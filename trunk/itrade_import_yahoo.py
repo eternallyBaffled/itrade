@@ -76,6 +76,9 @@ class Import_yahoo(object):
     def name(self):
         return 'yahoo'
 
+    def interval_year(self):
+        return 1
+
     def connect(self):
         return True
 

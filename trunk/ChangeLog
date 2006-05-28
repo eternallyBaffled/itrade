@@ -6,6 +6,11 @@ On the road for v0.4.5 (Nausicaa)
 ===============================================================================
 
 2006-05-28  Gilles Dumortier <dgil@ieee.org>
+	* Import plugin : number of years (SF bug 1485060)
+	* continue to work on v0.4.5 release :-)
+
+===============================================================================
+2006-05-28  Gilles Dumortier <dgil@ieee.org>
 
 	OFFICIAL release v0.4.2
 		SVN tag : ITRADE_0_4_2_COCA2
