@@ -1,0 +1,375 @@
+#!/usr/bin/env python
+# -*- coding: iso-8859-1 -*-
+# ============================================================================
+# Project Name : iTrade
+# Module Name  : itrade_wxmoney.py
+# Version      : $Id: itrade_wxmoney.py,v 1.16 2006/04/06 06:03:40 dgil Exp $
+#
+# Description: wxPython money management screens (risk, portfolio evaluation, ...)
+#
+# The Original Code is iTrade code (http://itrade.sourceforge.net).
+#
+# The Initial Developer of the Original Code is	Gilles Dumortier.
+#
+# Portions created by the Initial Developer are Copyright (C) 2004-2006 the
+# Initial Developer. All Rights Reserved.
+#
+# Contributor(s):
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; see http://www.gnu.org/licenses/gpl.html
+#
+# History       Rev   Description
+# 2005-11-1x    dgil  Wrote it from scratch
+# ============================================================================
+
+# ============================================================================
+# Version management
+# ============================================================================
+
+__revision__ = "$Id: itrade_wxmoney.py,v 1.16 2006/04/06 06:03:40 dgil Exp $"
+__author__ = "Gilles Dumortier (dgil@ieee.org)"
+__version__ = "0.4.5"
+__status__ = "alpha"
+__cvsversion__ = "$Revision: 1.16 $"[11:-2]
+__date__ = "$Date: 2006/04/06 06:03:40 $"[7:-2]
+__copyright__ = "Copyright (c) 2004-2006 Gilles Dumortier"
+__license__ = "GPL"
+__credits__ = """ """
+
+# ============================================================================
+# Imports
+# ============================================================================
+
+# python system
+import logging
+from datetime import *
+
+# wxPython system
+import itrade_wxversion
+from wxPython.wx import *
+#from wxPython.calendar import *
+#from wxPython.lib.mixins.listctrl import wxColumnSorterMixin, wxListCtrlAutoWidthMixin
+#from wxPython.lib.maskededit import wxMaskedTextCtrl
+
+# iTrade system
+from itrade_logging import *
+from itrade_local import message
+from itrade_quotes import QUOTE_BOTH,QUOTE_CASH,QUOTE_CREDIT
+from itrade_portfolio import *
+
+from itrade_wxhtml import iTradeHtmlWindow
+import itrade_wxres
+from itrade_wxmixin import iTrade_wxFrame
+
+# ============================================================================
+# menu identifier
+# ============================================================================
+
+ID_SAVE = 110
+ID_CLOSE = 111
+
+# ============================================================================
+# iTradeMoneyPanel
+#
+#   Money management
+# ============================================================================
+
+class iTradeMoneyPanel(wxWindow):
+
+    def __init__(self,parent,id,port):
+        wxWindow.__init__(self, parent, id)
+        self.m_port = port
+
+    def refresh(self):
+        pass
+
+# ============================================================================
+# iTradeEvaluationChartPanel
+#
+#   Display portfolio evaluation chart
+# ============================================================================
+
+class iTradeEvaluationChartPanel(wxWindow):
+
+    def __init__(self,parent,id,port):
+        wxWindow.__init__(self, parent, id)
+        self.m_port = port
+
+    def refresh(self):
+        pass
+
+# ============================================================================
+# iTradeComputeChartPanel
+#
+#   Computer
+# ============================================================================
+
+class iTradeComputePanel(wxWindow):
+
+    def __init__(self,parent,id,quote):
+        wxWindow.__init__(self, parent, id)
+        self.m_quote = quote
+
+    def refresh(self):
+        pass
+
+# ============================================================================
+# iTradeEvaluationPanel
+#
+#   Display textual evaluation of the portfolio
+# ============================================================================
+
+class iTradeEvaluationPanel(wxWindow):
+
+    def __init__(self,parent,id,port):
+        wxWindow.__init__(self, parent, id)
+        self.m_parent = parent
+        self.m_port = port
+
+        self.html = iTradeHtmlWindow(self.m_parent,-1)
+
+        EVT_SIZE(self, self.OnSize)
+
+        self.refresh()
+
+    def OnSize(self, event):
+        w,h = self.GetClientSizeTuple()
+        self.html.SetDimensions(5, 24, w-5, h-8)
+
+    def compute(self,year):
+        self.m_port.computeOperations(year)
+        return (self.m_port.nv_expenses(),self.m_port.nv_transfer(),self.m_port.nv_appreciation(),self.m_port.nv_taxable(),self.m_port.nv_taxes())
+
+    def refresh(self):
+        self.m_port.computeOperations()
+        # __x localisation + better look + previous year information + ...
+        # __x hopefully for next release :-)
+        self.html.SetPage("<html><body>")
+        self.html.AppendToPage('<table border="1" cellpadding="2" cellspacing="1" class="bright">')
+        self.html.AppendToPage(' <tr align="right" class="T20">')
+        self.html.AppendToPage('   <td align="left" nowrap><b>%s</b></td>' % message('money_portfolio'))
+        self.html.AppendToPage('   <td align="left" nowrap>%s</td>' % self.m_port.filename())
+        self.html.AppendToPage(' </tr>')
+        self.html.AppendToPage(' <tr align="right" class="L20">')
+        self.html.AppendToPage('   <td align="left" nowrap>%s</td>' % message('money_description'))
+        self.html.AppendToPage('   <td align="left" nowrap>%s</td>' % self.m_port.name())
+        self.html.AppendToPage(' </tr>')
+        self.html.AppendToPage(' <tr align="right" class="L20">')
+        self.html.AppendToPage('   <td align="left" nowrap>%s</td>' % message('money_account_number'))
+        self.html.AppendToPage('   <td align="left" nowrap>%s</td>' % self.m_port.accountref())
+        self.html.AppendToPage(' </tr>')
+        self.html.AppendToPage('</table>')
+        self.html.AppendToPage('<br><br>')
+        self.html.AppendToPage('<table border="1" cellpadding="2" cellspacing="1" width="100%" class="bright">')
+        self.html.AppendToPage(' <tr align="right" class="T20">')
+        self.html.AppendToPage('   <td align="left" nowrap></td>')
+        self.html.AppendToPage('   <td align="right" ><b>%s</b></td>' % message('money_initial_investment'))
+        self.html.AppendToPage('   <td align="right" nowrap><b>%s %s</b></td>' % (message('money_value'),date.today()))
+        self.html.AppendToPage('   <td align="right" nowrap><b>%s</b></td>' % message('money_performance'))
+        self.html.AppendToPage('   <td align="center" nowrap><b>%</b></td>')
+        self.html.AppendToPage(' </tr>')
+        self.html.AppendToPage(' <tr align="right" class="L20">')
+        self.html.AppendToPage('   <td align="left" nowrap><b>%s</b></td>' % message('money_investment_evaluation'))
+        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</b></td>' % (self.m_port.nv_invest(),self.m_port.currency_symbol()))
+        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</b></td>' % (self.m_port.nv_totalValue(),self.m_port.currency_symbol()))
+        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</b></td>' % (self.m_port.nv_perfTotal(),self.m_port.currency_symbol()))
+        self.html.AppendToPage('   <td align="right" nowrap>%2.2f %%</b></td>' % self.m_port.nv_perfTotalPercent())
+        self.html.AppendToPage(' </tr>')
+        self.html.AppendToPage(' <tr align="right" class="L20">')
+        self.html.AppendToPage('   <td align="left" nowrap>%s</td>' % (message('money_srd')))
+        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</b></td>' % (self.m_port.nv_credit(),self.m_port.currency_symbol()))
+        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</b></td>' % (self.m_port.nv_value(QUOTE_CREDIT),self.m_port.currency_symbol()))
+        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</b></td>' % (self.m_port.nv_perf(QUOTE_CREDIT),self.m_port.currency_symbol()))
+        self.html.AppendToPage('   <td align="center" nowrap>%2.2f%%</td>' % self.m_port.nv_perfPercent(QUOTE_CREDIT))
+        self.html.AppendToPage(' </tr>') # __x
+        self.html.AppendToPage(' <tr align="right" class="L20">')
+        self.html.AppendToPage('   <td align="left" nowrap>%s (%2.2f%s)</td>' % (message('money_cash'),self.m_port.nv_percentCash(QUOTE_CASH),message('money_percent_of_portfolio')))
+        self.html.AppendToPage('   <td align="right" nowrap></td>')
+        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</b></td>' % (self.m_port.nv_cash(),self.m_port.currency_symbol()))
+        self.html.AppendToPage(' </tr>')
+        self.html.AppendToPage(' <tr align="right" class="L20">')
+        self.html.AppendToPage('   <td align="left" nowrap>%s (%2.2f%s)</td>' % (message('money_quote'),self.m_port.nv_percentQuotes(QUOTE_CASH),message('money_percent_of_portfolio')))
+        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</b></td>' % (self.m_port.nv_buy(QUOTE_CASH),self.m_port.currency_symbol()))
+        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</b></td>' % (self.m_port.nv_value(QUOTE_CASH),self.m_port.currency_symbol()))
+        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</b></td>' % (self.m_port.nv_perf(QUOTE_CASH),self.m_port.currency_symbol()))
+        self.html.AppendToPage('   <td align="center" nowrap>%2.2f%%</td>' % self.m_port.nv_perfPercent(QUOTE_CASH))
+        self.html.AppendToPage(' </tr>')
+        self.html.AppendToPage('</table>')
+        self.html.AppendToPage('<br>')
+        self.html.AppendToPage('<br>')
+        self.html.AppendToPage('<table border="1" cellpadding="2" cellspacing="1" width="320" class="bright">')
+        self.html.AppendToPage(' <tr align="right" class="T20">')
+        self.html.AppendToPage('   <td align="left" nowrap><b>%s</b></td>' % message('money_fiscal_year'))
+        self.html.AppendToPage('   <td align="right" class="percent" nowrap><b>%d</b></td>' % (date.today().year-2))
+        self.html.AppendToPage('   <td align="right" class="percent" nowrap><b>%d</b></td>' % (date.today().year-1))
+        self.html.AppendToPage('   <td align="right" class="percent" nowrap><b>%d</b></td>' % date.today().year)
+        self.html.AppendToPage(' </tr>')
+
+        expenses0,transfer0,appr0,taxable0,taxes0 = self.compute(date.today().year-2)
+        expenses1,transfer1,appr1,taxable1,taxes1 = self.compute(date.today().year-1)
+        expenses2,transfer2,appr2,taxable2,taxes2 = self.compute(date.today().year)
+
+        self.html.AppendToPage(' <tr align="right" class="T20">')
+        self.html.AppendToPage('   <td align="left" nowrap>%s</td>' % message('money_expenses_vat'))
+        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (expenses0,self.m_port.currency_symbol()))
+        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (expenses1,self.m_port.currency_symbol()))
+        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (expenses2,self.m_port.currency_symbol()))
+        self.html.AppendToPage(' </tr>')
+        self.html.AppendToPage(' <tr align="right" class="T20">')
+        self.html.AppendToPage('   <td align="left" nowrap>%s</td>' % message('money_total_of_transfers'))
+        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (transfer0,self.m_port.currency_symbol()))
+        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (transfer1,self.m_port.currency_symbol()))
+        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (transfer2,self.m_port.currency_symbol()))
+        self.html.AppendToPage(' </tr>')
+        self.html.AppendToPage(' <tr align="right" class="T20">')
+        self.html.AppendToPage('   <td align="left" nowrap>%s</td>' % message('money_financial_appreciation'))
+        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (appr0,self.m_port.currency_symbol()))
+        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (appr1,self.m_port.currency_symbol()))
+        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (appr2,self.m_port.currency_symbol()))
+        self.html.AppendToPage(' </tr>')
+        self.html.AppendToPage(' <tr align="right" class="T20">')
+        self.html.AppendToPage('   <td align="left" nowrap>%s</td>' % message('money_taxable_amounts'))
+        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (taxable0,self.m_port.currency_symbol()))
+        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (taxable1,self.m_port.currency_symbol()))
+        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (taxable2,self.m_port.currency_symbol()))
+        self.html.AppendToPage(' </tr>')
+        self.html.AppendToPage(' <tr align="right" class="T20">')
+        self.html.AppendToPage('   <td align="left" nowrap>%s</td>' % message('money_amount_of_taxes'))
+        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (taxes0,self.m_port.currency_symbol()))
+        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (taxes1,self.m_port.currency_symbol()))
+        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (taxes2,self.m_port.currency_symbol()))
+        self.html.AppendToPage(' </tr>')
+        self.html.AppendToPage('</table>')
+        self.html.AppendToPage("</body></html>")
+
+# ============================================================================
+# iTradeMoneyNotebookWindow
+# ============================================================================
+
+class iTradeMoneyNotebookWindow(wxNotebook):
+
+    ID_PAGE_EVALUATION = 0
+    ID_PAGE_COMPUTE = 1
+    ID_PAGE_EVALCHART = 2
+    ID_PAGE_MONEY = 3
+
+    def __init__(self,parent,id,page,port,quote):
+        wxNotebook.__init__(self,parent,id,wxDefaultPosition, style=wxSIMPLE_BORDER|wxNB_TOP)
+        self.m_port = port
+        self.m_quote = quote
+        self.init()
+
+        EVT_NOTEBOOK_PAGE_CHANGED(self, self.GetId(), self.OnPageChanged)
+        EVT_NOTEBOOK_PAGE_CHANGING(self, self.GetId(), self.OnPageChanging)
+
+        # __x select page
+
+    def init(self):
+        self.win = {}
+        self.DeleteAllPages()
+
+        self.win[self.ID_PAGE_EVALUATION] = iTradeEvaluationPanel(self,wxNewId(),self.m_port)
+        self.AddPage(self.win[self.ID_PAGE_EVALUATION], message('money_evaluation'))
+
+        self.win[self.ID_PAGE_COMPUTE] = iTradeComputePanel(self,wxNewId(),self.m_quote)
+        self.AddPage(self.win[self.ID_PAGE_COMPUTE], message('money_compute'))
+
+        self.win[self.ID_PAGE_EVALCHART] = iTradeEvaluationChartPanel(self,wxNewId(),self.m_port)
+        self.AddPage(self.win[self.ID_PAGE_EVALCHART], message('money_evaluationchart'))
+
+        self.win[self.ID_PAGE_MONEY] = iTradeMoneyPanel(self,wxNewId(),self.m_port)
+        self.AddPage(self.win[self.ID_PAGE_MONEY], message('money_money'))
+
+    def OnPageChanged(self, event):
+        old = event.GetOldSelection()
+        new = event.GetSelection()
+        sel = self.GetSelection()
+        info('OnPageChanged,  old:%d, new:%d, sel:%d\n' % (old, new, sel))
+        if old<>new:
+            self.win[new].refresh()
+        event.Skip()
+
+    def OnPageChanging(self, event):
+        old = event.GetOldSelection()
+        new = event.GetSelection()
+        sel = self.GetSelection()
+        info('OnPageChanging, old:%d, new:%d, sel:%d\n' % (old, new, sel))
+        event.Skip()
+
+# ============================================================================
+# iTradeMoneyWindow
+# ============================================================================
+
+class iTradeMoneyWindow(wxFrame,iTrade_wxFrame):
+
+    def __init__(self,parent,id,title,page,port,quote):
+        self.m_id = wxNewId()
+        wxFrame.__init__(self,None,self.m_id, title, size = (640,480), style=wxDEFAULT_FRAME_STYLE|wxNO_FULL_REPAINT_ON_RESIZE)
+        iTrade_wxFrame.__init__(self,parent,'money')
+        self.m_port = port
+        self.m_quote = quote
+        self.m_page = page
+
+        self.m_book = iTradeMoneyNotebookWindow(self, -1, page=self.m_page,port=self.m_port,quote=self.m_quote)
+
+        EVT_WINDOW_DESTROY(self, self.OnDestroy)
+        EVT_SIZE(self, self.OnSize)
+
+    def OnSize(self, event):
+        w,h = self.GetClientSizeTuple()
+        self.m_book.SetDimensions(0, 0, w, h)
+
+    def OnDestroy(self, evt):
+        if self.m_parent:
+            self.m_parent.m_hMoney = None
+
+# ============================================================================
+# open_iTradeMoney
+# ============================================================================
+
+def open_iTradeMoney(win,page=0,port=None,quote=None):
+    debug('open_iTradeMoney')
+    if win and win.m_hMoney:
+        # set focus
+        win.m_hMoney.SetFocus()
+    else:
+        if not isinstance(port,Portfolio):
+            port = loadPortfolio()
+        frame = iTradeMoneyWindow(win, -1, "%s - %s" %(message('money_title'),port.name()),page,port,quote)
+        if win:
+            win.m_hMoney = frame
+        frame.Show()
+
+# ============================================================================
+# Test me
+# ============================================================================
+
+if __name__=='__main__':
+    setLevel(logging.INFO)
+
+    app = wxPySimpleApp()
+
+    from itrade_local import *
+    setLang('us')
+    gMessage.load()
+
+    port,matrix = cmdline_evaluatePortfolio()
+
+    open_iTradeMoney(None,port,None)
+    app.MainLoop()
+
+# ============================================================================
+# That's all folks !
+# ============================================================================
+# vim:set shiftwidth=4 tabstop=8 expandtab textwidth=78:
