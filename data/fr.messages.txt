@@ -1,0 +1,411 @@
+main_file;&Fichier
+main_open;&Ouvre ...
+main_desc_open; Ouvre un compte
+main_new;&Nouveau
+main_desc_new; Crée un nouveau compte
+main_delete;&Supprime
+main_desc_delete; Supprime un compte
+main_save;&Sauvegarde
+main_desc_save; Sauvegarde les données du compte courant
+main_saveas;&Sauvegarde sous ...
+main_desc_saveas; Sauvegarde le compte sous un autre nom
+main_edit;&Propriétés
+main_desc_edit; Edite les propriétés du compte courant
+main_exit;Sorti&e
+main_desc_exit; Quitte l'application iTrade
+main_close;&Ferme
+main_desc_close; Ferme cette fenêtre
+
+main_window;&Fenêtre
+
+main_view;&Suivi
+main_quote;&Valeur
+main_matrix;&Matrice
+
+main_view_portfolio;&Portefeuille
+main_view_desc_portfolio; Affichage de la vue du Portefeuille
+main_view_quotes;&Titres
+main_view_desc_quotes; Affichage de la vue des Titres
+main_view_stops;&Stops
+main_view_desc_stops; Affichage de la vue des Stops
+main_view_indicators;&Indicateurs
+main_view_desc_indicators; Affichage de la vue des Indicateurs
+
+main_view_operations;&Opérations
+main_view_desc_operations; Gère les opérations du Portefeuille
+main_view_money;&Money Management
+main_view_desc_money; Money Management
+main_view_alerts;&Information et Alertes
+main_view_desc_alerts; Information et alertes
+main_view_currencies;&Devises
+main_view_desc_currencies; Devises
+
+main_view_compute;&Calculette
+main_view_desc_compute; Calculette
+
+main_view_refresh;&Tout mettre à jour
+main_view_desc_refresh; Mettre à jour toutes les informations de la vue courante maintenant
+main_view_autorefresh;Mise à jour automatique
+main_view_desc_autorefresh; Mettre à jour toutes les informations de la vue courante automatiquement
+
+main_view_small;Texte rétréci
+main_view_desc_small; Utilise une taille rétrécie de texte pour l'affichage de la matrice
+main_view_normal;Texte normal
+main_view_desc_normal; Utilise une taille normale de texte pour l'affichage de la matrice
+main_view_big;Texte enlargi
+main_view_desc_big; Utilise une taille enlargi de texte pour l'affichage de la matrice
+
+main_quote_add;Ajouter ...
+main_quote_desc_add; Ajouter une valeur dans la liste
+main_quote_remove;Supprimer
+main_quote_desc_remove; Supprimer la valeur sélectionner de la liste
+main_quote_graph;Courbes Historiques
+main_quote_desc_graph; Visualise les courbes historiques de la valeur sélectionnée
+main_quote_live;Live
+main_quote_desc_live; Visualise le carnet d'ordre de la valeur sélectionnée
+main_quote_intraday;Intraday
+main_quote_desc_intraday; Visualise les données de la journée de la valeur sélectionnée
+main_quote_news;Informations
+main_quote_desc_news; Visualise les informations de la valeur sélectionnée
+main_quote_table;Données Brutes
+main_quote_desc_table; Visualise les données brutes de la valeur sélectionnée
+main_quote_analysis;Analyses
+main_quote_desc_analysis; Visualise les analyses techniques sur la valeur sélectionnée
+main_quote_buy;Achat
+main_quote_desc_buy; Opération d'achat sur la valeur sélectionnée
+main_quote_sell;Vente
+main_quote_desc_sell; Opération de vente sur la valeur sélectionnée
+main_quote_property;Propriétés
+main_quote_desc_property; Visualise les propriétés de la valeur sélectionnée
+
+main_help;&Aide
+main_help_contents;&Contenu
+main_help_desc_contents; Contenu de l'aide
+main_help_support;&Support Technique ...
+main_help_desc_support; Comment obtenir du Support Technique ?
+main_help_bugs;&Anomalie ...
+main_help_desc_bugs; Créer un rapport d'anomalie dans la base de l'application
+main_help_donors;&Faire une donation ...
+main_help_desc_donors; Comment faire une donation pour supporter ce projet
+
+main_about;&A propos de ...
+main_desc_about; Informations à propos de l'application iTrade
+
+main_save_matrix_data;Sauvegarde des données de la matrice ?
+main_save_operation_data;Sauvegarde des opérations du portfolio ?
+
+main_title_portfolio;iTrade - Portefeuille %s:%s
+main_title_quotes;iTrade - Matrice %s:%s
+main_title_stops;iTrade - Stops %s:%s
+main_title_indicators;iTrade - Indicateurs %s:%s
+
+main_refreshing;Mise à jour des données
+
+mixin_exit;Quitter l'application iTrade
+mixin_close;Fermer cette fenêtre
+mixin_open;Changement de Contexte
+
+main_popup_refreshall;Tout mettre à jour
+main_popup_buy;Vente
+main_popup_sell;Achat
+main_popup_remove;Supprimer
+main_popup_delete;Supprimer
+main_popup_add;Ajouter ...
+main_popup_view;Visualiser
+main_popup_live;Live
+main_popup_properties;Propriétés
+main_popup_edit;Modifier
+
+main_valuation;Evaluation
+
+html_connecting;Connexion en cours ...
+html_noconnect;Pas de connexion
+
+ok;Valide
+ok_desc;Ce bouton valide la boite de dialogue
+cancel;Abandon
+cancel_desc;Le bouton Abandon abandonne la boite de dialogue (Duh!)
+
+isin;ISIN
+ticker;Titre
+quote;Valeur
+variation;Var.
+date;Le
+time;à
+name;Nom
+volume;Volume
+last;Dernier
+open;Ouv.
+low;Bas
+high;Haut
+prev;Préc.
+pivots;Pivots
+status;Statut
+reopen;Reprise
+high_threshold;Seuil H
+low_threshold;Seuil B
+cmp;CMP
+qty;Qté
+perfday;Jour %
+perfper;Perf %
+profit;Gain
+sell;Vente
+buy;Achat
+UPP;PRU
+USP;PVU
+
+quote_title;iTrade - Valeur
+quote_select_title;Choix d'une valeur
+
+quote_select_textfield;ISIN / Ticker / Nom :
+quote_select_filterfield;Seulement les valeurs tradées
+
+quote_graphdaily;Journalier
+quote_live;Live
+quote_graphweekly;Hebdomadaire
+quote_news;Infos
+quote_analysis;Analyses
+quote_table;Table
+quote_intraday;Journée
+quote_properties;Propriétés
+
+alerts_title;iTrade - Information et Alertes
+alerts_alerts;Alertes
+alerts_news;Information
+
+money_title;iTrade - Money Management
+money_evaluation;Performance
+money_compute;Calculette
+money_evaluationchart;Graphique
+money_money;Gestion Risque
+
+portfolio_title;iTrade - Opération
+portfolio_select_title;Choix d'un Compte
+portfolio_delete_title;Suppression d'un Compte
+portfolio_properties_edit;Propriétés du Compte
+portfolio_properties_create;Création d'un nouveau Compte
+portfolio_properties_delete;Suppression de Compte
+portfolio_properties_rename;Renommage de Compte
+
+portfolio_delete_confirm;Confirmez-vous la suppression du compte '%s' ?
+portfolio_delete_confirm_title;Suppression de Compte
+portfolio_exist_info;Le compte de référence '%s' existe déjà !
+portfolio_exist_info_title;Création de Compte
+portfolio_rename_confirm;Confirmez-vous le référencement du compte sous '%s' ?
+portfolio_rename_confirm_title;Renommage de Compte
+
+portfolio_properties_btncreate;Crée
+portfolio_properties_btncreatedesc;Crée le nouveau compte
+portfolio_properties_btndelete;Supprime
+portfolio_properties_btndeletedesc;Supprime ce compte (irréversible)
+portfolio_properties_btnedit;Modifie
+portfolio_properties_btneditdesc;Valide les informations du compte
+portfolio_properties_btnrename;Renomme
+portfolio_properties_btnrenamedesc;Renomme le compte
+portfolio_properties_btnselect;Ouvre
+portfolio_properties_btnselectdesc;Ouvre ce compte
+
+portfolio_filename;Référence
+portfolio_name;Description
+portfolio_accountref;Numéro de Compte
+portfolio_market;Marché Principal
+portfolio_select_textfield;Référence :
+portfolio_currency;Devise
+portfolio_indicator;Indicateur Principal
+
+portfolio_modify;Modifie
+portfolio_new;Nouveau
+portfolio_delete;Supprime
+portfolio_date;Date de valeur :
+portfolio_operation;Opération :
+portfolio_description;Description :
+portfolio_quote;Valeur :
+portfolio_pre_expenses1;dont
+portfolio_pre_expenses2;et
+portfolio_post_expenses; de Frais
+portfolio_quantity;Quantité :
+
+portfolio_field_credit;net crédit :
+portfolio_field_debit;net débit :
+portfolio_field_freeofcharges;aucun Frais
+portfolio_field_valorization;Valorisation :
+
+portfolio_ctrl_sell;Vente au Comptant
+portfolio_ctrl_sell_srd;Vente SRD
+portfolio_ctrl_buy;Achat au Comptant
+portfolio_ctrl_buy_srd;Achat SRD
+portfolio_ctrl_debit;Retrait
+portfolio_ctrl_credit;Dépôt
+portfolio_ctrl_fee;Taxes et Impôts
+portfolio_ctrl_interest;Intérêts
+portfolio_ctrl_detachment;Prime d'émission (non imposable)
+portfolio_ctrl_dividend;Dividende (imposable)
+portfolio_ctrl_liquidation;Liquidation SRD
+portfolio_ctrl_quote;Prime d'émission en titres
+portfolio_ctrl_register;Enregistrement Public
+
+portfolio_list_date;Date
+portfolio_list_operation;Opération
+portfolio_list_description;Description
+portfolio_list_number; Quantité
+portfolio_list_debit;   Débit
+portfolio_list_credit;  Crédit
+portfolio_list_expense; Taxes
+portfolio_list_balance; Balance
+portfolio_list_srd;    SRD
+
+Portfolio_sell;vente
+Portfolio_sell_srd;vente SRD
+Portfolio_buy;achat
+Portfolio_buy_srd;achat SRD
+Portfolio_credit;dépôt
+Portfolio_debit;retrait
+Portfolio_fee;taxe
+Portfolio_interest;intérêts
+Portfolio_split;split
+Portfolio_detachment;prime
+Portfolio_dividend;dividende
+Portfolio_liquidation;liquidation
+Portfolio_quote;prime
+Portfolio_register;public registration
+
+portfolio_dispall;&Tous
+portfolio_desc_dispall; Affiche toutes les opérations
+portfolio_dispquotes;&Titres
+portfolio_desc_dispquotes; Affiche les opérations sur titres
+portfolio_dispcash;&Cash
+portfolio_desc_dispcash; Affiche les opérations en cash
+portfolio_dispvalues;&Gains
+portfolio_desc_dispvalues; Affiche les opérations de + ou - values
+portfolio_dispsrd;&SRD
+portfolio_desc_dispsrd; Affiche les opérations SRD
+
+portfolio_opadd;&Ajouter ...
+portfolio_desc_opadd; Ajoute une nouvelle opération
+portfolio_opdelete;&Supprimer
+portfolio_desc_opdelete; Supprime l'opération courante
+portfolio_opmodify;&Modifier
+portfolio_desc_opmodify; Modifie l'opération courante
+
+portfolio_view_small;Texte rétréci
+portfolio_view_desc_small; Utilise une taille rétrécie de texte pour l'affichage des opérations
+portfolio_view_normal;Texte normal
+portfolio_view_desc_normal; Utilise une taille normale de texte pour l'affichage des opérations
+portfolio_view_big;Texte enlargi
+portfolio_view_desc_big; Utilise une taille enlargi de texte pour l'affichage des opérations
+
+portfolio_per30days;&30 jours
+portfolio_desc_per30days; Affiche les 30 derniers jours d'opérations
+portfolio_per90days;&90 jours
+portfolio_desc_per90days; Affiche les 90 derniers jours d'opérations
+portfolio_peryear;&Année
+portfolio_desc_peryear; Affiche l'année en cours
+portfolio_perall;&Tous
+portfolio_desc_perall; Affiche toutes les opérations depuis l'origine
+
+portfolio_menu_file;&Fichier
+portfolio_menu_disp;&Affichage
+portfolio_menu_op;&Opérations
+portfolio_menu_per;&Filtres
+
+graph_price;Prix
+graph_volume;Volume
+
+backtolist;Retour à la liste
+
+popup_open;Ouverture
+popup_high;Plus Haut
+popup_low;Plus Bas
+popup_close;Dernier
+popup_percent;Var. (%s)
+popup_volume;Volume
+
+save_to_file;Sauver vers fichier
+
+tb_pan_left;Déplace vers la gauche
+tb_pan_right;Déplace vers la droite
+tb_save_file;Sauvegarde du graphique vers un fichier
+tb_config;Paramètrage des graphiques
+tb_home;Restaure la position par défaut
+tb_zoom_out;period Zoom out
+tb_zoom_in;period Zoom in
+
+quote_popup_dispMA150;Moyenne Mobile 150 jours
+quote_popup_dispBollinger;Bandes de Bollinger
+quote_popup_dispOverlaidVolume;Volumes en incrustation
+quote_popup_dispLegend;Légendes
+quote_popup_dispGrid;Quadrillage
+quote_popup_dispChart1Candlestick;Chandeliers
+quote_popup_dispChart1OHLC;Barres
+quote_popup_dispChart1Line;Lignes
+
+prop_reference;Référence
+prop_marketandconnector;Marché et Connecteur
+prop_tradingstyle;Informations de Trading
+prop_isin;ISIN :
+prop_name;Nom :
+prop_ticker;Ticker :
+prop_reload;Recharge
+prop_desc_reload;Recharge toutes les cotations
+prop_rename;Renomme
+prop_desc_rename;Renomme le ticker de cette valeur
+prop_import;Importe
+prop_desc_importe;Importe les données pour cette valeur
+prop_export;Exporte
+prop_desc_exporte;Exporte les données de cette valeur
+prop_restore;Réinit
+prop_desc_restore;Restaure les valeurs initiales
+prop_market;Marché :
+prop_country;Pays :
+prop_liveconnector;Connector temps réel :
+prop_islive;Temps réel
+prop_isnotlive;Temps différé (%d minutes)
+prop_impconnector;Connecteur d'importation :
+prop_set;Valide
+prop_desc_set;Valide les nouvelles informations de marché et de connection
+prop_term;Période d'investissement (en mois) :
+prop_risk;Niveau de risque (en %) :
+
+live_busy;Patientez s.v.p., la connexion live doit être arrêtée ...
+live_notebook;Carnet d'Ordres
+live_lasttrades;Dernières Transactions
+live_hours;Heures
+live_qty;Qté
+live_price;Prix
+live_buy;Achat
+live_sell;Vente
+live_number;Nb
+live_CMP;CMP
+live_FMP;FMP
+
+wxversion_title;Erreur de version wxPython
+wxversion_msg;La version requise de wxPython n'est pas installée. Merci d'installer la version %d.%d ANSI
+
+money_fiscal_year;Année Fiscale
+money_amount_of_taxes;Impots à payer
+money_taxable_amounts;Montants Imposables
+money_financial_appreciation;Plus values
+money_total_of_transfers;Total des Transferts
+money_expenses_vat;Taxes (Frais, TVA, ...)
+money_portfolio;Portefeuille
+money_description;Description
+money_account_number;Numéro du compte
+money_percent_of_portfolio;% du portefeuille
+money_quote;Titres
+money_srd;SRD
+money_cash;Liquidité
+money_initial_investment;Investissement initial
+money_value;Valeur
+money_performance;Performance
+money_investment_evaluation;Evaluation
+
+currencies_title;Devises
+currency_menu_file;&Fichier
+currency_menu_view;&Vue
+
+currency_to;En
+currency_from;Convertir
+currency_rate;Taux
+currency_refreshing;Mise à jour des devises
+
+test;message de test
