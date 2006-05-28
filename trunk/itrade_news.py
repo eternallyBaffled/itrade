@@ -2,7 +2,6 @@
 # ============================================================================
 # Project Name : iTrade
 # Module Name  : itrade_news.py
-# Version      : $Id: itrade_news.py,v 1.3 2006/05/02 14:04:15 dgil Exp $
 #
 # Description: News Aggregator
 #
@@ -31,20 +30,6 @@
 # History       Rev   Description
 # 2005-12-xx    dgil  Wrote it from scratch
 # ============================================================================
-
-# ============================================================================
-# Version management
-# ============================================================================
-
-__revision__ = "$Id: itrade_news.py,v 1.3 2006/05/02 14:04:15 dgil Exp $"
-__author__ = "Gilles Dumortier (dgil@ieee.org)"
-__version__ = "0.4"
-__status__ = "alpha"
-__cvsversion__ = "$Revision: 1.3 $"[11:-2]
-__date__ = "$Date: 2006/05/02 14:04:15 $"[7:-2]
-__copyright__ = "Copyright (c) 2004-2006 Gilles Dumortier"
-__license__ = "GPL"
-__credits__ = """ """
 
 # ============================================================================
 # Imports

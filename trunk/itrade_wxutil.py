@@ -2,7 +2,6 @@
 # ============================================================================
 # Project Name : iTrade
 # Module Name  : itrade_wxutil.py
-# Version      : $Id: itrade_wxutil.py,v 1.5 2006/05/03 08:18:47 dgil Exp $
 #
 # Description: wxPython utilities, incl. matplotlib func support
 #
@@ -31,20 +30,6 @@
 # History       Rev   Description
 # 2005-10-26    dgil  Wrote it from scratch
 # ============================================================================
-
-# ============================================================================
-# Version management
-# ============================================================================
-
-__revision__ = "$Id: itrade_wxutil.py,v 1.5 2006/05/03 08:18:47 dgil Exp $"
-__author__ = "Gilles Dumortier (dgil@ieee.org)"
-__version__ = "0.4"
-__status__ = "alpha"
-__cvsversion__ = "$Revision: 1.5 $"[11:-2]
-__date__ = "$Date: 2006/05/03 08:18:47 $"[7:-2]
-__copyright__ = "Copyright (c) 2004-2006 Gilles Dumortier"
-__license__ = "GPL"
-__credits__ = """ """
 
 # ============================================================================
 # Imports

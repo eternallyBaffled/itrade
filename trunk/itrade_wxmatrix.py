@@ -2,7 +2,6 @@
 # ============================================================================
 # Project Name : iTrade
 # Module Name  : itrade_wxmatrix.py
-# Version      : $Id: itrade_wxmatrix.py,v 1.19 2006/05/04 07:55:03 dgil Exp $
 #
 # Description: wxPython Matrix
 #
@@ -31,20 +30,6 @@
 # History       Rev   Description
 # 2006-01-2x    dgil  Wrote it from itrade_wxmain.py module
 # ============================================================================
-
-# ============================================================================
-# Version management
-# ============================================================================
-
-__revision__ = "$Id: itrade_wxmatrix.py,v 1.19 2006/05/04 07:55:03 dgil Exp $"
-__author__ = "Gilles Dumortier (dgil@ieee.org)"
-__version__ = "0.4.5"
-__status__ = "alpha"
-__cvsversion__ = "$Revision: 1.19 $"[11:-2]
-__date__ = "$Date: 2006/05/04 07:55:03 $"[7:-2]
-__copyright__ = "Copyright (c) 2004-2006 Gilles Dumortier"
-__license__ = "GPL"
-__credits__ = """ """
 
 # ============================================================================
 # Imports

@@ -2,7 +2,6 @@
 # ============================================================================
 # Project Name : iTrade
 # Module Name  : itrade_wxquote.py
-# Version      : $Id: itrade_wxquote.py,v 1.80 2006/05/03 14:45:40 dgil Exp $
 #
 # Description: wxPython quote display
 #
@@ -32,20 +31,6 @@
 # 2005-03-27    dgil  Wrote it from scratch
 # 2005-04-03    dgil  Add quote selector
 # ============================================================================
-
-# ============================================================================
-# Version management
-# ============================================================================
-
-__revision__ = "$Id: itrade_wxquote.py,v 1.80 2006/05/03 14:45:40 dgil Exp $"
-__author__ = "Gilles Dumortier (dgil@ieee.org)"
-__version__ = "0.4.5"
-__status__ = "alpha"
-__cvsversion__ = "$Revision: 1.80 $"[11:-2]
-__date__ = "$Date: 2006/05/03 14:45:40 $"[7:-2]
-__copyright__ = "Copyright (c) 2004-2006 Gilles Dumortier"
-__license__ = "GPL"
-__credits__ = """ """
 
 # ============================================================================
 # Imports

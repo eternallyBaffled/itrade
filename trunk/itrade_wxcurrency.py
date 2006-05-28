@@ -2,7 +2,6 @@
 # ============================================================================
 # Project Name : iTrade
 # Module Name  : itrade_wxcurrency.py
-# Version      : $Id: itrade_wxcurrency.py,v 1.1 2006/04/20 17:47:38 dgil Exp $
 #
 # Description: wxPython Currencies
 #
@@ -31,20 +30,6 @@
 # History       Rev   Description
 # 2006-04-2x    dgil  Wrote it from scratch
 # ============================================================================
-
-# ============================================================================
-# Version management
-# ============================================================================
-
-__revision__ = "$Id: itrade_wxcurrency.py,v 1.1 2006/04/20 17:47:38 dgil Exp $"
-__author__ = "Gilles Dumortier (dgil@ieee.org)"
-__version__ = "0.4.5"
-__status__ = "alpha"
-__cvsversion__ = "$Revision: 1.1 $"[11:-2]
-__date__ = "$Date: 2006/04/20 17:47:38 $"[7:-2]
-__copyright__ = "Copyright (c) 2004-2006 Gilles Dumortier"
-__license__ = "GPL"
-__credits__ = """ """
 
 # ============================================================================
 # Imports

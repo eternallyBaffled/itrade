@@ -3,7 +3,6 @@
 # ============================================================================
 # Project Name : iTrade
 # Module Name  : itrade_wxalerts.py
-# Version      : $Id: itrade_wxalerts.py,v 1.12 2006/05/03 14:45:40 dgil Exp $
 #
 # Description: Alerts wx Front-End
 #
@@ -32,20 +31,6 @@
 # History       Rev   Description
 # 2005-10-20    dgil  Wrote it from scratch
 # ============================================================================
-
-# ============================================================================
-# Version management
-# ============================================================================
-
-__revision__ = "$Id: itrade_wxalerts.py,v 1.12 2006/05/03 14:45:40 dgil Exp $"
-__author__ = "Gilles Dumortier (dgil@ieee.org)"
-__version__ = "0.4"
-__status__ = "alpha"
-__cvsversion__ = "$Revision: 1.12 $"[11:-2]
-__date__ = "$Date: 2006/05/03 14:45:40 $"[7:-2]
-__copyright__ = "Copyright (c) 2004-2006 Gilles Dumortier"
-__license__ = "GPL"
-__credits__ = """ """
 
 # ============================================================================
 # Imports

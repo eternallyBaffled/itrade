@@ -3,7 +3,6 @@
 # ============================================================================
 # Project Name : iTrade
 # Module Name  : itrade_liveupdate_fortuneo.py
-# Version      : $Id: itrade_liveupdate_fortuneo.py,v 1.20 2006/05/04 15:03:46 dgil Exp $
 #
 # Description: Live update quotes from fortuneo
 #
@@ -34,21 +33,9 @@
 # 2006-05-0x    dgil  live.txt
 # 2006-05-28    dgil  deprecated - live broken / access has been securized
 #                     keep it for historical reason
+#
+# DEPRECATED
 # ============================================================================
-
-# ============================================================================
-# Version management
-# ============================================================================
-
-__revision__ = "$Id: itrade_liveupdate_fortuneo.py,v 1.20 2006/05/04 15:03:46 dgil Exp $"
-__author__ = "Gilles Dumortier (dgil@ieee.org)"
-__version__ = "0.4.5"
-__status__ = "DEPRECATED"
-__cvsversion__ = "$Revision: 1.20 $"[11:-2]
-__date__ = "$Date: 2006/05/04 15:03:46 $"[7:-2]
-__copyright__ = "Copyright (c) 2004-2006 Gilles Dumortier"
-__license__ = "GPL"
-__credits__ = """  """
 
 # ============================================================================
 # Imports

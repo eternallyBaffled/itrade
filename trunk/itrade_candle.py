@@ -2,7 +2,6 @@
 # ============================================================================
 # Project Name : iTrade
 # Module Name  : itrade_candle.py
-# Version      : $Id: itrade_candle.py,v 1.7 2006/01/20 18:46:14 dgil Exp $
 #
 # Description: basic candle management
 #
@@ -31,20 +30,6 @@
 # History       Rev   Description
 # 2005-04-24    dgil  Wrote it from scratch
 # ============================================================================
-
-# ============================================================================
-# Version management
-# ============================================================================
-
-__revision__ = "$Id: itrade_candle.py,v 1.7 2006/01/20 18:46:14 dgil Exp $"
-__author__ = "Gilles Dumortier (dgil@ieee.org)"
-__version__ = "0.4"
-__status__ = "alpha"
-__cvsversion__ = "$Revision: 1.7 $"[11:-2]
-__date__ = "$Date: 2006/01/20 18:46:14 $"[7:-2]
-__copyright__ = "Copyright (c) 2004-2006 Gilles Dumortier"
-__license__ = "GPL"
-__credits__ = """ """
 
 # ============================================================================
 # Imports

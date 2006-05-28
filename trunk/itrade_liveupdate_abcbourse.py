@@ -2,7 +2,6 @@
 # ============================================================================
 # Project Name : iTrade
 # Module Name  : itrade_liveupdate_abcbourse.py
-# Version      : $Id: itrade_liveupdate_abcbourse.py,v 1.16 2006/01/28 12:27:43 dgil Exp $
 #
 # Description: Live update quotes from abcbourse.com
 #
@@ -31,20 +30,6 @@
 # History       Rev   Description
 # 2005-03-25    dgil  Wrote it from scratch
 # ============================================================================
-
-# ============================================================================
-# Version management
-# ============================================================================
-
-__revision__ = "$Id: itrade_liveupdate_abcbourse.py,v 1.16 2006/01/28 12:27:43 dgil Exp $"
-__author__ = "Gilles Dumortier (dgil@ieee.org)"
-__version__ = "0.4"
-__status__ = "alpha"
-__cvsversion__ = "$Revision: 1.16 $"[11:-2]
-__date__ = "$Date: 2006/01/28 12:27:43 $"[7:-2]
-__copyright__ = "Copyright (c) 2004-2006 Gilles Dumortier"
-__license__ = "GPL"
-__credits__ = """ """
 
 # ============================================================================
 # Imports

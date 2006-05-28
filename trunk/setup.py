@@ -3,7 +3,6 @@
 # ============================================================================
 # Project Name : iTrade
 # Module Name  : setup.py
-# Version      : $Id: setup.py,v 1.3 2006/02/12 12:31:31 dgil Exp $
 #
 # Description: Setup for py2exe
 #
@@ -32,20 +31,6 @@
 # History       Rev   Description
 # 2005-10-15    dgil  Wrote it from scratch
 # ============================================================================
-
-# ============================================================================
-# Version management
-# ============================================================================
-
-__revision__ = "$Id: setup.py,v 1.3 2006/02/12 12:31:31 dgil Exp $"
-__author__ = "Gilles Dumortier (dgil@ieee.org)"
-__version__ = "0.4"
-__status__ = "alpha"
-__cvsversion__ = "$Revision: 1.3 $"[11:-2]
-__date__ = "$Date: 2006/02/12 12:31:31 $"[7:-2]
-__copyright__ = "Copyright (c) 2004-2006 Gilles Dumortier"
-__license__ = "GPL"
-__credits__ = """ """
 
 # ============================================================================
 # Imports

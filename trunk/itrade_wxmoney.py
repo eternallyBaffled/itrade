@@ -3,7 +3,6 @@
 # ============================================================================
 # Project Name : iTrade
 # Module Name  : itrade_wxmoney.py
-# Version      : $Id: itrade_wxmoney.py,v 1.16 2006/04/06 06:03:40 dgil Exp $
 #
 # Description: wxPython money management screens (risk, portfolio evaluation, ...)
 #
@@ -32,20 +31,6 @@
 # History       Rev   Description
 # 2005-11-1x    dgil  Wrote it from scratch
 # ============================================================================
-
-# ============================================================================
-# Version management
-# ============================================================================
-
-__revision__ = "$Id: itrade_wxmoney.py,v 1.16 2006/04/06 06:03:40 dgil Exp $"
-__author__ = "Gilles Dumortier (dgil@ieee.org)"
-__version__ = "0.4.5"
-__status__ = "alpha"
-__cvsversion__ = "$Revision: 1.16 $"[11:-2]
-__date__ = "$Date: 2006/04/06 06:03:40 $"[7:-2]
-__copyright__ = "Copyright (c) 2004-2006 Gilles Dumortier"
-__license__ = "GPL"
-__credits__ = """ """
 
 # ============================================================================
 # Imports

@@ -2,7 +2,6 @@
 # ============================================================================
 # Project Name : iTrade
 # Module Name  : itrade_quotes.py
-# Version      : $Id: itrade_quotes.py,v 1.84 2006/05/04 15:03:46 dgil Exp $
 #
 # Description: Quotes
 #
@@ -31,20 +30,6 @@
 # History       Rev   Description
 # 2004-01-08    dgil  Wrote it from scratch
 # ============================================================================
-
-# ============================================================================
-# Version management
-# ============================================================================
-
-__revision__ = "$Id: itrade_quotes.py,v 1.84 2006/05/04 15:03:46 dgil Exp $"
-__author__ = "Gilles Dumortier (dgil@ieee.org)"
-__version__ = "0.4.5"
-__status__ = "alpha"
-__cvsversion__ = "$Revision: 1.84 $"[11:-2]
-__date__ = "$Date: 2006/05/04 15:03:46 $"[7:-2]
-__copyright__ = "Copyright (c) 2004-2006 Gilles Dumortier"
-__license__ = "GPL"
-__credits__ = """ """
 
 # ============================================================================
 # Imports

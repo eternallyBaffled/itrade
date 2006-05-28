@@ -2,7 +2,6 @@
 # ============================================================================
 # Project Name : iTrade
 # Module Name  : itrade_portfolio.py
-# Version      : $Id: itrade_portfolio.py,v 1.61 2006/04/22 09:30:12 dgil Exp $
 #
 # Description: Portfolio & Operations
 #
@@ -31,20 +30,6 @@
 # History       Rev   Description
 # 2004-02-20    dgil  Wrote it from scratch
 # ============================================================================
-
-# ============================================================================
-# Version management
-# ============================================================================
-
-__revision__ = "$Id: itrade_portfolio.py,v 1.61 2006/04/22 09:30:12 dgil Exp $"
-__author__ = "Gilles Dumortier (dgil@ieee.org)"
-__version__ = "0.4.5"
-__status__ = "alpha"
-__cvsversion__ = "$Revision: 1.61 $"[11:-2]
-__date__ = "$Date: 2006/04/22 09:30:12 $"[7:-2]
-__copyright__ = "Copyright (c) 2004-2006 Gilles Dumortier"
-__license__ = "GPL"
-__credits__ = """ """
 
 # ============================================================================
 # Imports
