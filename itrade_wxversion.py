@@ -2,7 +2,6 @@
 # ============================================================================
 # Project Name : iTrade
 # Module Name  : itrade_wxversion.py
-# Version      : $Id: itrade_wxversion.py,v 1.3 2006/02/12 10:40:26 dgil Exp $
 #
 # Description: Manage wxVersion
 #
@@ -31,20 +30,6 @@
 # History       Rev   Description
 # 2006-01-01    dgil  Wrote it from scratch
 # ============================================================================
-
-# ============================================================================
-# Version management
-# ============================================================================
-
-__revision__ = "$Id: itrade_wxversion.py,v 1.3 2006/02/12 10:40:26 dgil Exp $"
-__author__ = "Gilles Dumortier (dgil@ieee.org)"
-__version__ = "0.4"
-__status__ = "alpha"
-__cvsversion__ = "$Revision: 1.3 $"[11:-2]
-__date__ = "$Date: 2006/02/12 10:40:26 $"[7:-2]
-__copyright__ = "Copyright (c) 2004-2006 Gilles Dumortier"
-__license__ = "GPL"
-__credits__ = """ """
 
 # ============================================================================
 # wxPython version required : 2.6.x

@@ -2,7 +2,6 @@
 # ============================================================================
 # Project Name : iTrade
 # Module Name  : itrade_datation.py
-# Version      : $Id: itrade_datation.py,v 1.18 2006/04/17 17:21:22 dgil Exp $
 #
 # Description: Datation
 #
@@ -33,20 +32,6 @@
 # 2005-08-15    dgil  Add indexation system (trade can be referenced by index
 #                     or by date)
 # ============================================================================
-
-# ============================================================================
-# Version management
-# ============================================================================
-
-__revision__ = "$Id: itrade_datation.py,v 1.18 2006/04/17 17:21:22 dgil Exp $"
-__author__ = "Gilles Dumortier (dgil@ieee.org)"
-__version__ = "0.4"
-__status__ = "alpha"
-__cvsversion__ = "$Revision: 1.18 $"[11:-2]
-__date__ = "$Date: 2006/04/17 17:21:22 $"[7:-2]
-__copyright__ = "Copyright (c) 2004-2006 Gilles Dumortier"
-__license__ = "GPL"
-__credits__ = """ """
 
 # ============================================================================
 # Imports

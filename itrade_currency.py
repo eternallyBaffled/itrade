@@ -3,7 +3,6 @@
 # ============================================================================
 # Project Name : iTrade
 # Module Name  : itrade_currency.py
-# Version      : $Id: itrade_currency.py,v 1.6 2006/04/22 09:00:44 dgil Exp $
 #
 # Description: Currency management
 #
@@ -32,20 +31,6 @@
 # History       Rev   Description
 # 2006-04-1x    dgil  Wrote it from scratch
 # ============================================================================
-
-# ============================================================================
-# Version management
-# ============================================================================
-
-__revision__ = "$Id: itrade_currency.py,v 1.6 2006/04/22 09:00:44 dgil Exp $"
-__author__ = "Gilles Dumortier (dgil@ieee.org)"
-__version__ = "0.4.5"
-__status__ = "alpha"
-__cvsversion__ = "$Revision: 1.6 $"[11:-2]
-__date__ = "$Date: 2006/04/22 09:00:44 $"[7:-2]
-__copyright__ = "Copyright (c) 2004-2006 Gilles Dumortier"
-__license__ = "GPL"
-__credits__ = """ """
 
 # ============================================================================
 # Imports

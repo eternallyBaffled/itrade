@@ -2,7 +2,6 @@
 # ============================================================================
 # Project Name : iTrade
 # Module Name  : iTrade_ansicolors.py
-# Version      : $Id: itrade_ansicolors.py,v 1.4 2006/01/20 18:46:14 dgil Exp $
 #
 # Description: ANSI Colors code
 #
@@ -31,20 +30,6 @@
 # History       Rev   Description
 # 2004-04-11    dgil  Wrote it from scratch
 # ============================================================================
-
-# ============================================================================
-# Version management
-# ============================================================================
-
-__revision__ = "$Id: itrade_ansicolors.py,v 1.4 2006/01/20 18:46:14 dgil Exp $"
-__author__ = "Gilles Dumortier (dgil@ieee.org)"
-__version__ = "0.4"
-__status__ = "alpha"
-__cvsversion__ = "$Revision: 1.4 $"[11:-2]
-__date__ = "$Date: 2006/01/20 18:46:14 $"[7:-2]
-__copyright__ = "Copyright (c) 2004-2006 Gilles Dumortier"
-__license__ = "GPL"
-__credits__ = """Jeremiah Fincher"""
 
 # ============================================================================
 # Imports

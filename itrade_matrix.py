@@ -2,7 +2,6 @@
 # ============================================================================
 # Project Name : iTrade
 # Module Name  : itrade_matrix.py
-# Version      : $Id: itrade_matrix.py,v 1.21 2006/04/19 19:28:51 dgil Exp $
 #
 # Description: Matrix
 #
@@ -31,20 +30,6 @@
 # History       Rev   Description
 # 2004-02-20    dgil  Wrote it from scratch
 # ============================================================================
-
-# ============================================================================
-# Version management
-# ============================================================================
-
-__revision__ = "$Id: itrade_matrix.py,v 1.21 2006/04/19 19:28:51 dgil Exp $"
-__author__ = "Gilles Dumortier (dgil@ieee.org)"
-__version__ = "0.4"
-__status__ = "alpha"
-__cvsversion__ = "$Revision: 1.21 $"[11:-2]
-__date__ = "$Date: 2006/04/19 19:28:51 $"[7:-2]
-__copyright__ = "Copyright (c) 2004-2006 Gilles Dumortier"
-__license__ = "GPL"
-__credits__ = """ """
 
 # ============================================================================
 # Imports

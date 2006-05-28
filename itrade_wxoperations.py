@@ -3,7 +3,6 @@
 # ============================================================================
 # Project Name : iTrade
 # Module Name  : itrade_wxoperations.py
-# Version      : $Id: itrade_wxoperations.py,v 1.13 2006/05/04 17:15:36 dgil Exp $
 #
 # Description: wxPython portfolio operations screen
 #
@@ -32,20 +31,6 @@
 # History       Rev   Description
 # 2006-01-1x    dgil  Split code from original itrade_wxportfolio.py module
 # ============================================================================
-
-# ============================================================================
-# Version management
-# ============================================================================
-
-__revision__ = "$Id: itrade_wxoperations.py,v 1.13 2006/05/04 17:15:36 dgil Exp $"
-__author__ = "Gilles Dumortier (dgil@ieee.org)"
-__version__ = "0.4.5"
-__status__ = "alpha"
-__cvsversion__ = "$Revision: 1.13 $"[11:-2]
-__date__ = "$Date: 2006/05/04 17:15:36 $"[7:-2]
-__copyright__ = "Copyright (c) 2004-2006 Gilles Dumortier"
-__license__ = "GPL"
-__credits__ = """ """
 
 # ============================================================================
 # Imports

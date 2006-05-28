@@ -2,7 +2,6 @@
 # ============================================================================
 # Project Name : iTrade
 # Module Name  : itrade_config.py
-# Version      : $Id: itrade_config.py,v 1.42 2006/05/04 07:55:02 dgil Exp $
 #
 # Description: Configuration
 #
