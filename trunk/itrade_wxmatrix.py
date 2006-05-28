@@ -1536,7 +1536,7 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
         debug("OnPopup_Properties")
         open_iTradeQuote(self,self.m_portfolio,self.m_list.GetItemText(self.m_currentItem),page=7)
 
-    def OnAddQuote(self):
+    def OnAddQuote(self,e):
         quote = addInMatrix_iTradeQuote(self,self.m_matrix)
         if quote:
             self.m_portfolio.setupCurrencies()
@@ -1549,14 +1549,14 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
         if self.m_listmode == LISTMODE_STOPS:
             pass
         elif self.m_listmode == LISTMODE_QUOTES:
-            self.OnAddQuote()
+            self.OnAddQuote(None)
 
     def OnPopup_Edit(self, event):
         debug("OnPopup_Edit")
         if self.m_listmode == LISTMODE_STOPS:
             pass
 
-    def OnRemoveCurrentQuote(self):
+    def OnRemoveCurrentQuote(self,e):
         if removeFromMatrix_iTradeQuote(self,self.m_matrix,self.m_list.GetItemText(self.m_currentItem)):
             self.m_portfolio.setupCurrencies()
             self.setDirty()
@@ -1568,7 +1568,7 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
         if self.m_listmode == LISTMODE_STOPS:
             pass
         elif self.m_listmode == LISTMODE_QUOTES:
-            self.OnRemoveCurrentQuote()
+            self.OnRemoveCurrentQuote(None)
 
     def OnPopup_Buy(self, event):
         debug("OnPopup_Buy")
