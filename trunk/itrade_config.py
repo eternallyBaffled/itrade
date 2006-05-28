@@ -38,7 +38,7 @@
 
 __revision__ = "$Id: itrade_config.py,v 1.42 2006/05/04 07:55:02 dgil Exp $"
 __author__ = "Gilles Dumortier (dgil@ieee.org)"
-__version__ = "0.4.5"
+__version__ = "0.4.2"
 __status__ = "alpha"
 __cvsversion__ = "$Revision: 1.42 $"[11:-2]
 __date__ = "$Date: 2006/05/04 07:55:02 $"[7:-2]
@@ -70,7 +70,8 @@ softwareWebsite = 'http://itrade.sourceforge.net/'
 
 # iTrade version (major.minor)
 softwareVersion = __version__
-softwareVersionName = 'Nausicaa - (unstable)'
+#softwareVersionName = 'Nausicaa - (unstable)'
+softwareVersionName = 'Coca2 - (stable)'
 softwareStatus = __status__
 
 print '%s(%s) - %s %s' % (softwareName,softwareStatus,softwareVersion,softwareVersionName)

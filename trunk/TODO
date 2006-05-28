@@ -90,6 +90,9 @@ SRD and short positions
 ITEMS DONE by VERSION (History)
 ===============================================================================
 
+Version 0.4.2 (Coca2) - 2006/05/28
+ + MMI enhancements
+
 Version 0.4 (Coca) - DONE - 2006/03/11
  + generic live/import quotes data plugins
  + realtime connector for live data (euronext market only)

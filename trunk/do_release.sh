@@ -8,7 +8,8 @@
 # put real file names or directory to be removed here
 to_be_removed='do_release.sh ethereal/* '
 
-target="$HOME/itrade_snapshot_`date +'%F'`.tar.gz"
+#target="$HOME/itrade_snapshot_`date +'%F'`.tar.gz"
+target="$HOME/itrade_0_4_2_coca2_`date +'%F'`.tar.gz"
 #export SVN_RSH=ssh
 
 cd /tmp
