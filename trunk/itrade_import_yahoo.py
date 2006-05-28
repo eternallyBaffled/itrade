@@ -1,0 +1,256 @@
+#!/usr/bin/env python
+# ============================================================================
+# Project Name : iTrade
+# Module Name  : itrade_import_yahoo.py
+# Version      : $Id: itrade_import_yahoo.py,v 1.9 2006/04/20 05:40:36 dgil Exp $
+#
+# Description: Import quotes from yahoo.com
+#
+# The Original Code is iTrade code (http://itrade.sourceforge.net).
+#
+# The Initial Developer of the Original Code is	Gilles Dumortier.
+#
+# Portions created by the Initial Developer are Copyright (C) 2004-2006 the
+# Initial Developer. All Rights Reserved.
+#
+# Contributor(s):
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; see http://www.gnu.org/licenses/gpl.html
+#
+# History       Rev   Description
+# 2005-10-17    dgil  Wrote it from scratch
+# ============================================================================
+
+# ============================================================================
+# Version management
+# ============================================================================
+
+__revision__ = "$Id: itrade_import_yahoo.py,v 1.9 2006/04/20 05:40:36 dgil Exp $"
+__author__ = "Gilles Dumortier (dgil@ieee.org)"
+__version__ = "0.4"
+__status__ = "alpha"
+__cvsversion__ = "$Revision: 1.9 $"[11:-2]
+__date__ = "$Date: 2006/04/20 05:40:36 $"[7:-2]
+__copyright__ = "Copyright (c) 2004-2006 Gilles Dumortier"
+__license__ = "GPL"
+__credits__ = """Rimon Barr, barr@cs.cornell.edu for code snippet"""
+
+# ============================================================================
+# Imports
+# ============================================================================
+
+# python system
+import logging
+import re
+import string
+import urllib
+from datetime import *
+
+# iTrade system
+from itrade_logging import *
+from itrade_quotes import *
+from itrade_datation import Datation,dd_mmm_yy2yyyymmdd
+from itrade_import import registerImportConnector
+
+# ============================================================================
+# Import_yahoo()
+#
+# ============================================================================
+
+class Import_yahoo(object):
+    def __init__(self):
+        debug('Import_yahoo:__init__')
+        self.m_url = 'http://ichart.finance.yahoo.com/table.csv'
+
+    def name(self):
+        return 'yahoo'
+
+    def connect(self):
+        return True
+
+    def disconnect(self):
+        pass
+
+    def getstate(self):
+        return True
+
+    def getdataByQuote(self,quote,datedebut=None,datefin=None):
+        if quote:
+            return self.getdata(quote,datedebut,datefin)
+        return None
+
+    def getdataByTicker(self,ticker,datedebut=None,datefin=None):
+        quote = quotes.lookupTicker(ticker)
+        if quote:
+            return self.getdata(quote,datedebut,datefin)
+        return None
+
+    def getdataByISIN(self,isin,datedebut=None,datefin=None):
+        quote = quotes.lookupISIN(isin)
+        if quote:
+            return self.getdata(quote,datedebut,datefin)
+        return None
+
+    def parseDate(self,d):
+        return (d.year, d.month, d.day)
+
+    def splitLines(self,buf):
+        lines = string.split(buf, '\n')
+        lines = filter(lambda x:x, lines)
+        def removeCarriage(s):
+            if s[-1]=='\r':
+                return s[:-1]
+            else:
+                return s
+        lines = [removeCarriage(l) for l in lines]
+        return lines
+
+    def getdata(self,quote,datedebut=None,datefin=None):
+        if not datefin:
+            datefin = date.today()
+
+        if not datedebut:
+            datedebut = date.today()
+
+        if isinstance(datedebut,Datation):
+            datedebut = datedebut.date()
+
+        if isinstance(datefin,Datation):
+            datefin = datefin.date()
+
+        d1 = self.parseDate(datedebut)
+        d2 = self.parseDate(datefin)
+
+        debug("Import_yahoo:getdata quote:%s begin:%s end:%s" % (quote,d1,d2))
+
+        query = (
+            ('a', '%02d' % (int(d1[1])-1)),
+            ('b', d1[2]),
+            ('c', d1[0]),
+            ('d', '%02d' % (int(d2[1])-1)),
+            ('e', d2[2]),
+            ('f', d2[0]),
+            ('s', quote.ticker()),
+            ('y', '0'),
+            ('g', 'd'),
+            ('ignore', '.csv'),
+        )
+        query = map(lambda (var, val): '%s=%s' % (var, str(val)), query)
+        query = string.join(query, '&')
+        url = self.m_url + '?' + query
+
+        debug("Import_yahoo:getdata: url=%s ",url)
+        try:
+            f = urllib.urlopen(url)
+        except:
+            debug('Import_yahoo:unable to connect :-(')
+            return None
+
+        # pull data
+        buf = f.read()
+        lines = self.splitLines(buf)
+        header = string.split(lines[0],',')
+        data = ""
+
+        if (header[0]<>"Date"):
+            # no valid content
+            return None
+
+        for eachLine in lines:
+            sdata = string.split (eachLine, ',')
+            sdate = sdata[0]
+            if (sdate<>"Date"):
+                sdate = dd_mmm_yy2yyyymmdd(sdate)
+                open = string.atof(sdata[1])
+                high = string.atof(sdata[2])
+                low = string.atof(sdata[3])
+                value = string.atof(sdata[6])   #   Adj. Close*
+                volume = string.atoi(sdata[5])
+
+                # encode in EBP format
+                # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME
+                line = (
+                  quote.isin(),
+                  sdate,
+                  open,
+                  high,
+                  low,
+                  value,
+                  volume
+                )
+                line = map(lambda (val): '%s' % str(val), line)
+                line = string.join(line, ';')
+
+                # append
+                data = data + line + '\r\n'
+        return data
+
+# ============================================================================
+# Export me
+# ============================================================================
+
+try:
+    ignore(gImportYahoo)
+except NameError:
+    gImportYahoo = Import_yahoo()
+
+registerImportConnector('NASDAQ',gImportYahoo)
+registerImportConnector('NYSE',gImportYahoo)
+
+# ============================================================================
+# Test ME
+#
+# ============================================================================
+
+def test(ticker,d):
+    if gImportYahoo.connect():
+
+        state = gImportYahoo.getstate()
+        if state:
+            debug("state=%s" % (state))
+
+            data = gImportYahoo.getdataByTicker(ticker,d)
+            if data!=None:
+                if data:
+                    debug(data)
+                else:
+                    debug("nodata")
+            else:
+                print "getdata() failure :-("
+        else:
+            print "getstate() failure :-("
+
+        gImportYahoo.disconnect()
+    else:
+        print "connect() failure :-("
+
+if __name__=='__main__':
+    setLevel(logging.INFO)
+
+    # never failed - fixed date
+    print "15/03/2005"
+    test('AAPL',date(2005,03,15))
+
+    # never failed except week-end
+    print "yesterday-today :-("
+    test('AAPL',date.today()-timedelta(1))
+
+    # always failed
+    print "tomorrow :-)"
+    test('AAPL',date.today()+timedelta(1))
+
+# ============================================================================
+# That's all folks !
+# ============================================================================
+# vim:set shiftwidth=4 tabstop=8 expandtab textwidth=78:

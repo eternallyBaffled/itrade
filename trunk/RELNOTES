@@ -1,0 +1,145 @@
+/iTrade/RELNOTES
+===============================================================================
+
+-------------------------------------------------------------------------------
+Version 0.4.5 - Nausicaa
+-------------------------------------------------------------------------------
+
+We recommend you to install :
+
+ Python		http://www.python.org			version 2.4.2 or better
+ wxPython	http://www.wxpython.org			version 2.6.3.x (ANSI)
+ numarray	http://sourceforge.net/projects/numpy	version 1.3.3 or better
+ matplotlib	http://matplotlib.sourceforge.net	version 0.87 or better
+
+Running :
+ "python itrade.py --help"	for command line help
+
+ "python itrade.py -e" 		to display portfolio evaluation
+
+ "python itrade.py" 		to start using default language
+ "python itrade.py -d"		to start without network connection
+
+ "python itrade.py --lang=us" 	to start using us language
+ "python itrade.py --lang=fr" 	to start using fr language
+
+===============================================================================
+Previous release notes
+===============================================================================
+
+-------------------------------------------------------------------------------
+Version 0.4 - Coca
+-------------------------------------------------------------------------------
+
+We recommend you to install :
+
+ Python		http://www.python.org			version 2.4.2 or better
+ wxPython	http://www.wxpython.org			version 2.6.1 (ANSI)
+ numarray	http://sourceforge.net/projects/numpy	version 1.3.3
+ matplotlib	http://matplotlib.sourceforge.net	version 0.85 or 0.86.2
+
+Running :
+ "python itrade.py --help"	for command line help
+
+ "python itrade.py -e" 		to display portfolio evaluation
+
+ "python itrade.py" 		to start using default language
+ "python itrade.py -d"		to start without network connection
+
+ "python itrade.py --lang=us" 	to start using us language
+ "python itrade.py --lang=fr" 	to start using fr language
+
+-------------------------------------------------------------------------------
+Version 0.3 - Popotka
+-------------------------------------------------------------------------------
+
+Important : with version 0.3, we have migrated from the packaged Entought
+Edition to the newer versions of the packages we are really using.
+
+Installation was :
+ Python		http://www.python.org			version 2.4
+ wxPython	http://www.wxpython.org			version 2.6.1 (ANSI)
+ numarray	http://sourceforge.net/projects/numpy	version 1.3.3
+ matplotlib	http://matplotlib.sourceforge.net	version 0.85
+
+-------------------------------------------------------------------------------
+Version 0.2 - Antiplona
+-------------------------------------------------------------------------------
+
+Installation was :
+ http://www.enthought.com/python	version 2.3.3
+ http://matplotlib.sourceforge.net	version 0.73.1
+
+-------------------------------------------------------------------------------
+Version 0.1 - Pandora
+-------------------------------------------------------------------------------
+
+	no specific release note
+
+===============================================================================
+Current Development notes
+===============================================================================
+
+o urllib -- Open arbitrary resources by URL
+  http://www.python.org/doc/lib/module-urllib.html
+
+o htmllib -- A parser for HTML documents
+  http://www.python.org/doc/lib/module-htmllib.html
+
+o File format : CSV compatible with EBP
+  all the backend use the EBP format convention : this is a definitive design
+  choice and this will be the only format supported.
+  so connector from variaous sources like yahoo, are converted to EBP format
+  on the fly
+
+o Tracing Python Programs
+	/usr/lib/python2.4/trace.py -t program.py
+  This'll print out the filename, line number and contents of that line before
+  executing the code. If you want to skip the output for the standard library
+  (ie. only show statements from your own code), simply pass
+  --ignore-dir=/usr/lib/python2.4 (or similar) as an option
+
+o Feed parser (to read news from a quote)
+  http://sourceforge.net/projects/feedparser/
+
+o Yahoo Quote Grabber
+  http://rimonbarr.com/repository/pyq/code/pyq
+
+o python 2 executable (binary pack) - see also setup.py in /itrade folder
+  http://www.py2exe.org
+
+ o Matplotlib and wxPython
+   http://www.scipy.org/wikis/topical_software/EmbeddingInWx
+
+ o strptime( string[, format])
+   strftime( format[, t])
+
+	%a Locale's abbreviated weekday name.
+	%A Locale's full weekday name.
+	%b Locale's abbreviated month name.
+	%B Locale's full month name.
+	%c Locale's appropriate date and time representation.
+	%d Day of the month as a decimal number [01,31].
+	%H Hour (24-hour clock) as a decimal number [00,23].
+	%I Hour (12-hour clock) as a decimal number [01,12].
+	%j Day of the year as a decimal number [001,366].
+	%m Month as a decimal number [01,12].
+	%M Minute as a decimal number [00,59].
+	%p Locale's equivalent of either AM or PM.
+	%S Second as a decimal number [00,61].
+	%U Week number of the year (Sunday as the first day of the week) as a
+	   decimal number [00,53]. All days in a new year preceding the first
+	   Sunday are considered to be in week 0.
+	%w Weekday as a decimal number [0(Sunday),6].
+	%W Week number of the year (Monday as the first day of the week) as a
+	   decimal number [00,53]. All days in a new year preceding the first
+	   Monday are considered to be in week 0.
+	%x Locale's appropriate date representation.
+	%X Locale's appropriate time representation.
+	%y Year without century as a decimal number [00,99].
+	%Y Year with century as a decimal number.
+	%Z Time zone name (no characters if no time zone exists).
+	%% A literal "%" character.
+
+===============================================================================
+

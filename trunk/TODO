@@ -1,0 +1,146 @@
+/iTrade/TODO
+===============================================================================
+PREFACE
+===============================================================================
+
+This file will go away soon after release beta 0.9. Please use the SourceForge
+tracker to submit any issue found after this release.
+
+Before reporting please check, whether someone else has already reported this.
+Working patches increase the chance to be included in the next release :-)
+
+===============================================================================
+KNOWN BUGS
+===============================================================================
+
+Coca release will focus on portfolio management and alerts mechanism (incl.
+news aggregator). Coca will also polish existing features like indicators,
+charting options and display.
+
+Known problems and major issues are tracked by the sourceforge bug tracker :
+http://sourceforge.net/tracker/?group_id=128261&atid=711187
+
+===============================================================================
+TODO ITEMS by VERSION
+ - : to be done
+ + : done
+ ~ : in progress
+===============================================================================
+
+Version 0.4.5 (Nausicaa)
+ ~ News aggregator (Google, Bourso, Balo)
+ ~ Money Computer (preview of Risk Management)
+ ~ www.lebalo.com (official french announces)
+ ~ multi-currency support in portfolio
+ ~ VAT information
+ ~ MMI enhancements
+ - alerts full back-end and front-end
+ - Deferred settlement service (SRD) alerts on dates/events
+ - data panel indicators, raw numerical, charting options
+ - more efficient indicators management (incl. RSI and MACD)
+
+Version 0.5 (Plume)
+ - more indicators (oscillators)
+ - full stops management
+ - daily Japanese candlestick
+ - graphical display of portfolio evaluations
+ - automated analysis (short and long term)
+
+Version 0.6 (Stella Maris)
+ - more indicators (schotastics)
+ - weekly Japanese candlestick
+ - more Japanese candlestick
+ - candlestick patterns
+ - Full Risk & Money Management
+
+Version 0.7 (Aaricia - The User Preview)
+ - support and resistance
+ - executable pack ?
+ - multi-accounts ?
+ - full taxes and expenses management ?
+ - pressure indicator in the matrix ?
+ - split management ?
+ - quote window selector can search with partial info ?
+
+Version 0.8 (AlefThau - Alpha Release)
+ - file attachement to operations (i.e. official doc from broker)
+ - installer ?
+ - official alpha release
+
+Version 0.9 (Betadine - Beta Release)
+ - official beta release
+
+Version 1.0 (iTrade - Final Release)
+ - final release
+
+===============================================================================
+ITEMS POSTPONED FOR POST 1.0 RELEASE
+===============================================================================
+
+Screening
+ - basic quotes screening
+ - more quotes screening
+ - full featured quotes screening
+
+SRD and short positions
+ - full SRD management
+ - alerts for short
+
+===============================================================================
+ITEMS DONE by VERSION (History)
+===============================================================================
+
+Version 0.4 (Coca) - DONE - 2006/03/11
+ + generic live/import quotes data plugins
+ + realtime connector for live data (euronext market only)
+ + portfolio management (create, delete, rename, select)
+ + better autorefresh the trading matrix (thread)
+ + realtime front panel with notebook and last trades
+ + alerts back-end
+ + Deferred settlement service (SRD) basic
+
+Version 0.3 (Popotka - The Toy Software) - DONE - 2005/11/27
+ + US market support
+ + localisation (fr and us)
+ + better daily charting with pan, zoom and cursor
+ + display logo for tickers
+ + more indicators (Bollinger , VMA15, OVB)
+ + News (RSS Google / Boursorama)
+ + Progress bar for lengthly operations
+ + more efficient quote data storage and manipulation
+ + textual display of portfolio evaluations
+ + basic marketplace management (process and mmi)
+ + toolbar in matrix (at least : Quit, Save All, Refresh)
+
+Version 0.2 (Antiplona - The Obvious Hack release) - DONE - 2005/10/02
+ + loss/win stops display in matrix view
+ + better trading matrix / portfolio / stops screen display
+ + website launch with some screenshots
+ + find a great logo
+ + display information on the quote (google news, abcbourse, ...)
+ + add/remove quotes to/from the matrix
+ + basic indicators view in the matrix
+ + basic indicators (moving averages, volume)
+ + market days open/close
+ + basic stops management
+ + basic graph display
+ + operations management on a portfolio
+
+Version 0.1 (Pandora - Proof of Concept)	- DONE - 2005/08/16
+ + load quotes
+ + load operations
+ + load/save quotes data (CSV format)
+ + import quotes data from CSV file
+ + calculate cash / evaluation of portfolio
+ + import quotes data from abcbourse.com
+ + live update quotes data from abcbourse.com
+ + command line initial support
+ + initial display of the trading matrix with wxWindows
+ + quote window selector (by ticker, isin or name)
+ + skeleton display of a quote with wxWindows and matplotlib
+ + detachment of coupon / dividend
+ + automatic update (import/refresh) of quotes data
+ + basic taxes and expenses management
+ + full / live data on a quote -> quick loading of matrix
+ + very basic Japanese candlestick
+
