@@ -242,16 +242,21 @@ def liveupdate_from_internet(quote):
 
 def cmdline_importQuoteFromInternet(quote,dlg=None):
     year = date.today().year
+    ic = quote.importconnector()
+    if ic:
+        step = ic.interval_year()
+    else:
+        step = 1
     nyear = 0
     bStop = False
     while (not bStop) and (nyear < itrade_config.numTradeYears):
-        print '--- update the quote --%d---' % year
-        if not quote.update(date(year,1,1),date(year,12,31)):
+        print '--- update the quote -- %d to %d ---' % (year-step+1,year)
+        if not quote.update(date(year-step+1,1,1),date(year,12,31)):
             bStop = True
         if dlg:
             dlg.Update(nyear)
-        nyear = nyear + 1
-        year = year -1
+        nyear = nyear + step
+        year = year - step
     print '--- save the quote data ------'
     quote.saveTrades()
     return True

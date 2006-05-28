@@ -86,6 +86,9 @@ class Import_ABCBourse(object):
     def name(self):
         return 'abcbourse'
 
+    def interval_year(self):
+        return 2
+
     def connect(self):
         debug('Import_ABCBourse:connect to web site')
         try:
