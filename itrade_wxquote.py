@@ -231,12 +231,7 @@ class iTradeQuoteInfoWindow(wxWindow):
 
         # paint fields
         self.m_ticker.SetLabel(self.m_quote.ticker())
-        d = self.m_quote.date()
-        if d:
-            d = d.strftime('%x')
-        else:
-            d = "....-..-.."
-        self.m_date.SetLabel("%s %s %s %s" % (message('date'),d,message('time'),self.m_quote.sv_clock()))
+        self.m_date.SetLabel("%s | %s | %s" % (self.m_quote.sv_date(bDisplayShort=True),self.m_quote.sv_clock(),self.m_quote.sv_type_of_clock()))
         self.m_percent.SetLabel(self.m_quote.sv_percent())
         self.m_last.SetLabel("%s %s" % (self.m_quote.sv_close(),self.m_quote.currency()))
         if self.m_quote.hasTraded():
@@ -392,12 +387,8 @@ class iTradeQuotePropertiesPanel(wxWindow):
         label = wxStaticText(self, -1, self.m_quote.country())
         box.Add(label, 0, wxALIGN_CENTRE|wxALL, 5)
 
-        if self.m_quote.delay()==0:
-            self.liveText = wxStaticText(self, -1, message('prop_islive'))
-            box.Add(self.liveText, 0, wxALIGN_CENTRE|wxALL, 5)
-        else:
-            self.liveText = wxStaticText(self, -1, message('prop_isnotlive')%self.m_quote.delay())
-            box.Add(self.liveText, 0, wxALIGN_CENTRE|wxALL, 5)
+        self.liveText = wxStaticText(self, -1, self.m_quote.sv_type_of_clock(bDisplayTime=True))
+        box.Add(self.liveText, 0, wxALIGN_CENTRE|wxALL, 5)
 
         thebox.AddSizer(box, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5)
 
@@ -524,10 +515,7 @@ class iTradeQuotePropertiesPanel(wxWindow):
         self.editMarket.SetLabel(self.m_quote.market())
         self.editLiveConnector.SetLabel(self.m_quote.liveconnector().name())
         self.editImportConnector.SetLabel(self.m_quote.importconnector().name())
-        if self.m_quote.delay()==0:
-            self.liveText.SetLabel(message('prop_islive'))
-        else:
-            self.liveText.SetLabel(message('prop_isnotlive')%self.m_quote.delay())
+        self.liveText.SetLabel(self.m_quote.sv_type_of_clock(bDisplayTime=True))
         if self.m_port:
             self.m_port.saveProperties()
 

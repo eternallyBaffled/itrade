@@ -359,6 +359,8 @@ prop_market;Marché :
 prop_country;Pays :
 prop_liveconnector;Connector temps réel :
 prop_islive;Temps réel
+prop_isslive;Live
+prop_isdiffered;Différé
 prop_isnotlive;Temps différé (%d minutes)
 prop_impconnector;Connecteur d'importation :
 prop_set;Valide

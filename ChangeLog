@@ -6,6 +6,7 @@ On the road for v0.4.5 (Nausicaa)
 ===============================================================================
 
 2006-05-28  Gilles Dumortier <dgil@ieee.org>
+	* Quote view : bad display (time/hours) (SF bug 1424415)
 	* Remove CVS $id$ in source file (SF bug 1496343)
 	* Import plugin : number of years (SF bug 1485060)
 	* continue to work on v0.4.5 release :-)

@@ -41,6 +41,7 @@ import logging
 
 # iTrade system
 from itrade_logging import *
+from itrade_local import message
 import itrade_csv
 import itrade_trades
 from itrade_import import *
@@ -336,6 +337,18 @@ class Quote(object):
         if cs=='CLOSED' or cl=="::":
             return ""
         return cl
+
+    def sv_type_of_clock(self,bDisplayTime=False):
+        if self.delay()==0:
+            if bDisplayTime:
+                return message('prop_islive')
+            else:
+                return message('prop_isslive')
+        else:
+            if bDisplayTime:
+                return message('prop_isnotlive')%self.delay()
+            else:
+                return message('prop_isdiffered')
 
     def sv_reopen(self):
         cs,r,rb,rh,cl = self.currentStatus()
@@ -732,6 +745,9 @@ class Quote(object):
         if tr:
             return tr.date()
         return None
+
+    def sv_date(self,bDisplayShort=False):
+        return date2str(self.date(),bDisplayShort)
 
     def hasOpened(self):
         if self.date() == date.today():
