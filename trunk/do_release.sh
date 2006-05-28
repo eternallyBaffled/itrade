@@ -17,7 +17,7 @@ rm -rf itrade
 
 echo "-------- Getting files from SVN"
 # anonymous login must have been done at least once
-svn export https://svn.sourceforge.net/svnroot/itrade -r HEAD itrade
+svn export https://svn.sourceforge.net/svnroot/itrade/trunk -r HEAD itrade
 
 echo "------- Removing file"
 for f in $to_be_removed;
