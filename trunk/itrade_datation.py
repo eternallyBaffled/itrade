@@ -45,6 +45,7 @@ import string
 
 # iTrade system
 from itrade_logging import *
+from itrade_local import getLang
 import itrade_csv
 
 # ============================================================================
@@ -69,6 +70,23 @@ def dd_mmm_yy2yyyymmdd(d):
     month = '%02d' % MONTH2NUM[d[1]]
     year = yy2yyyy(d[2])
     return year + month + day
+
+# ============================================================================
+# date2str
+# ============================================================================
+
+def date2str(dt,bDisplayShort):
+    if dt:
+        if bDisplayShort:
+            ll = getLang()
+            # __x bof :-(
+            if ll=='fr':
+                return dt.strftime('%d.%m')
+            else:
+                return dt.strftime('%m.%d')
+        else:
+            return dt.strftime('%x')
+    return ''
 
 # ============================================================================
 # Calendar

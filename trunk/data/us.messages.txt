@@ -354,7 +354,9 @@ prop_restore;Default
 prop_desc_restore;Restore default value
 prop_market;Market :
 prop_country;Country :
-prop_islive;Real-time
+prop_islive;Real time
+prop_isslive;Live
+prop_isdiffered;Differed
 prop_isnotlive;Differed time (%d minuts)
 prop_liveconnector;Live Connector :
 prop_impconnector;Import Connector :
