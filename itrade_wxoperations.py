@@ -1101,7 +1101,7 @@ class iTradeOperationsWindow(wxFrame,iTrade_wxFrame,wxColumnSorterMixin):
             self.setDirty()
             self.populate()
             if self.m_parent:
-                self.m_parent.OnRefresh(None)
+                self.m_parent.RebuildList()
 
     def OnDelete(self, event):
         key = self.m_list.GetItemData(self.m_currentItem)
