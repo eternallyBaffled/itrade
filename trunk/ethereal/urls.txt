@@ -1,0 +1,56 @@
+http://www.abcbourse.com/Graphes/graphe_histo.aspx?s=EADTp&m=w&t=lc5
+
+m=?	size = s,w, ?
+t=lc?	period (1 à 7 ?)
+
+Intraday Charting:
+http://charts.production.euronext.com/i_chart.html?ISIN=FR0000064594&ID_EXCHANGE=1&QUALITY=DLY&PREV_CLOSE=1&SUPP_INFO=1&DISPLAY=1&VOL=1&GRID=1&SCALE=1
+http://ichart.finance.yahoo.com/b?s=AAPL
+http://img.boursorama.com/cgi-local/graph_intra_normal?&symbole=1rPEADT
+
+small: http://ichart.finance.yahoo.com/t?s=AAPL
+better: http://ichart.finance.yahoo.com/b?s=AAPL
+
+weekly: http://ichart.finance.yahoo.com/w?s=AAPL
+
+news on a quote : http://news.google.fr/news?hl=fr&ie=UTF-8&q=SAFRAN
+rss format : http://news.google.fr/news?hl=us&ie=UTF-8&q=SAFRAN&output=rss
+
+import:
+http://finance.yahoo.com/q/hp?s=AAPL&a=08&b=7&c=1984&d=08&e=18&f=2005&g=d
+
+live:
+http://finance.yahoo.com/d/quotes.csv?s=AAPL&f=sl1d1t1c1ohgv&e=.csv
+format 'sl1d1t1c1ohgv'???
+
+news:
+http://www.boursorama.com/infos/actualites/actu_societes_code.phtml?symbole=1rPGNX
+http://www.boursorama.com/infos/imprimer_news.phtml?news=<num>
+
+
+
+ Opérations sur les portefeuilles
+     - Apport / retrait de liquidités
+     - Virement
+     - Droit de garde
+     - Opérations diverses
+     - Frais SRD
+     - Avoir fiscal
+
+ Opérations sur les transactions
+     - Dividendes
+     - Avoir fiscal
+     - Frais de report
+     - Frais CRD
+     - Frais en part
+     - Attribution gratuite d'actions
+     - Division du nominal (split)
+     - Opérations diverses
+
+http://www.abcbourse.com/Graphes/graphe.aspx?s=EADTp&m=g&t=lc
+
+Currency convert :
+http://uk.finance.yahoo.com/d/quotes.csv?s=EURUSD=X&f=s4l1t1c1ghov&e=.csv
+http://finance.yahoo.com/d/quotes.csv?s=EURUSD=X&f=s4l1t1c1ghov&e=.csv
+
+CAC40 : FR0003500008, PX1
