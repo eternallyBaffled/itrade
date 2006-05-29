@@ -43,7 +43,6 @@ import thread
 from itrade_logging import *
 from itrade_datation import Datation
 import itrade_config
-from itrade_quotes import *
 
 # ============================================================================
 # ConnectorRegistry
@@ -127,7 +126,7 @@ def import_from_internet(quote,fromdate=None,todate=None):
         return bRet
 
     abc = quote.importconnector()
-    if abc.connect():
+    if abc and abc.connect():
 
         state = abc.getstate()
         if state:
@@ -294,6 +293,8 @@ def cmdline_importMatrixFromFile(matrix,file):
 
 if __name__=='__main__':
     setLevel(logging.INFO)
+
+    from itrade_quotes import *
 
     print 'AUSY (Euronext market):'
     q = quotes.lookupTicker('OSI')

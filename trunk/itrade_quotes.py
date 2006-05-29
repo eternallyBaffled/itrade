@@ -41,7 +41,7 @@ import logging
 
 # iTrade system
 from itrade_logging import *
-from itrade_local import message
+from itrade_local import message,getLang,getNumSep
 import itrade_csv
 import itrade_trades
 from itrade_import import *
@@ -65,6 +65,24 @@ QUOTE_NOTYPE    = 0
 QUOTE_CASH      = 1
 QUOTE_CREDIT    = 2
 QUOTE_BOTH      = 3
+
+# ============================================================================
+# volume formatter
+# ============================================================================
+
+def fmtVolume(x):
+    sep = getNumSep()
+    val = '%d' % x
+    ret = ''
+    i   = len(val)
+    n   = 0
+    while i>0:
+        n = n + 1
+        i = i - 1
+        ret = val[i] + ret
+        if (n%3 == 0) and (i>0):
+            ret = sep+ret
+    return ret
 
 # ============================================================================
 # Quote
@@ -676,7 +694,7 @@ class Quote(object):
     def sv_volume(self,d=None):
         x = self.nv_volume(d)
         if x!=None:
-            return "%d" % x
+            return fmtVolume(x)
         return " ---------- "
 
     def sv_prevclose(self,d=None):
@@ -1104,24 +1122,33 @@ quotes.load()
 if __name__=='__main__':
     setLevel(logging.INFO)
 
-    info('test1 %s' % quotes.lookupISIN('FR0000072621'));
-    info('test2 %s' % quotes.lookupTicker('OSI').ticker());
-    info('test3 %s' % quotes.lookupTicker('OSI').isin());
-    info('test4 %s' % quotes.lookupTicker('OSI').name());
-    info('test5 %s' % quotes.lookupTicker('OSI').descr());
+#    info('test1 %s' % quotes.lookupISIN('FR0000072621'));
+#    info('test2 %s' % quotes.lookupTicker('OSI').ticker());
+#    info('test3 %s' % quotes.lookupTicker('OSI').isin());
+#    info('test4 %s' % quotes.lookupTicker('OSI').name());
+#    info('test5 %s' % quotes.lookupTicker('OSI').descr());
+#
+#    quote = quotes.lookupTicker('OSI')
+#    quote.loadTrades('import/Cortal-2005-01-07.txt')
+#    info('test6 %s' % quote.trades().trade('20050104'));
+#
+#    quotes.loadTrades('import/Cortal-2005-01-07.txt')
+#    quotes.loadTrades('import/Cortal-2005-01-14.txt')
+#    quotes.loadTrades('import/Cortal-2005-01-21.txt')
+#    quote = quotes.lookupTicker('EADT')
+#    info('test7 %s' % quote.trades().trade('20050104'));
+#
+#    quotes.saveTrades()
+#    quotes.saveListOfQuotes(os.path.join(itrade_config.dirSysData,'test.txt'))
 
-    quote = quotes.lookupTicker('OSI')
-    quote.loadTrades('import/Cortal-2005-01-07.txt')
-    info('test6 %s' % quote.trades().trade('20050104'));
-
-    quotes.loadTrades('import/Cortal-2005-01-07.txt')
-    quotes.loadTrades('import/Cortal-2005-01-14.txt')
-    quotes.loadTrades('import/Cortal-2005-01-21.txt')
-    quote = quotes.lookupTicker('EADT')
-    info('test7 %s' % quote.trades().trade('20050104'));
-
-    quotes.saveTrades()
-    quotes.save(os.path.join(itrade_config.dirSysData,'test.txt'))
+    print fmtVolume(1)
+    print fmtVolume(12)
+    print fmtVolume(130)
+    print fmtVolume(1400)
+    print fmtVolume(15000)
+    print fmtVolume(160000)
+    print fmtVolume(1700000)
+    print fmtVolume(18000000)
 
 # ============================================================================
 # That's all folks !

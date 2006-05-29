@@ -5,6 +5,10 @@ On the road for v0.4.5 (Nausicaa)
 
 ===============================================================================
 
+2006-05-29  Gilles Dumortier <dgil@ieee.org>
+	* Volume display : use separator (SF bug 1497092)
+	* move list stuff from itrade_wxquote.py to itrade_wxlistquote.py
+
 2006-05-28  Gilles Dumortier <dgil@ieee.org>
 	* Portfolio : remove a value : some issues on matrix (SF bug 1458054)
 	* Quote view : bad display (time/hours) (SF bug 1424415)
