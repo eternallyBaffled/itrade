@@ -45,7 +45,7 @@ import string
 
 # iTrade system
 from itrade_logging import *
-from itrade_local import getLang
+from itrade_local import getShortDateFmt
 import itrade_csv
 
 # ============================================================================
@@ -78,12 +78,7 @@ def dd_mmm_yy2yyyymmdd(d):
 def date2str(dt,bDisplayShort):
     if dt:
         if bDisplayShort:
-            ll = getLang()
-            # __x bof :-(
-            if ll=='fr':
-                return dt.strftime('%d.%m')
-            else:
-                return dt.strftime('%m.%d')
+            return dt.strftime(getShortDateFmt())
         else:
             return dt.strftime('%x')
     return ''

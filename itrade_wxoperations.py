@@ -54,7 +54,7 @@ from itrade_quotes import *
 from itrade_portfolio import *
 
 #from itrade_wxdatation import itrade_datePicker
-from itrade_wxquote import select_iTradeQuote
+from itrade_wxlistquote import select_iTradeQuote
 import itrade_wxres
 from itrade_wxmixin import iTrade_wxFrame,iTradeSelectorListCtrl
 from itrade_wxutil import wxFontFromSize
