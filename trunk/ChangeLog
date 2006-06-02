@@ -5,6 +5,11 @@ On the road for v0.4.5 (Nausicaa)
 
 ===============================================================================
 
+2006-06-01  Gilles Dumortier <dgil@ieee.org>
+	* currency front-end (SF bug 1470719)
+	* currency back-end (SF bug 1470718)
+	* number of shares display : use also separator (i.e. SF bug 1497092)
+
 2006-05-29  Gilles Dumortier <dgil@ieee.org>
 	* Volume display : use separator (SF bug 1497092)
 	* move list stuff from itrade_wxquote.py to itrade_wxlistquote.py

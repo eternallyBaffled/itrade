@@ -47,6 +47,7 @@ import itrade_trades
 from itrade_import import *
 from itrade_datation import *
 from itrade_market import market2currency,isin2market
+import itrade_currency
 
 # ============================================================================
 # color
@@ -112,6 +113,7 @@ class Quote(object):
 
     def _init_(self):
         # can be overloaded later ...
+        # NB: PRU currency *is* portfolio currency
         self.m_DIR_number = 0
         self.m_DIR_pru = 0.0
         self.m_SRD_number = 0
@@ -132,6 +134,7 @@ class Quote(object):
         self.m_name = self.m_defaultname
         self.m_ticker = self.m_defaultticker
         self.m_currency = market2currency(self.m_market)
+        self.m_symbcurr = itrade_currency.currency2symbol(self.m_currency)
 
     def reinit(self):
         #info('%s::reinit' %(self.name()))
@@ -161,6 +164,9 @@ class Quote(object):
 
     def currency(self):
         return self.m_currency
+
+    def currency_symbol(self):
+        return self.m_symbcurr
 
     def isin(self):
         return self.m_isin
@@ -192,12 +198,13 @@ class Quote(object):
             return self.m_DIR_number + self.m_SRD_number
 
     def sv_number(self,box=QUOTE_BOTH):
-        return "%d" % self.nv_number(box)
+        return fmtVolume(self.nv_number(box))
 
     def nv_pru(self,box=QUOTE_BOTH):
+        # return PRU in the default currency (i.e. portfolio currency)
         if box==QUOTE_CASH:
             return self.m_DIR_pru
-        if box==QUOTE_CREDIT:
+        elif box==QUOTE_CREDIT:
             return self.m_SRD_pru
         else:
             n = self.nv_number(QUOTE_BOTH)
@@ -206,44 +213,56 @@ class Quote(object):
             return 0.0
 
     def nv_pr(self,box=QUOTE_BOTH):
+        # return PR in the default currency (i.e. portfolio currency)
         return self.nv_pru(box) * self.nv_number(box)
 
-    def sv_pru(self,box=QUOTE_BOTH):
-        return "%.3f" % self.nv_pru(box)
+    def sv_pru(self,box=QUOTE_BOTH,fmt="%.3f"):
+        # return PRU in the default currency (i.e. portfolio currency)
+        return fmt % self.nv_pru(box)
 
-    def sv_pr(self,box=QUOTE_BOTH):
-        return "%.2f" % self.nv_pr(box)
+    def sv_pr(self,box=QUOTE_BOTH,fmt="%.2f"):
+        # return PR in the default currency (i.e. portfolio currency)
+        return fmt % self.nv_pr(box)
 
-    def nv_pv(self,box=QUOTE_BOTH):
+    def nv_pv(self,currency,box=QUOTE_BOTH):
+        # return PV in the requested currency
+        # nv_close() returns value in market currency
         cl = self.nv_close()
         if cl:
             if box==QUOTE_CASH:
-                return cl * self.m_DIR_number
-            if box==QUOTE_CREDIT:
-                return cl * self.m_SRD_number
-            return cl * (self.m_DIR_number + self.m_SRD_number)
+                retval = cl * self.m_DIR_number
+            elif box==QUOTE_CREDIT:
+                retval = cl * self.m_SRD_number
+            else:
+                retval = cl * (self.m_DIR_number + self.m_SRD_number)
         else:
-            return 0.0
+            retval = 0.0
+        if currency:
+            retval = itrade_currency.convert(currency,self.m_currency,retval)
+        return retval
 
-    def sv_pv(self,box=QUOTE_BOTH):
-        return "%.2f" % self.nv_pv(box)
+    def sv_pv(self,currency,box=QUOTE_BOTH,fmt="%.2f"):
+        # return PV in the requested currency
+        return fmt % self.nv_pv(currency,box)
 
-    def nv_profit(self,box=QUOTE_BOTH):
-        return self.nv_pv(box)-self.nv_pr(box)
+    def nv_profit(self,currency,box=QUOTE_BOTH):
+        return self.nv_pv(currency,box)-self.nv_pr(box)
 
-    def sv_profit(self,box=QUOTE_BOTH):
-        return "%.2f" % self.nv_profit(box)
+    def sv_profit(self,currency,box=QUOTE_BOTH,fmt="%.2f"):
+        return fmt % self.nv_profit(currency,box)
 
-    def nv_profitPercent(self,box=QUOTE_BOTH):
+    def nv_profitPercent(self,currency,box=QUOTE_BOTH):
+        # profit performance should be calculated after conversion to the portfolio currency !
         pr = self.nv_pr(box)
         if pr>0:
-            return self.nv_profit(box)/self.nv_pr(box)*100
+            return self.nv_profit(currency,box)/self.nv_pr(box)*100
         else:
             return 0.0
 
-    def sv_profitPercent(self,box=QUOTE_BOTH):
+    def sv_profitPercent(self,currency,box=QUOTE_BOTH):
+        # profit performance should be calculated after conversion to the portfolio currency !
         if self.nv_pr(box)>0:
-            return "%3.2f %%" % self.nv_profitPercent(box)
+            return "%3.2f %%" % self.nv_profitPercent(currency,box)
         else:
             return "---.-- %"
 
@@ -430,15 +449,16 @@ class Quote(object):
     def sv_stopwin(self):
         return "%.2f" % self.nv_stopwin()
 
-    def nv_riskmoney(self):
-        x = (self.nv_pru()-self.nv_stoploss())*self.nv_number()
+    def nv_riskmoney(self,currency):
+        sl = itrade_currency.convert(currency,self.m_currency,self.nv_stoploss())
+        x = (self.nv_pru()-sl)*self.nv_number()
         if x>0:
             return x
         else:
             return 0.0
 
-    def sv_riskmoney(self):
-        return "%.2f" % self.nv_riskmoney()
+    def sv_riskmoney(self,currency):
+        return "%.2f" % self.nv_riskmoney(currency)
 
     def hasStops(self):
         return self.m_hasStops
@@ -655,23 +675,27 @@ class Quote(object):
 
     # ---[ same current / live data on quote but string ] ------------------
 
-    def sv_close(self,d=None):
+    def sv_close(self,d=None,bDispCurrency=False):
+        if bDispCurrency:
+            sc = ' '+self.m_symbcurr+' '
+        else:
+            sc = ''
         x = self.nv_close(d)
         if x!=None:
             st,re,rb,rh,cl = self.currentStatus()
             if st=='OK':
-                return "%3.2f" % x
+                return "%3.2f%s" % (x,sc)
             elif st=='SUSPEND+':
-                return "%3.2f (+)" % x
+                return "%3.2f%s(+)" % (x,sc)
             elif st=='SUSPEND-':
-                return "%3.2f (-)" % x
+                return "%3.2f%s(-)" % (x,sc)
             elif st=='SUSPEND':
-                return "%3.2f (s)" % x
+                return "%3.2f%s(s)" % (x,sc)
             elif st=='CLOSED':
-                return "%3.2f (c)" % x
+                return "%3.2f%s(c)" % (x,sc)
             else:
-                return "%3.2f (%s)" % (x,st)
-        return " ---.-- "
+                return "%3.2f%s(%s)" % (x,sc,st)
+        return " ---.--%s" % sc
 
     def sv_open(self,d=None):
         x = self.nv_open(d)

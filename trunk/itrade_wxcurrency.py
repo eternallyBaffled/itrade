@@ -196,6 +196,7 @@ class iTradeCurrenciesWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveCurrencyMixin):
 
     def OnClose(self,e):
         self.saveConfig()
+        currencies.save()
         self.Close(True)
 
     def OnSize(self, event):
@@ -251,9 +252,9 @@ class iTradeCurrenciesWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveCurrencyMixin):
                 self.refreshLine(eachKey,x,True)
                 x = x + 1
 
+        currencies.save()
         if dlg:
             dlg.Destroy()
-
 
     def OnLiveCurrency(self, evt):
         if self.isRunningCurrency(evt.key):

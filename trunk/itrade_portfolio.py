@@ -838,6 +838,13 @@ class Portfolio(object):
             if eachQuote.isMatrix():
                 currencies.inuse(self.m_currency,eachQuote.currency(),bInUse=True)
 
+    def is_multicurrencies(self):
+        for eachQuote in quotes.list():
+            if eachQuote.isMatrix():
+                if eachQuote.currency()!=self.m_currency:
+                    return True
+        return False
+
     # --- [ compute the operations ] ---
 
     def sameyear(self,op,cd=None):
@@ -931,7 +938,7 @@ class Portfolio(object):
                 pass
             elif eachOp.type() == OPERATION_REGISTER:
                 debug('register/share %s/%s : %f' % (eachOp.name(),eachOp.isin(),eachOp.nv_value()))
-                pass
+                self.m_cInvest = self.m_cInvest + eachOp.nv_value()
             else:
                 raise TypeError("computeOperations(): operation::type() unknown %s",eachOp.type())
 
@@ -941,8 +948,8 @@ class Portfolio(object):
         self.m_cSRDValue = 0.0
         for eachQuote in quotes.list():
             if eachQuote.isTraded():
-                self.m_cDIRValue = self.m_cDIRValue + eachQuote.nv_pv(QUOTE_CASH)
-                self.m_cSRDValue = self.m_cSRDValue + eachQuote.nv_pv(QUOTE_CREDIT)
+                self.m_cDIRValue = self.m_cDIRValue + eachQuote.nv_pv(self.m_currency,QUOTE_CASH)
+                self.m_cSRDValue = self.m_cSRDValue + eachQuote.nv_pv(self.m_currency,QUOTE_CREDIT)
 
     def computeBuy(self):
         self.m_cDIRBuy = 0.0
@@ -1053,38 +1060,38 @@ class Portfolio(object):
 
     # --- [ string API ] ---
 
-    def sv_cash(self):
-        return "%.2f" % self.nv_cash()
+    def sv_cash(self,fmt="%.2f"):
+        return fmt % self.nv_cash()
 
-    def sv_credit(self):
-        return "%.2f" % self.nv_credit()
+    def sv_credit(self,fmt="%.2f"):
+        return fmt % self.nv_credit()
 
-    def sv_taxes(self):
-        return "%.2f" % self.nv_taxes()
+    def sv_taxes(self,fmt="%.2f"):
+        return fmt % self.nv_taxes()
 
-    def sv_expenses(self):
-        return "%.2f" % self.nv_expenses()
+    def sv_expenses(self,fmt="%.2f"):
+        return fmt % self.nv_expenses()
 
-    def sv_transfer(self):
-        return "%.2f" % self.nv_transfer()
+    def sv_transfer(self,fmt="%.2f"):
+        return fmt % self.nv_transfer()
 
-    def sv_taxable(self):
-        return "%.2f" % self.nv_taxable()
+    def sv_taxable(self,fmt="%.2f"):
+        return fmt % self.nv_taxable()
 
-    def sv_appreciation(self):
-        return "%.2f" % self.nv_appreciation()
+    def sv_appreciation(self,fmt="%.2f"):
+        return fmt % self.nv_appreciation()
 
-    def sv_invest(self):
-        return "%.2f" % self.nv_invest()
+    def sv_invest(self,fmt="%.2f"):
+        return fmt % self.nv_invest()
 
-    def sv_value(self,box=QUOTE_BOTH):
-        return "%.2f" % self.nv_value(box)
+    def sv_value(self,box=QUOTE_BOTH,fmt="%.2f"):
+        return fmt % self.nv_value(box)
 
-    def sv_buy(self,box=QUOTE_BOTH):
-        return "%.2f" % self.nv_buy(box)
+    def sv_buy(self,box=QUOTE_BOTH,fmt="%.2f"):
+        return fmt % self.nv_buy(box)
 
-    def sv_perf(self,box=QUOTE_BOTH):
-        return "%.2f" % self.nv_perf(box)
+    def sv_perf(self,box=QUOTE_BOTH,fmt="%.2f"):
+        return fmt % self.nv_perf(box)
 
     def sv_perfPercent(self,box=QUOTE_BOTH):
         return "%3.2f %%" % self.nv_perfPercent(box)
