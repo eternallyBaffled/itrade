@@ -52,6 +52,7 @@ from itrade_portfolio import loadPortfolio
 from itrade_matrix import *
 from itrade_quotes import *
 from itrade_import import getLiveConnector
+from itrade_currency import currencies
 
 # iTrade wx system
 from itrade_wxquote import open_iTradeQuote,addInMatrix_iTradeQuote,removeFromMatrix_iTradeQuote
@@ -77,7 +78,10 @@ ID_DELETE = 102
 ID_SAVE = 103
 ID_SAVEAS = 104
 ID_EDIT = 105
-ID_EXIT = 110
+
+ID_MANAGELIST = 110
+
+ID_EXIT = 150
 
 ID_PORTFOLIO = 200
 ID_QUOTES = 201
@@ -350,11 +354,13 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
         self.filemenu = wxMenu()
         self.filemenu.Append(ID_OPEN,message('main_open'),message('main_desc_open'))
         self.filemenu.Append(ID_NEW,message('main_new'),message('main_desc_new'))
-        self.filemenu.Append(ID_DELETE,message('main_delete'),message('main_desc_delete'))
         self.filemenu.Append(ID_SAVE,message('main_save'),message('main_desc_save'))
         self.filemenu.Append(ID_SAVEAS,message('main_saveas'),message('main_desc_saveas'))
+        self.filemenu.Append(ID_DELETE,message('main_delete'),message('main_desc_delete'))
         self.filemenu.AppendSeparator()
         self.filemenu.Append(ID_EDIT,message('main_edit'),message('main_desc_edit'))
+        self.filemenu.AppendSeparator()
+        self.filemenu.Append(ID_MANAGELIST,message('main_managelist'),message('main_desc_managelist'))
         self.filemenu.AppendSeparator()
         self.filemenu.Append(ID_EXIT,message('main_exit'),message('main_desc_exit'))
 
@@ -417,6 +423,7 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
         EVT_MENU(self, ID_SAVE, self.OnSave)
         EVT_MENU(self, ID_SAVEAS, self.OnSaveAs)
         EVT_MENU(self, ID_EDIT, self.OnEdit)
+        EVT_MENU(self, ID_MANAGELIST, self.OnManageList)
         EVT_MENU(self, ID_EXIT, self.OnExit)
         EVT_MENU(self, ID_SUPPORT, self.OnSupport)
         EVT_MENU(self, ID_BUG, self.OnBug)
@@ -604,6 +611,9 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
 
     def OnDonors(self,e):
         iTradeLaunchBrowser(itrade_config.donorsTrackerURL,new=True)
+
+    def OnManageList(self,e):
+        pass
 
     def OnAbout(self,e):
         d = iTradeAboutBox(self)
@@ -804,6 +814,8 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
             debug('%s: %s - bad : not running' % (evt.quote.isin(),evt.param))
 
     def OnRefresh(self,e):
+        if self.m_portfolio.is_multicurrencies():
+            self.refreshCurrencies()
         if self.m_listmode == LISTMODE_QUOTES:
             self.refreshQuotes()
         elif self.m_listmode == LISTMODE_PORTFOLIO:
@@ -812,6 +824,29 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
             self.refreshIndicators()
         else:
             self.refreshStops()
+
+    def refreshCurrencies(self):
+        x = 0
+        lst = currencies.m_currencies
+        max = len(lst)
+        keepGoing = True
+        if self.hasFocus():
+            dlg = wxProgressDialog(message('currency_refreshing'),"",max,self,wxPD_CAN_ABORT | wxPD_APP_MODAL)
+        else:
+            dlg = None
+        for eachKey in lst:
+            if keepGoing:
+                curTo = eachKey[:3]
+                curFrom = eachKey[3:]
+                if currencies.used(curTo,curFrom):
+                    if dlg:
+                        keepGoing = dlg.Update(x,"%s -> %s" % (curFrom,curTo))
+                    currencies.get(curTo,curFrom)
+                    x = x + 1
+
+        currencies.save()
+        if dlg:
+            dlg.Destroy()
 
     def refreshConnexion(self):
         self.m_toolbar.SetIndicator(self.m_market,self.m_connector.currentClock())
@@ -834,9 +869,9 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
         self.m_list.SetItem(item)
 
     def refreshEvalLine(self,x):
-        self.m_list.SetStringItem(x,IDC_PR,self.m_portfolio.sv_buy())
-        self.m_list.SetStringItem(x,IDC_PV,self.m_portfolio.sv_value())
-        self.m_list.SetStringItem(x,IDC_PROFIT,self.m_portfolio.sv_perf())
+        self.m_list.SetStringItem(x,IDC_PR,"%s %s" % (self.m_portfolio.sv_buy(fmt="%.0f"),self.m_portfolio.currency_symbol()))
+        self.m_list.SetStringItem(x,IDC_PV,"%s %s" % (self.m_portfolio.sv_value(fmt="%.0f"),self.m_portfolio.currency_symbol()))
+        self.m_list.SetStringItem(x,IDC_PROFIT,"%s %s" % (self.m_portfolio.sv_perf(fmt="%.0f"),self.m_portfolio.currency_symbol()))
         self.m_list.SetStringItem(x,IDC_PERCENT,self.m_portfolio.sv_perfPercent())
 
         if self.m_portfolio.nv_perf()>=0:
@@ -858,7 +893,7 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
         # refresh line text
         if disp:
             self.m_list.SetStringItem(x,IDC_PREV,quote.sv_prevclose())
-            self.m_list.SetStringItem(x,IDC_CLOSE,quote.sv_close())
+            self.m_list.SetStringItem(x,IDC_CLOSE,quote.sv_close(bDispCurrency=True))
             self.m_list.SetStringItem(x,IDC_PERCENT,quote.sv_percent())
             if quote.hasTraded():
                 self.m_list.SetStringItem(x,IDC_OPEN,quote.sv_open())
@@ -877,7 +912,7 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
                 color = QUOTE_NOCHANGE
         else:
             self.m_list.SetStringItem(x,IDC_PREV," ---.-- ")
-            self.m_list.SetStringItem(x,IDC_CLOSE," ---.-- ")
+            self.m_list.SetStringItem(x,IDC_CLOSE," ---.-- %s" % quote.currency_symbol())
             self.m_list.SetStringItem(x,IDC_OPEN," ---.-- ")
             self.m_list.SetStringItem(x,IDC_HIGH," ---.-- ")
             self.m_list.SetStringItem(x,IDC_LOW," ---.-- ")
@@ -933,14 +968,14 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
 
         # refresh line text
         if disp:
-            self.m_list.SetStringItem(x,IDC_PVU,quote.sv_close())
+            self.m_list.SetStringItem(x,IDC_PVU,quote.sv_close(bDispCurrency=True))
             if quote.hasTraded():
                 self.m_list.SetStringItem(x,IDC_PERFDAY,quote.sv_percent())
             else:
                 self.m_list.SetStringItem(x,IDC_PERFDAY," ---.-- % ")
-            self.m_list.SetStringItem(x,IDC_PV,quote.sv_pv(xtype))
-            self.m_list.SetStringItem(x,IDC_PROFIT,quote.sv_profit(xtype))
-            self.m_list.SetStringItem(x,IDC_PERCENT,quote.sv_profitPercent(xtype))
+            self.m_list.SetStringItem(x,IDC_PV,"%s %s" % (quote.sv_pv(self.m_portfolio.currency(),xtype,fmt="%.0f"),self.m_portfolio.currency_symbol()))
+            self.m_list.SetStringItem(x,IDC_PROFIT,"%s %s" % (quote.sv_profit(self.m_portfolio.currency(),xtype,fmt="%.0f"),self.m_portfolio.currency_symbol()))
+            self.m_list.SetStringItem(x,IDC_PERCENT,quote.sv_profitPercent(self.m_portfolio.currency(),xtype))
             # line color depending on pricing
             if quote.nv_pru(xtype) >= quote.nv_close():
                 item.SetImage(self.idx_down)
@@ -953,8 +988,8 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
             item.SetImage(self.idx_tbref)
             self.m_list.SetStringItem(x,IDC_PVU," ---.-- ")
             self.m_list.SetStringItem(x,IDC_PERFDAY," ---.-- % ")
-            self.m_list.SetStringItem(x,IDC_PV," ---.-- ")
-            self.m_list.SetStringItem(x,IDC_PROFIT," ----.-- ")
+            self.m_list.SetStringItem(x,IDC_PV," ---.-- %s" % self.m_portfolio.currency_symbol())
+            self.m_list.SetStringItem(x,IDC_PROFIT," ----.-- %s" % self.m_portfolio.currency_symbol())
             self.m_list.SetStringItem(x,IDC_PERCENT," ---.-- % ")
 
         self.m_list.SetItem(item)
@@ -999,15 +1034,15 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
         item = self.m_list.GetItem(x)
 
         if disp:
-            self.m_list.SetStringItem(x,IDC_CURRENT,quote.sv_close())
-            self.m_list.SetStringItem(x,IDC_PV,quote.sv_pv())
-            self.m_list.SetStringItem(x,IDC_PROFIT,quote.sv_profit())
-            self.m_list.SetStringItem(x,IDC_PERCENT,quote.sv_profitPercent())
+            self.m_list.SetStringItem(x,IDC_CURRENT,quote.sv_close(bDispCurrency=True))
+            self.m_list.SetStringItem(x,IDC_PV,"%s %s" % (quote.sv_pv(self.m_portfolio.currency(),fmt="%.0f"),self.m_portfolio.currency_symbol()))
+            self.m_list.SetStringItem(x,IDC_PROFIT,"%s %s" % (quote.sv_profit(self.m_portfolio.currency(),fmt="%.0f"),self.m_portfolio.currency_symbol()))
+            self.m_list.SetStringItem(x,IDC_PERCENT,quote.sv_profitPercent(self.m_portfolio.currency()))
             color = quote.colorStop()
         else:
-            self.m_list.SetStringItem(x,IDC_CURRENT," ---.-- ")
-            self.m_list.SetStringItem(x,IDC_PV," ----.-- ")
-            self.m_list.SetStringItem(x,IDC_PROFIT," ----.-- ")
+            self.m_list.SetStringItem(x,IDC_CURRENT," ---.-- %s " % quote.currency_symbol())
+            self.m_list.SetStringItem(x,IDC_PV," ------ %s" % self.m_portfolio.currency_symbol())
+            self.m_list.SetStringItem(x,IDC_PROFIT," ------ %s" % self.m_portfolio.currency_symbol())
             self.m_list.SetStringItem(x,IDC_PERCENT," ---.-- % ")
             color = QUOTE_INVALID
 
@@ -1061,7 +1096,7 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
         item = self.m_list.GetItem(x)
 
         if disp:
-            self.m_list.SetStringItem(x,IDC_LAST,quote.sv_close())
+            self.m_list.SetStringItem(x,IDC_LAST,quote.sv_close(bDispCurrency=True))
             if quote.hasTraded():
                 color = quote.colorTrend()
             else:
@@ -1080,7 +1115,7 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
             self.m_list.SetStringItem(x,IDC_DMI," ---.-- ")
             self.m_list.SetStringItem(x,IDC_EMV," ---.-- ")
             self.m_list.SetStringItem(x,IDC_OVB," ---.-- ")
-            self.m_list.SetStringItem(x,IDC_LAST," ---.-- ")
+            self.m_list.SetStringItem(x,IDC_LAST," ---.-- %s" % quote.currency_symbol())
             color = QUOTE_NOCHANGE
 
         # update line color and icon
@@ -1201,8 +1236,8 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
                     self.m_list.InsertImageStringItem(x, eachQuote.isin(), self.idx_tbref)
                     self.m_list.SetStringItem(x,IDC_TICKER,eachQuote.ticker())
                     self.m_list.SetStringItem(x,IDC_QTY,eachQuote.sv_number(QUOTE_CASH))
-                    self.m_list.SetStringItem(x,IDC_PRU,eachQuote.sv_pru(QUOTE_CASH))
-                    self.m_list.SetStringItem(x,IDC_PR,eachQuote.sv_pr(QUOTE_CASH))
+                    self.m_list.SetStringItem(x,IDC_PRU,"%s %s" % (eachQuote.sv_pru(QUOTE_CASH),self.m_portfolio.currency_symbol()))
+                    self.m_list.SetStringItem(x,IDC_PR,"%s %s" % (eachQuote.sv_pr(QUOTE_CASH,fmt="%.0f"),self.m_portfolio.currency_symbol()))
                     self.m_list.SetStringItem(x,IDC_NAME,eachQuote.name())
 
                     self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),x,x,x,x,x,x,x,x,eachQuote.name())
@@ -1217,8 +1252,8 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
                     self.m_list.InsertImageStringItem(x, eachQuote.isin(), self.idx_tbref)
                     self.m_list.SetStringItem(x,IDC_TICKER,"%s (%s)" % (eachQuote.ticker(),message("money_srd")))
                     self.m_list.SetStringItem(x,IDC_QTY,eachQuote.sv_number(QUOTE_CREDIT))
-                    self.m_list.SetStringItem(x,IDC_PRU,eachQuote.sv_pru(QUOTE_CREDIT))
-                    self.m_list.SetStringItem(x,IDC_PR,eachQuote.sv_pr(QUOTE_CREDIT))
+                    self.m_list.SetStringItem(x,IDC_PRU,"%s %s" % (eachQuote.sv_pru(QUOTE_CREDIT),self.m_portfolio.currency_symbol()))
+                    self.m_list.SetStringItem(x,IDC_PR,"%s %s" % (eachQuote.sv_pr(QUOTE_CREDIT),self.m_portfolio.currency_symbol()))
                     self.m_list.SetStringItem(x,IDC_NAME,eachQuote.name())
 
                     self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),x,x,x,x,x,x,x,x,eachQuote.name())
@@ -1269,10 +1304,10 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
             if eachQuote.hasStops() and (eachQuote.isTraded() or eachQuote.isMonitored()):
                 self.m_list.InsertImageStringItem(x, eachQuote.isin(), self.idx_tbref)
                 self.m_list.SetStringItem(x,IDC_TICKER,eachQuote.ticker())
-                self.m_list.SetStringItem(x,IDC_INVEST,eachQuote.sv_pr())
-                self.m_list.SetStringItem(x,IDC_RISKM,eachQuote.sv_riskmoney())
+                self.m_list.SetStringItem(x,IDC_INVEST,"%s %s" % (eachQuote.sv_pr(fmt="%.0f"),self.m_portfolio.currency_symbol()))
+                self.m_list.SetStringItem(x,IDC_RISKM,"%s %s" % (eachQuote.sv_riskmoney(self.m_portfolio.currency()),self.m_portfolio.currency_symbol()))
                 self.m_list.SetStringItem(x,IDC_STOPLOSS,"~ %s " % eachQuote.sv_stoploss())
-                self.m_list.SetStringItem(x,IDC_CURRENT,eachQuote.sv_close())
+                self.m_list.SetStringItem(x,IDC_CURRENT,eachQuote.sv_close(bDispCurrency=True))
                 self.m_list.SetStringItem(x,IDC_STOPWIN,"~ %s " % eachQuote.sv_stopwin())
                 self.m_list.SetStringItem(x,IDC_NAME,eachQuote.name())
 

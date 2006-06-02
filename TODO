@@ -28,12 +28,12 @@ TODO ITEMS by VERSION
 ===============================================================================
 
 Version 0.4.5 (Nausicaa)
+ + multi-currencies support in portfolio and matrix
  ~ News aggregator (Google, Bourso, Balo)
  ~ Money Computer (preview of Risk Management)
  ~ www.lebalo.com (official french announces)
- ~ multi-currency support in portfolio
  ~ VAT information
- ~ MMI enhancements
+ ~ more MMI enhancements
  - alerts full back-end and front-end
  - Deferred settlement service (SRD) alerts on dates/events
  - data panel indicators, raw numerical, charting options

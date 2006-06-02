@@ -108,14 +108,18 @@ class Currencies(object):
         curList = buildListOfSupportedCurrencies()
         for eachCur in curList:
             curTo,curFrom = eachCur
-            self.addConvert(curTo,curFrom,1.0)
+            self.update(curTo,curFrom,1.0)
 
     # ---[ Load / Save cache file ] ---
 
-    def addConvert(self,curTo,curFrom,rate):
+    def update(self,curTo,curFrom,rate):
         if curTo <> curFrom:
             key = self.key(curTo,curFrom)
-            self.m_currencies[key] = (False,rate)
+            if self.m_currencies.has_key(key):
+                used,oldrate = self.m_currencies[key]
+            else:
+                used = False
+            self.m_currencies[key] = (used,rate)
         return rate
 
     def load(self,fn=None):
@@ -127,7 +131,7 @@ class Currencies(object):
                 item = itrade_csv.parse(eachLine,3)
                 if item:
                     # debug('%s ::: %s' % (eachLine,item))
-                    self.addConvert(item[0],item[1],float(item[2]))
+                    self.update(item[0],item[1],float(item[2]))
 
     def save(self,fn=None):
         # generate list of strings TO;FROM;RATE
@@ -155,7 +159,9 @@ class Currencies(object):
             return 1.0
 
     def convert(self,curTo,curFrom,Value):
-        return Value * self.rate(curTo,curFrom)
+        rate = self.rate(curTo,curFrom)
+        print 'convert: value:%f from:%s to:%s rate=%f retval=%f' % (Value,curFrom,curTo,rate,Value*rate)
+        return Value * rate
 
     # ---[ Currency in use or not ? ] ---
 
@@ -165,6 +171,7 @@ class Currencies(object):
         key = self.key(curTo,curFrom)
         if self.m_currencies.has_key(key):
             used,rate = self.m_currencies[key]
+            print 'used >>> currency : ',key,' inUse: ',used,' rate: ',rate
             return used
         else:
             return False
@@ -176,7 +183,7 @@ class Currencies(object):
         if self.m_currencies.has_key(key):
             used,rate = self.m_currencies[key]
             self.m_currencies[key] = (bInUse,rate)
-            print '>>> currency : ',key,' inUse: ',bInUse,' rate: ',rate
+            print 'inuse >>> currency : ',key,' inUse: ',bInUse,' rate: ',rate
 
     def reset(self):
         print '>>> currency reset'
@@ -198,7 +205,7 @@ class Currencies(object):
         sdata = string.split(buf, ',')
 
         print 'get: %s %s rate = %.4f' %(curTo,curFrom,float(sdata[1]))
-        return self.addConvert(curTo,curFrom,float(sdata[1]))
+        return self.update(curTo,curFrom,float(sdata[1]))
 
     def getlasttrade(self,bAllEvenNotInUse=False):
         for eachCurrency in self.m_currencies:

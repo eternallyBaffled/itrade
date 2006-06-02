@@ -69,6 +69,7 @@ def isin2market(isin):
 
 market_currency = {
     'EURONEXT': 'EUR',
+    'ALTERNEXT': 'EUR',
     'NASDAQ': 'USD',
     'NYSE': 'USD',
     'LSE': 'GBP',
