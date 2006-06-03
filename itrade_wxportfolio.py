@@ -67,7 +67,13 @@ from itrade_wxmixin import iTrade_wxFrame,iTradeSelectorListCtrl
 
 class iTradePortfolioSelectorListCtrlDialog(wxDialog, wxColumnSorterMixin):
     def __init__(self, parent, portfolio, operation, except_portfolio=None):
-        wxDialog.__init__(self, parent, -1, message('portfolio_%s_title'%operation), size=(420, 420))
+        # context help
+        pre = wxPreDialog()
+        pre.SetExtraStyle(wxDIALOG_EX_CONTEXTHELP)
+        pre.Create(parent, -1, message('portfolio_%s_title'%operation), size=(420, 420))
+        self.PostCreate(pre)
+
+        # init
         if portfolio:
             self.m_name = portfolio.filename()
             self.m_accountref = portfolio.accountref()
@@ -123,12 +129,20 @@ class iTradePortfolioSelectorListCtrlDialog(wxDialog, wxColumnSorterMixin):
             msgdesc = message('ok_desc')
 
         box = wxBoxSizer(wxHORIZONTAL)
+
+        # context help
+        if wxPlatform != "__WXMSW__":
+            btn = wxContextHelpButton(self)
+            box.Add(btn, 0, wxALIGN_CENTRE|wxALL, 5)
+
+        # OK
         btn = wxButton(self, wxID_OK, msg)
         btn.SetDefault()
         btn.SetHelpText(msgdesc)
         box.Add(btn, 0, wxALIGN_CENTRE|wxALL, 5)
         EVT_BUTTON(self, wxID_OK, self.OnValid)
 
+        # CANCEL
         btn = wxButton(self, wxID_CANCEL, message('cancel'))
         btn.SetHelpText(message('cancel_desc'))
         box.Add(btn, 0, wxALIGN_CENTRE|wxALL, 5)
@@ -258,7 +272,11 @@ def select_iTradePortfolio(win,dportfolio=None,operation='select'):
 
 class iTradePortfolioPropertiesDialog(wxDialog):
     def __init__(self, parent, portfolio, operation):
-        wxDialog.__init__(self, parent, -1, message('portfolio_properties_%s'% operation), size=(420, 420))
+        # context help
+        pre = wxPreDialog()
+        pre.SetExtraStyle(wxDIALOG_EX_CONTEXTHELP)
+        pre.Create(parent, -1, message('portfolio_properties_%s'% operation), size=(420, 420))
+        self.PostCreate(pre)
 
         if portfolio:
             self.m_filename = portfolio.filename()
@@ -358,12 +376,20 @@ class iTradePortfolioPropertiesDialog(wxDialog):
             fnt = self.OnValid
 
         box = wxBoxSizer(wxHORIZONTAL)
+
+        # context help
+        if wxPlatform != "__WXMSW__":
+            btn = wxContextHelpButton(self)
+            box.Add(btn, 0, wxALIGN_CENTRE|wxALL, 5)
+
+        # OK
         btn = wxButton(self, wxID_OK, msg)
         btn.SetDefault()
         btn.SetHelpText(msgdesc)
         box.Add(btn, 0, wxALIGN_CENTRE|wxALL, 5)
         EVT_BUTTON(self, wxID_OK, fnt)
 
+        # CANCEL
         btn = wxButton(self, wxID_CANCEL, message('cancel'))
         btn.SetHelpText(message('cancel_desc'))
         box.Add(btn, 0, wxALIGN_CENTRE|wxALL, 5)
@@ -470,6 +496,10 @@ if __name__=='__main__':
     from itrade_local import *
     setLang('us')
     gMessage.load()
+
+    from wxPython.help import *
+    provider = wxSimpleHelpProvider()
+    wxHelpProvider_Set(provider)
 
     port = select_iTradePortfolio(None,'default','select')
     if port:

@@ -154,6 +154,11 @@ operation_ctrl = {
 
 class iTradeOperationDialog(wxDialog):
     def __init__(self, parent, op, opmode):
+        # context help
+        pre = wxPreDialog()
+        pre.SetExtraStyle(wxDIALOG_EX_CONTEXTHELP)
+
+        # pre-init
         self.opmode = opmode
 
         if op:
@@ -192,8 +197,12 @@ class iTradeOperationDialog(wxDialog):
             self.tt = tt % (op.date().strftime('%x'),op.operation(),op.description())
         else:
             self.tt = tb
-        wxDialog.__init__(self, parent, -1, self.tt, size=(420, 420))
 
+        # post-init
+        pre.Create(parent, -1, self.tt, size=(420, 420))
+        self.PostCreate(pre)
+
+        #
         self.m_sizer = wxBoxSizer(wxVERTICAL)
 
         # separator
@@ -301,12 +310,20 @@ class iTradeOperationDialog(wxDialog):
 
         # buttons
         box = wxBoxSizer(wxHORIZONTAL)
+
+        # context help
+        if wxPlatform != "__WXMSW__":
+            btn = wxContextHelpButton(self)
+            box.Add(btn, 0, wxALIGN_CENTRE|wxALL, 5)
+
+        # OK
         btn = wxButton(self, wxID_OK, tb)
         btn.SetDefault()
         btn.SetHelpText(message('ok_desc'))
         box.Add(btn, 0, wxALIGN_CENTRE|wxALL, 5)
         EVT_BUTTON(self, wxID_OK, self.OnValid)
 
+        # CANCEL
         btn = wxButton(self, wxID_CANCEL, message('cancel'))
         btn.SetHelpText(message('cancel_desc'))
         box.Add(btn, 0, wxALIGN_CENTRE|wxALL, 5)

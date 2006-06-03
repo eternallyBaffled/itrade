@@ -5,6 +5,9 @@ On the road for v0.4.5 (Nausicaa)
 
 ===============================================================================
 
+2006-06-03  Gilles Dumortier <dgil@ieee.org>
+	* Context Help in wxDialog (SF bug 1410679)
+
 2006-06-01  Gilles Dumortier <dgil@ieee.org>
 	* currency front-end (SF bug 1470719)
 	* currency back-end (SF bug 1470718)

@@ -141,5 +141,23 @@ o python 2 executable (binary pack) - see also setup.py in /itrade folder
 	%Z Time zone name (no characters if no time zone exists).
 	%% A literal "%" character.
 
+ o Context Help in wxDialog object
+   http://sourceforge.net/tracker/index.php?func=detail&aid=1410679&group_id=128261&atid=711187
+
+   wxPython documentation is not really clear :
+
+   def __init__(self,...):
+
+  	# context help
+  	pre = wxPreDialog()
+  	pre.SetExtraStyle(wxDIALOG_EX_CONTEXTHELP)
+  	pre.Create(parent, ID, title, pos, size, style)
+  	self.PostCreate(pre)
+  	...
+  	# context help
+  	if wxPlatform != "__WXMSW__":
+  	   btn = wxContextHelpButton(self)
+  	   box.Add(btn, 0, wxALIGN_CENTRE|wxALL, 5)
+
 ===============================================================================
 
