@@ -91,6 +91,9 @@ class iTrade_SplashScreen(wxSplashScreen):
 
 class iTradeApp(wxApp):
     def OnInit(self):
+        provider = wxSimpleHelpProvider()
+        wxHelpProvider_Set(provider)
+
         wxSystemOptions.SetOptionInt("mac.window-plain-transition",1)
         self.m_splash = iTrade_SplashScreen(self)
         self.m_splash.Show()
