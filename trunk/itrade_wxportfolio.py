@@ -333,14 +333,11 @@ class iTradePortfolioPropertiesDialog(wxDialog):
 
         sizer.AddSizer(box, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5)
 
-        # market (__x TBD combobox)
+        # market
         box = wxBoxSizer(wxHORIZONTAL)
 
         label = wxStaticText(self, -1, message('portfolio_market'))
         box.Add(label, 0, wxALIGN_CENTRE|wxALL, 5)
-
-        # __x self.wxMarketCtrl = wxTextCtrl(self, -1, self.m_market, size=(80,-1))
-        # __x box.Add(self.wxMarketCtrl, 1, wxALIGN_CENTRE|wxALL, 5)
 
         self.wxMarketCtrl = wxComboBox(self,-1, "", size=wxSize(80,-1), style=wxCB_DROPDOWN|wxCB_READONLY)
         box.Add(self.wxMarketCtrl, 0, wxALIGN_CENTRE|wxALL, 5)
@@ -357,14 +354,11 @@ class iTradePortfolioPropertiesDialog(wxDialog):
 
         sizer.AddSizer(box, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5)
 
-        # currency (__x TBD combobox)
+        # currency
         box = wxBoxSizer(wxHORIZONTAL)
 
         label = wxStaticText(self, -1, message('portfolio_currency'))
         box.Add(label, 0, wxALIGN_CENTRE|wxALL, 5)
-
-        # __x self.wxCurrencyCtrl = wxTextCtrl(self, -1, self.m_currency, size=(40,-1))
-        # __x box.Add(self.wxCurrencyCtrl, 1, wxALIGN_CENTRE|wxALL, 5)
 
         self.wxCurrencyCtrl = wxComboBox(self,-1, "", size=wxSize(80,-1), style=wxCB_DROPDOWN|wxCB_READONLY)
         box.Add(self.wxCurrencyCtrl, 0, wxALIGN_CENTRE|wxALL, 5)
@@ -466,8 +460,6 @@ class iTradePortfolioPropertiesDialog(wxDialog):
             return
         self.m_name = self.wxNameCtrl.GetLabel().strip()
         self.m_accountref = self.wxAccountRefCtrl.GetLabel().strip()
-        # __x self.m_market = self.wxMarketCtrl.GetLabel().upper().strip()
-        # __x self.m_currency = self.wxCurrencyCtrl.GetLabel().upper().strip()
         if self.m_operation=='delete':
             dlg = wxMessageDialog(self, message('portfolio_delete_confirm')%self.m_name, message('portfolio_delete_confirm_title'), wxYES_NO | wxYES_DEFAULT | wxICON_QUESTION)
             idRet = dlg.ShowModal()
