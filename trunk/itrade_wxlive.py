@@ -384,7 +384,7 @@ class iTrade_wxLive(wxPanel):
     def cell(self,ref,nvalue):
         c = ref.GetLabel()
         if c=="-":
-            c = -1
+            c = 0
         else:
             c = long(c)
         if c==nvalue:
@@ -393,7 +393,10 @@ class iTrade_wxLive(wxPanel):
             bg = cNEUTRAL
         ref.SetBackgroundColour(bg)
         ref.ClearBackground()
-        ref.SetLabel("%d" % nvalue)
+        if nvalue==0:
+            ref.SetLabel("-")
+        else:
+            ref.SetLabel("%d" % nvalue)
         return bg
 
     def cells(self,ref,svalue):
