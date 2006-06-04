@@ -584,7 +584,10 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
                 self.setDirty()
 
     def OnEdit(self,e):
-        properties_iTradePortfolio(self,self.m_portfolio,'edit')
+        dp = properties_iTradePortfolio(self,self.m_portfolio,'edit')
+        if dp:
+            self.NewContext(dp)
+            self.setDirty()
 
     def OnDelete(self,e):
         dp = select_iTradePortfolio(self,self.m_portfolio,'delete')

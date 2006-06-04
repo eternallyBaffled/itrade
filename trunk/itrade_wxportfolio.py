@@ -52,6 +52,7 @@ from itrade_logging import *
 from itrade_local import message
 from itrade_quotes import *
 from itrade_portfolio import *
+from itrade_market import list_of_markets
 
 from itrade_wxlistquote import select_iTradeQuote
 import itrade_wxres
@@ -337,8 +338,21 @@ class iTradePortfolioPropertiesDialog(wxDialog):
         label = wxStaticText(self, -1, message('portfolio_market'))
         box.Add(label, 0, wxALIGN_CENTRE|wxALL, 5)
 
-        self.wxMarketCtrl = wxTextCtrl(self, -1, self.m_market, size=(80,-1))
-        box.Add(self.wxMarketCtrl, 1, wxALIGN_CENTRE|wxALL, 5)
+        # __x self.wxMarketCtrl = wxTextCtrl(self, -1, self.m_market, size=(80,-1))
+        # __x box.Add(self.wxMarketCtrl, 1, wxALIGN_CENTRE|wxALL, 5)
+
+        self.wxMarketCtrl = wxComboBox(self,-1, "", size=wxSize(80,-1), style=wxCB_DROPDOWN|wxCB_READONLY)
+        box.Add(self.wxMarketCtrl, 0, wxALIGN_CENTRE|wxALL, 5)
+        EVT_COMBOBOX(self,self.wxMarketCtrl.GetId(),self.OnMarket)
+
+        count = 0
+        for eachCtrl in list_of_markets():
+            self.wxMarketCtrl.Append(eachCtrl,eachCtrl)
+            if eachCtrl==self.m_market:
+                idx = count
+            count = count + 1
+
+        self.wxMarketCtrl.SetSelection(idx)
 
         sizer.AddSizer(box, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5)
 
@@ -437,7 +451,7 @@ class iTradePortfolioPropertiesDialog(wxDialog):
             return
         self.m_name = self.wxNameCtrl.GetLabel().strip()
         self.m_accountref = self.wxAccountRefCtrl.GetLabel().strip()
-        self.m_market = self.wxMarketCtrl.GetLabel().upper().strip()
+        # __x self.m_market = self.wxMarketCtrl.GetLabel().upper().strip()
         self.m_currency = self.wxCurrencyCtrl.GetLabel().upper().strip()
         if self.m_operation=='delete':
             dlg = wxMessageDialog(self, message('portfolio_delete_confirm')%self.m_name, message('portfolio_delete_confirm_title'), wxYES_NO | wxYES_DEFAULT | wxICON_QUESTION)
@@ -452,6 +466,11 @@ class iTradePortfolioPropertiesDialog(wxDialog):
             if idRet == wxID_NO:
                 return
         self.EndModal(wxID_OK)
+
+    def OnMarket(self,evt):
+        t = self.wxMarketCtrl.GetClientData(self.wxMarketCtrl.GetSelection())
+        info("OnMarket %s" % t)
+        self.m_market = t
 
 # ============================================================================
 # properties_iTradePortfolio

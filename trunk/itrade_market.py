@@ -82,6 +82,9 @@ def market2currency(market):
         # default to EURO
         return 'EUR'
 
+def list_of_markets():
+    return ('ALTERNEXT','EURONEXT','LSE','NASDAQ','NYSE')
+
 # ============================================================================
 # That's all folks !
 # ============================================================================
