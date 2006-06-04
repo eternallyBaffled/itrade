@@ -54,3 +54,5 @@ http://uk.finance.yahoo.com/d/quotes.csv?s=EURUSD=X&f=s4l1t1c1ghov&e=.csv
 http://finance.yahoo.com/d/quotes.csv?s=EURUSD=X&f=s4l1t1c1ghov&e=.csv
 
 CAC40 : FR0003500008, PX1
+
+http://svn.sourceforge.net/viewcvs.cgi/eclipsetrader/trunk/net.sourceforge.eclipsetrader.yahoo/src/net/sourceforge/eclipsetrader/yahoo/Feed.java?view=markup&rev=27

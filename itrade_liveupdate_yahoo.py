@@ -60,7 +60,9 @@ class LiveUpdate_yahoo(object):
         self.m_url = "http://finance.yahoo.com/d/quotes.csv"
         self.m_connected = False
         self.m_livelock = thread.allocate_lock()
-        self.m_clock = "::"
+        self.m_clock = {}
+        self.m_dcmpd = {}
+        self.m_lastclock = "::"
 
     # ---[ reentrant ] ---
     def acquire(self):
@@ -129,7 +131,7 @@ class LiveUpdate_yahoo(object):
         self.m_connected = False
 
         query = (
-          ('f', 'sl1d1t1c1ohgv'),
+          ('f', 'sl1d1t1c1ohgvbap'),
           ('s', quote.ticker()),
           ('e', '.csv'),
         )
@@ -150,9 +152,7 @@ class LiveUpdate_yahoo(object):
         if len (sdata) < 9:
             return None
 
-        # connexion / clock
-        self.m_connected = True
-        self.m_clock = sdata[2][1:-1] + " - " + sdata[3][1:-1]
+        #print sdata
 
         # start decoding
         symbol = sdata[0][1:-1]
@@ -181,6 +181,16 @@ class LiveUpdate_yahoo(object):
         else:
             low = string.atof (sdata[7])
         volume = string.atoi (sdata[8])
+
+        # connexion / clock
+        self.m_connected = True
+        clock = sdata[2][1:-1] + " - " + sdata[3][1:-1]
+
+        # store for later use
+        isin = quote.isin()
+        self.m_dcmpd[isin] = sdata
+        self.m_clock[isin] = clock
+        self.m_lastclock = clock
 
         # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME
         data = (
@@ -232,15 +242,59 @@ class LiveUpdate_yahoo(object):
     # ---[ notebook of order ] ---
 
     def hasNotebook(self):
-        return False
+        return True
+
+    def currentNotebook(self,quote):
+        #
+        isin = quote.isin()
+        if not self.m_dcmpd.has_key(isin):
+            # no data for this quote !
+            return [],[]
+        d = self.m_dcmpd[isin]
+
+        buy = []
+        buy.append([0,0,d[9]])
+
+        sell = []
+        sell.append([0,0,d[10]])
+
+        return buy,sell
 
     # ---[ status of quote ] ---
 
     def hasStatus(self):
-        return False
+        return itrade_config.isConnected()
+
+    def currentStatus(self,quote):
+        #
+        isin = quote.isin()
+        if not self.m_dcmpd.has_key(isin):
+            # no data for this quote !
+            return "UNKNOWN","::","0.00","0.00","::"
+        d = self.m_dcmpd[isin]
+
+        st = 'OK'
+        cl = '::'
+        return st,cl,"0.00","0.00",self.m_clock[isin]
 
     def currentClock(self,quote=None):
-        return self.m_clock
+        if quote==None:
+            return self.m_lastclock
+        #
+        isin = quote.isin()
+        if not self.m_clock.has_key(isin):
+            # no data for this quote !
+            return "::"
+        else:
+            return self.m_clock[isin]
+
+    def currentTrades(self,quote):
+        # clock,volume,value
+        return None
+
+    def currentMeans(self,quote):
+        # means: sell,buy,last
+        return "-","-","-"
 
 # ============================================================================
 # Export me
