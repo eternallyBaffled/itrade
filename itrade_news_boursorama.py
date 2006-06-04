@@ -185,7 +185,7 @@ class News_Boursorama(object):
             page = "<html><body>" + "<br><a href=':back'>%s</a><H3>" % message('backtolist') + title + "</H3>" + buf + "<br><br><a href=':back'>%s</a>" % message('backtolist')  + "</body></html>"
 
             if html:
-                html.SetPage(page)
+                html.SetPageWithoutCache(page)
             else:
                 print page
         else:
