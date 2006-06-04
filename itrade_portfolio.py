@@ -1157,22 +1157,22 @@ class Portfolios(object):
 
     def editPortfolio(self,filename,name,accountref,market,currency,vat):
         if not self.m_portfolios.has_key(filename):
-            return False
+            return None
         else:
             del self.m_portfolios[filename]
             self.m_portfolios[filename] = Portfolio(filename,name,accountref,market,currency,vat)
-            debug('Portfolios::editPortfolio(): %s' % self.m_portfolios[filename])
-            return True
+            info('Portfolios::editPortfolio(): %s' % self.m_portfolios[filename])
+            return self.m_portfolios[filename]
 
     def renamePortfolio(self,filename,newfilename):
         if not self.m_portfolios.has_key(filename):
-            return False
+            return None
         else:
             self.m_portfolios[filename].rename(newfilename)
             self.m_portfolios[newfilename] = self.m_portfolios[filename]
             del self.m_portfolios[filename]
             debug('Portfolios::renamePortfolio(): %s -> %s' % (filename,newfilename))
-            return True
+            return self.m_portfolios[newfilename]
 
     def portfolio(self,fn):
         if self.m_portfolios.has_key(fn):
