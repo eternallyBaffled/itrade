@@ -6,6 +6,7 @@ On the road for v0.4.5 (Nausicaa)
 ===============================================================================
 
 2006-06-04  Gilles Dumortier <dgil@ieee.org>
+	* main currency in portfolio editing : use a combobox also
 	* NYSE and LSE + filter market name using combobox (SF bug 1473358)
 	* itrade_import.py was not working anymore ?! typo ?!
 
