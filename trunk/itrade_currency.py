@@ -79,6 +79,9 @@ def symbol2currency(symb):
     else:
         return symb
 
+def list_of_currencies():
+    return ('EUR','USD','JPY','GBP')
+
 # ============================================================================
 # Build list of supported currencies
 # ============================================================================
@@ -105,10 +108,13 @@ class Currencies(object):
 
         # to-from
         self.m_currencies = {}
-        curList = buildListOfSupportedCurrencies()
-        for eachCur in curList:
+        self.m_list = buildListOfSupportedCurrencies()
+        for eachCur in self.m_list:
             curTo,curFrom = eachCur
             self.update(curTo,curFrom,1.0)
+
+    def list(self):
+        return self.m_list
 
     # ---[ Load / Save cache file ] ---
 

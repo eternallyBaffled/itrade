@@ -53,6 +53,7 @@ from itrade_local import message
 from itrade_quotes import *
 from itrade_portfolio import *
 from itrade_market import list_of_markets
+from itrade_currency import list_of_currencies
 
 from itrade_wxlistquote import select_iTradeQuote
 import itrade_wxres
@@ -362,8 +363,22 @@ class iTradePortfolioPropertiesDialog(wxDialog):
         label = wxStaticText(self, -1, message('portfolio_currency'))
         box.Add(label, 0, wxALIGN_CENTRE|wxALL, 5)
 
-        self.wxCurrencyCtrl = wxTextCtrl(self, -1, self.m_currency, size=(40,-1))
-        box.Add(self.wxCurrencyCtrl, 1, wxALIGN_CENTRE|wxALL, 5)
+        # __x self.wxCurrencyCtrl = wxTextCtrl(self, -1, self.m_currency, size=(40,-1))
+        # __x box.Add(self.wxCurrencyCtrl, 1, wxALIGN_CENTRE|wxALL, 5)
+
+        self.wxCurrencyCtrl = wxComboBox(self,-1, "", size=wxSize(80,-1), style=wxCB_DROPDOWN|wxCB_READONLY)
+        box.Add(self.wxCurrencyCtrl, 0, wxALIGN_CENTRE|wxALL, 5)
+        EVT_COMBOBOX(self,self.wxCurrencyCtrl.GetId(),self.OnCurrency)
+
+        count = 0
+        for eachCtrl in list_of_currencies():
+            print eachCtrl
+            self.wxCurrencyCtrl.Append(eachCtrl,eachCtrl)
+            if eachCtrl==self.m_currency:
+                idx = count
+            count = count + 1
+
+        self.wxCurrencyCtrl.SetSelection(idx)
 
         sizer.AddSizer(box, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5)
 
@@ -452,7 +467,7 @@ class iTradePortfolioPropertiesDialog(wxDialog):
         self.m_name = self.wxNameCtrl.GetLabel().strip()
         self.m_accountref = self.wxAccountRefCtrl.GetLabel().strip()
         # __x self.m_market = self.wxMarketCtrl.GetLabel().upper().strip()
-        self.m_currency = self.wxCurrencyCtrl.GetLabel().upper().strip()
+        # __x self.m_currency = self.wxCurrencyCtrl.GetLabel().upper().strip()
         if self.m_operation=='delete':
             dlg = wxMessageDialog(self, message('portfolio_delete_confirm')%self.m_name, message('portfolio_delete_confirm_title'), wxYES_NO | wxYES_DEFAULT | wxICON_QUESTION)
             idRet = dlg.ShowModal()
@@ -469,8 +484,13 @@ class iTradePortfolioPropertiesDialog(wxDialog):
 
     def OnMarket(self,evt):
         t = self.wxMarketCtrl.GetClientData(self.wxMarketCtrl.GetSelection())
-        info("OnMarket %s" % t)
+        debug("OnMarket %s" % t)
         self.m_market = t
+
+    def OnCurrency(self,evt):
+        t = self.wxCurrencyCtrl.GetClientData(self.wxCurrencyCtrl.GetSelection())
+        debug("OnCurrency %s" % t)
+        self.m_currency = t
 
 # ============================================================================
 # properties_iTradePortfolio
