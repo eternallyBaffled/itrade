@@ -113,9 +113,9 @@ class iTradeHtmlPanel(wxPanel):
         self.html.SetSize(self.GetSizeTuple())
 
     def paint0(self):
-        self.html.SetPage("<html><body>")
+        self.html.HeaderPage()
         self.html.AppendToPage("<head>%s</head>" % message('html_connecting'))
-        self.html.AppendToPage("</body></html>")
+        self.html.TrailerPage()
 
     def refresh(self):
         if self.url:
@@ -136,24 +136,30 @@ class iTradeRSSPanel(wxPanel):
         self.m_content = ''
         EVT_SIZE(self, self.OnSize)
 
-    # ---[ SetPage / AppendToPage must use buffered content ]---
+    # ---[ HeaderPage / AppendToPage / TrailerPage must use buffered content ]---
 
-    def SetPage(self,content):
-        self.m_content = content + '\n'
-        self.m_html.SetPage(content)
+    def HeaderPage(self):
+        self.m_html.SetPage("<html><body>")
+        self.m_html.AppendToPage("<a href=':scan'>%s</a> " % message('rss_scan'))
+        self.m_html.AppendToPage("<a href=':clear'>%s</a>" % message('rss_clear'))
 
     def AppendToPage(self,content):
         self.m_content = self.m_content + content + '\n'
         self.m_html.AppendToPage(content)
 
+    def TrailerPage(self):
+        self.m_html.AppendToPage("</html></body>")
+
+    def SetPageWithoutCache(self,content):
+        self.m_html.SetPage(content)
+
     # ---[ cache management ]---
 
     def emptyPage(self):
         # generate default content
-        self.SetPage("<html><body>")
-        self.AppendToPage("<a href=':scan'>%s</a> " % message('rss_scan'))
-        self.AppendToPage("<a href=':clear'>%s</a>" % message('rss_clear'))
-        self.AppendToPage("</body></html>")
+        self.HeaderPage()
+        self.m_content = ""
+        self.TrailerPage()
 
         # save it
         self.saveCache()
@@ -176,7 +182,9 @@ class iTradeRSSPanel(wxPanel):
                 self.emptyPage()
                 info('loadCache(%s) : IOError -> empty page' % fn)
                 return
-            self.SetPage(txt)
+            self.HeaderPage()
+            self.AppendToPage(txt)
+            self.TrailerPage()
             info('loadCache(%s) : OK' % fn)
         else:
             self.emptyPage()
@@ -211,29 +219,26 @@ class iTradeRSSPanel(wxPanel):
     # ---[ display content ]---
 
     def paint0(self):
-        self.SetPage("<html><body>")
+        self.HeaderPage()
         self.AppendToPage("<head>%s</head>" % message('html_connecting'))
-        self.AppendToPage("</body></html>")
+        self.TrailerPage()
 
     def paint_NC(self):
-        self.SetPage("<html><body>")
+        self.HeaderPage()
         self.AppendToPage("<head>%s</head>" % message('html_noconnect'))
-        self.AppendToPage("</body></html>")
+        self.TrailerPage()
 
     def buildPage(self):
         if self.m_feed and self.m_feed.entries:
             info('Feed %s',self.m_feed.feed.title)
-            self.SetPage("<html><body>")
-
-            self.AppendToPage("<a href=':scan'>%s</a> " % message('rss_scan'))
-            self.AppendToPage("<a href=':clear'>%s</a>" % message('rss_clear'))
+            self.HeaderPage()
 
             self.AppendToPage("<head>%s</head><p>" % self.m_feed.feed.title)
 
             for eachEntry in self.m_feed.entries:
                 self.AppendToPage("%s : <a href='%s'>%s</a><p>" % (time.strftime('%x',eachEntry.date),eachEntry.link,eachEntry.title))
-            self.AppendToPage("</body></html>")
 
+            self.TrailerPage()
             self.saveCache()
         else:
             self.loadCache()
