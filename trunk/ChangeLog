@@ -5,6 +5,9 @@ On the road for v0.4.5 (Nausicaa)
 
 ===============================================================================
 
+2006-06-04  Gilles Dumortier <dgil@ieee.org>
+	* itrade_import.py was not working anymore ?! typo ?!
+
 2006-06-03  Gilles Dumortier <dgil@ieee.org>
 	* Context Help in wxDialog (SF bug 1410679)
 
