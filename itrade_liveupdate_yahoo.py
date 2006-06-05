@@ -57,7 +57,7 @@ from itrade_import import registerLiveConnector
 class LiveUpdate_yahoo(object):
     def __init__(self):
         debug('LiveUpdate_yahoo:__init__')
-        self.m_url = "http://finance.yahoo.com/d/quotes.csv"
+        self.m_url = "http://quote.yahoo.com/download/quotes.csv"
         self.m_connected = False
         self.m_livelock = thread.allocate_lock()
         self.m_clock = {}
@@ -153,6 +153,15 @@ class LiveUpdate_yahoo(object):
             return None
 
         #print sdata
+        # connexion / clock
+        self.m_connected = True
+        clock = sdata[2][1:-1] + " - " + sdata[3][1:-1]
+
+        # store for later use
+        isin = quote.isin()
+        self.m_dcmpd[isin] = sdata
+        self.m_clock[isin] = clock
+        self.m_lastclock = clock
 
         # start decoding
         symbol = sdata[0][1:-1]
@@ -182,19 +191,9 @@ class LiveUpdate_yahoo(object):
             low = string.atof (sdata[7])
         volume = string.atoi (sdata[8])
 
-        # connexion / clock
-        self.m_connected = True
-        clock = sdata[2][1:-1] + " - " + sdata[3][1:-1]
-
-        # store for later use
-        isin = quote.isin()
-        self.m_dcmpd[isin] = sdata
-        self.m_clock[isin] = clock
-        self.m_lastclock = clock
-
         # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME
         data = (
-          quote.isin(),
+          isin,
           date,
           open,
           high,
