@@ -196,7 +196,7 @@ class LiveUpdate_ABCBourse(object):
         # returns the data
         data = response.read()
         self.m_datatime = datetime.today()
-        self.m_clock = "%s" % self.m_datatime
+        self.m_clock = "%d:%02d" % (self.m_datatime.hour,self.m_datatime.minute)
 
         debug('!!! datatime = %s clock=%s' % (self.m_datatime,self.m_clock))
 
@@ -266,7 +266,20 @@ class LiveUpdate_ABCBourse(object):
     # ---[ status of quote ] ---
 
     def hasStatus(self):
-        return False
+        return itrade_config.isConnected()
+
+    def currentStatus(self,quote):
+        st = 'OK'
+        cl = '::'
+        return st,cl,"-","-",self.m_clock
+
+    def currentTrades(self,quote):
+        # clock,volume,value
+        return None
+
+    def currentMeans(self,quote):
+        # means: sell,buy,last
+        return "-","-","-"
 
     def currentClock(self,quote=None):
         return self.m_clock
