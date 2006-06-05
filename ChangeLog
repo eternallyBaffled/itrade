@@ -6,7 +6,8 @@ On the road for v0.4.5 (Nausicaa)
 ===============================================================================
 
 2006-06-04  Gilles Dumortier <dgil@ieee.org>
-	* Yahoo plugin : display correct time of the trades (SF bug 1498701)
+	* AbcBourse plugin : display correct time of trades (SF bug 1498701)
+	* Yahoo plugin : display correct time of trades (SF bug 1498701)
 
 2006-06-04  Gilles Dumortier <dgil@ieee.org>
 	* Yahoo plugin : ask and bid (SF bug 1497343). Activate live for yahoo
