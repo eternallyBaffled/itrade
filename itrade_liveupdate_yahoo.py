@@ -132,8 +132,8 @@ class LiveUpdate_yahoo(object):
         hour = clo[:-3]
         val = (int(hour)*60) + int(min)
         per = clock[-2:]
-        if per=='pm':
-            val = val + 12*60
+        #if per=='pm':
+        #    val = val + 12*60
         print clo,hour,min,val,per
         if val>self.m_lastclock:
             self.m_lastclock = val
