@@ -113,9 +113,9 @@ class iTradeHtmlPanel(wxPanel):
         self.html.SetSize(self.GetSizeTuple())
 
     def paint0(self):
-        self.html.HeaderPage()
+        self.html.SetPage("<html><body>")
         self.html.AppendToPage("<head>%s</head>" % message('html_connecting'))
-        self.html.TrailerPage()
+        self.html.AppendToPage("</html></body>")
 
     def refresh(self):
         if self.url:
