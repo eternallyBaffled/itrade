@@ -62,7 +62,7 @@ class LiveUpdate_yahoo(object):
         self.m_livelock = thread.allocate_lock()
         self.m_clock = {}
         self.m_dcmpd = {}
-        self.m_lastclock = "::"
+        self.m_lastclock = 0
 
     # ---[ reentrant ] ---
     def acquire(self):
@@ -126,6 +126,18 @@ class LiveUpdate_yahoo(object):
 
         return "%4d%02d%02d" % (year,month,day)
 
+    def updateLastClock(self,clock):
+        clo = clock[:-2]
+        min = clo[-2:]
+        hour = clo[:-3]
+        val = (int(hour)*60) + int(min)
+        per = clock[-2:]
+        if per=='pm':
+            val = val + 12*60
+        print clo,hour,min,val,per
+        if val>self.m_lastclock:
+            self.m_lastclock = val
+
     def getdata(self,quote):
         debug("LiveUpdate_yahoo:getdata quote:%s " % quote)
         self.m_connected = False
@@ -152,16 +164,16 @@ class LiveUpdate_yahoo(object):
         if len (sdata) < 9:
             return None
 
-        #print sdata
+        print sdata
         # connexion / clock
         self.m_connected = True
-        clock = sdata[2][1:-1] + " - " + sdata[3][1:-1]
+        clock = sdata[3][1:-1]
 
         # store for later use
         isin = quote.isin()
         self.m_dcmpd[isin] = sdata
         self.m_clock[isin] = clock
-        self.m_lastclock = clock
+        self.updateLastClock(clock)
 
         # start decoding
         symbol = sdata[0][1:-1]
@@ -278,7 +290,13 @@ class LiveUpdate_yahoo(object):
 
     def currentClock(self,quote=None):
         if quote==None:
-            return self.m_lastclock
+            # hh:xx
+            hh = self.m_lastclock/60
+            if hh>12:
+                hh = hh - 12
+                return "%d:%dpm" % (hh,self.m_lastclock%60)
+            else:
+                return "%d:%dam" % (hh,self.m_lastclock%60)
         #
         isin = quote.isin()
         if not self.m_clock.has_key(isin):

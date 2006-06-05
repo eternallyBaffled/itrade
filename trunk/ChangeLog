@@ -6,6 +6,9 @@ On the road for v0.4.5 (Nausicaa)
 ===============================================================================
 
 2006-06-04  Gilles Dumortier <dgil@ieee.org>
+	* Yahoo plugin : display correct time of the trades (SF bug 1498701)
+
+2006-06-04  Gilles Dumortier <dgil@ieee.org>
 	* Yahoo plugin : ask and bid (SF bug 1497343). Activate live for yahoo
 	* News : scan / clear button definitions (SF bug 1480417)
 	* main currency in portfolio editing : use a combobox also
