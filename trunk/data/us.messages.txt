@@ -145,6 +145,7 @@ sell;Sell
 buy;Buy
 UPP;UPP
 USP;USP
+market;Market
 
 quote_title;iTrade - Quote
 quote_select_title;Select a quote
