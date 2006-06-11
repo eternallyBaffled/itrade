@@ -153,6 +153,7 @@ sell;Vente
 buy;Achat
 UPP;PRU
 USP;PVU
+market;Marché
 
 quote_title;iTrade - Valeur
 quote_select_title;Choix d'une valeur
