@@ -1,3 +1,0 @@
-FR0010270033;live;abcbourse
-FR0004155455;live;abcbourse
-FR0004032795;live;abcbourse

@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: iso-8859-1 -*-
 # ============================================================================
 # Project Name : iTrade
 # Module Name  : itrade_quotes_euronext.py
@@ -47,6 +48,7 @@ import string
 import itrade_config
 from itrade_logging import *
 from itrade_quotes import quotes
+from itrade_isin import checkISIN
 
 # ============================================================================
 # Import_ListOfQuotes_Euronext()
@@ -87,10 +89,13 @@ def Import_ListOfQuotes_Euronext(market='EURONEXT'):
         data = string.split (line, ';')
         if len(data)==11:
             if data[1]!='ISIN':
-                if data[2]=='PAR' or data[2]=='BRU' or data[2]=='AMS' or data[2]=='LIS':
-                    quotes.addQuote(isin=data[1],name=data[0],ticker=data[3],market=market,currency=data[5])
+                if checkISIN(data[1]):
+                    if data[2]=='PAR' or data[2]=='BRU' or data[2]=='AMS' or data[2]=='LIS':
+                        quotes.addQuote(isin=data[1],name=data[0],ticker=data[3],market=market,currency=data[5])
+                    else:
+                        print 'unknown EURONEXT place : ',data
                 else:
-                    print 'unknown EURONEXT place : ',data
+                    print 'invalid ISIN : ',data
 
     return True
 

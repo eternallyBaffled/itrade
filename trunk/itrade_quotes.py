@@ -90,9 +90,8 @@ def fmtVolume(x):
 # ============================================================================
 
 class Quote(object):
-    def __init__(self,isin,name,sicovam,ticker,market):
+    def __init__(self,isin,name,ticker,market,currency):
         self.m_isin = isin
-        self.m_sicovam = sicovam
         self.m_defaultname = name
         self.m_defaultticker = ticker
         self.m_daytrades = None
@@ -106,6 +105,11 @@ class Quote(object):
             self.m_defaultmarket = market
         self.m_defaultliveconnector = getLiveConnector(self.m_defaultmarket)
         self.m_defaultimportconnector = getImportConnector(self.m_defaultmarket)
+
+        if not currency:
+            self.m_currency = market2currency(self.m_market)
+        else:
+            self.m_currency = currency
 
         self._init_()
 
@@ -133,7 +137,6 @@ class Quote(object):
         self.m_importconnector = self.m_defaultimportconnector
         self.m_name = self.m_defaultname
         self.m_ticker = self.m_defaultticker
-        self.m_currency = market2currency(self.m_market)
         self.m_symbcurr = itrade_currency.currency2symbol(self.m_currency)
 
     def reinit(self):
@@ -154,7 +157,7 @@ class Quote(object):
         return self.m_isin
 
     def __repr__(self):
-        return '%s;%s;%s;%s' % (self.m_isin, self.m_name, self.m_sicovam, self.m_ticker)
+        return '%s;%s;%s;%s;%s' % (self.m_isin, self.m_name, self.m_ticker, self.m_market, self.m_currency)
 
     def __hash__(self):
         return self.m_isin
@@ -1043,57 +1046,46 @@ class Quotes(object):
 
     # ---[ Quotes ] ---
 
-    def addQuote(self,isin,name,sicovam,ticker,market):
+    def addQuote(self,isin,name,ticker,market,currency):
+        # patch for abcbourse.com quotes file :-( (SF bug 1291713)
+        if isin[0:2].lower()=='us':
+            lg = len(isin)
+            if isin[lg-1:lg]=='u':
+                isin = isin[:lg-1]
+
         if self.m_quotes.has_key(isin):
-            return False
-        else:
-            # patch for abcbourse.com quotes file :-( (SF bug 1291713)
-            if isin[0:2].lower()=='us':
-                lg = len(isin)
-                if isin[lg-1:lg]=='u':
-                    isin = isin[:lg-1]
-            #print isin
+            # update quote
+            del self.m_quotes[isin]
 
-            self.m_quotes[isin] = Quote(isin,name,sicovam,ticker,market)
-            #debug('Quotes::addQuote(): %s' % self.m_quotes[isin]);
-            return True
+        # new quote
+        self.m_quotes[isin] = Quote(isin,name,ticker,market,currency)
+        #debug('Quotes::addQuote(): %s' % self.m_quotes[isin]);
+        return True
 
-    def addLines(self,infile):
+    def _addLines(self,infile):
         # scan each line to read each quote
         for eachLine in infile:
             item = itrade_csv.parse(eachLine,5)
-            if item:
-                # debug('%s ::: %s' % (eachLine,item))
-                ll = len(item)
-                if ll>=5:
-                    market = item[4]
-                else:
-                    market = None
-                if ll>3:
-                    self.addQuote(item[0],item[1],item[2],item[3],market)
-                else:
-                    info("can't import item=%s" % item)
+            if item and len(item)>=5:
+                self.addQuote(item[0],item[1],item[2],item[3],item[4])
 
     def load(self,fn=None,fs=None):
         # open and read the file to load these quotes information
         infile = itrade_csv.read(fn,os.path.join(itrade_config.dirSysData,'quotes.txt'))
         if infile:
-            self.addLines(infile)
+            self._addLines(infile)
 
         # them open and read user file
         infile = itrade_csv.read(fn,os.path.join(itrade_config.dirUserData,'quotes.txt'))
         if infile:
-            self.addLines(infile)
+            self._addLines(infile)
 
     def saveListOfQuotes(self,fn=None):
         pass
         # __x sys vs usr file. How to discriminate ?
         #
         # open and write the file with these quotes information
-        #itrade_csv.write(fn,os.path.join(itrade_config.dirSysData,'quotes.txt'),self.m_quotes.values())
-        #
-        # next, read quotes data
-        #self.saveTrades()
+        itrade_csv.write(fn,os.path.join(itrade_config.dirSysData,'quotes.txt'),self.m_quotes.values())
 
     # ---[ Lookup ] ---
 
@@ -1146,22 +1138,22 @@ quotes.load()
 if __name__=='__main__':
     setLevel(logging.INFO)
 
-#    info('test1 %s' % quotes.lookupISIN('FR0000072621'));
-#    info('test2 %s' % quotes.lookupTicker('OSI').ticker());
-#    info('test3 %s' % quotes.lookupTicker('OSI').isin());
-#    info('test4 %s' % quotes.lookupTicker('OSI').name());
-#    info('test5 %s' % quotes.lookupTicker('OSI').descr());
-#
-#    quote = quotes.lookupTicker('OSI')
-#    quote.loadTrades('import/Cortal-2005-01-07.txt')
-#    info('test6 %s' % quote.trades().trade('20050104'));
-#
-#    quotes.loadTrades('import/Cortal-2005-01-07.txt')
-#    quotes.loadTrades('import/Cortal-2005-01-14.txt')
-#    quotes.loadTrades('import/Cortal-2005-01-21.txt')
-#    quote = quotes.lookupTicker('EADT')
-#    info('test7 %s' % quote.trades().trade('20050104'));
-#
+    info('test1 %s' % quotes.lookupISIN('FR0000072621'));
+    info('test2 %s' % quotes.lookupTicker('OSI').ticker());
+    info('test3 %s' % quotes.lookupTicker('OSI').isin());
+    info('test4 %s' % quotes.lookupTicker('OSI').name());
+    info('test5 %s' % quotes.lookupTicker('OSI').descr());
+
+    quote = quotes.lookupTicker('OSI')
+    quote.loadTrades('import/Cortal-2005-01-07.txt')
+    info('test6 %s' % quote.trades().trade('20050104'));
+
+    quotes.loadTrades('import/Cortal-2005-01-07.txt')
+    quotes.loadTrades('import/Cortal-2005-01-14.txt')
+    quotes.loadTrades('import/Cortal-2005-01-21.txt')
+    quote = quotes.lookupTicker('EADT')
+    info('test7 %s' % quote.trades().trade('20050104'));
+
 #    quotes.saveTrades()
 #    quotes.saveListOfQuotes(os.path.join(itrade_config.dirSysData,'test.txt'))
 
@@ -1177,4 +1169,3 @@ if __name__=='__main__':
 # ============================================================================
 # That's all folks !
 # ============================================================================
-# vim:set shiftwidth=4 tabstop=8 expandtab textwidth=78:
