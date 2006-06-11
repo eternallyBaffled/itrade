@@ -71,7 +71,7 @@ class iTradeQuoteSelectorListCtrlDialog(wxDialog, wxColumnSorterMixin):
         # context help
         pre = wxPreDialog()
         pre.SetExtraStyle(wxDIALOG_EX_CONTEXTHELP)
-        pre.Create(parent, -1, message('quote_select_title'), size=(420, 420))
+        pre.Create(parent, -1, message('quote_select_title'), size=(460, 420))
         self.PostCreate(pre)
 
         # init
@@ -92,7 +92,7 @@ class iTradeQuoteSelectorListCtrlDialog(wxDialog, wxColumnSorterMixin):
 
         self.m_list = iTradeSelectorListCtrl(self, tID,
                                  style = wxLC_REPORT | wxSUNKEN_BORDER,
-                                 size=(400, 380)
+                                 size=(440, 380)
                                  )
         self.m_list.SetImageList(self.m_imagelist, wxIMAGE_LIST_SMALL)
 
@@ -100,7 +100,7 @@ class iTradeQuoteSelectorListCtrlDialog(wxDialog, wxColumnSorterMixin):
 
         # Now that the list exists we can init the other base class,
         # see wxPython/lib/mixins/listctrl.py
-        wxColumnSorterMixin.__init__(self, 3)
+        wxColumnSorterMixin.__init__(self, 4)
 
         EVT_LIST_COL_CLICK(self, tID, self.OnColClick)
         EVT_SIZE(self, self.OnSize)
@@ -176,6 +176,10 @@ class iTradeQuoteSelectorListCtrlDialog(wxDialog, wxColumnSorterMixin):
         info.m_text = message('name')
         self.m_list.InsertColumnInfo(2, info)
 
+        info.m_format = wxLIST_FORMAT_LEFT
+        info.m_text = message('market')
+        self.m_list.InsertColumnInfo(3, info)
+
         x = 0
         self.currentItem = -1
 
@@ -183,11 +187,11 @@ class iTradeQuoteSelectorListCtrlDialog(wxDialog, wxColumnSorterMixin):
         if self.m_filter:
             for eachQuote in quotes.list():
                 if eachQuote.isMatrix():
-                    self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.name())
+                    self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.name(),eachQuote.market())
                     x = x + 1
         else:
             for eachQuote in quotes.list():
-                self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.name())
+                self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.name(),eachQuote.market())
                 x = x + 1
 
         items = self.itemDataMap.items()
@@ -198,10 +202,13 @@ class iTradeQuoteSelectorListCtrlDialog(wxDialog, wxColumnSorterMixin):
                 self.currentItem = x
             self.m_list.SetStringItem(x, 1, data[1])
             self.m_list.SetStringItem(x, 2, data[2])
+            self.m_list.SetStringItem(x, 3, data[3])
             self.m_list.SetItemData(x, key)
 
         self.m_list.SetColumnWidth(0, wxLIST_AUTOSIZE)
         self.m_list.SetColumnWidth(1, wxLIST_AUTOSIZE_USEHEADER)
+        self.m_list.SetColumnWidth(2, wxLIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(3, wxLIST_AUTOSIZE)
         if self.currentItem>=0:
             self.m_list.SetItemState(self.currentItem, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED)
             self.m_list.EnsureVisible(self.currentItem)
