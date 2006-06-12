@@ -207,7 +207,7 @@ class iTradeQuoteSelectorListCtrlDialog(wxDialog, wxColumnSorterMixin):
 
         self.m_list.SetColumnWidth(0, wxLIST_AUTOSIZE)
         self.m_list.SetColumnWidth(1, wxLIST_AUTOSIZE_USEHEADER)
-        self.m_list.SetColumnWidth(2, wxLIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(2, 16*10)
         self.m_list.SetColumnWidth(3, wxLIST_AUTOSIZE)
         if self.currentItem>=0:
             self.m_list.SetItemState(self.currentItem, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED)
