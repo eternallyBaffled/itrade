@@ -115,6 +115,53 @@ def buildISIN(country,code):
     return code + "%d" % _buildVerifCode(code)
 
 # ============================================================================
+# CINS numbers employ the same Issuer (6 characters)/Issue (2 character &
+# check digit) concept espoused by the CUSIP Numbering System, which is
+# described in detail on the  following page. It is important to note that
+# the first position of a CINS code is always represented by an alpha
+# character, signifying the Issuer's country code (domicile) or geographic
+# region:
+#
+#   A = Austria         J = Japan           S = South Africa
+#   B = Belgium         K = Denmark         T = Italy
+#   C = Canada          L = Luxembourg      U = United States
+#   D = Germany         M = Mid-East        V = Africa - Other
+#   E = Spain           N = Netherlands     W = Sweden
+#   F = France          P = South America   X= Europe-Other
+#   G = United Kingdom  Q = Australia       Y = Asia
+#   H = Switzerland     R = Norway
+#
+# The CUSIP number consists of nine characters: a base number of six
+# characters known as the issuer number, (the 4th, 5th and/or 6th position may
+# be alpha or numeric) and a two character suffix (either numeric or
+# alphabetic or both) known as the issue number. The ninth character is a
+# check digit
+#
+# The first issue number for an issuer's equity securities is 10
+# ============================================================================
+
+cusip_country = {
+    'T' : 'IT',
+    'L' : 'LU',
+    'G' : 'UK',
+    'F' : 'FR',
+    'E' : 'ES',
+    'D' : 'DE',
+    'C' : 'CA',
+    'B' : 'BE',
+}
+
+def extractCUSIP(ref):
+    issuer = ref[:6]
+    issue  = ref[6:-1]
+    country = issuer[0]
+    if cusip_country.has_key(country):
+        country = cusip_country[country]
+    else:
+        country = 'US'
+    return country,issuer,issue
+
+# ============================================================================
 # Test
 # ============================================================================
 

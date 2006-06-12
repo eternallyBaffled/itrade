@@ -6,6 +6,7 @@ On the road for v0.4.5 (Nausicaa)
 ===============================================================================
 
 2006-06-12  Gilles Dumortier <dgil@ieee.org>
+	* Filter the NYSE symbol list (CUSIP better management)
 	* List of quotes : add filter by market (SF bug 1504296)
 	* List of quotes : MMI to update the list (SF bug 1504485)
 	* Import list plugin : NYSE (part of SF bug 1504294)
