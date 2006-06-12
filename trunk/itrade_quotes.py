@@ -1055,6 +1055,7 @@ class Quotes(object):
 
         if self.m_quotes.has_key(isin):
             # update quote
+            #print '%r already exists' % self.m_quotes[isin]
             del self.m_quotes[isin]
 
         # new quote

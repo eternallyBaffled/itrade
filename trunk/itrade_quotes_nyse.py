@@ -47,7 +47,7 @@ import string
 # iTrade system
 import itrade_config
 from itrade_logging import *
-from itrade_isin import buildISIN
+from itrade_isin import buildISIN,extractCUSIP
 from itrade_import import registerListSymbolConnector
 
 # ============================================================================
@@ -87,8 +87,11 @@ def Import_ListOfQuotes_NYSE(quotes,market='NYSE'):
     for line in lines:
         data = string.split (line, '|')
         if len(data)==5:
-            isin = buildISIN('US',data[1])
-            quotes.addQuote(isin=isin,name=data[2],ticker=data[0],market='NYSE',currency='USD')
+            country,issuer,issue = extractCUSIP(data[1])
+            if issue=='10':
+                #print data[1],country,issuer,issue,data[2]
+                isin = buildISIN(country,data[1])
+                quotes.addQuote(isin=isin,name=data[2],ticker=data[0],market='NYSE',currency='USD')
 
     print 'Imported %d lines from NYSE data.' % len(lines)
 
