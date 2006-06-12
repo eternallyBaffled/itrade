@@ -98,6 +98,19 @@ getImportConnector = gImportRegistry.get
 findImportConnector = gImportRegistry.find
 
 # ============================================================================
+# Export ListSymbol Registry
+# ============================================================================
+
+try:
+    ignore(gListSymbolRegistry)
+except NameError:
+    gListSymbolRegistry = ConnectorRegistry()
+
+registerListSymbolConnector = gListSymbolRegistry.register
+getListSymbolConnector = gListSymbolRegistry.get
+findListSymbolConnector = gListSymbolRegistry.find
+
+# ============================================================================
 # __x be more dynamic ...
 # ============================================================================
 
@@ -109,6 +122,10 @@ import itrade_liveupdate_abcbourse
 # US/CA market connectors : Yahoo
 import itrade_import_yahoo
 import itrade_liveupdate_yahoo
+
+# list of symnbols
+import itrade_quotes_euronext
+import itrade_quotes_nyse
 
 # ============================================================================
 # Importation from internet : HISTORIC

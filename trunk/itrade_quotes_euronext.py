@@ -47,15 +47,16 @@ import string
 # iTrade system
 import itrade_config
 from itrade_logging import *
-from itrade_quotes import quotes
 from itrade_isin import checkISIN
+from itrade_import import registerListSymbolConnector
 
 # ============================================================================
 # Import_ListOfQuotes_Euronext()
 #
 # ============================================================================
 
-def Import_ListOfQuotes_Euronext(market='EURONEXT'):
+def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT'):
+    print 'Update %s list of symbols' % market
 
     if market=='EURONEXT':
         url = "http://www.euronext.com/tradercenter/priceslists/trapridownload/0,4499,1732_338638,00.html?belongsToList=market_14&resultsTitle=All%20Euronext%20-%20Eurolist%20by%20Euronext&eligibilityList=&economicGroupList=&sectorList=&branchList="
@@ -97,7 +98,16 @@ def Import_ListOfQuotes_Euronext(market='EURONEXT'):
                 else:
                     print 'invalid ISIN : ',data
 
+    print 'Imported %d lines from %s data.' % (len(lines),market)
+
     return True
+
+# ============================================================================
+# Export me
+# ============================================================================
+
+registerListSymbolConnector('EURONEXT',Import_ListOfQuotes_Euronext)
+registerListSymbolConnector('ALTERNEXT',Import_ListOfQuotes_Euronext)
 
 # ============================================================================
 # Test ME
@@ -106,8 +116,10 @@ def Import_ListOfQuotes_Euronext(market='EURONEXT'):
 if __name__=='__main__':
     setLevel(logging.INFO)
 
-    Import_ListOfQuotes_Euronext('EURONEXT')
-    Import_ListOfQuotes_Euronext('ALTERNEXT')
+    from itrade_quotes import quotes
+
+    Import_ListOfQuotes_Euronext(quotes,'EURONEXT')
+    Import_ListOfQuotes_Euronext(quotes,'ALTERNEXT')
     quotes.saveListOfQuotes()
 
 # ============================================================================

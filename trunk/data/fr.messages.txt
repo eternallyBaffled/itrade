@@ -15,6 +15,8 @@ main_exit;Sorti&e
 main_desc_exit; Quitte l'application iTrade
 main_close;&Ferme
 main_desc_close; Ferme cette fenêtre
+main_managelist; Liste des Valeurs
+main_desc_managelist; Gère la liste des valeurs (mise à jour par téléchargement, edition, etc.)
 
 main_window;&Fenêtre
 
@@ -58,7 +60,7 @@ main_view_desc_big; Utilise une taille enlargi de texte pour l'affichage de la m
 main_quote_add;Ajouter ...
 main_quote_desc_add; Ajouter une valeur dans la liste
 main_quote_remove;Supprimer
-main_quote_desc_remove; Supprimer la valeur sélectionner de la liste
+main_quote_desc_remove; Supprimer la valeur sélectionnée de la liste
 main_quote_graph;Courbes Historiques
 main_quote_desc_graph; Visualise les courbes historiques de la valeur sélectionnée
 main_quote_live;Live
@@ -125,6 +127,8 @@ ok;Valide
 ok_desc;Ce bouton valide la boite de dialogue
 cancel;Abandon
 cancel_desc;Le bouton Abandon abandonne la boite de dialogue (Duh!)
+close;Ferme
+close_desc;Ferme cette fenêtre
 
 isin;ISIN
 ticker;Titre
@@ -154,11 +158,20 @@ buy;Achat
 UPP;PRU
 USP;PVU
 market;Marché
+all_markets;Tous les marchés
+invalid_isin;Le code ISIN %s est invalide
+symbol_not_found;Le symbole de code ISIN %s ou de nom %s n'a pas été trouvé
+
+download_symbols;Téléchargement Liste
+download_symbols_desc;Mise à jour de la liste des valeurs par téléchargement du réseau
 
 quote_title;iTrade - Valeur
 quote_select_title;Choix d'une valeur
+quote_list_title;Liste des valeurs
 
-quote_select_textfield;ISIN / Ticker / Nom :
+quote_select_isin;ISIN :
+quote_select_ticker;Ticker / Nom :
+quote_select_market;Marché :
 quote_select_filterfield;Seulement les valeurs tradées
 
 quote_graphdaily;Journalier

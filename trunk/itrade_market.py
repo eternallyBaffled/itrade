@@ -72,6 +72,7 @@ market_currency = {
     'ALTERNEXT': 'EUR',
     'NASDAQ': 'USD',
     'NYSE': 'USD',
+    'AMEX': 'USD',
     'LSE': 'GBP',
     }
 
@@ -82,8 +83,17 @@ def market2currency(market):
         # default to EURO
         return 'EUR'
 
-def list_of_markets():
-    return ('ALTERNEXT','EURONEXT','LSE','NASDAQ','NYSE')
+def list_of_markets(bFilterMode=False):
+    lom = []
+    if bFilterMode:
+        lom.append(message('all_markets'))
+    lom.append('EURONEXT')
+    lom.append('ALTERNEXT')
+    lom.append('LSE')
+    lom.append('NASDAQ')
+    lom.append('NYSE')
+    lom.append('AMEX')
+    return lom
 
 # ============================================================================
 # That's all folks !

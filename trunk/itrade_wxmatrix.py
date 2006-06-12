@@ -64,6 +64,7 @@ from itrade_wxcurrency import open_iTradeCurrencies
 from itrade_wxabout import iTradeAboutBox
 from itrade_wxhtml import iTradeHtmlWindow,iTradeLaunchBrowser
 from itrade_wxutil import wxFontFromSize
+from itrade_wxlistquote import list_iTradeQuote
 
 from itrade_wxmixin import iTrade_wxFrame
 from itrade_wxlive import iTrade_wxLiveMixin,EVT_UPDATE_LIVE
@@ -616,7 +617,7 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
         iTradeLaunchBrowser(itrade_config.donorsTrackerURL,new=True)
 
     def OnManageList(self,e):
-        pass
+        list_iTradeQuote(self)
 
     def OnAbout(self,e):
         d = iTradeAboutBox(self)
@@ -1575,7 +1576,7 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
         open_iTradeQuote(self,self.m_portfolio,self.m_list.GetItemText(self.m_currentItem),page=7)
 
     def OnAddQuote(self,e):
-        quote = addInMatrix_iTradeQuote(self,self.m_matrix)
+        quote = addInMatrix_iTradeQuote(self,self.m_matrix,self.m_portfolio)
         if quote:
             self.m_portfolio.setupCurrencies()
             self.setDirty()
