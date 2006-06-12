@@ -1058,7 +1058,7 @@ class Quotes(object):
             del self.m_quotes[isin]
 
         # new quote
-        self.m_quotes[isin] = Quote(isin,name,ticker,market,currency)
+        self.m_quotes[isin] = Quote(isin,name.upper(),ticker.upper(),market.upper(),currency.upper())
         #debug('Quotes::addQuote(): %s' % self.m_quotes[isin]);
         return True
 
@@ -1081,31 +1081,30 @@ class Quotes(object):
             self._addLines(infile)
 
     def saveListOfQuotes(self,fn=None):
-        pass
         # __x sys vs usr file. How to discriminate ?
         #
         # open and write the file with these quotes information
         itrade_csv.write(fn,os.path.join(itrade_config.dirSysData,'quotes.txt'),self.m_quotes.values())
 
-    # ---[ Lookup ] ---
+        print 'List of symbols saved.'
+
+    # ---[ Lookup (optionaly, filter by market) ] ---
 
     def lookupISIN(self,isin):
         return self.m_quotes.get(isin,None)
 
-    def lookupTicker(self,ticker):
+    def lookupTicker(self,ticker,market=None):
         for eachVal in self.m_quotes.values():
-            #debug('Quotes::lookupTicker() try: %s' % eachVal);
             if eachVal.ticker() == ticker:
-                #debug('Quotes::lookupTicker() Found: %s' % eachVal);
-                return eachVal
+                if market==None or (market==eachVal.market()):
+                    return eachVal
         return None
 
-    def lookupName(self,name):
+    def lookupName(self,name,market):
         for eachVal in self.m_quotes.values():
-            #debug('Quotes::lookupName() try: %s' % eachVal);
             if eachVal.name() == name:
-                #debug('Quotes::lookupName() Found: %s' % eachVal);
-                return eachVal
+                if market==None or (market==eachVal.market()):
+                    return eachVal
         return None
 
     # ---[ Trades ] ---

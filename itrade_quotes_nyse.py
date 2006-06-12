@@ -47,15 +47,16 @@ import string
 # iTrade system
 import itrade_config
 from itrade_logging import *
-from itrade_quotes import quotes
 from itrade_isin import buildISIN
+from itrade_import import registerListSymbolConnector
 
 # ============================================================================
 # Import_ListOfQuotes_NYSE()
 #
 # ============================================================================
 
-def Import_ListOfQuotes_NYSE(market='NYSE'):
+def Import_ListOfQuotes_NYSE(quotes,market='NYSE'):
+    print 'Update %s list of symbols' % market
 
     if market=='NYSE':
         url = "http://www.nysedata.com/nysedata/asp/download.asp?s=txt&prod=symbols"
@@ -89,7 +90,15 @@ def Import_ListOfQuotes_NYSE(market='NYSE'):
             isin = buildISIN('US',data[1])
             quotes.addQuote(isin=isin,name=data[2],ticker=data[0],market='NYSE',currency='USD')
 
+    print 'Imported %d lines from NYSE data.' % len(lines)
+
     return True
+
+# ============================================================================
+# Export me
+# ============================================================================
+
+registerListSymbolConnector('NYSE',Import_ListOfQuotes_NYSE)
 
 # ============================================================================
 # Test ME
@@ -98,7 +107,9 @@ def Import_ListOfQuotes_NYSE(market='NYSE'):
 if __name__=='__main__':
     setLevel(logging.INFO)
 
-    Import_ListOfQuotes_NYSE('NYSE')
+    from itrade_quotes import quotes
+
+    Import_ListOfQuotes_NYSE(quotes,'NYSE')
     quotes.saveListOfQuotes()
 
 # ============================================================================

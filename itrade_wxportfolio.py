@@ -55,7 +55,6 @@ from itrade_portfolio import *
 from itrade_market import list_of_markets
 from itrade_currency import list_of_currencies
 
-from itrade_wxlistquote import select_iTradeQuote
 import itrade_wxres
 from itrade_wxmixin import iTrade_wxFrame,iTradeSelectorListCtrl
 

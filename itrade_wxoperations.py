@@ -435,7 +435,7 @@ class iTradeOperationDialog(wxDialog):
 
     def OnQuote(self,evt):
         quote = quotes.lookupISIN(self.m_name)
-        quote = select_iTradeQuote(self,quote,True)
+        quote = select_iTradeQuote(self,quote,filter=True,market=None)
         if quote:
             debug('onQuote: %s - %s' % (quote.ticker(),quote.isin()))
             self.m_name = quote.isin()

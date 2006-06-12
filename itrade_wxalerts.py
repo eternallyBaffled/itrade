@@ -52,7 +52,6 @@ from itrade_local import message
 #from itrade_quotes import *
 from itrade_portfolio import *
 
-#from itrade_wxlistquote import select_iTradeQuote
 import itrade_wxres
 from itrade_wxmixin import iTrade_wxFrame
 

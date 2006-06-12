@@ -15,6 +15,8 @@ main_exit;E&xit
 main_desc_exit; Terminate iTrade application
 main_close;&Close
 main_desc_close; Close the window
+main_managelist; List of Symbols
+main_desc_managelist; Manage the List of Symbols (update by downloading, editing, etc.)
 
 main_window;&Window
 
@@ -117,6 +119,8 @@ ok;OK
 ok_desc;This button validates then completes the dialog
 cancel;Cancel
 cancel_desc;The Cancel button cancels the dialog (Duh!)
+close;Close
+close_desc;The Close button close the dialog
 
 isin;ISIN
 ticker;Ticker
@@ -146,11 +150,20 @@ buy;Buy
 UPP;UPP
 USP;USP
 market;Market
+all_markets;All markets
+invalid_isin;ISIN code %s is invalid
+symbol_not_found;ISIN code %s or name %s not found
+
+download_symbols;Update Symbols
+download_symbols_desc;Update the list of symbols by downloading data from the network
 
 quote_title;iTrade - Quote
-quote_select_title;Select a quote
+quote_select_title;Select a Symbol
+quote_list_title;List of Symbols
 
-quote_select_textfield;ISIN / Ticker / Name :
+quote_select_isin;ISIN :
+quote_select_ticker;Ticker / Name :
+quote_select_market;Market :
 quote_select_filterfield;Only traded quotes
 
 quote_graphdaily;Daily

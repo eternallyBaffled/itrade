@@ -5,8 +5,13 @@ On the road for v0.4.5 (Nausicaa)
 
 ===============================================================================
 
+2006-06-12  Gilles Dumortier <dgil@ieee.org>
+	* List of quotes : add filter by market (SF bug 1504296)
+	* List of quotes : MMI to update the list (SF bug 1504485)
+	* Import list plugin : NYSE (part of SF bug 1504294)
+
 2006-06-11  Gilles Dumortier <dgil@ieee.org>
-	* Import list plugin : euronext (SF bug 1485056)
+	* Import list plugin : Euronext (SF bug 1485056)
 
 2006-06-04  Gilles Dumortier <dgil@ieee.org>
 	* AbcBourse plugin : display correct time of trades (SF bug 1498701)

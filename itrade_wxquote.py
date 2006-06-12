@@ -1072,7 +1072,7 @@ class iTradeQuoteWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin):
 
     def SelectQuote(self,nquote=None):
         if not nquote:
-            nquote = select_iTradeQuote(self,self.m_quote,True)
+            nquote = select_iTradeQuote(self,self.m_quote,filter=True,market=None)
         if nquote and nquote<>self.m_quote:
             info('SelectQuote: %s - %s' % (nquote.ticker(),nquote.isin()))
             self.stopLive(self.m_quote)
@@ -1124,17 +1124,18 @@ def open_iTradeQuote(win,port,quote,page=1):
 # ============================================================================
 # addInMatrix_iTradeQuote
 #
-#   win     parent window
-#   matrix  Matrix object
-#   dquote  Quote object or ISIN reference
+#   win         parent window
+#   matrix      Matrix object
+#   portfolio   Portfolio object
+#   dquote      (optional) Quote object or ISIN reference
 # ============================================================================
 
-def addInMatrix_iTradeQuote(win,matrix,dquote=None):
+def addInMatrix_iTradeQuote(win,matrix,portfolio,dquote=None):
     if dquote:
         if not isinstance(dquote,Quote):
             dquote = quotes.lookupISIN(dquote)
     else:
-        dquote = select_iTradeQuote(win)
+        dquote = select_iTradeQuote(win,dquote=None,filter=False,market=portfolio.market())
 
     if dquote:
         matrix.addISIN(dquote.isin())
