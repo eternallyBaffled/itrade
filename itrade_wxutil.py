@@ -48,7 +48,7 @@ from wxPython.wx import *
 # matplotlib system
 import matplotlib
 matplotlib.use('WXAgg')
-matplotlib.rcParams['numerix'] = 'numarray'
+matplotlib.rcParams['numerix'] = 'numpy'
 
 # matplotlib helpers
 from matplotlib.colors import colorConverter

@@ -68,7 +68,7 @@ from itrade_wxlistquote import select_iTradeQuote
 # matplotlib system
 import matplotlib
 matplotlib.use('WXAgg')
-matplotlib.rcParams['numerix'] = 'numarray'
+matplotlib.rcParams['numerix'] = 'numpy'
 
 from matplotlib.dates import date2num, num2date
 from myfinance import candlestick, plot_day_summary2, candlestick2, index_bar, volume_overlay2

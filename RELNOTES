@@ -9,7 +9,7 @@ We recommend you to install :
 
  Python		http://www.python.org			version 2.4.2 or better
  wxPython	http://www.wxpython.org			version 2.6.3.x (ANSI)
- numarray	http://sourceforge.net/projects/numpy	version 1.3.3 or better
+ numpy		http://sourceforge.net/projects/numpy	version 0.9.8 or better
  matplotlib	http://matplotlib.sourceforge.net	version 0.87 or better
 
 Running :
