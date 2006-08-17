@@ -65,7 +65,7 @@ setup(windows=["itrade.py"],
                   ("matplotlibdata", mat),
                    ],
       options = {"py2exe":
-                 {"packages": ['pytz','numarray','matplotlib.numerix.random_array'],
+                 {"packages": ['pytz','numpy','matplotlib.numerix.random_array'],
                   "excludes": ['_gtkagg', '_tkagg', '_svg','_ps'],
                   "dll_excludes": ['libgdk-win32-2.0-0.dll','libgobject-2.0-0.dll'],
                   "bundle_files": 2

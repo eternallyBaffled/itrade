@@ -5,6 +5,9 @@ On the road for v0.4.5 (Nausicaa)
 
 ===============================================================================
 
+2006-07-17  Gilles Dumortier <dgil@ieee.org>
+	* switch from numarray to numpy (0.9.8)
+
 2006-06-12  Gilles Dumortier <dgil@ieee.org>
 	* Filter the NYSE symbol list (CUSIP better management)
 	* List of quotes : add filter by market (SF bug 1504296)
