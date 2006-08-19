@@ -34,7 +34,8 @@
 # 2006-05-28    dgil  deprecated - live broken / access has been securized
 #                     keep it for historical reason
 #
-# DEPRECATED
+# 2006-08-17    dgil  working on the new mechanism ...
+# 2006-08-19    dgil  authentication is working !!!!!!
 # ============================================================================
 
 # ============================================================================
@@ -47,14 +48,27 @@ import re
 import string
 import thread
 import datetime
-from urllib import *
-from httplib import *
+import os
+import httplib
 
 # iTrade system
-import itrade_config
-from itrade_logging import *
-from itrade_quotes import *
-from itrade_import import registerLiveConnector
+# __x import itrade_config
+# __x from itrade_logging import *
+# __x from itrade_quotes import *
+# __x from itrade_import import registerLiveConnector
+
+# ============================================================================
+# __x to be removed after iTrade final integration
+# ============================================================================
+
+def debug(a):
+    print a
+
+def info(a):
+    print a
+
+def setLevel(a):
+    pass
 
 # ============================================================================
 # decomp
@@ -150,14 +164,18 @@ def convert(n,v,s):
 class LiveUpdate_fortuneo(object):
     def __init__(self):
         debug('LiveUpdate_fortuneo:__init__')
-        self.m_host = None
-        self.m_default_host = "rt.fortuneo.fr"
-        self.m_conn = None
+        self.m_flux = None
+        self.m_default_host = "streaming.fortuneo.fr"
+        self.m_url = None
+        self.m_connected = False
+
+        self.m_blowfish = '437a80b2720feb61e32252c688831e5e28ca2bb84dfafe06a243b2aadbe610c984d57f79f3d334f30d264263654dbf30'
+
+        # __x
+        self.m_livelock = thread.allocate_lock()
         self.m_dcmpd = {}
         self.m_clock = {}
         self.m_lastclock = "::"
-        self.m_connected = False
-        self.m_livelock = thread.allocate_lock()
 
     # ---[ reentrant ] ---
     def acquire(self):
@@ -177,31 +195,25 @@ class LiveUpdate_fortuneo(object):
     # ---[ connexion ] ---
 
     def connect(self):
-        if self.m_host == None:
-           # try to read the config file ...
-           try:
-                f = open(os.path.join(itrade_config.dirUserData,'live.txt'),'r')
-                info = f.read().strip()
-                print info
-                self.m_host = info
-                f.close()
-                print 'live: use configured web site %s' % self.m_host
-           except IOError:
-                # can't open the file (existing ?)
-                self.m_host = self.m_default_host
-                print 'live: use default web site %s' % self.m_host
+        # __y params = urllib.urlencode({'subscriptions': '{FRANCE.PL025.BMG988431240.CSA_CRS_DERNIER,FRANCE.PL025.BMG988431240.CSA_VAR_VEILLE}','userinfo': self.m_blowfish,},True)
+		# __y
+        # __y self.m_url = 'http://' + self.m_default_host + '/streaming'
+        # __y self.m_flux = urllib.urlopen(self.m_url, params)
+        # __y if self.m_flux == None:
+        # __y     print 'live: not connected on %s' % self.m_url
+        # __y     return False
+		# __y
 
-        try:
-            self.m_conn = HTTPConnection(self.m_host,80)
-        except:
-            print 'live: unable to connect with %s :-(' % self.m_host
-            return False
+        self.m_flux = httplib.HTTPConnection(self.m_default_host,80)
+        print 'live: connected on %s' % self.m_flux
+
         return True
 
     def disconnect(self):
-        if self.m_conn:
-            self.m_conn.close()
-        self.m_conn = None
+        if self.m_flux:
+            self.m_flux.close()
+        self.m_flux = None
+        self.m_connected = False
 
     def alive(self):
         return self.m_connected
@@ -220,10 +232,11 @@ class LiveUpdate_fortuneo(object):
         return None
 
     def getdataByTicker(self,ticker):
-        quote = quotes.lookupTicker(ticker)
-        if quote:
+# __x         quote = quotes.lookupTicker(ticker)
+# __x         if quote:
+            quote = None
             return self.getdata(quote)
-        return None
+# __x         return None
 
     def getdataByISIN(self,isin):
         quote = quotes.lookupISIN(isin)
@@ -255,7 +268,7 @@ class LiveUpdate_fortuneo(object):
         self.m_connected = False
 
         # check we have a connection
-        if not self.m_conn:
+        if not self.m_flux:
             raise('LiveUpdate_fortuneo:no connection / missing connect() call !')
             return None
 
@@ -263,29 +276,36 @@ class LiveUpdate_fortuneo(object):
 
         # init params and headers
         headers = {
-                    "Accept:":"*/*",
-                    "Accept-Language": "fr",
-                    "Accept-Encoding": "gzip,deflate",
-                    "User-Agent": "Mozilla/4.0",
-                    "Host": self.m_host,
-                    "Connection": "keep-alive",
+                    "Content-Type":"application/x-www-form-urlencoded",
+                    "Connection":"keep-alive",
+                    "Accept":"text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
+                    "Host":self.m_default_host,
+                    "User-Agent":"Mozilla/4.0 (Windows)",
+                    "Pragma":"no-cache",
+                    "Cache-Control":"no-cache"
                     }
 
-        # GET quote request
+        params = "subscriptions={FRANCE.PL025.BMG988431240.CSA_CRS_DERNIER,FRANCE.PL025.BMG988431240.CSA_VAR_VEILLE}&userinfo=%s\r\n" % self.m_blowfish
+
+        # POST quote request
         try:
-            self.m_conn.request("GET", "/f%s" % quote.ticker(), None, headers)
-            response = self.m_conn.getresponse()
+            self.m_flux.request("POST", "/streaming", params, headers)
+            response = self.m_flux.getresponse()
         except:
-            info('LiveUpdate_fortuneo:GET failure')
+            info('LiveUpdate_fortuneo:POST failure')
             return None
 
         if response.status != 200:
             info('LiveUpdate_fortuneo: status==%d!=200 reason:%s' % (response.status,response.reason))
             return None
 
+        print 'cool: status==%d==200 reason:%s headers:%s msg:%s' % (response.status,response.reason,response.getheaders(),response.msg)
+
         # returns the data
-        data = response.read()
-        data = data.strip()
+        data = response.read(5)
+
+        print 'returns:',data
+        return None
 
         #info('getdata():\n%s\n--->' % data)
 
@@ -526,7 +546,7 @@ except NameError:
     gLiveFortuneo = LiveUpdate_fortuneo()
 
 # __x test the connection, and register only if working ...
-registerLiveConnector('EURONEXT',gLiveFortuneo)
+# __x registerLiveConnector('EURONEXT',gLiveFortuneo)
 
 # ============================================================================
 # Test ME
@@ -547,18 +567,18 @@ def test(ticker):
         if state:
             debug("state=%s" % (state))
 
-            quote = quotes.lookupTicker(ticker)
             data = gLiveFortuneo.getdataByTicker(ticker)
             if data:
                 info(data)
             else:
                 print "getdata() failure :-("
                 debug("nodata")
-            info(gLiveFortuneo.currentClock(quote))
-            info(gLiveFortuneo.currentNotebook(quote))
-            info(gLiveFortuneo.currentTrades(quote))
-            info(gLiveFortuneo.currentMeans(quote))
-            info(gLiveFortuneo.currentStatus(quote))
+            # __x quote = quotes.lookupTicker(ticker)
+            # __x info(gLiveFortuneo.currentClock(quote))
+            # __x info(gLiveFortuneo.currentNotebook(quote))
+            # __x info(gLiveFortuneo.currentTrades(quote))
+            # __x info(gLiveFortuneo.currentMeans(quote))
+            # __x info(gLiveFortuneo.currentStatus(quote))
         else:
             print "getstate() failure :-("
 
@@ -569,10 +589,8 @@ def test(ticker):
 if __name__=='__main__':
     setLevel(logging.INFO)
 
-    print 'live %s' % date.today()
     test('EADT')
 
 # ============================================================================
 # That's all folks !
 # ============================================================================
-# vim:set shiftwidth=4 tabstop=8 expandtab textwidth=78:
