@@ -56,23 +56,10 @@ import socket
 import asyncore
 
 # iTrade system
-# __x import itrade_config
-# __x from itrade_logging import *
-# __x from itrade_quotes import *
-# __x from itrade_import import registerLiveConnector
-
-# ============================================================================
-# __x to be removed after iTrade final integration
-# ============================================================================
-
-def debug(a):
-    print a
-
-def info(a):
-    print a
-
-def setLevel(a):
-    pass
+import itrade_config
+from itrade_logging import *
+from itrade_quotes import *
+from itrade_import import registerLiveConnector
 
 # ============================================================================
 # Flux to Place
@@ -301,47 +288,6 @@ index2field = {
 }
 
 # ============================================================================
-# FortuneoAsyncStream
-# ============================================================================
-
-class FortuneoAsyncStream(asyncore.dispatcher):
-
-    def __init__(self, host, port):
-        asyncore.dispatcher.__init__(self)
-        self.create_socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.buffer = ''
-        self.connect( (host, port) )
-
-    def handle_connect(self):
-        pass
-
-    def handle_read(self):
-        data = self.recv(8192)
-        print data
-
-    def writable(self):
-        return (len(self.buffer) > 0)
-
-    def handle_write(self):
-        sent = self.send(self.buffer)
-        self.buffer = self.buffer[sent:]
-
-    def request(self, cmd, path, params, headers):
-        self.path = path
-        self.buffer = '%s %s HTTP/1.1\r\n' % (cmd,self.path)
-        for h in headers:
-            self.buffer = self.buffer + '%s: %s\r\n' % (h,headers[h])
-        self.buffer = self.buffer + '\r\n' + params
-        print self.buffer
-
-    def getresponse(self):
-        self.status = 200
-        return self
-
-    def read(self,n):
-        return self.recv(n)
-
-# ============================================================================
 #
 # ============================================================================
 
@@ -367,12 +313,10 @@ class LiveUpdate_fortuneo(object):
         debug('LiveUpdate_fortuneo:__init__')
         self.m_default_host = "streaming.fortuneo.fr"
         self.m_conn = None
-        self.m_flux = None
         self.m_connected = False
 
         self.m_blowfish = '437a80b2720feb61e32252c688831e5e28ca2bb84dfafe06a243b2aadbe610c984d57f79f3d334f30d264263654dbf30'
 
-        # __x
         self.m_livelock = thread.allocate_lock()
         self.m_dcmpd = {}
         self.m_clock = {}
@@ -397,7 +341,6 @@ class LiveUpdate_fortuneo(object):
 
     def connect(self):
         self.m_conn = httplib.HTTPConnection(self.m_default_host,80)
-        #self.m_conn = FortuneoAsyncStream(self.m_default_host,80)
         if self.m_conn == None:
             print 'live: not connected on %s' % self.m_default_host
             return False
@@ -428,8 +371,7 @@ class LiveUpdate_fortuneo(object):
         return None
 
     def getdataByTicker(self,ticker):
-# __x         quote = quotes.lookupTicker(ticker)
-        quote = ticker
+        quote = quotes.lookupTicker(ticker)
         if quote:
             return self.getdata(quote)
         return None
@@ -448,52 +390,59 @@ class LiveUpdate_fortuneo(object):
             raise('LiveUpdate_fortuneo:no connection / missing connect() call !')
             return None
 
-        debug("LiveUpdate_fortuneo:getdata quote:%s " % quote)
+        info("LiveUpdate_fortuneo:getdata quote:%s " % quote)
 
-        if not self.m_flux:
-            self.m_connected = False
+        isin = quote.isin()
 
-            # init params and headers
-            headers = {
-                        "Content-Type":"application/x-www-form-urlencoded",
-                        "Connection":"keep-alive",
-                        "Accept":"text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
-                        "Host":self.m_default_host,
-                        "User-Agent":"Mozilla/4.0 (Windows)",
-                        "Pragma":"no-cache",
-                        "Cache-Control":"no-cache"
-                        }
+        self.m_connected = False
 
-            params = "subscriptions={%s}&userinfo=%s\r\n" % (isin2subscriptions(quote),self.m_blowfish)
+        # init params and headers
+        headers = {
+                    "Content-Type":"application/x-www-form-urlencoded",
+                    "Connection":"keep-alive",
+                    "Accept":"text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
+                    "Host":self.m_default_host,
+                    "User-Agent":"Mozilla/4.0 (Windows)",
+                    "Pragma":"no-cache",
+                    "Cache-Control":"no-cache"
+                    }
 
-            # POST quote request
-            try:
-                self.m_conn.request("POST", "/streaming", params, headers)
-                flux = self.m_conn.getresponse()
-            except:
-                info('LiveUpdate_fortuneo:POST failure')
-                return None
+        params = "subscriptions={%s}&userinfo=%s\r\n" % (isin2subscriptions(isin),self.m_blowfish)
 
-            if flux.status != 200:
-                info('LiveUpdate_fortuneo: status==%d!=200 reason:%s' % (flux.status,flux.reason))
-                return None
+        # POST quote request
+        try:
+            self.m_conn.request("POST", "/streaming", params, headers)
+            flux = self.m_conn.getresponse()
+        except:
+            info('LiveUpdate_fortuneo:POST failure')
+            return None
 
-            self.m_flux = flux
-            self.m_connected = True
+        if flux.status != 200:
+            info('LiveUpdate_fortuneo: status==%d!=200 reason:%s' % (flux.status,flux.reason))
+            return None
 
-        # print
-        #print 'cool: status==%d==200 reason:%s headers:%s msg:%s length=%s' % (self.m_flux.status,self.m_flux.reason,self.m_flux.getheaders(),self.m_flux.msg,self.m_flux.length)
+        self.m_connected = True
+
+        # init some defaut values (just in case not in the server answer ...)
+        dcmpd = {}
+
+        dcmpd['CSA_H_TRANS_2'] = '0:00:00'
+        dcmpd['CSA_H_TRANS_3'] = '0:00:00'
+        dcmpd['CSA_H_TRANS_4'] = '0:00:00'
+        dcmpd['CSA_H_TRANS_5'] = '0:00:00'
+
+        dcmpd['CSA_H_REPRIS_COT'] = ''
+        dcmpd['CSA_IND_ETAT'] = ''
 
         # read the streaming flux
-        self.m_dcmpd = {}
         while 1:
             # get index
-            index = self.m_flux.read(3)
+            index = flux.read(3)
 
             # get value
             value = ''
             while 1 :
-                data = self.m_flux.read(1)
+                data = flux.read(1)
                 if data=='\n':
                     break
                 else:
@@ -504,20 +453,33 @@ class LiveUpdate_fortuneo(object):
 
             # store information
             print '%s: %s = %s' % (index,field,value)
-            self.m_dcmpd[field] = value
+            dcmpd[field] = value
 
             if index == '01K':
                 break
 
+        # extrack date
+        cl = dcmpd['CSA_HD_COURS']
+        dt = cl[:8]
+        dt = '20' + cl[6:8] + '-' + cl[3:5] + '-' + cl[0:2]
+
+        # extract clock
+        self.m_clock[isin] = cl[8:]
+        print 'clock:',self.m_clock[isin]
+        self.m_lastclock = self.m_clock[isin]
+
+        # store in cache with clock
+        self.m_dcmpd[isin] = dcmpd
+
         # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME
         data = (
-          quote,
-          datetime.date.today(),
-          self.m_dcmpd['CSA_CRS_PREMIER'],
-          self.m_dcmpd['CSA_CRS_HAUT'],
-          self.m_dcmpd['CSA_CRS_BAS'],
-          self.m_dcmpd['CSA_CRS_DERNIER'],
-          self.m_dcmpd['CSA_VOL_JOUR']
+          isin,
+          dt,
+          dcmpd['CSA_CRS_PREMIER'],
+          dcmpd['CSA_CRS_HAUT'],
+          dcmpd['CSA_CRS_BAS'],
+          dcmpd['CSA_CRS_DERNIER'],
+          dcmpd['CSA_VOL_JOUR']
         )
         data = map(lambda (val): '%s' % str(val), data)
         data = string.join(data, ';')
@@ -569,28 +531,28 @@ class LiveUpdate_fortuneo(object):
 
         #
         buy = []
-        if d[8]<>"0":
-            buy.append(convert(d[8],d[9],d[10]))
-            if d[14]<>"0":
-                buy.append(convert(d[14],d[15],d[16]))
-                if d[20]<>"0":
-                    buy.append(convert(d[20],d[21],d[22]))
-                    if d[26]<>"0":
-                        buy.append(convert(d[26],d[27],d[28]))
-                        if d[32]<>"0":
-                            buy.append(convert(d[32],d[33],d[34]))
+        if d['CSA_NBL_DEM1']<>"0":
+            buy.append(convert(d['CSA_NBL_DEM1'],d['CSA_VOL_DEM1'],d['CSA_CRS_DEM1']))
+            if d['CSA_NBL_DEM2']<>"0":
+                buy.append(convert(d['CSA_NBL_DEM2'],d['CSA_VOL_DEM2'],d['CSA_CRS_DEM2']))
+                if d['CSA_NBL_DEM3']<>"0":
+                    buy.append(convert(d['CSA_NBL_DEM3'],d['CSA_VOL_DEM3'],d['CSA_CRS_DEM3']))
+                    if d['CSA_NBL_DEM4']<>"0":
+                        buy.append(convert(d['CSA_NBL_DEM4'],d['CSA_VOL_DEM4'],d['CSA_CRS_DEM4']))
+                        if d['CSA_NBL_DEM5']<>"0":
+                            buy.append(convert(d['CSA_NBL_DEM5'],d['CSA_VOL_DEM5'],d['CSA_CRS_DEM5']))
 
         sell = []
-        if d[13]<>"0":
-            sell.append(convert(d[13],d[12],d[11]))
-            if d[19]<>"0":
-                sell.append(convert(d[19],d[18],d[17]))
-                if d[25]<>"0":
-                    sell.append(convert(d[25],d[24],d[23]))
-                    if d[31]<>"0":
-                        sell.append(convert(d[31],d[30],d[29]))
-                        if d[37]<>"0":
-                            sell.append(convert(d[37],d[36],d[35]))
+        if d['CSA_NBL_OFF1']<>"0":
+            sell.append(convert(d['CSA_NBL_OFF1'],d['CSA_VOL_OFF1'],d['CSA_CRS_OFF1']))
+            if d['CSA_NBL_OFF2']<>"0":
+                sell.append(convert(d['CSA_NBL_OFF2'],d['CSA_VOL_OFF2'],d['CSA_CRS_OFF2']))
+                if d['CSA_NBL_OFF3']<>"0":
+                    sell.append(convert(d['CSA_NBL_OFF3'],d['CSA_VOL_OFF3'],d['CSA_CRS_OFF3']))
+                    if d['CSA_NBL_OFF4']<>"0":
+                        sell.append(convert(d['CSA_NBL_OFF4'],d['CSA_VOL_OFF4'],d['CSA_CRS_OFF4']))
+                        if d['CSA_NBL_OFF5']<>"0":
+                            sell.append(convert(d['CSA_NBL_OFF5'],d['CSA_VOL_OFF5'],d['CSA_CRS_OFF5']))
 
         return buy,sell
 
@@ -615,16 +577,16 @@ class LiveUpdate_fortuneo(object):
 
         # clock,volume,value
         last = []
-        if d[47]<>"0:00:00":
-            last.append((d[47],int(d[48]),d[49]))
-            if d[50]<>"0:00:00":
-                last.append((d[50],int(d[51]),d[52]))
-                if d[53]<>"0:00:00":
-                    last.append((d[53],int(d[54]),d[55]))
-                    if d[56]<>"0:00:00":
-                        last.append((d[56],int(d[57]),d[58]))
-                        if d[59]<>"0:00:00":
-                            last.append((d[59],int(d[60]),d[61]))
+        if self.m_clock[isin]<>"0:00:00":
+            last.append((self.m_clock[isin],int(d['CSA_VOL_DERNIER']),d['CSA_CRS_DERNIER']))
+            if d['CSA_H_TRANS_2']<>"0:00:00":
+                last.append((d['CSA_H_TRANS_2'],int(d['CSA_VOL_TRANS_2']),d['CSA_CRS_TRANS_2']))
+                if d['CSA_H_TRANS_3']<>"0:00:00":
+                    last.append((d['CSA_H_TRANS_3'],int(d['CSA_VOL_TRANS_3']),d['CSA_CRS_TRANS_3']))
+                    if d['CSA_H_TRANS_4']<>"0:00:00":
+                        last.append((d['CSA_H_TRANS_4'],int(d['CSA_VOL_TRANS_4']),d['CSA_CRS_TRANS_4']))
+                        if d['CSA_H_TRANS_5']<>"0:00:00":
+                            last.append((d['CSA_H_TRANS_5'],int(d['CSA_VOL_TRANS_5']),d['CSA_CRS_TRANS_5']))
 
         return last
 
@@ -636,20 +598,15 @@ class LiveUpdate_fortuneo(object):
             return "-","-","-"
         d = self.m_dcmpd[isin]
 
-        s = d[38]
+        s = d['CSA_FMP_OFF']
         if s=='0.00':
             s = '-'
 
-        b = d[39]
+        b = d['CSA_FMP_DEM']
         if b=='0.00':
             b = '-'
 
-        tcmp = float(d[7])
-        if tcmp<=0.0:
-            tcmp = 0.0
-        else:
-            tcmp = float(d[41])/tcmp
-
+        tcmp = float(d['CSA_CRS_CMP'])
         if tcmp<=0.0:
             tcmp = '-'
         else:
@@ -666,7 +623,7 @@ class LiveUpdate_fortuneo(object):
             return "UNKNOWN","::","0.00","0.00","::"
         d = self.m_dcmpd[isin]
 
-        st = d[43]
+        st = d['CSA_IND_ETAT']
         if st==' ' or st=='':
             st = 'OK'
         elif st=='H':
@@ -678,11 +635,11 @@ class LiveUpdate_fortuneo(object):
         elif st=='S':
             st = 'SUSPEND'
 
-        cl = d[44]
+        cl = d['CSA_H_REPRIS_COT']
         if cl=='':
             cl = "::"
 
-        return st,cl,d[45],d[46],self.m_clock[isin]
+        return st,cl,d['CSA_RESERV_BAS'],d['CSA_RESERV_HAUT'],self.m_clock[isin]
 
     # ---[ status of quote ] ---
 
@@ -699,7 +656,7 @@ except NameError:
     gLiveFortuneo = LiveUpdate_fortuneo()
 
 # __x test the connection, and register only if working ...
-# __x registerLiveConnector('EURONEXT',gLiveFortuneo)
+registerLiveConnector('EURONEXT',gLiveFortuneo)
 
 # ============================================================================
 # Test ME
@@ -726,12 +683,12 @@ def test(ticker):
             else:
                 print "getdata() failure :-("
                 debug("nodata")
-            # __x quote = quotes.lookupTicker(ticker)
-            # __x info(gLiveFortuneo.currentClock(quote))
-            # __x info(gLiveFortuneo.currentNotebook(quote))
-            # __x info(gLiveFortuneo.currentTrades(quote))
-            # __x info(gLiveFortuneo.currentMeans(quote))
-            # __x info(gLiveFortuneo.currentStatus(quote))
+            quote = quotes.lookupTicker(ticker)
+            info(gLiveFortuneo.currentClock(quote))
+            info(gLiveFortuneo.currentNotebook(quote))
+            info(gLiveFortuneo.currentTrades(quote))
+            info(gLiveFortuneo.currentMeans(quote))
+            info(gLiveFortuneo.currentStatus(quote))
         else:
             print "getstate() failure :-("
 
@@ -742,7 +699,7 @@ def test(ticker):
 if __name__=='__main__':
     setLevel(logging.INFO)
 
-    test('FR0000073272')
+    test('SAF')
 
 # ============================================================================
 # That's all folks !
