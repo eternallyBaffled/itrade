@@ -71,76 +71,6 @@ def setLevel(a):
     pass
 
 # ============================================================================
-# decomp
-# ============================================================================
-
-def decomp(str):
-    base         = 92
-    baseT        = " !#$%&()*+,./0123456789:;<=?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_`abcdefghijklmnopqrstuvwxyz{|}~‘’¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþ€"
-    struct_trame = ";S;S;.;.;.;.;;;;.;.;;;;;.;.;;;;;.;.;;;;;.;.;;;;;.;.;;;.;.;;.;S;S;S;.;.;::;;.;::;;.;::;;.;::;;.;::;;.;"
-    chaineDecompresse = ""
-
-    C = {}
-
-    for i in range(0,len(baseT)):
-        C[ baseT[i]] = i
-
-    i = 0
-    l = 0
-
-    #print 'len(str)=',len(str),'len(struct_trame)=',len(struct_trame)
-    while len(str)>0 and l<len(struct_trame):
-        i = 0
-        #print 'str=',str,'l=',l,'i=',i,'decomp=',chaineDecompresse
-        if struct_trame[l]== "S":
-            while str[i]!= ";":
-                chaineDecompresse = chaineDecompresse + str[i]
-                i = i + 1
-
-            i = i + 1
-
-            l = l + 1
-
-            chaineDecompresse = chaineDecompresse + ";"
-        else:
-            multiplicateur = 1
-            res = 0
-            end = False
-
-            i = 0
-            while (i<len(str)) and (not end):
-                CH = str[i]
-                if CH == '-':
-                    chaineDecompresse = chaineDecompresse + '-'
-                else:
-                    if C[ CH ] < base:
-                        res = res + (multiplicateur * C[ CH ])
-                    else:
-                        res = res + (multiplicateur * ( C[ CH ] - base ))
-                        end = True
-                    multiplicateur =  multiplicateur * base
-
-                i = i + 1
-
-            res = res - 10
-            if (res < 10) and ( (struct_trame[l - 1]== ".") or (struct_trame[l - 1] == ":") ):
-                res = "0" + ("%d"%res)
-                chaineDecompresse = chaineDecompresse + res
-            else:
-                chaineDecompresse = chaineDecompresse + ("%d"%res)
-
-            if struct_trame[l]== ".":
-                chaineDecompresse = chaineDecompresse + "."
-            else:
-                if struct_trame[l]== ":":
-                    chaineDecompresse = chaineDecompresse + ":"
-                else:
-                    chaineDecompresse = chaineDecompresse + ";"
-        l = l + 1
-        str = str[i:]
-    return chaineDecompresse
-
-# ============================================================================
 #
 # ============================================================================
 
@@ -195,18 +125,12 @@ class LiveUpdate_fortuneo(object):
     # ---[ connexion ] ---
 
     def connect(self):
-        # __y params = urllib.urlencode({'subscriptions': '{FRANCE.PL025.BMG988431240.CSA_CRS_DERNIER,FRANCE.PL025.BMG988431240.CSA_VAR_VEILLE}','userinfo': self.m_blowfish,},True)
-		# __y
-        # __y self.m_url = 'http://' + self.m_default_host + '/streaming'
-        # __y self.m_flux = urllib.urlopen(self.m_url, params)
-        # __y if self.m_flux == None:
-        # __y     print 'live: not connected on %s' % self.m_url
-        # __y     return False
-		# __y
-
         self.m_flux = httplib.HTTPConnection(self.m_default_host,80)
-        print 'live: connected on %s' % self.m_flux
+        if self.m_flux == None:
+            print 'live: not connected on %s' % self.m_url
+            return False
 
+        print 'live: connected on %s' % self.m_flux
         return True
 
     def disconnect(self):
@@ -243,24 +167,6 @@ class LiveUpdate_fortuneo(object):
         if quote:
             return self.getdata(quote)
         return None
-
-    # ---[ code to check the clock ] ---
-    def checkClock(self,clock,cac):
-        if string.find(cac,"/")>=0 or string.find(cac,"::")>=0:
-            print '>> cac >>> ',cac, '::: LIVE IS DEAD TODAY !'
-            return False
-        # __ local time :-(
-        #hh = int(clock[:2])
-        #mm = int(clock[3:5])
-        #ss = int(clock[6:])
-        #now = datetime.today()
-        #fortuneo = datetime(now.year,now.month,now.day,hh,mm,ss)
-        #delta = fortuneo - now
-        #delta = ((delta.days*24*60) + (delta.seconds/60)) / 60
-        #if (delta < -1) or (delta > 1):
-        #    print fortuneo,' vs ',now, (' = %d hours ::: FORTUNEO IS DEAD TODAY !' % delta)
-        #    return False
-        return True
 
     # ---[ code to get data ] ---
 
@@ -305,56 +211,12 @@ class LiveUpdate_fortuneo(object):
         data = response.read(5)
 
         print 'returns:',data
+
+        # __x OK : start decoding the octet-stream
+
         return None
 
-        #info('getdata():\n%s\n--->' % data)
-
-        try:
-            data = data[string.find(data,"(")+1:string.rfind(data,")")]
-            data = data.strip()
-            url,compd,cac,clock = data.split('",')
-        except:
-            info('LiveUpdate_fortuneo: data is bad:%s' % data)
-            return None
-
-        # remove "
-        url = url.strip()[1:]
-        compd = compd.strip()[1:]
-        cac = cac.strip()[1:]
-        clock = clock.strip()[1:-1]
-
-        #debug('getdata():\nurl=%s\ncompd=%s\ncac=%s\nclock=%s\n' % (url,compd,cac,clock))
-
-        # decompress the data
-        decompd = decomp(compd).split(';')
-        debug('getdata():decomp=\n%s\n' % decompd)
-
-        # extract values
-        open = decompd[4]
-        high = decompd[5]
-        low = decompd[6]
-        value = decompd[49]
-        volume = decompd[7]
-
-        #print '>>>',value,decompd[48],decompd[47]
-
-        # store for later use
-        isin = quote.isin()
-        self.m_dcmpd[isin] = decompd
-        self.m_clock[isin] = clock
-        self.m_lastclock = clock
-
-        # be sure fortuneo is working
-        if not self.checkClock(clock,cac):
-            return None
-
-        self.m_connected = True
-
-        # be sure market is open ...
-        if value=='0.00' and decompd[48]=='0' and decompd[47]=='0:00:00':
-            #print '>>>',value,decompd[48],decompd[47]
-            #info('Quote closed')
-            return None
+        # __x ...
 
         # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME
         data = (
