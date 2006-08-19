@@ -71,6 +71,167 @@ def setLevel(a):
     pass
 
 # ============================================================================
+# Flux to Place
+# ============================================================================
+
+flux_place = {
+    "025" : "FRANCE.PL",
+    "027" : "FRANCE.PL",
+    "028" : "FRANCE.PL",
+    "029" : "FRANCE.PL",
+    "030" : "FRANCE.PL",
+    "031" : "FRANCE.PL",
+    "032" : "FRANCE.PL",
+    "033" : "FRANCE.PL",
+    "260" : "FRANCE.PL",
+    "485" : "FRANCE.PL",
+
+    "004" : "EUROPE1.PL",
+    "011" : "EUROPE1.PL",
+    "013" : "EUROPE1.PL",
+    "014" : "EUROPE1.PL",
+    "015" : "EUROPE1.PL",
+    "016" : "EUROPE1.PL",
+    "017" : "EUROPE1.PL",
+    "018" : "EUROPE1.PL",
+    "019" : "EUROPE1.PL",
+    "022" : "EUROPE1.PL",
+    "038" : "EUROPE1.PL",
+    "046" : "EUROPE1.PL",
+    "220" : "EUROPE1.PL",
+
+    "036" : "EUROPE2.PL",
+    "232" : "EUROPE2.PL",
+    "361" : "EUROPE2.PL",
+    "613" : "EUROPE2.PL",
+    "615" : "EUROPE2.PL",
+
+    "055" : "ESPAGNE.PL",
+    "056" : "ESPAGNE.PL",
+    "057" : "ESPAGNE.PL",
+    "058" : "ESPAGNE.PL",
+    "355" : "ESPAGNE.PL",
+
+    "067" : "AMERIQUE1.PL",
+    "130" : "AMERIQUE1.PL",
+
+    "065" : "AMERIQUE2.PL",
+    "066" : "AMERIQUE2.PL",
+    "145" : "AMERIQUE2.PL",
+
+    "012" : "RESTEDUMONDE.PL",
+    "040" : "RESTEDUMONDE.PL",
+    "048" : "RESTEDUMONDE.PL",
+    "050" : "RESTEDUMONDE.PL",
+    "051" : "RESTEDUMONDE.PL",
+    "053" : "RESTEDUMONDE.PL",
+    "061" : "RESTEDUMONDE.PL",
+    "072" : "RESTEDUMONDE.PL",
+    "083" : "RESTEDUMONDE.PL",
+    "103" : "RESTEDUMONDE.PL",
+    "104" : "RESTEDUMONDE.PL",
+    "106" : "RESTEDUMONDE.PL",
+    "111" : "RESTEDUMONDE.PL",
+    "120" : "RESTEDUMONDE.PL",
+    "152" : "RESTEDUMONDE.PL",
+    "241" : "RESTEDUMONDE.PL",
+    "244" : "RESTEDUMONDE.PL",
+    "249" : "RESTEDUMONDE.PL",
+    "267" : "RESTEDUMONDE.PL",
+    "373" : "RESTEDUMONDE.PL",
+    "428" : "RESTEDUMONDE.PL",
+    "498" : "RESTEDUMONDE.PL"
+}
+
+def flux2place(flux):
+    if flux_place.has_key(flux):
+        return flux_place[flux]
+    else:
+        # default
+        return 'FRANCE.PL'
+
+# ============================================================================
+# subscriptions
+#
+# FR0003500008 : CAC40 indice
+# ============================================================================
+
+full_subscriptions = (
+    "CSA_CRS_DERNIER",
+    "CSA_VAR_VEILLE",
+    "CSA_CRS_PREMIER",
+    "CSA_CRS_HAUT",
+    "CSA_CRS_BAS",
+    "CSA_VOL_JOUR",
+    "CSA_NBL_DEM1",
+    "CSA_VOL_DEM1",
+    "CSA_CRS_DEM1",
+    "CSA_CRS_OFF1",
+    "CSA_VOL_OFF1",
+    "CSA_NBL_OFF1",
+    "CSA_NBL_DEM2",
+    "CSA_VOL_DEM2",
+    "CSA_CRS_DEM2",
+    "CSA_CRS_OFF2",
+    "CSA_VOL_OFF2",
+    "CSA_NBL_OFF2",
+    "CSA_NBL_DEM3",
+    "CSA_VOL_DEM3",
+    "CSA_CRS_DEM3",
+    "CSA_CRS_OFF3",
+    "CSA_VOL_OFF3",
+    "CSA_NBL_OFF3",
+    "CSA_NBL_DEM4",
+    "CSA_VOL_DEM4",
+    "CSA_CRS_DEM4",
+    "CSA_CRS_OFF4",
+    "CSA_VOL_OFF4",
+    "CSA_NBL_OFF4",
+    "CSA_NBL_DEM5",
+    "CSA_VOL_DEM5",
+    "CSA_CRS_DEM5",
+    "CSA_CRS_OFF5",
+    "CSA_VOL_OFF5",
+    "CSA_NBL_OFF5",
+
+    "CSA_FMP_DEM",
+    "CSA_FMP_OFF",
+
+    "CSA_HD_COURS",
+    "CSA_VOL_DERNIER",
+    "CSA_H_TRANS_2",
+    "CSA_VOL_TRANS_2",
+    "CSA_CRS_TRANS_2",
+    "CSA_H_TRANS_3",
+    "CSA_VOL_TRANS_3",
+    "CSA_CRS_TRANS_3",
+    "CSA_H_TRANS_4",
+    "CSA_VOL_TRANS_4",
+    "CSA_CRS_TRANS_4",
+    "CSA_H_TRANS_5",
+    "CSA_VOL_TRANS_5",
+    "CSA_CRS_TRANS_5",
+
+    "CSA_CRS_CMP",
+    "CSA_IND_ETAT",
+    "CSA_H_REPRIS_COT",
+    "CSA_RESERV_HAUT",
+    "CSA_RESERV_BAS"
+    )
+
+def isin2sub(isin,sub):
+    return "FRANCE.PL025.%s.%s" % (isin.strip().upper(),sub.strip().upper())
+    #return "FRANCE.PL025.%s.%s" %(isin,sub)
+
+def isin2subscriptions(isin):
+    str = ""
+    for each in full_subscriptions:
+        if str!="":
+            str = str+","
+        str = str + isin2sub(isin,each)
+    return str
+
+# ============================================================================
 #
 # ============================================================================
 
@@ -157,10 +318,10 @@ class LiveUpdate_fortuneo(object):
 
     def getdataByTicker(self,ticker):
 # __x         quote = quotes.lookupTicker(ticker)
-# __x         if quote:
-            quote = None
+        quote = ticker
+        if quote:
             return self.getdata(quote)
-# __x         return None
+        return None
 
     def getdataByISIN(self,isin):
         quote = quotes.lookupISIN(isin)
@@ -191,7 +352,7 @@ class LiveUpdate_fortuneo(object):
                     "Cache-Control":"no-cache"
                     }
 
-        params = "subscriptions={FRANCE.PL025.BMG988431240.CSA_CRS_DERNIER,FRANCE.PL025.BMG988431240.CSA_VAR_VEILLE}&userinfo=%s\r\n" % self.m_blowfish
+        params = "subscriptions={%s}&userinfo=%s\r\n" % (isin2subscriptions(quote),self.m_blowfish)
 
         # POST quote request
         try:
@@ -451,7 +612,7 @@ def test(ticker):
 if __name__=='__main__':
     setLevel(logging.INFO)
 
-    test('EADT')
+    test('FR0000073272')
 
 # ============================================================================
 # That's all folks !
