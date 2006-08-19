@@ -50,6 +50,10 @@ import thread
 import datetime
 import os
 import httplib
+import datetime
+
+import socket
+import asyncore
 
 # iTrade system
 # __x import itrade_config
@@ -163,30 +167,35 @@ full_subscriptions = (
     "CSA_CRS_HAUT",
     "CSA_CRS_BAS",
     "CSA_VOL_JOUR",
+
     "CSA_NBL_DEM1",
     "CSA_VOL_DEM1",
     "CSA_CRS_DEM1",
     "CSA_CRS_OFF1",
     "CSA_VOL_OFF1",
     "CSA_NBL_OFF1",
+
     "CSA_NBL_DEM2",
     "CSA_VOL_DEM2",
     "CSA_CRS_DEM2",
     "CSA_CRS_OFF2",
     "CSA_VOL_OFF2",
     "CSA_NBL_OFF2",
+
     "CSA_NBL_DEM3",
     "CSA_VOL_DEM3",
     "CSA_CRS_DEM3",
     "CSA_CRS_OFF3",
     "CSA_VOL_OFF3",
     "CSA_NBL_OFF3",
+
     "CSA_NBL_DEM4",
     "CSA_VOL_DEM4",
     "CSA_CRS_DEM4",
     "CSA_CRS_OFF4",
     "CSA_VOL_OFF4",
     "CSA_NBL_OFF4",
+
     "CSA_NBL_DEM5",
     "CSA_VOL_DEM5",
     "CSA_CRS_DEM5",
@@ -231,6 +240,107 @@ def isin2subscriptions(isin):
         str = str + isin2sub(isin,each)
     return str
 
+index2field = {
+    '000' : 0,
+    '001' : 1,
+    '002' : 2,
+    '003' : 3,
+    '004' : 4,
+    '005' : 5,
+    '006' : 6,
+    '007' : 7,
+    '008' : 8,
+    '009' : 9,
+    '00A' : 10,
+    '00B' : 11,
+    '00C' : 12,
+    '00D' : 13,
+    '00E' : 14,
+    '00F' : 15,
+    '00G' : 16,
+    '00H' : 17,
+    '00I' : 18,
+    '00J' : 19,
+    '00K' : 20,
+    '00L' : 21,
+    '00M' : 22,
+    '00N' : 23,
+    '00O' : 24,
+    '00P' : 25,
+    '00Q' : 26,
+    '00R' : 27,
+    '00S' : 28,
+    '00T' : 29,
+    '00U' : 30,
+    '00V' : 31,
+    '00W' : 32,
+    '00X' : 33,
+    '00Y' : 34,
+    '00Z' : 35,
+    '010' : 36,
+    '011' : 37,
+    '012' : 38,
+    '013' : 39,
+    '014' : 40,
+    '015' : 41,
+    '016' : 42,
+    '017' : 43,
+    '018' : 44,
+    '019' : 45,
+    '01A' : 46,
+    '01B' : 47,
+    '01C' : 48,
+    '01D' : 49,
+    '01E' : 50,
+    '01F' : 51,
+    '01G' : 52,
+    '01H' : 53,
+    '01I' : 54,
+    '01J' : 55,
+    '01K' : 56
+}
+
+# ============================================================================
+# FortuneoAsyncStream
+# ============================================================================
+
+class FortuneoAsyncStream(asyncore.dispatcher):
+
+    def __init__(self, host, port):
+        asyncore.dispatcher.__init__(self)
+        self.create_socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.buffer = ''
+        self.connect( (host, port) )
+
+    def handle_connect(self):
+        pass
+
+    def handle_read(self):
+        data = self.recv(8192)
+        print data
+
+    def writable(self):
+        return (len(self.buffer) > 0)
+
+    def handle_write(self):
+        sent = self.send(self.buffer)
+        self.buffer = self.buffer[sent:]
+
+    def request(self, cmd, path, params, headers):
+        self.path = path
+        self.buffer = '%s %s HTTP/1.1\r\n' % (cmd,self.path)
+        for h in headers:
+            self.buffer = self.buffer + '%s: %s\r\n' % (h,headers[h])
+        self.buffer = self.buffer + '\r\n' + params
+        print self.buffer
+
+    def getresponse(self):
+        self.status = 200
+        return self
+
+    def read(self,n):
+        return self.recv(n)
+
 # ============================================================================
 #
 # ============================================================================
@@ -255,9 +365,9 @@ def convert(n,v,s):
 class LiveUpdate_fortuneo(object):
     def __init__(self):
         debug('LiveUpdate_fortuneo:__init__')
-        self.m_flux = None
         self.m_default_host = "streaming.fortuneo.fr"
-        self.m_url = None
+        self.m_conn = None
+        self.m_flux = None
         self.m_connected = False
 
         self.m_blowfish = '437a80b2720feb61e32252c688831e5e28ca2bb84dfafe06a243b2aadbe610c984d57f79f3d334f30d264263654dbf30'
@@ -286,18 +396,19 @@ class LiveUpdate_fortuneo(object):
     # ---[ connexion ] ---
 
     def connect(self):
-        self.m_flux = httplib.HTTPConnection(self.m_default_host,80)
-        if self.m_flux == None:
-            print 'live: not connected on %s' % self.m_url
+        self.m_conn = httplib.HTTPConnection(self.m_default_host,80)
+        #self.m_conn = FortuneoAsyncStream(self.m_default_host,80)
+        if self.m_conn == None:
+            print 'live: not connected on %s' % self.m_default_host
             return False
 
-        print 'live: connected on %s' % self.m_flux
+        print 'live: connected on %s' % self.m_conn
         return True
 
     def disconnect(self):
-        if self.m_flux:
-            self.m_flux.close()
-        self.m_flux = None
+        if self.m_conn:
+            self.m_conn.close()
+        self.m_conn = None
         self.m_connected = False
 
     def alive(self):
@@ -332,62 +443,81 @@ class LiveUpdate_fortuneo(object):
     # ---[ code to get data ] ---
 
     def getdata(self,quote):
-        self.m_connected = False
-
         # check we have a connection
-        if not self.m_flux:
+        if not self.m_conn:
             raise('LiveUpdate_fortuneo:no connection / missing connect() call !')
             return None
 
         debug("LiveUpdate_fortuneo:getdata quote:%s " % quote)
 
-        # init params and headers
-        headers = {
-                    "Content-Type":"application/x-www-form-urlencoded",
-                    "Connection":"keep-alive",
-                    "Accept":"text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
-                    "Host":self.m_default_host,
-                    "User-Agent":"Mozilla/4.0 (Windows)",
-                    "Pragma":"no-cache",
-                    "Cache-Control":"no-cache"
-                    }
+        if not self.m_flux:
+            self.m_connected = False
 
-        params = "subscriptions={%s}&userinfo=%s\r\n" % (isin2subscriptions(quote),self.m_blowfish)
+            # init params and headers
+            headers = {
+                        "Content-Type":"application/x-www-form-urlencoded",
+                        "Connection":"keep-alive",
+                        "Accept":"text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
+                        "Host":self.m_default_host,
+                        "User-Agent":"Mozilla/4.0 (Windows)",
+                        "Pragma":"no-cache",
+                        "Cache-Control":"no-cache"
+                        }
 
-        # POST quote request
-        try:
-            self.m_flux.request("POST", "/streaming", params, headers)
-            response = self.m_flux.getresponse()
-        except:
-            info('LiveUpdate_fortuneo:POST failure')
-            return None
+            params = "subscriptions={%s}&userinfo=%s\r\n" % (isin2subscriptions(quote),self.m_blowfish)
 
-        if response.status != 200:
-            info('LiveUpdate_fortuneo: status==%d!=200 reason:%s' % (response.status,response.reason))
-            return None
+            # POST quote request
+            try:
+                self.m_conn.request("POST", "/streaming", params, headers)
+                flux = self.m_conn.getresponse()
+            except:
+                info('LiveUpdate_fortuneo:POST failure')
+                return None
 
-        print 'cool: status==%d==200 reason:%s headers:%s msg:%s' % (response.status,response.reason,response.getheaders(),response.msg)
+            if flux.status != 200:
+                info('LiveUpdate_fortuneo: status==%d!=200 reason:%s' % (flux.status,flux.reason))
+                return None
 
-        # returns the data
-        data = response.read(5)
+            self.m_flux = flux
+            self.m_connected = True
 
-        print 'returns:',data
+        # print
+        #print 'cool: status==%d==200 reason:%s headers:%s msg:%s length=%s' % (self.m_flux.status,self.m_flux.reason,self.m_flux.getheaders(),self.m_flux.msg,self.m_flux.length)
 
-        # __x OK : start decoding the octet-stream
+        # read the streaming flux
+        self.m_dcmpd = {}
+        while 1:
+            # get index
+            index = self.m_flux.read(3)
 
-        return None
+            # get value
+            value = ''
+            while 1 :
+                data = self.m_flux.read(1)
+                if data=='\n':
+                    break
+                else:
+                    value = value + data
 
-        # __x ...
+            # get field
+            field = full_subscriptions[index2field[index]]
+
+            # store information
+            print '%s: %s = %s' % (index,field,value)
+            self.m_dcmpd[field] = value
+
+            if index == '01K':
+                break
 
         # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME
         data = (
-          isin,
-          date.today(),
-          open,
-          high,
-          low,
-          value,
-          volume
+          quote,
+          datetime.date.today(),
+          self.m_dcmpd['CSA_CRS_PREMIER'],
+          self.m_dcmpd['CSA_CRS_HAUT'],
+          self.m_dcmpd['CSA_CRS_BAS'],
+          self.m_dcmpd['CSA_CRS_DERNIER'],
+          self.m_dcmpd['CSA_VOL_JOUR']
         )
         data = map(lambda (val): '%s' % str(val), data)
         data = string.join(data, ';')
