@@ -49,11 +49,9 @@ import string
 import thread
 import datetime
 import os
+import socket
 import httplib
 import datetime
-
-import socket
-import asyncore
 
 # iTrade system
 import itrade_config
@@ -215,16 +213,15 @@ full_subscriptions = (
     "CSA_RESERV_BAS"
     )
 
-def isin2sub(isin,sub):
-    return "FRANCE.PL025.%s.%s" % (isin.strip().upper(),sub.strip().upper())
-    #return "FRANCE.PL025.%s.%s" %(isin,sub)
+def isin2sub(isin,sub,flux):
+    return "%s%s.%s.%s" % (flux2place(flux),flux,isin.strip().upper(),sub.strip().upper())
 
-def isin2subscriptions(isin):
+def isin2subscriptions(isin,flux):
     str = ""
     for each in full_subscriptions:
         if str!="":
             str = str+","
-        str = str + isin2sub(isin,each)
+        str = str + isin2sub(isin,each,flux)
     return str
 
 index2field = {
@@ -315,12 +312,21 @@ class LiveUpdate_fortuneo(object):
         self.m_conn = None
         self.m_connected = False
 
-        self.m_blowfish = '437a80b2720feb61e32252c688831e5e28ca2bb84dfafe06a243b2aadbe610c984d57f79f3d334f30d264263654dbf30'
+        try:
+            f = open(os.path.join(itrade_config.dirUserData,'live.txt'),'r')
+            self.m_blowfish = f.read().strip()
+            f.close()
+        except IOError:
+            self.m_blowfish = '437a80b2720feb61e32252c688831e5e28ca2bb84dfafe06a243b2aadbe610c984d57f79f3d334f30d264263654dbf31'
 
         self.m_livelock = thread.allocate_lock()
         self.m_dcmpd = {}
         self.m_clock = {}
         self.m_lastclock = "::"
+
+        self.loadPlaces()
+
+        print 'Fortuneo live (%s) - ready to run' % self.m_blowfish
 
     # ---[ reentrant ] ---
     def acquire(self):
@@ -363,6 +369,22 @@ class LiveUpdate_fortuneo(object):
         # no state
         return True
 
+    # ---[ specific code to manage place ] ---
+
+    def loadPlaces(self):
+        self.m_places = {}
+        infile = itrade_csv.read(None,os.path.join(itrade_config.dirSysData,'places.txt'))
+        if infile:
+            # scan each line to read each quote
+            for eachLine in infile:
+                item = itrade_csv.parse(eachLine,2)
+                if item:
+                    self.m_places[item[0]] = item[1].strip()
+
+    def place(self,isin):
+        if self.m_places.has_key(isin) : return self.m_places[isin]
+        return "025"
+
     # ---[ API to get data ] ---
 
     def getdataByQuote(self,quote):
@@ -389,7 +411,7 @@ class LiveUpdate_fortuneo(object):
         min = clo[-2:]
         hour = clo[:-3]
         val = (int(hour)*60) + int(min)
-        print clo,hour,min,val
+        #print clo,hour,min,val
         if val>self.m_lastclock:
             self.m_lastclock = val
         return "%d:%02d" % (val/60,val%60)
@@ -417,7 +439,7 @@ class LiveUpdate_fortuneo(object):
                     "Cache-Control":"no-cache"
                     }
 
-        params = "subscriptions={%s}&userinfo=%s\r\n" % (isin2subscriptions(isin),self.m_blowfish)
+        params = "subscriptions={%s}&userinfo=%s\r\n" % (isin2subscriptions(isin,self.place(isin)),self.m_blowfish)
 
         # POST quote request
         try:
@@ -443,6 +465,8 @@ class LiveUpdate_fortuneo(object):
 
         dcmpd['CSA_H_REPRIS_COT'] = ''
         dcmpd['CSA_IND_ETAT'] = ''
+        dcmpd['CSA_FMP_DEM'] = ''
+        dcmpd['CSA_FMP_OFF'] = ''
 
         # read the streaming flux
         while 1:
@@ -478,7 +502,7 @@ class LiveUpdate_fortuneo(object):
 
         # extract clock
         self.m_clock[isin] = self.convertClock(cl[8:])
-        print 'clock:',self.m_clock[isin]
+        #print 'clock:',self.m_clock[isin]
 
         # store in cache with clock
         self.m_dcmpd[isin] = dcmpd
@@ -711,7 +735,7 @@ def test(ticker):
 if __name__=='__main__':
     setLevel(logging.INFO)
 
-    test('SAF')
+    test('EADT')
 
 # ============================================================================
 # That's all folks !
