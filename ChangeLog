@@ -5,6 +5,9 @@ On the road for v0.4.5 (Nausicaa)
 
 ===============================================================================
 
+2006-08-20  Gilles Dumortier <dgil@ieee.org>
+        * Live connector for Euronext market is working again !
+
 2006-07-17  Gilles Dumortier <dgil@ieee.org>
 	* switch from numarray to numpy (0.9.8)
 

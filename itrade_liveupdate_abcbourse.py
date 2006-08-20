@@ -293,7 +293,7 @@ try:
 except NameError:
     gLiveABC = LiveUpdate_ABCBourse()
 
-registerLiveConnector('EURONEXT',gLiveABC)
+#registerLiveConnector('EURONEXT',gLiveABC)
 registerLiveConnector('EURONEXT_differed',gLiveABC)
 
 # ============================================================================

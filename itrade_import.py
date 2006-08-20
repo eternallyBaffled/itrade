@@ -117,7 +117,7 @@ findListSymbolConnector = gListSymbolRegistry.find
 # Euronext market connectors : ABCBourse or Fortuneo
 import itrade_import_abcbourse
 import itrade_liveupdate_abcbourse
-#import itrade_liveupdate_fortuneo
+import itrade_liveupdate_fortuneo
 
 # US/CA market connectors : Yahoo
 import itrade_import_yahoo
