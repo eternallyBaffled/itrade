@@ -384,6 +384,16 @@ class LiveUpdate_fortuneo(object):
 
     # ---[ code to get data ] ---
 
+    def convertClock(self,clock):
+        clo = clock[:-3]
+        min = clo[-2:]
+        hour = clo[:-3]
+        val = (int(hour)*60) + int(min)
+        print clo,hour,min,val
+        if val>self.m_lastclock:
+            self.m_lastclock = val
+        return "%d:%02d" % (val/60,val%60)
+
     def getdata(self,quote):
         # check we have a connection
         if not self.m_conn:
@@ -458,15 +468,17 @@ class LiveUpdate_fortuneo(object):
             if index == '01K':
                 break
 
+        # close the stream
+        flux.close()
+
         # extrack date
         cl = dcmpd['CSA_HD_COURS']
         dt = cl[:8]
         dt = '20' + cl[6:8] + '-' + cl[3:5] + '-' + cl[0:2]
 
         # extract clock
-        self.m_clock[isin] = cl[8:]
+        self.m_clock[isin] = self.convertClock(cl[8:])
         print 'clock:',self.m_clock[isin]
-        self.m_lastclock = self.m_clock[isin]
 
         # store in cache with clock
         self.m_dcmpd[isin] = dcmpd
