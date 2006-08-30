@@ -91,7 +91,7 @@ def Import_ListOfQuotes_NYSE(quotes,market='NYSE'):
             if issue=='10':
                 #print data[1],country,issuer,issue,data[2]
                 isin = buildISIN(country,data[1])
-                quotes.addQuote(isin=isin,name=data[2],ticker=data[0],market='NYSE',currency='USD')
+                quotes.addQuote(isin=isin,name=data[2],ticker=data[0],market='NYSE',currency='USD',place='NYC')
 
     print 'Imported %d lines from NYSE data.' % len(lines)
 

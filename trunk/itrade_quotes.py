@@ -90,8 +90,9 @@ def fmtVolume(x):
 # ============================================================================
 
 class Quote(object):
-    def __init__(self,isin,name,ticker,market,currency):
+    def __init__(self,isin,name,ticker,market,currency,place):
         self.m_isin = isin
+        self.m_place = place
         self.m_defaultname = name
         self.m_defaultticker = ticker
         self.m_daytrades = None
@@ -157,7 +158,7 @@ class Quote(object):
         return self.m_isin
 
     def __repr__(self):
-        return '%s;%s;%s;%s;%s' % (self.m_isin, self.m_name, self.m_ticker, self.m_market, self.m_currency)
+        return '%s;%s;%s;%s;%s;%s' % (self.m_isin, self.m_name, self.m_ticker, self.m_market, self.m_currency, self.m_place)
 
     def __hash__(self):
         return self.m_isin
@@ -173,6 +174,9 @@ class Quote(object):
 
     def isin(self):
         return self.m_isin
+
+    def place(self):
+        return self.m_place
 
     def name(self):
         return self.m_name
@@ -1046,7 +1050,7 @@ class Quotes(object):
 
     # ---[ Quotes ] ---
 
-    def addQuote(self,isin,name,ticker,market,currency):
+    def addQuote(self,isin,name,ticker,market,currency,place):
         # patch for abcbourse.com quotes file :-( (SF bug 1291713)
         if isin[0:2].lower()=='us':
             lg = len(isin)
@@ -1059,16 +1063,16 @@ class Quotes(object):
             del self.m_quotes[isin]
 
         # new quote
-        self.m_quotes[isin] = Quote(isin,name.upper(),ticker.upper(),market.upper(),currency.upper())
+        self.m_quotes[isin] = Quote(isin,name.upper(),ticker.upper(),market.upper(),currency.upper(),place.upper())
         #debug('Quotes::addQuote(): %s' % self.m_quotes[isin]);
         return True
 
     def _addLines(self,infile):
         # scan each line to read each quote
         for eachLine in infile:
-            item = itrade_csv.parse(eachLine,5)
-            if item and len(item)>=5:
-                self.addQuote(item[0],item[1],item[2],item[3],item[4])
+            item = itrade_csv.parse(eachLine,6)
+            if item and len(item)>=6:
+                self.addQuote(item[0],item[1],item[2],item[3],item[4],item[5])
 
     def load(self,fn=None,fs=None):
         # open and read the file to load these quotes information

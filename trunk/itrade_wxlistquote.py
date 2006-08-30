@@ -69,7 +69,8 @@ from itrade_wxmixin import iTradeSelectorListCtrl
 IDC_ISIN = 0
 IDC_TICKER = 1
 IDC_NAME = 2
-IDC_MARKET = 3
+IDC_PLACE = 3
+IDC_MARKET = 4
 
 class iTradeQuoteSelectorListCtrlDialog(wxDialog, wxColumnSorterMixin):
     def __init__(self, parent, quote, filter = False, market = None, updateAction=False):
@@ -111,7 +112,7 @@ class iTradeQuoteSelectorListCtrlDialog(wxDialog, wxColumnSorterMixin):
 
         # Now that the list exists we can init the other base class,
         # see wxPython/lib/mixins/listctrl.py
-        wxColumnSorterMixin.__init__(self, 4)
+        wxColumnSorterMixin.__init__(self, 5)
 
         EVT_LIST_COL_CLICK(self, tID, self.OnColClick)
         EVT_SIZE(self, self.OnSize)
@@ -231,6 +232,7 @@ class iTradeQuoteSelectorListCtrlDialog(wxDialog, wxColumnSorterMixin):
         self.m_list.InsertColumn(IDC_ISIN, message('isin'), wxLIST_FORMAT_LEFT, wxLIST_AUTOSIZE)
         self.m_list.InsertColumn(IDC_TICKER, message('ticker'), wxLIST_FORMAT_LEFT, wxLIST_AUTOSIZE)
         self.m_list.InsertColumn(IDC_NAME, message('name'), wxLIST_FORMAT_LEFT, wxLIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_PLACE, message('place'), wxLIST_FORMAT_LEFT, wxLIST_AUTOSIZE)
         self.m_list.InsertColumn(IDC_MARKET, message('market'), wxLIST_FORMAT_LEFT, wxLIST_AUTOSIZE)
 
         x = 0
@@ -240,30 +242,32 @@ class iTradeQuoteSelectorListCtrlDialog(wxDialog, wxColumnSorterMixin):
         if self.m_filter:
             for eachQuote in quotes.list():
                 if eachQuote.isMatrix():
-                    self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.name(),eachQuote.market())
+                    self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.name(),eachQuote.place(),eachQuote.market())
                     x = x + 1
         else:
             for eachQuote in quotes.list():
-                self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.name(),eachQuote.market())
+                self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.name(),eachQuote.place(),eachQuote.market())
                 x = x + 1
 
         items = self.itemDataMap.items()
         line = 0
         for x in range(len(items)):
             key, data = items[x]
-            if self.m_market==None or (self.m_market==data[3]):
+            if self.m_market==None or (self.m_market==data[4]):
                 self.m_list.InsertImageStringItem(line, data[0], self.sm_q)
                 if data[0] == self.m_isin:  # current selection
                     self.currentItem = line
                 self.m_list.SetStringItem(line, IDC_TICKER, data[1])
                 self.m_list.SetStringItem(line, IDC_NAME, data[2])
-                self.m_list.SetStringItem(line, IDC_MARKET, data[3])
+                self.m_list.SetStringItem(line, IDC_PLACE, data[3])
+                self.m_list.SetStringItem(line, IDC_MARKET, data[4])
                 self.m_list.SetItemData(line, key)
                 line += 1
 
         self.m_list.SetColumnWidth(IDC_ISIN, wxLIST_AUTOSIZE)
         self.m_list.SetColumnWidth(IDC_TICKER, wxLIST_AUTOSIZE_USEHEADER)
         self.m_list.SetColumnWidth(IDC_NAME, 16*10)
+        self.m_list.SetColumnWidth(IDC_PLACE, wxLIST_AUTOSIZE)
         self.m_list.SetColumnWidth(IDC_MARKET, wxLIST_AUTOSIZE)
         if self.currentItem>=0:
             self.m_list.SetItemState(self.currentItem, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED)
@@ -403,4 +407,3 @@ if __name__=='__main__':
 # ============================================================================
 # That's all folks !
 # ============================================================================
-# vim:set shiftwidth=4 tabstop=8 expandtab textwidth=78:
