@@ -573,8 +573,8 @@ class LiveUpdate_fortuneo(object):
 
         dcmpd['CSA_H_REPRIS_COT'] = ''
         dcmpd['CSA_IND_ETAT'] = ''
-        dcmpd['CSA_FMP_DEM'] = ''
-        dcmpd['CSA_FMP_OFF'] = ''
+        dcmpd['CSA_FMP_DEM'] = '0.00'
+        dcmpd['CSA_FMP_OFF'] = '0.00'
 
         # read the streaming flux
         while 1:
