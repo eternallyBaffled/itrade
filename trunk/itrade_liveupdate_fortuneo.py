@@ -224,6 +224,20 @@ def isin2subscriptions(isin,flux):
         str = str + isin2sub(isin,each,flux)
     return str
 
+indice_subscriptions = (
+    "CSA_CRS_DERNIER",
+    "CSA_VAR_VEILLE",
+    "CSA_HD_COURS"
+    )
+
+def indice2subscriptions(isin,flux):
+    str = ""
+    for each in indice_subscriptions:
+        if str!="":
+            str = str+","
+        str = str + isin2sub(isin,each,flux)
+    return str
+
 index2field = {
     '000' : 0,
     '001' : 1,
@@ -281,8 +295,100 @@ index2field = {
     '01H' : 53,
     '01I' : 54,
     '01J' : 55,
-    '01K' : 56
+    '01K' : 56,     # last of quote
+    '01L' : 57,
+    '01M' : 58,
+    '01N' : 59
+
 }
+
+# ============================================================================
+# place -> code place
+# ============================================================================
+
+place_code = {
+    "025" : "025",
+    "PARIS": "025",
+
+    "027" : "027",
+
+    "028" : "028",
+
+    "029" : "029",
+    "NANCY" : "029",
+
+    "030" : "030",
+    "LYON" : "030",
+
+    "031" : "031",
+    "032" : "032",
+    "033" : "033",
+    "260" : "260",
+    "485" : "485",
+
+    "004" : "004",
+    "011" : "011",
+    "013" : "013",
+    "014" : "014",
+    "015" : "015",
+    "016" : "016",
+    "017" : "017",
+    "018" : "018",
+    "019" : "019",
+    "022" : "022",
+    "038" : "038",
+    "046" : "046",
+    "220" : "220",
+
+    "036" : "036",
+    "232" : "232",
+    "361" : "361",
+    "613" : "613",
+    "615" : "615",
+
+    "055" : "055",
+    "056" : "056",
+    "057" : "057",
+    "058" : "058",
+    "355" : "355",
+
+    "067" : "067",
+    "130" : "130",
+
+    "065" : "065",
+    "066" : "066",
+    "145" : "145",
+
+    "012" : "012",
+    "040" : "040",
+    "048" : "048",
+    "050" : "050",
+    "051" : "051",
+    "053" : "053",
+    "061" : "061",
+    "072" : "072",
+    "083" : "083",
+    "103" : "103",
+    "104" : "104",
+    "106" : "106",
+    "111" : "111",
+    "120" : "120",
+    "152" : "152",
+    "241" : "241",
+    "244" : "244",
+    "249" : "249",
+    "267" : "267",
+    "373" : "373",
+    "428" : "428",
+    "498" : "498"
+}
+
+def place2code(place):
+    if place_code.has_key(place):
+        return place_code[place]
+    else:
+        # default : PARIS
+        return '025'
 
 # ============================================================================
 #
@@ -379,7 +485,7 @@ class LiveUpdate_fortuneo(object):
             for eachLine in infile:
                 item = itrade_csv.parse(eachLine,2)
                 if item:
-                    self.m_places[item[0]] = item[1].strip()
+                    self.m_places[item[0]] = place2code(item[1].strip().upper())
 
     def place(self,isin):
         if self.m_places.has_key(isin) : return self.m_places[isin]
@@ -439,7 +545,9 @@ class LiveUpdate_fortuneo(object):
                     "Cache-Control":"no-cache"
                     }
 
-        params = "subscriptions={%s}&userinfo=%s\r\n" % (isin2subscriptions(isin,self.place(isin)),self.m_blowfish)
+        cac = "FR0003500008"
+        params = "subscriptions={%s,%s}&userinfo=%s\r\n" % (isin2subscriptions(isin,self.place(isin)),indice2subscriptions(cac,self.place(cac)),self.m_blowfish)
+        #print params
 
         # POST quote request
         try:
@@ -483,13 +591,21 @@ class LiveUpdate_fortuneo(object):
                     value = value + data
 
             # get field
-            field = full_subscriptions[index2field[index]]
+            numind = index2field[index]
+            if numind <= 56:
+                field = full_subscriptions[numind]
 
-            # store information
-            print '%s: %s = %s' % (index,field,value)
-            dcmpd[field] = value
+                # store information
+                print '%s: %s = %s' % (index,field,value)
+                dcmpd[field] = value
+            else:
+                field = indice_subscriptions[numind-57]
 
-            if index == '01K':
+                # store information
+                print '%s: %s = %s' % (index,field,value)
+                # indice[field] = value
+
+            if index == '01N':
                 break
 
         # close the stream
@@ -497,6 +613,7 @@ class LiveUpdate_fortuneo(object):
 
         # extrack date
         if not dcmpd.has_key('CSA_HD_COURS'):
+            info("LiveUpdate_fortuneo:getdata quote:%s CLOSED? or WRONG PLACE?" % quote)
             return None
 
         cl = dcmpd['CSA_HD_COURS']
