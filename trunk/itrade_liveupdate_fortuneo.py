@@ -611,9 +611,17 @@ class LiveUpdate_fortuneo(object):
         # close the stream
         flux.close()
 
+        # usefull information ?
+        if not dcmpd.has_key('CSA_IND_ETAT'):
+            info("LiveUpdate_fortuneo:getdata quote:%s UNKNOWN QUOTE? or WRONG PLACE?" % quote)
+            return None
+
+        # store in cache
+        self.m_dcmpd[isin] = dcmpd
+
         # extrack date
         if not dcmpd.has_key('CSA_HD_COURS'):
-            info("LiveUpdate_fortuneo:getdata quote:%s CLOSED? or WRONG PLACE?" % quote)
+            info("LiveUpdate_fortuneo:getdata quote:%s CLOSED" % quote)
             return None
 
         cl = dcmpd['CSA_HD_COURS']
@@ -623,9 +631,6 @@ class LiveUpdate_fortuneo(object):
         # extract clock
         self.m_clock[isin] = self.convertClock(cl[8:])
         #print 'clock:',self.m_clock[isin]
-
-        # store in cache with clock
-        self.m_dcmpd[isin] = dcmpd
 
         # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME
         data = (
@@ -795,7 +800,22 @@ class LiveUpdate_fortuneo(object):
         if cl=='':
             cl = "::"
 
-        return st,cl,d['CSA_RESERV_BAS'],d['CSA_RESERV_HAUT'],self.m_clock[isin]
+        if d.has_key('CSA_RESERV_BAS'):
+            bas = d['CSA_RESERV_BAS']
+        else:
+            bas = "-"
+
+        if d.has_key('CSA_RESERV_HAUT'):
+            haut = d['CSA_RESERV_HAUT']
+        else:
+            haut = "-"
+
+        if self.m_clock.has_key(isin):
+            clo = self.m_clock[isin]
+        else:
+            clo = "::"
+
+        return st,cl,bas,haut,clo
 
     # ---[ status of quote ] ---
 
@@ -841,9 +861,10 @@ def test(ticker):
                 debug("nodata")
             quote = quotes.lookupTicker(ticker)
             info(gLiveFortuneo.currentClock(quote))
-            info(gLiveFortuneo.currentNotebook(quote))
-            info(gLiveFortuneo.currentTrades(quote))
-            info(gLiveFortuneo.currentMeans(quote))
+            if data:
+                info(gLiveFortuneo.currentNotebook(quote))
+                info(gLiveFortuneo.currentTrades(quote))
+                info(gLiveFortuneo.currentMeans(quote))
             info(gLiveFortuneo.currentStatus(quote))
         else:
             print "getstate() failure :-("
