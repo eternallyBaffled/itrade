@@ -98,4 +98,3 @@ def list_of_markets(bFilterMode=False):
 # ============================================================================
 # That's all folks !
 # ============================================================================
-# vim:set shiftwidth=4 tabstop=8 expandtab textwidth=78:

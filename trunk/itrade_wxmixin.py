@@ -191,4 +191,3 @@ class iTradeSelectorListCtrl(wxListCtrl, wxListCtrlAutoWidthMixin):
 # ============================================================================
 # That's all folks !
 # ============================================================================
-# vim:set shiftwidth=4 tabstop=8 expandtab textwidth=78:
