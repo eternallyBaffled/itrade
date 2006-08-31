@@ -496,6 +496,9 @@ class LiveUpdate_fortuneo(object):
         flux.close()
 
         # extrack date
+        if not dcmpd.has_key('CSA_HD_COURS'):
+            return None
+
         cl = dcmpd['CSA_HD_COURS']
         dt = cl[:8]
         dt = '20' + cl[6:8] + '-' + cl[3:5] + '-' + cl[0:2]
