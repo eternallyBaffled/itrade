@@ -57,7 +57,7 @@ On the road for v0.4.5 (Nausicaa)
 2006-05-28  Gilles Dumortier <dgil@ieee.org>
 
 	OFFICIAL release v0.4.2
-		SVN tag : ITRADE_0_4_2_COCA2
+                SVN tag : ITRADE_0_4_2_COCA2_TAG
 		SVN branch : ITRADE_0_4_2_COCA2_BRANCH
 
 	* live connector is deprecated because link has been securized :-(
