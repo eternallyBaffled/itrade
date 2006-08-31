@@ -5,6 +5,9 @@ On the road for v0.4.5 (Nausicaa)
 
 ===============================================================================
 
+2006-08-3x  Gilles Dumortier <dgil@ieee.org>
+	* Many fixes around the new Euronext live connector
+
 2006-08-20  Gilles Dumortier <dgil@ieee.org>
         * Live connector for Euronext market is working again !
 
