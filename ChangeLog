@@ -5,6 +5,9 @@ On the road for v0.4.5 (Nausicaa)
 
 ===============================================================================
 
+2006-09-0x  Michel Legrand <m_leg at users.sourceforge.net>
+        * check every quote (euronext,alternext) with the new live connector !
+
 2006-08-3x  Gilles Dumortier <dgil at ieee.org>
 	* Many fixes around the new Euronext live connector
 
