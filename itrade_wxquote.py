@@ -44,10 +44,6 @@ import webbrowser
 import datetime
 import locale
 
-# matplotlib system
-import matplotlib
-matplotlib.use('WXAgg')
-
 # wxPython system
 import itrade_wxversion
 from wxPython.wx import *
