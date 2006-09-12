@@ -571,6 +571,18 @@ class LiveUpdate_fortuneo(object):
         dcmpd['CSA_H_TRANS_4'] = '0:00:00'
         dcmpd['CSA_H_TRANS_5'] = '0:00:00'
 
+        dcmpd['CSA_NBL_DEM1'] = '0'
+        dcmpd['CSA_NBL_DEM2'] = '0'
+        dcmpd['CSA_NBL_DEM3'] = '0'
+        dcmpd['CSA_NBL_DEM4'] = '0'
+        dcmpd['CSA_NBL_DEM5'] = '0'
+
+        dcmpd['CSA_NBL_OFF1'] = '0'
+        dcmpd['CSA_NBL_OFF2'] = '0'
+        dcmpd['CSA_NBL_OFF3'] = '0'
+        dcmpd['CSA_NBL_OFF4'] = '0'
+        dcmpd['CSA_NBL_OFF5'] = '0'
+
         dcmpd['CSA_H_REPRIS_COT'] = ''
         dcmpd['CSA_IND_ETAT'] = ''
         dcmpd['CSA_FMP_DEM'] = '0.00'
@@ -759,11 +771,11 @@ class LiveUpdate_fortuneo(object):
             return "-","-","-"
         d = self.m_dcmpd[isin]
 
-        s = d['CSA_FMP_OFF']
+        s = d['CSA_FMP_DEM']
         if s=='0.00':
             s = '-'
 
-        b = d['CSA_FMP_DEM']
+        b = d['CSA_FMP_OFF']
         if b=='0.00':
             b = '-'
 
