@@ -226,8 +226,8 @@ def isin2subscriptions(isin,flux):
 
 indice_subscriptions = (
     "CSA_CRS_DERNIER",
-    "CSA_VAR_VEILLE",
-    "CSA_HD_COURS"
+    "CSA_HD_COURS",
+    "CSA_VAR_VEILLE"
     )
 
 def indice2subscriptions(isin,flux):
