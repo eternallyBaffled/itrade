@@ -5,6 +5,9 @@ On the road for v0.4.5 (Nausicaa)
 
 ===============================================================================
 
+2006-09-12  Gilles Dumortier <dgil at ieee.org>
+	Live : freeze before Euronext opening (SF bug 1552404 Patch1)
+
 2006-09-0x  Michel Legrand <m_leg at users.sourceforge.net>
         * check every quote (euronext,alternext) with the new live connector !
 
