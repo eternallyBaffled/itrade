@@ -52,7 +52,7 @@ import matplotlib
 matplotlib.use('WXAgg')
 matplotlib.rcParams['numerix'] = 'numpy'
 
-from pylab import *
+#from pylab import *
 
 from matplotlib.backends.backend_wx import FigureManager
 from matplotlib.backends.backend_wxagg import Toolbar, FigureCanvasWxAgg as FigureCanvas
