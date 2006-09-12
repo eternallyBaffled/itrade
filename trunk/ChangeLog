@@ -9,13 +9,13 @@ On the road for v0.4.5 (Nausicaa)
 	Live : freeze before Euronext opening (SF bug 1552404 Patch1)
 
 2006-09-0x  Michel Legrand <m_leg at users.sourceforge.net>
-        * check every quote (euronext,alternext) with the new live connector !
+	* check every quote (euronext,alternext) with the new live connector !
 
 2006-08-3x  Gilles Dumortier <dgil at ieee.org>
 	* Many fixes around the new Euronext live connector
 
 2006-08-20  Gilles Dumortier <dgil at ieee.org>
-        * Live connector for Euronext market is working again !
+	* Live connector for Euronext market is working again !
 
 2006-07-17  Gilles Dumortier <dgil at ieee.org>
 	* switch from numarray to numpy (0.9.8)
