@@ -428,7 +428,7 @@ class LiveUpdate_fortuneo(object):
         self.m_livelock = thread.allocate_lock()
         self.m_dcmpd = {}
         self.m_clock = {}
-        self.m_lastclock = "::"
+        self.m_lastclock = 0
 
         self.loadPlaces()
 
@@ -457,7 +457,7 @@ class LiveUpdate_fortuneo(object):
             print 'live: not connected on %s' % self.m_default_host
             return False
 
-        print 'live: connected on %s' % self.m_conn
+        #print 'live: connected on %s' % self.m_conn
         return True
 
     def disconnect(self):
@@ -519,6 +519,7 @@ class LiveUpdate_fortuneo(object):
         val = (int(hour)*60) + int(min)
         #print clo,hour,min,val
         if val>self.m_lastclock:
+            print "lastclock was :",self.m_lastclock," then is : ",val
             self.m_lastclock = val
         return "%d:%02d" % (val/60,val%60)
 
@@ -742,7 +743,7 @@ class LiveUpdate_fortuneo(object):
 
     def currentClock(self,quote=None):
         if quote==None:
-            return self.m_lastclock
+            return "%d:%02d" % (self.m_lastclock/60,self.m_lastclock%60)
         #
         isin = quote.isin()
         if not self.m_clock.has_key(isin):
