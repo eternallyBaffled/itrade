@@ -6,6 +6,7 @@ On the road for v0.4.5 (Nausicaa)
 ===============================================================================
 
 2006-09-13  Gilles Dumortier <dgil at ieee.org>
+	* Live : bad indication "Disconnected" (SF bug 1549599)
 	* Live : live -2 or 0 instead of ATP / MX  (SF bug 1557631)
 	* Live : Live: CMP can be empty !  (SF bug 1557629)
 
