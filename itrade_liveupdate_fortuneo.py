@@ -397,9 +397,9 @@ def place2code(place):
 def convert(n,v,s):
     n = int(n)
     v = int(v)
-    if s=='-2.00':
+    if s=='-2':
         s = 'ATP'
-    if s=='0.00':
+    if s=='0' or s=='0.00':
         if v>0:
             s = 'APM'
         else:
@@ -576,17 +576,28 @@ class LiveUpdate_fortuneo(object):
         dcmpd['CSA_NBL_DEM3'] = '0'
         dcmpd['CSA_NBL_DEM4'] = '0'
         dcmpd['CSA_NBL_DEM5'] = '0'
+        dcmpd['CSA_CRS_DEM1'] = '0.00'
+        dcmpd['CSA_CRS_DEM2'] = '0.00'
+        dcmpd['CSA_CRS_DEM3'] = '0.00'
+        dcmpd['CSA_CRS_DEM4'] = '0.00'
+        dcmpd['CSA_CRS_DEM5'] = '0.00'
 
         dcmpd['CSA_NBL_OFF1'] = '0'
         dcmpd['CSA_NBL_OFF2'] = '0'
         dcmpd['CSA_NBL_OFF3'] = '0'
         dcmpd['CSA_NBL_OFF4'] = '0'
         dcmpd['CSA_NBL_OFF5'] = '0'
+        dcmpd['CSA_CRS_OFF1'] = '0.00'
+        dcmpd['CSA_CRS_OFF2'] = '0.00'
+        dcmpd['CSA_CRS_OFF3'] = '0.00'
+        dcmpd['CSA_CRS_OFF4'] = '0.00'
+        dcmpd['CSA_CRS_OFF5'] = '0.00'
 
         dcmpd['CSA_H_REPRIS_COT'] = ''
         dcmpd['CSA_IND_ETAT'] = ''
         dcmpd['CSA_FMP_DEM'] = '0.00'
         dcmpd['CSA_FMP_OFF'] = '0.00'
+        dcmpd['CSA_CRS_CMP'] = '0.00'
 
         # read the streaming flux
         while 1:
@@ -750,7 +761,7 @@ class LiveUpdate_fortuneo(object):
 
         # clock,volume,value
         last = []
-        if self.m_clock[isin]<>"0:00:00":
+        if self.m_clock.has_key(isin) and self.m_clock[isin]<>"0:00:00":
             last.append((self.m_clock[isin],int(d['CSA_VOL_DERNIER']),d['CSA_CRS_DERNIER']))
             if d['CSA_H_TRANS_2']<>"0:00:00":
                 last.append((d['CSA_H_TRANS_2'],int(d['CSA_VOL_TRANS_2']),d['CSA_CRS_TRANS_2']))
