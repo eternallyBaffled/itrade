@@ -12,6 +12,11 @@ We recommend you to install :
  numpy		http://sourceforge.net/projects/numpy	version 1.0b5 or better
  matplotlib	http://matplotlib.sourceforge.net	version 0.87.5 or better
 
+Attention :
+If you have some trouble running iTrade after migrating from a previous version,
+be sure you have uninstalled Matplotlib and NumArray/Numpy before installing
+the new versions of these libraries.
+
 Running :
  "python itrade.py --help"	for command line help
 
