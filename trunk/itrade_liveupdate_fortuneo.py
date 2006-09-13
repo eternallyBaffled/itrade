@@ -762,8 +762,9 @@ class LiveUpdate_fortuneo(object):
 
         # clock,volume,value
         last = []
-        if self.m_clock.has_key(isin) and self.m_clock[isin]<>"0:00:00":
-            last.append((self.m_clock[isin],int(d['CSA_VOL_DERNIER']),d['CSA_CRS_DERNIER']))
+        cl = d['CSA_HD_COURS'][8:]
+        if cl<>"0:00:00":
+            last.append((cl,int(d['CSA_VOL_DERNIER']),d['CSA_CRS_DERNIER']))
             if d['CSA_H_TRANS_2']<>"0:00:00":
                 last.append((d['CSA_H_TRANS_2'],int(d['CSA_VOL_TRANS_2']),d['CSA_CRS_TRANS_2']))
                 if d['CSA_H_TRANS_3']<>"0:00:00":
