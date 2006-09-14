@@ -761,6 +761,9 @@ class LiveUpdate_fortuneo(object):
         d = self.m_dcmpd[isin]
 
         # clock,volume,value
+        if not d.has_key('CSA_HD_COURS'):
+            return None
+
         last = []
         cl = d['CSA_HD_COURS'][8:]
         if cl<>"0:00:00":
