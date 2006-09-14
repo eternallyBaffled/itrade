@@ -289,6 +289,8 @@ class LiveUpdate_yahoo(object):
 
     def currentClock(self,quote=None):
         if quote==None:
+            if self.m_lastclock==0:
+                return "::"
             # hh:mm
             return "%d:%02d" % (self.m_lastclock/60,self.m_lastclock%60)
         #
