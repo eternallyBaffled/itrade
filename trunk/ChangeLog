@@ -7,7 +7,7 @@ On the road for v0.4.5 (Nausicaa)
 
 2006-09-20  Gilles Dumortier <dgil at ieee.org>
 	* create a specific branch to follow development on new quote
-	  referencing mechanism (see SF bug )
+	  referencing mechanism (see SF bug 1525716)
 	  branch name : ITRADE_0_4_5_new_quote_reference
 
 2006-09-13  Gilles Dumortier <dgil at ieee.org>
