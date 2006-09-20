@@ -3,7 +3,7 @@ A collection of modules for collecting, analyzing and plotting
 financial data.   User contributions welcome!
 
 """
-#from __future__ import division
+#from __future__ import division  
 import os, time, warnings, md5
 from urllib import urlopen
 
@@ -26,7 +26,6 @@ from matplotlib.transforms import scale_transform, Value, zero, one, \
 
 from pylab import gca
 
-
 configdir = get_configdir()
 cachedir = os.path.join(configdir, 'finance.cache')
 
@@ -37,7 +36,7 @@ def parse_yahoo_historical(fh, asobject=False, adjusted=True):
     results as a list of
 
     d, open, close, high, low, volume
-
+    
     where d is a floating poing representation of date, as returned by date2num
 
     if adjust=True, use adjusted prices
@@ -48,6 +47,7 @@ def parse_yahoo_historical(fh, asobject=False, adjusted=True):
     for line in lines[1:]:
 
         vals = line.split(',')
+
         if len(vals)!=7: continue
         datestr = vals[0]
         dt = datetime.date(*time.strptime(datestr, '%d-%b-%y')[:3])
@@ -65,21 +65,68 @@ def parse_yahoo_historical(fh, asobject=False, adjusted=True):
         results.append((d, open, close, high, low, volume))
     results.reverse()
     if asobject:
-        date, open, close, high, low, volume = map(nx.asarray, zip(*results))
+        if len(results)==0: return None        
+        else:
+            date, open, close, high, low, volume = map(nx.asarray, zip(*results))
         return Bunch(date=date, open=open, close=close, high=high, low=low, volume=volume)
     else:
 
         return results
 
-def quotes_historical_yahoo(ticker, date1, date2, asobject=False, adjusted=True):
+def fetch_historical_yahoo(ticker, date1, date2, cachename=None):
+    """
+    Fetch historical data for ticker between date1 and date2.  date1 and
+    date2 are datetime instances
+
+    Ex:
+    fh = fetch_historical_yahoo('^GSPC', d1, d2)
+
+    cachename is the name of the local file cache.  If None, will
+    default to the md5 hash or the url (which incorporates the ticker
+    and date range)
+
+    a file handle is returned
+    """
+
+    ticker = ticker.upper()
+
+    
+    d1 = (date1.month-1, date1.day, date1.year)
+    d2 = (date2.month-1, date2.day, date2.year)    
+
+
+    urlFmt = 'http://table.finance.yahoo.com/table.csv?a=%d&b=%d&c=%d&d=%d&e=%d&f=%d&s=%s&y=0&g=d&ignore=.csv'
+        
+    
+    url =  urlFmt % (d1[0], d1[1], d1[2],
+                     d2[0], d2[1], d2[2], ticker)
+
+
+    if cachename is None:
+        cachename = os.path.join(cachedir, md5.md5(url).hexdigest())
+    if os.path.exists(cachename):
+        fh = file(cachename)
+        verbose.report('Using cachefile %s for %s'%(cachename, ticker))
+    else:
+        if not os.path.isdir(cachedir): os.mkdir(cachedir)
+        fh = file(cachename, 'w')
+        fh.write(urlopen(url).read())
+        fh.close()
+        verbose.report('Saved %s data to cache file %s'%(ticker, cachename))
+        fh = file(cachename, 'r')
+        
+    return fh
+
+
+def quotes_historical_yahoo(ticker, date1, date2, asobject=False, adjusted=True, cachename=None):
     """
     Get historical data for ticker between date1 and date2.  date1 and
     date2 are datetime instances
-
+    
     results are a list of tuples
 
       (d, open, close, high, low, volume)
-
+    
     where d is a floating poing representation of date, as returned by date2num
 
     if asobject is True, the return val is an object with attrs date,
@@ -95,52 +142,27 @@ def quotes_historical_yahoo(ticker, date1, date2, asobject=False, adjusted=True)
     sigma = std(returns)
     x = normpdf(bins, mu, sigma)
     plot(bins, x, color='red', lw=2)
+
+    cachename is the name of the local file cache.  If None, will
+    default to the md5 hash or the url (which incorporates the ticker
+    and date range)
     """
 
-
-
-    d1 = (date1.month-1, date1.day, date1.year)
-    d2 = (date2.month-1, date2.day, date2.year)
-
-
-    urlFmt = 'http://table.finance.yahoo.com/table.csv?a=%d&b=%d&c=%d&d=%d&e=%d&f=%d&s=%s&y=0&g=d&ignore=.csv'
-
-
-    url =  urlFmt % (d1[0], d1[1], d1[2],
-                     d2[0], d2[1], d2[2], ticker)
-
-
-    cachename = os.path.join(cachedir, md5.md5(url).hexdigest())
-    if os.path.exists(cachename):
-        fh = file(cachename)
-        verbose.report('Using cachefile %s for %s'%(cachename, ticker))
-    else:
-        if not os.path.isdir(cachedir): os.mkdir(cachedir)
-        fh = file(cachename, 'w')
-        fh.write(urlopen(url).read())
-        fh.close()
-        verbose.report('Saved %s data to cache file %s'%(ticker, cachename))
-        fh = file(cachename, 'r')
-
-
-
-
-    ticker = ticker.upper()
-
+    fh = fetch_historical_yahoo(ticker, date1, date2, cachename)
+                
     try: ret = parse_yahoo_historical(fh, asobject, adjusted)
     except IOError, exc:
         warnings.warn('urlopen() failure\n' + url + '\n' + exc.strerror[1])
         return None
 
     return ret
-
-
+        
 def plot_day_summary(ax, quotes, ticksize=3,
                      colorup='k', colordown='r',
                      ):
     """
     quotes is a list of (time, open, close, high, low, ...) tuples
-
+    
     Represent the time, open, close, high, low as a vertical line
     ranging from low to high.  The left tick is the open and the right
     tick is the close.
@@ -150,7 +172,7 @@ def plot_day_summary(ax, quotes, ticksize=3,
     ax          : an Axes instance to plot to
     ticksize    : open/close tick marker in points
     colorup     : the color of the lines where close >= open
-    colordown   : the color of the lines where close <  open
+    colordown   : the color of the lines where close <  open    
     return value is a list of lines added
     """
 
@@ -547,6 +569,79 @@ def volume_overlay2(ax, closes, volumes,
     return volume_overlay(ax,closes[:-1],closes[1:],volumes[1:],colorup,colordown,width,alpha)
 
 
+def volume_overlay3(ax, quotes,
+                   colorup='k', colordown='r',
+                   width=4, alpha=1.0):
+    """
+    Add a volume overlay to the current axes.  quotes is a list of (d,
+    open, close, high, low, volume) and close-open is used to
+    determine the color of the bar
+
+    kwarg
+    width       : the bar width in points
+    colorup     : the color of the lines where close1 >= close0
+    colordown   : the color of the lines where close1 <  close0    
+    alpha       : bar transparency
+
+
+    """
+
+    r,g,b = colorConverter.to_rgb(colorup)
+    colorup = r,g,b,alpha
+    r,g,b = colorConverter.to_rgb(colordown)
+    colordown = r,g,b,alpha
+    colord = { True : colorup,
+               False : colordown,
+               }
+
+    dates, opens, closes, highs, lows, volumes = zip(*quotes)
+    colors = [colord[close1>=close0] for close0, close1 in zip(closes[:-1], closes[1:]) if close0!=-1 and close1 !=-1]
+    colors.insert(0,colord[closes[0]>=opens[0]])
+
+    right = width/2.0
+    left = -width/2.0
+
+    
+    bars = [ ( (left, 0), (left, volume), (right, volume), (right, 0)) for d, open, close, high, low, volume in quotes]
+
+    sx = ax.figure.dpi * Value(1/72.0)  # scale for points
+    sy = (ax.bbox.ur().y() - ax.bbox.ll().y()) / (ax.viewLim.ur().y() - ax.viewLim.ll().y()) 
+
+    barTransform = scale_sep_transform(sx,sy)
+
+    dates = [d for d, open, close, high, low, volume in quotes]
+    offsetsBars = [(d, 0) for d in dates]
+
+    useAA = 0,  # use tuple here
+    lw = 0.5,   # and here
+    barCollection = PolyCollection(bars,
+                                   facecolors   = colors,
+                                   edgecolors   = ( (0,0,0,1), ),
+                                   antialiaseds = useAA,
+                                   linewidths   = lw,
+                                   offsets      = offsetsBars,
+                                   transOffset  = ax.transData,
+                                   )
+    barCollection.set_transform(barTransform)
+
+
+
+    
+
+
+    minx, maxx = (min(dates), max(dates))
+    miny = 0
+    maxy = max([volume for d, open, close, high, low, volume in quotes])
+    corners = (minx, miny), (maxx, maxy)
+    ax.update_datalim(corners)
+    #print 'datalim', ax.dataLim.get_bounds()
+    #print 'viewlim', ax.viewLim.get_bounds()    
+    
+    ax.add_collection(barCollection)
+    ax.autoscale_view()
+
+    return barCollection
+    
 def index_bar(ax, vals,
               facecolor='b', edgecolor='k',
               width=4, alpha=1.0, ):
