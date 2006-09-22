@@ -150,7 +150,7 @@ def import_from_internet(quote,fromdate=None,todate=None):
         if state:
             #debug("state=%s" % (state))
             #debug('import historic %s from %s ...' % (quote.ticker(),abc.name()))
-            data = abc.getdataByQuote(quote,fromdate,todate)
+            data = abc.getdata(quote,fromdate,todate)
             if data!=None:
                 if data:
                     #debug('import_from_internet(%s): data:%s'% (quote.ticker(),data))
@@ -207,7 +207,7 @@ def liveupdate_from_internet(quote):
         if state:
             #debug("state=%s" % (state))
             #debug('liveupdate_from_internet(%s): import live from abcbourse ...' % quote.ticker())
-            data = abc.getdataByQuote(quote)
+            data = abc.getdata(quote)
             if data!=None:
                 if data:
                     #debug('liveupdate_from_internet(%s): data:%s'% (quote.ticker(),data))

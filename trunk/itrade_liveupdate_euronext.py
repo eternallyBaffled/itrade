@@ -108,25 +108,6 @@ class LiveUpdate_Euronext(object):
         # no state
         return True
 
-    # ---[ API to get data ] ---
-
-    def getdataByQuote(self,quote):
-        if quote:
-            return self.getdata(quote)
-        return None
-
-    def getdataByTicker(self,ticker):
-        quote = quotes.lookupTicker(ticker)
-        if quote:
-            return self.getdata(quote)
-        return None
-
-    def getdataByISIN(self,isin):
-        quote = quotes.lookupISIN(isin)
-        if quote:
-            return self.getdata(quote)
-        return None
-
     # ---[ code to get data ] ---
 
     def splitLines(self,buf):
@@ -307,7 +288,8 @@ def test(ticker):
         if state:
             debug("state=%s" % (state))
 
-            data = gLiveEuronext.getdataByTicker(ticker)
+            quote = quotes.lookupTicker(ticker)
+            data = gLiveEuronext.getdata(quote)
             if data!=None:
                 if data:
                     info(data)

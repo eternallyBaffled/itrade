@@ -73,23 +73,6 @@ class Import_yahoo(object):
     def getstate(self):
         return True
 
-    def getdataByQuote(self,quote,datedebut=None,datefin=None):
-        if quote:
-            return self.getdata(quote,datedebut,datefin)
-        return None
-
-    def getdataByTicker(self,ticker,datedebut=None,datefin=None):
-        quote = quotes.lookupTicker(ticker)
-        if quote:
-            return self.getdata(quote,datedebut,datefin)
-        return None
-
-    def getdataByISIN(self,isin,datedebut=None,datefin=None):
-        quote = quotes.lookupISIN(isin)
-        if quote:
-            return self.getdata(quote,datedebut,datefin)
-        return None
-
     def parseDate(self,d):
         return (d.year, d.month, d.day)
 
@@ -208,7 +191,8 @@ def test(ticker,d):
         if state:
             debug("state=%s" % (state))
 
-            data = gImportYahoo.getdataByTicker(ticker,d)
+            quote = quotes.lookupTicker(ticker)
+            data = gImportYahoo.getdata(quote,d)
             if data!=None:
                 if data:
                     debug(data)
