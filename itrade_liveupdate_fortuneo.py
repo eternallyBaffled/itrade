@@ -620,13 +620,13 @@ class LiveUpdate_fortuneo(object):
                 field = full_subscriptions[numind]
 
                 # store information
-                print '%s: %s = %s' % (index,field,value)
+                # print '%s: %s = %s' % (index,field,value)
                 dcmpd[field] = value
             else:
                 field = indice_subscriptions[numind-57]
 
                 # store information
-                print '%s: %s = %s' % (index,field,value)
+                # print '%s: %s = %s' % (index,field,value)
                 # indice[field] = value
 
             if index == '01N':
@@ -644,7 +644,7 @@ class LiveUpdate_fortuneo(object):
         self.m_dcmpd[isin] = dcmpd
 
         # extrack date
-        if not dcmpd.has_key('CSA_HD_COURS'):
+        if not dcmpd.has_key('CSA_HD_COURS') or not dcmpd.has_key('CSA_CRS_PREMIER'):
             info("LiveUpdate_fortuneo:getdata quote:%s CLOSED" % quote)
             return None
 
