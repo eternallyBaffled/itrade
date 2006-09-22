@@ -5,6 +5,10 @@ On the road for v0.4.5 (Nausicaa)
 
 ===============================================================================
 
+2006-09-22  Gilles Dumortier <dgil at ieee.org>
+	* Another fix on SF bug 1557368 (another KeyError)
+	* Live : remove traces in CONSOLE (better perf)
+
 2006-09-20  Gilles Dumortier <dgil at ieee.org>
 	* create a specific branch to follow development on new quote
 	  referencing mechanism (see SF bug 1525716)
