@@ -123,23 +123,6 @@ class Import_ABCBourse(object):
 
         return m
 
-    def getdataByQuote(self,quote,datedebut=None,datefin=None):
-        if quote:
-            return self.getdata(quote,datedebut,datefin)
-        return None
-
-    def getdataByTicker(self,ticker,datedebut=None,datefin=None):
-        quote = quotes.lookupTicker(ticker)
-        if quote:
-            return self.getdata(quote,datedebut,datefin)
-        return None
-
-    def getdataByISIN(self,isin,datedebut=None,datefin=None):
-        quote = quotes.lookupISIN(isin)
-        if quote:
-            return self.getdata(quote,datedebut,datefin)
-        return None
-
     def getdata(self,quote,datedebut=None,datefin=None):
         # check we have a connection
         if not self.m_conn:
@@ -220,7 +203,8 @@ def test(ticker,d):
         if state:
             debug("state=%s" % (state))
 
-            data = gImportABC.getdataByTicker(ticker,d)
+            quote = quotes.lookupTicker(ticker)
+            data = gImportABC.getdata(quote,d)
             if data!=None:
                 if data:
                     debug(data)

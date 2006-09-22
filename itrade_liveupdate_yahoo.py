@@ -96,25 +96,6 @@ class LiveUpdate_yahoo(object):
         # no state
         return True
 
-    # ---[ API to get data ] ---
-
-    def getdataByQuote(self,quote):
-        if quote:
-            return self.getdata(quote)
-        return None
-
-    def getdataByTicker(self,ticker):
-        quote = quotes.lookupTicker(ticker)
-        if quote:
-            return self.getdata(quote)
-        return None
-
-    def getdataByISIN(self,isin):
-        quote = quotes.lookupISIN(isin)
-        if quote:
-            return self.getdata(quote)
-        return None
-
     # ---[ code to get data ] ---
 
     def yahooDate (self,date):
@@ -340,7 +321,8 @@ def test(ticker):
         if state:
             debug("state=%s" % (state))
 
-            data = gLiveYahoo.getdataByTicker(ticker)
+            quote = quotes.lookupTicker(ticker)
+            data = gLiveYahoo.getdata(Quote)
             if data!=None:
                 if data:
                     info(data)

@@ -142,25 +142,6 @@ class LiveUpdate_ABCBourse(object):
 
         return m
 
-    # ---[ API to get data ] ---
-
-    def getdataByQuote(self,quote):
-        if quote:
-            return self.getdata(quote)
-        return None
-
-    def getdataByTicker(self,ticker):
-        quote = quotes.lookupTicker(ticker)
-        if quote:
-            return self.getdata(quote)
-        return None
-
-    def getdataByISIN(self,isin):
-        quote = quotes.lookupISIN(isin)
-        if quote:
-            return self.getdata(quote)
-        return None
-
     # ---[ code to get data ] ---
 
     def getdata(self,quote):
@@ -315,7 +296,8 @@ def test(ticker):
         if state:
             debug("state=%s" % (state))
 
-            data = gLiveABC.getdataByTicker(ticker)
+            quote = quotes.lookupTicker(ticker)
+            data = gLiveABC.getdata(quote)
             if data!=None:
                 if data:
                     info(data)

@@ -56,9 +56,13 @@ isin_market = {
     }
 
 def isin2market(isin):
-    cp = isin[0:2].lower()
-    if isin_market.has_key(cp):
-        return isin_market[cp]
+    if isin:
+        cp = isin[0:2].lower()
+        if isin_market.has_key(cp):
+            return isin_market[cp]
+        else:
+            # default to EURONEXT !
+            return 'EURONEXT'
     else:
         # default to EURONEXT !
         return 'EURONEXT'

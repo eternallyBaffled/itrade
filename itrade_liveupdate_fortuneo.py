@@ -491,25 +491,6 @@ class LiveUpdate_fortuneo(object):
         if self.m_places.has_key(isin) : return self.m_places[isin]
         return "025"
 
-    # ---[ API to get data ] ---
-
-    def getdataByQuote(self,quote):
-        if quote:
-            return self.getdata(quote)
-        return None
-
-    def getdataByTicker(self,ticker):
-        quote = quotes.lookupTicker(ticker)
-        if quote:
-            return self.getdata(quote)
-        return None
-
-    def getdataByISIN(self,isin):
-        quote = quotes.lookupISIN(isin)
-        if quote:
-            return self.getdata(quote)
-        return None
-
     # ---[ code to get data ] ---
 
     def convertClock(self,clock):
@@ -884,7 +865,8 @@ def test(ticker):
         if state:
             debug("state=%s" % (state))
 
-            data = gLiveFortuneo.getdataByTicker(ticker)
+            quote = quotes.lookupTicker(ticker)
+            data = gLiveFortuneo.getdata(quote)
             if data:
                 info(data)
             else:
