@@ -42,8 +42,8 @@ import pprint
 
 # wxPython system
 import itrade_wxversion
-from wxPython.wx import *
-from wxPython.lib.mixins.listctrl import wxColumnSorterMixin, wxListCtrlAutoWidthMixin
+import wx
+import wx.lib.mixins.listctrl as wxl
 
 # iTrade system
 import itrade_config
@@ -66,14 +66,14 @@ class iTrade_wxFrame(object):
         self._config = {}
 
         # icon
-        self.SetIcon(wxIcon("res/itrade.ico",wxBITMAP_TYPE_ICO))
+        self.SetIcon(wx.Icon("res/itrade.ico",wx.BITMAP_TYPE_ICO))
 
         # focus
         self.m_hasFocus = True
-        EVT_ACTIVATE(self,self._OnActivate)
+        wx.EVT_ACTIVATE(self,self._OnActivate)
 
         # size and position
-        EVT_ICONIZE(self,self._OnMinimize)
+        wx.EVT_ICONIZE(self,self._OnMinimize)
 
         # need to save
         self.m_needToSave = False
@@ -114,15 +114,15 @@ class iTrade_wxFrame(object):
         elif fnt=='open':
             msg2 = message('mixin_open')
         if self.isDirty():
-            # __x wxCANCEL : user parameter
-            dlg = wxMessageDialog(self, msg, msg2, wxCANCEL | wxYES_NO | wxYES_DEFAULT | wxICON_QUESTION)
+            # __x wx.CANCEL : user parameter
+            dlg = wx.MessageDialog(self, msg, msg2, wx.CANCEL | wx.YES_NO | wx.YES_DEFAULT | wx.ICON_QUESTION)
             idRet = dlg.ShowModal()
-            if idRet == wxID_YES:
+            if idRet == wx.ID_YES:
                 self.OnSave(None)
-            elif idRet == wxID_NO:
+            elif idRet == wx.ID_NO:
                 # do not reenter
                 self.clearDirty()
-            elif idRet == wxID_CANCEL:
+            elif idRet == wx.ID_CANCEL:
                 # do not touch dirty flag !
                 ret = False
             dlg.Destroy()
@@ -182,11 +182,11 @@ class iTrade_wxFrame(object):
 # ListCtrl with sorting columns
 # ============================================================================
 
-class iTradeSelectorListCtrl(wxListCtrl, wxListCtrlAutoWidthMixin):
-    def __init__(self, parent, ID, pos=wxDefaultPosition,
-                 size=wxDefaultSize, style=0):
-        wxListCtrl.__init__(self, parent, ID, pos, size, style)
-        wxListCtrlAutoWidthMixin.__init__(self)
+class iTradeSelectorListCtrl(wx.ListCtrl, wxl.ListCtrlAutoWidthMixin):
+    def __init__(self, parent, ID, pos=wx.DefaultPosition,
+                 size=wx.DefaultSize, style=0):
+        wx.ListCtrl.__init__(self, parent, ID, pos, size, style)
+        wxl.ListCtrlAutoWidthMixin.__init__(self)
 
 # ============================================================================
 # That's all folks !

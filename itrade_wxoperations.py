@@ -42,10 +42,9 @@ import logging
 
 # wxPython system
 import itrade_wxversion
-from wxPython.wx import *
-from wxPython.calendar import *
+import wx
+import wx.lib.mixins.listctrl as wxl
 from wxPython.lib.maskededit import wxMaskedTextCtrl
-from wxPython.lib.mixins.listctrl import wxColumnSorterMixin, wxListCtrlAutoWidthMixin
 
 # iTrade system
 from itrade_logging import *
@@ -57,7 +56,7 @@ from itrade_portfolio import *
 from itrade_wxlistquote import select_iTradeQuote
 import itrade_wxres
 from itrade_wxmixin import iTrade_wxFrame,iTradeSelectorListCtrl
-from itrade_wxutil import wxFontFromSize
+from itrade_wxutil import FontFromSize
 
 # ============================================================================
 # menu identifier
@@ -152,11 +151,11 @@ operation_ctrl = {
 # iTradeOperationsDialog
 # ============================================================================
 
-class iTradeOperationDialog(wxDialog):
+class iTradeOperationDialog(wx.Dialog):
     def __init__(self, parent, op, opmode):
         # context help
-        pre = wxPreDialog()
-        pre.SetExtraStyle(wxDIALOG_EX_CONTEXTHELP)
+        pre = wx.PreDialog()
+        pre.SetExtraStyle(wx.DIALOG_EX_CONTEXTHELP)
 
         # pre-init
         self.opmode = opmode
@@ -203,39 +202,39 @@ class iTradeOperationDialog(wxDialog):
         self.PostCreate(pre)
 
         #
-        self.m_sizer = wxBoxSizer(wxVERTICAL)
+        self.m_sizer = wx.BoxSizer(wx.VERTICAL)
 
         # separator
-        box = wxBoxSizer(wxHORIZONTAL)
-        self.m_sizer.AddSizer(box, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5)
+        box = wx.BoxSizer(wx.HORIZONTAL)
+        self.m_sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
         # date
-        box = wxBoxSizer(wxHORIZONTAL)
+        box = wx.BoxSizer(wx.HORIZONTAL)
 
-        label = wxStaticText(self, -1, message('portfolio_date'))
-        box.Add(label, 0, wxALIGN_CENTRE|wxALL, 5)
+        label = wx.StaticText(self, -1, message('portfolio_date'))
+        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        ssdatetime = wxDateTimeFromDMY(self.m_date.day,self.m_date.month-1,self.m_date.year)
-        self.wxDateCtrl = wxDatePickerCtrl(self, -1, ssdatetime , size = (120,-1), style=wxDP_DROPDOWN | wxDP_SHOWCENTURY)
-        EVT_DATE_CHANGED(self, self.wxDateCtrl.GetId(), self.OnDate)
-        box.Add(self.wxDateCtrl, 0, wxALIGN_CENTRE|wxALL, 5)
+        ssdatetime = wx.DateTimeFromDMY(self.m_date.day,self.m_date.month-1,self.m_date.year)
+        self.wxDateCtrl = wx.DatePickerCtrl(self, -1, ssdatetime , size = (120,-1), style = wx.DP_DROPDOWN | wx.DP_SHOWCENTURY)
+        wx.EVT_DATE_CHANGED(self, self.wxDateCtrl.GetId(), self.OnDate)
+        box.Add(self.wxDateCtrl, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.m_sizer.AddSizer(box, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5)
+        self.m_sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
         # separator
-        box = wxBoxSizer(wxHORIZONTAL)
-        self.m_sizer.AddSizer(box, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5)
+        box = wx.BoxSizer(wx.HORIZONTAL)
+        self.m_sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
         # kind of operation
 
-        box = wxBoxSizer(wxHORIZONTAL)
+        box = wx.BoxSizer(wx.HORIZONTAL)
 
-        label = wxStaticText(self, -1, message('portfolio_operation'))
-        box.Add(label, 0, wxALIGN_CENTRE|wxALL, 5)
+        label = wx.StaticText(self, -1, message('portfolio_operation'))
+        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.wxTypeCtrl = wxComboBox(self,-1, "", size=wxSize(160,-1), style=wxCB_DROPDOWN|wxCB_READONLY)
-        box.Add(self.wxTypeCtrl, 0, wxALIGN_CENTRE|wxALL, 5)
-        EVT_COMBOBOX(self,self.wxTypeCtrl.GetId(),self.OnType)
+        self.wxTypeCtrl = wx.ComboBox(self,-1, "", size=wx.Size(160,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
+        box.Add(self.wxTypeCtrl, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        wx.EVT_COMBOBOX(self,self.wxTypeCtrl.GetId(),self.OnType)
 
         count = 0
         for eachCtrl in operation_ctrl.items():
@@ -247,91 +246,91 @@ class iTradeOperationDialog(wxDialog):
 
         self.wxTypeCtrl.SetSelection(idx)
 
-        self.m_sizer.AddSizer(box, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5)
+        self.m_sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
         # quote
-        box = wxBoxSizer(wxHORIZONTAL)
+        box = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.wxNameLabel = wxStaticText(self, -1, message('portfolio_description'))
-        box.Add(self.wxNameLabel, 0, wxALIGN_CENTRE|wxALL, 5)
+        self.wxNameLabel = wx.StaticText(self, -1, message('portfolio_description'))
+        box.Add(self.wxNameLabel, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        bmp = wxBitmap('res/quotes.gif')
-        self.wxNameButton = wxBitmapButton(self, -1, bmp, size=wxSize(bmp.GetWidth()+5, bmp.GetHeight()+5))
-        box.Add(self.wxNameButton, 0, wxALIGN_CENTRE|wxSHAPED, 5)
-        EVT_BUTTON(self, self.wxNameButton.GetId(), self.OnQuote)
+        bmp = wx.Bitmap('res/quotes.gif')
+        self.wxNameButton = wx.BitmapButton(self, -1, bmp, size=wx.Size(bmp.GetWidth()+5, bmp.GetHeight()+5))
+        box.Add(self.wxNameButton, 0, wx.ALIGN_CENTRE|wx.SHAPED, 5)
+        wx.EVT_BUTTON(self, self.wxNameButton.GetId(), self.OnQuote)
 
-        self.wxNameCtrl = wxTextCtrl(self, -1, self.m_name, size=wxSize(240,-1), style=wxTE_LEFT)
-        EVT_TEXT( self, self.wxNameCtrl.GetId(), self.OnDescChange )
-        box.Add(self.wxNameCtrl, 0, wxALIGN_CENTRE|wxALL, 5)
+        self.wxNameCtrl = wx.TextCtrl(self, -1, self.m_name, size=wx.Size(240,-1), style = wx.TE_LEFT)
+        wx.EVT_TEXT( self, self.wxNameCtrl.GetId(), self.OnDescChange )
+        box.Add(self.wxNameCtrl, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.m_sizer.AddSizer(box, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5)
+        self.m_sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
         # value
-        box = wxBoxSizer(wxHORIZONTAL)
+        box = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.wxValueLabel = wxStaticText(self, -1, message('portfolio_field_credit'))
-        box.Add(self.wxValueLabel, 0, wxALIGN_CENTRE|wxALL, 5)
+        self.wxValueLabel = wx.StaticText(self, -1, message('portfolio_field_credit'))
+        box.Add(self.wxValueLabel, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         self.wxValueCtrl = wxMaskedTextCtrl(self, -1, mask="#{9}.##", formatcodes="SF_-R")
         self.wxValueCtrl.SetFieldParameters(0, formatcodes='r<', validRequired=True)  # right-insert, require explicit cursor movement to change fields
         self.wxValueCtrl.SetFieldParameters(1, defaultValue='00')                     # don't allow blank fraction
-        EVT_TEXT( self, self.wxValueCtrl.GetId(), self.OnValueChange )
+        wx.EVT_TEXT( self, self.wxValueCtrl.GetId(), self.OnValueChange )
 
-        box.Add(self.wxValueCtrl, 0, wxALIGN_CENTRE|wxALL, 5)
+        box.Add(self.wxValueCtrl, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.wxValueTxt = wxStaticText(self, -1, "€")
-        box.Add(self.wxValueTxt, 0, wxALIGN_CENTRE|wxALL, 5)
+        self.wxValueTxt = wx.StaticText(self, -1, "€")
+        box.Add(self.wxValueTxt, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.wxExpPreTxt = wxStaticText(self, -1, '')
-        box.Add(self.wxExpPreTxt, 0, wxALIGN_CENTRE|wxALL, 5)
+        self.wxExpPreTxt = wx.StaticText(self, -1, '')
+        box.Add(self.wxExpPreTxt, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         self.wxExpensesCtrl = wxMaskedTextCtrl(self, -1, mask="#{4}.##", formatcodes="SF_R")
         self.wxExpensesCtrl.SetFieldParameters(0, formatcodes='r<', validRequired=True)  # right-insert, require explicit cursor movement to change fields
         self.wxExpensesCtrl.SetFieldParameters(1, defaultValue='00')                     # don't allow blank fraction
-        box.Add(self.wxExpensesCtrl, 0, wxALIGN_CENTRE|wxALL, 5)
-        EVT_TEXT( self, self.wxExpensesCtrl.GetId(), self.OnExpensesChange )
+        box.Add(self.wxExpensesCtrl, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        wx.EVT_TEXT( self, self.wxExpensesCtrl.GetId(), self.OnExpensesChange )
 
-        self.wxExpPostTxt = wxStaticText(self, -1, "€ %s" % message('portfolio_post_expenses'))
-        box.Add(self.wxExpPostTxt, 0, wxALIGN_CENTRE|wxALL, 5)
+        self.wxExpPostTxt = wx.StaticText(self, -1, "€ %s" % message('portfolio_post_expenses'))
+        box.Add(self.wxExpPostTxt, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.m_sizer.AddSizer(box, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5)
+        self.m_sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
         # number
-        box = wxBoxSizer(wxHORIZONTAL)
+        box = wx.BoxSizer(wx.HORIZONTAL)
 
-        label = wxStaticText(self, -1, message('portfolio_quantity'))
-        box.Add(label, 0, wxALIGN_CENTRE|wxALL, 5)
+        label = wx.StaticText(self, -1, message('portfolio_quantity'))
+        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         self.wxNumberCtrl = wxMaskedTextCtrl(self, -1, mask="#{9}", formatcodes='SFR')
-        box.Add(self.wxNumberCtrl, 0, wxALIGN_CENTRE|wxALL, 5)
-        EVT_TEXT( self, self.wxNumberCtrl.GetId(), self.OnNumberChange )
+        box.Add(self.wxNumberCtrl, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        wx.EVT_TEXT( self, self.wxNumberCtrl.GetId(), self.OnNumberChange )
 
-        self.m_sizer.AddSizer(box, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5)
+        self.m_sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
         # buttons
-        box = wxBoxSizer(wxHORIZONTAL)
+        box = wx.BoxSizer(wx.HORIZONTAL)
 
         # context help
-        if wxPlatform != "__WXMSW__":
-            btn = wxContextHelpButton(self)
-            box.Add(btn, 0, wxALIGN_CENTRE|wxALL, 5)
+        if wx.Platform != "__WXMSW__":
+            btn = wx.ContextHelpButton(self)
+            box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         # OK
-        btn = wxButton(self, wxID_OK, tb)
+        btn = wx.Button(self, wx.ID_OK, tb)
         btn.SetDefault()
         btn.SetHelpText(message('ok_desc'))
-        box.Add(btn, 0, wxALIGN_CENTRE|wxALL, 5)
-        EVT_BUTTON(self, wxID_OK, self.OnValid)
+        box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        wx.EVT_BUTTON(self, wx.ID_OK, self.OnValid)
 
         # CANCEL
-        btn = wxButton(self, wxID_CANCEL, message('cancel'))
+        btn = wx.Button(self, wx.ID_CANCEL, message('cancel'))
         btn.SetHelpText(message('cancel_desc'))
-        box.Add(btn, 0, wxALIGN_CENTRE|wxALL, 5)
-        EVT_BUTTON(self, wxID_CANCEL, self.OnCancel)
+        box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        wx.EVT_BUTTON(self, wx.ID_CANCEL, self.OnCancel)
 
-        self.m_sizer.AddSizer(box, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5)
+        self.m_sizer.AddSizer(box, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
-        EVT_SIZE(self, self.OnSize)
+        wx.EVT_SIZE(self, self.OnSize)
 
         self.SetAutoLayout(True)
         self.SetSizerAndFit(self.m_sizer)
@@ -342,15 +341,15 @@ class iTradeOperationDialog(wxDialog):
 
     def OnCancel(self,event):
         self.aRet = None
-        self.EndModal(wxID_CANCEL)
+        self.EndModal(wx.ID_CANCEL)
 
     def OnValid(self,event):
         if self.Validate() and self.TransferDataFromWindow():
             self.aRet = (self.m_date.__str__(),self.m_type,self.m_name,self.m_value,self.m_expenses,self.m_number,self.m_ref)
-            self.EndModal(wxID_OK)
+            self.EndModal(wx.ID_OK)
 
     def refreshPage(self):
-        self.wxDateCtrl.SetValue(wxDateTimeFromDMY(self.m_date.day,self.m_date.month-1,self.m_date.year))
+        self.wxDateCtrl.SetValue(wx.DateTimeFromDMY(self.m_date.day,self.m_date.month-1,self.m_date.year))
         self.wxValueCtrl.SetLabel('%12.2f' % self.m_value)
         self.wxExpensesCtrl.SetLabel('%6.2f' % self.m_expenses)
         self.wxNumberCtrl.SetValue('%6d' % self.m_number)
@@ -468,82 +467,82 @@ class iTradeOperationDialog(wxDialog):
 # iTradeOperationsListCtrl
 # ============================================================================
 
-class iTradeOperationsListCtrl(wxListCtrl, wxListCtrlAutoWidthMixin):
-    def __init__(self, parent, ID, pos=wxDefaultPosition,
-                 size=wxDefaultSize, style=0):
-        wxListCtrl.__init__(self, parent, ID, pos, size, style)
-        wxListCtrlAutoWidthMixin.__init__(self)
+class iTradeOperationsListCtrl(wx.ListCtrl, wxl.ListCtrlAutoWidthMixin):
+    def __init__(self, parent, ID, pos=wx.DefaultPosition,
+                 size=wx.DefaultSize, style=0):
+        wx.ListCtrl.__init__(self, parent, ID, pos, size, style)
+        wxl.ListCtrlAutoWidthMixin.__init__(self)
 
 # ============================================================================
 # iTradeOperationToolbar
 #
 # ============================================================================
 
-class iTradeOperationToolbar(wxToolBar):
+class iTradeOperationToolbar(wx.ToolBar):
 
     def __init__(self,parent,id):
-        wxToolBar.__init__(self,parent,id,style = wxTB_HORIZONTAL | wxNO_BORDER | wxTB_FLAT)
+        wx.ToolBar.__init__(self,parent,id,style = wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT)
         self.m_parent = parent
         self._init_toolbar()
 
     def _init_toolbar(self):
-        self._NTB2_EXIT = wxNewId()
+        self._NTB2_EXIT = wx.NewId()
 
-        self._NTB2_DISPALL = wxNewId()
-        self._NTB2_DISPQUOTES = wxNewId()
-        self._NTB2_DISPCASH = wxNewId()
-        self._NTB2_DISPPVAL = wxNewId()
-        self._NTB2_DISPSRD = wxNewId()
+        self._NTB2_DISPALL = wx.NewId()
+        self._NTB2_DISPQUOTES = wx.NewId()
+        self._NTB2_DISPCASH = wx.NewId()
+        self._NTB2_DISPPVAL = wx.NewId()
+        self._NTB2_DISPSRD = wx.NewId()
 
-        self._NTB2_ADD = wxNewId()
-        self._NTB2_MODIFY = wxNewId()
-        self._NTB2_DELETE = wxNewId()
+        self._NTB2_ADD = wx.NewId()
+        self._NTB2_MODIFY = wx.NewId()
+        self._NTB2_DELETE = wx.NewId()
 
-        self._NTB2_30DAYS = wxNewId()
-        self._NTB2_90DAYS = wxNewId()
-        self._NTB2_CURRENTYEAR = wxNewId()
-        self._NTB2_ALLYEARS = wxNewId()
+        self._NTB2_30DAYS = wx.NewId()
+        self._NTB2_90DAYS = wx.NewId()
+        self._NTB2_CURRENTYEAR = wx.NewId()
+        self._NTB2_ALLYEARS = wx.NewId()
 
-        self.SetToolBitmapSize(wxSize(24,24))
-        self.AddSimpleTool(self._NTB2_EXIT, wxArtProvider.GetBitmap(wxART_CROSS_MARK, wxART_TOOLBAR),
+        self.SetToolBitmapSize(wx.Size(24,24))
+        self.AddSimpleTool(self._NTB2_EXIT, wx.ArtProvider.GetBitmap(wx.ART_CROSS_MARK, wx.ART_TOOLBAR),
                            message('main_close'), message('main_desc_close'))
-        self.AddControl(wxStaticLine(self, -1, size=(-1,23), style=wxLI_VERTICAL))
+        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
 
-        self.AddRadioLabelTool(self._NTB2_DISPALL,'',wxBitmap('res/dispall.gif'),wx.NullBitmap,message('portfolio_dispall'),message('portfolio_desc_dispall'))
-        self.AddRadioLabelTool(self._NTB2_DISPQUOTES,'',wxBitmap('res/dispquote.gif'),wx.NullBitmap,message('portfolio_dispquotes'),message('portfolio_desc_dispquotes'))
-        self.AddRadioLabelTool(self._NTB2_DISPCASH,'',wxBitmap('res/dispcash.gif'),wx.NullBitmap,message('portfolio_dispcash'),message('portfolio_desc_dispcash'))
-        self.AddRadioLabelTool(self._NTB2_DISPPVAL,'',wxBitmap('res/dispvalue.gif'),wx.NullBitmap,message('portfolio_dispvalues'),message('portfolio_desc_dispvalues'))
-        self.AddRadioLabelTool(self._NTB2_DISPSRD,'',wxBitmap('res/dispsrd.gif'),wx.NullBitmap,message('portfolio_dispsrd'),message('portfolio_desc_dispsrd'))
+        self.AddRadioLabelTool(self._NTB2_DISPALL,'',wx.Bitmap('res/dispall.gif'),wx.NullBitmap,message('portfolio_dispall'),message('portfolio_desc_dispall'))
+        self.AddRadioLabelTool(self._NTB2_DISPQUOTES,'',wx.Bitmap('res/dispquote.gif'),wx.NullBitmap,message('portfolio_dispquotes'),message('portfolio_desc_dispquotes'))
+        self.AddRadioLabelTool(self._NTB2_DISPCASH,'',wx.Bitmap('res/dispcash.gif'),wx.NullBitmap,message('portfolio_dispcash'),message('portfolio_desc_dispcash'))
+        self.AddRadioLabelTool(self._NTB2_DISPPVAL,'',wx.Bitmap('res/dispvalue.gif'),wx.NullBitmap,message('portfolio_dispvalues'),message('portfolio_desc_dispvalues'))
+        self.AddRadioLabelTool(self._NTB2_DISPSRD,'',wx.Bitmap('res/dispsrd.gif'),wx.NullBitmap,message('portfolio_dispsrd'),message('portfolio_desc_dispsrd'))
 
-        self.AddControl(wxStaticLine(self, -1, size=(-1,23), style=wxLI_VERTICAL))
+        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
 
-        self.AddSimpleTool(self._NTB2_ADD,wxBitmap('res/add.gif'),message('portfolio_opadd'),message('portfolio_desc_opadd'))
-        self.AddSimpleTool(self._NTB2_MODIFY,wxBitmap('res/modify.gif'),message('portfolio_opmodify'),message('portfolio_desc_opmodify'))
-        self.AddSimpleTool(self._NTB2_DELETE,wxBitmap('res/delete.gif'),message('portfolio_opdelete'),message('portfolio_desc_opdelete'))
+        self.AddSimpleTool(self._NTB2_ADD,wx.Bitmap('res/add.gif'),message('portfolio_opadd'),message('portfolio_desc_opadd'))
+        self.AddSimpleTool(self._NTB2_MODIFY,wx.Bitmap('res/modify.gif'),message('portfolio_opmodify'),message('portfolio_desc_opmodify'))
+        self.AddSimpleTool(self._NTB2_DELETE,wx.Bitmap('res/delete.gif'),message('portfolio_opdelete'),message('portfolio_desc_opdelete'))
 
-        self.AddControl(wxStaticLine(self, -1, size=(-1,23), style=wxLI_VERTICAL))
+        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
 
-        self.AddRadioLabelTool(self._NTB2_30DAYS,'',wxBitmap('res/filter30.gif'),wx.NullBitmap,message('portfolio_per30days'),message('portfolio_desc_per30days'))
-        self.AddRadioLabelTool(self._NTB2_90DAYS,'',wxBitmap('res/filter90.gif'),wx.NullBitmap,message('portfolio_per90days'),message('portfolio_desc_per90days'))
-        self.AddRadioLabelTool(self._NTB2_CURRENTYEAR,'',wxBitmap('res/filter365.gif'),wx.NullBitmap,message('portfolio_peryear'),message('portfolio_desc_peryear'))
-        self.AddRadioLabelTool(self._NTB2_ALLYEARS,'',wxBitmap('res/nofilter.gif'),wx.NullBitmap,message('portfolio_perall'),message('portfolio_desc_perall'))
+        self.AddRadioLabelTool(self._NTB2_30DAYS,'',wx.Bitmap('res/filter30.gif'),wx.NullBitmap,message('portfolio_per30days'),message('portfolio_desc_per30days'))
+        self.AddRadioLabelTool(self._NTB2_90DAYS,'',wx.Bitmap('res/filter90.gif'),wx.NullBitmap,message('portfolio_per90days'),message('portfolio_desc_per90days'))
+        self.AddRadioLabelTool(self._NTB2_CURRENTYEAR,'',wx.Bitmap('res/filter365.gif'),wx.NullBitmap,message('portfolio_peryear'),message('portfolio_desc_peryear'))
+        self.AddRadioLabelTool(self._NTB2_ALLYEARS,'',wx.Bitmap('res/nofilter.gif'),wx.NullBitmap,message('portfolio_perall'),message('portfolio_desc_perall'))
 
-        EVT_TOOL(self, self._NTB2_EXIT, self.onExit)
+        wx.EVT_TOOL(self, self._NTB2_EXIT, self.onExit)
 
-        EVT_TOOL(self, self._NTB2_DISPALL, self.onDispAll)
-        EVT_TOOL(self, self._NTB2_DISPQUOTES, self.onDispQuotes)
-        EVT_TOOL(self, self._NTB2_DISPCASH, self.onDispCash)
-        EVT_TOOL(self, self._NTB2_DISPPVAL, self.onDispPVal)
-        EVT_TOOL(self, self._NTB2_DISPSRD, self.onDispSRD)
+        wx.EVT_TOOL(self, self._NTB2_DISPALL, self.onDispAll)
+        wx.EVT_TOOL(self, self._NTB2_DISPQUOTES, self.onDispQuotes)
+        wx.EVT_TOOL(self, self._NTB2_DISPCASH, self.onDispCash)
+        wx.EVT_TOOL(self, self._NTB2_DISPPVAL, self.onDispPVal)
+        wx.EVT_TOOL(self, self._NTB2_DISPSRD, self.onDispSRD)
 
-        EVT_TOOL(self, self._NTB2_MODIFY, self.onModify)
-        EVT_TOOL(self, self._NTB2_DELETE, self.onDelete)
-        EVT_TOOL(self, self._NTB2_ADD, self.onAdd)
+        wx.EVT_TOOL(self, self._NTB2_MODIFY, self.onModify)
+        wx.EVT_TOOL(self, self._NTB2_DELETE, self.onDelete)
+        wx.EVT_TOOL(self, self._NTB2_ADD, self.onAdd)
 
-        EVT_TOOL(self, self._NTB2_30DAYS, self.on30Days)
-        EVT_TOOL(self, self._NTB2_90DAYS, self.on90Days)
-        EVT_TOOL(self, self._NTB2_CURRENTYEAR, self.onCurrentYear)
-        EVT_TOOL(self, self._NTB2_ALLYEARS, self.onAllYears)
+        wx.EVT_TOOL(self, self._NTB2_30DAYS, self.on30Days)
+        wx.EVT_TOOL(self, self._NTB2_90DAYS, self.on90Days)
+        wx.EVT_TOOL(self, self._NTB2_CURRENTYEAR, self.onCurrentYear)
+        wx.EVT_TOOL(self, self._NTB2_ALLYEARS, self.onAllYears)
 
         self.Realize()
 
@@ -590,15 +589,15 @@ class iTradeOperationToolbar(wxToolBar):
 # iTradeOperationsWindow
 # ============================================================================
 
-class iTradeOperationsWindow(wxFrame,iTrade_wxFrame,wxColumnSorterMixin):
+class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
 
     # window  identifier
     ID_WINDOW_TOP = 300
     ID_WINDOW_INFO = 301
 
     def __init__(self,parent,id,title,port):
-        self.m_id = wxNewId()
-        wxFrame.__init__(self,None,self.m_id, title, size = (800,320), style=wxDEFAULT_FRAME_STYLE|wxNO_FULL_REPAINT_ON_RESIZE)
+        self.m_id = wx.NewId()
+        wx.Frame.__init__(self,None,self.m_id, title, size = (800,320), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE)
         iTrade_wxFrame.__init__(self,parent,'portfolio')
         self.m_port = port
         self.m_mode = DISP_ALL
@@ -606,12 +605,12 @@ class iTradeOperationsWindow(wxFrame,iTrade_wxFrame,wxColumnSorterMixin):
         self.m_currentItem = -1
 
         # the menu
-        self.filemenu = wxMenu()
+        self.filemenu = wx.Menu()
         self.filemenu.Append(ID_SAVE,message('main_save'),message('main_desc_save'))
         self.filemenu.AppendSeparator()
         self.filemenu.Append(ID_CLOSE,message('main_close'),message('main_desc_close'))
 
-        self.dispmenu = wxMenu()
+        self.dispmenu = wx.Menu()
         self.dispmenu.AppendRadioItem(ID_DISPALL,message('portfolio_dispall'),message('portfolio_desc_dispall'))
         #self.dispmenu.AppendSeparator()
         self.dispmenu.AppendRadioItem(ID_DISPQUOTES,message('portfolio_dispquotes'),message('portfolio_desc_dispquotes'))
@@ -623,12 +622,12 @@ class iTradeOperationsWindow(wxFrame,iTrade_wxFrame,wxColumnSorterMixin):
         self.dispmenu.AppendRadioItem(ID_NORMAL_VIEW, message('portfolio_view_normal'),message('portfolio_view_desc_normal'))
         self.dispmenu.AppendRadioItem(ID_BIG_VIEW, message('portfolio_view_big'),message('portfolio_view_desc_big'))
 
-        self.opmenu = wxMenu()
+        self.opmenu = wx.Menu()
         self.opmenu.Append(ID_MODIFY,message('portfolio_opmodify'),message('portfolio_desc_opmodify'))
         self.opmenu.Append(ID_DELETE,message('portfolio_opdelete'),message('portfolio_desc_opdelete'))
         self.opmenu.Append(ID_ADD,message('portfolio_opadd'),message('portfolio_desc_opadd'))
 
-        self.permenu = wxMenu()
+        self.permenu = wx.Menu()
         self.permenu.AppendRadioItem(ID_30DAYS,message('portfolio_per30days'),message('portfolio_desc_per30days'))
         self.permenu.AppendRadioItem(ID_90DAYS,message('portfolio_per90days'),message('portfolio_desc_per90days'))
         self.permenu.AppendRadioItem(ID_CURRENTYEAR,message('portfolio_peryear'),message('portfolio_desc_peryear'))
@@ -638,7 +637,7 @@ class iTradeOperationsWindow(wxFrame,iTrade_wxFrame,wxColumnSorterMixin):
         self.updateMenuItems()
 
         # Creating the menubar
-        menuBar = wxMenuBar()
+        menuBar = wx.MenuBar()
 
         # Adding the "<x>menu" to the MenuBar
         menuBar.Append(self.filemenu,message('portfolio_menu_file'))
@@ -650,74 +649,74 @@ class iTradeOperationsWindow(wxFrame,iTrade_wxFrame,wxColumnSorterMixin):
         self.SetMenuBar(menuBar)
 
         # create an image list
-        self.m_imagelist = wxImageList(16,16)
-        self.idx_plus = self.m_imagelist.Add(wxBitmap('res/plus.gif'))
-        self.idx_minus = self.m_imagelist.Add(wxBitmap('res/minus.gif'))
-        self.idx_neutral = self.m_imagelist.Add(wxBitmap('res/neutral.gif'))
-        self.idx_unknown = self.m_imagelist.Add(wxBitmap('res/unknown.gif'))
+        self.m_imagelist = wx.ImageList(16,16)
+        self.idx_plus = self.m_imagelist.Add(wx.Bitmap('res/plus.gif'))
+        self.idx_minus = self.m_imagelist.Add(wx.Bitmap('res/minus.gif'))
+        self.idx_neutral = self.m_imagelist.Add(wx.Bitmap('res/neutral.gif'))
+        self.idx_unknown = self.m_imagelist.Add(wx.Bitmap('res/unknown.gif'))
 
-        self.sm_up = self.m_imagelist.Add(wxBitmap('res/sm_up.gif'))
-        self.sm_dn = self.m_imagelist.Add(wxBitmap('res/sm_down.gif'))
+        self.sm_up = self.m_imagelist.Add(wx.Bitmap('res/sm_up.gif'))
+        self.sm_dn = self.m_imagelist.Add(wx.Bitmap('res/sm_down.gif'))
 
         #
-        tID = wxNewId()
+        tID = wx.NewId()
 
         self.m_list = iTradeOperationsListCtrl(self, tID,
-                                 style = wxLC_REPORT | wxSUNKEN_BORDER | wxLC_SINGLE_SEL | wxLC_VRULES | wxLC_HRULES)
-        self.m_list.SetImageList(self.m_imagelist, wxIMAGE_LIST_SMALL)
+                                 style = wx.LC_REPORT | wx.SUNKEN_BORDER | wx.LC_SINGLE_SEL | wx.LC_VRULES | wx.LC_HRULES)
+        self.m_list.SetImageList(self.m_imagelist, wx.IMAGE_LIST_SMALL)
 
-        self.m_list.SetFont(wxFontFromSize(itrade_config.operationFontSize))
+        self.m_list.SetFont(FontFromSize(itrade_config.operationFontSize))
 
         # Now that the list exists we can init the other base class,
         # see wxPython/lib/mixins/listctrl.py
-        wxColumnSorterMixin.__init__(self, IDC_RESERVED)
+        wxl.ColumnSorterMixin.__init__(self, IDC_RESERVED)
 
         # Toolbar
-        self.m_toolbar = iTradeOperationToolbar(self, wxNewId())
+        self.m_toolbar = iTradeOperationToolbar(self, wx.NewId())
 
-        EVT_SIZE(self, self.OnSize)
-        EVT_LIST_ITEM_ACTIVATED(self, tID, self.OnItemActivated)
-        EVT_LIST_ITEM_SELECTED(self, tID, self.OnItemSelected)
+        wx.EVT_SIZE(self, self.OnSize)
+        wx.EVT_LIST_ITEM_ACTIVATED(self, tID, self.OnItemActivated)
+        wx.EVT_LIST_ITEM_SELECTED(self, tID, self.OnItemSelected)
 
-        EVT_COMMAND_RIGHT_CLICK(self.m_list, tID, self.OnRightClick)
+        wx.EVT_COMMAND_RIGHT_CLICK(self.m_list, tID, self.OnRightClick)
 
-        EVT_RIGHT_UP(self.m_list, self.OnRightClick)
-        EVT_RIGHT_DOWN(self.m_list, self.OnRightDown)
+        wx.EVT_RIGHT_UP(self.m_list, self.OnRightClick)
+        wx.EVT_RIGHT_DOWN(self.m_list, self.OnRightDown)
 
-        EVT_MENU(self, ID_SAVE, self.OnSave)
-        EVT_MENU(self, ID_CLOSE, self.OnClose)
+        wx.EVT_MENU(self, ID_SAVE, self.OnSave)
+        wx.EVT_MENU(self, ID_CLOSE, self.OnClose)
 
-        EVT_MENU(self, ID_DISPALL, self.OnDispAll)
-        EVT_MENU(self, ID_DISPQUOTES, self.OnDispQuotes)
-        EVT_MENU(self, ID_DISPCASH, self.OnDispCash)
-        EVT_MENU(self, ID_DISPPVAL, self.OnDispPVal)
-        EVT_MENU(self, ID_DISPSRD, self.OnDispSRD)
+        wx.EVT_MENU(self, ID_DISPALL, self.OnDispAll)
+        wx.EVT_MENU(self, ID_DISPQUOTES, self.OnDispQuotes)
+        wx.EVT_MENU(self, ID_DISPCASH, self.OnDispCash)
+        wx.EVT_MENU(self, ID_DISPPVAL, self.OnDispPVal)
+        wx.EVT_MENU(self, ID_DISPSRD, self.OnDispSRD)
 
-        EVT_MENU(self, ID_SMALL_VIEW, self.OnViewSmall)
-        EVT_MENU(self, ID_NORMAL_VIEW, self.OnViewNormal)
-        EVT_MENU(self, ID_BIG_VIEW, self.OnViewBig)
+        wx.EVT_MENU(self, ID_SMALL_VIEW, self.OnViewSmall)
+        wx.EVT_MENU(self, ID_NORMAL_VIEW, self.OnViewNormal)
+        wx.EVT_MENU(self, ID_BIG_VIEW, self.OnViewBig)
 
-        EVT_MENU(self, ID_MODIFY, self.OnModify)
-        EVT_MENU(self, ID_DELETE, self.OnDelete)
-        EVT_MENU(self, ID_ADD, self.OnAdd)
+        wx.EVT_MENU(self, ID_MODIFY, self.OnModify)
+        wx.EVT_MENU(self, ID_DELETE, self.OnDelete)
+        wx.EVT_MENU(self, ID_ADD, self.OnAdd)
 
-        EVT_MENU(self, ID_30DAYS, self.On30Days)
-        EVT_MENU(self, ID_90DAYS, self.On90Days)
-        EVT_MENU(self, ID_CURRENTYEAR, self.OnCurrentYear)
-        EVT_MENU(self, ID_ALLYEARS, self.OnAllYears)
+        wx.EVT_MENU(self, ID_30DAYS, self.On30Days)
+        wx.EVT_MENU(self, ID_90DAYS, self.On90Days)
+        wx.EVT_MENU(self, ID_CURRENTYEAR, self.OnCurrentYear)
+        wx.EVT_MENU(self, ID_ALLYEARS, self.OnAllYears)
 
-        EVT_WINDOW_DESTROY(self, self.OnDestroy)
-        EVT_CLOSE(self, self.OnCloseWindow)
+        wx.EVT_WINDOW_DESTROY(self, self.OnDestroy)
+        wx.EVT_CLOSE(self, self.OnCloseWindow)
 
         self.populate()
 
-    # --- [ wxColumnSorterMixin management ] -------------------------------------
+    # --- [ wxl.ColumnSorterMixin management ] -------------------------------------
 
-    # Used by the wxColumnSorterMixin, see wxPython/lib/mixins/listctrl.py
+    # Used by the wxl.ColumnSorterMixin, see wxPython/lib/mixins/listctrl.py
     def GetListCtrl(self):
         return self.m_list
 
-    # Used by the wxColumnSorterMixin, see wxPython/lib/mixins/listctrl.py
+    # Used by the wxl.ColumnSorterMixin, see wxPython/lib/mixins/listctrl.py
     def GetSortImages(self):
         return (self.sm_dn, self.sm_up)
 
@@ -726,9 +725,9 @@ class iTradeOperationsWindow(wxFrame,iTrade_wxFrame,wxColumnSorterMixin):
     def OnChangeViewText(self):
         self.setDirty()
         self.updateMenuItems()
-        self.m_list.SetFont(wxFontFromSize(itrade_config.operationFontSize))
+        self.m_list.SetFont(FontFromSize(itrade_config.operationFontSize))
         for i in range(0,IDC_RESERVED):
-            self.m_list.SetColumnWidth(i, wxLIST_AUTOSIZE)
+            self.m_list.SetColumnWidth(i, wx.LIST_AUTOSIZE)
 
     def OnViewSmall(self,e):
         itrade_config.operationFontSize = 1
@@ -810,17 +809,17 @@ class iTradeOperationsWindow(wxFrame,iTrade_wxFrame,wxColumnSorterMixin):
         self.itemOpMap = {}
 
         # set column headers
-        self.m_list.InsertColumn(IDC_DATE, message('portfolio_list_date'), wxLIST_FORMAT_LEFT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_OPERATION, message('portfolio_list_operation'), wxLIST_FORMAT_LEFT, wxLIST_AUTOSIZE_USEHEADER)
-        self.m_list.InsertColumn(IDC_DESCRIPTION, message('portfolio_list_description'), wxLIST_FORMAT_LEFT, 100)
-        self.m_list.InsertColumn(IDC_NUMBER, message('portfolio_list_number'), wxLIST_FORMAT_RIGHT, 55)
-        self.m_list.InsertColumn(IDC_DEBIT,message('portfolio_list_debit'), wxLIST_FORMAT_RIGHT, 75)
-        self.m_list.InsertColumn(IDC_CREDIT,message('portfolio_list_credit'), wxLIST_FORMAT_RIGHT, 75)
-        self.m_list.InsertColumn(IDC_EXPENSES,message('portfolio_list_expense'), wxLIST_FORMAT_RIGHT, 75)
-        self.m_list.InsertColumn(IDC_BALANCE,message('portfolio_list_balance'), wxLIST_FORMAT_RIGHT, 75)
+        self.m_list.InsertColumn(IDC_DATE, message('portfolio_list_date'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_OPERATION, message('portfolio_list_operation'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE_USEHEADER)
+        self.m_list.InsertColumn(IDC_DESCRIPTION, message('portfolio_list_description'), wx.LIST_FORMAT_LEFT, 100)
+        self.m_list.InsertColumn(IDC_NUMBER, message('portfolio_list_number'), wx.LIST_FORMAT_RIGHT, 55)
+        self.m_list.InsertColumn(IDC_DEBIT,message('portfolio_list_debit'), wx.LIST_FORMAT_RIGHT, 75)
+        self.m_list.InsertColumn(IDC_CREDIT,message('portfolio_list_credit'), wx.LIST_FORMAT_RIGHT, 75)
+        self.m_list.InsertColumn(IDC_EXPENSES,message('portfolio_list_expense'), wx.LIST_FORMAT_RIGHT, 75)
+        self.m_list.InsertColumn(IDC_BALANCE,message('portfolio_list_balance'), wx.LIST_FORMAT_RIGHT, 75)
         if self.filterSRDcolumn():
-            self.m_list.InsertColumn(IDC_SRD,message('portfolio_list_srd'), wxLIST_FORMAT_RIGHT, 75)
-        self.m_list.InsertColumn(IDC_RESERVED, '', wxLIST_FORMAT_LEFT, 1)
+            self.m_list.InsertColumn(IDC_SRD,message('portfolio_list_srd'), wx.LIST_FORMAT_RIGHT, 75)
+        self.m_list.InsertColumn(IDC_RESERVED, '', wx.LIST_FORMAT_LEFT, 1)
 
         # populate the list
         x = 0
@@ -901,13 +900,13 @@ class iTradeOperationsWindow(wxFrame,iTrade_wxFrame,wxColumnSorterMixin):
 
                         item = self.m_list.GetItem(x)
                         if sign == '+':
-                            item.SetTextColour(wxBLACK)
+                            item.SetTextColour(wx.BLACK)
                         elif sign == '-':
-                            item.SetTextColour(wxBLUE)
+                            item.SetTextColour(wx.BLUE)
                         elif sign == ' ':
-                            item.SetTextColour(wxBLACK)
+                            item.SetTextColour(wx.BLACK)
                         else:
-                            item.SetTextColour(wxRED)
+                            item.SetTextColour(wx.RED)
                         self.m_list.SetItem(item)
 
                         # one more item !
@@ -922,12 +921,12 @@ class iTradeOperationsWindow(wxFrame,iTrade_wxFrame,wxColumnSorterMixin):
             self.m_list.SetItemData(x, key)
 
         # adjust size of column
-        self.m_list.SetColumnWidth(IDC_DATE, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_DESCRIPTION, wxLIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_DATE, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_DESCRIPTION, wx.LIST_AUTOSIZE)
 
         # default selection
         self.m_currentItem = 0
-        self.m_list.SetItemState(0, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED)
+        self.m_list.SetItemState(0, wx.LIST_STATE_SELECTED, wx.LIST_STATE_SELECTED)
 
     # --- [ menu ] -------------------------------------
 
@@ -1049,7 +1048,7 @@ class iTradeOperationsWindow(wxFrame,iTrade_wxFrame,wxColumnSorterMixin):
         self.y = event.GetY()
         debug("x, y = %s" % str((self.x, self.y)))
         item, flags = self.m_list.HitTest((self.x, self.y))
-        if flags & wxLIST_HITTEST_ONITEM:
+        if flags & wx.LIST_HITTEST_ONITEM:
             pass
         else:
             self.m_currentItem = -1
@@ -1086,12 +1085,12 @@ class iTradeOperationsWindow(wxFrame,iTrade_wxFrame,wxColumnSorterMixin):
             self.m_popupID_Modify = ID_MODIFY
             self.m_popupID_Delete = ID_DELETE
             self.m_popupID_Add = ID_ADD
-            EVT_MENU(self, self.m_popupID_Modify, self.OnModify)
-            EVT_MENU(self, self.m_popupID_Delete, self.OnDelete)
-            EVT_MENU(self, self.m_popupID_Add, self.OnAdd)
+            wx.EVT_MENU(self, self.m_popupID_Modify, self.OnModify)
+            wx.EVT_MENU(self, self.m_popupID_Delete, self.OnDelete)
+            wx.EVT_MENU(self, self.m_popupID_Add, self.OnAdd)
 
         # make a menu
-        menu = wxMenu()
+        menu = wx.Menu()
         # add some items
         menu.Append(self.m_popupID_Modify, message('main_popup_edit'))
         menu.Enable(self.m_popupID_Modify,inList)
@@ -1102,7 +1101,7 @@ class iTradeOperationsWindow(wxFrame,iTrade_wxFrame,wxColumnSorterMixin):
 
         # Popup the menu.  If an item is selected then its handler
         # will be called before PopupMenu returns.
-        self.PopupMenu(menu, wxPoint(self.x, self.y))
+        self.PopupMenu(menu, wx.Point(self.x, self.y))
         menu.Destroy()
 
     def OnModify(self, event):
@@ -1171,7 +1170,7 @@ def open_iTradeOperations(win,port=None):
 
 def edit_iTradeOperation(win,op,opmode):
     dlg = iTradeOperationDialog(win,op,opmode)
-    if dlg.ShowModal()==wxID_OK:
+    if dlg.ShowModal()==wx.ID_OK:
         aRet = dlg.aRet
     else:
         aRet = None
@@ -1185,7 +1184,7 @@ def edit_iTradeOperation(win,op,opmode):
 if __name__=='__main__':
     setLevel(logging.INFO)
 
-    app = wxPySimpleApp()
+    app = wx.PySimpleApp()
 
     from itrade_local import *
     setLang('us')

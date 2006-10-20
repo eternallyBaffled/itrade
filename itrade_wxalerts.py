@@ -41,15 +41,12 @@ import logging
 
 # wxPython system
 import itrade_wxversion
-from wxPython.wx import *
-#from wxPython.calendar import *
-from wxPython.lib.mixins.listctrl import wxColumnSorterMixin, wxListCtrlAutoWidthMixin
-#from wxPython.lib.maskededit import wxMaskedTextCtrl
+import wx
+import wx.lib.mixins.listctrl as wxl
 
 # iTrade system
 from itrade_logging import *
 from itrade_local import message
-#from itrade_quotes import *
 from itrade_portfolio import *
 
 import itrade_wxres
@@ -73,11 +70,11 @@ IDC_TITLE = 4
 # iTradeAlertsListCtrl
 # ============================================================================
 
-class iTradeAlertsListCtrl(wxListCtrl, wxListCtrlAutoWidthMixin):
-    def __init__(self, parent, ID, pos=wxDefaultPosition,
-                 size=wxDefaultSize, style=0):
-        wxListCtrl.__init__(self, parent, ID, pos, size, style)
-        wxListCtrlAutoWidthMixin.__init__(self)
+class iTradeAlertsListCtrl(wx.ListCtrl, wxl.ListCtrlAutoWidthMixin):
+    def __init__(self, parent, ID, pos=wx.DefaultPosition,
+                 size=wx.DefaultSize, style=0):
+        wx.ListCtrl.__init__(self, parent, ID, pos, size, style)
+        wxl.ListCtrlAutoWidthMixin.__init__(self)
 
 # ============================================================================
 # iTradeAlertsPanel
@@ -85,24 +82,24 @@ class iTradeAlertsListCtrl(wxListCtrl, wxListCtrlAutoWidthMixin):
 #   Display Alerts information
 # ============================================================================
 
-class iTradeAlertsPanel(wxWindow):
+class iTradeAlertsPanel(wx.Window):
 
     def __init__(self,parent,id,port):
-        wxWindow.__init__(self, parent, id)
+        wx.Window.__init__(self, parent, id)
         self.m_port = port
 
-        EVT_SIZE(self, self.OnSize)
+        wx.EVT_SIZE(self, self.OnSize)
 
         # create an image list
-        self.m_imagelist = wxImageList(16,16)
-        self.idx_tbref = self.m_imagelist.Add(wxBitmap('res/invalid.gif'))
+        self.m_imagelist = wx.ImageList(16,16)
+        self.idx_tbref = self.m_imagelist.Add(wx.Bitmap('res/invalid.gif'))
 
         # List
-        tID = wxNewId()
+        tID = wx.NewId()
 
-        self.m_list = iTradeAlertsListCtrl(self, tID, style=wxLC_REPORT | wxSUNKEN_BORDER | wxLC_SINGLE_SEL | wxLC_VRULES | wxLC_HRULES)
-        self.m_list.SetImageList(self.m_imagelist, wxIMAGE_LIST_SMALL)
-        self.m_list.SetFont(wxFont(10, wxSWISS , wxNORMAL, wxNORMAL))
+        self.m_list = iTradeAlertsListCtrl(self, tID, style=wx.LC_REPORT | wx.SUNKEN_BORDER | wx.LC_SINGLE_SEL | wx.LC_VRULES | wx.LC_HRULES)
+        self.m_list.SetImageList(self.m_imagelist, wx.IMAGE_LIST_SMALL)
+        self.m_list.SetFont(wx.Font(10, wx.SWISS , wx.NORMAL, wx.NORMAL))
 
         # __x temp
         alerts.scan()
@@ -114,17 +111,17 @@ class iTradeAlertsPanel(wxWindow):
         self.m_list.SetDimensions(0, 32, w, h-32)
         event.Skip(False)
 
-    # Used by the wxColumnSorterMixin, see wxPython/lib/mixins/listctrl.py
+    # Used by the wxl.ColumnSorterMixin, see wxPython/lib/mixins/listctrl.py
     def GetListCtrl(self):
         return self.m_list
 
     def refresh(self):
         self.m_list.ClearAll()
-        self.m_list.InsertColumn(IDC_DATE, message('date'), wxLIST_FORMAT_LEFT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_TYPE, message('type'), wxLIST_FORMAT_LEFT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_SOURCE, message('source'), wxLIST_FORMAT_LEFT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_ISIN, message('isin'), wxLIST_FORMAT_LEFT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_TITLE, message('title'), wxLIST_FORMAT_LEFT, wxLIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_DATE, message('date'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_TYPE, message('type'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_SOURCE, message('source'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_ISIN, message('isin'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_TITLE, message('title'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
 
         x = 0
         for eachAlert in alerts.listAlerts():
@@ -138,14 +135,14 @@ class iTradeAlertsPanel(wxWindow):
 
         # default selection
         self.m_currentItem = 0
-        self.m_list.SetItemState(0, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED)
+        self.m_list.SetItemState(0, wx.LIST_STATE_SELECTED, wx.LIST_STATE_SELECTED)
 
         # adjust columns
-        self.m_list.SetColumnWidth(IDC_DATE, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_TYPE, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_SOURCE, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_ISIN, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_TITLE, wxLIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_DATE, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_TYPE, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_SOURCE, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_ISIN, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_TITLE, wx.LIST_AUTOSIZE)
 
 # ============================================================================
 # iTradeNewsPanel
@@ -153,10 +150,10 @@ class iTradeAlertsPanel(wxWindow):
 #   Display news for all quotes in the portfolio
 # ============================================================================
 
-class iTradeNewsPanel(wxWindow):
+class iTradeNewsPanel(wx.Window):
 
     def __init__(self,parent,id,port):
-        wxWindow.__init__(self, parent, id)
+        wx.Window.__init__(self, parent, id)
         self.m_port = port
 
     def refresh(self):
@@ -166,27 +163,27 @@ class iTradeNewsPanel(wxWindow):
 # iTradeAlertsNotebookWindow
 # ============================================================================
 
-class iTradeAlertsNotebookWindow(wxNotebook):
+class iTradeAlertsNotebookWindow(wx.Notebook):
 
     ID_PAGE_ALERTS = 0
     ID_PAGE_NEWS = 1
 
     def __init__(self,parent,id,port):
-        wxNotebook.__init__(self,parent,id,wxDefaultPosition, style=wxSIMPLE_BORDER|wxNB_TOP)
+        wx.Notebook.__init__(self,parent,id,wx.DefaultPosition, style=wx.SIMPLE_BORDER|wx.NB_TOP)
         self.m_port = port
         self.init()
 
-        EVT_NOTEBOOK_PAGE_CHANGED(self, self.GetId(), self.OnPageChanged)
-        EVT_NOTEBOOK_PAGE_CHANGING(self, self.GetId(), self.OnPageChanging)
+        wx.EVT_NOTEBOOK_PAGE_CHANGED(self, self.GetId(), self.OnPageChanged)
+        wx.EVT_NOTEBOOK_PAGE_CHANGING(self, self.GetId(), self.OnPageChanging)
 
     def init(self):
         self.win = {}
         self.DeleteAllPages()
 
-        self.win[self.ID_PAGE_ALERTS] = iTradeAlertsPanel(self,wxNewId(),self.m_port)
+        self.win[self.ID_PAGE_ALERTS] = iTradeAlertsPanel(self,wx.NewId(),self.m_port)
         self.AddPage(self.win[self.ID_PAGE_ALERTS], message('alerts_alerts'))
 
-        self.win[self.ID_PAGE_NEWS] = iTradeNewsPanel(self,wxNewId(),self.m_port)
+        self.win[self.ID_PAGE_NEWS] = iTradeNewsPanel(self,wx.NewId(),self.m_port)
         self.AddPage(self.win[self.ID_PAGE_NEWS], message('alerts_news'))
 
     def OnPageChanged(self, event):
@@ -209,18 +206,18 @@ class iTradeAlertsNotebookWindow(wxNotebook):
 # iTradeAlertsWindow
 # ============================================================================
 
-class iTradeAlertsWindow(wxFrame,iTrade_wxFrame):
+class iTradeAlertsWindow(wx.Frame,iTrade_wxFrame):
 
     def __init__(self,parent,id,title,port):
-        self.m_id = wxNewId()
-        wxFrame.__init__(self,None,self.m_id, title, size = (640,480), style=wxDEFAULT_FRAME_STYLE|wxNO_FULL_REPAINT_ON_RESIZE)
+        self.m_id = wx.NewId()
+        wx.Frame.__init__(self,None,self.m_id, title, size = (640,480), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE)
         iTrade_wxFrame.__init__(self,parent,'alerts')
         self.m_port = port
 
         self.m_book = iTradeAlertsNotebookWindow(self, -1, port=self.m_port)
 
-        EVT_WINDOW_DESTROY(self, self.OnDestroy)
-        EVT_SIZE(self, self.OnSize)
+        wx.EVT_WINDOW_DESTROY(self, self.OnDestroy)
+        wx.EVT_SIZE(self, self.OnSize)
 
     def OnSize(self, event):
         w,h = self.GetClientSizeTuple()
@@ -256,7 +253,7 @@ if __name__=='__main__':
 
     alerts.load()
 
-    app = wxPySimpleApp()
+    app = wx.PySimpleApp()
 
     from itrade_local import *
     setLang('us')

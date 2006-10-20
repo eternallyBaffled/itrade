@@ -40,7 +40,7 @@ import logging
 
 # wxPython system
 import itrade_wxversion
-from wxPython.wx import *
+import wx
 
 # iTrade system
 from itrade_logging import *
@@ -96,48 +96,48 @@ def fmtVolumeFunc0(x,pos):
 # iTrade_wxToolbarGraph
 # ============================================================================
 
-class iTrade_wxToolbarGraph(wxToolBar):
+class iTrade_wxToolbarGraph(wx.ToolBar):
     def __init__(self, canvas):
         self.m_parent = canvas.GetParent()
-        wxToolBar.__init__(self, self.m_parent, -1)
+        wx.ToolBar.__init__(self, self.m_parent, -1)
         self.canvas = canvas
         self._init_toolbar()
 
     def _init_toolbar(self):
-        self._NTB2_HOME = wxNewId()
-        self._NTB2_PANLEFT = wxNewId()
-        self._NTB2_PANRIGHT = wxNewId()
-        self._NTB2_ZOOMOUT = wxNewId()
-        self._NTB2_ZOOMIN = wxNewId()
-        self._NTB2_CONFIG = wxNewId()
-        self._NTB2_SAVE = wxNewId()
+        self._NTB2_HOME = wx.NewId()
+        self._NTB2_PANLEFT = wx.NewId()
+        self._NTB2_PANRIGHT = wx.NewId()
+        self._NTB2_ZOOMOUT = wx.NewId()
+        self._NTB2_ZOOMIN = wx.NewId()
+        self._NTB2_CONFIG = wx.NewId()
+        self._NTB2_SAVE = wx.NewId()
 
-        self.SetToolBitmapSize(wxSize(24,24))
-        self.AddSimpleTool(self._NTB2_HOME, wxArtProvider.GetBitmap(wxART_GO_HOME, wxART_TOOLBAR),
+        self.SetToolBitmapSize(wx.Size(24,24))
+        self.AddSimpleTool(self._NTB2_HOME, wx.ArtProvider.GetBitmap(wx.ART_GO_HOME, wx.ART_TOOLBAR),
                            message('tb_home'), message('tb_home'))
-        self.AddControl(wxStaticLine(self, -1, size=(-1,23), style=wxLI_VERTICAL))
-        self.AddSimpleTool(self._NTB2_PANLEFT, wxArtProvider.GetBitmap(wxART_GO_BACK, wxART_TOOLBAR),
+        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+        self.AddSimpleTool(self._NTB2_PANLEFT, wx.ArtProvider.GetBitmap(wx.ART_GO_BACK, wx.ART_TOOLBAR),
                            message('tb_pan_left'), message('tb_pan_left'))
-        self.AddSimpleTool(self._NTB2_PANRIGHT, wxArtProvider.GetBitmap(wxART_GO_FORWARD, wxART_TOOLBAR),
+        self.AddSimpleTool(self._NTB2_PANRIGHT, wx.ArtProvider.GetBitmap(wx.ART_GO_FORWARD, wx.ART_TOOLBAR),
                            message('tb_pan_right'), message('tb_pan_right'))
-        self.AddControl(wxStaticLine(self, -1, size=(-1,23), style=wxLI_VERTICAL))
+        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
         self.AddSimpleTool(self._NTB2_ZOOMOUT, _load_bitmap('stock_zoom-out.xpm'),
                            message('tb_zoom_out'), message('tb_zoom_out'))
         self.AddSimpleTool(self._NTB2_ZOOMIN, _load_bitmap('stock_zoom-in.xpm'),
                            message('tb_zoom_in'), message('tb_zoom_in'))
-        self.AddControl(wxStaticLine(self, -1, size=(-1,23), style=wxLI_VERTICAL))
-        self.AddSimpleTool(self._NTB2_CONFIG, wxArtProvider.GetBitmap(wxART_TICK_MARK, wxART_TOOLBAR),
+        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+        self.AddSimpleTool(self._NTB2_CONFIG, wx.ArtProvider.GetBitmap(wx.ART_TICK_MARK, wx.ART_TOOLBAR),
                            message('tb_config'), message('tb_config'))
-        self.AddSimpleTool(self._NTB2_SAVE, wxArtProvider.GetBitmap(wxART_FILE_SAVE, wxART_TOOLBAR),
+        self.AddSimpleTool(self._NTB2_SAVE, wx.ArtProvider.GetBitmap(wx.ART_FILE_SAVE, wx.ART_TOOLBAR),
                            message('tb_save_plot'), message('tb_save_plot'))
 
-        EVT_TOOL(self, self._NTB2_HOME, self.home)
-        EVT_TOOL(self, self._NTB2_PANLEFT, self.panLeft)
-        EVT_TOOL(self, self._NTB2_PANRIGHT, self.panRight)
-        EVT_TOOL(self, self._NTB2_ZOOMOUT, self.zoomOut)
-        EVT_TOOL(self, self._NTB2_ZOOMIN, self.zoomIn)
-        EVT_TOOL(self, self._NTB2_CONFIG, self.config)
-        EVT_TOOL(self, self._NTB2_SAVE, self.save)
+        wx.EVT_TOOL(self, self._NTB2_HOME, self.home)
+        wx.EVT_TOOL(self, self._NTB2_PANLEFT, self.panLeft)
+        wx.EVT_TOOL(self, self._NTB2_PANRIGHT, self.panRight)
+        wx.EVT_TOOL(self, self._NTB2_ZOOMOUT, self.zoomOut)
+        wx.EVT_TOOL(self, self._NTB2_ZOOMIN, self.zoomIn)
+        wx.EVT_TOOL(self, self._NTB2_CONFIG, self.config)
+        wx.EVT_TOOL(self, self._NTB2_SAVE, self.save)
 
         self.Realize()
 
@@ -161,15 +161,15 @@ class iTrade_wxToolbarGraph(wxToolBar):
 
     def save(self,event):
         filetypes = self.canvas._get_imagesave_wildcards()
-        dlg = wxFileDialog(self.m_parent, message('save_to_file'), itrade_config.dirSnapshots, "", filetypes, wxSAVE|wxOVERWRITE_PROMPT|wxCHANGE_DIR)
-        if dlg.ShowModal() == wxID_OK:
+        dlg = wx.FileDialog(self.m_parent, message('save_to_file'), itrade_config.dirSnapshots, "", filetypes, wx.SAVE|wx.OVERWRITE_PROMPT|wx.CHANGE_DIR)
+        if dlg.ShowModal() == wx.ID_OK:
             dirname  = dlg.GetDirectory()
             filename = dlg.GetFilename()
             debug('Save file dir:%s name:%s' % (dirname, filename))
             self.canvas.print_figure(os.path.join(dirname, filename))
 
     def set_cursor(self, cursor):
-        cursor = wxStockCursor(cursord[cursor])
+        cursor = wx.StockCursor(cursord[cursor])
         self.canvas.SetCursor( cursor )
 
     def update(self):
@@ -183,7 +183,7 @@ class iTrade_wxPanelGraph(object):
     def __init__(self, parent, id, size):
         self.m_parent = parent
 
-        self.SetBackgroundColour(wxNamedColor("WHITE"))
+        self.SetBackgroundColour(wx.NamedColor("WHITE"))
 
         # figure me
         self.figure = Figure(size, dpi = 96)
@@ -192,23 +192,23 @@ class iTrade_wxPanelGraph(object):
         self.canvas.mpl_connect('button_press_event', self.on_click)
         self.toolbar = iTrade_wxToolbarGraph(self.canvas)
 
-        EVT_LEFT_DOWN(self.toolbar, self.OnLeftDown)
+        wx.EVT_LEFT_DOWN(self.toolbar, self.OnLeftDown)
 
         # default parameters
         self.m_hasChart1Vol = False
         self.m_hasChart2Vol = False
 
         # size everything to fit in panel
-        sizer = wxBoxSizer(wxVERTICAL)
-        sizer.Add(self.canvas, 1, wxLEFT | wxTOP | wxGROW)
-        sizer.Add(self.toolbar, 0, wxGROW)
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer.Add(self.canvas, 1, wx.LEFT | wx.TOP | wx.GROW)
+        sizer.Add(self.toolbar, 0, wx.GROW)
         self.SetSizerAndFit(sizer)
-        EVT_PAINT(self, self.OnPaint)
+        wx.EVT_PAINT(self, self.OnPaint)
 
         # cursor need a timer
         self.cursorx,self.cursory = 0,0
-        self.m_timer = wxTimer(self)
-        EVT_TIMER(self, -1, self.OnTimer)
+        self.m_timer = wx.Timer(self)
+        wx.EVT_TIMER(self, -1, self.OnTimer)
 
     def cursorState(self):
         # return False if something prevent cursor to show up
@@ -311,10 +311,10 @@ class iTrade_wxPanelGraph(object):
         newx = left+((width/self.getPeriod())*int(time))
         debug('newx=%d width=%d period=%d time=%d' % (newx,width,self.getPeriod(),int(time)))
 
-        dc = wxClientDC(self.canvas)
-        dc.SetLogicalFunction(wxXOR)
-        wbrush = wxBrush(wxColour(255,255,255), wxTRANSPARENT)
-        wpen = wxPen(wxColour(200, 200, 200), 1, wxSOLID)
+        dc = wx.ClientDC(self.canvas)
+        dc.SetLogicalFunction(wx.XOR)
+        wbrush = wx.Brush(wx.Colour(255,255,255), wx.TRANSPARENT)
+        wpen = wx.Pen(wx.Colour(200, 200, 200), 1, wx.SOLID)
         dc.SetBrush(wbrush)
         dc.SetPen(wpen)
 

@@ -43,8 +43,8 @@ import logging
 
 # wxPython system
 import itrade_wxversion
-from wxPython.wx import *
-from wxPython.calendar import *
+import wx
+import wx.calendar as wxcal
 
 # iTrade system
 from itrade_logging import *
@@ -56,49 +56,49 @@ from itrade_local import message
 # iTradeDatePicker
 # ============================================================================
 
-class iTradeDatePicker(wxDialog):
+class iTradeDatePicker(wx.Dialog):
     def __init__(self, parent, title, ddate=None):
-        wxDialog.__init__(self, parent, -1, title, size=(420, 420))
+        wx.Dialog.__init__(self, parent, -1, title, size=(420, 420))
         self.dRet = ddate
 
         # calendar
-        sizer = wxBoxSizer(wxVERTICAL)
-        box = wxBoxSizer(wxHORIZONTAL)
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        box = wx.BoxSizer(wx.HORIZONTAL)
 
         if ddate==None:
-            dd = wxDateTime_Now()
+            dd = wx.DateTime_Now()
             debug('iTradeDatePicker() today date = %s' % dd.__str__())
         else:
             debug('iTradeDatePicker() default date = %d %d %d' % (ddate.day,ddate.month,ddate.year))
-            dd = wxDateTimeFromDMY(ddate.day,ddate.month-1,ddate.year)
+            dd = wx.DateTimeFromDMY(ddate.day,ddate.month-1,ddate.year)
             debug('iTradeDatePicker() default date = %s' % dd.__str__())
 
-        self.cal = wxCalendarCtrl(self, -1, dd, pos = (25,50),
-                             style = wxCAL_SHOW_HOLIDAYS
-                             | wxCAL_MONDAY_FIRST
-                             | wxCAL_SEQUENTIAL_MONTH_SELECTION
+        self.cal = wxcal.CalendarCtrl(self, -1, dd, pos = (25,50),
+                             style = wxcal.CAL_SHOW_HOLIDAYS
+                             | wxcal.CAL_MONDAY_FIRST
+                             | wxcal.CAL_SEQUENTIAL_MONTH_SELECTION
                              )
 
-        box.Add(self.cal, 1, wxALIGN_CENTRE|wxALL, 5)
+        box.Add(self.cal, 1, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        sizer.AddSizer(box, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5)
+        sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
         # buttons
-        box = wxBoxSizer(wxHORIZONTAL)
-        btn = wxButton(self, wxID_OK, message('ok'))
+        box = wx.BoxSizer(wx.HORIZONTAL)
+        btn = wx.Button(self, wx.ID_OK, message('ok'))
         btn.SetDefault()
         btn.SetHelpText(message('ok_desc'))
-        box.Add(btn, 0, wxALIGN_CENTRE|wxALL, 5)
-        EVT_BUTTON(self, btn.GetId(), self.OnValid)
+        box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        wx.EVT_BUTTON(self, btn.GetId(), self.OnValid)
 
-        btn = wxButton(self, wxID_CANCEL, message('cancel'))
+        btn = wx.Button(self, wx.ID_CANCEL, message('cancel'))
         btn.SetHelpText(message('cancel_desc'))
-        box.Add(btn, 0, wxALIGN_CENTRE|wxALL, 5)
-        EVT_BUTTON(self, btn.GetId(), self.OnCancel)
+        box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        wx.EVT_BUTTON(self, btn.GetId(), self.OnCancel)
 
-        sizer.AddSizer(box, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5)
+        sizer.AddSizer(box, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
-        EVT_SIZE(self, self.OnSize)
+        wx.EVT_SIZE(self, self.OnSize)
 
         self.SetAutoLayout(True)
         self.SetSizerAndFit(sizer)
@@ -110,11 +110,11 @@ class iTradeDatePicker(wxDialog):
         if self.Validate() and self.TransferDataFromWindow():
             wxD = self.cal.GetDate()
             self.dRet = date(wxD.GetYear(),wxD.GetMonth()+1,wxD.GetDay())
-            self.EndModal(wxID_OK)
+            self.EndModal(wx.ID_OK)
 
     def OnCancel(self,event):
         self.dRet = None
-        self.EndModal(wxID_CANCEL)
+        self.EndModal(wx.ID_CANCEL)
 
 # ============================================================================
 # itrade_datePicker()
@@ -137,7 +137,7 @@ def itrade_datePicker(win,title,ddate):
 if __name__=='__main__':
     setLevel(logging.INFO)
 
-    app = wxPySimpleApp()
+    app = wx.PySimpleApp()
     print itrade_datePicker(None,"Datepicker",date.today())
 
 # ============================================================================

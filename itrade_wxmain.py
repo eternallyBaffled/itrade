@@ -44,7 +44,7 @@ import time
 
 # wxPython system
 import itrade_wxversion
-from wxPython.wx import *
+import wx
 
 # iTrade system
 import itrade_config
@@ -59,11 +59,11 @@ from itrade_wxmatrix import iTradeMainWindow
 # iTrade_SplashScreen
 # ============================================================================
 
-class iTrade_SplashScreen(wxSplashScreen):
+class iTrade_SplashScreen(wx.SplashScreen):
     def __init__(self,app):
-        bmp = wxImage("res/itrade.jpg").ConvertToBitmap()
-        wxSplashScreen.__init__(self,bmp,wxSPLASH_CENTRE_ON_SCREEN,0,None,-1)
-        EVT_CLOSE(self,self.OnClose)
+        bmp = wx.Image("res/itrade.jpg").ConvertToBitmap()
+        wx.SplashScreen.__init__(self,bmp,wx.SPLASH_CENTRE_ON_SCREEN,0,None,-1)
+        wx.EVT_CLOSE(self,self.OnClose)
 
         thread.start_new_thread(self.Run,())
 
@@ -89,12 +89,12 @@ class iTrade_SplashScreen(wxSplashScreen):
 # iTradeApp
 # ============================================================================
 
-class iTradeApp(wxApp):
+class iTradeApp(wx.App):
     def OnInit(self):
-        provider = wxSimpleHelpProvider()
-        wxHelpProvider_Set(provider)
+        provider = wx.SimpleHelpProvider()
+        wx.HelpProvider_Set(provider)
 
-        wxSystemOptions.SetOptionInt("mac.window-plain-transition",1)
+        wx.SystemOptions.SetOptionInt("mac.window-plain-transition",1)
         self.m_splash = iTrade_SplashScreen(self)
         self.m_splash.Show()
         return True

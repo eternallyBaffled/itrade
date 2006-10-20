@@ -43,8 +43,8 @@ import thread
 
 # wxPython system
 import itrade_wxversion
-from wxPython.wx import *
-from wxPython.lib.mixins.listctrl import wxColumnSorterMixin, wxListCtrlAutoWidthMixin
+import wx
+import wx.lib.mixins.listctrl as wxl
 
 # iTrade system
 import itrade_config
@@ -79,27 +79,27 @@ ID_AUTOREFRESH = 231
 #
 # ============================================================================
 
-class iTradeCurrencyToolbar(wxToolBar):
+class iTradeCurrencyToolbar(wx.ToolBar):
 
     def __init__(self,parent,id):
-        wxToolBar.__init__(self,parent,id,style = wxTB_HORIZONTAL | wxNO_BORDER | wxTB_FLAT)
+        wx.ToolBar.__init__(self,parent,id,style = wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT)
         self.m_parent = parent
         self._init_toolbar()
 
     def _init_toolbar(self):
-        self._NTB2_EXIT = wxNewId()
-        self._NTB2_REFRESH = wxNewId()
+        self._NTB2_EXIT = wx.NewId()
+        self._NTB2_REFRESH = wx.NewId()
 
-        self.SetToolBitmapSize(wxSize(24,24))
-        self.AddSimpleTool(self._NTB2_EXIT, wxArtProvider.GetBitmap(wxART_CROSS_MARK, wxART_TOOLBAR),
+        self.SetToolBitmapSize(wx.Size(24,24))
+        self.AddSimpleTool(self._NTB2_EXIT, wx.ArtProvider.GetBitmap(wx.ART_CROSS_MARK, wx.ART_TOOLBAR),
                            message('main_close'), message('main_desc_close'))
 
-        self.AddControl(wxStaticLine(self, -1, size=(-1,23), style=wxLI_VERTICAL))
-        self.AddSimpleTool(self._NTB2_REFRESH, wxBitmap('res/refresh.png'),
+        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+        self.AddSimpleTool(self._NTB2_REFRESH, wx.Bitmap('res/refresh.png'),
                            message('main_view_refresh'), message('main_view_desc_refresh'))
 
-        EVT_TOOL(self, self._NTB2_EXIT, self.onExit)
-        EVT_TOOL(self, self._NTB2_REFRESH, self.onRefresh)
+        wx.EVT_TOOL(self, self._NTB2_EXIT, self.onExit)
+        wx.EVT_TOOL(self, self._NTB2_REFRESH, self.onRefresh)
         self.Realize()
 
     def onRefresh(self, event):
@@ -112,11 +112,11 @@ class iTradeCurrencyToolbar(wxToolBar):
 # iTradeCurrenciesListCtrl
 # ============================================================================
 
-class iTradeCurrenciesListCtrl(wxListCtrl, wxListCtrlAutoWidthMixin):
-    def __init__(self, parent, ID, pos=wxDefaultPosition,
-                 size=wxDefaultSize, style=0):
-        wxListCtrl.__init__(self, parent, ID, pos, size, style)
-        wxListCtrlAutoWidthMixin.__init__(self)
+class iTradeCurrenciesListCtrl(wx.ListCtrl, wxl.ListCtrlAutoWidthMixin):
+    def __init__(self, parent, ID, pos=wx.DefaultPosition,
+                 size = wx.DefaultSize, style=0):
+        wx.ListCtrl.__init__(self, parent, ID, pos, size, style)
+        wxl.ListCtrlAutoWidthMixin.__init__(self)
 
 # ============================================================================
 # iTradeCurrenciesWindow
@@ -125,20 +125,20 @@ class iTradeCurrenciesListCtrl(wxListCtrl, wxListCtrlAutoWidthMixin):
 import wx.lib.newevent
 (PostInitEvent,EVT_POSTINIT) = wx.lib.newevent.NewEvent()
 
-class iTradeCurrenciesWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveCurrencyMixin):
+class iTradeCurrenciesWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveCurrencyMixin):
     def __init__(self, parent,id,title):
-        self.m_id = wxNewId()
-        wxFrame.__init__(self,None,self.m_id, title, size = (640,480), style=wxDEFAULT_FRAME_STYLE|wxNO_FULL_REPAINT_ON_RESIZE)
+        self.m_id = wx.NewId()
+        wx.Frame.__init__(self,None,self.m_id, title, size = (640,480), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE)
         iTrade_wxFrame.__init__(self,parent,'currencies')
         iTrade_wxLiveCurrencyMixin.__init__(self)
 
         # the menu
-        self.filemenu = wxMenu()
+        self.filemenu = wx.Menu()
         #self.filemenu.Append(ID_SAVE,message('main_save'),message('main_desc_save'))
         #self.filemenu.AppendSeparator()
         self.filemenu.Append(ID_CLOSE,message('main_close'),message('main_desc_close'))
 
-        self.viewmenu = wxMenu()
+        self.viewmenu = wx.Menu()
         self.viewmenu.Append(ID_REFRESH, message('main_view_refresh'),message('main_view_desc_refresh'))
         self.viewmenu.AppendCheckItem(ID_AUTOREFRESH, message('main_view_autorefresh'),message('main_view_desc_autorefresh'))
 
@@ -146,7 +146,7 @@ class iTradeCurrenciesWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveCurrencyMixin):
         self.updateCheckItems()
 
         # Creating the menubar
-        menuBar = wxMenuBar()
+        menuBar = wx.MenuBar()
 
         # Adding the "<x>menu" to the MenuBar
         menuBar.Append(self.filemenu,message('currency_menu_file'))
@@ -156,28 +156,28 @@ class iTradeCurrenciesWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveCurrencyMixin):
         self.SetMenuBar(menuBar)
 
         # Toolbar
-        self.m_toolbar = iTradeCurrencyToolbar(self, wxNewId())
+        self.m_toolbar = iTradeCurrencyToolbar(self, wx.NewId())
 
         # default list is quotes
-        self.m_list = iTradeCurrenciesListCtrl(self, wxNewId(),
-                                 style = wxLC_REPORT | wxSUNKEN_BORDER | wxLC_SINGLE_SEL | wxLC_VRULES | wxLC_HRULES)
-        #self.m_list.SetImageList(self.m_imagelist, wxIMAGE_LIST_SMALL)
-        self.m_list.SetFont(wxFont(10, wxSWISS , wxNORMAL, wxNORMAL))
+        self.m_list = iTradeCurrenciesListCtrl(self, wx.NewId(),
+                                 style = wx.LC_REPORT | wx.SUNKEN_BORDER | wx.LC_SINGLE_SEL | wx.LC_VRULES | wx.LC_HRULES)
+        #self.m_list.SetImageList(self.m_imagelist, wx.IMAGE_LIST_SMALL)
+        self.m_list.SetFont(wx.Font(10, wx.SWISS , wx.NORMAL, wx.NORMAL))
 
-        EVT_SIZE(self, self.OnSize)
+        wx.EVT_SIZE(self, self.OnSize)
 
-        EVT_MENU(self, ID_CLOSE, self.OnClose)
-        EVT_MENU(self, ID_REFRESH, self.OnRefresh)
-        EVT_MENU(self, ID_AUTOREFRESH, self.OnAutoRefresh)
+        wx.EVT_MENU(self, ID_CLOSE, self.OnClose)
+        wx.EVT_MENU(self, ID_REFRESH, self.OnRefresh)
+        wx.EVT_MENU(self, ID_AUTOREFRESH, self.OnAutoRefresh)
 
-        EVT_WINDOW_DESTROY(self, self.OnDestroy)
-        EVT_CLOSE(self, self.OnCloseWindow)
+        wx.EVT_WINDOW_DESTROY(self, self.OnDestroy)
+        wx.EVT_CLOSE(self, self.OnCloseWindow)
 
         EVT_UPDATE_LIVECURRENCY(self, self.OnLiveCurrency)
 
         # refresh full view after window init finished
         EVT_POSTINIT(self, self.OnPostInit)
-        wxPostEvent(self,PostInitEvent())
+        wx.PostEvent(self,PostInitEvent())
 
         self.Show(True)
 
@@ -210,7 +210,7 @@ class iTradeCurrenciesWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveCurrencyMixin):
         self.stopLiveCurrency(bBusy=False)
         self.Destroy()
 
-    # Used by the wxColumnSorterMixin, see wxPython/lib/mixins/listctrl.py
+    # Used by the wxl.ColumnSorterMixin, see wxPython/lib/mixins/listctrl.py
     def GetListCtrl(self):
         return self.m_list
 
@@ -239,7 +239,7 @@ class iTradeCurrenciesWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveCurrencyMixin):
         max = len(lst)
         keepGoing = True
         if self.hasFocus():
-            dlg = wxProgressDialog(message('currency_refreshing'),"",max,self,wxPD_CAN_ABORT | wxPD_APP_MODAL)
+            dlg = wx.ProgressDialog(message('currency_refreshing'),"",max,self,wx.PD_CAN_ABORT | wx.PD_APP_MODAL)
         else:
             dlg = None
         for eachKey in lst:
@@ -273,10 +273,10 @@ class iTradeCurrenciesWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveCurrencyMixin):
         self.unregisterLiveCurrency()
         self.m_list.ClearAll()
 
-        self.m_list.InsertColumn(IDC_FROM, message('currency_from'), wxLIST_FORMAT_LEFT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_RATE, message('currency_rate'), wxLIST_FORMAT_LEFT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_TO, message('currency_to'), wxLIST_FORMAT_LEFT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_DESC, '', wxLIST_FORMAT_LEFT, wxLIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_FROM, message('currency_from'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_RATE, message('currency_rate'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_TO, message('currency_to'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_DESC, '', wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
 
         x = 0
         for eachKey in currencies.m_currencies.keys():
@@ -317,7 +317,7 @@ if __name__=='__main__':
     setLang('us')
     gMessage.load()
 
-    app = wxPySimpleApp()
+    app = wx.PySimpleApp()
 
     open_iTradeCurrencies(None)
     app.MainLoop()

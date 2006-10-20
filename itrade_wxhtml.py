@@ -43,8 +43,8 @@ import time
 
 # wxPython system
 import itrade_wxversion
-from wxPython.wx import *
-from wxPython.html import *
+import wx
+import wx.html as wxhtml
 
 # iTrade system
 from itrade_logging import *
@@ -64,9 +64,9 @@ from itrade_news import gNews
 #   render page on the internal browser
 # ============================================================================
 
-class iTradeHtmlWindow(wxHtmlWindow):
+class iTradeHtmlWindow(wxhtml.HtmlWindow):
     def __init__(self, parent, id, bUseFromFeed=False, size=None):
-        wxHtmlWindow.__init__(self, parent, id, style = wxNO_FULL_REPAINT_ON_RESIZE)
+        wxhtml.HtmlWindow.__init__(self, parent, id, style = wx.NO_FULL_REPAINT_ON_RESIZE)
         self.m_bUseFromFeed = bUseFromFeed
         self.m_parent = parent
         if size:
@@ -101,13 +101,13 @@ class iTradeHtmlWindow(wxHtmlWindow):
 # iTradeHtmlPanel
 # ============================================================================
 
-class iTradeHtmlPanel(wxPanel):
+class iTradeHtmlPanel(wx.Panel):
     def __init__(self, parent, id, url=None):
-        wxPanel.__init__(self, parent, id, size = (800,600), style=wxTAB_TRAVERSAL|wxCLIP_CHILDREN|wxNO_FULL_REPAINT_ON_RESIZE)
+        wx.Panel.__init__(self, parent, id, size = (800,600), style = wx.TAB_TRAVERSAL|wx.CLIP_CHILDREN|wx.NO_FULL_REPAINT_ON_RESIZE)
         self.url = url
         self.html = iTradeHtmlWindow(self, -1)
 
-        EVT_SIZE(self, self.OnSize)
+        wx.EVT_SIZE(self, self.OnSize)
 
     def OnSize(self, evt):
         self.html.SetSize(self.GetSizeTuple())
@@ -127,14 +127,14 @@ class iTradeHtmlPanel(wxPanel):
 # iTradeRSSPanel
 # ============================================================================
 
-class iTradeRSSPanel(wxPanel):
+class iTradeRSSPanel(wx.Panel):
     def __init__(self, parent, id, quote):
-        wxPanel.__init__(self, parent, id, size = (800,600), style=wxTAB_TRAVERSAL|wxCLIP_CHILDREN|wxNO_FULL_REPAINT_ON_RESIZE)
+        wx.Panel.__init__(self, parent, id, size = (800,600), style=wx.TAB_TRAVERSAL|wx.CLIP_CHILDREN|wx.NO_FULL_REPAINT_ON_RESIZE)
         self.m_quote = quote
         self.m_html = iTradeHtmlWindow(self, -1, bUseFromFeed=True)
         self.m_feed = None
         self.m_content = ''
-        EVT_SIZE(self, self.OnSize)
+        wx.EVT_SIZE(self, self.OnSize)
 
     # ---[ HeaderPage / AppendToPage / TrailerPage must use buffered content ]---
 

@@ -40,9 +40,8 @@ import logging
 
 # wxPython system
 import itrade_wxversion
-from wxPython.wx import *
-from wxPython.lib.mixins.listctrl import wxColumnSorterMixin, wxListCtrlAutoWidthMixin
-#from wxPython.lib.throbber import Throbber
+import wx
+import wx.lib.mixins.listctrl as wxl
 
 # iTrade system
 import itrade_config
@@ -63,7 +62,7 @@ from itrade_wxalerts import open_iTradeAlerts
 from itrade_wxcurrency import open_iTradeCurrencies
 from itrade_wxabout import iTradeAboutBox
 from itrade_wxhtml import iTradeHtmlWindow,iTradeLaunchBrowser
-from itrade_wxutil import wxFontFromSize
+from itrade_wxutil import FontFromSize
 from itrade_wxlistquote import list_iTradeQuote
 
 from itrade_wxmixin import iTrade_wxFrame
@@ -190,83 +189,83 @@ IDC_LAST = 11
 # iTradeMatrixListCtrl
 # ============================================================================
 
-class iTradeMatrixListCtrl(wxListCtrl, wxListCtrlAutoWidthMixin):
-    def __init__(self, parent, ID, pos=wxDefaultPosition,
-                 size=wxDefaultSize, style=0):
-        wxListCtrl.__init__(self, parent, ID, pos, size, style)
-        wxListCtrlAutoWidthMixin.__init__(self)
+class iTradeMatrixListCtrl(wx.ListCtrl, wxl.ListCtrlAutoWidthMixin):
+    def __init__(self, parent, ID, pos=wx.DefaultPosition,
+                 size=wx.DefaultSize, style=0):
+        wx.ListCtrl.__init__(self, parent, ID, pos, size, style)
+        wxl.ListCtrlAutoWidthMixin.__init__(self)
 
 # ============================================================================
 # iTradeMainToolbar
 #
 # ============================================================================
 
-cCONNECTED = wxColour(51,255,51)
-cDISCONNECTED = wxColour(255,51,51)
+cCONNECTED = wx.Colour(51,255,51)
+cDISCONNECTED = wx.Colour(255,51,51)
 
-class iTradeMainToolbar(wxToolBar):
+class iTradeMainToolbar(wx.ToolBar):
 
     def __init__(self,parent,id):
-        wxToolBar.__init__(self,parent,id,style = wxTB_HORIZONTAL | wxNO_BORDER | wxTB_FLAT)
+        wx.ToolBar.__init__(self,parent,id,style = wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT)
         self.m_parent = parent
         self._init_toolbar()
 
     def _init_toolbar(self):
-        self._NTB2_EXIT = wxNewId()
-        self._NTB2_NEW = wxNewId()
-        self._NTB2_OPEN = wxNewId()
-        self._NTB2_EDIT = wxNewId()
-        self._NTB2_SAVE = wxNewId()
-        self._NTB2_SAVE_AS = wxNewId()
-        self._NTB2_MONEY = wxNewId()
-        self._NTB2_OPERATIONS = wxNewId()
-        self._NTB2_ALERTS = wxNewId()
-        self._NTB2_QUOTE = wxNewId()
-        self._NTB2_REFRESH = wxNewId()
-        self._NTB2_ABOUT = wxNewId()
+        self._NTB2_EXIT = wx.NewId()
+        self._NTB2_NEW = wx.NewId()
+        self._NTB2_OPEN = wx.NewId()
+        self._NTB2_EDIT = wx.NewId()
+        self._NTB2_SAVE = wx.NewId()
+        self._NTB2_SAVE_AS = wx.NewId()
+        self._NTB2_MONEY = wx.NewId()
+        self._NTB2_OPERATIONS = wx.NewId()
+        self._NTB2_ALERTS = wx.NewId()
+        self._NTB2_QUOTE = wx.NewId()
+        self._NTB2_REFRESH = wx.NewId()
+        self._NTB2_ABOUT = wx.NewId()
 
-        self.SetToolBitmapSize(wxSize(24,24))
-        self.AddSimpleTool(self._NTB2_EXIT, wxArtProvider.GetBitmap(wxART_CROSS_MARK, wxART_TOOLBAR),
+        self.SetToolBitmapSize(wx.Size(24,24))
+        self.AddSimpleTool(self._NTB2_EXIT, wx.ArtProvider.GetBitmap(wx.ART_CROSS_MARK, wx.ART_TOOLBAR),
                            message('main_exit'), message('main_desc_exit'))
-        self.AddControl(wxStaticLine(self, -1, size=(-1,23), style=wxLI_VERTICAL))
-        self.AddSimpleTool(self._NTB2_NEW, wxArtProvider.GetBitmap(wxART_NEW, wxART_TOOLBAR),
+        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+        self.AddSimpleTool(self._NTB2_NEW, wx.ArtProvider.GetBitmap(wx.ART_NEW, wx.ART_TOOLBAR),
                            message('main_new'), message('main_desc_new'))
-        self.AddSimpleTool(self._NTB2_OPEN, wxArtProvider.GetBitmap(wxART_FILE_OPEN, wxART_TOOLBAR),
+        self.AddSimpleTool(self._NTB2_OPEN, wx.ArtProvider.GetBitmap(wx.ART_FILE_OPEN, wx.ART_TOOLBAR),
                            message('main_open'), message('main_desc_open'))
-        self.AddSimpleTool(self._NTB2_EDIT, wxArtProvider.GetBitmap(wxART_EXECUTABLE_FILE, wxART_TOOLBAR),
+        self.AddSimpleTool(self._NTB2_EDIT, wx.ArtProvider.GetBitmap(wx.ART_EXECUTABLE_FILE, wx.ART_TOOLBAR),
                            message('main_edit'), message('main_desc_edit'))
-        self.AddSimpleTool(self._NTB2_SAVE, wxArtProvider.GetBitmap(wxART_FILE_SAVE, wxART_TOOLBAR),
+        self.AddSimpleTool(self._NTB2_SAVE, wx.ArtProvider.GetBitmap(wx.ART_FILE_SAVE, wx.ART_TOOLBAR),
                            message('main_save'), message('main_desc_save'))
-        self.AddControl(wxStaticLine(self, -1, size=(-1,23), style=wxLI_VERTICAL))
-        self.AddSimpleTool(self._NTB2_OPERATIONS, wxArtProvider.GetBitmap(wxART_REPORT_VIEW, wxART_TOOLBAR),
+        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+        self.AddSimpleTool(self._NTB2_OPERATIONS, wx.ArtProvider.GetBitmap(wx.ART_REPORT_VIEW, wx.ART_TOOLBAR),
                            message('main_view_operations'), message('main_view_desc_operations'))
-        self.AddSimpleTool(self._NTB2_MONEY, wxBitmap('res/money.gif'),
+        self.AddSimpleTool(self._NTB2_MONEY, wx.Bitmap('res/money.gif'),
                            message('main_view_money'), message('main_view_desc_money'))
-        self.AddSimpleTool(self._NTB2_ALERTS, wxBitmap('res/bell.gif'),
+        self.AddSimpleTool(self._NTB2_ALERTS, wx.Bitmap('res/bell.gif'),
                            message('main_view_alerts'), message('main_view_desc_alerts'))
-        self.AddControl(wxStaticLine(self, -1, size=(-1,23), style=wxLI_VERTICAL))
-        self.AddSimpleTool(self._NTB2_QUOTE, wxBitmap('res/graph.gif'),
+        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+        self.AddSimpleTool(self._NTB2_QUOTE, wx.Bitmap('res/graph.gif'),
                            message('main_view_current'), message('main_view_desc_current'))
-        self.AddControl(wxStaticLine(self, -1, size=(-1,23), style=wxLI_VERTICAL))
-        self.AddSimpleTool(self._NTB2_REFRESH, wxBitmap('res/refresh.png'),
+        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+        self.AddSimpleTool(self._NTB2_REFRESH, wx.Bitmap('res/refresh.png'),
                            message('main_view_refresh'), message('main_view_desc_refresh'))
-        self.AddSimpleTool(self._NTB2_ABOUT, wxBitmap('res/about.gif'),
+        self.AddSimpleTool(self._NTB2_ABOUT, wx.Bitmap('res/about.gif'),
                            message('main_about'), message('main_desc_about'))
-        self.AddControl(wxStaticLine(self, -1, size=(-1,23), style=wxLI_VERTICAL))
-        self.m_indicator = wxStaticText(self, -1, "::", size=(180,15), style=wxALIGN_RIGHT|wxST_NO_AUTORESIZE)
+        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+        self.m_indicator = wx.StaticText(self, -1, "::", size=(180,15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
         self.AddControl(self.m_indicator)
 
-        EVT_TOOL(self, self._NTB2_EXIT, self.onExit)
-        EVT_TOOL(self, self._NTB2_NEW, self.onNew)
-        EVT_TOOL(self, self._NTB2_OPEN, self.onOpen)
-        EVT_TOOL(self, self._NTB2_EDIT, self.onEdit)
-        EVT_TOOL(self, self._NTB2_SAVE, self.onSave)
-        EVT_TOOL(self, self._NTB2_OPERATIONS, self.onOperations)
-        EVT_TOOL(self, self._NTB2_MONEY, self.onMoney)
-        EVT_TOOL(self, self._NTB2_ALERTS, self.onAlerts)
-        EVT_TOOL(self, self._NTB2_QUOTE, self.onQuote)
-        EVT_TOOL(self, self._NTB2_ABOUT, self.onAbout)
-        EVT_TOOL(self, self._NTB2_REFRESH, self.onRefresh)
+        wx.EVT_TOOL(self, self._NTB2_EXIT, self.onExit)
+        wx.EVT_TOOL(self, self._NTB2_NEW, self.onNew)
+        wx.EVT_TOOL(self, self._NTB2_OPEN, self.onOpen)
+        wx.EVT_TOOL(self, self._NTB2_EDIT, self.onEdit)
+        wx.EVT_TOOL(self, self._NTB2_SAVE, self.onSave)
+        wx.EVT_TOOL(self, self._NTB2_OPERATIONS, self.onOperations)
+        wx.EVT_TOOL(self, self._NTB2_MONEY, self.onMoney)
+        wx.EVT_TOOL(self, self._NTB2_ALERTS, self.onAlerts)
+        wx.EVT_TOOL(self, self._NTB2_QUOTE, self.onQuote)
+        wx.EVT_TOOL(self, self._NTB2_ABOUT, self.onAbout)
+        wx.EVT_TOOL(self, self._NTB2_REFRESH, self.onRefresh)
         self.Realize()
 
     def onRefresh(self, event):
@@ -314,7 +313,7 @@ class iTradeMainToolbar(wxToolBar):
         else:
             label = market + ": " + clock
             if label==self.m_indicator.GetLabel():
-                self.m_indicator.SetBackgroundColour(wxNullColour)
+                self.m_indicator.SetBackgroundColour(wx.NullColour)
             else:
                 self.m_indicator.SetBackgroundColour(cCONNECTED)
         self.m_indicator.ClearBackground()
@@ -328,10 +327,10 @@ class iTradeMainToolbar(wxToolBar):
 import wx.lib.newevent
 (PostInitEvent,EVT_POSTINIT) = wx.lib.newevent.NewEvent()
 
-class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorterMixin):
+class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSorterMixin):
     def __init__(self,parent,id,portfolio,matrix):
-        self.m_id = wxNewId()
-        wxFrame.__init__(self,parent,self.m_id, "", size = ( 640,480), style=wxDEFAULT_FRAME_STYLE|wxNO_FULL_REPAINT_ON_RESIZE)
+        self.m_id = wx.NewId()
+        wx.Frame.__init__(self,parent,self.m_id, "", size = ( 640,480), style = wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE)
         iTrade_wxFrame.__init__(self,parent, 'main')
         iTrade_wxLiveMixin.__init__(self)
 
@@ -348,11 +347,11 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
         self.m_hView = None
         self.m_hCurrency = None
 
-        EVT_CLOSE(self, self.OnCloseWindow)
-        EVT_WINDOW_DESTROY(self, self.OnDestroyWindow)
+        wx.EVT_CLOSE(self, self.OnCloseWindow)
+        wx.EVT_WINDOW_DESTROY(self, self.OnDestroyWindow)
 
         # the main menu
-        self.filemenu = wxMenu()
+        self.filemenu = wx.Menu()
         self.filemenu.Append(ID_OPEN,message('main_open'),message('main_desc_open'))
         self.filemenu.Append(ID_NEW,message('main_new'),message('main_desc_new'))
         self.filemenu.Append(ID_SAVE,message('main_save'),message('main_desc_save'))
@@ -365,7 +364,7 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
         self.filemenu.AppendSeparator()
         self.filemenu.Append(ID_EXIT,message('main_exit'),message('main_desc_exit'))
 
-        self.matrixmenu = wxMenu()
+        self.matrixmenu = wx.Menu()
         self.matrixmenu.AppendRadioItem(ID_PORTFOLIO, message('main_view_portfolio'),message('main_view_desc_portfolio'))
         self.matrixmenu.AppendRadioItem(ID_QUOTES, message('main_view_quotes'),message('main_view_desc_quotes'))
         self.matrixmenu.AppendRadioItem(ID_STOPS, message('main_view_stops'),message('main_view_desc_stops'))
@@ -378,7 +377,7 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
         self.matrixmenu.Append(ID_REFRESH, message('main_view_refresh'),message('main_view_desc_refresh'))
         self.matrixmenu.AppendCheckItem(ID_AUTOREFRESH, message('main_view_autorefresh'),message('main_view_desc_autorefresh'))
 
-        self.quotemenu = wxMenu()
+        self.quotemenu = wx.Menu()
         self.quotemenu.Append(ID_ADD_QUOTE, message('main_quote_add'),message('main_quote_desc_add'))
         self.quotemenu.Append(ID_REMOVE_QUOTE, message('main_quote_remove'),message('main_quote_desc_add'))
         self.quotemenu.AppendSeparator()
@@ -387,7 +386,7 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
         self.quotemenu.AppendSeparator()
         self.quotemenu.Append(ID_PROPERTY_QUOTE, message('main_quote_property'),message('main_quote_desc_property'))
 
-        self.viewmenu = wxMenu()
+        self.viewmenu = wx.Menu()
         self.viewmenu.Append(ID_OPERATIONS, message('main_view_operations'),message('main_view_desc_operations'))
         self.viewmenu.Append(ID_MONEY, message('main_view_money'),message('main_view_desc_money'))
         self.viewmenu.AppendSeparator()
@@ -396,7 +395,7 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
         self.viewmenu.AppendSeparator()
         self.viewmenu.Append(ID_COMPUTE, message('main_view_compute'),message('main_view_desc_compute'))
 
-        self.helpmenu = wxMenu()
+        self.helpmenu = wx.Menu()
         self.helpmenu.Append(ID_CONTENT, message('main_help_contents'),message('main_help_desc_contents'))
         self.helpmenu.AppendSeparator()
         self.helpmenu.Append(ID_SUPPORT, message('main_help_support'),message('main_help_desc_support'))
@@ -406,7 +405,7 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
         self.helpmenu.Append(ID_ABOUT, message('main_about'), message('main_desc_about'))
 
         # Creating the menubar
-        menuBar = wxMenuBar()
+        menuBar = wx.MenuBar()
 
         # Adding the "filemenu" to the MenuBar
         menuBar.Append(self.filemenu,message('main_file'))
@@ -418,97 +417,97 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
         # Adding the MenuBar to the Frame content
         self.SetMenuBar(menuBar)
 
-        EVT_MENU(self, ID_OPEN, self.OnOpen)
-        EVT_MENU(self, ID_NEW, self.OnNew)
-        EVT_MENU(self, ID_DELETE, self.OnDelete)
-        EVT_MENU(self, ID_SAVE, self.OnSave)
-        EVT_MENU(self, ID_SAVEAS, self.OnSaveAs)
-        EVT_MENU(self, ID_EDIT, self.OnEdit)
-        EVT_MENU(self, ID_MANAGELIST, self.OnManageList)
-        EVT_MENU(self, ID_EXIT, self.OnExit)
-        EVT_MENU(self, ID_SUPPORT, self.OnSupport)
-        EVT_MENU(self, ID_BUG, self.OnBug)
-        EVT_MENU(self, ID_DONORS, self.OnDonors)
-        EVT_MENU(self, ID_PORTFOLIO, self.OnPortfolio)
-        EVT_MENU(self, ID_QUOTES, self.OnQuotes)
-        EVT_MENU(self, ID_STOPS, self.OnStops)
-        EVT_MENU(self, ID_INDICATORS, self.OnIndicators)
-        EVT_MENU(self, ID_OPERATIONS, self.OnOperations)
-        EVT_MENU(self, ID_MONEY, self.OnMoney)
-        EVT_MENU(self, ID_COMPUTE, self.OnCompute)
-        EVT_MENU(self, ID_ALERTS, self.OnAlerts)
-        EVT_MENU(self, ID_CURRENCIES, self.OnCurrencies)
+        wx.EVT_MENU(self, ID_OPEN, self.OnOpen)
+        wx.EVT_MENU(self, ID_NEW, self.OnNew)
+        wx.EVT_MENU(self, ID_DELETE, self.OnDelete)
+        wx.EVT_MENU(self, ID_SAVE, self.OnSave)
+        wx.EVT_MENU(self, ID_SAVEAS, self.OnSaveAs)
+        wx.EVT_MENU(self, ID_EDIT, self.OnEdit)
+        wx.EVT_MENU(self, ID_MANAGELIST, self.OnManageList)
+        wx.EVT_MENU(self, ID_EXIT, self.OnExit)
+        wx.EVT_MENU(self, ID_SUPPORT, self.OnSupport)
+        wx.EVT_MENU(self, ID_BUG, self.OnBug)
+        wx.EVT_MENU(self, ID_DONORS, self.OnDonors)
+        wx.EVT_MENU(self, ID_PORTFOLIO, self.OnPortfolio)
+        wx.EVT_MENU(self, ID_QUOTES, self.OnQuotes)
+        wx.EVT_MENU(self, ID_STOPS, self.OnStops)
+        wx.EVT_MENU(self, ID_INDICATORS, self.OnIndicators)
+        wx.EVT_MENU(self, ID_OPERATIONS, self.OnOperations)
+        wx.EVT_MENU(self, ID_MONEY, self.OnMoney)
+        wx.EVT_MENU(self, ID_COMPUTE, self.OnCompute)
+        wx.EVT_MENU(self, ID_ALERTS, self.OnAlerts)
+        wx.EVT_MENU(self, ID_CURRENCIES, self.OnCurrencies)
 
-        EVT_MENU(self, ID_ADD_QUOTE, self.OnAddQuote)
-        EVT_MENU(self, ID_REMOVE_QUOTE, self.OnRemoveCurrentQuote)
-        EVT_MENU(self, ID_GRAPH_QUOTE, self.OnGraphQuote)
-        EVT_MENU(self, ID_LIVE_QUOTE, self.OnLiveQuote)
-        EVT_MENU(self, ID_PROPERTY_QUOTE, self.OnPropertyQuote)
+        wx.EVT_MENU(self, ID_ADD_QUOTE, self.OnAddQuote)
+        wx.EVT_MENU(self, ID_REMOVE_QUOTE, self.OnRemoveCurrentQuote)
+        wx.EVT_MENU(self, ID_GRAPH_QUOTE, self.OnGraphQuote)
+        wx.EVT_MENU(self, ID_LIVE_QUOTE, self.OnLiveQuote)
+        wx.EVT_MENU(self, ID_PROPERTY_QUOTE, self.OnPropertyQuote)
 
-        EVT_MENU(self, ID_SMALL_VIEW, self.OnViewSmall)
-        EVT_MENU(self, ID_NORMAL_VIEW, self.OnViewNormal)
-        EVT_MENU(self, ID_BIG_VIEW, self.OnViewBig)
+        wx.EVT_MENU(self, ID_SMALL_VIEW, self.OnViewSmall)
+        wx.EVT_MENU(self, ID_NORMAL_VIEW, self.OnViewNormal)
+        wx.EVT_MENU(self, ID_BIG_VIEW, self.OnViewBig)
 
-        EVT_MENU(self, ID_REFRESH, self.OnRefresh)
-        EVT_MENU(self, ID_AUTOREFRESH, self.OnAutoRefresh)
-        EVT_MENU(self, ID_ABOUT, self.OnAbout)
+        wx.EVT_MENU(self, ID_REFRESH, self.OnRefresh)
+        wx.EVT_MENU(self, ID_AUTOREFRESH, self.OnAutoRefresh)
+        wx.EVT_MENU(self, ID_ABOUT, self.OnAbout)
 
         # create an image list
-        self.m_imagelist = wxImageList(16,16)
+        self.m_imagelist = wx.ImageList(16,16)
 
-        self.idx_nochange = self.m_imagelist.Add(wxBitmap('res/nochange.gif'))
-        self.idx_up = self.m_imagelist.Add(wxBitmap('res/up.gif'))
-        self.idx_down = self.m_imagelist.Add(wxBitmap('res/down.gif'))
-        self.idx_tbref = self.m_imagelist.Add(wxBitmap('res/invalid.gif'))
-        self.idx_buy = self.m_imagelist.Add(wxBitmap('res/buy.gif'))
-        self.idx_sell = self.m_imagelist.Add(wxBitmap('res/sell.gif'))
-        self.idx_noop = self.m_imagelist.Add(wxBitmap('res/noop.gif'))
+        self.idx_nochange = self.m_imagelist.Add(wx.Bitmap('res/nochange.gif'))
+        self.idx_up = self.m_imagelist.Add(wx.Bitmap('res/up.gif'))
+        self.idx_down = self.m_imagelist.Add(wx.Bitmap('res/down.gif'))
+        self.idx_tbref = self.m_imagelist.Add(wx.Bitmap('res/invalid.gif'))
+        self.idx_buy = self.m_imagelist.Add(wx.Bitmap('res/buy.gif'))
+        self.idx_sell = self.m_imagelist.Add(wx.Bitmap('res/sell.gif'))
+        self.idx_noop = self.m_imagelist.Add(wx.Bitmap('res/noop.gif'))
 
-        self.sm_up = self.m_imagelist.Add(wxBitmap('res/sm_up.gif'))
-        self.sm_dn = self.m_imagelist.Add(wxBitmap('res/sm_down.gif'))
+        self.sm_up = self.m_imagelist.Add(wx.Bitmap('res/sm_up.gif'))
+        self.sm_dn = self.m_imagelist.Add(wx.Bitmap('res/sm_down.gif'))
 
         # List
-        tID = wxNewId()
+        tID = wx.NewId()
 
         self.m_list = iTradeMatrixListCtrl(self, tID,
-                                 style = wxLC_REPORT | wxSUNKEN_BORDER | wxLC_SINGLE_SEL | wxLC_VRULES | wxLC_HRULES)
-        EVT_LIST_ITEM_ACTIVATED(self, tID, self.OnItemActivated)
-        EVT_LIST_ITEM_SELECTED(self, tID, self.OnItemSelected)
-        EVT_COMMAND_RIGHT_CLICK(self.m_list, tID, self.OnRightClick)
-        EVT_RIGHT_UP(self.m_list, self.OnRightClick)
-        EVT_RIGHT_DOWN(self.m_list, self.OnRightDown)
-        EVT_LEFT_DOWN(self.m_list, self.OnLeftDown)
+                                 style = wx.LC_REPORT | wx.SUNKEN_BORDER | wx.LC_SINGLE_SEL | wx.LC_VRULES | wx.LC_HRULES)
+        wx.EVT_LIST_ITEM_ACTIVATED(self, tID, self.OnItemActivated)
+        wx.EVT_LIST_ITEM_SELECTED(self, tID, self.OnItemSelected)
+        wx.EVT_COMMAND_RIGHT_CLICK(self.m_list, tID, self.OnRightClick)
+        wx.EVT_RIGHT_UP(self.m_list, self.OnRightClick)
+        wx.EVT_RIGHT_DOWN(self.m_list, self.OnRightDown)
+        wx.EVT_LEFT_DOWN(self.m_list, self.OnLeftDown)
 
-        self.m_list.SetImageList(self.m_imagelist, wxIMAGE_LIST_SMALL)
-        self.m_list.SetFont(wxFontFromSize(itrade_config.matrixFontSize))
+        self.m_list.SetImageList(self.m_imagelist, wx.IMAGE_LIST_SMALL)
+        self.m_list.SetFont(FontFromSize(itrade_config.matrixFontSize))
 
         # Now that the list exists we can init the other base class,
         # see wxPython/lib/mixins/listctrl.py
-        wxColumnSorterMixin.__init__(self, IDC_LAST+1)
+        wxl.ColumnSorterMixin.__init__(self, IDC_LAST+1)
 
         # Toolbar
-        self.m_toolbar = iTradeMainToolbar(self, wxNewId())
+        self.m_toolbar = iTradeMainToolbar(self, wx.NewId())
 
         # default list is quotes
         self.m_listmode = LISTMODE_INIT
 
-        EVT_SIZE(self, self.OnSize)
+        wx.EVT_SIZE(self, self.OnSize)
 
         EVT_UPDATE_LIVE(self, self.OnLive)
 
         # refresh full view after window init finished
         EVT_POSTINIT(self, self.OnPostInit)
-        wxPostEvent(self,PostInitEvent())
+        wx.PostEvent(self,PostInitEvent())
 
         self.Show(True)
 
-    # --- [ wxColumnSorterMixin management ] -------------------------------------
+    # --- [ wxl.ColumnSorterMixin management ] -------------------------------------
 
-    # Used by the wxColumnSorterMixin, see wxPython/lib/mixins/listctrl.py
+    # Used by the wxl.ColumnSorterMixin, see wxPython/lib/mixins/listctrl.py
     def GetListCtrl(self):
         return self.m_list
 
-    # Used by the wxColumnSorterMixin, see wxPython/lib/mixins/listctrl.py
+    # Used by the wxl.ColumnSorterMixin, see wxPython/lib/mixins/listctrl.py
     def GetSortImages(self):
         return (self.sm_dn, self.sm_up)
 
@@ -764,9 +763,9 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
     def OnChangeViewText(self):
         self.setDirty()
         self.updateCheckItems()
-        self.m_list.SetFont(wxFontFromSize(itrade_config.matrixFontSize))
+        self.m_list.SetFont(FontFromSize(itrade_config.matrixFontSize))
         for i in range(0,IDC_LAST+1):
-            self.m_list.SetColumnWidth(i, wxLIST_AUTOSIZE)
+            self.m_list.SetColumnWidth(i, wx.LIST_AUTOSIZE)
 
     def OnViewSmall(self,e):
         itrade_config.matrixFontSize = 1
@@ -835,7 +834,7 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
         max = len(lst)
         keepGoing = True
         if self.hasFocus():
-            dlg = wxProgressDialog(message('currency_refreshing'),"",max,self,wxPD_CAN_ABORT | wxPD_APP_MODAL)
+            dlg = wx.ProgressDialog(message('currency_refreshing'),"",max,self,wx.PD_CAN_ABORT | wx.PD_APP_MODAL)
         else:
             dlg = None
         for eachKey in lst:
@@ -859,16 +858,16 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
         # update line color and icon
         item = self.m_list.GetItem(x)
         if color == QUOTE_INVALID:
-            item.SetTextColour(wxBLACK)
+            item.SetTextColour(wx.BLACK)
             item.SetImage(self.idx_tbref)
         elif color == QUOTE_RED:
-            item.SetTextColour(wxRED)
+            item.SetTextColour(wx.RED)
             item.SetImage(self.idx_down)
         elif color == QUOTE_GREEN:
-            item.SetTextColour(wxBLUE)
+            item.SetTextColour(wx.BLUE)
             item.SetImage(self.idx_up)
         else:
-            item.SetTextColour(wxBLACK)
+            item.SetTextColour(wx.BLACK)
             item.SetImage(self.idx_nochange)
         self.m_list.SetItem(item)
 
@@ -884,10 +883,10 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
             self.refreshColorLine(x,QUOTE_RED)
 
         # enough space for data ?
-        self.m_list.SetColumnWidth(IDC_PV, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_PR, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_PROFIT, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_PERCENT, wxLIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_PV, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_PR, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_PROFIT, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_PERCENT, wx.LIST_AUTOSIZE)
 
     def refreshQuoteLine(self,x,disp):
         key = self.m_list.GetItemData(x)
@@ -928,14 +927,14 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
         self.refreshColorLine(x,color)
 
         # enough space for data ?
-        self.m_list.SetColumnWidth(IDC_VOLUME, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_PREV, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_OPEN, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_HIGH, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_LOW, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_PIVOTS, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_CLOSE, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_PERCENT, wxLIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_VOLUME, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_PREV, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_OPEN, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_HIGH, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_LOW, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_PIVOTS, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_CLOSE, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_PERCENT, wx.LIST_AUTOSIZE)
 
     def refreshQuotes(self):
         x = 0
@@ -943,7 +942,7 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
         max = len(lst)
         keepGoing = True
         if self.hasFocus():
-            dlg = wxProgressDialog(message('main_refreshing'),"",max,self,wxPD_CAN_ABORT | wxPD_APP_MODAL)
+            dlg = wx.ProgressDialog(message('main_refreshing'),"",max,self,wx.PD_CAN_ABORT | wx.PD_APP_MODAL)
         else:
             dlg = None
         for eachQuote in lst:
@@ -983,12 +982,12 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
             # line color depending on pricing
             if quote.nv_pru(xtype) >= quote.nv_close():
                 item.SetImage(self.idx_down)
-                item.SetTextColour(wxRED)
+                item.SetTextColour(wx.RED)
             else:
                 item.SetImage(self.idx_up)
-                item.SetTextColour(wxBLUE)
+                item.SetTextColour(wx.BLUE)
         else:
-            item.SetTextColour(wxBLACK)
+            item.SetTextColour(wx.BLACK)
             item.SetImage(self.idx_tbref)
             self.m_list.SetStringItem(x,IDC_PVU," ---.-- ")
             self.m_list.SetStringItem(x,IDC_PERFDAY," ---.-- % ")
@@ -998,11 +997,11 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
 
         self.m_list.SetItem(item)
 
-        self.m_list.SetColumnWidth(IDC_PVU, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_PERFDAY, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_PV, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_PROFIT, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_PERCENT, wxLIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_PVU, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_PERFDAY, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_PV, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_PROFIT, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_PERCENT, wx.LIST_AUTOSIZE)
 
     def refreshPortfolio(self):
         x = 0
@@ -1010,7 +1009,7 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
         max = len(lst)
         keepGoing = True
         if self.hasFocus():
-            dlg = wxProgressDialog(message('main_refreshing'),"",max,self,wxPD_CAN_ABORT | wxPD_APP_MODAL)
+            dlg = wx.ProgressDialog(message('main_refreshing'),"",max,self,wx.PD_CAN_ABORT | wx.PD_APP_MODAL)
         else:
             dlg = None
         for eachQuote in lst:
@@ -1052,23 +1051,23 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
 
         # update line color and icon
         if color == QUOTE_INVALID:
-            item.SetTextColour(wxBLACK)
+            item.SetTextColour(wx.BLACK)
             item.SetImage(self.idx_tbref)
         elif color == QUOTE_RED:
-            item.SetTextColour(wxRED)
+            item.SetTextColour(wx.RED)
             item.SetImage(self.idx_sell)
         elif color == QUOTE_GREEN:
-            item.SetTextColour(wxBLUE)
+            item.SetTextColour(wx.BLUE)
             item.SetImage(self.idx_buy)
         else:
-            item.SetTextColour(wxBLACK)
+            item.SetTextColour(wx.BLACK)
             item.SetImage(self.idx_noop)
 
         self.m_list.SetItem(item)
-        self.m_list.SetColumnWidth(IDC_CURRENT, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_PV, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_PROFIT, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_PERCENT, wxLIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_CURRENT, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_PV, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_PROFIT, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_PERCENT, wx.LIST_AUTOSIZE)
 
     def refreshStops(self):
         x = 0
@@ -1076,7 +1075,7 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
         max = len(lst)
         keepGoing = True
         if self.hasFocus():
-            dlg = wxProgressDialog(message('main_refreshing'),"",max,self,wxPD_CAN_ABORT | wxPD_APP_MODAL)
+            dlg = wx.ProgressDialog(message('main_refreshing'),"",max,self,wx.PD_CAN_ABORT | wx.PD_APP_MODAL)
         else:
             dlg = None
         for eachQuote in lst:
@@ -1125,30 +1124,30 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
         # update line color and icon
         item = self.m_list.GetItem(x)
         if color == QUOTE_INVALID:
-            item.SetTextColour(wxBLACK)
+            item.SetTextColour(wx.BLACK)
             item.SetImage(self.idx_tbref)
         elif color == QUOTE_RED:
-            item.SetTextColour(wxRED)
+            item.SetTextColour(wx.RED)
             item.SetImage(self.idx_down)
         elif color == QUOTE_GREEN:
-            item.SetTextColour(wxBLUE)
+            item.SetTextColour(wx.BLUE)
             item.SetImage(self.idx_up)
         else:
-            item.SetTextColour(wxBLACK)
+            item.SetTextColour(wx.BLACK)
             item.SetImage(self.idx_nochange)
         self.m_list.SetItem(item)
 
         # enough space for data ?
-        self.m_list.SetColumnWidth(IDC_MA20, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_MA50, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_MA100, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_RSI, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_MACD, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_STOCH, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_DMI, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_EMV, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_OVB, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_LAST, wxLIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_MA20, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_MA50, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_MA100, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_RSI, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_MACD, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_STOCH, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_DMI, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_EMV, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_OVB, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_LAST, wx.LIST_AUTOSIZE)
 
     def refreshIndicators(self):
         x = 0
@@ -1156,7 +1155,7 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
         max = len(lst)
         keepGoing = True
         if self.hasFocus():
-            dlg = wxProgressDialog(message('main_refreshing'),"",max,self,wxPD_CAN_ABORT | wxPD_APP_MODAL)
+            dlg = wx.ProgressDialog(message('main_refreshing'),"",max,self,wx.PD_CAN_ABORT | wx.PD_APP_MODAL)
         else:
             dlg = None
         for eachQuote in lst:
@@ -1201,8 +1200,8 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
         self.itemTypeMap = {}
 
         # at least isin and ticker columns !
-        self.m_list.InsertColumn(IDC_ISIN, message('isin'), wxLIST_FORMAT_LEFT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_TICKER, message('ticker'), wxLIST_FORMAT_LEFT, wxLIST_AUTOSIZE_USEHEADER)
+        self.m_list.InsertColumn(IDC_ISIN, message('isin'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_TICKER, message('ticker'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE_USEHEADER)
 
     def populateMatrixEnd(self):
         # fix the item data
@@ -1212,25 +1211,25 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
             self.m_list.SetItemData(x, key)
 
         # adjust column
-        self.m_list.SetColumnWidth(IDC_ISIN, wxLIST_AUTOSIZE_USEHEADER)
-        self.m_list.SetColumnWidth(IDC_TICKER, wxLIST_AUTOSIZE_USEHEADER)
+        self.m_list.SetColumnWidth(IDC_ISIN, wx.LIST_AUTOSIZE_USEHEADER)
+        self.m_list.SetColumnWidth(IDC_TICKER, wx.LIST_AUTOSIZE_USEHEADER)
 
         # default selection
         self.m_currentItem = 0
-        self.m_list.SetItemState(0, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED)
+        self.m_list.SetItemState(0, wx.LIST_STATE_SELECTED, wx.LIST_STATE_SELECTED)
 
     def populatePortfolio(self):
         self.populateMatrixBegin()
 
-        self.m_list.InsertColumn(IDC_QTY, message('qty'), wxLIST_FORMAT_RIGHT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_PRU, message('UPP'), wxLIST_FORMAT_RIGHT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_PR, message('buy'), wxLIST_FORMAT_RIGHT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_PVU, message('USP'), wxLIST_FORMAT_RIGHT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_PERFDAY, message('perfday'), wxLIST_FORMAT_RIGHT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_PV, message('sell'), wxLIST_FORMAT_RIGHT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_PROFIT, message('profit'), wxLIST_FORMAT_RIGHT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_PERCENT, message('perfper'), wxLIST_FORMAT_RIGHT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_NAME, message('name'), wxLIST_FORMAT_LEFT, wxLIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_QTY, message('qty'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_PRU, message('UPP'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_PR, message('buy'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_PVU, message('USP'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_PERFDAY, message('perfday'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_PV, message('sell'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_PROFIT, message('profit'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_PERCENT, message('perfper'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_NAME, message('name'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
 
         x = 0
         for eachQuote in self.m_matrix.list():
@@ -1282,9 +1281,9 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
         self.itemTypeMap[x+1] = QUOTE_BOTH
 
         # adjust some column's size
-        self.m_list.SetColumnWidth(IDC_QTY, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_PRU, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_PR, wxLIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_QTY, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_PRU, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_PR, wx.LIST_AUTOSIZE)
 
         # finish populating
         self.populateMatrixEnd()
@@ -1292,15 +1291,15 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
     def populateStops(self):
         self.populateMatrixBegin()
 
-        self.m_list.InsertColumn(IDC_INVEST, 'Buy', wxLIST_FORMAT_RIGHT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_RISKM, 'Risk', wxLIST_FORMAT_RIGHT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_STOPLOSS, 'Stop-', wxLIST_FORMAT_RIGHT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_CURRENT, 'USP', wxLIST_FORMAT_RIGHT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_STOPWIN, 'Stop+', wxLIST_FORMAT_RIGHT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_PV, 'Sell', wxLIST_FORMAT_RIGHT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_PROFIT, 'Profit', wxLIST_FORMAT_RIGHT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_PERCENT, ' % ', wxLIST_FORMAT_RIGHT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_NAME, message('name'), wxLIST_FORMAT_LEFT, wxLIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_INVEST, 'Buy', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_RISKM, 'Risk', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_STOPLOSS, 'Stop-', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_CURRENT, 'USP', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_STOPWIN, 'Stop+', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_PV, 'Sell', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_PROFIT, 'Profit', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_PERCENT, ' % ', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_NAME, message('name'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
 
         x = 0
         for eachQuote in self.m_matrix.list():
@@ -1328,10 +1327,10 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
             self.registerLive(eachQuote,itrade_config.refreshView,LISTMODE_STOPS)
 
         # adjust some column's size
-        self.m_list.SetColumnWidth(IDC_INVEST, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_RISKM, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_STOPLOSS, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_STOPWIN, wxLIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_INVEST, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_RISKM, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_STOPLOSS, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_STOPWIN, wx.LIST_AUTOSIZE)
 
         # finish populating
         self.populateMatrixEnd()
@@ -1339,15 +1338,15 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
     def populateQuotes(self):
         self.populateMatrixBegin()
 
-        self.m_list.InsertColumn(IDC_VOLUME, message('volume'), wxLIST_FORMAT_RIGHT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_PREV, message('prev'), wxLIST_FORMAT_RIGHT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_OPEN, message('open'), wxLIST_FORMAT_RIGHT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_HIGH, message('high'), wxLIST_FORMAT_RIGHT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_LOW,  message('low'), wxLIST_FORMAT_RIGHT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_CLOSE,message('last'), wxLIST_FORMAT_RIGHT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_PIVOTS,message('pivots'), wxLIST_FORMAT_RIGHT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_PERCENT, ' % ', wxLIST_FORMAT_RIGHT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_NAME, message('name'), wxLIST_FORMAT_LEFT, wxLIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_VOLUME, message('volume'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_PREV, message('prev'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_OPEN, message('open'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_HIGH, message('high'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_LOW,  message('low'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_CLOSE,message('last'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_PIVOTS,message('pivots'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_PERCENT, ' % ', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_NAME, message('name'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
 
         x = 0
         for eachQuote in self.m_matrix.list():
@@ -1373,17 +1372,17 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
     def populateIndicators(self):
         self.populateMatrixBegin()
 
-        self.m_list.InsertColumn(IDC_MA20, 'ma20', wxLIST_FORMAT_RIGHT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_MA50, 'ma50', wxLIST_FORMAT_RIGHT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_MA100, 'ma100', wxLIST_FORMAT_RIGHT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_RSI, 'RSI', wxLIST_FORMAT_RIGHT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_MACD, 'MACD', wxLIST_FORMAT_RIGHT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_STOCH, 'STOCH', wxLIST_FORMAT_RIGHT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_DMI, 'DMI', wxLIST_FORMAT_RIGHT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_EMV, 'EMV', wxLIST_FORMAT_RIGHT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_OVB, 'OVB', wxLIST_FORMAT_RIGHT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_LAST, 'Last', wxLIST_FORMAT_RIGHT, wxLIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_LAST+1, '', wxLIST_FORMAT_RIGHT, wxLIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_MA20, 'ma20', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_MA50, 'ma50', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_MA100, 'ma100', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_RSI, 'RSI', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_MACD, 'MACD', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_STOCH, 'STOCH', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_DMI, 'DMI', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_EMV, 'EMV', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_OVB, 'OVB', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_LAST, 'Last', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_LAST+1, '', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
 
         x = 0
         for eachQuote in self.m_matrix.list():
@@ -1416,7 +1415,7 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
         self.y = event.GetY()
         item, flags = self.m_list.HitTest((self.x, self.y))
         debug("OnRightDown: x, y = %s item=%d max=%d" % (str((self.x, self.y)), item,self.m_maxlines))
-        if flags & wxLIST_HITTEST_ONITEM:
+        if flags & wx.LIST_HITTEST_ONITEM:
             pass
         else:
             self.m_currentItem = -1
@@ -1428,7 +1427,7 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
         self.y = event.GetY()
         debug("OnLeftDown: x, y = %s" % str((self.x, self.y)))
         item, flags = self.m_list.HitTest((self.x, self.y))
-        if flags & wxLIST_HITTEST_ONITEM:
+        if flags & wx.LIST_HITTEST_ONITEM:
             pass
         else:
             self.m_currentItem = -1
@@ -1465,27 +1464,27 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
 
         # only do this part the first time so the events are only bound once
         if not hasattr(self, "m_popupID_Update"):
-            self.m_popupID_Update = wxNewId()
-            self.m_popupID_View = wxNewId()
-            self.m_popupID_Live = wxNewId()
-            self.m_popupID_Properties = wxNewId()
-            self.m_popupID_Add = wxNewId()
-            self.m_popupID_Remove = wxNewId()
-            self.m_popupID_Edit = wxNewId()
-            self.m_popupID_Buy = wxNewId()
-            self.m_popupID_Sell = wxNewId()
-            EVT_MENU(self, self.m_popupID_Update, self.OnPopup_Update)
-            EVT_MENU(self, self.m_popupID_View, self.OnPopup_View)
-            EVT_MENU(self, self.m_popupID_Live, self.OnPopup_Live)
-            EVT_MENU(self, self.m_popupID_Properties, self.OnPopup_Properties)
-            EVT_MENU(self, self.m_popupID_Add, self.OnPopup_Add)
-            EVT_MENU(self, self.m_popupID_Edit, self.OnPopup_Add)
-            EVT_MENU(self, self.m_popupID_Remove, self.OnPopup_Remove)
-            EVT_MENU(self, self.m_popupID_Buy, self.OnPopup_Buy)
-            EVT_MENU(self, self.m_popupID_Sell, self.OnPopup_Sell)
+            self.m_popupID_Update = wx.NewId()
+            self.m_popupID_View = wx.NewId()
+            self.m_popupID_Live = wx.NewId()
+            self.m_popupID_Properties = wx.NewId()
+            self.m_popupID_Add = wx.NewId()
+            self.m_popupID_Remove = wx.NewId()
+            self.m_popupID_Edit = wx.NewId()
+            self.m_popupID_Buy = wx.NewId()
+            self.m_popupID_Sell = wx.NewId()
+            wx.EVT_MENU(self, self.m_popupID_Update, self.OnPopup_Update)
+            wx.EVT_MENU(self, self.m_popupID_View, self.OnPopup_View)
+            wx.EVT_MENU(self, self.m_popupID_Live, self.OnPopup_Live)
+            wx.EVT_MENU(self, self.m_popupID_Properties, self.OnPopup_Properties)
+            wx.EVT_MENU(self, self.m_popupID_Add, self.OnPopup_Add)
+            wx.EVT_MENU(self, self.m_popupID_Edit, self.OnPopup_Add)
+            wx.EVT_MENU(self, self.m_popupID_Remove, self.OnPopup_Remove)
+            wx.EVT_MENU(self, self.m_popupID_Buy, self.OnPopup_Buy)
+            wx.EVT_MENU(self, self.m_popupID_Sell, self.OnPopup_Sell)
 
         # make a menu
-        menu = wxMenu()
+        menu = wx.Menu()
         # add some items
         menu.Append(self.m_popupID_Update, message('main_popup_refreshall'))
         if self.m_listmode == LISTMODE_QUOTES:
@@ -1556,7 +1555,7 @@ class iTradeMainWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin, wxColumnSorter
 
         # Popup the menu.  If an item is selected then its handler
         # will be called before PopupMenu returns.
-        self.PopupMenu(menu, wxPoint(self.x, self.y))
+        self.PopupMenu(menu, wx.Point(self.x, self.y))
         menu.Destroy()
 
     def OnPopup_Update(self, event):

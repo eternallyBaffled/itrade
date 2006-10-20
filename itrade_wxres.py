@@ -40,7 +40,7 @@ import logging
 
 # wxPython system
 import itrade_wxversion
-from wxPython.wx import *
+import wx
 
 # ============================================================================
 # That's all folks !
