@@ -43,7 +43,7 @@ import thread
 
 # wxPython system
 import itrade_wxversion
-from wxPython.wx import *
+import wx
 
 # iTrade system
 import itrade_config
@@ -54,35 +54,35 @@ from itrade_local import message
 # iTrade_wxPivots
 # ============================================================================
 
-class iTrade_wxPivots(wxPanel):
+class iTrade_wxPivots(wx.Panel):
     def __init__(self, parent,quote):
         info('iTrade_wxPivots::__init__')
-        wxPanel.__init__(self,parent,-1)
+        wx.Panel.__init__(self,parent,-1)
         self.m_parent = parent
         self.m_quote = quote
 
-        self.m_font = wxFont(10, wxMODERN, wxNORMAL, wxNORMAL)
+        self.m_font = wx.Font(10, wx.MODERN, wx.NORMAL, wx.NORMAL)
         self.SetFont(self.m_font)
 
-        self.m_sizer = wxBoxSizer(wxVERTICAL)
+        self.m_sizer = wx.BoxSizer(wx.VERTICAL)
 
         # separator
-        box = wxBoxSizer(wxHORIZONTAL)
-        self.m_sizer.AddSizer(box, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5)
+        box = wx.BoxSizer(wx.HORIZONTAL)
+        self.m_sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
         # r2
-        box = wxBoxSizer(wxHORIZONTAL)
+        box = wx.BoxSizer(wx.HORIZONTAL)
 
-        bmp = wxBitmap('res/resist2.gif')
-        bbmp = wxStaticBitmap(self, -1, bmp, size=wxSize(bmp.GetWidth()+5, bmp.GetHeight()+5))
-        box.Add(bbmp, 0, wxALIGN_CENTRE|wxALL, 5)
+        bmp = wx.Bitmap('res/resist2.gif')
+        bbmp = wxStaticBitmap(self, -1, bmp, size=wx.Size(bmp.GetWidth()+5, bmp.GetHeight()+5))
+        box.Add(bbmp, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.s_r2 = wxStaticText(self, -1, '')
-        box.Add(self.s_r2, 0, wxALIGN_CENTRE|wxALL, 5)
+        self.s_r2 = wx.StaticText(self, -1, '')
+        box.Add(self.s_r2, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.m_sizer.AddSizer(box, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5)
+        self.m_sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
-        EVT_SIZE(self, self.OnSize)
+        wx.EVT_SIZE(self, self.OnSize)
 
         self.SetAutoLayout(True)
         self.SetSizerAndFit(self.m_sizer)
@@ -106,9 +106,9 @@ class iTrade_wxPivots(wxPanel):
 
 if __name__=='__main__':
 
-    class WndTest(wxFrame):
+    class WndTest(wx.Frame):
         def __init__(self, parent,quote):
-            wxFrame.__init__(self,parent,wxNewId(), 'WndTest', size = (300,300), style=wxDEFAULT_FRAME_STYLE|wxNO_FULL_REPAINT_ON_RESIZE)
+            wx.Frame.__init__(self,parent,wx.NewId(), 'WndTest', size = (300,300), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE)
             self.m_pivots = iTrade_wxPivots(self,quote)
             self.m_quote = quote
 
@@ -130,7 +130,7 @@ if __name__=='__main__':
     quote.loadTrades()
     info('%s: %s' % (ticker,quote))
 
-    app = wxPySimpleApp()
+    app = wx.PySimpleApp()
 
     frame = WndTest(None,quote)
     if frame:

@@ -32,11 +32,11 @@
 # ============================================================================
 
 # ============================================================================
-# wxPython version required : 2.6.x
+# wxPython version required : 2.7.x
 # ============================================================================
 
 WXVERSION_MAJOR     = 2
-WXVERSION_MINOR     = 6
+WXVERSION_MINOR     = 7
 
 # ============================================================================
 # Imports
@@ -85,7 +85,7 @@ def resolve_wxversion():
     app = wx.PySimpleApp()
     wx.MessageBox(message('wxversion_msg') % (WXVERSION_MAJOR,WXVERSION_MINOR), message('wxversion_title'))
     app.MainLoop()
-    webbrowser.open("http://wxPython.org/")
+    webbrowser.open("http://wxpython.org/")
     sys.exit()
 
 # ============================================================================

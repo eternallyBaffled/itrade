@@ -43,7 +43,7 @@ from itrade_logging import *
 
 # wxPython system
 import itrade_wxversion
-from wxPython.wx import *
+import wx
 
 # matplotlib system
 import matplotlib
@@ -54,7 +54,7 @@ matplotlib.rcParams['numerix'] = 'numpy'
 from matplotlib.colors import colorConverter
 
 # ============================================================================
-# wxMatplotColorToRGB()
+# MatplotColorToRGB()
 #
 # convert a MatplotColor to a RGB tuple used by wxPython
 #
@@ -80,13 +80,13 @@ from matplotlib.colors import colorConverter
 #
 # ============================================================================
 
-def wxMatplotColorToRGB(colorname='k'):
+def MatplotColorToRGB(colorname='k'):
     r,g,b = colorConverter.to_rgb(colorname)
 
-    return wxColour(int(r*255),int(g*255),int(b*255))
+    return wx.Colour(int(r*255),int(g*255),int(b*255))
 
 # ============================================================================
-# wxFontFromSize
+# FontFromSize
 #   1 : small
 #   2 : regular
 #   3 : big
@@ -94,13 +94,13 @@ def wxMatplotColorToRGB(colorname='k'):
 # Porting note : adjust this function to the platform ?? __x
 # ============================================================================
 
-def wxFontFromSize(size):
+def FontFromSize(size):
     if size==2:
-        return wxFont(10, wxSWISS , wxNORMAL, wxNORMAL)
+        return wx.Font(10, wx.SWISS , wx.NORMAL, wx.NORMAL)
     elif size==3:
-        return wxFont(12, wxSWISS , wxNORMAL, wxNORMAL)
+        return wx.Font(12, wx.SWISS , wx.NORMAL, wx.NORMAL)
     else:
-        return wxFont(7, wxSWISS , wxNORMAL, wxNORMAL)
+        return wx.Font(7, wx.SWISS , wx.NORMAL, wx.NORMAL)
 
 # ============================================================================
 # That's all folks !

@@ -43,7 +43,7 @@ import thread
 
 # wxPython system
 import itrade_wxversion
-from wxPython.wx import *
+import wx
 import wx.lib.newevent
 
 # iTrade system
@@ -96,7 +96,7 @@ class UpdateLiveThread:
             # update live information
             itrade_import.liveupdate_from_internet(self.m_quote)
             evt = UpdateLiveEvent(quote=self.m_quote,param=p)
-            wxPostEvent(self.m_win,evt)
+            wx.PostEvent(self.m_win,evt)
 
             time.sleep(self.m_sleeptime)
 
@@ -158,7 +158,7 @@ class iTrade_wxLiveMixin:
                 if len(self.m_threads.values()):
                     # stop live for all registered quotes
                     if bBusy:
-                        busy = wxBusyInfo(message('live_busy'))
+                        busy = wx.BusyInfo(message('live_busy'))
                         wxYield()
 
                     for t in self.m_threads.values():
@@ -213,7 +213,7 @@ class UpdateLiveCurrencyThread:
             # update live information
             itrade_currency.currencies.get(self.m_curTo,self.m_curFrom)
             evt = UpdateLiveCurrencyEvent(key=self.m_key,param=p)
-            wxPostEvent(self.m_win,evt)
+            wx.PostEvent(self.m_win,evt)
 
             time.sleep(self.m_sleeptime)
 
@@ -271,7 +271,7 @@ class iTrade_wxLiveCurrencyMixin:
                 if len(self.m_threads.values()):
                     # stop live for all registered currencies
                     if bBusy:
-                        busy = wxBusyInfo(message('live_busy'))
+                        busy = wx.BusyInfo(message('live_busy'))
                         wxYield()
 
                     for t in self.m_threads.values():
@@ -297,19 +297,19 @@ class iTrade_wxLiveCurrencyMixin:
 NBLINES = 7
 LTLINES = 7
 
-cNEUTRAL = wxColour(170,170,255)
-cPOSITIF = wxColour(51,255,51)
-cNEGATIF = wxColour(255,51,51)
+cNEUTRAL = wx.Colour(170,170,255)
+cPOSITIF = wx.Colour(51,255,51)
+cNEGATIF = wx.Colour(255,51,51)
 
-class iTrade_wxLive(wxPanel):
+class iTrade_wxLive(wx.Panel):
     def __init__(self, parent,quote):
         info('iTrade_wxLive::__init__')
-        wxPanel.__init__(self,parent,-1)
+        wx.Panel.__init__(self,parent,-1)
         self.m_parent = parent
         self.m_quote = quote
         self.m_live = quote.liveconnector()
 
-        self.m_font = wxFont(10, wxMODERN, wxNORMAL, wxNORMAL)
+        self.m_font = wx.Font(10, wx.MODERN, wx.NORMAL, wx.NORMAL)
         self.SetFont(self.m_font)
 
         # column mapping
@@ -318,14 +318,14 @@ class iTrade_wxLive(wxPanel):
         W = (50,70, 60, 60, 70, 50, 70, 70, 60,  70)
 
         # notebook
-        title = wxStaticText(self, -1, message('live_notebook'), wxPoint(X[0],5), wxSize(W[0]+W[1]+W[2]+W[3]+W[4]+W[5], 15), style=wxALIGN_CENTRE)
+        title = wx.StaticText(self, -1, message('live_notebook'), wx.Point(X[0],5), wx.Size(W[0]+W[1]+W[2]+W[3]+W[4]+W[5], 15), style=wx.ALIGN_CENTRE)
         title.SetBackgroundColour('sea green')
-        nb = wxStaticText(self, -1, message('live_number'), wxPoint(X[0],20), wxSize(W[0], 15), style=wxALIGN_RIGHT)
-        qte = wxStaticText(self, -1, message('live_qty'), wxPoint(X[1],20), wxSize(W[1], 15), style=wxALIGN_RIGHT)
-        price = wxStaticText(self, -1, message('live_buy'), wxPoint(X[2],20), wxSize(W[2], 15), style=wxALIGN_RIGHT)
-        price = wxStaticText(self, -1, message('live_sell'), wxPoint(X[3],20), wxSize(W[3], 15), style=wxALIGN_RIGHT)
-        qte = wxStaticText(self, -1, message('live_qty'), wxPoint(X[4],20), wxSize(W[4], 15), style=wxALIGN_RIGHT)
-        nb = wxStaticText(self, -1, message('live_number'), wxPoint(X[5],20), wxSize(W[5], 15), style=wxALIGN_RIGHT)
+        nb = wx.StaticText(self, -1, message('live_number'), wx.Point(X[0],20), wx.Size(W[0], 15), style=wx.ALIGN_RIGHT)
+        qte = wx.StaticText(self, -1, message('live_qty'), wx.Point(X[1],20), wx.Size(W[1], 15), style=wx.ALIGN_RIGHT)
+        price = wx.StaticText(self, -1, message('live_buy'), wx.Point(X[2],20), wx.Size(W[2], 15), style=wx.ALIGN_RIGHT)
+        price = wx.StaticText(self, -1, message('live_sell'), wx.Point(X[3],20), wx.Size(W[3], 15), style=wx.ALIGN_RIGHT)
+        qte = wx.StaticText(self, -1, message('live_qty'), wx.Point(X[4],20), wx.Size(W[4], 15), style=wx.ALIGN_RIGHT)
+        nb = wx.StaticText(self, -1, message('live_number'), wx.Point(X[5],20), wx.Size(W[5], 15), style=wx.ALIGN_RIGHT)
 
         y = 35
         self.nba = {}
@@ -335,39 +335,39 @@ class iTrade_wxLive(wxPanel):
         self.qtev = {}
         self.nbv = {}
         for i in range(0,NBLINES):
-            self.nba[i] = wxStaticText(self, -1, "-", wxPoint(X[0],y), wxSize(W[0], 15), style=wxALIGN_RIGHT|wxST_NO_AUTORESIZE)
-            self.qtea[i] = wxStaticText(self, -1, "-", wxPoint(X[1],y), wxSize(W[1], 15), style=wxALIGN_RIGHT|wxST_NO_AUTORESIZE)
-            self.pricea[i] = wxStaticText(self, -1, "-", wxPoint(X[2],y), wxSize(W[2], 15), style=wxALIGN_RIGHT|wxST_NO_AUTORESIZE)
-            self.pricev[i] = wxStaticText(self, -1, "-", wxPoint(X[3],y), wxSize(W[3], 15), style=wxALIGN_RIGHT|wxST_NO_AUTORESIZE)
-            self.qtev[i] = wxStaticText(self, -1, "-", wxPoint(X[4],y), wxSize(W[4], 15), style=wxALIGN_RIGHT|wxST_NO_AUTORESIZE)
-            self.nbv[i] = wxStaticText(self, -1, "-", wxPoint(X[5],y), wxSize(W[5], 15), style=wxALIGN_RIGHT|wxST_NO_AUTORESIZE)
+            self.nba[i] = wx.StaticText(self, -1, "-", wx.Point(X[0],y), wx.Size(W[0], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
+            self.qtea[i] = wx.StaticText(self, -1, "-", wx.Point(X[1],y), wx.Size(W[1], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
+            self.pricea[i] = wx.StaticText(self, -1, "-", wx.Point(X[2],y), wx.Size(W[2], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
+            self.pricev[i] = wx.StaticText(self, -1, "-", wx.Point(X[3],y), wx.Size(W[3], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
+            self.qtev[i] = wx.StaticText(self, -1, "-", wx.Point(X[4],y), wx.Size(W[4], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
+            self.nbv[i] = wx.StaticText(self, -1, "-", wx.Point(X[5],y), wx.Size(W[5], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
             y = y + 15
 
-        fmp = wxStaticText(self, -1, message('live_FMP'), wxPoint(X[1],y), wxSize(W[1], 15), style=wxALIGN_RIGHT|wxST_NO_AUTORESIZE)
-        self.fmpa = wxStaticText(self, -1, "-", wxPoint(X[2],y), wxSize(W[2], 15), style=wxALIGN_RIGHT|wxST_NO_AUTORESIZE)
-        self.fmpv = wxStaticText(self, -1, "-", wxPoint(X[3],y), wxSize(W[3], 15), style=wxALIGN_RIGHT|wxST_NO_AUTORESIZE)
+        fmp = wx.StaticText(self, -1, message('live_FMP'), wx.Point(X[1],y), wx.Size(W[1], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
+        self.fmpa = wx.StaticText(self, -1, "-", wx.Point(X[2],y), wx.Size(W[2], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
+        self.fmpv = wx.StaticText(self, -1, "-", wx.Point(X[3],y), wx.Size(W[3], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
 
         # last trades
-        title = wxStaticText(self, -1, message('live_lasttrades'), wxPoint(X[6],5), wxSize(W[6]+W[7]+W[8], 15), style=wxALIGN_CENTRE)
+        title = wx.StaticText(self, -1, message('live_lasttrades'), wx.Point(X[6],5), wx.Size(W[6]+W[7]+W[8], 15), style=wx.ALIGN_CENTRE)
         title.SetBackgroundColour('sea green')
-        hours = wxStaticText(self, -1, message('live_hours'), wxPoint(X[6],20), wxSize(W[6], 15), style=wxALIGN_RIGHT)
-        qte = wxStaticText(self, -1, message('live_qty'), wxPoint(X[7],20), wxSize(W[7], 15), style=wxALIGN_RIGHT)
-        price = wxStaticText(self, -1, message('live_price'), wxPoint(X[8],20), wxSize(W[8], 15), style=wxALIGN_RIGHT)
+        hours = wx.StaticText(self, -1, message('live_hours'), wx.Point(X[6],20), wx.Size(W[6], 15), style=wx.ALIGN_RIGHT)
+        qte = wx.StaticText(self, -1, message('live_qty'), wx.Point(X[7],20), wx.Size(W[7], 15), style=wx.ALIGN_RIGHT)
+        price = wx.StaticText(self, -1, message('live_price'), wx.Point(X[8],20), wx.Size(W[8], 15), style=wx.ALIGN_RIGHT)
 
         y = 35
         self.qtelt = {}
         self.hourlt = {}
         self.pricelt = {}
         for i in range(0,LTLINES):
-            self.hourlt[i] = wxStaticText(self, -1, "::", wxPoint(X[6],y), wxSize(W[6], 15), style=wxALIGN_RIGHT|wxST_NO_AUTORESIZE)
-            self.qtelt[i] = wxStaticText(self, -1, "-", wxPoint(X[7],y), wxSize(W[7], 15), style=wxALIGN_RIGHT|wxST_NO_AUTORESIZE)
-            self.pricelt[i] = wxStaticText(self, -1, "-", wxPoint(X[8],y), wxSize(W[8], 15), style=wxALIGN_RIGHT|wxST_NO_AUTORESIZE)
+            self.hourlt[i] = wx.StaticText(self, -1, "::", wx.Point(X[6],y), wx.Size(W[6], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
+            self.qtelt[i] = wx.StaticText(self, -1, "-", wx.Point(X[7],y), wx.Size(W[7], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
+            self.pricelt[i] = wx.StaticText(self, -1, "-", wx.Point(X[8],y), wx.Size(W[8], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
             y = y + 15
 
-        cmp = wxStaticText(self, -1, message('live_CMP'), wxPoint(X[7],y), wxSize(W[7], 15), style=wxALIGN_RIGHT|wxST_NO_AUTORESIZE)
-        self.cmplt = wxStaticText(self, -1, "-", wxPoint(X[8],y), wxSize(W[8], 15), style=wxALIGN_RIGHT|wxST_NO_AUTORESIZE)
+        cmp = wx.StaticText(self, -1, message('live_CMP'), wx.Point(X[7],y), wx.Size(W[7], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
+        self.cmplt = wx.StaticText(self, -1, "-", wx.Point(X[8],y), wx.Size(W[8], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
 
-        self.m_sclock = wxStaticText(self, -1, " ", wxPoint(X[9],y), wxSize(W[9], 15), style=wxALIGN_CENTRE|wxST_NO_AUTORESIZE)
+        self.m_sclock = wx.StaticText(self, -1, " ", wx.Point(X[9],y), wx.Size(W[9], 15), style=wx.ALIGN_CENTRE|wx.ST_NO_AUTORESIZE)
 
         self.refresh()
 
@@ -388,7 +388,7 @@ class iTrade_wxLive(wxPanel):
         else:
             c = long(c)
         if c==nvalue:
-            bg = wxNullColour
+            bg = wx.NullColour
         else:
             bg = cNEUTRAL
         ref.SetBackgroundColour(bg)
@@ -401,7 +401,7 @@ class iTrade_wxLive(wxPanel):
 
     def cells(self,ref,svalue):
         if ref.GetLabel()==svalue:
-            bg = wxNullColour
+            bg = wx.NullColour
         else:
             bg = cNEUTRAL
         ref.SetBackgroundColour(bg)
@@ -412,11 +412,11 @@ class iTrade_wxLive(wxPanel):
     def cellfd(self,ref,nvalue):
         c1 = ref.GetLabel()
         if c1=='-':
-            bg = wxNullColour
+            bg = wx.NullColour
         else:
             c1 = float(c1)
             if nvalue=='-':
-                bg = wxNullColour
+                bg = wx.NullColour
             else:
                 c2 = float(nvalue)
                 if c2>c1:
@@ -424,10 +424,10 @@ class iTrade_wxLive(wxPanel):
                 elif c2<c1:
                     bg = cNEGATIF
                 else:
-                    bg = wxNullColour
+                    bg = wx.NullColour
         return bg
 
-    def setcell(self,ref,val,bg=wxNullColour):
+    def setcell(self,ref,val,bg=wx.NullColour):
         ref.SetBackgroundColour(bg)
         ref.ClearBackground()
         ref.SetLabel(val)
@@ -502,10 +502,10 @@ class iTrade_wxLive(wxPanel):
             ssi = self.foundIndex(lt)
             for trade in lt:
                 if i>ssi:
-                    bg = wxNullColour
+                    bg = wx.NullColour
                 else:
                     bg = self.cellfd(self.pricelt[i],trade[2])
-                if bg==wxNullColour:
+                if bg==wx.NullColour:
                     bg = self.cells(self.hourlt[i],trade[0])
                 else:
                     self.setcell(self.hourlt[i],trade[0],bg)
@@ -535,15 +535,15 @@ class iTrade_wxLive(wxPanel):
 
 if __name__=='__main__':
 
-    class WndTest(wxFrame,iTrade_wxLiveMixin):
+    class WndTest(wx.Frame,iTrade_wxLiveMixin):
         def __init__(self, parent,quote):
-            wxFrame.__init__(self,parent,wxNewId(), 'WndTest', size = (600,190), style=wxDEFAULT_FRAME_STYLE|wxNO_FULL_REPAINT_ON_RESIZE)
+            wx.Frame.__init__(self,parent,wx.NewId(), 'WndTest', size = (600,190), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE)
             iTrade_wxLiveMixin.__init__(self)
             self.m_live = iTrade_wxLive(self,quote)
             self.m_quote = quote
             self.registerLive(quote,itrade_config.refreshLive,quote.isin())
 
-            EVT_CLOSE(self, self.OnCloseWindow)
+            wx.EVT_CLOSE(self, self.OnCloseWindow)
             EVT_UPDATE_LIVE(self, self.OnLive)
 
             self.startLive()
@@ -551,7 +551,7 @@ if __name__=='__main__':
         def OnLive(self,event):
             print event.param
             self.m_live.refresh()
-            self.m_live.Refresh(false)
+            self.m_live.Refresh(False)
             event.Skip()
 
         def OnCloseWindow(self,event):
@@ -575,7 +575,7 @@ if __name__=='__main__':
     quote = quotes.lookupTicker(ticker)
     info('%s: %s' % (ticker,quote))
 
-    app = wxPySimpleApp()
+    app = wx.PySimpleApp()
 
     frame = WndTest(None,quote)
     if frame:

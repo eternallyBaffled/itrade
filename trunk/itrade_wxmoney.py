@@ -42,10 +42,7 @@ from datetime import *
 
 # wxPython system
 import itrade_wxversion
-from wxPython.wx import *
-#from wxPython.calendar import *
-#from wxPython.lib.mixins.listctrl import wxColumnSorterMixin, wxListCtrlAutoWidthMixin
-#from wxPython.lib.maskededit import wxMaskedTextCtrl
+import wx
 
 # iTrade system
 from itrade_logging import *
@@ -70,10 +67,10 @@ ID_CLOSE = 111
 #   Money management
 # ============================================================================
 
-class iTradeMoneyPanel(wxWindow):
+class iTradeMoneyPanel(wx.Window):
 
     def __init__(self,parent,id,port):
-        wxWindow.__init__(self, parent, id)
+        wx.Window.__init__(self, parent, id)
         self.m_port = port
 
     def refresh(self):
@@ -85,10 +82,10 @@ class iTradeMoneyPanel(wxWindow):
 #   Display portfolio evaluation chart
 # ============================================================================
 
-class iTradeEvaluationChartPanel(wxWindow):
+class iTradeEvaluationChartPanel(wx.Window):
 
     def __init__(self,parent,id,port):
-        wxWindow.__init__(self, parent, id)
+        wx.Window.__init__(self, parent, id)
         self.m_port = port
 
     def refresh(self):
@@ -100,10 +97,10 @@ class iTradeEvaluationChartPanel(wxWindow):
 #   Computer
 # ============================================================================
 
-class iTradeComputePanel(wxWindow):
+class iTradeComputePanel(wx.Window):
 
     def __init__(self,parent,id,quote):
-        wxWindow.__init__(self, parent, id)
+        wx.Window.__init__(self, parent, id)
         self.m_quote = quote
 
     def refresh(self):
@@ -115,16 +112,16 @@ class iTradeComputePanel(wxWindow):
 #   Display textual evaluation of the portfolio
 # ============================================================================
 
-class iTradeEvaluationPanel(wxWindow):
+class iTradeEvaluationPanel(wx.Window):
 
     def __init__(self,parent,id,port):
-        wxWindow.__init__(self, parent, id)
+        wx.Window.__init__(self, parent, id)
         self.m_parent = parent
         self.m_port = port
 
         self.html = iTradeHtmlWindow(self.m_parent,-1)
 
-        EVT_SIZE(self, self.OnSize)
+        wx.EVT_SIZE(self, self.OnSize)
 
         self.refresh()
 
@@ -242,7 +239,7 @@ class iTradeEvaluationPanel(wxWindow):
 # iTradeMoneyNotebookWindow
 # ============================================================================
 
-class iTradeMoneyNotebookWindow(wxNotebook):
+class iTradeMoneyNotebookWindow(wx.Notebook):
 
     ID_PAGE_EVALUATION = 0
     ID_PAGE_COMPUTE = 1
@@ -250,13 +247,13 @@ class iTradeMoneyNotebookWindow(wxNotebook):
     ID_PAGE_MONEY = 3
 
     def __init__(self,parent,id,page,port,quote):
-        wxNotebook.__init__(self,parent,id,wxDefaultPosition, style=wxSIMPLE_BORDER|wxNB_TOP)
+        wx.Notebook.__init__(self,parent,id,wx.DefaultPosition, style=wx.SIMPLE_BORDER|wx.NB_TOP)
         self.m_port = port
         self.m_quote = quote
         self.init()
 
-        EVT_NOTEBOOK_PAGE_CHANGED(self, self.GetId(), self.OnPageChanged)
-        EVT_NOTEBOOK_PAGE_CHANGING(self, self.GetId(), self.OnPageChanging)
+        wx.EVT_NOTEBOOK_PAGE_CHANGED(self, self.GetId(), self.OnPageChanged)
+        wx.EVT_NOTEBOOK_PAGE_CHANGING(self, self.GetId(), self.OnPageChanging)
 
         # __x select page
 
@@ -264,16 +261,16 @@ class iTradeMoneyNotebookWindow(wxNotebook):
         self.win = {}
         self.DeleteAllPages()
 
-        self.win[self.ID_PAGE_EVALUATION] = iTradeEvaluationPanel(self,wxNewId(),self.m_port)
+        self.win[self.ID_PAGE_EVALUATION] = iTradeEvaluationPanel(self,wx.NewId(),self.m_port)
         self.AddPage(self.win[self.ID_PAGE_EVALUATION], message('money_evaluation'))
 
-        self.win[self.ID_PAGE_COMPUTE] = iTradeComputePanel(self,wxNewId(),self.m_quote)
+        self.win[self.ID_PAGE_COMPUTE] = iTradeComputePanel(self,wx.NewId(),self.m_quote)
         self.AddPage(self.win[self.ID_PAGE_COMPUTE], message('money_compute'))
 
-        self.win[self.ID_PAGE_EVALCHART] = iTradeEvaluationChartPanel(self,wxNewId(),self.m_port)
+        self.win[self.ID_PAGE_EVALCHART] = iTradeEvaluationChartPanel(self,wx.NewId(),self.m_port)
         self.AddPage(self.win[self.ID_PAGE_EVALCHART], message('money_evaluationchart'))
 
-        self.win[self.ID_PAGE_MONEY] = iTradeMoneyPanel(self,wxNewId(),self.m_port)
+        self.win[self.ID_PAGE_MONEY] = iTradeMoneyPanel(self,wx.NewId(),self.m_port)
         self.AddPage(self.win[self.ID_PAGE_MONEY], message('money_money'))
 
     def OnPageChanged(self, event):
@@ -296,11 +293,11 @@ class iTradeMoneyNotebookWindow(wxNotebook):
 # iTradeMoneyWindow
 # ============================================================================
 
-class iTradeMoneyWindow(wxFrame,iTrade_wxFrame):
+class iTradeMoneyWindow(wx.Frame,iTrade_wxFrame):
 
     def __init__(self,parent,id,title,page,port,quote):
-        self.m_id = wxNewId()
-        wxFrame.__init__(self,None,self.m_id, title, size = (640,480), style=wxDEFAULT_FRAME_STYLE|wxNO_FULL_REPAINT_ON_RESIZE)
+        self.m_id = wx.NewId()
+        wx.Frame.__init__(self,None,self.m_id, title, size = (640,480), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE)
         iTrade_wxFrame.__init__(self,parent,'money')
         self.m_port = port
         self.m_quote = quote
@@ -308,8 +305,8 @@ class iTradeMoneyWindow(wxFrame,iTrade_wxFrame):
 
         self.m_book = iTradeMoneyNotebookWindow(self, -1, page=self.m_page,port=self.m_port,quote=self.m_quote)
 
-        EVT_WINDOW_DESTROY(self, self.OnDestroy)
-        EVT_SIZE(self, self.OnSize)
+        wx.EVT_WINDOW_DESTROY(self, self.OnDestroy)
+        wx.EVT_SIZE(self, self.OnSize)
 
     def OnSize(self, event):
         w,h = self.GetClientSizeTuple()
@@ -343,7 +340,7 @@ def open_iTradeMoney(win,page=0,port=None,quote=None):
 if __name__=='__main__':
     setLevel(logging.INFO)
 
-    app = wxPySimpleApp()
+    app = wx.PySimpleApp()
 
     from itrade_local import *
     setLang('us')

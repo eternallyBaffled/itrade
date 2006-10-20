@@ -41,7 +41,7 @@ import string
 
 # wxPython system
 import itrade_wxversion
-from wxPython.wx import *
+import wx
 
 # matplotlib system
 import matplotlib
@@ -50,7 +50,7 @@ matplotlib.rcParams['numerix'] = 'numpy'
 
 # itrade system
 from itrade_logging import *
-from itrade_wxutil import wxMatplotColorToRGB
+from itrade_wxutil import MatplotColorToRGB
 
 # ============================================================================
 # iTrade_LabelPopup()
@@ -80,9 +80,9 @@ class iTrade_wxLabel(object):
             idx = string.find(eachLine,',')
             if idx>=0:
                 debug('idx=%d line=%s color=%s' %(idx,eachLine[idx+1:],eachLine[:idx]))
-                nlines.append((eachLine[idx+1:],wxMatplotColorToRGB(eachLine[:idx])))
+                nlines.append((eachLine[idx+1:],MatplotColorToRGB(eachLine[:idx])))
             else:
-                nlines.append((eachLine,wxMatplotColorToRGB('k')))
+                nlines.append((eachLine,MatplotColorToRGB('k')))
 
         # calculate space to display the string
         tx = 0
@@ -103,15 +103,15 @@ class iTrade_wxLabel(object):
         self.EndPaint(dc)
 
     def InitPaint(self,parent,pos,max):
-        self.pos = wxPoint(*pos)
+        self.pos = wx.Point(*pos)
         if max:
-            self.max = wxPoint(*max)
+            self.max = wx.Point(*max)
         else:
             self.max = None
         self.parent = parent
-        self.font = wxFont(8, wxROMAN, wxNORMAL, wxNORMAL)
-        self.bg = wxNamedColor("YELLOW")
-        return wxMemoryDC()
+        self.font = wx.Font(8, wx.ROMAN, wx.NORMAL, wx.NORMAL)
+        self.bg = wx.NamedColor("YELLOW")
+        return wx.MemoryDC()
 
     def BeginPaint(self,dc,w,h):
         if self.max:
@@ -125,43 +125,43 @@ class iTrade_wxLabel(object):
             else:
                 self.pos.y = self.pos.y + 16
 
-        self.bmp = wxEmptyBitmap(w,h)
+        self.bmp = wx.EmptyBitmap(w,h)
         dc.SelectObject(self.bmp)
-        dc.SetBackground(wxBrush(self.bg, wxSOLID))
+        dc.SetBackground(wx.Brush(self.bg, wx.SOLID))
         dc.Clear()
-        dc.SetTextForeground(wxBLACK)
+        dc.SetTextForeground(wx.BLACK)
         dc.SetFont(self.font)
         dc.BeginDrawing()
         dc.DrawRectangle(0, 0, self.bmp.GetWidth(),self.bmp.GetHeight())
 
     def EndPaint(self,dc):
-        dc.SelectObject(wxNullBitmap)
+        dc.SelectObject(wx.NullBitmap)
         dc.EndDrawing()
-        mask = wxMaskColour(self.bmp, self.bg)
+        mask = wx.MaskColour(self.bmp, self.bg)
         self.bmp.SetMask(mask)
 
     def GetRect(self):
         return wxRect(self.pos.x, self.pos.y, self.bmp.GetWidth(), self.bmp.GetHeight())
 
     def Draw(self):
-        dc = wxClientDC(self.parent)
-        memDC = wxMemoryDC()
+        dc = wx.ClientDC(self.parent)
+        memDC = wx.MemoryDC()
 
         # save previous bmp
-        self.prevbmp = wxEmptyBitmap(self.bmp.GetWidth(), self.bmp.GetHeight())
+        self.prevbmp = wx.EmptyBitmap(self.bmp.GetWidth(), self.bmp.GetHeight())
         memDC.SelectObject(self.prevbmp)
-        memDC.Blit(0, 0, self.bmp.GetWidth(), self.bmp.GetHeight(), dc, self.pos.x, self.pos.y, wxCOPY, True)
+        memDC.Blit(0, 0, self.bmp.GetWidth(), self.bmp.GetHeight(), dc, self.pos.x, self.pos.y, wx.COPY, True)
 
         # put new bmp
         memDC.SelectObject(self.bmp)
-        dc.Blit(self.pos.x, self.pos.y,self.bmp.GetWidth(), self.bmp.GetHeight(),memDC, 0, 0, wxCOPY, True)
+        dc.Blit(self.pos.x, self.pos.y,self.bmp.GetWidth(), self.bmp.GetHeight(),memDC, 0, 0, wx.COPY, True)
 
     def Remove(self):
         if self.prevbmp:
-            dc = wxClientDC(self.parent)
-            memDC = wxMemoryDC()
+            dc = wx.ClientDC(self.parent)
+            memDC = wx.MemoryDC()
             memDC.SelectObject(self.prevbmp)
-            dc.Blit(self.pos.x, self.pos.y,self.prevbmp.GetWidth(), self.prevbmp.GetHeight(),memDC, 0, 0, wxCOPY, True)
+            dc.Blit(self.pos.x, self.pos.y,self.prevbmp.GetWidth(), self.prevbmp.GetHeight(),memDC, 0, 0, wx.COPY, True)
             del self.prevbmp
         del self.pos
         del self.bmp

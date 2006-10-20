@@ -46,8 +46,7 @@ import locale
 
 # wxPython system
 import itrade_wxversion
-from wxPython.wx import *
-#from wxPython.lib.mixins.listctrl import wxColumnSorterMixin, wxListCtrlAutoWidthMixin
+import wx
 
 # iTrade system
 from itrade_logging import *
@@ -56,7 +55,6 @@ from itrade_local import message
 from itrade_config import *
 from itrade_wxhtml import *
 from itrade_wxmixin import iTrade_wxFrame
-from itrade_wxlabel import iTrade_wxLabel
 from itrade_wxgraph import iTrade_wxPanelGraph,fmtVolumeFunc,fmtVolumeFunc0
 from itrade_wxlive import iTrade_wxLive,iTrade_wxLiveMixin,EVT_UPDATE_LIVE
 from itrade_wxlistquote import select_iTradeQuote
@@ -74,31 +72,31 @@ from myfinance import candlestick, plot_day_summary2, candlestick2, index_bar, v
 #
 # ============================================================================
 
-class iTradeQuoteToolbar(wxToolBar):
+class iTradeQuoteToolbar(wx.ToolBar):
 
     def __init__(self,parent,id):
-        wxToolBar.__init__(self,parent,id,size = (120,32), style = wxTB_HORIZONTAL | wxNO_BORDER | wxTB_FLAT)
+        wx.ToolBar.__init__(self,parent,id,size = (120,32), style = wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT)
         self.m_parent = parent
         self.m_Throbber = None
         self._init_toolbar()
 
     def _init_toolbar(self):
-        self._NTB2_EXIT = wxNewId()
-        self._NTB2_SELECT = wxNewId()
-        self._NTB2_REFRESH = wxNewId()
+        self._NTB2_EXIT = wx.NewId()
+        self._NTB2_SELECT = wx.NewId()
+        self._NTB2_REFRESH = wx.NewId()
 
-        self.SetToolBitmapSize(wxSize(24,24))
-        self.AddSimpleTool(self._NTB2_EXIT, wxArtProvider.GetBitmap(wxART_CROSS_MARK, wxART_TOOLBAR),
+        self.SetToolBitmapSize(wx.Size(24,24))
+        self.AddSimpleTool(self._NTB2_EXIT, wx.ArtProvider.GetBitmap(wx.ART_CROSS_MARK, wx.ART_TOOLBAR),
                            message('main_close'), message('main_desc_close'))
-        self.AddControl(wxStaticLine(self, -1, size=(-1,23), style=wxLI_VERTICAL))
-        self.AddSimpleTool(self._NTB2_SELECT, wxBitmap('res/quotes.gif'),
+        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+        self.AddSimpleTool(self._NTB2_SELECT, wx.Bitmap('res/quotes.gif'),
                            message('quote_select_title'), message('quote_select_title'))
-        self.AddSimpleTool(self._NTB2_REFRESH, wxBitmap('res/refresh.png'),
+        self.AddSimpleTool(self._NTB2_REFRESH, wx.Bitmap('res/refresh.png'),
                            message('main_view_refresh'), message('main_view_desc_refresh'))
 
-        EVT_TOOL(self, self._NTB2_EXIT, self.exit)
-        EVT_TOOL(self, self._NTB2_SELECT, self.select)
-        EVT_TOOL(self, self._NTB2_REFRESH, self.refresh)
+        wx.EVT_TOOL(self, self._NTB2_EXIT, self.exit)
+        wx.EVT_TOOL(self, self._NTB2_SELECT, self.select)
+        wx.EVT_TOOL(self, self._NTB2_REFRESH, self.refresh)
         self.Realize()
 
     def refresh(self, event):
@@ -136,59 +134,59 @@ def exists(filename):
     except:
         return False
 
-class iTradeQuoteInfoWindow(wxWindow):
+class iTradeQuoteInfoWindow(wx.Window):
 
     def __init__(self,parent,id,size,quote):
-        wxWindow.__init__(self,parent,id,wxDefaultPosition, size, style=wxSIMPLE_BORDER)
+        wx.Window.__init__(self,parent,id,wx.DefaultPosition, size, style=wx.SIMPLE_BORDER)
         self.m_parent = parent
         self.m_quote = quote
         self.m_logo = None
 
         # Toolbar
-        self.m_toolbar = iTradeQuoteToolbar(self, wxNewId())
+        self.m_toolbar = iTradeQuoteToolbar(self, wx.NewId())
 
-        self.m_ticker = wxStaticText(self, -1, "???", wxPoint(5,37), wxSize(70, 20))
+        self.m_ticker = wx.StaticText(self, -1, "???", wx.Point(5,37), wx.Size(70, 20))
 
-        self.m_date = wxStaticText(self, -1, "???", wxPoint(5,65), wxSize(140, 20))
+        self.m_date = wx.StaticText(self, -1, "???", wx.Point(5,65), wx.Size(140, 20))
 
-        txt = wxStaticText(self, -1, message('variation'), wxPoint(5,80), wxSize(70, 20))
-        self.m_percent = wxStaticText(self, -1, "??? %", wxPoint(50,80), wxSize(70, 20))
+        txt = wx.StaticText(self, -1, message('variation'), wx.Point(5,80), wx.Size(70, 20))
+        self.m_percent = wx.StaticText(self, -1, "??? %", wx.Point(50,80), wx.Size(70, 20))
 
-        txt = wxStaticText(self, -1, message('last'), wxPoint(5,95), wxSize(70, 20))
-        self.m_last = wxStaticText(self, -1, "???", wxPoint(50,95), wxSize(70, 20))
+        txt = wx.StaticText(self, -1, message('last'), wx.Point(5,95), wx.Size(70, 20))
+        self.m_last = wx.StaticText(self, -1, "???", wx.Point(50,95), wx.Size(70, 20))
 
-        txt = wxStaticText(self, -1, message('open'), wxPoint(5,110), wxSize(70, 20))
-        self.m_open = wxStaticText(self, -1, "???", wxPoint(50,110), wxSize(70, 20))
+        txt = wx.StaticText(self, -1, message('open'), wx.Point(5,110), wx.Size(70, 20))
+        self.m_open = wx.StaticText(self, -1, "???", wx.Point(50,110), wx.Size(70, 20))
 
-        txt = wxStaticText(self, -1, message('high'), wxPoint(5,125), wxSize(70, 20))
-        self.m_high = wxStaticText(self, -1, "???", wxPoint(50,125), wxSize(70, 20))
+        txt = wx.StaticText(self, -1, message('high'), wx.Point(5,125), wx.Size(70, 20))
+        self.m_high = wx.StaticText(self, -1, "???", wx.Point(50,125), wx.Size(70, 20))
 
-        txt = wxStaticText(self, -1, message('low'), wxPoint(5,140), wxSize(70, 20))
-        self.m_low = wxStaticText(self, -1, "???", wxPoint(50,140), wxSize(70, 20))
+        txt = wx.StaticText(self, -1, message('low'), wx.Point(5,140), wx.Size(70, 20))
+        self.m_low = wx.StaticText(self, -1, "???", wx.Point(50,140), wx.Size(70, 20))
 
-        txt = wxStaticText(self, -1, message('volume'), wxPoint(5,155), wxSize(70, 20))
-        self.m_volume = wxStaticText(self, -1, "???", wxPoint(50,155), wxSize(70, 20))
+        txt = wx.StaticText(self, -1, message('volume'), wx.Point(5,155), wx.Size(70, 20))
+        self.m_volume = wx.StaticText(self, -1, "???", wx.Point(50,155), wx.Size(70, 20))
 
-        txt = wxStaticText(self, -1, message('prev'), wxPoint(5,170), wxSize(70, 20))
-        self.m_prev = wxStaticText(self, -1, "???", wxPoint(50,170), wxSize(70, 20))
+        txt = wx.StaticText(self, -1, message('prev'), wx.Point(5,170), wx.Size(70, 20))
+        self.m_prev = wx.StaticText(self, -1, "???", wx.Point(50,170), wx.Size(70, 20))
 
-        txt = wxStaticText(self, -1, message('cmp'), wxPoint(5,185), wxSize(70, 20))
-        self.m_cmp = wxStaticText(self, -1, "???", wxPoint(50,185), wxSize(70, 20))
+        txt = wx.StaticText(self, -1, message('cmp'), wx.Point(5,185), wx.Size(70, 20))
+        self.m_cmp = wx.StaticText(self, -1, "???", wx.Point(50,185), wx.Size(70, 20))
 
-        txt = wxStaticText(self, -1, message('status'), wxPoint(5,225), wxSize(70, 20))
-        self.m_status = wxStaticText(self, -1, "", wxPoint(60,225), wxSize(70, 20))
+        txt = wx.StaticText(self, -1, message('status'), wx.Point(5,225), wx.Size(70, 20))
+        self.m_status = wx.StaticText(self, -1, "", wx.Point(60,225), wx.Size(70, 20))
 
-        txt = wxStaticText(self, -1, message('reopen'), wxPoint(5,240), wxSize(70, 20))
-        self.m_reopen = wxStaticText(self, -1, "???", wxPoint(60,240), wxSize(70, 20))
+        txt = wx.StaticText(self, -1, message('reopen'), wx.Point(5,240), wx.Size(70, 20))
+        self.m_reopen = wx.StaticText(self, -1, "???", wx.Point(60,240), wx.Size(70, 20))
 
-        txt = wxStaticText(self, -1, message('high_threshold'), wxPoint(5,255), wxSize(70, 20))
-        self.m_high_threshold = wxStaticText(self, -1, "???", wxPoint(60,255), wxSize(70, 20))
+        txt = wx.StaticText(self, -1, message('high_threshold'), wx.Point(5,255), wx.Size(70, 20))
+        self.m_high_threshold = wx.StaticText(self, -1, "???", wx.Point(60,255), wx.Size(70, 20))
 
-        txt = wxStaticText(self, -1, message('low_threshold'), wxPoint(5,270), wxSize(70, 20))
-        self.m_low_threshold = wxStaticText(self, -1, "???", wxPoint(60,270), wxSize(70, 20))
+        txt = wx.StaticText(self, -1, message('low_threshold'), wx.Point(5,270), wx.Size(70, 20))
+        self.m_low_threshold = wx.StaticText(self, -1, "???", wx.Point(60,270), wx.Size(70, 20))
 
-        EVT_PAINT(self, self.OnPaint)
-        EVT_SIZE(self,self.OnSize)
+        wx.EVT_PAINT(self, self.OnPaint)
+        wx.EVT_SIZE(self,self.OnSize)
         self.refresh()
 
     def OnSelectQuote(self,event):
@@ -203,28 +201,28 @@ class iTradeQuoteInfoWindow(wxWindow):
     def paintLogo(self,dc):
         if self.m_logo == None:
             bgc = self.GetBackgroundColour()
-            wbrush = wxBrush(bgc, wxSOLID)
-            wpen = wxPen(bgc, 1, wxSOLID)
+            wbrush = wx.Brush(bgc, wx.SOLID)
+            wpen = wx.Pen(bgc, 1, wx.SOLID)
             dc.SetBrush(wbrush)
             dc.SetPen(wpen)
             dc.DrawRectangle(60,33,80,62)
 
             fn = os.path.join(itrade_config.dirImageData,'%s.gif' % self.m_quote.ticker())
             if exists(fn):
-                self.m_logo = wxBitmap(fn)
+                self.m_logo = wx.Bitmap(fn)
                 if self.m_logo:
                     dc.DrawBitmap(self.m_logo,60,33,False)
         else:
             dc.DrawBitmap(self.m_logo,60,33,False)
 
     def OnPaint(self,event):
-        dc = wxPaintDC(self)
+        dc = wx.PaintDC(self)
         self.paintLogo(dc)
         event.Skip()
 
     def paint(self):
         # paint logo (if any)
-        dc = wxClientDC(self)
+        dc = wx.ClientDC(self)
         self.paintLogo(dc)
 
         # paint fields
@@ -272,10 +270,10 @@ class iTradeQuoteInfoWindow(wxWindow):
 #   Table
 # ============================================================================
 
-class iTradeQuoteTablePanel(wxWindow):
+class iTradeQuoteTablePanel(wx.Window):
 
     def __init__(self,parent,id,quote):
-        wxWindow.__init__(self, parent, id)
+        wx.Window.__init__(self, parent, id)
         self.m_id = id
         self.m_quote = quote
         self.m_parent = parent
@@ -294,174 +292,174 @@ class iTradeQuoteTablePanel(wxWindow):
 #   Properties of a quote : cache flush/reload, Short/Long Term, Fixing, ...
 # ============================================================================
 
-class iTradeQuotePropertiesPanel(wxWindow):
+class iTradeQuotePropertiesPanel(wx.Window):
 
     def __init__(self,parent,id,quote):
-        wxWindow.__init__(self, parent, id)
+        wx.Window.__init__(self, parent, id)
         self.m_id = id
         self.m_quote = quote
         self.m_parent = parent
         self.m_port = parent.portfolio()
 
         # vertical general layout
-        self._sizer = wxBoxSizer(wxVERTICAL)
+        self._sizer = wx.BoxSizer(wx.VERTICAL)
 
         # ---[ info : ISIN / Ticker / Name : <Rename> <Reload> ... ]---
-        box = wxStaticBox(self, -1, message('prop_reference'))
-        thebox = wxStaticBoxSizer(box,wxVERTICAL)
+        box = wx.StaticBox(self, -1, message('prop_reference'))
+        thebox = wx.StaticBoxSizer(box,wx.VERTICAL)
 
-        box = wxBoxSizer(wxHORIZONTAL)
+        box = wx.BoxSizer(wx.HORIZONTAL)
 
-        label = wxStaticText(self, -1, message('prop_isin'))
-        box.Add(label, 0, wxALIGN_CENTRE|wxALL, 5)
+        label = wx.StaticText(self, -1, message('prop_isin'))
+        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        label = wxStaticText(self, -1, self.m_quote.isin())
-        box.Add(label, 0, wxALIGN_CENTRE|wxALL, 5)
+        label = wx.StaticText(self, -1, self.m_quote.isin())
+        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        label = wxStaticText(self, -1, message('prop_ticker'))
-        box.Add(label, 0, wxALIGN_CENTRE|wxALL, 5)
+        label = wx.StaticText(self, -1, message('prop_ticker'))
+        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.editTicker = wxTextCtrl(self, -1, self.m_quote.ticker(), size=wxSize(60,-1), style=wxTE_LEFT)
-        box.Add(self.editTicker, 0, wxALIGN_CENTRE|wxALL, 5)
+        self.editTicker = wx.TextCtrl(self, -1, self.m_quote.ticker(), size=wx.Size(60,-1), style = wx.TE_LEFT)
+        box.Add(self.editTicker, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        label = wxStaticText(self, -1, message('prop_name'))
-        box.Add(label, 0, wxALIGN_CENTRE|wxALL, 5)
+        label = wx.StaticText(self, -1, message('prop_name'))
+        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.editName = wxTextCtrl(self, -1, self.m_quote.name(), size=wxSize(160,-1), style=wxTE_LEFT)
-        box.Add(self.editName, 0, wxALIGN_CENTRE_VERTICAL|wxALL, 5)
+        self.editName = wx.TextCtrl(self, -1, self.m_quote.name(), size=wx.Size(160,-1), style = wx.TE_LEFT)
+        box.Add(self.editName, 0, wx.ALIGN_CENTRE_VERTICAL|wx.ALL, 5)
 
-        thebox.AddSizer(box, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5)
+        thebox.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
-        box = wxBoxSizer(wxHORIZONTAL)
+        box = wx.BoxSizer(wx.HORIZONTAL)
 
-        nid = wxNewId()
-        btn = wxButton(self, nid, message('prop_restore'))
+        nid = wx.NewId()
+        btn = wx.Button(self, nid, message('prop_restore'))
         btn.SetHelpText(message('prop_desc_restore'))
-        box.Add(btn, 0, wxALIGN_CENTRE|wxALL, 5)
-        EVT_BUTTON(self, nid, self.OnRestoreReference)
+        box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        wx.EVT_BUTTON(self, nid, self.OnRestoreReference)
 
-        nid = wxNewId()
-        btn = wxButton(self, nid, message('prop_rename'))
+        nid = wx.NewId()
+        btn = wx.Button(self, nid, message('prop_rename'))
         btn.SetHelpText(message('prop_desc_rename'))
-        box.Add(btn, 0, wxALIGN_CENTRE|wxALL, 5)
-        EVT_BUTTON(self, nid, self.OnRename)
+        box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        wx.EVT_BUTTON(self, nid, self.OnRename)
 
-        nid = wxNewId()
-        btn = wxButton(self, nid, message('prop_reload'))
+        nid = wx.NewId()
+        btn = wx.Button(self, nid, message('prop_reload'))
         btn.SetHelpText(message('prop_desc_reload'))
-        box.Add(btn, 0, wxALIGN_CENTRE|wxALL, 5)
-        EVT_BUTTON(self, nid, self.OnReload)
+        box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        wx.EVT_BUTTON(self, nid, self.OnReload)
 
-        nid = wxNewId()
-        btn = wxButton(self, nid, message('prop_import'))
+        nid = wx.NewId()
+        btn = wx.Button(self, nid, message('prop_import'))
         btn.SetHelpText(message('prop_desc_import'))
-        box.Add(btn, 0, wxALIGN_CENTRE|wxALL, 5)
-        EVT_BUTTON(self, nid, self.OnImport)
+        box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        wx.EVT_BUTTON(self, nid, self.OnImport)
 
-        nid = wxNewId()
-        btn = wxButton(self, nid, message('prop_export'))
+        nid = wx.NewId()
+        btn = wx.Button(self, nid, message('prop_export'))
         btn.SetHelpText(message('prop_desc_export'))
-        box.Add(btn, 0, wxALIGN_CENTRE|wxALL, 5)
-        EVT_BUTTON(self, nid, self.OnExport)
+        box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        wx.EVT_BUTTON(self, nid, self.OnExport)
 
-        thebox.AddSizer(box, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5)
-        self._sizer.AddSizer(thebox, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5)
+        thebox.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
+        self._sizer.AddSizer(thebox, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
         # ---[ market and connector ]---
-        box = wxStaticBox(self, -1, message('prop_marketandconnector'))
-        thebox = wxStaticBoxSizer(box,wxVERTICAL)
+        box = wx.StaticBox(self, -1, message('prop_marketandconnector'))
+        thebox = wx.StaticBoxSizer(box,wx.VERTICAL)
 
-        box = wxBoxSizer(wxHORIZONTAL)
+        box = wx.BoxSizer(wx.HORIZONTAL)
 
-        label = wxStaticText(self, -1, message('prop_market'))
-        box.Add(label, 0, wxALIGN_CENTRE|wxALL, 5)
+        label = wx.StaticText(self, -1, message('prop_market'))
+        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.editMarket = wxTextCtrl(self, -1, self.m_quote.market(), size=wxSize(120,-1), style=wxTE_LEFT)
-        box.Add(self.editMarket, 0, wxALIGN_CENTRE|wxALL, 5)
+        self.editMarket = wx.TextCtrl(self, -1, self.m_quote.market(), size=wx.Size(120,-1), style = wx.TE_LEFT)
+        box.Add(self.editMarket, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        label = wxStaticText(self, -1, message('prop_country'))
-        box.Add(label, 0, wxALIGN_CENTRE|wxALL, 5)
+        label = wx.StaticText(self, -1, message('prop_country'))
+        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        label = wxStaticText(self, -1, self.m_quote.country())
-        box.Add(label, 0, wxALIGN_CENTRE|wxALL, 5)
+        label = wx.StaticText(self, -1, self.m_quote.country())
+        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.liveText = wxStaticText(self, -1, self.m_quote.sv_type_of_clock(bDisplayTime=True))
-        box.Add(self.liveText, 0, wxALIGN_CENTRE|wxALL, 5)
+        self.liveText = wx.StaticText(self, -1, self.m_quote.sv_type_of_clock(bDisplayTime=True))
+        box.Add(self.liveText, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        thebox.AddSizer(box, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5)
+        thebox.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
-        box = wxBoxSizer(wxHORIZONTAL)
+        box = wx.BoxSizer(wx.HORIZONTAL)
 
-        label = wxStaticText(self, -1, message('prop_liveconnector'))
-        box.Add(label, 0, wxALIGN_CENTRE|wxALL, 5)
+        label = wx.StaticText(self, -1, message('prop_liveconnector'))
+        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.editLiveConnector = wxTextCtrl(self, -1, self.m_quote.liveconnector().name(), size=wxSize(120,-1), style=wxTE_LEFT)
-        box.Add(self.editLiveConnector, 0, wxALIGN_CENTRE|wxALL, 5)
+        self.editLiveConnector = wx.TextCtrl(self, -1, self.m_quote.liveconnector().name(), size=wx.Size(120,-1), style = wx.TE_LEFT)
+        box.Add(self.editLiveConnector, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        label = wxStaticText(self, -1, message('prop_impconnector'))
-        box.Add(label, 0, wxALIGN_CENTRE|wxALL, 5)
+        label = wx.StaticText(self, -1, message('prop_impconnector'))
+        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.editImportConnector = wxTextCtrl(self, -1, self.m_quote.importconnector().name(), size=wxSize(120,-1), style=wxTE_LEFT)
-        box.Add(self.editImportConnector, 0, wxALIGN_CENTRE|wxALL, 5)
+        self.editImportConnector = wx.TextCtrl(self, -1, self.m_quote.importconnector().name(), size=wx.Size(120,-1), style = wx.TE_LEFT)
+        box.Add(self.editImportConnector, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        thebox.AddSizer(box, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5)
+        thebox.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
-        box = wxBoxSizer(wxHORIZONTAL)
+        box = wx.BoxSizer(wx.HORIZONTAL)
 
-        nid = wxNewId()
-        btn = wxButton(self, nid, message('prop_restore'))
+        nid = wx.NewId()
+        btn = wx.Button(self, nid, message('prop_restore'))
         btn.SetHelpText(message('prop_desc_restore'))
-        box.Add(btn, 0, wxALIGN_CENTRE|wxALL, 5)
-        EVT_BUTTON(self, nid, self.OnRestoreMarketAndConnector)
+        box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        wx.EVT_BUTTON(self, nid, self.OnRestoreMarketAndConnector)
 
-        nid = wxNewId()
-        btn = wxButton(self, nid, message('prop_set'))
+        nid = wx.NewId()
+        btn = wx.Button(self, nid, message('prop_set'))
         btn.SetHelpText(message('prop_desc_set'))
-        box.Add(btn, 0, wxALIGN_CENTRE|wxALL, 5)
-        EVT_BUTTON(self, nid, self.OnSetMarketAndConnector)
+        box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        wx.EVT_BUTTON(self, nid, self.OnSetMarketAndConnector)
 
-        thebox.AddSizer(box, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5)
-        self._sizer.AddSizer(thebox, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5)
+        thebox.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
+        self._sizer.AddSizer(thebox, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
         # ---[ trading style ]---
-        box = wxStaticBox(self, -1, message('prop_tradingstyle'))
-        thebox = wxStaticBoxSizer(box,wxVERTICAL)
+        box = wx.StaticBox(self, -1, message('prop_tradingstyle'))
+        thebox = wx.StaticBoxSizer(box,wx.VERTICAL)
 
-        box = wxBoxSizer(wxHORIZONTAL)
+        box = wx.BoxSizer(wx.HORIZONTAL)
 
-        label = wxStaticText(self, -1, message('prop_term'))
-        box.Add(label, 0, wxALIGN_CENTRE|wxALL, 5)
+        label = wx.StaticText(self, -1, message('prop_term'))
+        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.editTerm = wxTextCtrl(self, -1, '3', size=wxSize(30,-1), style=wxTE_LEFT)
-        box.Add(self.editTerm, 0, wxALIGN_CENTRE|wxALL, 5)
+        self.editTerm = wx.TextCtrl(self, -1, '3', size=wx.Size(30,-1), style = wx.TE_LEFT)
+        box.Add(self.editTerm, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        label = wxStaticText(self, -1, message('prop_risk'))
-        box.Add(label, 0, wxALIGN_CENTRE|wxALL, 5)
+        label = wx.StaticText(self, -1, message('prop_risk'))
+        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.editRisk = wxTextCtrl(self, -1, '50', size=wxSize(30,-1), style=wxTE_LEFT)
-        box.Add(self.editRisk, 0, wxALIGN_CENTRE|wxALL, 5)
+        self.editRisk = wx.TextCtrl(self, -1, '50', size=wx.Size(30,-1), style = wx.TE_LEFT)
+        box.Add(self.editRisk, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        thebox.AddSizer(box, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5)
+        thebox.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
-        box = wxBoxSizer(wxHORIZONTAL)
+        box = wx.BoxSizer(wx.HORIZONTAL)
 
-        nid = wxNewId()
-        btn = wxButton(self, nid, message('prop_restore'))
+        nid = wx.NewId()
+        btn = wx.Button(self, nid, message('prop_restore'))
         btn.SetHelpText(message('prop_desc_restore'))
-        box.Add(btn, 0, wxALIGN_CENTRE|wxALL, 5)
-        EVT_BUTTON(self, nid, self.OnRestoreTrading)
+        box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        wx.EVT_BUTTON(self, nid, self.OnRestoreTrading)
 
-        nid = wxNewId()
-        btn = wxButton(self, nid, message('prop_set'))
+        nid = wx.NewId()
+        btn = wx.Button(self, nid, message('prop_set'))
         btn.SetHelpText(message('prop_desc_set'))
-        box.Add(btn, 0, wxALIGN_CENTRE|wxALL, 5)
-        EVT_BUTTON(self, nid, self.OnSetTrading)
+        box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        wx.EVT_BUTTON(self, nid, self.OnSetTrading)
 
-        thebox.AddSizer(box, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5)
-        self._sizer.AddSizer(thebox, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5)
+        thebox.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
+        self._sizer.AddSizer(thebox, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
         # auto layout
-        EVT_SIZE(self, self.OnSize)
+        wx.EVT_SIZE(self, self.OnSize)
         self.SetSizerAndFit(self._sizer)
 
     def paint(self):
@@ -477,7 +475,7 @@ class iTradeQuotePropertiesPanel(wxWindow):
         self.paint()
 
     def OnReload(self,event):
-        dlg = wxProgressDialog(message('main_refreshing'),"",1*itrade_config.numTradeYears,self,wxPD_APP_MODAL)
+        dlg = wx.ProgressDialog(message('main_refreshing'),"",1*itrade_config.numTradeYears,self,wx.PD_APP_MODAL)
         dlg.Update(0,self.m_quote.name())
         self.m_quote.flushAndReload(dlg)
         dlg.Destroy()
@@ -544,17 +542,17 @@ class iTradeQuotePropertiesPanel(wxWindow):
 #   Display Candlestick / Analysis on a specific quote
 # ============================================================================
 
-class iTradeQuoteAnalysisPanel(wxWindow):
+class iTradeQuoteAnalysisPanel(wx.Window):
 
     def __init__(self,parent,id,quote):
-        wxWindow.__init__(self, parent, id)
+        wx.Window.__init__(self, parent, id)
         self.m_id = id
         self.m_quote = quote
         self.m_parent = parent
         self.m_port = parent.portfolio()
 
-        txt = wxStaticText(self, -1, "Candle : ", wxPoint(5,25), wxSize(70, 20))
-        self.m_candle = wxStaticText(self, -1, "???", wxPoint(80,25), wxSize(120, 20))
+        txt = wx.StaticText(self, -1, "Candle : ", wx.Point(5,25), wx.Size(70, 20))
+        self.m_candle = wx.StaticText(self, -1, "???", wx.Point(80,25), wx.Size(120, 20))
 
     def paint(self):
         self.m_candle.SetLabel(self.m_quote.ov_candle().__str__())
@@ -567,9 +565,9 @@ class iTradeQuoteAnalysisPanel(wxWindow):
 # iTradeQuoteGraphPanel
 # ============================================================================
 
-class iTradeQuoteGraphPanel(wxPanel,iTrade_wxPanelGraph):
+class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
     def __init__(self, parent, id, quote):
-        wxPanel.__init__(self, parent, id)
+        wx.Panel.__init__(self, parent, id)
         iTrade_wxPanelGraph.__init__(self, parent, id, size=(5,4))
 
         self.m_id = id
@@ -644,25 +642,25 @@ class iTradeQuoteGraphPanel(wxPanel,iTrade_wxPanelGraph):
 
     def OnConfig(self,event):
         if not hasattr(self, "m_popupID_dispMA150"):
-            self.m_popupID_dispMA150 = wxNewId()
-            EVT_MENU(self, self.m_popupID_dispMA150, self.OnPopup_dispMA150)
-            self.m_popupID_dispBollinger = wxNewId()
-            EVT_MENU(self, self.m_popupID_dispBollinger, self.OnPopup_dispBollinger)
-            self.m_popupID_dispOverlaidVolume = wxNewId()
-            EVT_MENU(self, self.m_popupID_dispOverlaidVolume, self.OnPopup_dispOverlaidVolume)
-            self.m_popupID_dispLegend = wxNewId()
-            EVT_MENU(self, self.m_popupID_dispLegend, self.OnPopup_dispLegend)
-            self.m_popupID_dispGrid = wxNewId()
-            EVT_MENU(self, self.m_popupID_dispGrid, self.OnPopup_dispGrid)
-            self.m_popupID_dispChart1Candlestick = wxNewId()
-            EVT_MENU(self, self.m_popupID_dispChart1Candlestick, self.OnPopup_dispChart1Candlestick)
-            self.m_popupID_dispChart1OHLC = wxNewId()
-            EVT_MENU(self, self.m_popupID_dispChart1OHLC, self.OnPopup_dispChart1OHLC)
-            self.m_popupID_dispChart1Line = wxNewId()
-            EVT_MENU(self, self.m_popupID_dispChart1Line, self.OnPopup_dispChart1Line)
+            self.m_popupID_dispMA150 = wx.NewId()
+            wx.EVT_MENU(self, self.m_popupID_dispMA150, self.OnPopup_dispMA150)
+            self.m_popupID_dispBollinger = wx.NewId()
+            wx.EVT_MENU(self, self.m_popupID_dispBollinger, self.OnPopup_dispBollinger)
+            self.m_popupID_dispOverlaidVolume = wx.NewId()
+            wx.EVT_MENU(self, self.m_popupID_dispOverlaidVolume, self.OnPopup_dispOverlaidVolume)
+            self.m_popupID_dispLegend = wx.NewId()
+            wx.EVT_MENU(self, self.m_popupID_dispLegend, self.OnPopup_dispLegend)
+            self.m_popupID_dispGrid = wx.NewId()
+            wx.EVT_MENU(self, self.m_popupID_dispGrid, self.OnPopup_dispGrid)
+            self.m_popupID_dispChart1Candlestick = wx.NewId()
+            wx.EVT_MENU(self, self.m_popupID_dispChart1Candlestick, self.OnPopup_dispChart1Candlestick)
+            self.m_popupID_dispChart1OHLC = wx.NewId()
+            wx.EVT_MENU(self, self.m_popupID_dispChart1OHLC, self.OnPopup_dispChart1OHLC)
+            self.m_popupID_dispChart1Line = wx.NewId()
+            wx.EVT_MENU(self, self.m_popupID_dispChart1Line, self.OnPopup_dispChart1Line)
 
         # make a menu
-        self.popmenu = wxMenu()
+        self.popmenu = wx.Menu()
         # add items
         i = self.popmenu.AppendRadioItem(self.m_popupID_dispChart1Candlestick, message('quote_popup_dispChart1Candlestick'))
         i.Check(self.m_dispChart1Type == 'c')
@@ -686,7 +684,7 @@ class iTradeQuoteGraphPanel(wxPanel,iTrade_wxPanelGraph):
 
         # Popup the menu.  If an item is selected then its handler
         # will be called before PopupMenu returns.
-        self.toolbar.PopupMenu(self.popmenu, wxPoint(self.x, self.y))
+        self.toolbar.PopupMenu(self.popmenu, wx.Point(self.x, self.y))
         self.popmenu.Destroy()
 
     def OnPopup_dispChart1Candlestick(self,event):
@@ -888,12 +886,12 @@ class iTradeQuoteGraphPanel(wxPanel,iTrade_wxPanelGraph):
     def GetXYLabel(self,ax,data):
         dt = self.m_quote.m_daytrades.m_date[self.idx[data[0]]]
         s = 'k, ' + self.m_quote.name() + ' ('+ dt.strftime('%x') + ') \n'
-        s = s + ' '+ self.space(message('popup_open'), self.m_quote.sv_open(dt)) + ' \n'
-        s = s + ' '+ self.space(message('popup_high'), self.m_quote.sv_high(dt)) + ' \n'
-        s = s + ' '+ self.space(message('popup_low'), self.m_quote.sv_low(dt)) + ' \n'
-        s = s + ' '+ self.space(message('popup_close'), self.m_quote.sv_close(dt)) + ' \n'
-        s = s + ' '+ self.space(message('popup_percent') % self.m_quote.sv_percent(dt), self.m_quote.sv_unitvar(dt)) + ' \n'
-        s = s + ' '+ self.space(message('popup_volume') , self.m_quote.sv_volume(dt)) + ' \n'
+        s = s + 'k, '+ self.space(message('popup_open'), self.m_quote.sv_open(dt)) + ' \n'
+        s = s + 'k, '+ self.space(message('popup_high'), self.m_quote.sv_high(dt)) + ' \n'
+        s = s + 'k, '+ self.space(message('popup_low'), self.m_quote.sv_low(dt)) + ' \n'
+        s = s + 'k, '+ self.space(message('popup_close'), self.m_quote.sv_close(dt)) + ' \n'
+        s = s + 'k, '+ self.space(message('popup_percent') % self.m_quote.sv_percent(dt), self.m_quote.sv_unitvar(dt)) + ' \n'
+        s = s + 'k, '+ self.space(message('popup_volume') , self.m_quote.sv_volume(dt)) + ' \n'
         if ax == self.chart2:
             s = s + 'r, '+ self.space('VMA%s'%15, self.m_quote.sv_vma(15,dt)) + ' \n'
             s = s + 'k, '+ self.space('OVB', self.m_quote.sv_ovb(dt)) + ' \n'
@@ -911,18 +909,18 @@ class iTradeQuoteGraphPanel(wxPanel,iTrade_wxPanelGraph):
 #   Display Notebook on a specific quote
 # ============================================================================
 
-class iTradeQuoteNotebookWindow(wxNotebook):
+class iTradeQuoteNotebookWindow(wx.Notebook):
 
     def __init__(self,parent,id,size,quote,page):
-        wxNotebook.__init__(self,parent,id,wxDefaultPosition, size, style=wxSIMPLE_BORDER|wxNB_TOP)
+        wx.Notebook.__init__(self,parent,id,wx.DefaultPosition, size, style=wx.SIMPLE_BORDER|wx.NB_TOP)
         self.m_quote = None
         self.m_parent = parent
         self.m_port = parent.portfolio()
         self.m_curpage = 0
         self.ID_PAGE_LIVE = 99
         page = self.init(quote,page)
-        EVT_NOTEBOOK_PAGE_CHANGED(self, self.GetId(), self.OnPageChanged)
-        EVT_NOTEBOOK_PAGE_CHANGING(self, self.GetId(), self.OnPageChanging)
+        wx.EVT_NOTEBOOK_PAGE_CHANGED(self, self.GetId(), self.OnPageChanged)
+        wx.EVT_NOTEBOOK_PAGE_CHANGING(self, self.GetId(), self.OnPageChanging)
         self.SetSelection(page)
 
     def portfolio(self):
@@ -971,7 +969,7 @@ class iTradeQuoteNotebookWindow(wxNotebook):
             self.ID_PAGE_TABLE = self.ID_PAGE_ANALYSIS+1
             self.ID_PAGE_PROP = self.ID_PAGE_TABLE+1
 
-            self.win[self.ID_PAGE_GRAPH] = iTradeQuoteGraphPanel(self,wxNewId(),self.m_quote)
+            self.win[self.ID_PAGE_GRAPH] = iTradeQuoteGraphPanel(self,wx.NewId(),self.m_quote)
             self.AddPage(self.win[self.ID_PAGE_GRAPH], message('quote_graphdaily'))
 
             if self.ID_PAGE_LIVE<>99:
@@ -986,19 +984,19 @@ class iTradeQuoteNotebookWindow(wxNotebook):
             else:
                 url = url % self.m_quote.ticker()
 
-            self.win[self.ID_PAGE_INTRADAY] = iTradeHtmlPanel(self,wxNewId(), url)
+            self.win[self.ID_PAGE_INTRADAY] = iTradeHtmlPanel(self,wx.NewId(), url)
             self.AddPage(self.win[self.ID_PAGE_INTRADAY], message('quote_intraday'))
 
-            self.win[self.ID_PAGE_NEWS] = iTradeRSSPanel(self,wxNewId(),self.m_quote)
+            self.win[self.ID_PAGE_NEWS] = iTradeRSSPanel(self,wx.NewId(),self.m_quote)
             self.AddPage(self.win[self.ID_PAGE_NEWS], message('quote_news'))
 
-            self.win[self.ID_PAGE_ANALYSIS] = iTradeQuoteAnalysisPanel(self,wxNewId(),self.m_quote)
+            self.win[self.ID_PAGE_ANALYSIS] = iTradeQuoteAnalysisPanel(self,wx.NewId(),self.m_quote)
             self.AddPage(self.win[self.ID_PAGE_ANALYSIS], message('quote_analysis'))
 
-            self.win[self.ID_PAGE_TABLE] = iTradeQuoteTablePanel(self,wxNewId(),self.m_quote)
+            self.win[self.ID_PAGE_TABLE] = iTradeQuoteTablePanel(self,wx.NewId(),self.m_quote)
             self.AddPage(self.win[self.ID_PAGE_TABLE], message('quote_table'))
 
-            self.win[self.ID_PAGE_PROP] = iTradeQuotePropertiesPanel(self,wxNewId(),self.m_quote)
+            self.win[self.ID_PAGE_PROP] = iTradeQuotePropertiesPanel(self,wx.NewId(),self.m_quote)
             self.AddPage(self.win[self.ID_PAGE_PROP], message('quote_properties'))
 
             return page
@@ -1020,11 +1018,11 @@ class iTradeQuoteNotebookWindow(wxNotebook):
 #
 # ============================================================================
 
-class iTradeQuoteWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin):
+class iTradeQuoteWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin):
 
     def __init__(self,parent,id,port,quote,dpage=1):
-        self.m_id = wxNewId()
-        wxFrame.__init__(self,None,self.m_id, size = ( 800,480), style = wxDEFAULT_FRAME_STYLE | wxNO_FULL_REPAINT_ON_RESIZE)
+        self.m_id = wx.NewId()
+        wx.Frame.__init__(self,None,self.m_id, size = ( 800,480), style = wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE)
         iTrade_wxFrame.__init__(self,parent,'view',hasStatusBar=False)
         iTrade_wxLiveMixin.__init__(self)
         self.m_quote = quote
@@ -1036,11 +1034,11 @@ class iTradeQuoteWindow(wxFrame,iTrade_wxFrame,iTrade_wxLiveMixin):
         self.setTitle()
 
         # info + panels
-        self.m_infowindow = iTradeQuoteInfoWindow(self, -1, size=wxDefaultSize ,quote=self.m_quote)
-        self.m_notewindow = iTradeQuoteNotebookWindow(self, -1, size=wxDefaultSize ,quote=self.m_quote, page=dpage)
+        self.m_infowindow = iTradeQuoteInfoWindow(self, -1, size=wx.DefaultSize ,quote=self.m_quote)
+        self.m_notewindow = iTradeQuoteNotebookWindow(self, -1, size=wx.DefaultSize ,quote=self.m_quote, page=dpage)
 
-        EVT_WINDOW_DESTROY(self, self.OnDestroy)
-        EVT_SIZE(self, self.OnSize)
+        wx.EVT_WINDOW_DESTROY(self, self.OnDestroy)
+        wx.EVT_SIZE(self, self.OnSize)
         EVT_UPDATE_LIVE(self, self.OnLive)
 
     def OnLive(self, evt):
@@ -1162,7 +1160,7 @@ def removeFromMatrix_iTradeQuote(win,matrix,quote):
 if __name__=='__main__':
     setLevel(logging.INFO)
 
-    app = wxPySimpleApp()
+    app = wx.PySimpleApp()
 
     from itrade_local import *
     setLang('us')

@@ -5,6 +5,10 @@ On the road for v0.4.5 (Nausicaa)
 
 ===============================================================================
 
+2006-10-20  Gilles Dumortier <dgil at ieee.org>
+	* Convert to using the wx namespace (SF bug 1500964)
+	* migrate to wxPython 2.7.x (SF bug 1581494) - not working yet
+
 2006-09-22  Gilles Dumortier <dgil at ieee.org>
 	* Another fix on SF bug 1557368 (another KeyError)
 	* Live : remove traces in CONSOLE (better perf)

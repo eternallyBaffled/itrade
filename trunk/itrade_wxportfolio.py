@@ -42,10 +42,8 @@ import logging
 
 # wxPython system
 import itrade_wxversion
-from wxPython.wx import *
-from wxPython.calendar import *
-from wxPython.lib.maskededit import wxMaskedTextCtrl
-from wxPython.lib.mixins.listctrl import wxColumnSorterMixin, wxListCtrlAutoWidthMixin
+import wx
+import wx.lib.mixins.listctrl as wxl
 
 # iTrade system
 from itrade_logging import *
@@ -56,7 +54,7 @@ from itrade_market import list_of_markets
 from itrade_currency import list_of_currencies
 
 import itrade_wxres
-from itrade_wxmixin import iTrade_wxFrame,iTradeSelectorListCtrl
+from itrade_wxmixin import iTradeSelectorListCtrl
 
 # ============================================================================
 # iTradePortfolioSelector
@@ -66,11 +64,11 @@ from itrade_wxmixin import iTrade_wxFrame,iTradeSelectorListCtrl
 #   except_portfolio = filename of portfolio which can't be selected
 # ============================================================================
 
-class iTradePortfolioSelectorListCtrlDialog(wxDialog, wxColumnSorterMixin):
+class iTradePortfolioSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
     def __init__(self, parent, portfolio, operation, except_portfolio=None):
         # context help
-        pre = wxPreDialog()
-        pre.SetExtraStyle(wxDIALOG_EX_CONTEXTHELP)
+        pre = wx.PreDialog()
+        pre.SetExtraStyle(wx.DIALOG_EX_CONTEXTHELP)
         pre.Create(parent, -1, message('portfolio_%s_title'%operation), size=(420, 420))
         self.PostCreate(pre)
 
@@ -83,41 +81,41 @@ class iTradePortfolioSelectorListCtrlDialog(wxDialog, wxColumnSorterMixin):
             self.m_accountref = ''
         self.m_except = except_portfolio
 
-        tID = wxNewId()
-        self.m_imagelist = wxImageList(16,16)
-        self.sm_q = self.m_imagelist.Add(wxBitmap('res/invalid.gif'))
-        self.sm_up = self.m_imagelist.Add(wxBitmap('res/sm_up.gif'))
-        self.sm_dn = self.m_imagelist.Add(wxBitmap('res/sm_down.gif'))
+        tID = wx.NewId()
+        self.m_imagelist = wx.ImageList(16,16)
+        self.sm_q = self.m_imagelist.Add(wx.Bitmap('res/invalid.gif'))
+        self.sm_up = self.m_imagelist.Add(wx.Bitmap('res/sm_up.gif'))
+        self.sm_dn = self.m_imagelist.Add(wx.Bitmap('res/sm_down.gif'))
 
         self.m_list = iTradeSelectorListCtrl(self, tID,
-                                 style = wxLC_REPORT | wxSUNKEN_BORDER,
+                                 style = wx.LC_REPORT | wx.SUNKEN_BORDER,
                                  size=(400, 380)
                                  )
-        self.m_list.SetImageList(self.m_imagelist, wxIMAGE_LIST_SMALL)
+        self.m_list.SetImageList(self.m_imagelist, wx.IMAGE_LIST_SMALL)
 
         self.PopulateList()
 
         # Now that the list exists we can init the other base class,
         # see wxPython/lib/mixins/listctrl.py
-        wxColumnSorterMixin.__init__(self, 3)
+        wxl.ColumnSorterMixin.__init__(self, 3)
 
-        EVT_LIST_COL_CLICK(self, tID, self.OnColClick)
-        EVT_SIZE(self, self.OnSize)
-        EVT_LIST_ITEM_ACTIVATED(self, tID, self.OnItemActivated)
-        EVT_LIST_ITEM_SELECTED(self, tID, self.OnItemSelected)
+        wx.EVT_LIST_COL_CLICK(self, tID, self.OnColClick)
+        wx.EVT_SIZE(self, self.OnSize)
+        wx.EVT_LIST_ITEM_ACTIVATED(self, tID, self.OnItemActivated)
+        wx.EVT_LIST_ITEM_SELECTED(self, tID, self.OnItemSelected)
 
-        sizer = wxBoxSizer(wxVERTICAL)
+        sizer = wx.BoxSizer(wx.VERTICAL)
 
-        box = wxBoxSizer(wxHORIZONTAL)
+        box = wx.BoxSizer(wx.HORIZONTAL)
 
-        label = wxStaticText(self, -1, message('portfolio_select_textfield'))
-        box.Add(label, 0, wxALIGN_CENTRE|wxALL, 5)
+        label = wx.StaticText(self, -1, message('portfolio_select_textfield'))
+        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.wxNameCtrl = wxTextCtrl(self, -1, self.m_name, size=(80,-1))
-        box.Add(self.wxNameCtrl, 1, wxALIGN_CENTRE|wxALL, 5)
+        self.wxNameCtrl = wx.TextCtrl(self, -1, self.m_name, size=(80,-1))
+        box.Add(self.wxNameCtrl, 1, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        sizer.AddSizer(box, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5)
-        sizer.Add(self.m_list, 0, wxALIGN_CENTRE|wxALL, 5)
+        sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
+        sizer.Add(self.m_list, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         if operation=='delete':
             msg = message('portfolio_properties_btndelete')
@@ -129,26 +127,26 @@ class iTradePortfolioSelectorListCtrlDialog(wxDialog, wxColumnSorterMixin):
             msg = message('ok')
             msgdesc = message('ok_desc')
 
-        box = wxBoxSizer(wxHORIZONTAL)
+        box = wx.BoxSizer(wx.HORIZONTAL)
 
         # context help
-        if wxPlatform != "__WXMSW__":
-            btn = wxContextHelpButton(self)
-            box.Add(btn, 0, wxALIGN_CENTRE|wxALL, 5)
+        if wx.Platform != "__WXMSW__":
+            btn = wx.ContextHelpButton(self)
+            box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         # OK
-        btn = wxButton(self, wxID_OK, msg)
+        btn = wx.Button(self, wx.ID_OK, msg)
         btn.SetDefault()
         btn.SetHelpText(msgdesc)
-        box.Add(btn, 0, wxALIGN_CENTRE|wxALL, 5)
-        EVT_BUTTON(self, wxID_OK, self.OnValid)
+        box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        wx.EVT_BUTTON(self, wx.ID_OK, self.OnValid)
 
         # CANCEL
-        btn = wxButton(self, wxID_CANCEL, message('cancel'))
+        btn = wx.Button(self, wx.ID_CANCEL, message('cancel'))
         btn.SetHelpText(message('cancel_desc'))
-        box.Add(btn, 0, wxALIGN_CENTRE|wxALL, 5)
+        box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        sizer.AddSizer(box, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5)
+        sizer.AddSizer(box, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
         self.SetAutoLayout(True)
         self.SetSizerAndFit(sizer)
@@ -158,18 +156,18 @@ class iTradePortfolioSelectorListCtrlDialog(wxDialog, wxColumnSorterMixin):
         self.m_list.ClearAll()
 
         # but since we want images on the column header we have to do it the hard way:
-        info = wxListItem()
-        info.m_mask = wxLIST_MASK_TEXT | wxLIST_MASK_IMAGE | wxLIST_MASK_FORMAT
+        info = wx.ListItem()
+        info.m_mask = wx.LIST_MASK_TEXT | wx.LIST_MASK_IMAGE | wx.LIST_MASK_FORMAT
         info.m_image = -1
-        info.m_format = wxLIST_FORMAT_LEFT
+        info.m_format = wx.LIST_FORMAT_LEFT
         info.m_text = message('portfolio_filename')
         self.m_list.InsertColumnInfo(0, info)
 
-        info.m_format = wxLIST_FORMAT_LEFT
+        info.m_format = wx.LIST_FORMAT_LEFT
         info.m_text = message('portfolio_name')
         self.m_list.InsertColumnInfo(1, info)
 
-        info.m_format = wxLIST_FORMAT_LEFT
+        info.m_format = wx.LIST_FORMAT_LEFT
         info.m_text = message('portfolio_accountref')
         self.m_list.InsertColumnInfo(2, info)
 
@@ -192,21 +190,21 @@ class iTradePortfolioSelectorListCtrlDialog(wxDialog, wxColumnSorterMixin):
             self.m_list.SetStringItem(x, 2, data[2])
             self.m_list.SetItemData(x, key)
 
-        self.m_list.SetColumnWidth(0, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(1, wxLIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(2, wxLIST_AUTOSIZE)
-        self.m_list.SetItemState(self.currentItem, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED)
+        self.m_list.SetColumnWidth(0, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(1, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(2, wx.LIST_AUTOSIZE)
+        self.m_list.SetItemState(self.currentItem, wx.LIST_STATE_SELECTED, wx.LIST_STATE_SELECTED)
         self.m_list.EnsureVisible(self.currentItem)
 
     def OnSize(self, event):
         w,h = self.GetClientSizeTuple()
         self.m_list.SetDimensions(0, 0, w, h)
 
-    # Used by the wxColumnSorterMixin, see wxPython/lib/mixins/listctrl.py
+    # Used by the wxl.ColumnSorterMixin, see wxPython/lib/mixins/listctrl.py
     def GetListCtrl(self):
         return self.m_list
 
-    # Used by the wxColumnSorterMixin, see wxPython/lib/mixins/listctrl.py
+    # Used by the wxl.ColumnSorterMixin, see wxPython/lib/mixins/listctrl.py
     def GetSortImages(self):
         return (self.sm_dn, self.sm_up)
 
@@ -235,7 +233,7 @@ class iTradePortfolioSelectorListCtrlDialog(wxDialog, wxColumnSorterMixin):
 
         if portfolio:
             self.portfolio = portfolio
-            self.EndModal(wxID_OK)
+            self.EndModal(wx.ID_OK)
 
 # ============================================================================
 # select_iTradePortfolio
@@ -253,7 +251,7 @@ def select_iTradePortfolio(win,dportfolio=None,operation='select'):
         dlg = iTradePortfolioSelectorListCtrlDialog(win,None,operation,dportfolio.filename())
     else:
         dlg = iTradePortfolioSelectorListCtrlDialog(win,dportfolio,operation,None)
-    if dlg.ShowModal()==wxID_OK:
+    if dlg.ShowModal()==wx.ID_OK:
         info('select_iTradePortfolio() : %s' % dlg.portfolio)
         portfolio = dlg.portfolio
     else:
@@ -271,11 +269,11 @@ def select_iTradePortfolio(win,dportfolio=None,operation='select'):
 #   operation   'edit','create','delete','rename'
 # ============================================================================
 
-class iTradePortfolioPropertiesDialog(wxDialog):
+class iTradePortfolioPropertiesDialog(wx.Dialog):
     def __init__(self, parent, portfolio, operation):
         # context help
-        pre = wxPreDialog()
-        pre.SetExtraStyle(wxDIALOG_EX_CONTEXTHELP)
+        pre = wx.PreDialog()
+        pre.SetExtraStyle(wx.DIALOG_EX_CONTEXTHELP)
         pre.Create(parent, -1, message('portfolio_properties_%s'% operation), size=(420, 420))
         self.PostCreate(pre)
 
@@ -295,52 +293,52 @@ class iTradePortfolioPropertiesDialog(wxDialog):
             self.m_vat = 1.196
         self.m_operation = operation
 
-        EVT_SIZE(self, self.OnSize)
+        wx.EVT_SIZE(self, self.OnSize)
 
-        sizer = wxBoxSizer(wxVERTICAL)
+        sizer = wx.BoxSizer(wx.VERTICAL)
 
         # filename
-        box = wxBoxSizer(wxHORIZONTAL)
+        box = wx.BoxSizer(wx.HORIZONTAL)
 
-        label = wxStaticText(self, -1, message('portfolio_filename'))
-        box.Add(label, 0, wxALIGN_CENTRE|wxALL, 5)
+        label = wx.StaticText(self, -1, message('portfolio_filename'))
+        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.wxFilenameCtrl = wxTextCtrl(self, -1, self.m_filename, size=(120,-1))
-        box.Add(self.wxFilenameCtrl, 1, wxALIGN_CENTRE|wxALL, 5)
+        self.wxFilenameCtrl = wx.TextCtrl(self, -1, self.m_filename, size=(120,-1))
+        box.Add(self.wxFilenameCtrl, 1, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        sizer.AddSizer(box, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5)
+        sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
         # name
-        box = wxBoxSizer(wxHORIZONTAL)
+        box = wx.BoxSizer(wx.HORIZONTAL)
 
-        label = wxStaticText(self, -1, message('portfolio_name'))
-        box.Add(label, 0, wxALIGN_CENTRE|wxALL, 5)
+        label = wx.StaticText(self, -1, message('portfolio_name'))
+        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.wxNameCtrl = wxTextCtrl(self, -1, self.m_name, size=(180,-1))
-        box.Add(self.wxNameCtrl, 1, wxALIGN_CENTRE|wxALL, 5)
+        self.wxNameCtrl = wx.TextCtrl(self, -1, self.m_name, size=(180,-1))
+        box.Add(self.wxNameCtrl, 1, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        sizer.AddSizer(box, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5)
+        sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
         # accountref
-        box = wxBoxSizer(wxHORIZONTAL)
+        box = wx.BoxSizer(wx.HORIZONTAL)
 
-        label = wxStaticText(self, -1, message('portfolio_accountref'))
-        box.Add(label, 0, wxALIGN_CENTRE|wxALL, 5)
+        label = wx.StaticText(self, -1, message('portfolio_accountref'))
+        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.wxAccountRefCtrl = wxTextCtrl(self, -1, self.m_accountref, size=(80,-1))
-        box.Add(self.wxAccountRefCtrl, 1, wxALIGN_CENTRE|wxALL, 5)
+        self.wxAccountRefCtrl = wx.TextCtrl(self, -1, self.m_accountref, size=(80,-1))
+        box.Add(self.wxAccountRefCtrl, 1, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        sizer.AddSizer(box, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5)
+        sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
         # market
-        box = wxBoxSizer(wxHORIZONTAL)
+        box = wx.BoxSizer(wx.HORIZONTAL)
 
-        label = wxStaticText(self, -1, message('portfolio_market'))
-        box.Add(label, 0, wxALIGN_CENTRE|wxALL, 5)
+        label = wx.StaticText(self, -1, message('portfolio_market'))
+        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.wxMarketCtrl = wxComboBox(self,-1, "", size=wxSize(80,-1), style=wxCB_DROPDOWN|wxCB_READONLY)
-        box.Add(self.wxMarketCtrl, 0, wxALIGN_CENTRE|wxALL, 5)
-        EVT_COMBOBOX(self,self.wxMarketCtrl.GetId(),self.OnMarket)
+        self.wxMarketCtrl = wx.ComboBox(self,-1, "", size=wx.Size(80,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
+        box.Add(self.wxMarketCtrl, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        wx.EVT_COMBOBOX(self,self.wxMarketCtrl.GetId(),self.OnMarket)
 
         count = 0
         for eachCtrl in list_of_markets():
@@ -351,17 +349,17 @@ class iTradePortfolioPropertiesDialog(wxDialog):
 
         self.wxMarketCtrl.SetSelection(idx)
 
-        sizer.AddSizer(box, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5)
+        sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
         # currency
-        box = wxBoxSizer(wxHORIZONTAL)
+        box = wx.BoxSizer(wx.HORIZONTAL)
 
-        label = wxStaticText(self, -1, message('portfolio_currency'))
-        box.Add(label, 0, wxALIGN_CENTRE|wxALL, 5)
+        label = wx.StaticText(self, -1, message('portfolio_currency'))
+        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.wxCurrencyCtrl = wxComboBox(self,-1, "", size=wxSize(80,-1), style=wxCB_DROPDOWN|wxCB_READONLY)
-        box.Add(self.wxCurrencyCtrl, 0, wxALIGN_CENTRE|wxALL, 5)
-        EVT_COMBOBOX(self,self.wxCurrencyCtrl.GetId(),self.OnCurrency)
+        self.wxCurrencyCtrl = wx.ComboBox(self,-1, "", size=wx.Size(80,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
+        box.Add(self.wxCurrencyCtrl, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        wx.EVT_COMBOBOX(self,self.wxCurrencyCtrl.GetId(),self.OnCurrency)
 
         count = 0
         for eachCtrl in list_of_currencies():
@@ -373,7 +371,7 @@ class iTradePortfolioPropertiesDialog(wxDialog):
 
         self.wxCurrencyCtrl.SetSelection(idx)
 
-        sizer.AddSizer(box, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5)
+        sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
         # OK and Cancel
         if operation=='create':
@@ -397,26 +395,26 @@ class iTradePortfolioPropertiesDialog(wxDialog):
             msgdesc = message('ok_desc')
             fnt = self.OnValid
 
-        box = wxBoxSizer(wxHORIZONTAL)
+        box = wx.BoxSizer(wx.HORIZONTAL)
 
         # context help
-        if wxPlatform != "__WXMSW__":
-            btn = wxContextHelpButton(self)
-            box.Add(btn, 0, wxALIGN_CENTRE|wxALL, 5)
+        if wx.Platform != "__WXMSW__":
+            btn = wx.ContextHelpButton(self)
+            box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         # OK
-        btn = wxButton(self, wxID_OK, msg)
+        btn = wx.Button(self, wx.ID_OK, msg)
         btn.SetDefault()
         btn.SetHelpText(msgdesc)
-        box.Add(btn, 0, wxALIGN_CENTRE|wxALL, 5)
-        EVT_BUTTON(self, wxID_OK, fnt)
+        box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        wx.EVT_BUTTON(self, wx.ID_OK, fnt)
 
         # CANCEL
-        btn = wxButton(self, wxID_CANCEL, message('cancel'))
+        btn = wx.Button(self, wx.ID_CANCEL, message('cancel'))
         btn.SetHelpText(message('cancel_desc'))
-        box.Add(btn, 0, wxALIGN_CENTRE|wxALL, 5)
+        box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        sizer.AddSizer(box, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5)
+        sizer.AddSizer(box, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
         # enable some fields based on the operation
         if operation=='edit':
@@ -453,25 +451,25 @@ class iTradePortfolioPropertiesDialog(wxDialog):
         if (self.m_operation=='create' or self.m_operation=='rename') and portfolios.existPortfolio(self.m_filename):
             self.wxFilenameCtrl.SetLabel('')
             self.wxFilenameCtrl.SetFocus()
-            dlg = wxMessageDialog(self, message('portfolio_exist_info')%self.m_filename, message('portfolio_exist_info_title'), wxOK | wxICON_ERROR)
+            dlg = wx.MessageDialog(self, message('portfolio_exist_info')%self.m_filename, message('portfolio_exist_info_title'), wx.OK | wx.ICON_ERROR)
             dlg.ShowModal()
             dlg.Destroy()
             return
         self.m_name = self.wxNameCtrl.GetLabel().strip()
         self.m_accountref = self.wxAccountRefCtrl.GetLabel().strip()
         if self.m_operation=='delete':
-            dlg = wxMessageDialog(self, message('portfolio_delete_confirm')%self.m_name, message('portfolio_delete_confirm_title'), wxYES_NO | wxYES_DEFAULT | wxICON_QUESTION)
+            dlg = wx.MessageDialog(self, message('portfolio_delete_confirm')%self.m_name, message('portfolio_delete_confirm_title'), wx.YES_NO | wx.YES_DEFAULT | wxICON_QUESTION)
             idRet = dlg.ShowModal()
             dlg.Destroy()
-            if idRet == wxID_NO:
+            if idRet == wx.ID_NO:
                 return
         if self.m_operation=='rename':
-            dlg = wxMessageDialog(self, message('portfolio_rename_confirm')%self.m_filename, message('portfolio_rename_confirm_title'), wxYES_NO | wxYES_DEFAULT | wxICON_QUESTION)
+            dlg = wx.MessageDialog(self, message('portfolio_rename_confirm')%self.m_filename, message('portfolio_rename_confirm_title'), wx.YES_NO | wx.YES_DEFAULT | wxICON_QUESTION)
             idRet = dlg.ShowModal()
             dlg.Destroy()
-            if idRet == wxID_NO:
+            if idRet == wx.ID_NO:
                 return
-        self.EndModal(wxID_OK)
+        self.EndModal(wx.ID_OK)
 
     def OnMarket(self,evt):
         t = self.wxMarketCtrl.GetClientData(self.wxMarketCtrl.GetSelection())
@@ -493,7 +491,7 @@ class iTradePortfolioPropertiesDialog(wxDialog):
 def properties_iTradePortfolio(win,portfolio,operation='create'):
     dlg = iTradePortfolioPropertiesDialog(win,portfolio,operation)
     retport = None
-    if dlg.ShowModal()==wxID_OK:
+    if dlg.ShowModal()==wx.ID_OK:
         info('properties_iTradePortfolio(operation=%s) : %s' % (operation,dlg.m_name))
         if operation=='delete':
             if portfolios.delPortfolio(portfolio.filename()):
@@ -521,15 +519,14 @@ def properties_iTradePortfolio(win,portfolio,operation='create'):
 if __name__=='__main__':
     setLevel(logging.INFO)
 
-    app = wxPySimpleApp()
+    app = wx.PySimpleApp()
 
     from itrade_local import *
     setLang('us')
     gMessage.load()
 
-    from wxPython.help import *
-    provider = wxSimpleHelpProvider()
-    wxHelpProvider_Set(provider)
+    provider = wx.SimpleHelpProvider()
+    wx.HelpProvider_Set(provider)
 
     port = select_iTradePortfolio(None,'default','select')
     if port:
