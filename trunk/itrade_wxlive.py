@@ -159,7 +159,7 @@ class iTrade_wxLiveMixin:
                     # stop live for all registered quotes
                     if bBusy:
                         busy = wx.BusyInfo(message('live_busy'))
-                        wxYield()
+                        wx.Yield()
 
                     for t in self.m_threads.values():
                         if t.IsRunning():
@@ -272,7 +272,7 @@ class iTrade_wxLiveCurrencyMixin:
                     # stop live for all registered currencies
                     if bBusy:
                         busy = wx.BusyInfo(message('live_busy'))
-                        wxYield()
+                        wx.Yield()
 
                     for t in self.m_threads.values():
                         if t.IsRunning():
