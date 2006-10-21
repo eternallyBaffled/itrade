@@ -74,7 +74,7 @@ class iTrade_wxPivots(wx.Panel):
         box = wx.BoxSizer(wx.HORIZONTAL)
 
         bmp = wx.Bitmap('res/resist2.gif')
-        bbmp = wxStaticBitmap(self, -1, bmp, size=wx.Size(bmp.GetWidth()+5, bmp.GetHeight()+5))
+        bbmp = wx.StaticBitmap(self, -1, bmp, size=wx.Size(bmp.GetWidth()+5, bmp.GetHeight()+5))
         box.Add(bbmp, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         self.s_r2 = wx.StaticText(self, -1, '')

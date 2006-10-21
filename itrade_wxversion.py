@@ -68,6 +68,13 @@ def resolve_wxversion():
             wxversion.select(eachVersion)
             return
 
+        if WXVERSION_MINOR > 0:
+            m = re.search("%d\.%d[0-9\-\.A-Za-z]*-ansi" % (WXVERSION_MAJOR,WXVERSION_MINOR-1), eachVersion)
+            if m:
+                print 'wxPython Selected  :',eachVersion,' (deprecated version - think to update)'
+                wxversion.select(eachVersion)
+                return
+
     # no compatible version :-( : try to select an ansi release
     bAnsi = False
     for eachVersion in versions:
