@@ -5,6 +5,9 @@ On the road for v0.4.5 (Nausicaa)
 
 ===============================================================================
 
+2006-10-21  Gilles Dumortier <dgil at ieee.org>
+	* Memory problem loading many portolios (SF bug 1565374)
+
 2006-10-20  Gilles Dumortier <dgil at ieee.org>
 	* Convert to using the wx namespace (SF bug 1500964)
 	* migrate to wxPython 2.7.x (SF bug 1581494) - not working yet

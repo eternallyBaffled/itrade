@@ -95,9 +95,6 @@ class Quote(object):
         self.m_place = place
         self.m_defaultname = name
         self.m_defaultticker = ticker
-        self.m_daytrades = None
-        self.m_weektrades = None
-        self.m_monthtrades = None
         self.m_country = self.m_isin[0:2].lower()
 
         if not market:
@@ -139,6 +136,10 @@ class Quote(object):
         self.m_name = self.m_defaultname
         self.m_ticker = self.m_defaultticker
         self.m_symbcurr = itrade_currency.currency2symbol(self.m_currency)
+
+        self.m_daytrades = None
+        self.m_weektrades = None
+        self.m_monthtrades = None
 
     def reinit(self):
         #info('%s::reinit' %(self.name()))
