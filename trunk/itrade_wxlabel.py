@@ -141,7 +141,7 @@ class iTrade_wxLabel(object):
         self.bmp.SetMask(mask)
 
     def GetRect(self):
-        return wxRect(self.pos.x, self.pos.y, self.bmp.GetWidth(), self.bmp.GetHeight())
+        return wx.Rect(self.pos.x, self.pos.y, self.bmp.GetWidth(), self.bmp.GetHeight())
 
     def Draw(self):
         dc = wx.ClientDC(self.parent)
