@@ -5,6 +5,10 @@ On the road for v0.4.5 (Nausicaa)
 
 ===============================================================================
 
+2006-10-24  Gilles Dumortier <dgil at ieee.org>
+	* quotes.txt : error in a NYSE quote (SF bug 1561805) : filter name by
+	  removing any ';' character
+
 2006-10-21  Gilles Dumortier <dgil at ieee.org>
 	* Memory problem loading many portolios (SF bug 1565374)
 

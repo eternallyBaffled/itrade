@@ -115,6 +115,22 @@ def buildISIN(country,code):
     return code + "%d" % _buildVerifCode(code)
 
 # ============================================================================
+# filterName
+#
+# remove any ';' character in the quote name
+# ============================================================================
+
+def filterName(name):
+    while True:
+        pos = name.find(';')
+        if pos >-1:
+            print pos,name
+            name = name[:pos] + name[pos+1:]
+            print name
+        else:
+            return name
+
+# ============================================================================
 # CINS numbers employ the same Issuer (6 characters)/Issue (2 character &
 # check digit) concept espoused by the CUSIP Numbering System, which is
 # described in detail on the  following page. It is important to note that
