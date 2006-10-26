@@ -814,7 +814,7 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         self.idx = idx[1:]
         debug('len(self.times)==%d' % len(self.times))
 
-        if len(opens)>0:
+        if len(opens)>1:
             if self.m_dispChart1Type == 'c':
                 lc = candlestick2(self.chart1, opens[1:], closes[1:], highs[1:], lows[1:], width = self.zoomWidth[self.zoomLevel], colorup = 'g', colordown = 'r', alpha=1.0)
             elif self.m_dispChart1Type == 'l':
