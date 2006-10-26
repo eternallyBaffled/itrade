@@ -115,7 +115,7 @@ class LiveUpdate_yahoo(object):
         per = clock[-2:]
         #if per=='pm':
         #    val = val + 12*60
-        print clo,hour,min,val,per
+        # print clo,hour,min,val,per
         if val>self.m_lastclock:
             self.m_lastclock = val
         return "%d:%02d" % (val/60,val%60)
@@ -146,7 +146,7 @@ class LiveUpdate_yahoo(object):
         if len (sdata) < 9:
             return None
 
-        print sdata
+        #print sdata
         # connexion / clock
         self.m_connected = True
 
