@@ -1,0 +1,60 @@
+/iTrade/PLUGINS
+===============================================================================
+
+===============================================================================
+Live / End Of Day data
+===============================================================================
+
+Exchange		Provider
+EURONEXT		FORTUNEO / ABCBOURSE (deprecated) / EURONEXT (dev ongoing)
+ALTERNEXT		FORTUNEO / ABCBOURSE (deprecated) / EURONEXT (dev ongoing)
+NASDAQ			YAHOO FINANCE
+NYSE			YAHOO FINANCE
+AMEX			not available yet
+OTC			not available yet
+OTCBB			not available yet
+LSE			not available yet
+
+===============================================================================
+History data
+===============================================================================
+
+Exchange		Provider
+EURONEXT		ABCBOURSE (deprecated) / EURONEXT (dev ongoing)
+ALTERNEXT		ABCBOURSE (deprecated) / EURONEXT (dev ongoing)
+NASDAQ			YAHOO FINANCE
+NYSE			YAHOO FINANCE
+AMEX			not available yet
+OTC			not available yet
+OTCBB			not available yet
+LSE			not available yet
+
+===============================================================================
+List of quotes
+===============================================================================
+
+Exchange		Provider
+EURONEXT		EURONEXT
+ALTERNEXT		EURONEXT
+NASDAQ			not available yet
+NYSE			NYSE
+AMEX			not available yet
+OTC			not available yet
+OTCBB			not available yet
+LSE			not available yet
+
+===============================================================================
+Intraday data
+===============================================================================
+
+Exchange		Provider
+EURONEXT		not available yet
+ALTERNEXT		not available yet
+NASDAQ			not available yet
+NYSE			not available yet
+AMEX			not available yet
+OTC			not available yet
+OTCBB			not available yet
+LSE			not available yet
+
+===============================================================================

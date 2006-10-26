@@ -276,6 +276,7 @@ except NameError:
 
 #registerLiveConnector('EURONEXT',gLiveABC)
 registerLiveConnector('EURONEXT_differed',gLiveABC)
+registerLiveConnector('ALTERNEXT_differed',gLiveABC)
 
 # ============================================================================
 # Test ME
