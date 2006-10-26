@@ -702,7 +702,7 @@ class Portfolio(object):
         self.reset()
 
     def reinit(self):
-        info('Portfolio::%s::reinit' %(self.name()))
+        debug('Portfolio::%s::reinit' %(self.name()))
         quotes.reinit()
         self._init_()
 

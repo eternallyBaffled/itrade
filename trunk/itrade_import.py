@@ -64,6 +64,7 @@ class ConnectorRegistry(object):
 
     def get(self,market):
         if not self.m_conn.has_key(market):
+            print 'no connector for market :',market
             return None
         else:
             return self.m_conn[market]
@@ -114,12 +115,12 @@ findListSymbolConnector = gListSymbolRegistry.find
 # __x be more dynamic ...
 # ============================================================================
 
-# Euronext market connectors : ABCBourse or Fortuneo
+# Euronext market connectors : ABCBourse (deprecated), Euronext (under dev) or Fortuneo
 import itrade_import_abcbourse
 import itrade_liveupdate_abcbourse
 import itrade_liveupdate_fortuneo
 
-# US/CA market connectors : Yahoo
+# all others market connectors : Yahoo
 import itrade_import_yahoo
 import itrade_liveupdate_yahoo
 

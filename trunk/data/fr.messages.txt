@@ -15,7 +15,7 @@ main_exit;Sorti&e
 main_desc_exit; Quitte l'application iTrade
 main_close;&Ferme
 main_desc_close; Ferme cette fenêtre
-main_managelist; Liste des Valeurs
+main_managelist;Liste des Valeurs
 main_desc_managelist; Gère la liste des valeurs (mise à jour par téléchargement, edition, etc.)
 
 main_window;&Fenêtre
@@ -158,6 +158,7 @@ buy;Achat
 UPP;PRU
 USP;PVU
 market;Marché
+place;Place
 all_markets;Tous les marchés
 invalid_isin;Le code ISIN %s est invalide
 symbol_not_found;Le symbole de code ISIN %s ou de nom %s n'a pas été trouvé
@@ -324,6 +325,8 @@ portfolio_menu_per;&Filtres
 
 graph_price;Prix
 graph_volume;Volume
+graph_period;Periode :
+graph_days;jours
 
 backtolist;Retour à la liste
 
@@ -356,7 +359,7 @@ quote_popup_dispChart1Line;Lignes
 prop_reference;Référence
 prop_marketandconnector;Marché et Connecteur
 prop_tradingstyle;Informations de Trading
-prop_isin;ISIN :
+prop_isin;Référence :
 prop_name;Nom :
 prop_ticker;Ticker :
 prop_reload;Recharge

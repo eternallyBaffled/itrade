@@ -6,6 +6,7 @@ On the road for v0.4.5 (Nausicaa)
 ===============================================================================
 
 2006-10-26  Gilles Dumortier <dgil at ieee.org>
+	* Graph : display in-use period (SF bug 1339926)
 	* view live : not access with RINV (SF bug 1567054)
 
 2006-10-24  Gilles Dumortier <dgil at ieee.org>

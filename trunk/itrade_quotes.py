@@ -1000,7 +1000,7 @@ class Quotes(object):
         self.m_quotes = {}
 
     def reinit(self):
-        info('Quotes::reinit')
+        debug('Quotes::reinit')
         for eachQuote in self.list():
             eachQuote.reinit()
 

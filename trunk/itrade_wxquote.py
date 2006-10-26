@@ -747,6 +747,9 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
     def getPeriod(self):
         return self.zoomPeriod[self.zoomLevel]
 
+    def getTextPeriod(self):
+        return '%s %s %s' % (message('graph_period'),self.getPeriod(),message('graph_days'))
+
     def ChartRealize(self):
         self.BeginCharting()
 
@@ -856,9 +859,30 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
 
                 self.legend2 = self.chart2.legend((lvma15, lovb), ('VMA15', 'OVB'), 2) #'upper left'
 
+            left, top = 0.005, 1.005
+            t = self.chart1.text(left, top, self.GetPeriod(1), fontsize = 7, transform = self.chart1.transAxes)
+
+            left, top = 0.450, 1.005
+            t = self.chart1.text(left, top, self.getTextPeriod(), fontsize = 7, transform = self.chart1.transAxes)
+
+            left, top = 0.950, 1.005
+            t = self.chart1.text(left, top, self.GetPeriod(-1), fontsize = 7, transform = self.chart1.transAxes)
+
         self.EndCharting()
 
+    def GetPeriod(self,idxtime):
+        if idxtime<0:
+            idxtime = len(self.idx)+idxtime
+        elif idxtime==0:
+            idxtime = len(self.idx)/2
+        dt = self.m_quote.m_daytrades.m_date[self.idx[idxtime]]
+        return dt.strftime(' %Y ')
+
     def GetXLabel(self,idxtime):
+        if idxtime<0:
+            idxtime = len(self.idx)+idxtime
+        elif idxtime==0:
+            idxtime = len(self.idx)/2
         dt = self.m_quote.m_daytrades.m_date[self.idx[idxtime]]
         return dt.strftime(' %x ')
 
