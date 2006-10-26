@@ -845,6 +845,7 @@ except NameError:
 
 # __x test the connection, and register only if working ...
 registerLiveConnector('EURONEXT',gLiveFortuneo)
+registerLiveConnector('ALTERNEXT',gLiveFortuneo)
 
 # ============================================================================
 # Test ME

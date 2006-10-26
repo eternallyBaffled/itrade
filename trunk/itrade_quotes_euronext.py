@@ -85,21 +85,36 @@ def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT'):
     # returns the data
     data = f.read()
     lines = splitLines(data)
+    count = 0
 
     for line in lines:
         data = string.split (line, ';')
-        if len(data)==11:
+
+        if len(data)==35:
             if data[1]!='ISIN':
                 if checkISIN(data[1]):
-                    if data[2]=='PAR' or data[2]=='BRU' or data[2]=='AMS' or data[2]=='LIS':
+                    if data[3]=='PAR' or data[3]=='BRU' or data[3]=='AMS' or data[3]=='LIS':
                         name = filterName(data[0])
-                        quotes.addQuote(isin=data[1],name=name,ticker=data[3],market=market,currency=data[5],place=data[2])
+                        quotes.addQuote(isin=data[1],name=name,ticker=data[4],market=market,currency=data[7],place=data[3])
+                        count = count + 1
+                    else:
+                        print 'unknown ALTERNEXT place : ',data
+                else:
+                    print 'invalid ISIN : ',data
+
+        if len(data)==34:
+            if data[1]!='ISIN':
+                if checkISIN(data[1]):
+                    if data[3]=='PAR' or data[3]=='BRU' or data[3]=='AMS' or data[3]=='LIS':
+                        name = filterName(data[0])
+                        quotes.addQuote(isin=data[1],name=name,ticker=data[4],market=market,currency=data[6],place=data[3])
+                        count = count + 1
                     else:
                         print 'unknown EURONEXT place : ',data
                 else:
                     print 'invalid ISIN : ',data
 
-    print 'Imported %d lines from %s data.' % (len(lines),market)
+    print 'Imported %d/%d lines from %s data.' % (count,len(lines),market)
 
     return True
 
