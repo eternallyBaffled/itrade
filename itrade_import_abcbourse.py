@@ -183,6 +183,7 @@ except NameError:
     gImportABC = Import_ABCBourse()
 
 registerImportConnector('EURONEXT',gImportABC)
+registerImportConnector('ALTERNEXT',gImportABC)
 
 # ============================================================================
 # Test ME
