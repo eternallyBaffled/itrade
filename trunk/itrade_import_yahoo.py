@@ -178,6 +178,7 @@ except NameError:
 
 registerImportConnector('NASDAQ',gImportYahoo)
 registerImportConnector('NYSE',gImportYahoo)
+registerImportConnector('AMEX',gImportYahoo)
 
 # ============================================================================
 # Test ME
