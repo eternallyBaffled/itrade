@@ -458,13 +458,13 @@ class iTradePortfolioPropertiesDialog(wx.Dialog):
         self.m_name = self.wxNameCtrl.GetLabel().strip()
         self.m_accountref = self.wxAccountRefCtrl.GetLabel().strip()
         if self.m_operation=='delete':
-            dlg = wx.MessageDialog(self, message('portfolio_delete_confirm')%self.m_name, message('portfolio_delete_confirm_title'), wx.YES_NO | wx.YES_DEFAULT | wxICON_QUESTION)
+            dlg = wx.MessageDialog(self, message('portfolio_delete_confirm')%self.m_name, message('portfolio_delete_confirm_title'), wx.YES_NO | wx.YES_DEFAULT | wx.ICON_QUESTION)
             idRet = dlg.ShowModal()
             dlg.Destroy()
             if idRet == wx.ID_NO:
                 return
         if self.m_operation=='rename':
-            dlg = wx.MessageDialog(self, message('portfolio_rename_confirm')%self.m_filename, message('portfolio_rename_confirm_title'), wx.YES_NO | wx.YES_DEFAULT | wxICON_QUESTION)
+            dlg = wx.MessageDialog(self, message('portfolio_rename_confirm')%self.m_filename, message('portfolio_rename_confirm_title'), wx.YES_NO | wx.YES_DEFAULT | wx.ICON_QUESTION)
             idRet = dlg.ShowModal()
             dlg.Destroy()
             if idRet == wx.ID_NO:
