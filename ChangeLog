@@ -5,6 +5,9 @@ On the road for v0.4.5 (Nausicaa)
 
 ===============================================================================
 
+2006-10-29  Gilles Dumortier <dgil at ieee.org>
+	* Alternext : not access view graph (SF bug 1586254)
+
 2006-10-28  Gilles Dumortier <dgil at ieee.org>
 	* Can't remove a file (SF bug 1586418)
 
