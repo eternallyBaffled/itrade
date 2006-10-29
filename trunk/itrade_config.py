@@ -175,10 +175,14 @@ intradayGraphUrlUseISIN = {}
 #intradayGraphUrlUseISIN['EURONEXT'] = True
 intradayGraphUrl['EURONEXT'] = "http://www.abcbourse.com/Graphes/graphe.aspx?s=%sp&m=g&t=lc"
 intradayGraphUrlUseISIN['EURONEXT'] = False
+intradayGraphUrl['ALTERNEXT'] = "http://www.abcbourse.com/Graphes/graphe.aspx?s=%sp&m=g&t=lc"
+intradayGraphUrlUseISIN['ALTERNEXT'] = False
 intradayGraphUrl['NASDAQ'] = "http://ichart.finance.yahoo.com/b?s=%s"
 intradayGraphUrlUseISIN['NASDAQ'] = False
 intradayGraphUrl['NYSE'] = "http://ichart.finance.yahoo.com/b?s=%s"
 intradayGraphUrlUseISIN['NYSE'] = False
+intradayGraphUrl['AMEX'] = "http://ichart.finance.yahoo.com/b?s=%s"
+intradayGraphUrlUseISIN['AMEX'] = False
 
 # in ms, time before activating XYPopup
 timerForXYPopup = 500
