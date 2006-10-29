@@ -59,10 +59,15 @@ class Trade(object):
             #debug('Trade::__init__():%s: %d %d %d' % (d,long(d[0:4]),long(d[4:6]),long(d[6:8])));
             self.m_date = date(long(d[0:4]),long(d[4:6]),long(d[6:8]))
         self.m_open = float(open)
+        if self.m_open<0.0: self.m_open=0.0
         self.m_close = float(close)
+        if self.m_close<0.0: self.m_close=0.0
         self.m_low = float(low)
+        if self.m_low<0.0: self.m_low=0.0
         self.m_high = float(high)
+        if self.m_high<0.0: self.m_high=0.0
         self.m_volume = long(volume)
+        if self.m_volume<0: self.m_volume=0
         self.m_trades = trades
         self.m_index = idx
 
