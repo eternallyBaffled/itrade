@@ -790,29 +790,29 @@ class Quote(object):
             s2,s1,pivot,r1,r2 = self.ov_pivots()
             cl = self.nv_close()
             if cl>r2:
-                return "%.2f R2+" % r2
+                return "R2+ (%.2f)" % r2
             elif cl==r2:
-                return "%.2f R2=" % r2
+                return "R2= (%.2f)" % r2
             elif cl>r1:
-                return "%.2f R1+" % r1
+                return "R1+ (%.2f)" % r1
             elif cl==r1:
-                return "%.2f R1=" % r1
+                return "R1= (%.2f)" % r1
             elif cl>pivot:
-                return "%.2f PI+" % pivot
+                return "PI+ (%.2f)" % pivot
             elif cl==pivot:
-                return "%.2f PI=" % pivot
+                return "PI= (%.2f)" % pivot
             elif cl>s1:
-                return "%.2f PI-" % pivot
+                return "PI- (%.2f)" % pivot
             elif cl==s1:
-                return "%.2f S1=" % s1
+                return "S1= (%.2f)" % s1
             elif cl>s2:
-                return "%.2f S1-" % s1
+                return "S1- (%.2f)" % s1
             elif cl==s2:
-                return "%.2f S2=" % s2
+                return "S2= (%.2f)" % s2
             else:
-                return "%.2f S2-" % s2
+                return "S2- (%.2f)" % s2
         else:
-            return " ----- "
+            return " --- (-.--) "
 
     # ---[ market open/close ] ---
 
