@@ -11,7 +11,6 @@ ALTERNEXT		FORTUNEO / ABCBOURSE (deprecated) / EURONEXT (dev ongoing)
 NASDAQ			YAHOO FINANCE
 NYSE			YAHOO FINANCE
 AMEX			not available yet
-OTC			not available yet
 OTCBB			not available yet
 LSE			not available yet
 
@@ -25,7 +24,6 @@ ALTERNEXT		ABCBOURSE (deprecated) / EURONEXT (dev ongoing)
 NASDAQ			YAHOO FINANCE
 NYSE			YAHOO FINANCE
 AMEX			not available yet
-OTC			not available yet
 OTCBB			not available yet
 LSE			not available yet
 
@@ -39,7 +37,6 @@ ALTERNEXT		EURONEXT
 NASDAQ			not available yet
 NYSE			NYSE
 AMEX			not available yet
-OTC			not available yet
 OTCBB			not available yet
 LSE			not available yet
 
@@ -53,7 +50,6 @@ ALTERNEXT		not available yet
 NASDAQ			not available yet
 NYSE			not available yet
 AMEX			not available yet
-OTC			not available yet
 OTCBB			not available yet
 LSE			not available yet
 
