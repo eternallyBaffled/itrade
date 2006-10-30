@@ -910,7 +910,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
                 self.m_list.SetStringItem(x,IDC_OPEN," ---.-- ")
                 self.m_list.SetStringItem(x,IDC_HIGH," ---.-- ")
                 self.m_list.SetStringItem(x,IDC_LOW," ---.-- ")
-                self.m_list.SetStringItem(x,IDC_PIVOTS," ----- ")
+                self.m_list.SetStringItem(x,IDC_PIVOTS," --- (-.--) ")
                 self.m_list.SetStringItem(x,IDC_VOLUME," ---------- ")
                 color = QUOTE_NOCHANGE
         else:
@@ -919,7 +919,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
             self.m_list.SetStringItem(x,IDC_OPEN," ---.-- ")
             self.m_list.SetStringItem(x,IDC_HIGH," ---.-- ")
             self.m_list.SetStringItem(x,IDC_LOW," ---.-- ")
-            self.m_list.SetStringItem(x,IDC_PIVOTS," ----- ")
+            self.m_list.SetStringItem(x,IDC_PIVOTS," --- (-.--) ")
             self.m_list.SetStringItem(x,IDC_VOLUME," ---------- ")
             self.m_list.SetStringItem(x,IDC_PERCENT," ---.-- %")
             color = QUOTE_INVALID
@@ -1344,7 +1344,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
         self.m_list.InsertColumn(IDC_HIGH, message('high'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
         self.m_list.InsertColumn(IDC_LOW,  message('low'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
         self.m_list.InsertColumn(IDC_CLOSE,message('last'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_PIVOTS,message('pivots'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_PIVOTS,message('pivots'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
         self.m_list.InsertColumn(IDC_PERCENT, ' % ', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
         self.m_list.InsertColumn(IDC_NAME, message('name'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
 
