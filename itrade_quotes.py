@@ -785,6 +785,35 @@ class Quote(object):
         else:
             return None
 
+    def sv_pivots(self):
+        if self.sv_status()=='OK':
+            s2,s1,pivot,r1,r2 = self.ov_pivots()
+            cl = self.nv_close()
+            if cl>r2:
+                return "%.2f R2+" % r2
+            elif cl==r2:
+                return "%.2f R2=" % r2
+            elif cl>r1:
+                return "%.2f R1+" % r1
+            elif cl==r1:
+                return "%.2f R1=" % r1
+            elif cl>pivot:
+                return "%.2f PI+" % pivot
+            elif cl==pivot:
+                return "%.2f PI=" % pivot
+            elif cl>s1:
+                return "%.2f PI-" % pivot
+            elif cl==s1:
+                return "%.2f S1=" % s1
+            elif cl>s2:
+                return "%.2f S1-" % s1
+            elif cl==s2:
+                return "%.2f S2=" % s2
+            else:
+                return "%.2f S2-" % s2
+        else:
+            return " ----- "
+
     # ---[ market open/close ] ---
 
     def date(self,d=None):

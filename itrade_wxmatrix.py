@@ -902,7 +902,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
                 self.m_list.SetStringItem(x,IDC_OPEN,quote.sv_open())
                 self.m_list.SetStringItem(x,IDC_HIGH,quote.sv_high())
                 self.m_list.SetStringItem(x,IDC_LOW,quote.sv_low())
-                self.m_list.SetStringItem(x,IDC_PIVOTS," ----- ") # __x
+                self.m_list.SetStringItem(x,IDC_PIVOTS,quote.sv_pivots())
                 self.m_list.SetStringItem(x,IDC_VOLUME,quote.sv_volume())
                 color = quote.colorTrend()
             else:
