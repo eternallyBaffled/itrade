@@ -5,6 +5,9 @@ On the road for v0.4.5 (Nausicaa)
 
 ===============================================================================
 
+2006-10-30  Gilles Dumortier <dgil at ieee.org>
+	* Matrix view : "Points Pivots" information (SF bug 1448784)
+
 2006-10-29  Gilles Dumortier <dgil at ieee.org>
 	* assertionError (SF bug 1579983)
 	* Alternext : not access view graph (SF bug 1586254)
