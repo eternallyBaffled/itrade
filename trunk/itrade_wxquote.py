@@ -383,6 +383,21 @@ class iTradeQuotePropertiesPanel(wx.Window):
         label = wx.StaticText(self, -1, self.m_quote.country())
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
+        label = wx.StaticText(self, -1, message('prop_place'))
+        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+
+        label = wx.StaticText(self, -1, self.m_quote.place())
+        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+
+        label = wx.StaticText(self, -1, message('prop_currency'))
+        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+
+        label = wx.StaticText(self, -1, self.m_quote.currency())
+        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+
+        label = wx.StaticText(self, -1, message('prop_typeofclock'))
+        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+
         self.liveText = wx.StaticText(self, -1, self.m_quote.sv_type_of_clock(bDisplayTime=True))
         box.Add(self.liveText, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 

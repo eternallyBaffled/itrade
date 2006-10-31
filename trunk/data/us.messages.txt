@@ -15,7 +15,7 @@ main_exit;E&xit
 main_desc_exit; Terminate iTrade application
 main_close;&Close
 main_desc_close; Close the window
-main_managelist;List of Symbols
+main_managelist;Manage Symbols
 main_desc_managelist; Manage the List of Symbols (update by downloading, editing, etc.)
 
 main_window;&Window
@@ -160,7 +160,7 @@ download_symbols_desc;Update the list of symbols by downloading data from the ne
 
 quote_title;iTrade - Quote
 quote_select_title;Select a Symbol
-quote_list_title;List of Symbols
+quote_list_title;Manage Symbols
 
 quote_select_isin;ISIN :
 quote_select_ticker;Ticker / Name :
@@ -369,8 +369,11 @@ prop_export;Export
 prop_desc_exporte;Export quote's data
 prop_restore;Default
 prop_desc_restore;Restore default value
-prop_market;Market :
+prop_market;Exchange :
 prop_country;Country :
+prop_place;Place :
+prop_currency;Currency :
+prop_typeofclock;Delay :
 prop_islive;Real time
 prop_isslive;Live
 prop_isdiffered;Differed

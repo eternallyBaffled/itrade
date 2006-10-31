@@ -15,7 +15,7 @@ main_exit;Sorti&e
 main_desc_exit; Quitte l'application iTrade
 main_close;&Ferme
 main_desc_close; Ferme cette fenêtre
-main_managelist;Liste des Valeurs
+main_managelist;Gestion des Symboles
 main_desc_managelist; Gère la liste des valeurs (mise à jour par téléchargement, edition, etc.)
 
 main_window;&Fenêtre
@@ -168,7 +168,7 @@ download_symbols_desc;Mise à jour de la liste des valeurs par téléchargement du 
 
 quote_title;iTrade - Valeur
 quote_select_title;Choix d'une valeur
-quote_list_title;Liste des valeurs
+quote_list_title;Gestion des Symboles
 
 quote_select_isin;ISIN :
 quote_select_ticker;Ticker / Nom :
@@ -374,7 +374,10 @@ prop_restore;Réinit
 prop_desc_restore;Restaure les valeurs initiales
 prop_market;Marché :
 prop_country;Pays :
-prop_liveconnector;Connector temps réel :
+prop_place;Place :
+prop_currency;Devise :
+prop_typeofclock;Délai :
+prop_liveconnector;Connecteur temps réel :
 prop_islive;Temps réel
 prop_isslive;Live
 prop_isdiffered;Différé
