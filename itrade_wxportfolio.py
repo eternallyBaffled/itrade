@@ -336,7 +336,7 @@ class iTradePortfolioPropertiesDialog(wx.Dialog):
         label = wx.StaticText(self, -1, message('portfolio_market'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.wxMarketCtrl = wx.ComboBox(self,-1, "", size=wx.Size(80,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
+        self.wxMarketCtrl = wx.ComboBox(self,-1, "", size=wx.Size(160,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
         box.Add(self.wxMarketCtrl, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_COMBOBOX(self,self.wxMarketCtrl.GetId(),self.OnMarket)
 
@@ -363,7 +363,7 @@ class iTradePortfolioPropertiesDialog(wx.Dialog):
 
         count = 0
         for eachCtrl in list_of_currencies():
-            print eachCtrl
+            #print eachCtrl
             self.wxCurrencyCtrl.Append(eachCtrl,eachCtrl)
             if eachCtrl==self.m_currency:
                 idx = count

@@ -5,6 +5,9 @@ On the road for v0.4.5 (Nausicaa)
 
 ===============================================================================
 
+2006-10-31  Gilles Dumortier <dgil at ieee.org>
+        * some merge on quote properties (country,place and currency display)
+
 2006-10-30  Gilles Dumortier <dgil at ieee.org>
 	* Matrix view : "Points Pivots" information (SF bug 1448784)
 
