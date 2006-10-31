@@ -783,36 +783,36 @@ class Quote(object):
             r2 = pivot + (H - B)
             return (s2,s1,pivot,r1,r2)
         else:
-            return None
+            return (-1.0,-1.0,-1.0,-1.0,-1.0)
 
     def sv_pivots(self):
         if self.sv_status()=='OK':
             s2,s1,pivot,r1,r2 = self.ov_pivots()
-            cl = self.nv_close()
-            if cl>r2:
-                return "R2+ (%.2f)" % r2
-            elif cl==r2:
-                return "R2= (%.2f)" % r2
-            elif cl>r1:
-                return "R1+ (%.2f)" % r1
-            elif cl==r1:
-                return "R1= (%.2f)" % r1
-            elif cl>pivot:
-                return "PI+ (%.2f)" % pivot
-            elif cl==pivot:
-                return "PI= (%.2f)" % pivot
-            elif cl>s1:
-                return "PI- (%.2f)" % pivot
-            elif cl==s1:
-                return "S1= (%.2f)" % s1
-            elif cl>s2:
-                return "S1- (%.2f)" % s1
-            elif cl==s2:
-                return "S2= (%.2f)" % s2
-            else:
-                return "S2- (%.2f)" % s2
-        else:
-            return " --- (-.--) "
+            if pivot != -1.0:
+                cl = self.nv_close()
+                if cl>r2:
+                    return "R2+ (%.2f)" % r2
+                elif cl==r2:
+                    return "R2= (%.2f)" % r2
+                elif cl>r1:
+                    return "R1+ (%.2f)" % r1
+                elif cl==r1:
+                    return "R1= (%.2f)" % r1
+                elif cl>pivot:
+                    return "PI+ (%.2f)" % pivot
+                elif cl==pivot:
+                    return "PI= (%.2f)" % pivot
+                elif cl>s1:
+                    return "PI- (%.2f)" % pivot
+                elif cl==s1:
+                    return "S1= (%.2f)" % s1
+                elif cl>s2:
+                    return "S1- (%.2f)" % s1
+                elif cl==s2:
+                    return "S2= (%.2f)" % s2
+                else:
+                    return "S2- (%.2f)" % s2
+        return " --- (-.--) "
 
     # ---[ market open/close ] ---
 
