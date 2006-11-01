@@ -119,6 +119,11 @@ dirImport = 'import'
 if not os.path.exists(dirImport):
     os.mkdir(dirImport)
 
+# directory for exportation
+dirExport = 'export'
+if not os.path.exists(dirExport):
+    os.mkdir(dirExport)
+
 # directory for snapshots
 dirSnapshots = 'snapshots'
 if not os.path.exists(dirSnapshots):

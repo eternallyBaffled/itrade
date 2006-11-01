@@ -338,6 +338,10 @@ popup_percent;Var. (%s)
 popup_volume;Volume
 
 save_to_file;Sauver vers fichier
+export_to_file;Exporter vers fichier
+import_from_file;Importer depuis fichier
+exported_to_file;Le fichier %s a été exporté
+imported_from_file;Le fichier %s a été importé
 
 tb_pan_left;Déplace vers la gauche
 tb_pan_right;Déplace vers la droite

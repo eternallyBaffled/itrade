@@ -5,6 +5,10 @@ On the road for v0.4.5 (Nausicaa)
 
 ===============================================================================
 
+2006-11-01  Gilles Dumortier <dgil at ieee.org>
+	* Quote View : Properties Panel : Implement Import (SF bug 1392037)
+	* Quote View : Properties Panel : Implement Export (SF bug 1392036)
+
 2006-10-31  Gilles Dumortier <dgil at ieee.org>
         * some merge on quote properties (country,place and currency display)
 
