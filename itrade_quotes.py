@@ -474,7 +474,7 @@ class Quote(object):
     # ---[ load or import trades / date is unique key ] ---
 
     def loadTrades(self,fn=None):
-        #debug('Quote:loadTrades %s' % self.ticker)
+        debug('Quote:loadTrades %s' % self.ticker)
         if self.m_daytrades==None:
             self.m_daytrades = itrade_trades.Trades(self)
         self.m_daytrades.load(fn)
@@ -491,7 +491,7 @@ class Quote(object):
         if self.m_daytrades==None:
             info('Quote:saveTrades %s - no daytrades !' % self.ticker())
             return
-        info('Quote:saveTrades %s - save now !' % self.ticker())
+        debug('Quote:saveTrades %s - save now !' % self.ticker())
         self.m_daytrades.save(fn)
 
     # ---[ update the quote from the network ] ---

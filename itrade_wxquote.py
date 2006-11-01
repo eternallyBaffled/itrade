@@ -53,6 +53,7 @@ from itrade_logging import *
 from itrade_quotes import *
 from itrade_local import message
 from itrade_config import *
+
 from itrade_wxhtml import *
 from itrade_wxmixin import iTrade_wxFrame
 from itrade_wxgraph import iTrade_wxPanelGraph,fmtVolumeFunc,fmtVolumeFunc0
@@ -496,10 +497,38 @@ class iTradeQuotePropertiesPanel(wx.Window):
         dlg.Destroy()
 
     def OnImport(self,event):
-        pass
+        dlg = wx.FileDialog(self.m_parent, message('import_from_file'), itrade_config.dirImport, "", "*.txt", wx.OPEN|wx.FILE_MUST_EXIST)
+        if dlg.ShowModal() == wx.ID_OK:
+            dirname  = dlg.GetDirectory()
+            filename = dlg.GetFilename()
+            file = os.path.join(dirname,filename)
+
+            info('Import file %s' % file)
+            self.m_quote.loadTrades(file)
+            self.m_quote.saveTrades()
+
+            dlg2 = wx.MessageDialog(self, message('imported_from_file') % file, message('import_from_file'), wx.OK | wx.ICON_INFORMATION)
+            dlg2.ShowModal()
+            dlg2.Destroy()
+
+        dlg.Destroy()
 
     def OnExport(self,event):
-        pass
+        dlg = wx.FileDialog(self.m_parent, message('export_to_file'), itrade_config.dirExport, "", "*.txt", wx.SAVE|wx.OVERWRITE_PROMPT)
+        if dlg.ShowModal() == wx.ID_OK:
+            dirname  = dlg.GetDirectory()
+            filename = dlg.GetFilename()
+            file = os.path.join(dirname,filename)
+            info('Export file %s' % file)
+
+            self.m_quote.saveTrades(file)
+
+            dlg2 = wx.MessageDialog(self, message('exported_to_file') % file, message('export_to_file'), wx.OK | wx.ICON_INFORMATION)
+            dlg2.ShowModal()
+            dlg2.Destroy()
+
+            #
+        dlg.Destroy()
 
     def saveThenDisplayReference(self):
         self.editTicker.SetLabel(self.m_quote.ticker())

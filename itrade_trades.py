@@ -156,7 +156,7 @@ class Trades(object):
 
     def load(self,infile=None):
         infile = itrade_csv.read(infile,os.path.join(itrade_config.dirCacheData,self.m_quote.isin())+'.txt')
-        #print infile
+        #print 'Trades:load::',infile
         if infile:
             # scan each line to read each trade
             #debug('Trades::load %s %s' % (self.m_quote.ticker(),self.m_quote.isin()))

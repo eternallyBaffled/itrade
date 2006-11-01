@@ -88,6 +88,7 @@ class CSV(object):
                 f = open(fd,'w')
         except IOError:
             # can't open the file (existing ?)
+            print "can't open the file %s/%s (existing ?) for writing !" % (fn,fd)
             return None
 
         # write each lines
