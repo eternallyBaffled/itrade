@@ -55,6 +55,7 @@ from itrade_currency import currencies
 
 # iTrade wx system
 from itrade_wxquote import open_iTradeQuote,addInMatrix_iTradeQuote,removeFromMatrix_iTradeQuote
+from itrade_wxpropquote import open_iTradeQuoteProperty
 from itrade_wxportfolio import select_iTradePortfolio,properties_iTradePortfolio
 from itrade_wxoperations import open_iTradeOperations
 from itrade_wxmoney import open_iTradeMoney
@@ -345,6 +346,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
         self.m_hMoney = None
         self.m_hAlerts = None
         self.m_hView = None
+        self.m_hProperty = None
         self.m_hCurrency = None
 
         wx.EVT_CLOSE(self, self.OnCloseWindow)
@@ -520,7 +522,10 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
 
     def openCurrentQuote(self,page=1):
         quote,item = self.getQuoteAndItemOnTheLine(self.m_currentItem)
-        open_iTradeQuote(self,self.m_portfolio,quote,page)
+        if page==7:
+            open_iTradeQuoteProperty(self,self.m_portfolio,quote)
+        else:
+            open_iTradeQuote(self,self.m_portfolio,quote,page)
 
     # --- [ window management ] -------------------------------------
 
@@ -549,6 +554,8 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
             self.m_hAlerts.Close()
         if self.m_hView:
             self.m_hView.Close()
+        if self.m_hProperty:
+            self.m_hProperty.Close()
         if self.m_hCurrency:
             self.m_hCurrency.Close()
 
