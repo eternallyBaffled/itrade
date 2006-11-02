@@ -41,7 +41,7 @@ import logging
 
 # iTrade system
 from itrade_logging import *
-from itrade_quotes import quotes
+from itrade_quotes import quotes,quote_reference
 from itrade_portfolio import *
 import itrade_csv
 
@@ -73,7 +73,25 @@ class TradingMatrix(object):
             for eachLine in infile:
                 item = itrade_csv.parse(eachLine,1)
                 if item:
-                    self.addISIN(item[0])
+                    if len(item)>4:
+                        # new format with country
+                        #print 'addKey:new fmt: %s : %s : %s' % (item[0],item[2],item[3])
+                        ref = None
+                        if item[0]=='':
+                            quote = quotes.lookupTicker(item[2],item[3])
+                            if quote:
+                                ref = quote.key()
+                        if not ref:
+                            ref = quote_reference(isin=item[0],ticker=item[2],market=item[3])
+                        if not self.addKey(ref):
+                            print 'load (new format): %s/%s : quote not found in quotes list ! (ref=%s)' % (item[0],item[2],ref)
+                    else:
+                        # old format with isin only
+                        # __x TBD: to be deprecated during beta release
+                        #print 'load:old fmt: %s : %s : no market' % (item[0],item[3])
+                        ref = quote_reference(isin=item[0],ticker=item[3],market=None)
+                        if not self.addKey(ref):
+                            print 'load (old format): %s/%s : quote not found in quotes list ! (ref=%s)' % (item[0],item[3],ref)
 
     # save 'matrix.txt'
     def save(self,fn):
@@ -94,37 +112,41 @@ class TradingMatrix(object):
         self.reinit()
         for eachQuote in quotes.list():
             if eachQuote.isMatrix():
-                self.m_quotes[eachQuote.isin()] = eachQuote
+                self.m_quotes[eachQuote.key()] = eachQuote
                 debug('matrix:build: add %s',eachQuote.ticker())
             else:
-                if self.m_quotes.has_key(eachQuote.isin()):
-                    del self.m_quotes[eachQuote.isin()]
+                if self.m_quotes.has_key(eachQuote.key()):
+                    del self.m_quotes[eachQuote.key()]
                     debug('matrix:build: remove %s',eachQuote.ticker())
 
     # update the matrix
     def update(self,fromdate=None,todate=None):
         for eachQuote in self.list():
-            debug('matrix::update: %s - %s' % (eachQuote.isin(),eachQuote.ticker()))
+            debug('matrix::update: %s - %s' % (eachQuote.key(),eachQuote.ticker()))
             eachQuote.update(fromdate,todate)
-            info('matrix::compute: %s - %s' % (eachQuote.isin(),eachQuote.ticker()))
+            info('matrix::compute: %s - %s' % (eachQuote.key(),eachQuote.ticker()))
             eachQuote.compute(todate)
 
     # add a quote in the matrix
-    def addISIN(self,i):
-        q = quotes.lookupISIN(i)
+    def addKey(self,i):
+        q = quotes.lookupKey(i)
+        #print 'addKey: %s %s' % (i,q)
         if q:
-            debug('addISIN: add %s',q.ticker())
-            self.m_quotes[q.isin()] = q
-            debug('addISIN: monitor %s' % i)
+            debug('addKey: add %s',q.ticker())
+            self.m_quotes[q.key()] = q
+            debug('addKey: monitor %s' % i)
             q.monitorIt(True)
+            return True
+        else:
+            return False
 
     # remove a quote in the matrix
-    def removeISIN(self,i):
-        q = quotes.lookupISIN(i)
+    def removeKey(self,i):
+        q = quotes.lookupKey(i)
         if q:
-            debug('removeISIN: add %s',q.ticker())
-            del self.m_quotes[q.isin()]
-            debug('removeISIN: un-monitor %s' % i)
+            debug('removeKey: add %s',q.ticker())
+            del self.m_quotes[q.key()]
+            debug('removeKey: un-monitor %s' % i)
             q.monitorIt(False)
 
 # ============================================================================

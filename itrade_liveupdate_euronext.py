@@ -3,7 +3,8 @@
 # Project Name : iTrade
 # Module Name  : itrade_liveupdate_euronext.py
 #
-# Description: Live update quotes from euronext.com : EURONEXT and ALTERNEXT
+# Description: Live update quotes from euronext.com : EURONEXT, ALTERNEXT,
+# MARCHE LIBRE (PARIS & BRUXELLES)
 #
 # The Original Code is iTrade code (http://itrade.sourceforge.net).
 #
@@ -29,9 +30,6 @@
 #
 # History       Rev   Description
 # 2005-06-10    dgil  Wrote it from scratch
-
-NOT WORKING YET :-(
-
 # ============================================================================
 
 # ============================================================================
@@ -41,15 +39,17 @@ NOT WORKING YET :-(
 # python system
 import logging
 import re
-import thread
-import time
+import string
 import urllib
+import thread
+from datetime import *
 
 # iTrade system
-import itrade_config
 from itrade_logging import *
 from itrade_quotes import *
+from itrade_datation import Datation,jjmmaa2yyyymmdd
 from itrade_import import registerLiveConnector
+from itrade_market import euronext_place2mep
 
 # ============================================================================
 # LiveUpdate_Euronext()
@@ -61,7 +61,7 @@ from itrade_import import registerLiveConnector
 # ============================================================================
 
 class LiveUpdate_Euronext(object):
-    def __init__(self,market='euronext'):
+    def __init__(self,market='EURONEXT'):
         debug('LiveUpdate_Euronext:__init__')
         self.m_connected = False
         self.m_data = None
@@ -70,10 +70,8 @@ class LiveUpdate_Euronext(object):
         self.m_lastclock = "::"
         self.m_livelock = thread.allocate_lock()
         self.m_market = market
-        if self.m_market=='euronext':
-            self.m_url = "http://www.euronext.com/tradercenter/priceslists/trapridownload/0,4499,1732_338638,00.html?belongsToList=market_14&resultsTitle=All%20Euronext%20-%20Eurolist%20by%20Euronext&eligibilityList=&economicGroupList=&sectorList=&branchList="
-        elif self.m_market=='alternext':
-            self.m_url = "http://www.euronext.com/tradercenter/priceslists/trapridownload/0,4499,1732_338638,00.html?belongsToList=market_15&resultsTitle=All%20Euronext%20-%20Eurolist%20by%20Euronext&eligibilityList=&economicGroupList=&sectorList=&branchList="
+        self.m_urlid = 'http://www.euronext.com/trader/summarizedmarket/0,5372,1732_6834,00.html?isinCode='
+        self.m_url = 'http://www.euronext.com/tools/datacentre/dataCentreDownloadExcell/0,5822,1732_2276422,00.html'
 
     # ---[ reentrant ] ---
     def acquire(self):
@@ -121,96 +119,136 @@ class LiveUpdate_Euronext(object):
         lines = [removeCarriage(l) for l in lines]
         return lines
 
+    def euronextDate(self,date):
+        adate,sclock = string.split(date,' ')
+
+        # Date part is easy
+        sdate = jjmmaa2yyyymmdd(adate)
+
+        return sdate,sclock
+
+    def convertClock(self,clock):
+        min = clock[-2:]
+        hour = clock[:-3]
+        val = (int(hour)*60) + int(min)
+        #print 'clock:',clock,hour,min,val
+        if val>self.m_lastclock:
+            self.m_lastclock = val
+        return "%d:%02d" % (val/60,val%60)
 
     def getdata(self,quote):
         self.m_connected = False
         debug("LiveUpdate_Euronext:getdata quote:%s market:%s" % (quote,self.m_market))
 
+        # get instrument ID
+        IdInstrument = quote.get_pluginID()
+        if IdInstrument==None:
+
+            url = self.m_urlid+quote.isin()
+
+            debug("LiveUpdate_Euronext:getdata: urlID=%s ",url)
+            try:
+                f = urllib.urlopen(url)
+            except:
+                debug('LiveUpdate_Euronext:unable to connect :-(')
+                return None
+            buf = f.read()
+            sid = re.search("isinCode=%s&selectedMep=%d&idInstrument=" % (quote.isin(),euronext_place2mep(quote.place())),buf,re.IGNORECASE|re.MULTILINE)
+            if sid:
+                sid = sid.end()
+                sexch = re.search("&quotes=stock",buf[sid:],re.IGNORECASE|re.MULTILINE)
+                if sexch:
+                    sexch = sexch.start()
+                    data = buf[sid:]
+                    IdInstrument = data[:sexch]
+
+            if IdInstrument==None:
+                print "LiveUpdate_Euronext:can't get IdInstrument for %s " % quote.isin()
+                return None
+            else:
+                quote.set_pluginID(IdInstrument)
+
+        query = (
+            ('idInstrument', IdInstrument),
+            ('isinCode', quote.isin()),
+            ('indexCompo', ''),
+            ('opening', 'on'),
+            ('high', 'on'),
+            ('low', 'on'),
+            ('closing', 'on'),
+            ('volume', 'on'),
+            ('typeDownload', '3'),
+            ('format', ''),
+        )
+        query = map(lambda (var, val): '%s=%s' % (var, str(val)), query)
+        query = string.join(query, '&')
+        url = self.m_url + '?' + query
+
+        debug("LiveUpdate_Euronext:getdata: url=%s ",url)
         try:
-            f = urllib.urlopen(self.m_url)
+            f = urllib.urlopen(url)
         except:
             debug('LiveUpdate_Euronext:unable to connect :-(')
             return None
 
-        # returns the data
-        data = f.read()
-        self.m_datatime = datetime.today()
+        # pull data
+        buf = f.read()
+        lines = self.splitLines(buf)
+        data = ''
 
-        # __x
-        self.m_lastclock = "%d:%02d" % (self.m_datatime.hour,self.m_datatime.minute)
+        for eachLine in lines:
+            sdata = string.split (eachLine, '\t')
+            #print sdata,len(sdata)
+            if len(sdata)==34:
+                if (sdata[1]<>"ISIN"):
+                    c_datetime = datetime.today()
+                    c_date = "%04d%02d%02d" % (c_datetime.year,c_datetime.month,c_datetime.day)
+                    #print 'Today is :', c_date
 
-        debug('!!! datatime = %s clock=%s' % (self.m_datatime,self.m_lastclock))
+                    sdate,sclock = self.euronextDate(sdata[10])
 
-        lines = self.splitLines(data)
+                    # be sure not an oldest day !
+                    if c_date==sdate:
 
-        for line in lines:
-            data = string.split (line, ';')
-            if len(data)==11:
-                # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME
-                self.m_dcmpd[data[1]] = data[1],data[9],
-                self.m_clock[data[1]] = data[9]
+                        #
+                        key = quote.key()
+                        self.m_dcmpd[key] = sdate
+                        self.m_clock[key] = self.convertClock(sclock)
 
-        # extract the quote we are looking for
-        return self.getcacheddata(quote)
+                        # __x
+                        self.m_lastclock = sclock
+
+                        # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME
+                        data = (
+                          quote.key(),
+                          sdate,
+                          sdata[15],    # Open
+                          sdata[16],    # High
+                          sdata[18],    # Low
+                          sdata[7],     # Last
+                          sdata[8]      # Volume
+                        )
+                        data = map(lambda (val): '%s' % str(val), data)
+                        data = string.join(data, ';')
+
+                        return data
+                else:
+                    #print sdata
+                    pass
+
+        return None
 
     # ---[ cache management on data ] ---
 
-    def getcacheddataByQuote(self,quote):
-        if quote:
-            return self.getcacheddata(quote)
-        return None
-
-    def getcacheddataByTicker(self,ticker):
-        quote = quotes.lookupTicker(ticker)
-        if quote:
-            return self.getcacheddata(quote)
-        return None
-
-    def getcacheddataByISIN(self,isin):
-        quote = quotes.lookupISIN(isin)
-        if quote:
-            return self.getcacheddata(quote)
-        return None
-
     def getcacheddata(self,quote):
-        isin = quote.isin()
-        if not self.m_dcmpd.has_key(isin):
-            return None
-
-        # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME
-        data = (
-          isin,
-          date,
-          open,
-          high,
-          low,
-          value,
-          volume
-        )
-        data = map(lambda (val): '%s' % str(val), data)
-        data = string.join(data, ';')
-
-        print data
-        return data
+        return None
 
     def iscacheddataenoughfreshq(self):
-        if self.m_data==None:
-            #print
-            debug('iscacheddataenoughfreshq : no cache !')
-            return False
-        if not self.m_datatime:
-            debug('iscacheddataenoughfreshq : no data time !')
-            return False
-        delta = timedelta(0,itrade_config.cachedDataFreshDelay)
-        newtime = self.m_datatime + delta
-        if (datetime.today()>newtime):
-            debug('datatime = %s  currentdatatime = %s  newtime = %s delta = %s : False' %(self.m_datatime,datetime.today(),newtime,delta))
-            return False
-        debug('datatime = %s  currentdatatime = %s  newtime = %s delta = %s : True' %(self.m_datatime,datetime.today(),newtime,delta))
-        return True
+        return False
 
     def cacheddatanotfresh(self):
-        self.m_data = None
+        # no cache
+        pass
 
     # ---[ notebook of order ] ---
 
@@ -224,14 +262,14 @@ class LiveUpdate_Euronext(object):
 
     def currentStatus(self,quote):
         #
-        isin = quote.isin()
-        if not self.m_dcmpd.has_key(isin):
+        key = quote.key()
+        if not self.m_dcmpd.has_key(key):
             # no data for this quote !
             return "UNKNOWN","::","0.00","0.00","::"
 
         st = 'OK'
         cl = '::'
-        return st,cl,"-","-",self.m_clock[isin]
+        return st,cl,"-","-",self.m_clock[key]
 
     def currentTrades(self,quote):
         # clock,volume,value
@@ -245,12 +283,12 @@ class LiveUpdate_Euronext(object):
         if quote==None:
             return self.m_lastclock
 
-        isin = quote.isin()
-        if not self.m_clock.has_key(isin):
+        key = quote.key()
+        if not self.m_clock.has_key(key):
             # no data for this quote !
             return "::"
         else:
-            return self.m_clock[isin]
+            return self.m_clock[key]
 
 # ============================================================================
 # Export me
@@ -262,12 +300,13 @@ try:
 except NameError:
     gLiveEuronext = LiveUpdate_Euronext('euronext')
     gLiveAlternext = LiveUpdate_Euronext('alternext')
+    gLiveParisML = LiveUpdate_Euronext('paris marche libre')
+    gLiveBruxellesML = LiveUpdate_Euronext('bruxelles marche libre')
 
-registerLiveConnector('EURONEXT',gLiveEuronext)
-registerLiveConnector('EURONEXT_differed',gLiveEuronext)
-
-registerLiveConnector('ALTERNEXT',gLiveAlternext)
-registerLiveConnector('ALTERNEXT_differed',gLiveAlternext)
+registerLiveConnector('EURONEXT',gLiveEuronext,bDefault=False)
+registerLiveConnector('ALTERNEXT',gLiveAlternext,bDefault=False)
+registerLiveConnector('PARIS MARCHE LIBRE',gLiveParisML,bDefault=False)
+registerLiveConnector('BRUXELLES MARCHE LIBRE',gLiveBruxellesML,bDefault=False)
 
 # ============================================================================
 # Test ME
@@ -276,7 +315,7 @@ registerLiveConnector('ALTERNEXT_differed',gLiveAlternext)
 
 def test(ticker):
     if gLiveEuronext.iscacheddataenoughfreshq():
-        data = gLiveEuronext.getcacheddataByTicker(ticker)
+        data = gLiveEuronext.getcacheddata(ticker)
         if data:
             debug(data)
         else:
@@ -309,9 +348,9 @@ if __name__=='__main__':
 
     print 'live %s' % date.today()
     test('OSI')
-    test('EADT')
+    test('GTO')
     gLiveEuronext.cacheddatanotfresh()
-    test('EADT')
+    test('GTO')
 
 # ============================================================================
 # That's all folks !

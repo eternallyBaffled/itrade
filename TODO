@@ -28,7 +28,10 @@ TODO ITEMS by VERSION
 ===============================================================================
 
 Version 0.4.5 (Nausicaa)
- + multi-currencies support in portfolio and matrix
+ + Multi-currencies support in portfolio and matrix
+ + List of quotes Management (Downloading, Editing, ...)
+ + Yahoo connector fully functionnal for the US market
+ + "Points Pivots" feature
  ~ News aggregator (Google, Bourso, Balo)
  ~ Money Computer (preview of Risk Management)
  ~ www.lebalo.com (official french announces)

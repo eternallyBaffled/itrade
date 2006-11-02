@@ -639,7 +639,7 @@ class LiveUpdate_fortuneo(object):
 
         # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME
         data = (
-          isin,
+          quote.key(),
           dt,
           dcmpd['CSA_CRS_PREMIER'],
           dcmpd['CSA_CRS_HAUT'],
@@ -652,23 +652,6 @@ class LiveUpdate_fortuneo(object):
         return data
 
     # ---[ cache management on data ] ---
-
-    def getcacheddataByQuote(self,quote):
-        if quote:
-            return self.getcacheddata(quote)
-        return None
-
-    def getcacheddataByTicker(self,ticker):
-        quote = quotes.lookupTicker(ticker)
-        if quote:
-            return self.getcacheddata(quote)
-        return None
-
-    def getcacheddataByISIN(self,isin):
-        quote = quotes.lookupISIN(isin)
-        if quote:
-            return self.getcacheddata(quote)
-        return None
 
     def getcacheddata(self,quote):
         # no cache
@@ -844,8 +827,10 @@ except NameError:
     gLiveFortuneo = LiveUpdate_fortuneo()
 
 # __x test the connection, and register only if working ...
-registerLiveConnector('EURONEXT',gLiveFortuneo)
-registerLiveConnector('ALTERNEXT',gLiveFortuneo)
+registerLiveConnector('EURONEXT',gLiveFortuneo,bDefault=True)
+registerLiveConnector('ALTERNEXT',gLiveFortuneo,bDefault=True)
+registerLiveConnector('PARIS MARCHE LIBRE',gLiveFortuneo,bDefault=True)
+registerLiveConnector('BRUXELLES MARCHE LIBRE',gLiveFortuneo,bDefault=True)
 
 # ============================================================================
 # Test ME
@@ -854,7 +839,7 @@ registerLiveConnector('ALTERNEXT',gLiveFortuneo)
 
 def test(ticker):
     if gLiveFortuneo.iscacheddataenoughfreshq():
-        data = gLiveFortuneo.getcacheddataByTicker(ticker)
+        data = gLiveFortuneo.getcacheddata(ticker)
         if data:
             debug(data)
         else:

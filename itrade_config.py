@@ -69,7 +69,7 @@ softwareWebsite = 'http://itrade.sourceforge.net/'
 
 # iTrade version (major.minor)
 softwareVersion = __version__
-softwareVersionName = 'Nausicaa - (unstable)'
+softwareVersionName = 'Nausicaa - (unstable) (merged)'
 softwareStatus = __status__
 
 print '%s(%s) - %s %s' % (softwareName,softwareStatus,softwareVersion,softwareVersionName)
@@ -182,12 +182,18 @@ intradayGraphUrl['EURONEXT'] = "http://www.abcbourse.com/Graphes/graphe.aspx?s=%
 intradayGraphUrlUseISIN['EURONEXT'] = False
 intradayGraphUrl['ALTERNEXT'] = "http://www.abcbourse.com/Graphes/graphe.aspx?s=%sp&m=g&t=lc"
 intradayGraphUrlUseISIN['ALTERNEXT'] = False
+intradayGraphUrl['PARIS MARCHE LIBRE'] = "http://www.abcbourse.com/Graphes/graphe.aspx?s=%sp&m=g&t=lc"
+intradayGraphUrlUseISIN['PARIS MARCHE LIBRE'] = False
+intradayGraphUrl['BRUXELLES MARCHE LIBRE'] = "http://www.abcbourse.com/Graphes/graphe.aspx?s=%sp&m=g&t=lc"
+intradayGraphUrlUseISIN['BRUXELLES MARCHE LIBRE'] = False
 intradayGraphUrl['NASDAQ'] = "http://ichart.finance.yahoo.com/b?s=%s"
 intradayGraphUrlUseISIN['NASDAQ'] = False
 intradayGraphUrl['NYSE'] = "http://ichart.finance.yahoo.com/b?s=%s"
 intradayGraphUrlUseISIN['NYSE'] = False
 intradayGraphUrl['AMEX'] = "http://ichart.finance.yahoo.com/b?s=%s"
 intradayGraphUrlUseISIN['AMEX'] = False
+intradayGraphUrl['OTCBB'] = "http://ichart.finance.yahoo.com/b?s=%s.OB"
+intradayGraphUrlUseISIN['OTCBB'] = False
 
 # in ms, time before activating XYPopup
 timerForXYPopup = 500

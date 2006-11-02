@@ -161,12 +161,13 @@ class iTrade_wxToolbarGraph(wx.ToolBar):
 
     def save(self,event):
         filetypes = self.canvas._get_imagesave_wildcards()
-        dlg = wx.FileDialog(self.m_parent, message('save_to_file'), itrade_config.dirSnapshots, "", filetypes, wx.SAVE|wx.OVERWRITE_PROMPT)
+        dlg = wx.FileDialog(self.m_parent, message('save_to_file'), itrade_config.dirSnapshots, "", filetypes, wx.SAVE|wx.OVERWRITE_PROMPT|wx.CHANGE_DIR)
         if dlg.ShowModal() == wx.ID_OK:
             dirname  = dlg.GetDirectory()
             filename = dlg.GetFilename()
             debug('Save file dir:%s name:%s' % (dirname, filename))
             self.canvas.print_figure(os.path.join(dirname, filename))
+        dlg.Destroy()
 
     def set_cursor(self, cursor):
         cursor = wx.StockCursor(cursord[cursor])

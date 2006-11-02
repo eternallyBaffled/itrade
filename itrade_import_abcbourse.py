@@ -182,8 +182,10 @@ try:
 except NameError:
     gImportABC = Import_ABCBourse()
 
-registerImportConnector('EURONEXT',gImportABC)
-registerImportConnector('ALTERNEXT',gImportABC)
+registerImportConnector('EURONEXT',gImportABC,bDefault=False)
+registerImportConnector('ALTERNEXT',gImportABC,bDefault=False)
+registerImportConnector('PARIS MARCHE LIBRE',gImportABC,bDefault=False)
+registerImportConnector('BRUXELLES MARCHE LIBRE',gImportABC,bDefault=False)
 
 # ============================================================================
 # Test ME

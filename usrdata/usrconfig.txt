@@ -1,3 +1,2 @@
 [view]
-autorefreshview = False
 

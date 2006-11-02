@@ -51,6 +51,7 @@ isin_market = {
     'fr': 'EURONEXT',
     'nl': 'EURONEXT',
     'be': 'EURONEXT',
+    'es': 'EURONEXT',
     'uk': 'LSE',
     'us': 'NASDAQ'
     }
@@ -61,8 +62,8 @@ def isin2market(isin):
         if isin_market.has_key(cp):
             return isin_market[cp]
         else:
-            # default to EURONEXT !
-            return 'EURONEXT'
+            # don't know !
+            return None
     else:
         # default to EURONEXT !
         return 'EURONEXT'
@@ -74,9 +75,12 @@ def isin2market(isin):
 market_currency = {
     'EURONEXT': 'EUR',
     'ALTERNEXT': 'EUR',
+    'PARIS MARCHE LIBRE': 'EUR',
+    'BRUXELLES MARCHE LIBRE': 'EUR',
     'NASDAQ': 'USD',
     'NYSE': 'USD',
     'AMEX': 'USD',
+    'OTCBB': 'USD',
     'LSE': 'GBP',
     }
 
@@ -93,11 +97,134 @@ def list_of_markets(bFilterMode=False):
         lom.append(message('all_markets'))
     lom.append('EURONEXT')
     lom.append('ALTERNEXT')
+    lom.append('PARIS MARCHE LIBRE')
+    lom.append('BRUXELLES MARCHE LIBRE')
     lom.append('LSE')
     lom.append('NASDAQ')
     lom.append('NYSE')
     lom.append('AMEX')
+    lom.append('OTCBB')
     return lom
+
+# ============================================================================
+# use isin / market / place to found the country
+# ============================================================================
+
+def compute_country(isin,market,place):
+    if isin:
+        return isin[0:2].upper()
+    else:
+        if market=='EURONEXT' or market=='ALTERNEXT':
+            if place=='PAR': return 'FR'
+            if place=='BRU': return 'BE'
+            if place=='AMS': return 'NL'
+            if place=='LIS': return 'ES'
+            return 'FR'
+        if market=='PARIS MARCHE LIBRE':
+            return 'FR'
+        if market=='BRUXELLES MARCHE LIBRE':
+            return 'BE'
+        if market=='LSE':
+            return 'GB'
+        if market=='NASDAQ':
+            return 'US'
+        if market=='AMEX':
+            return 'US'
+        if market=='NYSE':
+            return 'US'
+        if market=='OTCBB':
+            return 'US'
+    return '??'
+
+# ============================================================================
+# list_of_places
+# ============================================================================
+
+def list_of_places(market):
+    lop = []
+    if market=='EURONEXT':
+        lop.append('PAR')
+        lop.append('BRU')
+        lop.append('AMS')
+        lop.append('LIS')
+    if market=='ALTERNEXT':
+        lop.append('PAR')
+    if market=='PARIS MARCHE LIBRE':
+        lop.append('PAR')
+    if market=='BRUXELLES MARCHE LIBRE':
+        lop.append('BRU')
+    if market=='NASDAQ':
+        lop.append('NYC')
+    if market=='AMEX':
+        lop.append('NYC')
+    if market=='NYSE':
+        lop.append('NYC')
+    if market=='OTCBB':
+        lop.append('NYC')
+    if market=='LSE':
+        lop.append('LON')
+    return lop
+
+# ============================================================================
+# market2place
+# ============================================================================
+
+market_place = {
+    'EURONEXT': 'PAR',
+    'ALTERNEXT': 'PAR',
+    'PARIS MARCHE LIBRE': 'PAR',
+    'BRUXELLES MARCHE LIBRE': 'BRU',
+    'NASDAQ': 'NYC',
+    'NYSE': 'NYC',
+    'AMEX': 'NYC',
+    'OTCBB': 'NYC',
+    'LSE': 'LON',
+    }
+
+def market2place(market):
+    if market_place.has_key(market):
+        return market_place[market]
+    else:
+        # default to PARIS
+        return 'PAR'
+
+# ============================================================================
+# yahooTicker
+# ============================================================================
+
+yahoo_suffix = {
+    'EURONEXT': '.PA',
+    'ALTERNEXT': '.PA',
+    'PARIS MARCHE LIBRE': '.PA',
+    'BRUXELLES MARCHE LIBRE': '.BOGUS',
+    'OTCBB': '.OB',
+    'LSE': '.L',
+    }
+
+def yahooTicker(ticker,market):
+    if yahoo_suffix.has_key(market):
+        return ticker + yahoo_suffix[market]
+    else:
+        return ticker
+
+
+# ============================================================================
+# euronext_place2mep
+# ============================================================================
+
+euronext_place = {
+    'PAR' : 1,
+    'AMS' : 2,
+    'BRU' : 3,
+    'LIS' : 5
+    }
+
+def euronext_place2mep(place):
+    if euronext_place.has_key(place):
+        return euronext_place[place]
+    else:
+        # default to PARIS
+        return 1
 
 # ============================================================================
 # That's all folks !

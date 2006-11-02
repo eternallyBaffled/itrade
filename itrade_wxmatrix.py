@@ -511,6 +511,17 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
     def GetSortImages(self):
         return (self.sm_dn, self.sm_up)
 
+    def getQuoteAndItemOnTheLine(self,x):
+        key = self.m_list.GetItemData(x)
+        #print 'line:%d -> key=%d quote=%s' % (x,key,self.itemQuoteMap[key].ticker())
+        quote = self.itemQuoteMap[key]
+        item = self.m_list.GetItem(x)
+        return quote,item
+
+    def openCurrentQuote(self,page=1):
+        quote,item = self.getQuoteAndItemOnTheLine(self.m_currentItem)
+        open_iTradeQuote(self,self.m_portfolio,quote,page)
+
     # --- [ window management ] -------------------------------------
 
     def OnPostInit(self,event):
@@ -616,7 +627,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
         iTradeLaunchBrowser(itrade_config.donorsTrackerURL,new=True)
 
     def OnManageList(self,e):
-        list_iTradeQuote(self)
+        list_iTradeQuote(self,self.m_portfolio.market())
 
     def OnAbout(self,e):
         d = iTradeAboutBox(self)
@@ -656,7 +667,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
     def updateQuoteItems(self):
         op1 = (self.m_currentItem>=0) and (self.m_currentItem<self.m_maxlines)
         if op1:
-            quote = quotes.lookupISIN(self.m_list.GetItemText(self.m_currentItem))
+            quote,item = self.getQuoteAndItemOnTheLine(self.m_currentItem)
         else:
             quote = None
 
@@ -725,14 +736,14 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
 
     def OnMoney(self,e):
         if self.m_currentItem>=0:
-            quote = self.m_list.GetItemText(self.m_currentItem)
+            quote,item = self.getQuoteAndItemOnTheLine(self.m_currentItem)
         else:
             quote = None
         open_iTradeMoney(self,0,self.m_portfolio,quote)
 
     def OnCompute(self,e):
         if self.m_currentItem>=0:
-            quote = self.m_list.GetItemText(self.m_currentItem)
+            quote,item = self.getQuoteAndItemOnTheLine(self.m_currentItem)
         else:
             quote = None
         open_iTradeMoney(self,1,self.m_portfolio,quote)
@@ -746,17 +757,17 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
     def OnGraphQuote(self,e):
         if self.m_currentItem>=0:
             debug("OnGraphQuote: %s" % self.m_list.GetItemText(self.m_currentItem))
-            open_iTradeQuote(self,self.m_portfolio,self.m_list.GetItemText(self.m_currentItem),page=1)
+            self.openCurrentQuote(page=1)
 
     def OnLiveQuote(self,e):
         if self.m_currentItem>=0:
             debug("OnLiveQuote: %s" % self.m_list.GetItemText(self.m_currentItem))
-            open_iTradeQuote(self,self.m_portfolio,self.m_list.GetItemText(self.m_currentItem),page=2)
+            self.openCurrentQuote(page=2)
 
     def OnPropertyQuote(self,e):
         if self.m_currentItem>=0:
             debug("OnPropertyQuote: %s" % self.m_list.GetItemText(self.m_currentItem))
-            open_iTradeQuote(self,self.m_portfolio,self.m_list.GetItemText(self.m_currentItem),page=7)
+            self.openCurrentQuote(page=7)
 
     # --- [ Text font size management ] -------------------------------------
 
@@ -800,7 +811,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
                 if self.itemQuoteMap[xline] == evt.quote:
                     #print 'live %d %d %d VS %d' % (xline,idview,xtype,self.m_listmode)
                     if idview == self.m_listmode:
-                        #debug('%s: %s' % (evt.quote.isin(),evt.param))
+                        #debug('%s: %s' % (evt.quote.key(),evt.param))
                         if self.m_listmode == LISTMODE_QUOTES:
                             self.refreshQuoteLine(xline,True)
                         elif self.m_listmode == LISTMODE_PORTFOLIO:
@@ -812,9 +823,9 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
                             self.refreshStopLine(xline,True)
                         self.refreshConnexion()
                     else:
-                        debug('%s: %s - bad : other view' % (evt.quote.isin(),evt.param))
+                        debug('%s: %s - bad : other view' % (evt.quote.key(),evt.param))
         else:
-            debug('%s: %s - bad : not running' % (evt.quote.isin(),evt.param))
+            debug('%s: %s - bad : not running' % (evt.quote.key(),evt.param))
 
     def OnRefresh(self,e):
         if self.m_portfolio.is_multicurrencies():
@@ -889,9 +900,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
         self.m_list.SetColumnWidth(IDC_PERCENT, wx.LIST_AUTOSIZE)
 
     def refreshQuoteLine(self,x,disp):
-        key = self.m_list.GetItemData(x)
-        #print 'line:%d -> key=%d quote=%s' % (x,key,self.itemQuoteMap[key].ticker())
-        quote = self.itemQuoteMap[key]
+        quote,item = self.getQuoteAndItemOnTheLine(x)
 
         # refresh line text
         if disp:
@@ -962,12 +971,9 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
             dlg.Destroy()
 
     def refreshPortfolioLine(self,x,disp):
-        key = self.m_list.GetItemData(x)
-        #print 'line:%d -> key=%d quote=%s' % (x,key,self.itemQuoteMap[key].ticker())
-        quote = self.itemQuoteMap[key]
+        quote,item = self.getQuoteAndItemOnTheLine(x)
         if quote==None: return
-        xtype = self.itemTypeMap[key]
-        item = self.m_list.GetItem(x)
+        xtype = self.itemTypeMap[self.m_list.GetItemData(x)]
 
         # refresh line text
         if disp:
@@ -1030,11 +1036,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
             dlg.Destroy()
 
     def refreshStopLine(self,x,disp):
-        key = self.m_list.GetItemData(x)
-        #print 'line:%d -> key=%d quote=%s' % (x,key,self.itemQuoteMap[key].ticker())
-        quote = self.itemQuoteMap[key]
-
-        item = self.m_list.GetItem(x)
+        quote,item = self.getQuoteAndItemOnTheLine(x)
 
         if disp:
             self.m_list.SetStringItem(x,IDC_CURRENT,quote.sv_close(bDispCurrency=True))
@@ -1092,11 +1094,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
             dlg.Destroy()
 
     def refreshIndicatorLine(self,x,disp):
-        key = self.m_list.GetItemData(x)
-        #print 'line:%d -> key=%d quote=%s' % (x,key,self.itemQuoteMap[key].ticker())
-        quote = self.itemQuoteMap[key]
-
-        item = self.m_list.GetItem(x)
+        quote,item = self.getQuoteAndItemOnTheLine(x)
 
         if disp:
             self.m_list.SetStringItem(x,IDC_LAST,quote.sv_close(bDispCurrency=True))
@@ -1438,7 +1436,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
         self.m_currentItem = event.m_itemIndex
         if (self.m_currentItem>=0) and (self.m_currentItem<self.m_maxlines):
             debug("OnItemActivated: %s" % self.m_list.GetItemText(self.m_currentItem))
-            open_iTradeQuote(self,self.m_portfolio,self.m_list.GetItemText(self.m_currentItem))
+            self.openCurrentQuote()
             # __x if self.m_currentItem == self.m_maxlines, launch eval !
 
     def OnItemSelected(self, event):
@@ -1459,7 +1457,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
             inList = False
         else:
             inList = True
-            quote = quotes.lookupISIN(self.m_list.GetItemText(self.m_currentItem))
+            quote,item = self.getQuoteAndItemOnTheLine(self.m_currentItem)
             info("OnRightClick %s : %s\n" % (self.m_list.GetItemText(self.m_currentItem),quote))
 
         # only do this part the first time so the events are only bound once
@@ -1564,15 +1562,15 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
 
     def OnPopup_View(self, event):
         debug("OnPopup_View")
-        open_iTradeQuote(self,self.m_portfolio,self.m_list.GetItemText(self.m_currentItem),page=1)
+        self.openCurrentQuote(page=1)
 
     def OnPopup_Live(self, event):
         debug("OnPopup_Live")
-        open_iTradeQuote(self,self.m_portfolio,self.m_list.GetItemText(self.m_currentItem),page=2)
+        self.openCurrentQuote(page=2)
 
     def OnPopup_Properties(self, event):
         debug("OnPopup_Properties")
-        open_iTradeQuote(self,self.m_portfolio,self.m_list.GetItemText(self.m_currentItem),page=7)
+        self.openCurrentQuote(page=7)
 
     def OnAddQuote(self,e):
         quote = addInMatrix_iTradeQuote(self,self.m_matrix,self.m_portfolio)
@@ -1595,7 +1593,8 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
             pass
 
     def OnRemoveCurrentQuote(self,e):
-        if removeFromMatrix_iTradeQuote(self,self.m_matrix,self.m_list.GetItemText(self.m_currentItem)):
+        quote,item = self.getQuoteAndItemOnTheLine(self.m_currentItem)
+        if removeFromMatrix_iTradeQuote(self,self.m_matrix,quote):
             self.m_portfolio.setupCurrencies()
             self.setDirty()
             self.m_listmode = LISTMODE_INIT

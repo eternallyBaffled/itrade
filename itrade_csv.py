@@ -97,6 +97,8 @@ class CSV(object):
             #print txt[0],txt[-1],'>>>',txt
             if txt[0]=="'" and txt[-1]=="'":
                 txt = txt[1:-1]
+            if txt[0]=='"' and txt[-1]=='"':
+                txt = txt[1:-1]
             f.write( txt + '\n')
 
         # close the file

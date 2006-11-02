@@ -48,6 +48,7 @@ import itrade_config
 from itrade_logging import *
 from itrade_quotes import *
 from itrade_import import registerLiveConnector
+from itrade_market import yahooTicker
 
 # ============================================================================
 # LiveUpdate_yahoo()
@@ -124,9 +125,11 @@ class LiveUpdate_yahoo(object):
         debug("LiveUpdate_yahoo:getdata quote:%s " % quote)
         self.m_connected = False
 
+        sname = yahooTicker(quote.ticker(),quote.market())
+
         query = (
           ('f', 'sl1d1t1c1ohgvbap'),
-          ('s', quote.ticker()),
+          ('s', sname),
           ('e', '.csv'),
         )
         query = map(lambda (var, val): '%s=%s' % (var, str(val)), query)
@@ -151,14 +154,20 @@ class LiveUpdate_yahoo(object):
         self.m_connected = True
 
         # store for later use
-        isin = quote.isin()
-        self.m_dcmpd[isin] = sdata
-        self.m_clock[isin] = self.convertClock(sdata[3][1:-1])
+        key = quote.key()
+
+        sclock = sdata[3][1:-1]
+        if sclock=="N/A" or sdata[2]=='"N/A"':
+            info('invalid datation for %s' % (quote.ticker()))
+            return None
+
+        self.m_dcmpd[key] = sdata
+        self.m_clock[key] = self.convertClock(sclock)
 
         # start decoding
         symbol = sdata[0][1:-1]
-        if symbol<>quote.ticker():
-            info('invalid ticker : ask for %s and receive %s' % (symbol,quote.ticker()))
+        if symbol<>sname:
+            info('invalid ticker : ask for %s and receive %s' % (sname,symbol))
             return None
         value = string.atof (sdata[1])
         date = self.yahooDate (sdata[2])
@@ -185,7 +194,7 @@ class LiveUpdate_yahoo(object):
 
         # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME
         data = (
-          isin,
+          key,
           date,
           open,
           high,
@@ -200,23 +209,6 @@ class LiveUpdate_yahoo(object):
         return data
 
     # ---[ cache management on data ] ---
-
-    def getcacheddataByQuote(self,quote):
-        if quote:
-            return self.getcacheddata(quote)
-        return None
-
-    def getcacheddataByTicker(self,ticker):
-        quote = quotes.lookupTicker(ticker)
-        if quote:
-            return self.getcacheddata(quote)
-        return None
-
-    def getcacheddataByISIN(self,isin):
-        quote = quotes.lookupISIN(isin)
-        if quote:
-            return self.getcacheddata(quote)
-        return None
 
     def getcacheddata(self,quote):
         # no cache
@@ -237,11 +229,11 @@ class LiveUpdate_yahoo(object):
 
     def currentNotebook(self,quote):
         #
-        isin = quote.isin()
-        if not self.m_dcmpd.has_key(isin):
+        key = quote.key()
+        if not self.m_dcmpd.has_key(key):
             # no data for this quote !
             return [],[]
-        d = self.m_dcmpd[isin]
+        d = self.m_dcmpd[key]
 
         buy = []
         buy.append([0,0,d[9]])
@@ -258,15 +250,15 @@ class LiveUpdate_yahoo(object):
 
     def currentStatus(self,quote):
         #
-        isin = quote.isin()
-        if not self.m_dcmpd.has_key(isin):
+        key = quote.key()
+        if not self.m_dcmpd.has_key(key):
             # no data for this quote !
             return "UNKNOWN","::","0.00","0.00","::"
-        d = self.m_dcmpd[isin]
+        d = self.m_dcmpd[key]
 
         st = 'OK'
         cl = '::'
-        return st,cl,"-","-",self.m_clock[isin]
+        return st,cl,"-","-",self.m_clock[key]
 
     def currentClock(self,quote=None):
         if quote==None:
@@ -275,12 +267,12 @@ class LiveUpdate_yahoo(object):
             # hh:mm
             return "%d:%02d" % (self.m_lastclock/60,self.m_lastclock%60)
         #
-        isin = quote.isin()
-        if not self.m_clock.has_key(isin):
+        key = quote.key()
+        if not self.m_clock.has_key(key):
             # no data for this quote !
             return "::"
         else:
-            return self.m_clock[isin]
+            return self.m_clock[key]
 
     def currentTrades(self,quote):
         # clock,volume,value
@@ -299,8 +291,16 @@ try:
 except NameError:
     gLiveYahoo = LiveUpdate_yahoo()
 
-registerLiveConnector('NASDAQ',gLiveYahoo)
-registerLiveConnector('NYSE',gLiveYahoo)
+registerLiveConnector('NASDAQ',gLiveYahoo,bDefault=True)
+registerLiveConnector('NYSE',gLiveYahoo,bDefault=True)
+registerLiveConnector('AMEX',gLiveYahoo,bDefault=True)
+registerLiveConnector('OTCBB',gLiveYahoo,bDefault=True)
+registerLiveConnector('LSE',gLiveYahoo,bDefault=True)
+
+registerLiveConnector('EURONEXT',gLiveYahoo,bDefault=False)
+registerLiveConnector('ALTERNEXT',gLiveYahoo,bDefault=False)
+registerLiveConnector('PARIS MARCHE LIBRE',gLiveYahoo,bDefault=False)
+registerLiveConnector('BRUXELLES MARCHE LIBRE',gLiveYahoo,bDefault=False)
 
 # ============================================================================
 # Test ME
@@ -309,7 +309,7 @@ registerLiveConnector('NYSE',gLiveYahoo)
 
 def test(ticker):
     if gLiveYahoo.iscacheddataenoughfreshq():
-        data = gLiveYahoo.getcacheddataByTicker(ticker)
+        data = gLiveYahoo.getcacheddata(ticker)
         if data:
             debug(data)
         else:

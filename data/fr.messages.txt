@@ -163,8 +163,32 @@ all_markets;Tous les marchés
 invalid_isin;Le code ISIN %s est invalide
 symbol_not_found;Le symbole de code ISIN %s ou de nom %s n'a pas été trouvé
 
-download_symbols;Téléchargement Liste
-download_symbols_desc;Mise à jour de la liste des valeurs par téléchargement du réseau
+download_symbols_onelist;Téléchargement Liste
+download_symbols_onedesc;Mise à jour de la liste des valeurs par téléchargement du réseau
+download_symbols_alllists;Téléchargement Listes
+download_symbols_alldesc;Mise à jour des listes de valeurs par téléchargement du réseau
+clear_symbols_onelist;Effacer Liste
+clear_symbols_onedesc;Efface toutes les valeurs de cette liste
+clear_symbols_alllists;Effacer Listes
+clear_symbols_alldesc;Efface toutes les valeurs de toutes les listes
+listquote_clear_confirm_title;Opération irreversible
+listquote_clear_confirm;Pour %s, confirmez-vous l'opération (%s) ?
+listquote_new;Nouveau
+listquote_edit;Modifie
+listquote_delete;Supprime
+listquote_new_desc;Crée un nouveau symbole
+listquote_edit_desc;Modifie le symbole sélectionné dans la liste
+listquote_delete_desc;Supprime le symbole sélectionné dans la liste
+listquote_duplicate_ref;Le symbole %s existe déjà !
+listquote_save;Sauve
+listquote_save_desc;Sauve la liste des symboles
+listquote_saved;La liste des symboles a été sauvegardée
+listquote_dirty_save;Voulez-vous sauvegarder les modifications apportées à la liste des symboles ?
+listquote_nodirty_save;Vos modifications ne sont pas sauvés et ne persisteront pas après la session en cours
+
+listquote_modify_title;Modification Symbole %s
+listquote_new_title;Nouveau Symbole
+listquote_delete_title;Suppression Symbole %s
 
 quote_title;iTrade - Valeur
 quote_select_title;Choix d'une valeur
@@ -173,6 +197,10 @@ quote_list_title;Gestion des Symboles
 quote_select_isin;ISIN :
 quote_select_ticker;Ticker / Nom :
 quote_select_market;Marché :
+quote_select_list;Liste :
+quote_select_alllist;Aucun filtre
+quote_select_syslist;Système
+quote_select_usrlist;Utilisateur
 quote_select_filterfield;Seulement les valeurs tradées
 
 quote_graphdaily;Journalier
@@ -363,7 +391,8 @@ quote_popup_dispChart1Line;Lignes
 prop_reference;Référence
 prop_marketandconnector;Marché et Connecteur
 prop_tradingstyle;Informations de Trading
-prop_isin;Référence :
+prop_ref;Référence :
+prop_isin;ISIN :
 prop_name;Nom :
 prop_ticker;Ticker :
 prop_reload;Recharge

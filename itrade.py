@@ -123,9 +123,11 @@ def main():
             if not quote:
                 print 'quote %s not found !' % a
         if o in ("-q","--quote"):
-            quote = quotes.lookupISIN(a)
+            quote = quotes.lookupKey(a)
             if not quote:
-                print 'quote %s not found !' % a
+                quote = quotes.lookupISIN(a)
+                if not quote:
+                    print 'quote %s not found !' % a
 
     # use the correct pack language
     gMessage.setLang(lang)

@@ -29,6 +29,7 @@
 #
 # History       Rev   Description
 # 2004-01-08    dgil  Wrote it from scratch
+# 2006-09-2x    dgil  New quote referencing
 # ============================================================================
 
 # ============================================================================
@@ -46,7 +47,7 @@ import itrade_csv
 import itrade_trades
 from itrade_import import *
 from itrade_datation import *
-from itrade_market import market2currency,isin2market
+from itrade_market import market2currency,compute_country,isin2market,market2place
 import itrade_currency
 
 # ============================================================================
@@ -68,6 +69,14 @@ QUOTE_CREDIT    = 2
 QUOTE_BOTH      = 3
 
 # ============================================================================
+# LIST
+# ============================================================================
+
+QLIST_ALL    = 0
+QLIST_SYSTEM = 1
+QLIST_USER   = 2
+
+# ============================================================================
 # volume formatter
 # ============================================================================
 
@@ -86,28 +95,61 @@ def fmtVolume(x):
     return ret
 
 # ============================================================================
+# Quote referencing
+# ============================================================================
+
+def quote_reference(isin,ticker,market):
+    if isin and isin!='':
+        if market==None or market=='':
+            quote = quotes.lookupISIN(isin)
+            if quote:
+                market = quote.market()
+                return '%s.%s' % (isin,market)
+        else:
+            return '%s.%s' % (isin,market)
+
+    if market==None or market=='':
+        quote = quotes.lookupTicker(ticker)
+        if quote:
+            market = quote.market()
+        else:
+            market = '?'
+    return '%s.%s' % (ticker,market)
+
+# ============================================================================
 # Quote
 # ============================================================================
 
 class Quote(object):
-    def __init__(self,isin,name,ticker,market,currency,place):
+    def __init__(self,key,isin,name,ticker,market,currency,place,country,list=QLIST_SYSTEM):
+        self.m_key = key
         self.m_isin = isin
-        self.m_place = place
         self.m_defaultname = name
         self.m_defaultticker = ticker
-        self.m_country = self.m_isin[0:2].lower()
+        self.m_list = list
 
-        if not market:
-            self.m_defaultmarket = isin2market(isin)
+        if not place:
+            self.m_place = market2place(market)
         else:
-            self.m_defaultmarket = market
-        self.m_defaultliveconnector = getLiveConnector(self.m_defaultmarket)
-        self.m_defaultimportconnector = getImportConnector(self.m_defaultmarket)
+            self.m_place = place
+
+        if not country:
+            self.m_country = compute_country(isin,market,place)
+        else:
+            self.m_country = country
+
+        self.m_market = market
+
+        self.m_defaultliveconnector = getLiveConnector(self.m_market)
+        self.m_defaultimportconnector = getImportConnector(self.m_market)
 
         if not currency:
             self.m_currency = market2currency(self.m_market)
         else:
             self.m_currency = currency
+
+        # data for the connector plugin
+        self.m_pluginId = None
 
         self._init_()
 
@@ -130,7 +172,6 @@ class Quote(object):
         self.m_stoploss = 0.0
         self.m_stopwin = 0.0
         self.m_hasStops = False
-        self.m_market = self.m_defaultmarket
         self.m_liveconnector = self.m_defaultliveconnector
         self.m_importconnector = self.m_defaultimportconnector
         self.m_name = self.m_defaultname
@@ -147,6 +188,9 @@ class Quote(object):
 
     # ---[ properties ] -----------------------------------
 
+    def key(self):
+        return self.m_key
+
     def type(self):
         n = QUOTE_NOTYPE
         if self.m_DIR_number > 0:
@@ -156,13 +200,13 @@ class Quote(object):
         return n
 
     def __str__(self):
-        return self.m_isin
+        return self.m_key
 
     def __repr__(self):
-        return '%s;%s;%s;%s;%s;%s' % (self.m_isin, self.m_name, self.m_ticker, self.m_market, self.m_currency, self.m_place)
+        return '%s;%s;%s;%s;%s;%s;%s' % (self.m_isin, self.m_name, self.m_ticker, self.m_market, self.m_currency, self.m_place, self.m_country)
 
     def __hash__(self):
-        return self.m_isin
+        return self.m_key
 
     def country(self):
         return self.m_country
@@ -178,6 +222,9 @@ class Quote(object):
 
     def place(self):
         return self.m_place
+
+    def list(self):
+        return self.m_list
 
     def name(self):
         return self.m_name
@@ -298,9 +345,6 @@ class Quote(object):
     def market(self):
         return self.m_market
 
-    def default_market(self):
-        return self.m_defaultmarket
-
     def delay(self):
         return self.m_liveconnector.delay()
 
@@ -316,24 +360,29 @@ class Quote(object):
     def default_importconnector(self):
         return self.m_defaultimportconnector
 
-    def set_market(self,market):
-        # set market to use
-        self.m_market = market
-        # then get the connector for this market
+    def restore_defaultconnectors(self):
         self.m_liveconnector = getLiveConnector(self.m_market)
         self.m_importconnector = getImportConnector(self.m_market)
-        # then update currency on this market
-        self.m_currency = market2currency(self.m_market)
+        self.m_pluginId = None
 
     def set_liveconnector(self,name):
-        conn = findLiveConnector(name)
+        conn = getLiveConnector(self.m_market,name)
         if conn:
             self.m_liveconnector = conn
+            self.m_pluginId = None
 
     def set_importconnector(self,name):
-        conn = findImportConnector(name)
+        conn = getImportConnector(self.m_market,name)
         if conn:
             self.m_importconnector = conn
+            self.m_pluginId = None
+
+    def get_pluginID(self):
+        return self.m_pluginId
+
+    def set_pluginID(self,id):
+        self.m_pluginId = id
+        return self.m_pluginId
 
     # ---[ notebook of order ] ----------------------------
 
@@ -474,7 +523,7 @@ class Quote(object):
     # ---[ load or import trades / date is unique key ] ---
 
     def loadTrades(self,fn=None):
-        debug('Quote:loadTrades %s' % self.ticker)
+        #debug('Quote:loadTrades %s' % self.ticker)
         if self.m_daytrades==None:
             self.m_daytrades = itrade_trades.Trades(self)
         self.m_daytrades.load(fn)
@@ -512,12 +561,12 @@ class Quote(object):
             # full importation ?
             tr = self.m_daytrades.lastimport()
             if tr==None:
-                print '%s *** no trade at all ! : need to import ...' % self.ticker()
+                print '%s *** no trade at all ! : need to import ...' % self.key()
                 if not cmdline_importQuoteFromInternet(self):
                     print 'error importing full data ...'
                     return False
             elif tr.date() != ajd:
-                print '%s *** from = %s today = %s : need to import ...' % (self.ticker(),tr.date(),ajd)
+                print '%s *** from = %s today = %s : need to import ...' % (self.key(),tr.date(),ajd)
                 if not import_from_internet(self,tr.date(),ajd):
                     print 'error importing partial data ...'
                     return False
@@ -525,13 +574,13 @@ class Quote(object):
 
             # live update today
             if self.isOpen():
-                print '%s / %s *** liveupdate today = %s ...' % (self.ticker(),self.market(),date.today())
+                print '%s / %s *** liveupdate today = %s ...' % (self.key(),self.market(),date.today())
                 return liveupdate_from_internet(self)
             else:
                 return True
         else:
             # history importation
-            info('history importation for %s'%self.ticker())
+            info('history importation for %s '%self.key())
             if import_from_internet(self,fromdate,todate):
                 #self.saveTrades()
                 return True
@@ -963,7 +1012,7 @@ class Quote(object):
     # ---[ Command line ] ---
 
     def printInfo(self):
-        print '%s - %s - %s (market=%s)' % (self.isin(),self.ticker(),self.name(),self.market())
+        print '%s - %s - %s (market=%s)' % (self.key(),self.ticker(),self.name(),self.market())
         print 'PRU DIR/SRD = %f / %f' % (self.m_DIR_pru,self.m_SRD_pru)
         print 'Cours = %f' % self.nv_close()
         print 'Nbre DIR/SRD/total = %d/%d/%d' % (self.nv_number(QUOTE_CASH),self.nv_number(QUOTE_CREDIT),self.nv_number(QUOTE_BOTH))
@@ -993,23 +1042,19 @@ class Quote(object):
             self.set_liveconnector(val)
         elif prop=='import':
             self.set_importconnector(val)
-        elif prop=='market':
-            self.set_market(val)
         else:
-            info('Quote::setProperty(%s): unknown property: %s' % (self.isin(),prop))
+            info('Quote::setProperty(%s): unknown property: %s' % (self.key(),prop))
 
     def listProperties(self):
         prop = []
         if self.name()!=self.default_name():
-            prop.append('%s;%s;%s' % (self.isin(),'name',self.name()))
+            prop.append('%s;%s;%s' % (self.key(),'name',self.name()))
         if self.ticker()!=self.default_ticker():
-            prop.append('%s;%s;%s' % (self.isin(),'ticker',self.ticker()))
+            prop.append('%s;%s;%s' % (self.key(),'ticker',self.ticker()))
         if self.liveconnector()!=self.default_liveconnector():
-            prop.append('%s;%s;%s' % (self.isin(),'live',self.liveconnector().name()))
+            prop.append('%s;%s;%s' % (self.key(),'live',self.liveconnector().name()))
         if self.importconnector()!=self.default_importconnector():
-            prop.append('%s;%s;%s' % (self.isin(),'import',self.importconnector().name()))
-        if self.market()!=self.default_market():
-            prop.append('%s;%s;%s' % (self.isin(),'market',self.market()))
+            prop.append('%s;%s;%s' % (self.key(),'import',self.importconnector().name()))
         return prop
 
 # ============================================================================
@@ -1063,9 +1108,9 @@ class Quotes(object):
 
     # ---[ Stops ] ---
 
-    def addStops(self,isin,loss,win):
-        if self.m_quotes.has_key(isin):
-            self.m_quotes[isin].setStops(loss,win)
+    def addStops(self,key,loss,win):
+        if self.m_quotes.has_key(key):
+            self.m_quotes[key].setStops(loss,win)
 
     def loadStops(self,fs=None):
         # open and read the file to load stops information
@@ -1080,53 +1125,112 @@ class Quotes(object):
 
     # ---[ Quotes ] ---
 
-    def addQuote(self,isin,name,ticker,market,currency,place):
-        # patch for abcbourse.com quotes file :-( (SF bug 1291713)
-        if isin[0:2].lower()=='us':
-            lg = len(isin)
-            if isin[lg-1:lg]=='u':
-                isin = isin[:lg-1]
+    def addQuote(self,isin,name,ticker,market,currency,place,country=None,list=QLIST_SYSTEM,debug=False):
 
-        if self.m_quotes.has_key(isin):
-            # update quote
-            #print '%r already exists' % self.m_quotes[isin]
-            del self.m_quotes[isin]
+        # right case
+        if country:
+            country = country.upper()
+        if place:
+            place = place.upper()
+
+        # get a key and check strict duplicate (i.e. same key)
+        key = quote_reference(isin,ticker,market)
+        if self.m_quotes.has_key(key):
+            # update quote ?
+            if debug:
+                print '%r already exists - replace' % (self.m_quotes[key])
+            del self.m_quotes[key]
+
+        # depending on isin
+        if isin==None or isin=='':
+            # no isin : check if we have already this quote
+            quote = None # __perf: self.lookupTicker(ticker,market)
+            if quote:
+                if debug:
+                    print '%r already exists - ignore' % self.m_quotes[key]
+                return True
+        else:
+            # isin : check if we can replace the same quote without isin
+            key2 = quote_reference(None,ticker,market)
+            if self.m_quotes.has_key(key2):
+                if debug:
+                    print '%r already exists but without ISIN - replace' % self.m_quotes[key2]
+                del self.m_quotes[key2]
 
         # new quote
-        self.m_quotes[isin] = Quote(isin,name.upper(),ticker.upper(),market.upper(),currency.upper(),place.upper())
-        #debug('Quotes::addQuote(): %s' % self.m_quotes[isin]);
+        self.m_quotes[key] = Quote(key,isin,name.upper(),ticker.upper(),market.upper(),currency.upper(),place,country,list)
+
+        if debug:
+            print 'Add %s in quotes list' % self.m_quotes[key]
+
         return True
 
-    def _addLines(self,infile):
+    def _addLines(self,infile,list,debug):
         # scan each line to read each quote
         for eachLine in infile:
-            item = itrade_csv.parse(eachLine,6)
-            if item and len(item)>=6:
-                self.addQuote(item[0],item[1],item[2],item[3],item[4],item[5])
+            item = itrade_csv.parse(eachLine,7)
+            if item and len(item)>=7:
+                self.addQuote(item[0],item[1],item[2],item[3],item[4],item[5],item[6],list,debug)
 
     def load(self,fn=None,fs=None):
         # open and read the file to load these quotes information
         infile = itrade_csv.read(fn,os.path.join(itrade_config.dirSysData,'quotes.txt'))
         if infile:
-            self._addLines(infile)
+            self._addLines(infile,list=QLIST_SYSTEM,debug=False)
 
         # them open and read user file
         infile = itrade_csv.read(fn,os.path.join(itrade_config.dirUserData,'quotes.txt'))
         if infile:
-            self._addLines(infile)
+            self._addLines(infile,list=QLIST_USER,debug=True)
 
     def saveListOfQuotes(self,fn=None):
-        # __x sys vs usr file. How to discriminate ?
+        # System list
+        props = []
+        for eachQuote in self.list():
+            if eachQuote.list()==QLIST_SYSTEM:
+                props.append(eachQuote.__repr__())
         #
         # open and write the file with these quotes information
-        itrade_csv.write(fn,os.path.join(itrade_config.dirSysData,'quotes.txt'),self.m_quotes.values())
+        itrade_csv.write(fn,os.path.join(itrade_config.dirSysData,'quotes.txt'),props)
+        print 'System List of symbols saved.'
 
-        print 'List of symbols saved.'
+        # User list
+        props = []
+        for eachQuote in self.list():
+            if eachQuote.list()==QLIST_USER:
+                props.append(eachQuote.__repr__())
+        #
+        # open and write the file with these quotes information
+        itrade_csv.write(fn,os.path.join(itrade_config.dirUserData,'quotes.txt'),props)
+        print 'User List of symbols saved.'
+
+    # ---[ removeQuotes from the list ] ---
+
+    def removeQuote(self,key):
+        if self.m_quotes.has_key(key):
+            del self.m_quotes[key]
+            return True
+        return False
+
+    def removeQuotes(self,market,list=QLIST_ALL):
+        for eachQuote in self.list():
+            if list==QLIST_ALL or (list==eachQuote.list()):
+                if market==None or eachQuote.market()==market:
+                    del self.m_quotes[eachQuote.key()]
 
     # ---[ Lookup (optionaly, filter by market) ] ---
 
-    def lookupISIN(self,isin):
-        return self.m_quotes.get(isin,None)
+    def lookupKey(self,key):
+        if self.m_quotes.has_key(key):
+            return self.m_quotes[key]
+        return None
+
+    def lookupISIN(self,isin,market=None):
+        for eachVal in self.m_quotes.values():
+            if eachVal.isin() == isin:
+                if market==None or (market==eachVal.market()):
+                    return eachVal
+        return None
 
     def lookupTicker(self,ticker,market=None):
         for eachVal in self.m_quotes.values():
@@ -1173,19 +1277,21 @@ if __name__=='__main__':
     setLevel(logging.INFO)
 
     info('test1 %s' % quotes.lookupISIN('FR0000072621'));
-    info('test2 %s' % quotes.lookupTicker('OSI').ticker());
-    info('test3 %s' % quotes.lookupTicker('OSI').isin());
-    info('test4 %s' % quotes.lookupTicker('OSI').name());
-    info('test5 %s' % quotes.lookupTicker('OSI').descr());
+    quote = quotes.lookupTicker('OSI','EURONEXT')
+    info('test2 %s' % quote.ticker());
+    info('test3a %s' % quote.isin());
+    info('test3b %s' % quote.key());
+    info('test4 %s' % quote.name());
+    info('test5 %s' % quote.descr());
 
-    quote = quotes.lookupTicker('OSI')
+    quote = quotes.lookupTicker('OSI','EURONEXT')
     quote.loadTrades('import/Cortal-2005-01-07.txt')
     info('test6 %s' % quote.trades().trade('20050104'));
 
     quotes.loadTrades('import/Cortal-2005-01-07.txt')
     quotes.loadTrades('import/Cortal-2005-01-14.txt')
     quotes.loadTrades('import/Cortal-2005-01-21.txt')
-    quote = quotes.lookupTicker('EADT')
+    quote = quotes.lookupTicker('EADT','EURONEXT')
     info('test7 %s' % quote.trades().trade('20050104'));
 
 #    quotes.saveTrades()

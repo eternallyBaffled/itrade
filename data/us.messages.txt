@@ -155,8 +155,32 @@ all_markets;All markets
 invalid_isin;ISIN code %s is invalid
 symbol_not_found;ISIN code %s or name %s not found
 
-download_symbols;Update Symbols
-download_symbols_desc;Update the list of symbols by downloading data from the network
+download_symbols_onelist;Update List
+download_symbols_onedesc;Update the list of symbols by downloading data from the network
+download_symbols_alllists;Update All Lists
+download_symbols_alldesc;Update all lists of symbols by downloading data from the network
+clear_symbols_onelist;Clear List
+clear_symbols_onedesc;Clear all symbols for this list
+clear_symbols_alllists;Clear All Lists
+clear_symbols_alldesc;Clear all symbols for all the lists
+listquote_clear_confirm_title;Undoable Operation
+listquote_clear_confirm;For %s, do you confirm the operation (%s) ?
+listquote_new;New
+listquote_edit;Edit
+listquote_delete;Delete
+listquote_new_desc;Create a new symbol
+listquote_edit_desc;Edit current symbol on the list
+listquote_delete_desc;Delete current symbol on the list
+listquote_duplicate_ref;Symbol %s already exists !
+listquote_save;Save
+listquote_save_desc;Save the list of symbols
+listquote_saved;The list of symbols has been saved
+listquote_dirty_save;Do you want to save the modification you have done to the list of symbols ?
+listquote_nodirty_save;Your modifications have not been saved and will not persist the current session
+
+listquote_modify_title;Edit %s Symbol
+listquote_new_title;New Symbol
+listquote_delete_title;Delete %s Symbol
 
 quote_title;iTrade - Quote
 quote_select_title;Select a Symbol
@@ -165,6 +189,10 @@ quote_list_title;Manage Symbols
 quote_select_isin;ISIN :
 quote_select_ticker;Ticker / Name :
 quote_select_market;Market :
+quote_select_list;List :
+quote_select_alllist;No filter
+quote_select_syslist;System
+quote_select_usrlist;User
 quote_select_filterfield;Only traded quotes
 
 quote_graphdaily;Daily
@@ -360,7 +388,8 @@ quote_popup_dispChart1Line;Lines
 prop_reference;Reference
 prop_marketandconnector;Market and Connector
 prop_tradingstyle;Trading Information
-prop_isin;Reference :
+prop_ref;Reference :
+prop_isin;ISIN :
 prop_name;Name :
 prop_ticker;Ticker :
 prop_reload;Reload

@@ -4,7 +4,8 @@
 # Project Name : iTrade
 # Module Name  : itrade_quotes_euronext.py
 #
-# Description: List of quotes from euronext.com : EURONEXT and ALTERNEXT
+# Description: List of quotes from euronext.com : EURONEXT, ALTERNEXT and
+# MARCHE LIBRE (PARIS & BRUXELLES)
 #
 # The Original Code is iTrade code (http://itrade.sourceforge.net).
 #
@@ -59,9 +60,13 @@ def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT'):
     print 'Update %s list of symbols' % market
 
     if market=='EURONEXT':
-        url = "http://www.euronext.com/tradercenter/priceslists/trapridownload/0,4499,1732_338638,00.html?belongsToList=market_14&resultsTitle=All%20Euronext%20-%20Eurolist%20by%20Euronext&eligibilityList=&economicGroupList=&sectorList=&branchList="
+        url = "http://www.euronext.com/tradercenter/priceslists/trapridownload/0,4499,1732_338638,00.html?belongsToList=market_14&eligibilityList=&economicGroupList=&sectorList=&branchList="
     elif market=='ALTERNEXT':
-        url = "http://www.euronext.com/tradercenter/priceslists/trapridownload/0,4499,1732_338638,00.html?belongsToList=market_15&resultsTitle=All%20Euronext%20-%20Eurolist%20by%20Euronext&eligibilityList=&economicGroupList=&sectorList=&branchList="
+        url = "http://www.euronext.com/tradercenter/priceslists/trapridownload/0,4499,1732_338638,00.html?belongsToList=market_15&eligibilityList=&economicGroupList=&sectorList=&branchList="
+    elif market=='PARIS MARCHE LIBRE':
+        url = "http://www.euronext.com/tradercenter/priceslists/trapridownload/0,4499,1732_338638,00.html?belongsToList=market_10&eligibilityList=&economicGroupList=&sectorList=&branchList="
+    elif market=='BRUXELLES MARCHE LIBRE':
+        url = "http://www.euronext.com/tradercenter/priceslists/trapridownload/0,4499,1732_338638,00.html?belongsToList=market_17&eligibilityList=&economicGroupList=&sectorList=&branchList="
     else:
         return False
 
@@ -95,7 +100,7 @@ def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT'):
                 if checkISIN(data[1]):
                     if data[3]=='PAR' or data[3]=='BRU' or data[3]=='AMS' or data[3]=='LIS':
                         name = filterName(data[0])
-                        quotes.addQuote(isin=data[1],name=name,ticker=data[4],market=market,currency=data[7],place=data[3])
+                        quotes.addQuote(isin=data[1],name=name,ticker=data[4],market=market,currency=data[7],place=data[3],country=None)
                         count = count + 1
                     else:
                         print 'unknown ALTERNEXT place : ',data
@@ -107,7 +112,7 @@ def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT'):
                 if checkISIN(data[1]):
                     if data[3]=='PAR' or data[3]=='BRU' or data[3]=='AMS' or data[3]=='LIS':
                         name = filterName(data[0])
-                        quotes.addQuote(isin=data[1],name=name,ticker=data[4],market=market,currency=data[6],place=data[3])
+                        quotes.addQuote(isin=data[1],name=name,ticker=data[4],market=market,currency=data[6],place=data[3],country=None)
                         count = count + 1
                     else:
                         print 'unknown EURONEXT place : ',data
@@ -124,6 +129,8 @@ def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT'):
 
 registerListSymbolConnector('EURONEXT',Import_ListOfQuotes_Euronext)
 registerListSymbolConnector('ALTERNEXT',Import_ListOfQuotes_Euronext)
+registerListSymbolConnector('PARIS MARCHE LIBRE',Import_ListOfQuotes_Euronext)
+registerListSymbolConnector('BRUXELLES MARCHE LIBRE',Import_ListOfQuotes_Euronext)
 
 # ============================================================================
 # Test ME
@@ -136,6 +143,8 @@ if __name__=='__main__':
 
     Import_ListOfQuotes_Euronext(quotes,'EURONEXT')
     Import_ListOfQuotes_Euronext(quotes,'ALTERNEXT')
+    Import_ListOfQuotes_Euronext(quotes,'PARIS MARCHE LIBRE')
+    Import_ListOfQuotes_Euronext(quotes,'BRUXELLES MARCHE LIBRE')
     quotes.saveListOfQuotes()
 
 # ============================================================================

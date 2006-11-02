@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # ============================================================================
 # Project Name : iTrade
-# Module Name  : itrade_import_yahoo.py
+# Module Name  : itrade_import_euronext.py
 #
-# Description: Import quotes from yahoo.com
+# Description: Import quotes from euronext.com
 #
 # The Original Code is iTrade code (http://itrade.sourceforge.net).
 #
@@ -28,7 +28,7 @@
 # along with this program; see http://www.gnu.org/licenses/gpl.html
 #
 # History       Rev   Description
-# 2005-10-17    dgil  Wrote it from scratch
+# 2006-11-01    dgil  Wrote it from scratch
 # ============================================================================
 
 # ============================================================================
@@ -45,25 +45,26 @@ from datetime import *
 # iTrade system
 from itrade_logging import *
 from itrade_quotes import *
-from itrade_datation import Datation,dd_mmm_yy2yyyymmdd
+from itrade_datation import Datation,jjmmaa2yyyymmdd
 from itrade_import import registerImportConnector
-from itrade_market import yahooTicker
+from itrade_market import euronext_place2mep
 
 # ============================================================================
-# Import_yahoo()
+# Import_euronext()
 #
 # ============================================================================
 
-class Import_yahoo(object):
+class Import_euronext(object):
     def __init__(self):
-        debug('Import_yahoo:__init__')
-        self.m_url = 'http://ichart.finance.yahoo.com/table.csv'
+        debug('Import_euronext:__init__')
+        self.m_urlid = 'http://www.euronext.com/trader/summarizedmarket/0,5372,1732_6834,00.html?isinCode='
+        self.m_url = 'http://www.euronext.com/tools/datacentre/dataCentreDownloadExcell/0,5822,1732_2276422,00.html'
 
     def name(self):
-        return 'yahoo'
+        return 'euronext'
 
     def interval_year(self):
-        return 1
+        return 2
 
     def connect(self):
         return True
@@ -89,6 +90,35 @@ class Import_yahoo(object):
         return lines
 
     def getdata(self,quote,datedebut=None,datefin=None):
+        # get instrument ID
+        IdInstrument = quote.get_pluginID()
+        if IdInstrument==None:
+
+            url = self.m_urlid+quote.isin()
+
+            debug("Import_euronext:getdata: urlID=%s ",url)
+            try:
+                f = urllib.urlopen(url)
+            except:
+                debug('Import_euronext:unable to connect :-(')
+                return None
+            buf = f.read()
+            sid = re.search("isinCode=%s&selectedMep=%d&idInstrument=" % (quote.isin(),euronext_place2mep(quote.place())),buf,re.IGNORECASE|re.MULTILINE)
+            if sid:
+                sid = sid.end()
+                sexch = re.search("&quotes=stock",buf[sid:],re.IGNORECASE|re.MULTILINE)
+                if sexch:
+                    sexch = sexch.start()
+                    data = buf[sid:]
+                    IdInstrument = data[:sexch]
+
+            if IdInstrument==None:
+                print "Import_euronext:can't get IdInstrument for %s " % quote.isin()
+                return None
+            else:
+                quote.set_pluginID(IdInstrument)
+
+        # get historic data itself !
         if not datefin:
             datefin = date.today()
 
@@ -104,70 +134,66 @@ class Import_yahoo(object):
         d1 = self.parseDate(datedebut)
         d2 = self.parseDate(datefin)
 
-        debug("Import_yahoo:getdata quote:%s begin:%s end:%s" % (quote,d1,d2))
-
-        sname = yahooTicker(quote.ticker(),quote.market())
+        debug("Import_euronext:getdata quote:%s begin:%s end:%s" % (quote,d1,d2))
 
         query = (
-            ('a', '%02d' % (int(d1[1])-1)),
-            ('b', d1[2]),
-            ('c', d1[0]),
-            ('d', '%02d' % (int(d2[1])-1)),
-            ('e', d2[2]),
-            ('f', d2[0]),
-            ('s', sname),
-            ('y', '0'),
-            ('g', 'd'),
-            ('ignore', '.csv'),
+            ('idInstrument', IdInstrument),
+            ('isinCode', quote.isin()),
+            ('indexCompo', ''),
+            ('opening', 'on'),
+            ('high', 'on'),
+            ('low', 'on'),
+            ('closing', 'on'),
+            ('volume', 'on'),
+            ('dateFrom', '%02d/%02d/%04d' % (d1[2],d1[1],d1[0])),
+            ('dateTo', '%02d/%02d/%04d' % (d2[2],d2[1],d2[0])),
+            ('typeDownload', '2'),
+            ('format', ''),
         )
         query = map(lambda (var, val): '%s=%s' % (var, str(val)), query)
         query = string.join(query, '&')
         url = self.m_url + '?' + query
 
-        debug("Import_yahoo:getdata: url=%s ",url)
+        debug("Import_euronext:getdata: url=%s ",url)
         try:
             f = urllib.urlopen(url)
         except:
-            debug('Import_yahoo:unable to connect :-(')
+            debug('Import_euronext:unable to connect :-(')
             return None
 
         # pull data
         buf = f.read()
         lines = self.splitLines(buf)
-        header = string.split(lines[0],',')
-        data = ""
-
-        if (header[0]<>"Date"):
-            # no valid content
-            return None
+        data = ''
 
         for eachLine in lines:
-            sdata = string.split (eachLine, ',')
-            sdate = sdata[0]
-            if (sdate<>"Date"):
-                sdate = dd_mmm_yy2yyyymmdd(sdate)
-                open = string.atof(sdata[1])
-                high = string.atof(sdata[2])
-                low = string.atof(sdata[3])
-                value = string.atof(sdata[6])   #   Adj. Close*
-                volume = string.atoi(sdata[5])
+            sdata = string.split (eachLine, '\t')
+            if len(sdata)==6:
+                if (sdata[0]<>"Date"):
+                    sdate = jjmmaa2yyyymmdd(sdata[0])
+                    open = string.atof(sdata[1])
+                    high = string.atof(sdata[2])
+                    low = string.atof(sdata[3])
+                    value = string.atof(sdata[4])
+                    volume = string.atoi(sdata[5])
 
-                # encode in EBP format
-                # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME
-                line = (
-                  quote.key(),
-                  sdate,
-                  open,
-                  high,
-                  low,
-                  value,
-                  volume
-                )
-                line = map(lambda (val): '%s' % str(val), line)
-                line = string.join(line, ';')
+                    # encode in EBP format
+                    # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME
+                    line = (
+                      quote.key(),
+                      sdate,
+                      open,
+                      high,
+                      low,
+                      value,
+                      volume
+                    )
+                    line = map(lambda (val): '%s' % str(val), line)
+                    line = string.join(line, ';')
+                    #print line
 
-                # append
-                data = data + line + '\r\n'
+                    # append
+                    data = data + line + '\r\n'
         return data
 
 # ============================================================================
@@ -175,20 +201,14 @@ class Import_yahoo(object):
 # ============================================================================
 
 try:
-    ignore(gImportYahoo)
+    ignore(gImportEuronext)
 except NameError:
-    gImportYahoo = Import_yahoo()
+    gImportEuronext = Import_euronext()
 
-registerImportConnector('NASDAQ',gImportYahoo,bDefault=True)
-registerImportConnector('NYSE',gImportYahoo,bDefault=True)
-registerImportConnector('AMEX',gImportYahoo,bDefault=True)
-registerImportConnector('OTCBB',gImportYahoo,bDefault=True)
-registerImportConnector('LSE',gImportYahoo,bDefault=True)
-
-registerImportConnector('EURONEXT',gImportYahoo,bDefault=False)
-registerImportConnector('ALTERNEXT',gImportYahoo,bDefault=False)
-registerImportConnector('PARIS MARCHE LIBRE',gImportYahoo,bDefault=False)
-registerImportConnector('BRUXELLES MARCHE LIBRE',gImportYahoo,bDefault=False)
+registerImportConnector('EURONEXT',gImportEuronext,bDefault=True)
+registerImportConnector('ALTERNEXT',gImportEuronext,bDefault=True)
+registerImportConnector('PARIS MARCHE LIBRE',gImportEuronext,bDefault=True)
+registerImportConnector('BRUXELLES MARCHE LIBRE',gImportEuronext,bDefault=True)
 
 # ============================================================================
 # Test ME
@@ -196,14 +216,14 @@ registerImportConnector('BRUXELLES MARCHE LIBRE',gImportYahoo,bDefault=False)
 # ============================================================================
 
 def test(ticker,d):
-    if gImportYahoo.connect():
+    if gImportEuronext.connect():
 
-        state = gImportYahoo.getstate()
+        state = gImportEuronext.getstate()
         if state:
             debug("state=%s" % (state))
 
             quote = quotes.lookupTicker(ticker)
-            data = gImportYahoo.getdata(quote,d)
+            data = gImportEuronext.getdata(quote,d)
             if data!=None:
                 if data:
                     debug(data)
@@ -214,7 +234,7 @@ def test(ticker,d):
         else:
             print "getstate() failure :-("
 
-        gImportYahoo.disconnect()
+        gImportEuronext.disconnect()
     else:
         print "connect() failure :-("
 
@@ -223,15 +243,16 @@ if __name__=='__main__':
 
     # never failed - fixed date
     print "15/03/2005"
-    test('AAPL',date(2005,03,15))
+    test('OSI',date(2005,03,15))
 
     # never failed except week-end
     print "yesterday-today :-("
-    test('AAPL',date.today()-timedelta(1))
+    test('OSI',date.today()-timedelta(1))
 
     # always failed
     print "tomorrow :-)"
-    test('AAPL',date.today()+timedelta(1))
+    test('OSI',date.today()+timedelta(1))
+
 
 # ============================================================================
 # That's all folks !

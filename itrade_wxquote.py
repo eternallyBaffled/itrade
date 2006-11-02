@@ -53,12 +53,13 @@ from itrade_logging import *
 from itrade_quotes import *
 from itrade_local import message
 from itrade_config import *
+from itrade_import import listImportConnector,listLiveConnector
 
 from itrade_wxhtml import *
 from itrade_wxmixin import iTrade_wxFrame
 from itrade_wxgraph import iTrade_wxPanelGraph,fmtVolumeFunc,fmtVolumeFunc0
 from itrade_wxlive import iTrade_wxLive,iTrade_wxLiveMixin,EVT_UPDATE_LIVE
-from itrade_wxlistquote import select_iTradeQuote
+from itrade_wxselectquote import select_iTradeQuote
 
 # matplotlib system
 import matplotlib
@@ -311,22 +312,32 @@ class iTradeQuotePropertiesPanel(wx.Window):
 
         box = wx.BoxSizer(wx.HORIZONTAL)
 
+        label = wx.StaticText(self, -1, message('prop_ref'))
+        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+
+        label = wx.StaticText(self, -1, self.m_quote.key())
+        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+
         label = wx.StaticText(self, -1, message('prop_isin'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         label = wx.StaticText(self, -1, self.m_quote.isin())
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
+        thebox.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
+
+        box = wx.BoxSizer(wx.HORIZONTAL)
+
         label = wx.StaticText(self, -1, message('prop_ticker'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.editTicker = wx.TextCtrl(self, -1, self.m_quote.ticker(), size=wx.Size(60,-1), style = wx.TE_LEFT)
+        self.editTicker = wx.TextCtrl(self, -1, self.m_quote.ticker(), size=wx.Size(80,-1), style = wx.TE_LEFT)
         box.Add(self.editTicker, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         label = wx.StaticText(self, -1, message('prop_name'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.editName = wx.TextCtrl(self, -1, self.m_quote.name(), size=wx.Size(160,-1), style = wx.TE_LEFT)
+        self.editName = wx.TextCtrl(self, -1, self.m_quote.name(), size=wx.Size(210,-1), style = wx.TE_LEFT)
         box.Add(self.editName, 0, wx.ALIGN_CENTRE_VERTICAL|wx.ALL, 5)
 
         thebox.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
@@ -366,7 +377,7 @@ class iTradeQuotePropertiesPanel(wx.Window):
         thebox.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
         self._sizer.AddSizer(thebox, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
-        # ---[ market and connector ]---
+        # ---[ market ]---
         box = wx.StaticBox(self, -1, message('prop_marketandconnector'))
         thebox = wx.StaticBoxSizer(box,wx.VERTICAL)
 
@@ -375,8 +386,8 @@ class iTradeQuotePropertiesPanel(wx.Window):
         label = wx.StaticText(self, -1, message('prop_market'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.editMarket = wx.TextCtrl(self, -1, self.m_quote.market(), size=wx.Size(120,-1), style = wx.TE_LEFT)
-        box.Add(self.editMarket, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        label = wx.StaticText(self, -1, self.m_quote.market())
+        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         label = wx.StaticText(self, -1, message('prop_country'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
@@ -404,21 +415,43 @@ class iTradeQuotePropertiesPanel(wx.Window):
 
         thebox.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
+        # ---[ Connectors ]---
+
         box = wx.BoxSizer(wx.HORIZONTAL)
 
         label = wx.StaticText(self, -1, message('prop_liveconnector'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.editLiveConnector = wx.TextCtrl(self, -1, self.m_quote.liveconnector().name(), size=wx.Size(120,-1), style = wx.TE_LEFT)
+        self.editLiveConnector = wx.ComboBox(self,-1, "", size=wx.Size(120,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
         box.Add(self.editLiveConnector, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+
+        count = 0
+        for aname,amarket,adefaut,aconnector in listLiveConnector(self.m_quote.market()):
+            self.editLiveConnector.Append(aname,aname)
+            if aname==self.m_quote.liveconnector().name():
+                idx = count
+            count = count + 1
+
+        self.editLiveConnector.SetSelection(idx)
 
         label = wx.StaticText(self, -1, message('prop_impconnector'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.editImportConnector = wx.TextCtrl(self, -1, self.m_quote.importconnector().name(), size=wx.Size(120,-1), style = wx.TE_LEFT)
+        self.editImportConnector = wx.ComboBox(self,-1, "", size=wx.Size(120,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
         box.Add(self.editImportConnector, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
+        count = 0
+        for aname,amarket,adefaut,aconnector in listImportConnector(self.m_quote.market()):
+            self.editImportConnector.Append(aname,aname)
+            if aname==self.m_quote.importconnector().name():
+                idx = count
+            count = count + 1
+
+        self.editImportConnector.SetSelection(idx)
+
         thebox.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
+
+        # ---[ Restore/Set Market / Connectors Properties ]---
 
         box = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -426,18 +459,18 @@ class iTradeQuotePropertiesPanel(wx.Window):
         btn = wx.Button(self, nid, message('prop_restore'))
         btn.SetHelpText(message('prop_desc_restore'))
         box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
-        wx.EVT_BUTTON(self, nid, self.OnRestoreMarketAndConnector)
+        wx.EVT_BUTTON(self, nid, self.OnRestoreConnector)
 
         nid = wx.NewId()
         btn = wx.Button(self, nid, message('prop_set'))
         btn.SetHelpText(message('prop_desc_set'))
         box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
-        wx.EVT_BUTTON(self, nid, self.OnSetMarketAndConnector)
+        wx.EVT_BUTTON(self, nid, self.OnSetConnector)
 
         thebox.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
         self._sizer.AddSizer(thebox, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
-        # ---[ trading style ]---
+        # ---[ Trading style ]---
         box = wx.StaticBox(self, -1, message('prop_tradingstyle'))
         thebox = wx.StaticBoxSizer(box,wx.VERTICAL)
 
@@ -551,28 +584,26 @@ class iTradeQuotePropertiesPanel(wx.Window):
         # then refresh the display
         self.saveThenDisplayReference()
 
-    def saveThenDisplayMarketAndConnector(self):
-        self.editMarket.SetLabel(self.m_quote.market())
+    def saveThenDisplayConnector(self):
         self.editLiveConnector.SetLabel(self.m_quote.liveconnector().name())
         self.editImportConnector.SetLabel(self.m_quote.importconnector().name())
         self.liveText.SetLabel(self.m_quote.sv_type_of_clock(bDisplayTime=True))
         if self.m_port:
             self.m_port.saveProperties()
 
-    def OnRestoreMarketAndConnector(self,event):
+    def OnRestoreConnector(self,event):
         # set default market for this value
-        self.m_quote.set_market(self.m_quote.default_market())
+        self.m_quote.restore_defaultconnectors()
 
         # then refresh the display
-        self.saveThenDisplayMarketAndConnector()
+        self.saveThenDisplayConnector()
 
-    def OnSetMarketAndConnector(self,event):
-        self.m_quote.set_market(self.editMarket.GetLabel().upper())
+    def OnSetConnector(self,event):
         self.m_quote.set_liveconnector(self.editLiveConnector.GetLabel().lower())
         self.m_quote.set_importconnector(self.editImportConnector.GetLabel().lower())
 
         # then refresh the display
-        self.saveThenDisplayMarketAndConnector()
+        self.saveThenDisplayConnector()
 
     def OnRestoreTrading(self,event):
         pass
@@ -862,6 +893,7 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         debug('len(self.times)==%d' % len(self.times))
 
         if len(opens)>1:
+
             if self.m_dispChart1Type == 'c':
                 lc = candlestick2(self.chart1, opens[1:], closes[1:], highs[1:], lows[1:], width = self.zoomWidth[self.zoomLevel], colorup = 'g', colordown = 'r', alpha=1.0)
             elif self.m_dispChart1Type == 'l':
@@ -1112,10 +1144,10 @@ class iTradeQuoteWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin):
     def OnLive(self, evt):
         # be sure this quote is still under population
         if self.isRunning(evt.quote):
-            info('%s: %s' % (evt.quote.isin(),evt.param))
+            info('%s: %s' % (evt.quote.key(),evt.param))
             self.refresh(live=True)
         else:
-            info('%s: %s - bad' % (evt.quote.isin(),evt.param))
+            info('%s: %s - bad' % (evt.quote.key(),evt.param))
 
     def portfolio(self):
         return self.m_port
@@ -1130,13 +1162,13 @@ class iTradeQuoteWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin):
 
     def setTitle(self):
         w,h = self.GetClientSizeTuple()
-        self.SetTitle("%s %s - %s : %s (%d,%d)" % (message('quote_title'),self.m_quote.isin(),self.m_quote.ticker(),self.m_quote.name(),w,h))
+        self.SetTitle("%s %s - %s : %s (%d,%d)" % (message('quote_title'),self.m_quote.key(),self.m_quote.ticker(),self.m_quote.name(),w,h))
 
     def SelectQuote(self,nquote=None):
         if not nquote:
             nquote = select_iTradeQuote(self,self.m_quote,filter=True,market=None)
         if nquote and nquote<>self.m_quote:
-            info('SelectQuote: %s - %s' % (nquote.ticker(),nquote.isin()))
+            info('SelectQuote: %s - %s' % (nquote.ticker(),nquote.key()))
             self.stopLive(self.m_quote)
             self.unregisterLive(self.m_quote)
             self.m_notewindow.Hide()
@@ -1171,7 +1203,7 @@ class iTradeQuoteWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin):
 
 def open_iTradeQuote(win,port,quote,page=1):
     if not isinstance(quote,Quote):
-        quote = quotes.lookupISIN(quote)
+        quote = quotes.lookupKey(quote)
     if win and win.m_hView:
         # set focus
         win.m_hView.SelectQuote(quote)
@@ -1195,12 +1227,12 @@ def open_iTradeQuote(win,port,quote,page=1):
 def addInMatrix_iTradeQuote(win,matrix,portfolio,dquote=None):
     if dquote:
         if not isinstance(dquote,Quote):
-            dquote = quotes.lookupISIN(dquote)
+            dquote = quotes.lookupKey(dquote)
     else:
         dquote = select_iTradeQuote(win,dquote=None,filter=False,market=portfolio.market())
 
     if dquote:
-        matrix.addISIN(dquote.isin())
+        matrix.addKey(dquote.key())
         return dquote
     return None
 
@@ -1214,10 +1246,10 @@ def addInMatrix_iTradeQuote(win,matrix,portfolio,dquote=None):
 
 def removeFromMatrix_iTradeQuote(win,matrix,quote):
     if not isinstance(quote,Quote):
-        quote = quotes.lookupISIN(quote)
+        quote = quotes.lookupKey(quote)
     if quote:
         if not quote.isTraded():
-            matrix.removeISIN(quote.isin())
+            matrix.removeKey(quote.key())
             return True
     return False
 

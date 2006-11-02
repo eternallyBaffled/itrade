@@ -5,6 +5,47 @@ On the road for v0.4.5 (Nausicaa)
 
 ===============================================================================
 
+2006-11-02  Gilles Dumortier <dgil at ieee.org>
+Merge back branch ITRADE_0_4_5_new_quote_reference :
+	2006-11-02:
+	* Quote View:Properties Panel:List of live plugins (SF bug 1560067)
+	* Quote View:Properties Panel:List of import plugins (SF bug 1560066)
+	* Euronext livedata (differed 15 min) plugin (SF bug 1497570)
+	* Euronext requires an IdInstrument (isin not enough). Special Hack !
+	  NB: also, found a way to differenciate place. For example L'OREAL
+	  (OR) have two IdInstrument for the same isin : one for PARis and
+	  one for AMSterdam. Use the place information to discriminate.
+	2006-11-01:
+	* Euronext historic data import plugin (SF bug 1497570)
+	* Rewrite part of the connectors management
+	2006-10-31:
+	* Euronext importing list : some quote are bogus (SF bug 1588092)
+	* Manage User / System list of quotes
+	* Add a quote in a user quotes.txt (SF bug 1410683)
+	* Clear list(s) of quotes (SF bug 1587735)
+	2006-10-30:
+	* ISIN or TICKER ? (SF bug 1587117)
+	* import OTCBB & LSE historic data + live (SF bug 1587345)
+	* List of Quotes : no refresh after Importation (SF bug 1563518)
+	* Can't select a quote without ISIN (SF bug 1585677)
+	* Bad state for a US quote (SF bug 1585657)
+	2006-10-29:
+	* assertionError (SF bug 1579983)
+	* Marché Libre : Bruxelles / Paris (SF bug 1586749)
+	* Alternext : not access view graph (SF bug 1586254)
+	* Matrix view : can't delete quote (SF bug 1586260)
+	2006-10-28:
+	* Fix to better handle old matrix format !
+	2006-10-27:
+	* Try to resolve : Key ambiguity (still) (SF bug 1585649)
+	* Operations and Stops Views seems to work properly with new reference
+	  mechanism
+	2006-10-26:
+	* Data Importation, Data Refresh and Matrix View seems to work properly
+	  with the new reference mechanism
+	* List of quotes from barchart (AMEX,OTC,OTCBB,NASDAQ) (SF bug 1504294)
+	* new file : PLUGINS (SF bug 1584735)
+
 2006-11-01  Gilles Dumortier <dgil at ieee.org>
 	* Quote View : Properties Panel : Implement Import (SF bug 1392037)
 	* Quote View : Properties Panel : Implement Export (SF bug 1392036)
