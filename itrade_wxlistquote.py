@@ -325,7 +325,7 @@ class iTradeQuoteListDialog(wx.Dialog):
         self.m_isin = event.GetString()
         if len(self.m_isin)>1:
             market = isin2market(self.m_isin)
-            print 'market: ',market
+            #print 'market: ',market
             if market:
                 self.m_market = market
                 self.m_place = market2place(market)

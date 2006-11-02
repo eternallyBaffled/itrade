@@ -87,14 +87,13 @@ class iTradeQuoteSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
             self.m_isin = quote.isin()
             self.m_ticker = quote.ticker()
             self.m_market = quote.market()
-            self.m_qlist = quote.list()
         else:
             self.m_isin = ''
             self.m_ticker = ''
             self.m_market = market
-            self.m_qlist = QLIST_ALL
 
         self.m_filter = filter
+        self.m_qlist = QLIST_ALL
 
         tID = wx.NewId()
         self.m_imagelist = wx.ImageList(16,16)
@@ -331,7 +330,8 @@ class iTradeQuoteSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
     # --- [ On handlers management ] -------------------------------------
 
     def OnColClick(self, event):
-        debug("OnColClick: %d\n" % event.GetColumn())
+        #debug("OnColClick: %d\n" % event.GetColumn())
+        pass
 
     def OnTickerEdited(self,event):
         ticker = event.GetString()
@@ -339,14 +339,14 @@ class iTradeQuoteSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
             quote = quotes.lookupTicker(ticker,self.m_market)
             if quote:
                 v = self.wxIsinCtrl.GetLabel()
-                print 'ticker:',ticker,' label %s=?=%s' % (v,quote.isin()), 'line=%d' % self.itemLineMap[quote.ticker()]
+                #print 'ticker:',ticker,' label %s=?=%s' % (v,quote.isin()), 'line=%d' % self.itemLineMap[quote.ticker()]
                 if v!= quote.isin():
                     self.wxIsinCtrl.SetLabel(quote.isin())
                 self.SetCurrentItem(self.itemLineMap[quote.ticker()])
             else:
                 self.wxIsinCtrl.SetLabel('')
 
-        print 'ticker:',ticker
+        #print 'ticker:',ticker
 
     def OnISINEdited(self,event):
         isin = event.GetString()
@@ -354,13 +354,13 @@ class iTradeQuoteSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
             quote = quotes.lookupISIN(isin,self.m_market)
             if quote:
                 v = self.wxTickerCtrl.GetLabel()
-                print 'isin:',isin,' label %s=?=%s' % (v,quote.ticker()), 'line=%d' % self.itemLineMap[quote.ticker()]
+                #print 'isin:',isin,' label %s=?=%s' % (v,quote.ticker()), 'line=%d' % self.itemLineMap[quote.ticker()]
                 if v!= quote.ticker():
                     self.wxTickerCtrl.SetLabel(quote.ticker())
                 self.SetCurrentItem(self.itemLineMap[quote.ticker()])
             else:
                 self.wxTickerCtrl.SetLabel('')
-        print 'isin:',isin
+        #print 'isin:',isin
 
     def OnItemActivated(self, event):
         self.currentItem = event.m_itemIndex
@@ -373,7 +373,7 @@ class iTradeQuoteSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
             quote = self.getQuoteOnTheLine(self.currentItem)
             self.wxTickerCtrl.SetLabel(quote.ticker())
             self.wxIsinCtrl.SetLabel(quote.isin())
-            info('OnItemSelected: %s'%quote)
+            #debug('OnItemSelected: %s'%quote)
         event.Skip()
 
     def OnValid(self,event):
