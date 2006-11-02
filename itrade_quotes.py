@@ -1101,9 +1101,9 @@ class Quotes(object):
     def saveProperties(self,fp=None):
         props = []
         for eachQuote in self.list():
-            prop = eachQuote.listProperties()
-            if prop!=[]:
-                props.append(*prop)
+            for eachProp in eachQuote.listProperties():
+                #print eachProp
+                props.append(eachProp)
         itrade_csv.write(fp,os.path.join(itrade_config.dirUserData,'default.properties.txt'),props)
 
     # ---[ Stops ] ---
