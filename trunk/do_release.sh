@@ -6,7 +6,7 @@
 # 060504 dgil Migrate from CVS to SVN
 
 # put real file names or directory to be removed here
-to_be_removed='do_release.sh ethereal/* '
+to_be_removed='do_release.sh ethereal/* data/quotes.txt.org cache/*'
 
 target="$HOME/itrade_snapshot_`date +'%F'`.tar.gz"
 #target="$HOME/itrade_0_4_5_nausicaa_`date +'%F'`.tar.gz"
