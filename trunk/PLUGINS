@@ -10,9 +10,9 @@ EURONEXT		FORTUNEO / ABCBOURSE (deprecated) / EURONEXT (dev ongoing)
 ALTERNEXT		FORTUNEO / ABCBOURSE (deprecated) / EURONEXT (dev ongoing)
 NASDAQ			YAHOO FINANCE
 NYSE			YAHOO FINANCE
-AMEX			not available yet
-OTCBB			not available yet
-LSE			not available yet
+AMEX			YAHOO FINANCE
+OTCBB			YAHOO FINANCE
+LSE			YAHOO FINANCE
 
 ===============================================================================
 History data
@@ -23,9 +23,9 @@ EURONEXT		ABCBOURSE (deprecated) / EURONEXT (dev ongoing)
 ALTERNEXT		ABCBOURSE (deprecated) / EURONEXT (dev ongoing)
 NASDAQ			YAHOO FINANCE
 NYSE			YAHOO FINANCE
-AMEX			not available yet
-OTCBB			not available yet
-LSE			not available yet
+AMEX			YAHOO FINANCE
+OTCBB			YAHOO FINANCE
+LSE			YAHOO FINANCE
 
 ===============================================================================
 List of quotes
@@ -34,10 +34,10 @@ List of quotes
 Exchange		Provider
 EURONEXT		EURONEXT
 ALTERNEXT		EURONEXT
-NASDAQ			not available yet
+NASDAQ			BARCHART
 NYSE			NYSE
-AMEX			not available yet
-OTCBB			not available yet
+AMEX			BARCHART
+OTCBB			BARCHART
 LSE			not available yet
 
 ===============================================================================

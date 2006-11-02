@@ -1,1 +1,2 @@
-FR0000066839;live;abcbourse
+FR0000121881.EURONEXT;live;euronext
+FR0004154060.EURONEXT;live;euronext

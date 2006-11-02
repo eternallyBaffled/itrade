@@ -116,7 +116,7 @@ operation_cash = {
     OPERATION_QUOTE : False
 }
 
-operation_isin = {
+operation_quote = {
     OPERATION_BUY       : True,
     OPERATION_BUY_SRD   : True,
     OPERATION_SELL      : True,
@@ -233,26 +233,29 @@ class Operation(object):
         self.m_vat = float(vat)
         self.m_ref = ref
 
-        # support isin or name or bad value
+        # support key or name or bad value
         if self.isQuote():
-            self.m_isin = quotes.lookupTicker(m)
-            if self.m_isin:
-                self.m_name = self.m_isin.name()
-            else:
-                self.m_isin = quotes.lookupISIN(m)
-                if self.m_isin:
-                    self.m_name = self.m_isin.name()
+            # m : could be isin (old format) or key (new format)
+            self.m_quote = quotes.lookupKey(m)
+            if not self.m_quote:
+                self.m_quote = quotes.lookupTicker(m)
+                if self.m_quote:
+                    self.m_name = self.m_quote.name()
                 else:
-                    # bad name : keep it :-(
-                    self.m_name = m
+                    self.m_quote = quotes.lookupISIN(m)
+                    if self.m_quote:
+                        self.m_name = self.m_quote.name()
+                    else:
+                        # bad name : keep it :-(
+                        self.m_name = m
         else:
             # not a quote : keep the label
-            self.m_isin = None
+            self.m_quote = None
             self.m_name = m
 
     def __repr__(self):
-        if self.m_isin:
-            return '%s;%s;%s;%f;%f;%d;%f' % (self.m_date, self.m_type, self.m_isin, self.m_value, self.m_expenses, self.m_number, self.m_vat)
+        if self.m_quote:
+            return '%s;%s;%s;%f;%f;%d;%f' % (self.m_date, self.m_type, self.m_quote.key(), self.m_value, self.m_expenses, self.m_number, self.m_vat)
         else:
             return '%s;%s;%s;%f;%f;%d;%f' % (self.m_date, self.m_type, self.m_name, self.m_value, self.m_expenses, self.m_number, self.m_vat)
 
@@ -312,11 +315,11 @@ class Operation(object):
         self.m_date = nd
         return self.m_date
 
-    def isin(self):
+    def quote(self):
         if self.isQuote():
-            return self.m_isin
+            return self.m_quote
         else:
-            raise TypeError("isin(): operation::type() shall be S or B or Y or Z")
+            raise TypeError("quote(): operation::type() shall be S or B or Y or Z")
 
     def operation(self):
         if operation_desc.has_key(self.m_type):
@@ -330,8 +333,8 @@ class Operation(object):
         return self.isQuote()
 
     def isQuote(self):
-        if operation_isin.has_key(self.m_type):
-            return operation_isin[self.m_type]
+        if operation_quote.has_key(self.m_type):
+            return operation_quote[self.m_type]
         else:
             return False
 
@@ -343,98 +346,98 @@ class Operation(object):
 
     def description(self):
         if self.isQuote():
-            return '%s (%s)' % (self.name(),self.isin())
+            return '%s (%s)' % (self.name(),self.quote().ticker())
         else:
             return self.name()
 
     def apply(self,d=None):
         if self.m_type == OPERATION_SELL:
-            if self.m_isin:
-                debug('sell %s' % self.m_isin)
-                max = self.m_isin.nv_number(QUOTE_CASH)
+            if self.m_quote:
+                debug('sell %s' % self.m_quote)
+                max = self.m_quote.nv_number(QUOTE_CASH)
                 if self.m_number>max:
                     self.m_number = max
-                self.m_isin.sell(self.m_number,QUOTE_CASH)
+                self.m_quote.sell(self.m_number,QUOTE_CASH)
         elif self.m_type == OPERATION_BUY:
-            if self.m_isin:
-                debug('buy %s' % self.m_isin)
-                self.m_isin.buy(self.m_number,self.m_value,QUOTE_CASH)
+            if self.m_quote:
+                debug('buy %s' % self.m_quote)
+                self.m_quote.buy(self.m_number,self.m_value,QUOTE_CASH)
         elif self.m_type == OPERATION_SELL_SRD:
-            if self.m_isin:
-                debug('sell SRD %s' % self.m_isin)
-                max = self.m_isin.nv_number(QUOTE_CREDIT)
+            if self.m_quote:
+                debug('sell SRD %s' % self.m_quote)
+                max = self.m_quote.nv_number(QUOTE_CREDIT)
                 if self.m_number>max:
                     self.m_number = max
-                self.m_isin.sell(self.m_number,QUOTE_CREDIT)
+                self.m_quote.sell(self.m_number,QUOTE_CREDIT)
         elif self.m_type == OPERATION_BUY_SRD:
-            if self.m_isin:
-                debug('buy SRD %s' % self.m_isin)
-                self.m_isin.buy(self.m_number,self.m_value,QUOTE_CREDIT)
+            if self.m_quote:
+                debug('buy SRD %s' % self.m_quote)
+                self.m_quote.buy(self.m_number,self.m_value,QUOTE_CREDIT)
         elif self.m_type == OPERATION_QUOTE:
-            if self.m_isin:
-                debug('dividend/shares %s' % self.m_isin)
-                self.m_isin.buy(self.m_number,0.0,QUOTE_CASH)
+            if self.m_quote:
+                debug('dividend/shares %s' % self.m_quote)
+                self.m_quote.buy(self.m_number,0.0,QUOTE_CASH)
         elif self.m_type == OPERATION_REGISTER:
-            if self.m_isin:
-                debug('register/shares %s' % self.m_isin)
-                self.m_isin.buy(self.m_number,self.m_value,QUOTE_CASH)
+            if self.m_quote:
+                debug('register/shares %s' % self.m_quote)
+                self.m_quote.buy(self.m_number,self.m_value,QUOTE_CASH)
         elif self.m_type == OPERATION_DETACHMENT:
-            if self.m_isin:
-                debug('detachment %s / %d' % (self.m_isin,self.m_value))
-                self.m_isin.buy(0,-self.m_value,QUOTE_CASH)
+            if self.m_quote:
+                debug('detachment %s / %d' % (self.m_quote,self.m_value))
+                self.m_quote.buy(0,-self.m_value,QUOTE_CASH)
         elif self.m_type == OPERATION_LIQUIDATION:
-            if self.m_isin:
-                debug('liquidation %s / %d' % (self.m_isin,self.m_value))
-                self.m_isin.transfertTo(self.m_number,self.m_expenses,QUOTE_CASH)
+            if self.m_quote:
+                debug('liquidation %s / %d' % (self.m_quote,self.m_value))
+                self.m_quote.transfertTo(self.m_number,self.m_expenses,QUOTE_CASH)
 
     def undo(self,d=None):
         if self.m_type == OPERATION_SELL:
-            if self.m_isin:
-                debug('undo-sell %s' % self.m_isin)
-                self.m_isin.buy(self.m_number,self.m_value,QUOTE_CASH)
+            if self.m_quote:
+                debug('undo-sell %s' % self.m_quote)
+                self.m_quote.buy(self.m_number,self.m_value,QUOTE_CASH)
         elif self.m_type == OPERATION_BUY:
-            if self.m_isin:
-                debug('undo-buy %s' % self.m_isin)
-                self.m_isin.sell(self.m_number,QUOTE_CASH)
+            if self.m_quote:
+                debug('undo-buy %s' % self.m_quote)
+                self.m_quote.sell(self.m_number,QUOTE_CASH)
         elif self.m_type == OPERATION_QUOTE:
-            if self.m_isin:
-                debug('undo-dividend/share %s' % self.m_isin)
-                self.m_isin.sell(self.m_number,QUOTE_CASH)
+            if self.m_quote:
+                debug('undo-dividend/share %s' % self.m_quote)
+                self.m_quote.sell(self.m_number,QUOTE_CASH)
         elif self.m_type == OPERATION_REGISTER:
-            if self.m_isin:
-                debug('undo-register %s' % self.m_isin)
-                self.m_isin.sell(self.m_number,QUOTE_CASH)
+            if self.m_quote:
+                debug('undo-register %s' % self.m_quote)
+                self.m_quote.sell(self.m_number,QUOTE_CASH)
         elif self.m_type == OPERATION_BUY_SRD:
-            if self.m_isin:
-                debug('undo-buy SRD %s' % self.m_isin)
-                self.m_isin.sell(self.m_number,QUOTE_CREDIT)
+            if self.m_quote:
+                debug('undo-buy SRD %s' % self.m_quote)
+                self.m_quote.sell(self.m_number,QUOTE_CREDIT)
         elif self.m_type == OPERATION_SELL_SRD:
-            if self.m_isin:
-                debug('undo-sell SRD %s' % self.m_isin)
-                self.m_isin.buy(self.m_number,self.m_value,QUOTE_CREDIT)
+            if self.m_quote:
+                debug('undo-sell SRD %s' % self.m_quote)
+                self.m_quote.buy(self.m_number,self.m_value,QUOTE_CREDIT)
         elif self.m_type == OPERATION_DETACHMENT:
-            if self.m_isin:
-                debug('undo-detachment %s' % self.m_isin)
-                self.m_isin.buy(0,self.m_value,QUOTE_CASH)
+            if self.m_quote:
+                debug('undo-detachment %s' % self.m_quote)
+                self.m_quote.buy(0,self.m_value,QUOTE_CASH)
         elif self.m_type == OPERATION_LIQUIDATION:
-            if self.m_isin:
-                debug('undo-liquidation %s / %d' % self.m_isin)
-                self.m_isin.transfertTo(self.m_number,self.m_expenses,QUOTE_CREDIT)
+            if self.m_quote:
+                debug('undo-liquidation %s / %d' % self.m_quote)
+                self.m_quote.transfertTo(self.m_number,self.m_expenses,QUOTE_CREDIT)
 
     def nv_pvalue(self):
-        if self.m_isin:
+        if self.m_quote:
             if self.m_type == OPERATION_SELL:
-                    return self.m_value - (self.m_isin.nv_pru(QUOTE_CASH) * self.m_number)
+                    return self.m_value - (self.m_quote.nv_pru(QUOTE_CASH) * self.m_number)
             if self.m_type == OPERATION_SELL_SRD:
-                    return self.m_value - (self.m_isin.nv_pru(QUOTE_CREDIT) * self.m_number)
+                    return self.m_value - (self.m_quote.nv_pru(QUOTE_CREDIT) * self.m_number)
         return 0
 
     def sv_pvalue(self):
         return '%.2f' % self.nv_pvalue()
 
 def isOperationTypeAQuote(type):
-    if operation_isin.has_key(type):
-        return operation_isin[type]
+    if operation_quote.has_key(type):
+        return operation_quote[type]
     else:
         return False
 
@@ -871,17 +874,17 @@ class Portfolio(object):
                 if self.sameyear(eachOp,cd):
                     self.m_cExpenses = self.m_cExpenses + eachOp.nv_expenses()
             elif eachOp.type() == OPERATION_BUY:
-                debug('buy %s/%s : %d for %f' % (eachOp.name(),eachOp.isin(),eachOp.nv_number(),eachOp.nv_value()))
+                debug('buy %s/%s : %d for %f' % (eachOp.name(),eachOp.quote(),eachOp.nv_number(),eachOp.nv_value()))
                 self.m_cCash = self.m_cCash - eachOp.nv_value()
                 if self.sameyear(eachOp,cd):
                     self.m_cExpenses = self.m_cExpenses + eachOp.nv_expenses()
             elif eachOp.type() == OPERATION_BUY_SRD:
-                debug('buy SRD %s/%s : %d for %f' % (eachOp.name(),eachOp.isin(),eachOp.nv_number(),eachOp.nv_value()))
+                debug('buy SRD %s/%s : %d for %f' % (eachOp.name(),eachOp.quote(),eachOp.nv_number(),eachOp.nv_value()))
                 self.m_cCredit = self.m_cCredit + eachOp.nv_value()
                 if self.sameyear(eachOp,cd):
                     self.m_cExpenses = self.m_cExpenses + eachOp.nv_expenses()
             elif eachOp.type() == OPERATION_SELL:
-                debug('sell %s/%s : %d for %f' % (eachOp.name(),eachOp.isin(),eachOp.nv_number(),eachOp.nv_value()))
+                debug('sell %s/%s : %d for %f' % (eachOp.name(),eachOp.quote(),eachOp.nv_number(),eachOp.nv_value()))
                 self.m_cCash = self.m_cCash + eachOp.nv_value()
                 if self.sameyear(eachOp,cd):
                     self.m_cExpenses = self.m_cExpenses + eachOp.nv_expenses()
@@ -889,7 +892,7 @@ class Portfolio(object):
                     self.m_cTaxable = self.m_cTaxable + eachOp.nv_pvalue()
                     self.m_cAppreciation = self.m_cAppreciation + eachOp.nv_pvalue()
             elif eachOp.type() == OPERATION_SELL_SRD:
-                debug('sell SRD %s/%s : %d for %f' % (eachOp.name(),eachOp.isin(),eachOp.nv_number(),eachOp.nv_value()))
+                debug('sell SRD %s/%s : %d for %f' % (eachOp.name(),eachOp.quote(),eachOp.nv_number(),eachOp.nv_value()))
                 self.m_cCredit = self.m_cCredit - eachOp.nv_value()
                 if self.sameyear(eachOp,cd):
                     self.m_cExpenses = self.m_cExpenses + eachOp.nv_expenses()
@@ -907,9 +910,9 @@ class Portfolio(object):
                     self.m_cExpenses = self.m_cExpenses + eachOp.nv_expenses()
                     self.m_cTaxable = self.m_cTaxable + eachOp.nv_value()
                     self.m_cAppreciation = self.m_cAppreciation + eachOp.nv_value()
-                    isin = eachOp.isin()
-                    if isin:
-                        pv = eachOp.nv_number() * isin.nv_pru(QUOTE_CREDIT)
+                    quote = eachOp.quote()
+                    if quote:
+                        pv = eachOp.nv_number() * quote.nv_pru(QUOTE_CREDIT)
                         self.m_cTaxable = self.m_cTaxable + pv
                         self.m_cAppreciation = self.m_cAppreciation + pv
             elif eachOp.type() == OPERATION_INTEREST:
@@ -920,24 +923,24 @@ class Portfolio(object):
                     #self.m_cTaxable = self.m_cTaxable + eachOp.nv_value()
                     self.m_cAppreciation = self.m_cAppreciation + eachOp.nv_value()
             elif eachOp.type() == OPERATION_DETACHMENT:
-                debug('detach %s/%s : %f' % (eachOp.name(),eachOp.isin(),eachOp.nv_value()))
+                debug('detach %s/%s : %f' % (eachOp.name(),eachOp.quote(),eachOp.nv_value()))
                 self.m_cCash = self.m_cCash + eachOp.nv_value()
                 if self.sameyear(eachOp,cd):
                     self.m_cExpenses = self.m_cExpenses + eachOp.nv_expenses()
                     #self.m_cTaxable = self.m_cTaxable + eachOp.nv_value()
                     self.m_cAppreciation = self.m_cAppreciation + eachOp.nv_value()
             elif eachOp.type() == OPERATION_DIVIDEND:
-                debug('dividend %s/%s : %f' % (eachOp.name(),eachOp.isin(),eachOp.nv_value()))
+                debug('dividend %s/%s : %f' % (eachOp.name(),eachOp.quote(),eachOp.nv_value()))
                 self.m_cCash = self.m_cCash + eachOp.nv_value()
                 if self.sameyear(eachOp,cd):
                     self.m_cExpenses = self.m_cExpenses + eachOp.nv_expenses()
                     self.m_cTaxable = self.m_cTaxable + eachOp.nv_value()
                     self.m_cAppreciation = self.m_cAppreciation + eachOp.nv_value()
             elif eachOp.type() == OPERATION_QUOTE:
-                debug('dividend/share %s/%s : %f' % (eachOp.name(),eachOp.isin(),eachOp.nv_value()))
+                debug('dividend/share %s/%s : %f' % (eachOp.name(),eachOp.quote(),eachOp.nv_value()))
                 pass
             elif eachOp.type() == OPERATION_REGISTER:
-                debug('register/share %s/%s : %f' % (eachOp.name(),eachOp.isin(),eachOp.nv_value()))
+                debug('register/share %s/%s : %f' % (eachOp.name(),eachOp.quote(),eachOp.nv_value()))
                 self.m_cInvest = self.m_cInvest + eachOp.nv_value()
             else:
                 raise TypeError("computeOperations(): operation::type() unknown %s",eachOp.type())

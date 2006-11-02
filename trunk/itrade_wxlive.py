@@ -111,23 +111,23 @@ class iTrade_wxLiveMixin:
             self.m_threads = {}
 
         def registerLive(self,quote,sleeptime,param=None):
-            self.m_threads[quote.isin()] = UpdateLiveThread(self,quote,sleeptime,param)
+            self.m_threads[quote.key()] = UpdateLiveThread(self,quote,sleeptime,param)
 
         def unregisterLive(self,quote=None):
             if quote:
-                isin = quote.isin()
-                if self.m_threads.has_key(isin):
-                    del self.m_threads[isin]
+                key = quote.key()
+                if self.m_threads.has_key(key):
+                    del self.m_threads[key]
             else:
                 self.m_threads = {}
 
         def startLive(self,quote=None):
             if quote:
                 # start live only for one quote
-                isin = quote.isin()
-                info('startLive : %s' % isin)
-                if self.m_threads.has_key(isin):
-                    t = self.m_threads[isin]
+                key = quote.key()
+                info('startLive : %s' % key)
+                if self.m_threads.has_key(key):
+                    t = self.m_threads[key]
                     if not t.IsRunning():
                         t.Start()
             else:
@@ -138,19 +138,19 @@ class iTrade_wxLiveMixin:
                         t.Start()
 
         def isRunning(self,quote):
-            isin = quote.isin()
-            if self.m_threads.has_key(isin):
-                return self.m_threads[isin].IsRunning()
+            key = quote.key()
+            if self.m_threads.has_key(key):
+                return self.m_threads[key].IsRunning()
             else:
                 return False
 
         def stopLive(self,quote=None,bBusy=False):
             if quote:
                 # stop live only for one quote
-                isin = quote.isin()
-                info('stopLive : %s' % isin)
-                if self.m_threads.has_key(isin):
-                    t = self.m_threads[isin]
+                key = quote.key()
+                info('stopLive : %s' % key)
+                if self.m_threads.has_key(key):
+                    t = self.m_threads[key]
                     if t.IsRunning():
                         t.Stop()
             else:
@@ -541,7 +541,7 @@ if __name__=='__main__':
             iTrade_wxLiveMixin.__init__(self)
             self.m_live = iTrade_wxLive(self,quote)
             self.m_quote = quote
-            self.registerLive(quote,itrade_config.refreshLive,quote.isin())
+            self.registerLive(quote,itrade_config.refreshLive,quote.key())
 
             wx.EVT_CLOSE(self, self.OnCloseWindow)
             EVT_UPDATE_LIVE(self, self.OnLive)

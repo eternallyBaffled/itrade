@@ -71,6 +71,13 @@ def dd_mmm_yy2yyyymmdd(d):
     year = yy2yyyy(d[2])
     return year + month + day
 
+def jjmmaa2yyyymmdd(d):
+    d = string.split(d,'/')
+    day = '%02d' % int(d[0])
+    month = '%02d' % int(d[1])
+    year = yy2yyyy(d[2])
+    return year + month + day
+
 # ============================================================================
 # date2str
 # ============================================================================

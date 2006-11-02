@@ -51,30 +51,30 @@ import itrade_config
 
 class ConnectorRegistry(object):
     def __init__(self):
-        self.m_conn = {}
+        self.m_conn = []
 
-    def list(self):
-        return self.m_conn.values()
-
-    def register(self,market,connector):
-        if self.m_conn.has_key(market):
-            return False
-        self.m_conn[market] = connector
+    def register(self,market,connector,bDefault=True):
+        self.m_conn.append((market,bDefault,connector))
         return True
 
-    def get(self,market):
-        if not self.m_conn.has_key(market):
-            print 'no connector for market :',market
-            return None
+    def get(self,market,name=None):
+        if name:
+            for amarket,adefault,aconnector in self.m_conn:
+                if market==amarket and aconnector.name()==name:
+                    return aconnector
         else:
-            return self.m_conn[market]
-
-    def find(self,name):
-        for eachConn in self.list():
-            if eachConn.name()==name:
-                return eachConn
-        # not found
+            for amarket,adefault,aconnector in self.m_conn:
+                if market==amarket and adefault:
+                    return aconnector
+        print 'No default connector for market :',market
         return None
+
+    def list(self,market):
+        lst = []
+        for amarket,adefault,aconnector in self.m_conn:
+            if amarket==market:
+                lst.append((aconnector.name(),amarket,adefault,aconnector))
+        return lst
 
 # ============================================================================
 # Export Live and Import Registries
@@ -87,7 +87,7 @@ except NameError:
 
 registerLiveConnector = gLiveRegistry.register
 getLiveConnector = gLiveRegistry.get
-findLiveConnector = gLiveRegistry.find
+listLiveConnector = gLiveRegistry.list
 
 try:
     ignore(gImportRegistry)
@@ -96,7 +96,7 @@ except NameError:
 
 registerImportConnector = gImportRegistry.register
 getImportConnector = gImportRegistry.get
-findImportConnector = gImportRegistry.find
+listImportConnector = gImportRegistry.list
 
 # ============================================================================
 # Export ListSymbol Registry
@@ -109,24 +109,31 @@ except NameError:
 
 registerListSymbolConnector = gListSymbolRegistry.register
 getListSymbolConnector = gListSymbolRegistry.get
-findListSymbolConnector = gListSymbolRegistry.find
+listListSymbolConnector = gListSymbolRegistry.list
 
 # ============================================================================
 # __x be more dynamic ...
 # ============================================================================
 
-# Euronext market connectors : ABCBourse (deprecated), Euronext (under dev) or Fortuneo
-import itrade_import_abcbourse
-import itrade_liveupdate_abcbourse
+# Euronext market connectors : ABCBourse (deprecated), Euronext or Fortuneo
+import itrade_import_euronext
+import itrade_liveupdate_euronext
+
 import itrade_liveupdate_fortuneo
 
-# all others market connectors : Yahoo
+import itrade_import_abcbourse
+import itrade_liveupdate_abcbourse
+
+# all others market connectors (incl. euronext) : Yahoo
 import itrade_import_yahoo
 import itrade_liveupdate_yahoo
 
-# list of symnbols
+# list of symbols : Euronext, Nyse, BarChart (Amex,Nasdaq,OTCBB)
 import itrade_quotes_euronext
+
 import itrade_quotes_nyse
+
+import itrade_quotes_barchart
 
 # ============================================================================
 # Importation from internet : HISTORIC
@@ -189,7 +196,7 @@ def liveupdate_from_internet(quote):
     abc = quote.liveconnector()
     abc.acquire()
     if abc.iscacheddataenoughfreshq():
-        data = abc.getcacheddataByQuote(quote)
+        data = abc.getcacheddata(quote)
         if data:
             #debug(data)
             debug("liveupdate_from_internet(%s): import live from cache" % quote.ticker())

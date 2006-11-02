@@ -192,23 +192,6 @@ class LiveUpdate_ABCBourse(object):
 
     # ---[ cache management on data ] ---
 
-    def getcacheddataByQuote(self,quote):
-        if quote:
-            return self.getcacheddata(quote)
-        return None
-
-    def getcacheddataByTicker(self,ticker):
-        quote = quotes.lookupTicker(ticker)
-        if quote:
-            return self.getcacheddata(quote)
-        return None
-
-    def getcacheddataByISIN(self,isin):
-        quote = quotes.lookupISIN(isin)
-        if quote:
-            return self.getcacheddata(quote)
-        return None
-
     def getcacheddata(self,quote):
         debug('getcacheddata %s' % self.m_data)
         for eachLine in self.m_data:
@@ -274,9 +257,10 @@ try:
 except NameError:
     gLiveABC = LiveUpdate_ABCBourse()
 
-#registerLiveConnector('EURONEXT',gLiveABC)
-registerLiveConnector('EURONEXT_differed',gLiveABC)
-registerLiveConnector('ALTERNEXT_differed',gLiveABC)
+registerLiveConnector('EURONEXT',gLiveABC,bDefault=False)
+registerLiveConnector('ALTERNEXT',gLiveABC,bDefault=False)
+registerLiveConnector('PARIS MARCHE LIBRE',gLiveABC,bDefault=False)
+registerLiveConnector('BRUXELLES MARCHE LIBRE',gLiveABC,bDefault=False)
 
 # ============================================================================
 # Test ME
@@ -285,7 +269,7 @@ registerLiveConnector('ALTERNEXT_differed',gLiveABC)
 
 def test(ticker):
     if gLiveABC.iscacheddataenoughfreshq():
-        data = gLiveABC.getcacheddataByTicker(ticker)
+        data = gLiveABC.getcacheddata(ticker)
         if data:
             debug(data)
         else:

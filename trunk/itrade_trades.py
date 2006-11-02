@@ -72,7 +72,7 @@ class Trade(object):
         self.m_index = idx
 
     def __repr__(self):
-        return '%s;%s;%f;%f;%f;%f;%d' % (self.m_trades,self.m_date, self.m_open, self.m_high, self.m_low, self.m_close, self.m_volume)
+        return '%s;%s;%f;%f;%f;%f;%d' % (self.m_trades.quote().key(),self.m_date, self.m_open, self.m_high, self.m_low, self.m_close, self.m_volume)
 
     def date(self):
         return self.m_date
@@ -148,22 +148,22 @@ class Trades(object):
     def reset(self,infile=None):
         self._init_()
         if not infile:
-            infile = os.path.join(itrade_config.dirCacheData,self.m_quote.isin())+'.txt'
+            infile = os.path.join(itrade_config.dirCacheData,self.m_quote.key())+'.txt'
         try:
             os.remove(infile)
         except OSError:
             pass
 
     def load(self,infile=None):
-        infile = itrade_csv.read(infile,os.path.join(itrade_config.dirCacheData,self.m_quote.isin())+'.txt')
+        infile = itrade_csv.read(infile,os.path.join(itrade_config.dirCacheData,self.m_quote.key())+'.txt')
         #print 'Trades:load::',infile
         if infile:
             # scan each line to read each trade
-            #debug('Trades::load %s %s' % (self.m_quote.ticker(),self.m_quote.isin()))
+            #debug('Trades::load %s %s' % (self.m_quote.ticker(),self.m_quote.key()))
             for eachLine in infile:
                 item = itrade_csv.parse(eachLine,7)
                 if item:
-                    if (item[0]==self.m_quote.isin()):
+                    if (item[0]==self.m_quote.key()) or (item[0]==self.m_quote.isin() and item[0]!=''):
                         #print item
                         self.add(item,bImporting=True);
 
@@ -176,12 +176,12 @@ class Trades(object):
             for eachLine in data:
                 item = itrade_csv.parse(eachLine,7)
                 if item:
-                    if (item[0]==self.m_quote.isin()):
+                    if (item[0]==self.m_quote.key()) or (item[0]==self.m_quote.isin() and item[0]!=''):
                         #print item
                         self.add(item,bImporting=not bLive);
 
     def save(self,outfile=None):
-        #debug('Trades::save %s %s' % (self.m_quote.ticker(),self.m_quote.isin()))
+        #debug('Trades::save %s %s' % (self.m_quote.ticker(),self.m_quote.key()))
         if self.m_trades.keys():
             # do not save today trade
             ajd = date.today()
@@ -193,7 +193,7 @@ class Trades(object):
                 tr = None
 
             # save all trades (except today)
-            itrade_csv.write(outfile,os.path.join(itrade_config.dirCacheData,self.m_quote.isin())+'.txt',self.m_trades.values())
+            itrade_csv.write(outfile,os.path.join(itrade_config.dirCacheData,self.m_quote.key())+'.txt',self.m_trades.values())
             self.m_dirty = False
 
             # restore today trade
@@ -209,7 +209,8 @@ class Trades(object):
             # __x need to save file
             self.m_dirty = True
             return False
-        tr = Trade(item[0],item[1],item[2],item[3],item[4],item[5],item[6],idx)
+
+        tr = Trade(self,item[1],item[2],item[3],item[4],item[5],item[6],idx)
 
         # NB: replace existing date ('cause live update)
         self.m_trades[tr.date()] = tr
@@ -370,7 +371,7 @@ class Trades(object):
         # default date == last trade
         if d==None:
             if not self.m_lasttrade:
-                print '%s : no trade' % self.m_quote.isin()
+                print '%s : no trade' % self.m_quote.key()
                 return
             d = self.m_lasttrade.date()
 

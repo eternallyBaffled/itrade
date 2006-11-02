@@ -53,7 +53,7 @@ from itrade_quotes import *
 from itrade_portfolio import *
 
 #from itrade_wxdatation import itrade_datePicker
-from itrade_wxlistquote import select_iTradeQuote
+from itrade_wxselectquote import select_iTradeQuote
 import itrade_wxres
 from itrade_wxmixin import iTrade_wxFrame,iTradeSelectorListCtrl
 from itrade_wxutil import FontFromSize
@@ -166,7 +166,7 @@ class iTradeOperationDialog(wx.Dialog):
             self.m_expenses = op.nv_expenses()
             self.m_number = op.nv_number()
             if op.isQuote():
-                self.m_name = op.isin().__str__()
+                self.m_name = op.quote().key()
             else:
                 self.m_name = op.name()
             self.m_date = op.date()
@@ -177,7 +177,6 @@ class iTradeOperationDialog(wx.Dialog):
             self.m_expenses = 0.0
             self.m_number = 0
             self.m_name = ""
-            self.m_isin = ""
             self.m_date = date.today()
             self.m_ref = -1
 
@@ -433,11 +432,11 @@ class iTradeOperationDialog(wx.Dialog):
         self.refreshPage()
 
     def OnQuote(self,evt):
-        quote = quotes.lookupISIN(self.m_name)
+        quote = quotes.lookupKey(self.m_name)
         quote = select_iTradeQuote(self,quote,filter=True,market=None)
         if quote:
-            debug('onQuote: %s - %s' % (quote.ticker(),quote.isin()))
-            self.m_name = quote.isin()
+            debug('onQuote: %s - %s' % (quote.ticker(),quote.key()))
+            self.m_name = quote.key()
             self.refreshPage()
 
     def OnValueChange(self,event):
