@@ -825,93 +825,94 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
         balance = 0
         srd = 0
         for eachOp in self.m_port.operations().list():
-                if self.filterDisplay(eachOp):
-                    sign = eachOp.sign()
+            if self.filterDisplay(eachOp):
+                #print 'populate:',eachOp
+                sign = eachOp.sign()
 
+                if sign=='+':
+                    if eachOp.isSRD():
+                        if eachOp.type()==OPERATION_LIQUIDATION:
+                            balance = balance + eachOp.nv_value()
+                            srd = srd + ( eachOp.nv_value() + eachOp.nv_expenses() )
+                        else:
+                            srd = srd - eachOp.nv_value()
+                    else:
+                        if self.m_mode == DISP_PVAL:
+                            balance = balance + eachOp.nv_pvalue()
+                        else:
+                            balance = balance + eachOp.nv_value()
+                elif sign=='-':
+                    if eachOp.isSRD():
+                        srd = srd + eachOp.nv_value()
+                    else:
+                        balance = balance - eachOp.nv_value()
+
+                # do we really need to display this op ?
+                if self.filterPeriod(eachOp):
                     if sign=='+':
-                        if eachOp.isSRD():
-                            if eachOp.type()==OPERATION_LIQUIDATION:
-                                balance = balance + eachOp.nv_value()
-                                srd = srd + ( eachOp.nv_value() + eachOp.nv_expenses() )
-                            else:
-                                srd = srd - eachOp.nv_value()
-                        else:
-                            if self.m_mode == DISP_PVAL:
-                                balance = balance + eachOp.nv_pvalue()
-                            else:
-                                balance = balance + eachOp.nv_value()
+                        idx = self.idx_plus
                     elif sign=='-':
+                        idx = self.idx_minus
+                    elif sign==' ' or sign=='~':
+                        idx = self.idx_neutral
+                    else:
+                        idx = self.idx_unknown
+                    sdate = eachOp.date().strftime('%x')
+                    self.m_list.InsertImageStringItem(x, sdate, idx)
+                    self.m_list.SetStringItem(x,IDC_OPERATION,eachOp.operation())
+                    if eachOp.nv_number()>0:
+                        self.m_list.SetStringItem(x,IDC_NUMBER,'%s' % eachOp.sv_number())
+                    else:
+                        self.m_list.SetStringItem(x,IDC_NUMBER,'')
+                    if sign=='+':
+                        self.m_list.SetStringItem(x,IDC_CREDIT,eachOp.sv_value())
+                        vdebit = 0.0
+                        vcredit = eachOp.nv_value()
+                    elif sign=='-':
+                        self.m_list.SetStringItem(x,IDC_DEBIT,'- %s' % eachOp.sv_value())
+                        vcredit = 0.0
+                        vdebit = eachOp.nv_value()
+                    elif sign=='~':
+                        self.m_list.SetStringItem(x,IDC_CREDIT,eachOp.sv_value())
+                        vcredit = eachOp.nv_value()
+                        self.m_list.SetStringItem(x,IDC_DEBIT,'- %s' % eachOp.sv_value())
+                        vdebit = eachOp.nv_value()
+                    else:
+                        vcredit = 0.0
+                        vdebit = 0.0
+                    self.m_list.SetStringItem(x,IDC_EXPENSES,eachOp.sv_expenses())
+                    self.m_list.SetStringItem(x,IDC_DESCRIPTION,eachOp.description())
+                    self.m_list.SetStringItem(x,IDC_BALANCE,'%.2f' % balance)
+
+                    if self.filterSRDcolumn():
                         if eachOp.isSRD():
-                            srd = srd + eachOp.nv_value()
+                            self.m_list.SetStringItem(x,IDC_SRD,'%.2f' % srd)
+                            vsrd = srd
                         else:
-                            balance = balance - eachOp.nv_value()
-
-                    # do we really need to display this op ?
-                    if self.filterPeriod(eachOp):
-                        if sign=='+':
-                            idx = self.idx_plus
-                        elif sign=='-':
-                            idx = self.idx_minus
-                        elif sign==' ' or sign=='~':
-                            idx = self.idx_neutral
-                        else:
-                            idx = self.idx_unknown
-                        sdate = eachOp.date().strftime('%x')
-                        self.m_list.InsertImageStringItem(x, sdate, idx)
-                        self.m_list.SetStringItem(x,IDC_OPERATION,eachOp.operation())
-                        if eachOp.nv_number()>0:
-                            self.m_list.SetStringItem(x,IDC_NUMBER,'%s' % eachOp.sv_number())
-                        else:
-                            self.m_list.SetStringItem(x,IDC_NUMBER,'')
-                        if sign=='+':
-                            self.m_list.SetStringItem(x,IDC_CREDIT,eachOp.sv_value())
-                            vdebit = 0.0
-                            vcredit = eachOp.nv_value()
-                        elif sign=='-':
-                            self.m_list.SetStringItem(x,IDC_DEBIT,'- %s' % eachOp.sv_value())
-                            vcredit = 0.0
-                            vdebit = eachOp.nv_value()
-                        elif sign=='~':
-                            self.m_list.SetStringItem(x,IDC_CREDIT,eachOp.sv_value())
-                            vcredit = eachOp.nv_value()
-                            self.m_list.SetStringItem(x,IDC_DEBIT,'- %s' % eachOp.sv_value())
-                            vdebit = eachOp.nv_value()
-                        else:
-                            vcredit = 0.0
-                            vdebit = 0.0
-                        self.m_list.SetStringItem(x,IDC_EXPENSES,eachOp.sv_expenses())
-                        self.m_list.SetStringItem(x,IDC_DESCRIPTION,eachOp.description())
-                        self.m_list.SetStringItem(x,IDC_BALANCE,'%.2f' % balance)
-
-                        if self.filterSRDcolumn():
-                            if eachOp.isSRD():
-                                self.m_list.SetStringItem(x,IDC_SRD,'%.2f' % srd)
-                                vsrd = srd
-                            else:
-                                self.m_list.SetStringItem(x,IDC_SRD,'')
-                                vsrd = 0.0
-                        else:
+                            self.m_list.SetStringItem(x,IDC_SRD,'')
                             vsrd = 0.0
+                    else:
+                        vsrd = 0.0
 
-                        self.m_list.SetStringItem(x,IDC_RESERVED,'%d' % eachOp.ref())
-                        self.itemDataMap[x] = (sdate,eachOp.operation(),eachOp.description(),eachOp.nv_number(),vdebit,vcredit,eachOp.nv_expenses(),balance,vsrd)
-                        self.itemOpMap[x] = eachOp.ref()
+                    self.m_list.SetStringItem(x,IDC_RESERVED,'%d' % eachOp.ref())
+                    self.itemDataMap[x] = (sdate,eachOp.operation(),eachOp.description(),eachOp.nv_number(),vdebit,vcredit,eachOp.nv_expenses(),balance,vsrd)
+                    self.itemOpMap[x] = eachOp.ref()
 
-                        item = self.m_list.GetItem(x)
-                        if sign == '+':
-                            item.SetTextColour(wx.BLACK)
-                        elif sign == '-':
-                            item.SetTextColour(wx.BLUE)
-                        elif sign == ' ':
-                            item.SetTextColour(wx.BLACK)
-                        else:
-                            item.SetTextColour(wx.RED)
-                        self.m_list.SetItem(item)
+                    item = self.m_list.GetItem(x)
+                    if sign == '+':
+                        item.SetTextColour(wx.BLACK)
+                    elif sign == '-':
+                        item.SetTextColour(wx.BLUE)
+                    elif sign == ' ':
+                        item.SetTextColour(wx.BLACK)
+                    else:
+                        item.SetTextColour(wx.RED)
+                    self.m_list.SetItem(item)
 
-                        # one more item !
-                        #self.m_op[x] = eachOp
+                    # one more item !
+                    #self.m_op[x] = eachOp
 
-                        x = x + 1
+                    x = x + 1
 
         # fix the item data
         items = self.itemDataMap.items()

@@ -41,37 +41,44 @@ import glob
 import py2exe
 
 # ============================================================================
+
+from distutils.filelist import findall
+import os
+import matplotlib
+matplotlibdatadir = matplotlib.get_data_path()
+matplotlibdata = findall(matplotlibdatadir)
+
+matplotlibdata_files =[("cache",[]),
+            ("alerts",[]),
+            ("data",["data/quotes.txt","data/closed.txt","data/fr.messages.txt","data/us.messages.txt"]),
+            ("images",glob.glob("images\\*.gif")),
+            ("res",glob.glob("res\\*.*")),
+            ("usrdata",["usrdata/portfolio.txt","usrdata/default.matrix.txt","usrdata/default.operations.txt","usrdata/default.stops.txt"]),
+           ]
+
+
+for f in matplotlibdata:
+    dirname = os.path.join('matplotlibdata', f[len(matplotlibdatadir)+1:])
+    matplotlibdata_files.append((os.path.split(dirname)[0], [f]))
+
+# ============================================================================
 # setup
 #
 # usage: python setup.py py2exe
 # ============================================================================
 
-mat = glob.glob(r'C:\Python24\share\matplotlib\*')
-mat.append(r'C:\Python24\share\matplotlib\matplotlibrc')
-
 setup(windows=["itrade.py"],
-      data_files=[("cache",
-                   []),
-                  ("alerts",
-                   []),
-                  ("data",
-                   ["data/quotes.txt","data/closed.txt","data/fr.messages.txt","data/us.messages.txt"]),
-                  ("images",
-                   glob.glob("images\\*.gif")),
-                  ("res",
-                   glob.glob("res\\*.*")),
-                  ("usrdata",
-                   ["usrdata/portfolio.txt","usrdata/default.matrix.txt","usrdata/default.operations.txt","usrdata/default.stops.txt"]),
-                  ("matplotlibdata", mat),
-                   ],
+      data_files=matplotlibdata_files,
       options = {"py2exe":
-                 {"packages": ['pytz','numpy','matplotlib.numerix.random_array'],
-                  "excludes": ['_gtkagg', '_tkagg', '_svg','_ps'],
-                  "dll_excludes": ['libgdk-win32-2.0-0.dll','libgobject-2.0-0.dll'],
-                  "bundle_files": 2
+                 {"packages": ['matplotlib','pytz'],
+                  "excludes": ['_gtkagg', '_tkagg', '_svg','_ps',"Tkconstants","Tkinter","tcl"],
+                  "dll_excludes": ['libgdk_pixbuf-2.0-0.dll','libgdk-win32-2.0-0.dll','libgobject-2.0-0.dll','wxmsw26uh_vc.dll','gdiplus.dll'],
+                  "bundle_files": 2,
+                  "optimize":2
                   }
                 },
 )
+
 
 # ============================================================================
 # That's all folks !

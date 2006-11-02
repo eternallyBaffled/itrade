@@ -248,10 +248,14 @@ class Operation(object):
                     else:
                         # bad name : keep it :-(
                         self.m_name = m
+            else:
+                self.m_name = self.m_quote.name()
         else:
             # not a quote : keep the label
             self.m_quote = None
             self.m_name = m
+
+        #print 'Operation(): quote=%s name=%s' % (self.m_quote,self.m_name)
 
     def __repr__(self):
         if self.m_quote:
@@ -346,7 +350,10 @@ class Operation(object):
 
     def description(self):
         if self.isQuote():
-            return '%s (%s)' % (self.name(),self.quote().ticker())
+            if self.m_quote:
+                return '%s (%s)' % (self.name(),self.m_quote.ticker())
+            else:
+                return '%s (?)' % self.name()
         else:
             return self.name()
 
@@ -502,7 +509,7 @@ class Operations(object):
         itrade_csv.write(outfile,os.path.join(itrade_config.dirUserData,'default.operations.txt'),self.m_operations.values())
 
     def add(self,item,bApply):
-        debug('Operations::add() before: 0:%s , 1:%s , 2:%s , 3:%s , 4:%s , 5:%s' % (item[0],item[1],item[2],item[3],item[4],item[5]))
+        info('Operations::add() before: 0:%s , 1:%s , 2:%s , 3:%s , 4:%s , 5:%s' % (item[0],item[1],item[2],item[3],item[4],item[5]))
         #info('Operations::add() before: %s' % item)
         ll = len(item)
         if ll>=7:
