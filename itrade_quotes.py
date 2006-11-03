@@ -1137,9 +1137,15 @@ class Quotes(object):
         key = quote_reference(isin,ticker,market)
         if self.m_quotes.has_key(key):
             # update quote ?
-            if debug:
-                print '%r already exists - replace' % (self.m_quotes[key])
-            del self.m_quotes[key]
+            country2 = compute_country(None,market,place)
+            if country2 == isin[0:2].upper():
+                if debug:
+                    print '%r/%s already exists - replace with %s' % (self.m_quotes[key],self.m_quotes[key].ticker(),ticker)
+                del self.m_quotes[key]
+            else:
+                if debug:
+                    print '%r/%s already exists - keep it (ignore %s)' % (self.m_quotes[key],self.m_quotes[key].ticker(),ticker)
+                return True
 
         # depending on isin
         if isin==None or isin=='':
