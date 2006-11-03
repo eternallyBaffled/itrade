@@ -291,16 +291,15 @@ try:
 except NameError:
     gLiveYahoo = LiveUpdate_yahoo()
 
-registerLiveConnector('NASDAQ',gLiveYahoo,bDefault=True)
-registerLiveConnector('NYSE',gLiveYahoo,bDefault=True)
-registerLiveConnector('AMEX',gLiveYahoo,bDefault=True)
-registerLiveConnector('OTCBB',gLiveYahoo,bDefault=True)
-registerLiveConnector('LSE',gLiveYahoo,bDefault=True)
+registerLiveConnector('NASDAQ','NYC',gLiveYahoo,bDefault=True)
+registerLiveConnector('NYSE','NYC',gLiveYahoo,bDefault=True)
+registerLiveConnector('AMEX','NYC',gLiveYahoo,bDefault=True)
+registerLiveConnector('OTCBB','NYC',gLiveYahoo,bDefault=True)
+registerLiveConnector('LSE','LON',gLiveYahoo,bDefault=True)
 
-registerLiveConnector('EURONEXT',gLiveYahoo,bDefault=False)
-registerLiveConnector('ALTERNEXT',gLiveYahoo,bDefault=False)
-registerLiveConnector('PARIS MARCHE LIBRE',gLiveYahoo,bDefault=False)
-registerLiveConnector('BRUXELLES MARCHE LIBRE',gLiveYahoo,bDefault=False)
+registerLiveConnector('EURONEXT','PAR',gLiveYahoo,bDefault=False)
+registerLiveConnector('ALTERNEXT','PAR',gLiveYahoo,bDefault=False)
+registerLiveConnector('PARIS MARCHE LIBRE','PAR',gLiveYahoo,bDefault=False)
 
 # ============================================================================
 # Test ME

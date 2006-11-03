@@ -44,6 +44,7 @@ from datetime import *
 from itrade_logging import *
 from itrade_datation import Datation
 import itrade_config
+from itrade_market import market2place
 
 # ============================================================================
 # ConnectorRegistry
@@ -53,27 +54,29 @@ class ConnectorRegistry(object):
     def __init__(self):
         self.m_conn = []
 
-    def register(self,market,connector,bDefault=True):
-        self.m_conn.append((market,bDefault,connector))
+    def register(self,market,place,connector,bDefault=True):
+        self.m_conn.append((market,place,bDefault,connector))
         return True
 
-    def get(self,market,name=None):
+    def get(self,market,place=None,name=None):
+        if place==None:
+            place = market2place(market)
         if name:
-            for amarket,adefault,aconnector in self.m_conn:
-                if market==amarket and aconnector.name()==name:
+            for amarket,aplace,adefault,aconnector in self.m_conn:
+                if market==amarket and place==aplace and aconnector.name()==name:
                     return aconnector
         else:
-            for amarket,adefault,aconnector in self.m_conn:
-                if market==amarket and adefault:
+            for amarket,aplace,adefault,aconnector in self.m_conn:
+                if market==amarket and place==aplace and adefault:
                     return aconnector
         print 'No default connector for market :',market
         return None
 
-    def list(self,market):
+    def list(self,market,place):
         lst = []
-        for amarket,adefault,aconnector in self.m_conn:
-            if amarket==market:
-                lst.append((aconnector.name(),amarket,adefault,aconnector))
+        for amarket,aplace,adefault,aconnector in self.m_conn:
+            if amarket==market and aplace==place:
+                lst.append((aconnector.name(),amarket,aplace,adefault,aconnector))
         return lst
 
 # ============================================================================

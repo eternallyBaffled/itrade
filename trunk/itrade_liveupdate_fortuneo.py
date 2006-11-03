@@ -827,10 +827,9 @@ except NameError:
     gLiveFortuneo = LiveUpdate_fortuneo()
 
 # __x test the connection, and register only if working ...
-registerLiveConnector('EURONEXT',gLiveFortuneo,bDefault=True)
-registerLiveConnector('ALTERNEXT',gLiveFortuneo,bDefault=True)
-registerLiveConnector('PARIS MARCHE LIBRE',gLiveFortuneo,bDefault=True)
-registerLiveConnector('BRUXELLES MARCHE LIBRE',gLiveFortuneo,bDefault=True)
+registerLiveConnector('EURONEXT','PAR',gLiveFortuneo,bDefault=True)
+registerLiveConnector('ALTERNEXT','PAR',gLiveFortuneo,bDefault=True)
+registerLiveConnector('PARIS MARCHE LIBRE','PAR',gLiveFortuneo,bDefault=True)
 
 # ============================================================================
 # Test ME

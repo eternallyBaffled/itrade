@@ -191,7 +191,7 @@ class iTradeQuotePropertiesPanel(wx.Window):
         box.Add(self.editLiveConnector, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         count = 0
-        for aname,amarket,adefaut,aconnector in listLiveConnector(self.m_quote.market()):
+        for aname,amarket,aplace,adefaut,aconnector in listLiveConnector(self.m_quote.market(),self.m_quote.place()):
             self.editLiveConnector.Append(aname,aname)
             if aname==self.m_quote.liveconnector().name():
                 idx = count
@@ -206,7 +206,7 @@ class iTradeQuotePropertiesPanel(wx.Window):
         box.Add(self.editImportConnector, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         count = 0
-        for aname,amarket,adefaut,aconnector in listImportConnector(self.m_quote.market()):
+        for aname,aplace,amarket,adefaut,aconnector in listImportConnector(self.m_quote.market(),self.m_quote.place()):
             self.editImportConnector.Append(aname,aname)
             if aname==self.m_quote.importconnector().name():
                 idx = count

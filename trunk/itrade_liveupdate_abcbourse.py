@@ -257,10 +257,9 @@ try:
 except NameError:
     gLiveABC = LiveUpdate_ABCBourse()
 
-registerLiveConnector('EURONEXT',gLiveABC,bDefault=False)
-registerLiveConnector('ALTERNEXT',gLiveABC,bDefault=False)
-registerLiveConnector('PARIS MARCHE LIBRE',gLiveABC,bDefault=False)
-registerLiveConnector('BRUXELLES MARCHE LIBRE',gLiveABC,bDefault=False)
+registerLiveConnector('EURONEXT','PAR',gLiveABC,bDefault=False)
+registerLiveConnector('ALTERNEXT','PAR',gLiveABC,bDefault=False)
+registerLiveConnector('PARIS MARCHE LIBRE','PAR',gLiveABC,bDefault=False)
 
 # ============================================================================
 # Test ME
