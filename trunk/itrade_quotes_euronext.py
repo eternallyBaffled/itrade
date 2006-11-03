@@ -112,7 +112,7 @@ def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT'):
                 if checkISIN(data[1]):
                     if data[3]=='PAR' or data[3]=='BRU' or data[3]=='AMS' or data[3]=='LIS':
                         name = filterName(data[0])
-                        quotes.addQuote(isin=data[1],name=name,ticker=data[4],market=market,currency=data[6],place=data[3],country=None)
+                        quotes.addQuote(isin=data[1],name=name,ticker=data[4],market=market,currency=data[6],place=data[3],country=None,debug=True)
                         count = count + 1
                     else:
                         print 'unknown EURONEXT place : ',data
