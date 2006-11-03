@@ -63,7 +63,7 @@ from itrade_wxpropquote import iTradeQuotePropertiesPanel
 
 # matplotlib system
 import matplotlib
-matplotlib.use('WXAgg')
+matplotlib.use('WX')
 matplotlib.rcParams['numerix'] = 'numpy'
 
 from matplotlib.dates import date2num, num2date
