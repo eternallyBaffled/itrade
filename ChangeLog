@@ -6,6 +6,7 @@ On the road for v0.4.5 (Nausicaa)
 ===============================================================================
 
 2006-11-03  Gilles Dumortier <dgil at ieee.org>
+	* "official" tarball for testing
 	* Backend WXAgg -> WX (better perf + remove unicode dependancy)
 	* Specific connector for deffered prices (SF bug 1589922)
 	* Download EURONEXT list of quotes : use the MEP (SF bug 1589626)
