@@ -53,7 +53,6 @@ from itrade_logging import *
 from itrade_quotes import *
 from itrade_local import message
 from itrade_config import *
-from itrade_import import listImportConnector,listLiveConnector
 
 from itrade_wxhtml import *
 from itrade_wxmixin import iTrade_wxFrame

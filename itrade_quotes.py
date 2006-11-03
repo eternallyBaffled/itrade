@@ -140,8 +140,8 @@ class Quote(object):
 
         self.m_market = market
 
-        self.m_defaultliveconnector = getLiveConnector(self.m_market)
-        self.m_defaultimportconnector = getImportConnector(self.m_market)
+        self.m_defaultliveconnector = getLiveConnector(self.m_market,self.m_place)
+        self.m_defaultimportconnector = getImportConnector(self.m_market,self.m_place)
 
         if not currency:
             self.m_currency = market2currency(self.m_market)
@@ -361,18 +361,18 @@ class Quote(object):
         return self.m_defaultimportconnector
 
     def restore_defaultconnectors(self):
-        self.m_liveconnector = getLiveConnector(self.m_market)
-        self.m_importconnector = getImportConnector(self.m_market)
+        self.m_liveconnector = getLiveConnector(self.m_market,self.m_place)
+        self.m_importconnector = getImportConnector(self.m_market,self.m_place)
         self.m_pluginId = None
 
     def set_liveconnector(self,name):
-        conn = getLiveConnector(self.m_market,name)
+        conn = getLiveConnector(self.m_market,self.m_place,name)
         if conn:
             self.m_liveconnector = conn
             self.m_pluginId = None
 
     def set_importconnector(self,name):
-        conn = getImportConnector(self.m_market,name)
+        conn = getImportConnector(self.m_market,self.m_place,name)
         if conn:
             self.m_importconnector = conn
             self.m_pluginId = None

@@ -179,16 +179,15 @@ try:
 except NameError:
     gImportYahoo = Import_yahoo()
 
-registerImportConnector('NASDAQ',gImportYahoo,bDefault=True)
-registerImportConnector('NYSE',gImportYahoo,bDefault=True)
-registerImportConnector('AMEX',gImportYahoo,bDefault=True)
-registerImportConnector('OTCBB',gImportYahoo,bDefault=True)
-registerImportConnector('LSE',gImportYahoo,bDefault=True)
+registerImportConnector('NASDAQ','NYC',gImportYahoo,bDefault=True)
+registerImportConnector('NYSE','NYC',gImportYahoo,bDefault=True)
+registerImportConnector('AMEX','NYC',gImportYahoo,bDefault=True)
+registerImportConnector('OTCBB','NYC',gImportYahoo,bDefault=True)
+registerImportConnector('LSE','LON',gImportYahoo,bDefault=True)
 
-registerImportConnector('EURONEXT',gImportYahoo,bDefault=False)
-registerImportConnector('ALTERNEXT',gImportYahoo,bDefault=False)
-registerImportConnector('PARIS MARCHE LIBRE',gImportYahoo,bDefault=False)
-registerImportConnector('BRUXELLES MARCHE LIBRE',gImportYahoo,bDefault=False)
+registerImportConnector('EURONEXT','PAR',gImportYahoo,bDefault=False)
+registerImportConnector('ALTERNEXT','PAR',gImportYahoo,bDefault=False)
+registerImportConnector('PARIS MARCHE LIBRE','PAR',gImportYahoo,bDefault=False)
 
 # ============================================================================
 # Test ME

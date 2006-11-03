@@ -303,10 +303,14 @@ except NameError:
     gLiveParisML = LiveUpdate_Euronext('paris marche libre')
     gLiveBruxellesML = LiveUpdate_Euronext('bruxelles marche libre')
 
-registerLiveConnector('EURONEXT',gLiveEuronext,bDefault=False)
-registerLiveConnector('ALTERNEXT',gLiveAlternext,bDefault=False)
-registerLiveConnector('PARIS MARCHE LIBRE',gLiveParisML,bDefault=False)
-registerLiveConnector('BRUXELLES MARCHE LIBRE',gLiveBruxellesML,bDefault=False)
+registerLiveConnector('EURONEXT','PAR',gLiveEuronext,bDefault=False)
+registerLiveConnector('EURONEXT','BRU',gLiveEuronext,bDefault=True)
+registerLiveConnector('EURONEXT','AMS',gLiveEuronext,bDefault=True)
+registerLiveConnector('EURONEXT','LIS',gLiveEuronext,bDefault=True)
+registerLiveConnector('ALTERNEXT','PAR',gLiveAlternext,bDefault=False)
+registerLiveConnector('ALTERNEXT','BRU',gLiveAlternext,bDefault=True)
+registerLiveConnector('PARIS MARCHE LIBRE','PAR',gLiveParisML,bDefault=False)
+registerLiveConnector('BRUXELLES MARCHE LIBRE','BRU',gLiveBruxellesML,bDefault=True)
 
 # ============================================================================
 # Test ME

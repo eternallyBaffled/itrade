@@ -205,10 +205,14 @@ try:
 except NameError:
     gImportEuronext = Import_euronext()
 
-registerImportConnector('EURONEXT',gImportEuronext,bDefault=True)
-registerImportConnector('ALTERNEXT',gImportEuronext,bDefault=True)
-registerImportConnector('PARIS MARCHE LIBRE',gImportEuronext,bDefault=True)
-registerImportConnector('BRUXELLES MARCHE LIBRE',gImportEuronext,bDefault=True)
+registerImportConnector('EURONEXT','PAR',gImportEuronext,bDefault=True)
+registerImportConnector('EURONEXT','BRU',gImportEuronext,bDefault=True)
+registerImportConnector('EURONEXT','AMS',gImportEuronext,bDefault=True)
+registerImportConnector('EURONEXT','LIS',gImportEuronext,bDefault=True)
+registerImportConnector('ALTERNEXT','PAR',gImportEuronext,bDefault=True)
+registerImportConnector('ALTERNEXT','BRU',gImportEuronext,bDefault=True)
+registerImportConnector('PARIS MARCHE LIBRE','PAR',gImportEuronext,bDefault=True)
+registerImportConnector('BRUXELLES MARCHE LIBRE','BRU',gImportEuronext,bDefault=True)
 
 # ============================================================================
 # Test ME

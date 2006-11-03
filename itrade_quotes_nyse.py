@@ -102,7 +102,7 @@ def Import_ListOfQuotes_NYSE(quotes,market='NYSE'):
 # Export me
 # ============================================================================
 
-registerListSymbolConnector('NYSE',Import_ListOfQuotes_NYSE)
+registerListSymbolConnector('NYSE','NYC',Import_ListOfQuotes_NYSE)
 
 # ============================================================================
 # Test ME
