@@ -5,52 +5,76 @@
 Live / End Of Day data
 ===============================================================================
 
-Exchange		Provider
-EURONEXT		FORTUNEO / ABCBOURSE (deprecated) / EURONEXT (dev ongoing)
-ALTERNEXT		FORTUNEO / ABCBOURSE (deprecated) / EURONEXT (dev ongoing)
-NASDAQ			YAHOO FINANCE
-NYSE			YAHOO FINANCE
-AMEX			YAHOO FINANCE
-OTCBB			YAHOO FINANCE
-LSE			YAHOO FINANCE
+Exchange 	Place	Provider
+EURONEXT	PAR	FORTUNEO / ABCBOURSE (deprecated) / EURONEXT
+EURONEXT	BRU	EURONEXT
+EURONEXT	AMS	EURONEXT
+EURONEXT	LIS	EURONEXT
+ML PARIS	PAR	FORTUNEO / ABCBOURSE (deprecated) / EURONEXT
+ML BRUXELLES	BRU	EURONEXT
+ALTERNEXT	PAR	FORTUNEO / ABCBOURSE (deprecated) / EURONEXT
+ALTERNEXT	BRU 	EURONEXT
+NASDAQ		NYC	YAHOO FINANCE
+NYSE		NYC	YAHOO FINANCE
+AMEX		NYC	YAHOO FINANCE
+OTCBB		NYC	YAHOO FINANCE
+LSE		LONs	YAHOO FINANCE
 
 ===============================================================================
 History data
 ===============================================================================
 
-Exchange		Provider
-EURONEXT		ABCBOURSE (deprecated) / EURONEXT (dev ongoing)
-ALTERNEXT		ABCBOURSE (deprecated) / EURONEXT (dev ongoing)
-NASDAQ			YAHOO FINANCE
-NYSE			YAHOO FINANCE
-AMEX			YAHOO FINANCE
-OTCBB			YAHOO FINANCE
-LSE			YAHOO FINANCE
+Exchange 	Place	Provider
+EURONEXT	PAR	EURONEXT / ABCBOURSE (deprecated)
+EURONEXT	BRU	EURONEXT
+EURONEXT	AMS	EURONEXT
+EURONEXT	LIS	EURONEXT
+ML PARIS	PAR	EURONEXT / ABCBOURSE (deprecated)
+ML BRUXELLES	BRU	EURONEXT
+ALTERNEXT	PAR	EURONEXT / ABCBOURSE (deprecated)
+ALTERNEXT	BRU	EURONEXT
+NASDAQ		NYC	YAHOO FINANCE
+NYSE		NYC	YAHOO FINANCE
+AMEX		NYC	YAHOO FINANCE
+OTCBB		NYC	YAHOO FINANCE
+LSE		LON	YAHOO FINANCE
 
 ===============================================================================
 List of quotes
 ===============================================================================
 
-Exchange		Provider
-EURONEXT		EURONEXT
-ALTERNEXT		EURONEXT
-NASDAQ			BARCHART
-NYSE			NYSE
-AMEX			BARCHART
-OTCBB			BARCHART
-LSE			not available yet
+Exchange 	Place	Provider
+EURONEXT	PAR	EURONEXT
+EURONEXT	BRU	EURONEXT
+EURONEXT	AMS	EURONEXT
+EURONEXT	LIS	EURONEXT
+ML PARIS	PAR	EURONEXT
+ML BRUXELLES	BRU	EURONEXT
+ALTERNEXT	PAR	EURONEXT
+ALTERNEXT	BRU	EURONEXT
+NASDAQ		NYC	BARCHART
+NYSE		NYC	NYSE
+AMEX		NYC	BARCHART
+OTCBB		NYC	BARCHART
+LSE		LON	not available yet
 
 ===============================================================================
 Intraday data
 ===============================================================================
 
-Exchange		Provider
-EURONEXT		not available yet
-ALTERNEXT		not available yet
-NASDAQ			not available yet
-NYSE			not available yet
-AMEX			not available yet
-OTCBB			not available yet
-LSE			not available yet
+Exchange 	Place	Provider
+EURONEXT	PAR	not available yet
+EURONEXT	BRU	not available yet
+EURONEXT	AMS	not available yet
+EURONEXT	LIS	not available yet
+ML PARIS	PAR	not available yet
+ML BRUXELLES	BRU	not available yet
+ALTERNEXT	PAR	not available yet
+ALTERNEXT	BRU	not available yet
+NASDAQ		NYC	not available yet
+NYSE		NYC	not available yet
+AMEX		NYC	not available yet
+OTCBB		NYC	not available yet
+LSE		LON	not available yet
 
 ===============================================================================
