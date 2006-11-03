@@ -45,7 +45,7 @@ import wx
 
 # matplotlib system
 import matplotlib
-matplotlib.use('WXAgg')
+matplotlib.use('WX')
 matplotlib.rcParams['numerix'] = 'numpy'
 
 # itrade system
@@ -165,6 +165,16 @@ class iTrade_wxLabel(object):
             del self.prevbmp
         del self.pos
         del self.bmp
+
+# ============================================================================
+# Test me
+# ============================================================================
+
+if __name__=='__main__':
+    setLevel(logging.INFO)
+
+    app = wx.PySimpleApp()
+    app.MainLoop()
 
 # ============================================================================
 # That's all folks !

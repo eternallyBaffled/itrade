@@ -49,13 +49,13 @@ from itrade_wxlabel import iTrade_wxLabel
 
 # matplotlib system
 import matplotlib
-matplotlib.use('WXAgg')
+matplotlib.use('WX')
 matplotlib.rcParams['numerix'] = 'numpy'
 
 from pylab import *
 
-from matplotlib.backends.backend_wx import FigureManager
-from matplotlib.backends.backend_wxagg import Toolbar, FigureCanvasWxAgg as FigureCanvas
+from matplotlib.backends.backend_wx import FigureManager,FigureCanvasWx as FigureCanvas
+#from matplotlib.backends.backend_wxagg import Toolbar, FigureCanvasWxAgg as FigureCanvas
 from matplotlib.backends.backend_wx import NavigationToolbar2Wx,_load_bitmap
 
 from matplotlib.figure import Figure

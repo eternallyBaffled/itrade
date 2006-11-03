@@ -47,7 +47,7 @@ import wx
 
 # matplotlib system
 import matplotlib
-matplotlib.use('WXAgg')
+matplotlib.use('WX')
 matplotlib.rcParams['numerix'] = 'numpy'
 
 # matplotlib helpers
