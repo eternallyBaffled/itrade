@@ -9,6 +9,7 @@ On the road for v0.4.5 (Nausicaa)
 	* Download EURONEXT list of quotes : use the MEP (SF bug 1589626)
 
 2006-11-02  Gilles Dumortier <dgil at ieee.org>
+	* Experimental Binary Package : 8 to 9 M bytes (SF bug 1477443)
 	* Property View : should be independent (SF bug 1589102)
 	* Fix a bug when a quote has more than 1 property to save
 
