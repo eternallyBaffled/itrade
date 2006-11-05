@@ -6,6 +6,7 @@ On the road for v0.4.5 (Nausicaa)
 ===============================================================================
 
 2006-11-05  Gilles Dumortier <dgil at ieee.org>
+	* Quotes.txt - missing Indices & Trackers for Euronext (SF bug 1590916)
 	* Select Quote : bad select item (SF bug  1590074)
 	* Euronext quotes - display only Euronext Paris !? (SF bug 1589626)
 		key : <ISINorTICKER>.<EXCHANGE>.<PLACE>

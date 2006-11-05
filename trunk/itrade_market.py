@@ -52,6 +52,7 @@ isin_market = {
     'nl': 'EURONEXT',
     'be': 'EURONEXT',
     'es': 'EURONEXT',
+    'qs': 'EURONEXT',
     'uk': 'LSE',
     'us': 'NASDAQ'
     }
@@ -112,7 +113,11 @@ def list_of_markets(bFilterMode=False):
 
 def compute_country(isin,market,place):
     if isin:
-        return isin[0:2].upper()
+        cp = isin[0:2].upper()
+        if cp=='QS':
+            return 'FR'
+        else:
+            return cp
     else:
         if market=='EURONEXT' or market=='ALTERNEXT':
             if place=='PAR': return 'FR'

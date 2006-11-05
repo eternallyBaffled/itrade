@@ -72,9 +72,11 @@ QUOTE_BOTH      = 3
 # LIST
 # ============================================================================
 
-QLIST_ALL    = 0
-QLIST_SYSTEM = 1
-QLIST_USER   = 2
+QLIST_ALL      = 0
+QLIST_SYSTEM   = 1
+QLIST_USER     = 2
+QLIST_INDICES  = 3
+QLIST_TRACKERS = 4
 
 # ============================================================================
 # volume formatter
@@ -1189,6 +1191,14 @@ class Quotes(object):
         if infile:
             self._addLines(infile,list=QLIST_SYSTEM,debug=False)
 
+        infile = itrade_csv.read(fn,os.path.join(itrade_config.dirSysData,'indices.txt'))
+        if infile:
+            self._addLines(infile,list=QLIST_INDICES,debug=False)
+
+        infile = itrade_csv.read(fn,os.path.join(itrade_config.dirSysData,'trackers.txt'))
+        if infile:
+            self._addLines(infile,list=QLIST_TRACKERS,debug=False)
+
         # them open and read user file
         infile = itrade_csv.read(fn,os.path.join(itrade_config.dirUserData,'quotes.txt'))
         if infile:
@@ -1223,9 +1233,9 @@ class Quotes(object):
             return True
         return False
 
-    def removeQuotes(self,market,list=QLIST_ALL):
+    def removeQuotes(self,market,list):
         for eachQuote in self.list():
-            if list==QLIST_ALL or (list==eachQuote.list()):
+            if list==eachQuote.list():
                 if market==None or eachQuote.market()==market:
                     del self.m_quotes[eachQuote.key()]
 
