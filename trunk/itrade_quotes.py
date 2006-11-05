@@ -1192,7 +1192,7 @@ class Quotes(object):
         # them open and read user file
         infile = itrade_csv.read(fn,os.path.join(itrade_config.dirUserData,'quotes.txt'))
         if infile:
-            self._addLines(infile,list=QLIST_USER,debug=True)
+            self._addLines(infile,list=QLIST_USER,debug=False)
 
     def saveListOfQuotes(self,fn=None):
         # System list
