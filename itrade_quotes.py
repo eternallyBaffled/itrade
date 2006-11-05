@@ -98,23 +98,35 @@ def fmtVolume(x):
 # Quote referencing
 # ============================================================================
 
-def quote_reference(isin,ticker,market):
+def quote_reference(isin,ticker,market,place):
+    #print 'quote_reference: isin=%s ticker=%s market=%s place=%s' % (isin,ticker,market,place)
     if isin and isin!='':
         if market==None or market=='':
-            quote = quotes.lookupISIN(isin)
-            if quote:
+            lst = quotes.lookupISIN(isin)
+            if len(lst)>0:
+                quote = lst[0]
                 market = quote.market()
-                return '%s.%s' % (isin,market)
+                place = quote.place()
+                return '%s.%s.%s' % (isin,market,place)
         else:
-            return '%s.%s' % (isin,market)
+            if place==None or place=='':
+                lst = quotes.lookupISIN(isin,market)
+                if len(lst)>0:
+                    quote = lst[0]
+                    place = quote.place()
+
+            return '%s.%s.%s' % (isin,market,place)
 
     if market==None or market=='':
         quote = quotes.lookupTicker(ticker)
         if quote:
             market = quote.market()
+            place = quote.place()
         else:
             market = '?'
-    return '%s.%s' % (ticker,market)
+            place = '?'
+
+    return '%s.%s.%s' % (ticker,market,place)
 
 # ============================================================================
 # Quote
@@ -1134,18 +1146,11 @@ class Quotes(object):
             place = place.upper()
 
         # get a key and check strict duplicate (i.e. same key)
-        key = quote_reference(isin,ticker,market)
+        key = quote_reference(isin,ticker,market,place)
         if self.m_quotes.has_key(key):
-            # update quote ?
-            country2 = compute_country(None,market,place)
-            if country2 == isin[0:2].upper():
-                if debug:
-                    print '%r/%s already exists - replace with %s' % (self.m_quotes[key],self.m_quotes[key].ticker(),ticker)
-                del self.m_quotes[key]
-            else:
-                if debug:
-                    print '%r/%s already exists - keep it (ignore %s)' % (self.m_quotes[key],self.m_quotes[key].ticker(),ticker)
-                return True
+            if debug:
+                print '%r/%s already exists - keep it (ignore %s)' % (self.m_quotes[key],self.m_quotes[key].ticker(),ticker)
+            return True
 
         # depending on isin
         if isin==None or isin=='':
@@ -1157,7 +1162,7 @@ class Quotes(object):
                 return True
         else:
             # isin : check if we can replace the same quote without isin
-            key2 = quote_reference(None,ticker,market)
+            key2 = quote_reference(None,ticker,market,place)
             if self.m_quotes.has_key(key2):
                 if debug:
                     print '%r already exists but without ISIN - replace' % self.m_quotes[key2]
@@ -1231,25 +1236,24 @@ class Quotes(object):
             return self.m_quotes[key]
         return None
 
-    def lookupISIN(self,isin,market=None):
+    def lookupISIN(self,isin,market=None,place=None):
+        ret = []
         for eachVal in self.m_quotes.values():
             if eachVal.isin() == isin:
-                if market==None or (market==eachVal.market()):
+                if (market==None or (market==eachVal.market())) and (place==None or (place==eachVal.place())):
+                    ret.append(eachVal)
+        return ret
+
+    def lookupTicker(self,ticker,market=None,place=None):
+        for eachVal in self.m_quotes.values():
+            if (eachVal.ticker() == ticker) and (market==None or (market==eachVal.market())) and (place==None or (place==eachVal.place())):
                     return eachVal
         return None
 
-    def lookupTicker(self,ticker,market=None):
+    def lookupName(self,name,market,place=None):
         for eachVal in self.m_quotes.values():
-            if eachVal.ticker() == ticker:
-                if market==None or (market==eachVal.market()):
-                    return eachVal
-        return None
-
-    def lookupName(self,name,market):
-        for eachVal in self.m_quotes.values():
-            if eachVal.name() == name:
-                if market==None or (market==eachVal.market()):
-                    return eachVal
+            if (eachVal.name() == name) and (market==None or (market==eachVal.market())) and (place==None or (place==eachVal.place())):
+                return eachVal
         return None
 
     # ---[ Trades ] ---

@@ -6,6 +6,8 @@ On the road for v0.4.5 (Nausicaa)
 ===============================================================================
 
 2006-11-05  Gilles Dumortier <dgil at ieee.org>
+	* Euronext quotes - display only Euronext Paris !? (SF bug 1589626)
+		key : <ISINorTICKER>.<EXCHANGE>.<PLACE>
 	* Marche Libre - ValueError (SF bug 1590367)
 
 2006-11-03  Gilles Dumortier <dgil at ieee.org>

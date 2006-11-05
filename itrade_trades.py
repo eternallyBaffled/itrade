@@ -512,10 +512,10 @@ if __name__=='__main__':
 
     from itrade_quotes import quotes
 
-    quote = quotes.lookupISIN('FR0000072621');
+    quote = quotes.lookupTicket('AUSY','EURONEXT');
     info('test1 %s' % quote );
 
-    quote = quotes.lookupISIN('US0378331005');
+    quote = quotes.lookupTicker('AAPL','NASDAQ');
     info('test2 %s' % quote );
 
     trade = Trades(quote)

@@ -267,7 +267,7 @@ class iTradeQuoteListDialog(wx.Dialog):
                         return
 
                 # check uniqueness
-                ref = quote_reference(self.m_isin,self.m_ticker,self.m_market)
+                ref = quote_reference(self.m_isin,self.m_ticker,self.m_market,self.m_place)
                 if quotes.lookupKey(ref):
                     dlg = wx.MessageDialog(self, message('listquote_duplicate_ref') % ref, self.tt, wx.OK | wx.ICON_ERROR)
                     idRet = dlg.ShowModal()

@@ -1,1 +1,1 @@
-FR0010270033.EURONEXT;live;euronext
+FR0010270033.EURONEXT.PAR;live;euronext
