@@ -258,12 +258,6 @@ def select_iTradePortfolio(win,dportfolio=None,operation='select'):
         portfolio = None
     dlg.Destroy()
 
-    if portfolio and operation=='select':
-        # can be long ...
-        wx.SetCursor(wx.HOURGLASS_CURSOR)
-
-        # hint: do not load a portfolio selected for deletion !
-        portfolio = loadPortfolio(portfolio.filename())
     return portfolio
 
 # ============================================================================
@@ -533,6 +527,7 @@ if __name__=='__main__':
 
     port = select_iTradePortfolio(None,'default','select')
     if port:
+        port = loadPortfolio(port.filename())
         properties_iTradePortfolio(None,port,'edit')
         app.MainLoop()
 

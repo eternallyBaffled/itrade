@@ -1194,6 +1194,7 @@ if __name__=='__main__':
 
     port = itrade_wxportfolio.select_iTradePortfolio(None,'default','select')
     if port:
+        port = loadPortfolio(port.filename())
         open_iTradeOperations(None,port)
         app.MainLoop()
 
