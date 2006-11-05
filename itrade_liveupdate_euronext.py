@@ -70,7 +70,8 @@ class LiveUpdate_Euronext(object):
         self.m_lastclock = "::"
         self.m_livelock = thread.allocate_lock()
         self.m_market = market
-        self.m_urlid = 'http://www.euronext.com/trader/summarizedmarket/0,5372,1732_6834,00.html?isinCode='
+        self.m_urlid = 'http://www.euronext.com/initsession/0,4157,1732_4794711,00.html?searchTarget=quote&path=%2Fquicksearch&fromsearchbox=true&matchpattern='
+        #'http://www.euronext.com/trader/summarizedmarket/0,5372,1732_6834,00.html?isinCode='
         self.m_url = 'http://www.euronext.com/tools/datacentre/dataCentreDownloadExcell/0,5822,1732_2276422,00.html'
 
     # ---[ reentrant ] ---
@@ -170,11 +171,16 @@ class LiveUpdate_Euronext(object):
             sid = re.search("isinCode=%s&selectedMep=%d&idInstrument=" % (quote.isin(),euronext_place2mep(quote.place())),buf,re.IGNORECASE|re.MULTILINE)
             if sid:
                 sid = sid.end()
-                sexch = re.search("&quotes=stock",buf[sid:],re.IGNORECASE|re.MULTILINE)
+                sexch = re.search("&quotes=stock",buf[sid:sid+20],re.IGNORECASE|re.MULTILINE)
+                if not sexch:
+                    print 'BOGUS : ',buf[sid:sid+20]
+                    sexch = re.search('\"',buf[sid:sid+20],re.IGNORECASE|re.MULTILINE)
                 if sexch:
                     sexch = sexch.start()
-                    data = buf[sid:]
+                    data = buf[sid:sid+20]
                     IdInstrument = data[:sexch]
+            else:
+                print 'isinCode=%s&selectedMep=%d&idInstrument=' % (quote.isin(),euronext_place2mep(quote.place()))
 
             if IdInstrument==None:
                 print "LiveUpdate_Euronext:can't get IdInstrument for %s " % quote.isin()

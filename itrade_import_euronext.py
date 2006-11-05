@@ -120,11 +120,15 @@ class Import_euronext(object):
             sid = re.search("isinCode=%s&selectedMep=%d&idInstrument=" % (quote.isin(),euronext_place2mep(quote.place())),buf,re.IGNORECASE|re.MULTILINE)
             if sid:
                 sid = sid.end()
-                sexch = re.search("&quotes=stock",buf[sid:],re.IGNORECASE|re.MULTILINE)
+                sexch = re.search("&quotes=stock",buf[sid:sid+20],re.IGNORECASE|re.MULTILINE)
+                if not sexch:
+                    sexch = re.search('\"',buf[sid:sid+20],re.IGNORECASE|re.MULTILINE)
                 if sexch:
                     sexch = sexch.start()
-                    data = buf[sid:]
+                    data = buf[sid:sid+20]
                     IdInstrument = data[:sexch]
+            else:
+                print 'isinCode=%s&selectedMep=%d&idInstrument=' % (quote.isin(),euronext_place2mep(quote.place()))
 
             if IdInstrument==None:
                 print "Import_euronext:can't get IdInstrument for %s " % quote.isin()

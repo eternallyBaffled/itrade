@@ -191,8 +191,10 @@ quote_select_ticker;Ticker / Name :
 quote_select_market;Market :
 quote_select_list;List :
 quote_select_alllist;No filter
-quote_select_syslist;System
-quote_select_usrlist;User
+quote_select_syslist;Stocks
+quote_select_usrlist;User Edited
+quote_select_indiceslist;Indices
+quote_select_trackerslist;Trackers
 quote_select_filterfield;Only traded quotes
 
 quote_graphdaily;Daily

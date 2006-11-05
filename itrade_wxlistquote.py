@@ -415,6 +415,8 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         self.wxQListCtrl.Append(message('quote_select_alllist'),QLIST_ALL)
         self.wxQListCtrl.Append(message('quote_select_syslist'),QLIST_SYSTEM)
         self.wxQListCtrl.Append(message('quote_select_usrlist'),QLIST_USER)
+        self.wxQListCtrl.Append(message('quote_select_indiceslist'),QLIST_INDICES)
+        self.wxQListCtrl.Append(message('quote_select_trackerslist'),QLIST_TRACKERS)
         self.wxQListCtrl.SetSelection(self.m_qlist)
 
         sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
@@ -507,21 +509,30 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         self.m_list.SetFocus()
 
     def checkEnablity(self):
-        if self.m_qlist == QLIST_USER:
+        if self.m_qlist == QLIST_INDICES or self.m_qlist == QLIST_TRACKERS:
             self.wxOK.Enable(False)
-            self.wxNEW.Enable(True)
-            self.wxEDIT.Enable(True)
-            self.wxDELETE.Enable(True)
-        else:
-            self.wxOK.Enable(True)
             self.wxNEW.Enable(False)
             self.wxEDIT.Enable(False)
             self.wxDELETE.Enable(False)
-
-        if self.m_qlist == QLIST_ALL:
             self.wxCLEAR.Enable(False)
+            self.wxSAVE.Enable(False)
         else:
-            self.wxCLEAR.Enable(True)
+
+            if self.m_qlist == QLIST_USER:
+                self.wxOK.Enable(False)
+                self.wxNEW.Enable(True)
+                self.wxEDIT.Enable(True)
+                self.wxDELETE.Enable(True)
+            else:
+                self.wxOK.Enable(True)
+                self.wxNEW.Enable(False)
+                self.wxEDIT.Enable(False)
+                self.wxDELETE.Enable(False)
+
+            if self.m_qlist == QLIST_ALL:
+                self.wxCLEAR.Enable(False)
+            else:
+                self.wxCLEAR.Enable(True)
 
         if self.m_market==None:
             self.wxOK.SetLabel(message('download_symbols_alllists'))
@@ -535,6 +546,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
 
             self.wxCLEAR.SetLabel(message('clear_symbols_onelist'))
             self.wxCLEAR.SetHelpText(message('clear_symbols_onedesc'))
+
         self.Layout()
 
     def PopulateList(self):

@@ -173,6 +173,8 @@ class iTradeQuoteSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         self.wxQListCtrl.Append(message('quote_select_alllist'),QLIST_ALL)
         self.wxQListCtrl.Append(message('quote_select_syslist'),QLIST_SYSTEM)
         self.wxQListCtrl.Append(message('quote_select_usrlist'),QLIST_USER)
+        self.wxQListCtrl.Append(message('quote_select_indiceslist'),QLIST_INDICES)
+        self.wxQListCtrl.Append(message('quote_select_trackerslist'),QLIST_TRACKERS)
         self.wxQListCtrl.SetSelection(self.m_qlist)
 
         sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
