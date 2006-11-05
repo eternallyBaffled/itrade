@@ -132,12 +132,13 @@ class Import_euronext(object):
                     print 'seq-2 not found'
             else:
                 print 'seq-1 not found'
-            print 'isinCode=%s&selectedMep=%d&idInstrument=' % (quote.isin(),euronext_place2mep(quote.place()))
+            #print 'isinCode=%s&selectedMep=%d&idInstrument=' % (quote.isin(),euronext_place2mep(quote.place()))
 
             if IdInstrument==None:
                 print "Import_euronext:can't get IdInstrument for %s " % quote.isin()
                 return None
             else:
+                print "Import_euronext:IdInstrument for %s is %s" % (quote.isin(),IdInstrument)
                 quote.set_pluginID(IdInstrument)
 
         # get historic data itself !
