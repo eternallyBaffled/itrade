@@ -70,8 +70,7 @@ class LiveUpdate_Euronext(object):
         self.m_lastclock = "::"
         self.m_livelock = thread.allocate_lock()
         self.m_market = market
-        self.m_urlid = 'http://www.euronext.com/initsession/0,4157,1732_4794711,00.html?searchTarget=quote&path=%2Fquicksearch&fromsearchbox=true&matchpattern='
-        #'http://www.euronext.com/trader/summarizedmarket/0,5372,1732_6834,00.html?isinCode='
+        self.m_urlid = 'http://www.euronext.com/tools/datacentre/results/0,5773,1732_204211370,00.html?fromsearchbox=true&matchpattern='
         self.m_url = 'http://www.euronext.com/tools/datacentre/dataCentreDownloadExcell/0,5822,1732_2276422,00.html'
 
     # ---[ reentrant ] ---
@@ -178,6 +177,10 @@ class LiveUpdate_Euronext(object):
                     sexch = sexch.start()
                     data = buf[sid:sid+20]
                     IdInstrument = data[:sexch]
+                else:
+                    print 'seq-2 not found'
+            else:
+                print 'seq-1 not found'
             print 'isinCode=%s&selectedMep=%d&idInstrument=' % (quote.isin(),euronext_place2mep(quote.place()))
 
             if IdInstrument==None:
@@ -325,8 +328,6 @@ try:
 except NameError:
     gLiveEuronext = LiveUpdate_Euronext('euronext')
     gLiveAlternext = LiveUpdate_Euronext('alternext')
-    gLiveParisML = LiveUpdate_Euronext('paris marche libre')
-    gLiveBruxellesML = LiveUpdate_Euronext('bruxelles marche libre')
 
 registerLiveConnector('EURONEXT','PAR',gLiveEuronext,bDefault=False)
 registerLiveConnector('EURONEXT','BRU',gLiveEuronext,bDefault=True)
@@ -334,8 +335,8 @@ registerLiveConnector('EURONEXT','AMS',gLiveEuronext,bDefault=True)
 registerLiveConnector('EURONEXT','LIS',gLiveEuronext,bDefault=True)
 registerLiveConnector('ALTERNEXT','PAR',gLiveAlternext,bDefault=False)
 registerLiveConnector('ALTERNEXT','BRU',gLiveAlternext,bDefault=True)
-registerLiveConnector('PARIS MARCHE LIBRE','PAR',gLiveParisML,bDefault=False)
-registerLiveConnector('BRUXELLES MARCHE LIBRE','BRU',gLiveBruxellesML,bDefault=True)
+registerLiveConnector('PARIS MARCHE LIBRE','PAR',gLiveEuronext,bDefault=False)
+registerLiveConnector('BRUXELLES MARCHE LIBRE','BRU',gLiveEuronext,bDefault=True)
 
 # ============================================================================
 # Test ME
