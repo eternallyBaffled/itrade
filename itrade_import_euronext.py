@@ -57,7 +57,8 @@ from itrade_market import euronext_place2mep
 class Import_euronext(object):
     def __init__(self):
         debug('Import_euronext:__init__')
-        self.m_urlid = 'http://www.euronext.com/trader/summarizedmarket/0,5372,1732_6834,00.html?isinCode='
+        self.m_urlid = 'http://www.euronext.com/initsession/0,4157,1732_4794711,00.html?searchTarget=quote&path=%2Fquicksearch&fromsearchbox=true&matchpattern='
+        #'http://www.euronext.com/trader/summarizedmarket/0,5372,1732_6834,00.html?isinCode='
         self.m_url = 'http://www.euronext.com/tools/datacentre/dataCentreDownloadExcell/0,5822,1732_2276422,00.html'
 
     def name(self):
@@ -127,8 +128,7 @@ class Import_euronext(object):
                     sexch = sexch.start()
                     data = buf[sid:sid+20]
                     IdInstrument = data[:sexch]
-            else:
-                print 'isinCode=%s&selectedMep=%d&idInstrument=' % (quote.isin(),euronext_place2mep(quote.place()))
+            print 'isinCode=%s&selectedMep=%d&idInstrument=' % (quote.isin(),euronext_place2mep(quote.place()))
 
             if IdInstrument==None:
                 print "Import_euronext:can't get IdInstrument for %s " % quote.isin()
