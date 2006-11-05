@@ -136,6 +136,20 @@ class LiveUpdate_Euronext(object):
             self.m_lastclock = val
         return "%d:%02d" % (val/60,val%60)
 
+    def parseFValue(self,d):
+        val = string.split(d,',')
+        ret = ''
+        for val in val:
+            ret = ret+val
+        return string.atof(ret)
+
+    def parseLValue(self,d):
+        val = string.split(d,',')
+        ret = ''
+        for val in val:
+            ret = ret+val
+        return string.atol(ret)
+
     def getdata(self,quote):
         self.m_connected = False
         debug("LiveUpdate_Euronext:getdata quote:%s market:%s" % (quote,self.m_market))
@@ -218,15 +232,22 @@ class LiveUpdate_Euronext(object):
                         # __x
                         self.m_lastclock = sclock
 
+                        #
+                        open = self.parseFValue(sdata[15])
+                        high = self.parseFValue(sdata[16])
+                        low = self.parseFValue(sdata[18])
+                        value = self.parseFValue(sdata[7])
+                        volume = self.parseLValue(sdata[8])
+
                         # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME
                         data = (
                           quote.key(),
                           sdate,
-                          sdata[15],    # Open
-                          sdata[16],    # High
-                          sdata[18],    # Low
-                          sdata[7],     # Last
-                          sdata[8]      # Volume
+                          open,
+                          high,
+                          low,
+                          value,
+                          volume
                         )
                         data = map(lambda (val): '%s' % str(val), data)
                         data = string.join(data, ';')

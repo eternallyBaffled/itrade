@@ -581,6 +581,9 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
                 self.NewContext(dp)
 
     def NewContext(self,dp):
+        # can be long ...
+        wx.SetCursor(wx.HOURGLASS_CURSOR)
+
         # close links
         self.CloseLinks()
 
@@ -590,6 +593,9 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
         self.m_matrix = createMatrix(dp.filename(),dp)
         self.m_market = self.m_portfolio.market()
         self.m_connector = getLiveConnector(self.m_market)
+
+        # should be enough !
+        wx.SetCursor(wx.STANDARD_CURSOR)
 
         # populate current view and refresh
         self.OnPostInit(None)
