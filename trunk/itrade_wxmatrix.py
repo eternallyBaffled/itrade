@@ -578,6 +578,11 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
         if self.manageDirty(message('main_save_matrix_data'),fnt='open'):
             dp = select_iTradePortfolio(self,self.m_portfolio,'select')
             if dp:
+                # can be long ...
+                wx.SetCursor(wx.HOURGLASS_CURSOR)
+                self.stopLive(bBusy=False)
+
+                dp = loadPortfolio(dp.filename())
                 self.NewContext(dp)
 
     def NewContext(self,dp):
