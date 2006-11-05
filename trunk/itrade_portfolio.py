@@ -510,8 +510,7 @@ class Operations(object):
         itrade_csv.write(outfile,os.path.join(itrade_config.dirUserData,'default.operations.txt'),self.m_operations.values())
 
     def add(self,item,bApply):
-        info('Operations::add() before: 0:%s , 1:%s , 2:%s , 3:%s , 4:%s , 5:%s' % (item[0],item[1],item[2],item[3],item[4],item[5]))
-        #info('Operations::add() before: %s' % item)
+        debug('Operations::add() before: 0:%s , 1:%s , 2:%s , 3:%s , 4:%s , 5:%s' % (item[0],item[1],item[2],item[3],item[4],item[5]))
         ll = len(item)
         if ll>=7:
             vat = item[6]
