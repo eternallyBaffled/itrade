@@ -326,7 +326,7 @@ if __name__=='__main__':
     from itrade_quotes import *
 
     print 'AUSY (Euronext market):'
-    q = quotes.lookupTicker('OSI')
+    q = quotes.lookupTicker('OSI','EURONEXT')
     print 'Country: %s, Market: %s' % (q.country(),q.market())
     print "Get 15/03/2005 - 25/03/2005"
     q.update(date(2005,03,15),date(2005,03,25))
@@ -334,7 +334,7 @@ if __name__=='__main__':
     q.update()
 
     print 'APPLE (US market):'
-    q = quotes.lookupTicker('AAPL')
+    q = quotes.lookupTicker('AAPL','NASDAQ')
     print 'Country: %s, Market: %s' % (q.country(),q.market())
     print "Get 15/03/2005 - 25/03/2005"
     q.update(date(2005,03,15),date(2005,03,25))

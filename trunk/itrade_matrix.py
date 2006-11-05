@@ -75,21 +75,21 @@ class TradingMatrix(object):
                 if item:
                     if len(item)>4:
                         # new format with country
-                        #print 'addKey:new fmt: %s : %s : %s' % (item[0],item[2],item[3])
+                        print 'addKey:new fmt: %s : %s : %s : %s '% (item[0],item[2],item[3],item[5])
                         ref = None
                         if item[0]=='':
-                            quote = quotes.lookupTicker(item[2],item[3])
+                            quote = quotes.lookupTicker(ticker=item[2],market=item[3],place=item[5])
                             if quote:
                                 ref = quote.key()
                         if not ref:
-                            ref = quote_reference(isin=item[0],ticker=item[2],market=item[3])
+                            ref = quote_reference(isin=item[0],ticker=item[2],market=item[3],place=item[5])
                         if not self.addKey(ref):
                             print 'load (new format): %s/%s : quote not found in quotes list ! (ref=%s)' % (item[0],item[2],ref)
                     elif len(item)==4:
                         # old format with isin only
                         # __x TBD: to be deprecated during beta release
-                        print 'load:old fmt: %s : %s : no market' % (item[0],item[3])
-                        ref = quote_reference(isin=item[0],ticker=item[3],market=None)
+                        print 'load:old fmt: %s : %s : no market : no place' % (item[0],item[3])
+                        ref = quote_reference(isin=item[0],ticker=item[3],market=None,place=None)
                         if not self.addKey(ref):
                             print 'load (old format): %s/%s : quote not found in quotes list ! (ref=%s)' % (item[0],item[3],ref)
 

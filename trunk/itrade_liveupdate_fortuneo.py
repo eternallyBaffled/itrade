@@ -850,14 +850,13 @@ def test(ticker):
         if state:
             debug("state=%s" % (state))
 
-            quote = quotes.lookupTicker(ticker)
+            quote = quotes.lookupTicker(ticker,'EURONEXT')
             data = gLiveFortuneo.getdata(quote)
             if data:
                 info(data)
             else:
                 print "getdata() failure :-("
                 debug("nodata")
-            quote = quotes.lookupTicker(ticker)
             info(gLiveFortuneo.currentClock(quote))
             if data:
                 info(gLiveFortuneo.currentNotebook(quote))

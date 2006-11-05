@@ -242,8 +242,9 @@ class Operation(object):
                 if self.m_quote:
                     self.m_name = self.m_quote.name()
                 else:
-                    self.m_quote = quotes.lookupISIN(m)
-                    if self.m_quote:
+                    lst = quotes.lookupISIN(m)
+                    if len(lst)>0:
+                        self.m_quote = lst[0]
                         self.m_name = self.m_quote.name()
                     else:
                         # bad name : keep it :-(

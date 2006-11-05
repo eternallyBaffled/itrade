@@ -351,8 +351,9 @@ class iTradeQuoteSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
     def OnISINEdited(self,event):
         isin = event.GetString()
         if isin!='':
-            quote = quotes.lookupISIN(isin,self.m_market)
-            if quote:
+            lst = quotes.lookupISIN(isin,self.m_market)
+            if len(lst)>0:
+                quote = lst[0]
                 v = self.wxTickerCtrl.GetLabel()
                 #print 'isin:',isin,' label %s=?=%s' % (v,quote.ticker()), 'line=%d' % self.itemLineMap[quote.ticker()]
                 if v!= quote.ticker():
@@ -414,9 +415,6 @@ class iTradeQuoteSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
 # ============================================================================
 
 def select_iTradeQuote(win,dquote=None,filter=False,market=None):
-    if dquote:
-        if not isinstance(dquote,Quote):
-            dquote = quotes.lookupISIN(dquote,market)
     dlg = iTradeQuoteSelectorListCtrlDialog(win,dquote,filter,market)
     if dlg.ShowModal()==wx.ID_OK:
         info('select_iTradeQuote() : %s' % dlg.quote)
