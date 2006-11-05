@@ -173,14 +173,12 @@ class LiveUpdate_Euronext(object):
                 sid = sid.end()
                 sexch = re.search("&quotes=stock",buf[sid:sid+20],re.IGNORECASE|re.MULTILINE)
                 if not sexch:
-                    print 'BOGUS : ',buf[sid:sid+20]
                     sexch = re.search('\"',buf[sid:sid+20],re.IGNORECASE|re.MULTILINE)
                 if sexch:
                     sexch = sexch.start()
                     data = buf[sid:sid+20]
                     IdInstrument = data[:sexch]
-            else:
-                print 'isinCode=%s&selectedMep=%d&idInstrument=' % (quote.isin(),euronext_place2mep(quote.place()))
+            print 'isinCode=%s&selectedMep=%d&idInstrument=' % (quote.isin(),euronext_place2mep(quote.place()))
 
             if IdInstrument==None:
                 print "LiveUpdate_Euronext:can't get IdInstrument for %s " % quote.isin()
