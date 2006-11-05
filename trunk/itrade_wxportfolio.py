@@ -259,6 +259,9 @@ def select_iTradePortfolio(win,dportfolio=None,operation='select'):
     dlg.Destroy()
 
     if portfolio and operation=='select':
+        # can be long ...
+        wx.SetCursor(wx.HOURGLASS_CURSOR)
+
         # hint: do not load a portfolio selected for deletion !
         portfolio = loadPortfolio(portfolio.filename())
     return portfolio

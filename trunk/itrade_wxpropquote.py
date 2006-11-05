@@ -270,7 +270,7 @@ class iTradeQuotePropertiesPanel(wx.Window):
         wx.EVT_BUTTON(self, nid, self.OnSetTrading)
 
         thebox.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
-        self._sizer.AddSizer(thebox, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
+        self._sizer.AddSizer(thebox, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5, proportion=1)   # __x
 
         # auto layout
         wx.EVT_SIZE(self, self.OnSize)

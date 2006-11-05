@@ -78,6 +78,20 @@ class Import_euronext(object):
     def parseDate(self,d):
         return (d.year, d.month, d.day)
 
+    def parseFValue(self,d):
+        val = string.split(d,',')
+        ret = ''
+        for val in val:
+            ret = ret+val
+        return string.atof(ret)
+
+    def parseLValue(self,d):
+        val = string.split(d,',')
+        ret = ''
+        for val in val:
+            ret = ret+val
+        return string.atol(ret)
+
     def splitLines(self,buf):
         lines = string.split(buf, '\n')
         lines = filter(lambda x:x, lines)
@@ -165,17 +179,19 @@ class Import_euronext(object):
         buf = f.read()
         lines = self.splitLines(buf)
         data = ''
+        #print lines
 
         for eachLine in lines:
             sdata = string.split (eachLine, '\t')
             if len(sdata)==6:
                 if (sdata[0]<>"Date"):
+                    #print sdata
                     sdate = jjmmaa2yyyymmdd(sdata[0])
-                    open = string.atof(sdata[1])
-                    high = string.atof(sdata[2])
-                    low = string.atof(sdata[3])
-                    value = string.atof(sdata[4])
-                    volume = string.atoi(sdata[5])
+                    open = self.parseFValue(sdata[1])
+                    high = self.parseFValue(sdata[2])
+                    low = self.parseFValue(sdata[3])
+                    value = self.parseFValue(sdata[4])
+                    volume = self.parseLValue(sdata[5])
 
                     # encode in EBP format
                     # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME
