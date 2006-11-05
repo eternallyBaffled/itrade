@@ -224,24 +224,26 @@ class iTradeQuoteSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         self.PopulateList()
         self.wxTickerCtrl.SetFocus()
 
+    def resetFields(self):
+        self.m_isin = ''
+        self.m_ticker = ''
+        self.wxIsinCtrl.SetLabel('')
+        self.wxTickerCtrl.SetLabel('')
+        self.m_list.SetFocus()
+
     def OnFilter(self,event):
         self.m_filter = event.Checked()
-        self.PopulateList()
-        self.wxIsinCtrl.SetLabel(self.m_isin)
-        self.wxTickerCtrl.SetLabel(self.m_ticker)
-        self.wxTickerCtrl.SetFocus()
+        self.resetFields()
 
     def OnMarket(self,evt):
         idx = self.wxMarketCtrl.GetSelection()
         self.m_market = self.wxMarketCtrl.GetClientData(idx)
-        self.PopulateList()
-        self.m_list.SetFocus()
+        self.resetFields()
 
     def OnQuoteList(self,evt):
         idx = self.wxQListCtrl.GetSelection()
         self.m_qlist = idx
-        self.PopulateList()
-        self.m_list.SetFocus()
+        self.resetFields()
 
     def isFiltered(self,quote):
         if (self.m_qlist == QLIST_ALL) or (self.m_qlist == quote.list()):
@@ -348,10 +350,20 @@ class iTradeQuoteSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         print 'ticker: (editing=%d) :' % self.m_editing,self.m_ticker
 
         if self.m_ticker!='':
-            quote = quotes.lookupTicker(self.m_ticker,self.m_market)
-            if quote:
-                self.m_isin = quote.isin()
-                self.m_place = quote.place()
+            if self.m_editing:
+                lst = quotes.lookupPartialTicker(self.m_ticker,self.m_market)
+            else:
+                lst = [quotes.lookupTicker(self.m_ticker,self.m_market)]
+            if len(lst)==1:
+                quote = lst[0]
+                if self.m_ticker == quote.ticker():
+                    self.m_isin = quote.isin()
+                    self.m_place = quote.place()
+                    self.SetCurrentItem(self.itemLineMap[quote.ticker()])
+                else:
+                    self.m_isin = ''
+                    self.m_place = ''
+                    self.wxIsinCtrl.SetLabel('')
             else:
                 self.m_isin = ''
                 self.m_place = ''
@@ -391,6 +403,7 @@ class iTradeQuoteSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
     def OnItemSelected(self, event):
         # be sure we come from a click and not some editing in ticker/isin controls
         quote = self.getQuoteOnTheLine(event.m_itemIndex)
+        print 'OnItemSelected:',quote,' item:',event.m_itemIndex
         self.m_editing = False
         self.m_isin = quote.isin()
         self.m_place = quote.place()
@@ -403,6 +416,7 @@ class iTradeQuoteSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
 
     def OnValid(self,event):
         self.quote = self.getQuoteOnTheLine(self.currentItem)
+        print 'OnItemSelected:',self.quote,' item:',self.currentItem
         if self.quote:
             self.EndModal(wx.ID_OK)
 

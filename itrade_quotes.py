@@ -1237,6 +1237,7 @@ class Quotes(object):
         return None
 
     def lookupISIN(self,isin,market=None,place=None):
+        # return list of
         ret = []
         for eachVal in self.m_quotes.values():
             if eachVal.isin() == isin:
@@ -1245,10 +1246,19 @@ class Quotes(object):
         return ret
 
     def lookupTicker(self,ticker,market=None,place=None):
+        # return first one
         for eachVal in self.m_quotes.values():
             if (eachVal.ticker() == ticker) and (market==None or (market==eachVal.market())) and (place==None or (place==eachVal.place())):
                     return eachVal
         return None
+
+    def lookupPartialTicker(self,ticker,market=None,place=None):
+        # return list of
+        ret = []
+        for eachVal in self.m_quotes.values():
+            if (eachVal.ticker().find(ticker,0)==0) and (market==None or (market==eachVal.market())) and (place==None or (place==eachVal.place())):
+                    ret.append(eachVal)
+        return ret
 
     def lookupName(self,name,market,place=None):
         for eachVal in self.m_quotes.values():
