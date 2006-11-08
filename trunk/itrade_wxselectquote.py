@@ -101,7 +101,8 @@ class iTradeQuoteSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
 
         tID = wx.NewId()
         self.m_imagelist = wx.ImageList(16,16)
-        self.sm_q = self.m_imagelist.Add(wx.Bitmap('res/invalid.png'))
+        self.sm_q = self.m_imagelist.Add(wx.Bitmap('res/quote.png'))
+        self.sm_i = self.m_imagelist.Add(wx.Bitmap('res/invalid.png'))
         self.sm_up = self.m_imagelist.Add(wx.Bitmap('res/sm_up.png'))
         self.sm_dn = self.m_imagelist.Add(wx.Bitmap('res/sm_down.png'))
 
@@ -288,7 +289,10 @@ class iTradeQuoteSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         curline = -1
         for x in range(len(items)):
             key, data = items[x]
-            self.m_list.InsertImageStringItem(line, data[0], self.sm_q)
+            if data[0]!='':
+                self.m_list.InsertImageStringItem(line, data[0], self.sm_q)
+            else:
+                self.m_list.InsertImageStringItem(line, data[0], self.sm_i)
             if data[0] == self.m_isin and data[1]== self.m_ticker and data[3] == self.m_place and data[4] == self.m_market:
                 # current selection
                 curline = line

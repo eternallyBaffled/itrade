@@ -83,7 +83,8 @@ class iTradePortfolioSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
 
         tID = wx.NewId()
         self.m_imagelist = wx.ImageList(16,16)
-        self.sm_q = self.m_imagelist.Add(wx.Bitmap('res/invalid.png'))
+        self.sm_q = self.m_imagelist.Add(wx.Bitmap('res/quote.png'))
+        self.sm_i = self.m_imagelist.Add(wx.Bitmap('res/invalid.png'))
         self.sm_up = self.m_imagelist.Add(wx.Bitmap('res/sm_up.png'))
         self.sm_dn = self.m_imagelist.Add(wx.Bitmap('res/sm_down.png'))
 
@@ -183,7 +184,10 @@ class iTradePortfolioSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         items = self.itemDataMap.items()
         for x in range(len(items)):
             key, data = items[x]
-            self.m_list.InsertImageStringItem(x, data[0], self.sm_q)
+            if data[0]!='':
+                self.m_list.InsertImageStringItem(x, data[0], self.sm_q)
+            else:
+                self.m_list.InsertImageStringItem(x, data[0], self.sm_i)
             if data[0] == self.m_name:  # current selection
                 self.currentItem = x
             self.m_list.SetStringItem(x, 1, data[1])
