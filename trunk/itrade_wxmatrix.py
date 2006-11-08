@@ -240,17 +240,17 @@ class iTradeMainToolbar(wx.ToolBar):
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
         self.AddSimpleTool(self._NTB2_OPERATIONS, wx.ArtProvider.GetBitmap(wx.ART_REPORT_VIEW, wx.ART_TOOLBAR),
                            message('main_view_operations'), message('main_view_desc_operations'))
-        self.AddSimpleTool(self._NTB2_MONEY, wx.Bitmap('res/money.gif'),
+        self.AddSimpleTool(self._NTB2_MONEY, wx.Bitmap('res/money.png'),
                            message('main_view_money'), message('main_view_desc_money'))
-        self.AddSimpleTool(self._NTB2_ALERTS, wx.Bitmap('res/bell.gif'),
+        self.AddSimpleTool(self._NTB2_ALERTS, wx.Bitmap('res/bell.png'),
                            message('main_view_alerts'), message('main_view_desc_alerts'))
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
-        self.AddSimpleTool(self._NTB2_QUOTE, wx.Bitmap('res/graph.gif'),
+        self.AddSimpleTool(self._NTB2_QUOTE, wx.Bitmap('res/graph.png'),
                            message('main_view_current'), message('main_view_desc_current'))
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
         self.AddSimpleTool(self._NTB2_REFRESH, wx.Bitmap('res/refresh.png'),
                            message('main_view_refresh'), message('main_view_desc_refresh'))
-        self.AddSimpleTool(self._NTB2_ABOUT, wx.Bitmap('res/about.gif'),
+        self.AddSimpleTool(self._NTB2_ABOUT, wx.Bitmap('res/about.png'),
                            message('main_about'), message('main_desc_about'))
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
         self.m_indicator = wx.StaticText(self, -1, "::", size=(180,15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
@@ -457,16 +457,16 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
         # create an image list
         self.m_imagelist = wx.ImageList(16,16)
 
-        self.idx_nochange = self.m_imagelist.Add(wx.Bitmap('res/nochange.gif'))
-        self.idx_up = self.m_imagelist.Add(wx.Bitmap('res/up.gif'))
-        self.idx_down = self.m_imagelist.Add(wx.Bitmap('res/down.gif'))
-        self.idx_tbref = self.m_imagelist.Add(wx.Bitmap('res/invalid.gif'))
-        self.idx_buy = self.m_imagelist.Add(wx.Bitmap('res/buy.gif'))
-        self.idx_sell = self.m_imagelist.Add(wx.Bitmap('res/sell.gif'))
-        self.idx_noop = self.m_imagelist.Add(wx.Bitmap('res/noop.gif'))
+        self.idx_nochange = self.m_imagelist.Add(wx.Bitmap('res/nochange.png'))
+        self.idx_up = self.m_imagelist.Add(wx.Bitmap('res/up.png'))
+        self.idx_down = self.m_imagelist.Add(wx.Bitmap('res/down.png'))
+        self.idx_tbref = self.m_imagelist.Add(wx.Bitmap('res/invalid.png'))
+        self.idx_buy = self.m_imagelist.Add(wx.Bitmap('res/buy.png'))
+        self.idx_sell = self.m_imagelist.Add(wx.Bitmap('res/sell.png'))
+        self.idx_noop = self.m_imagelist.Add(wx.Bitmap('res/noop.png'))
 
-        self.sm_up = self.m_imagelist.Add(wx.Bitmap('res/sm_up.gif'))
-        self.sm_dn = self.m_imagelist.Add(wx.Bitmap('res/sm_down.gif'))
+        self.sm_up = self.m_imagelist.Add(wx.Bitmap('res/sm_up.png'))
+        self.sm_dn = self.m_imagelist.Add(wx.Bitmap('res/sm_down.png'))
 
         # List
         tID = wx.NewId()
