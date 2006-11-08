@@ -6,6 +6,7 @@ On the road for v0.4.5 (Nausicaa)
 ===============================================================================
 
 2006-11-08  Gilles Dumortier <dgil at ieee.org>
+	* Select/List Quote : invalid icon (SF bug 1592758)
 	* wxPython 2.7 : icons look bad in the toolbars (SF bug 1586180)
 	* Add a value: no possible when sorted (SF bug 1591293)
 	* Value error: invalid literal for long() (SF bug 1592003)
