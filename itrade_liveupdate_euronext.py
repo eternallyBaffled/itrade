@@ -222,7 +222,7 @@ class LiveUpdate_Euronext(object):
             sdata = string.split (eachLine, '\t')
             #print sdata,len(sdata)
             if len(sdata)==34:
-                if (sdata[1]<>"ISIN"):
+                if (sdata[1]<>"ISIN") and (sdata[10]!='-'):
                     c_datetime = datetime.today()
                     c_date = "%04d%02d%02d" % (c_datetime.year,c_datetime.month,c_datetime.day)
                     #print 'Today is :', c_date
