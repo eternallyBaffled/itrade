@@ -92,7 +92,7 @@ class iTradeAlertsPanel(wx.Window):
 
         # create an image list
         self.m_imagelist = wx.ImageList(16,16)
-        self.idx_tbref = self.m_imagelist.Add(wx.Bitmap('res/invalid.gif'))
+        self.idx_tbref = self.m_imagelist.Add(wx.Bitmap('res/invalid.png'))
 
         # List
         tID = wx.NewId()

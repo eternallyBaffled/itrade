@@ -253,7 +253,7 @@ class iTradeOperationDialog(wx.Dialog):
         self.wxNameLabel = wx.StaticText(self, -1, message('portfolio_description'))
         box.Add(self.wxNameLabel, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        bmp = wx.Bitmap('res/quotes.gif')
+        bmp = wx.Bitmap('res/quotes.png')
         self.wxNameButton = wx.BitmapButton(self, -1, bmp, size=wx.Size(bmp.GetWidth()+5, bmp.GetHeight()+5))
         box.Add(self.wxNameButton, 0, wx.ALIGN_CENTRE|wx.SHAPED, 5)
         wx.EVT_BUTTON(self, self.wxNameButton.GetId(), self.OnQuote)
@@ -507,24 +507,24 @@ class iTradeOperationToolbar(wx.ToolBar):
                            message('main_close'), message('main_desc_close'))
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
 
-        self.AddRadioLabelTool(self._NTB2_DISPALL,'',wx.Bitmap('res/dispall.gif'),wx.NullBitmap,message('portfolio_dispall'),message('portfolio_desc_dispall'))
-        self.AddRadioLabelTool(self._NTB2_DISPQUOTES,'',wx.Bitmap('res/dispquote.gif'),wx.NullBitmap,message('portfolio_dispquotes'),message('portfolio_desc_dispquotes'))
-        self.AddRadioLabelTool(self._NTB2_DISPCASH,'',wx.Bitmap('res/dispcash.gif'),wx.NullBitmap,message('portfolio_dispcash'),message('portfolio_desc_dispcash'))
-        self.AddRadioLabelTool(self._NTB2_DISPPVAL,'',wx.Bitmap('res/dispvalue.gif'),wx.NullBitmap,message('portfolio_dispvalues'),message('portfolio_desc_dispvalues'))
-        self.AddRadioLabelTool(self._NTB2_DISPSRD,'',wx.Bitmap('res/dispsrd.gif'),wx.NullBitmap,message('portfolio_dispsrd'),message('portfolio_desc_dispsrd'))
+        self.AddRadioLabelTool(self._NTB2_DISPALL,'',wx.Bitmap('res/dispall.png'),wx.NullBitmap,message('portfolio_dispall'),message('portfolio_desc_dispall'))
+        self.AddRadioLabelTool(self._NTB2_DISPQUOTES,'',wx.Bitmap('res/dispquote.png'),wx.NullBitmap,message('portfolio_dispquotes'),message('portfolio_desc_dispquotes'))
+        self.AddRadioLabelTool(self._NTB2_DISPCASH,'',wx.Bitmap('res/dispcash.png'),wx.NullBitmap,message('portfolio_dispcash'),message('portfolio_desc_dispcash'))
+        self.AddRadioLabelTool(self._NTB2_DISPPVAL,'',wx.Bitmap('res/dispvalue.png'),wx.NullBitmap,message('portfolio_dispvalues'),message('portfolio_desc_dispvalues'))
+        self.AddRadioLabelTool(self._NTB2_DISPSRD,'',wx.Bitmap('res/dispsrd.png'),wx.NullBitmap,message('portfolio_dispsrd'),message('portfolio_desc_dispsrd'))
 
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
 
-        self.AddSimpleTool(self._NTB2_ADD,wx.Bitmap('res/add.gif'),message('portfolio_opadd'),message('portfolio_desc_opadd'))
-        self.AddSimpleTool(self._NTB2_MODIFY,wx.Bitmap('res/modify.gif'),message('portfolio_opmodify'),message('portfolio_desc_opmodify'))
-        self.AddSimpleTool(self._NTB2_DELETE,wx.Bitmap('res/delete.gif'),message('portfolio_opdelete'),message('portfolio_desc_opdelete'))
+        self.AddSimpleTool(self._NTB2_ADD,wx.Bitmap('res/add.png'),message('portfolio_opadd'),message('portfolio_desc_opadd'))
+        self.AddSimpleTool(self._NTB2_MODIFY,wx.Bitmap('res/modify.png'),message('portfolio_opmodify'),message('portfolio_desc_opmodify'))
+        self.AddSimpleTool(self._NTB2_DELETE,wx.Bitmap('res/delete.png'),message('portfolio_opdelete'),message('portfolio_desc_opdelete'))
 
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
 
-        self.AddRadioLabelTool(self._NTB2_30DAYS,'',wx.Bitmap('res/filter30.gif'),wx.NullBitmap,message('portfolio_per30days'),message('portfolio_desc_per30days'))
-        self.AddRadioLabelTool(self._NTB2_90DAYS,'',wx.Bitmap('res/filter90.gif'),wx.NullBitmap,message('portfolio_per90days'),message('portfolio_desc_per90days'))
-        self.AddRadioLabelTool(self._NTB2_CURRENTYEAR,'',wx.Bitmap('res/filter365.gif'),wx.NullBitmap,message('portfolio_peryear'),message('portfolio_desc_peryear'))
-        self.AddRadioLabelTool(self._NTB2_ALLYEARS,'',wx.Bitmap('res/nofilter.gif'),wx.NullBitmap,message('portfolio_perall'),message('portfolio_desc_perall'))
+        self.AddRadioLabelTool(self._NTB2_30DAYS,'',wx.Bitmap('res/filter30.png'),wx.NullBitmap,message('portfolio_per30days'),message('portfolio_desc_per30days'))
+        self.AddRadioLabelTool(self._NTB2_90DAYS,'',wx.Bitmap('res/filter90.png'),wx.NullBitmap,message('portfolio_per90days'),message('portfolio_desc_per90days'))
+        self.AddRadioLabelTool(self._NTB2_CURRENTYEAR,'',wx.Bitmap('res/filter365.png'),wx.NullBitmap,message('portfolio_peryear'),message('portfolio_desc_peryear'))
+        self.AddRadioLabelTool(self._NTB2_ALLYEARS,'',wx.Bitmap('res/nofilter.png'),wx.NullBitmap,message('portfolio_perall'),message('portfolio_desc_perall'))
 
         wx.EVT_TOOL(self, self._NTB2_EXIT, self.onExit)
 
@@ -649,13 +649,13 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
 
         # create an image list
         self.m_imagelist = wx.ImageList(16,16)
-        self.idx_plus = self.m_imagelist.Add(wx.Bitmap('res/plus.gif'))
-        self.idx_minus = self.m_imagelist.Add(wx.Bitmap('res/minus.gif'))
-        self.idx_neutral = self.m_imagelist.Add(wx.Bitmap('res/neutral.gif'))
-        self.idx_unknown = self.m_imagelist.Add(wx.Bitmap('res/unknown.gif'))
+        self.idx_plus = self.m_imagelist.Add(wx.Bitmap('res/plus.png'))
+        self.idx_minus = self.m_imagelist.Add(wx.Bitmap('res/minus.png'))
+        self.idx_neutral = self.m_imagelist.Add(wx.Bitmap('res/neutral.png'))
+        self.idx_unknown = self.m_imagelist.Add(wx.Bitmap('res/unknown.png'))
 
-        self.sm_up = self.m_imagelist.Add(wx.Bitmap('res/sm_up.gif'))
-        self.sm_dn = self.m_imagelist.Add(wx.Bitmap('res/sm_down.gif'))
+        self.sm_up = self.m_imagelist.Add(wx.Bitmap('res/sm_up.png'))
+        self.sm_dn = self.m_imagelist.Add(wx.Bitmap('res/sm_down.png'))
 
         #
         tID = wx.NewId()

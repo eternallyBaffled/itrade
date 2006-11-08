@@ -101,9 +101,9 @@ class iTradeQuoteSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
 
         tID = wx.NewId()
         self.m_imagelist = wx.ImageList(16,16)
-        self.sm_q = self.m_imagelist.Add(wx.Bitmap('res/invalid.gif'))
-        self.sm_up = self.m_imagelist.Add(wx.Bitmap('res/sm_up.gif'))
-        self.sm_dn = self.m_imagelist.Add(wx.Bitmap('res/sm_down.gif'))
+        self.sm_q = self.m_imagelist.Add(wx.Bitmap('res/invalid.png'))
+        self.sm_up = self.m_imagelist.Add(wx.Bitmap('res/sm_up.png'))
+        self.sm_dn = self.m_imagelist.Add(wx.Bitmap('res/sm_down.png'))
 
         self.m_list = iTradeSelectorListCtrl(self, tID,
                                  style = wx.LC_REPORT | wx.SUNKEN_BORDER,
