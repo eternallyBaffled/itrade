@@ -230,7 +230,7 @@ class LiveUpdate_Euronext(object):
                     sdate,sclock = self.euronextDate(sdata[10])
 
                     # be sure not an oldest day !
-                    if c_date==sdate:
+                    if (c_date==sdate) and (sdata[8]<>'-'):
 
                         #
                         key = quote.key()
