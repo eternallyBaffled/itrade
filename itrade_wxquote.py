@@ -436,7 +436,7 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
 
         # Popup the menu.  If an item is selected then its handler
         # will be called before PopupMenu returns.
-        self.toolbar.PopupMenu(self.popmenu, wx.Point(self.x, self.y))
+        self.m_toolbar.PopupMenu(self.popmenu, wx.Point(self.x, self.y))
         self.popmenu.Destroy()
 
     def OnPopup_dispChart1Candlestick(self,event):
@@ -943,7 +943,7 @@ if __name__=='__main__':
     setLang('us')
     gMessage.load()
 
-    q = select_iTradeQuote(None,None,False)
+    q = quotes.lookupTicker('SAF','EURONEXT')
     if q:
         open_iTradeQuote(None,None,q)
         app.MainLoop()

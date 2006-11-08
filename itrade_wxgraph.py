@@ -112,6 +112,10 @@ class iTrade_wxToolbarGraph(wx.ToolBar):
         self._NTB2_CONFIG = wx.NewId()
         self._NTB2_SAVE = wx.NewId()
 
+        self._NTB2_TOOL_IND   = wx.NewId()
+        self._NTB2_TOOL_HLINE = wx.NewId()
+        self._NTB2_TOOL_TRASH = wx.NewId()
+
         self.SetToolBitmapSize(wx.Size(24,24))
         self.AddSimpleTool(self._NTB2_HOME, wx.ArtProvider.GetBitmap(wx.ART_GO_HOME, wx.ART_TOOLBAR),
                            message('tb_home'), message('tb_home'))
@@ -130,6 +134,11 @@ class iTrade_wxToolbarGraph(wx.ToolBar):
                            message('tb_config'), message('tb_config'))
         self.AddSimpleTool(self._NTB2_SAVE, wx.ArtProvider.GetBitmap(wx.ART_FILE_SAVE, wx.ART_TOOLBAR),
                            message('tb_save_plot'), message('tb_save_plot'))
+        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+
+        self.AddRadioLabelTool(self._NTB2_TOOL_IND, '', wx.Bitmap('res/toolind.png'), wx.NullBitmap, message('tb_tool_ind'), message('tb_tool_ind'))
+        self.AddRadioLabelTool(self._NTB2_TOOL_HLINE, '', wx.Bitmap('res/toolhline.png'), wx.NullBitmap, message('tb_tool_hline'), message('tb_tool_hline'))
+        self.AddRadioLabelTool(self._NTB2_TOOL_TRASH, '', wx.Bitmap('res/tooltrash.png'), wx.NullBitmap, message('tb_tool_trash'), message('tb_tool_trash'))
 
         wx.EVT_TOOL(self, self._NTB2_HOME, self.home)
         wx.EVT_TOOL(self, self._NTB2_PANLEFT, self.panLeft)
@@ -138,6 +147,10 @@ class iTrade_wxToolbarGraph(wx.ToolBar):
         wx.EVT_TOOL(self, self._NTB2_ZOOMIN, self.zoomIn)
         wx.EVT_TOOL(self, self._NTB2_CONFIG, self.config)
         wx.EVT_TOOL(self, self._NTB2_SAVE, self.save)
+
+        wx.EVT_TOOL(self, self._NTB2_TOOL_IND, self.toolInd)
+        wx.EVT_TOOL(self, self._NTB2_TOOL_HLINE, self.toolHLine)
+        wx.EVT_TOOL(self, self._NTB2_TOOL_TRASH, self.toolTrash)
 
         self.Realize()
 
@@ -159,6 +172,15 @@ class iTrade_wxToolbarGraph(wx.ToolBar):
     def zoomIn(self,event):
         self.m_parent.OnZoomIn(event)
 
+    def toolInd(self,event):
+        self.m_parent.OnToolInd(event)
+
+    def toolHLine(self,event):
+        self.m_parent.OnToolHLine(event)
+
+    def toolTrash(self,event):
+        self.m_parent.OnToolTrash(event)
+
     def save(self,event):
         filetypes = self.canvas._get_imagesave_wildcards()
         dlg = wx.FileDialog(self.m_parent, message('save_to_file'), itrade_config.dirSnapshots, "", filetypes, wx.SAVE|wx.OVERWRITE_PROMPT|wx.CHANGE_DIR)
@@ -177,6 +199,17 @@ class iTrade_wxToolbarGraph(wx.ToolBar):
         pass
 
 # ============================================================================
+# Cursor mode
+# ============================================================================
+
+CURSOR_MODE_IND = 0
+CURSOR_MODE_HLINE = 1
+CURSOR_MODE_VLINE = 2
+CURSOR_MODE_OLINE = 3
+CURSOR_MODE_FIBO = 4
+CURSOR_MODE_TRASH = 255
+
+# ============================================================================
 # iTrade_wxPanelGraph
 # ============================================================================
 
@@ -191,9 +224,13 @@ class iTrade_wxPanelGraph(object):
         self.canvas = FigureCanvas(self, -1, self.figure)
         self.canvas.mpl_connect('motion_notify_event', self.mouse_move)
         self.canvas.mpl_connect('button_press_event', self.on_click)
-        self.toolbar = iTrade_wxToolbarGraph(self.canvas)
 
-        wx.EVT_LEFT_DOWN(self.toolbar, self.OnLeftDown)
+        self.m_toolbar = iTrade_wxToolbarGraph(self.canvas)
+
+        wx.EVT_LEFT_DOWN(self.m_toolbar, self.OnLeftDown)
+
+        # cursor mode
+        self.set_cursor_mode(CURSOR_MODE_IND)
 
         # default parameters
         self.m_hasChart1Vol = False
@@ -202,7 +239,7 @@ class iTrade_wxPanelGraph(object):
         # size everything to fit in panel
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(self.canvas, 1, wx.LEFT | wx.TOP | wx.GROW)
-        sizer.Add(self.toolbar, 0, wx.GROW)
+        sizer.Add(self.m_toolbar, 0, wx.GROW)
         self.SetSizerAndFit(sizer)
         wx.EVT_PAINT(self, self.OnPaint)
 
@@ -211,9 +248,69 @@ class iTrade_wxPanelGraph(object):
         self.m_timer = wx.Timer(self)
         wx.EVT_TIMER(self, -1, self.OnTimer)
 
+    # ---[ CURSOR MANAGEMENT ] -----------------------------------------------
+
+    def set_cursor_mode(self,mode):
+        self.m_cursormode = mode
+        if mode == CURSOR_MODE_HLINE:
+            self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_TOOL_HLINE,True)
+        elif mode == CURSOR_MODE_TRASH:
+            self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_TOOL_TRASH,True)
+        else:
+            self.m_cursormode = CURSOR_MODE_IND
+            self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_TOOL_IND,True)
+
     def cursorState(self):
         # return False if something prevent cursor to show up
         return True
+
+    def is_display_vcursor(self):
+        if self.m_cursormode == CURSOR_MODE_HLINE:
+            return False
+        if self.m_cursormode == CURSOR_MODE_TRASH:
+            return False
+        if self.m_cursormode == CURSOR_MODE_OLINE:
+            return False
+        if self.m_cursormode == CURSOR_MODE_FIBO:
+            return False
+        return True
+
+    def is_display_hcursor(self):
+        if self.m_cursormode == CURSOR_MODE_VLINE:
+            return False
+        if self.m_cursormode == CURSOR_MODE_TRASH:
+            return False
+        if self.m_cursormode == CURSOR_MODE_OLINE:
+            return False
+        return True
+
+    # ---[ TOOLBOX MANAGEMENT ] ---------------------------------------------
+
+    def OnToolInd(self,event):
+        self.m_cursormode = CURSOR_MODE_IND
+        event.Skip()
+
+    def OnToolHLine(self,event):
+        self.m_cursormode = CURSOR_MODE_HLINE
+        event.Skip()
+
+    def OnToolVLine(self,event):
+        self.m_cursormode = CURSOR_MODE_VLINE
+        event.Skip()
+
+    def OnToolOLine(self,event):
+        self.m_cursormode = CURSOR_MODE_OLINE
+        event.Skip()
+
+    def OnToolFibo(self,event):
+        self.m_cursormode = CURSOR_MODE_FIBO
+        event.Skip()
+
+    def OnToolTrash(self,event):
+        self.m_cursormode = CURSOR_MODE_TRASH
+        event.Skip()
+
+    # ---[ MOUSE MANAGEMENT ] -----------------------------------------------
 
     def OnLeftDown(self, event):
         self.x = event.GetX()
@@ -221,16 +318,16 @@ class iTrade_wxPanelGraph(object):
         event.Skip()
 
     def OnTimer(self,event):
-        debug('OnTimer')
-        if self.cursorState():
-            debug('OnTimer create label')
+        #debug('OnTimer')
+        if self.cursorState() and (self.m_cursormode == CURSOR_MODE_IND):
+            #debug('OnTimer create label')
             try:
                 self.m_xylabel = iTrade_wxLabel(self.canvas,self.m_xylabelPos,self.m_xylabelMax,label=self.GetXYLabel(self.m_xylabelAxis,self.m_xylabelData),multiline=True)
             except AttributeError:
                 info('axis not managed')
                 pass
             else:
-                debug('OnTimer draw label')
+                #debug('OnTimer draw label')
                 self.m_xylabel.Draw()
 
     def on_click(self,event):
@@ -248,6 +345,8 @@ class iTrade_wxPanelGraph(object):
                 if event.inaxes:
                     debug('Start timer x:%d,y:%d t:%d!' %(event.x, event.y,itrade_config.timerForXYPopup))
                     self.m_timer.Start(itrade_config.timerForXYPopup,oneShot=True)
+
+    # ---[ CURSOR DRAWING during MOVE ] -----------------------------------------------------------------
 
     def erase_cursor(self):
         # erase xylabel
@@ -288,8 +387,8 @@ class iTrade_wxPanelGraph(object):
         except AttributeError:
             pass
         else:
-            lastdc.DrawLine(*lastline1) # erase old
-            lastdc.DrawLine(*lastline2) # erase old
+            if self.is_display_vcursor(): lastdc.DrawLine(*lastline1) # erase old
+            if self.is_display_hcursor(): lastdc.DrawLine(*lastline2) # erase old
 
     def draw_cursor(self, event):
         #event is a MplEvent.  Draw a cursor over the axes
@@ -329,8 +428,8 @@ class iTrade_wxPanelGraph(object):
         line2 = (left, y, right, y)
         self.m_lastInfo = line1, line2, ax, dc
 
-        dc.DrawLine(*line1) # draw new
-        dc.DrawLine(*line2) # draw new
+        if self.is_display_vcursor(): dc.DrawLine(*line1) # draw new
+        if self.is_display_hcursor(): dc.DrawLine(*line2) # draw new
         dc.EndDrawing()
 
         debug("Time=%d  Value=%f"% (time, value))
@@ -350,8 +449,10 @@ class iTrade_wxPanelGraph(object):
 
         dc.EndDrawing()
 
+    # ---[ GRAPHING EVERYTHING ] --------------------------------------------------------------
+
     def refresh(self):
-        #self.toolbar.update() # Not sure why this is needed - ADS
+        #self.m_toolbar.update() # Not sure why this is needed - ADS
         self.OnPaint()
 
     def onEraseBackground(self, evt):
@@ -361,7 +462,7 @@ class iTrade_wxPanelGraph(object):
     def GetToolBar(self):
         # You will need to override GetToolBar if you are using an
         # unmanaged toolbar in your frame
-        return self.toolbar
+        return self.m_toolbar
 
     def BeginCharting(self):
         self.figure.clear()
