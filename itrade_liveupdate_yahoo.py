@@ -145,11 +145,18 @@ class LiveUpdate_yahoo(object):
 
         # pull data
         data = f.read()[:-2] # Get rid of CRLF
+        s400 = re.search("400 Bad Request",data,re.IGNORECASE|re.MULTILINE)
+        if s400:
+            info('unknown %s quote (400 Bad Request) from Yahoo' % (quote.ticker()))
+            return None
+
         sdata = string.split (data, ',')
         if len (sdata) < 9:
+            info('invalid data (bad answer length) for %s quote' % (quote.ticker()))
             return None
 
         #print sdata
+
         # connexion / clock
         self.m_connected = True
 
