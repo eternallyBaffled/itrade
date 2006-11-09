@@ -522,10 +522,12 @@ class iTrade_wxPanelGraph(object):
 
         # add x and y labels
         if int(time)<len(self.times):
-            self.m_xlabel = iTrade_wxLabel(self.canvas,(x,bottom), label=self.GetXLabel(int(time)))
-            self.m_xlabel.Draw()
-            self.m_ylabel = iTrade_wxLabel(self.canvas,(right,y), label=self.GetYLabel(ax,value))
-            self.m_ylabel.Draw()
+            if self.is_display_vcursor():
+                self.m_xlabel = iTrade_wxLabel(self.canvas,(x,bottom), label=self.GetXLabel(int(time)))
+                self.m_xlabel.Draw()
+            if self.is_display_hcursor():
+                self.m_ylabel = iTrade_wxLabel(self.canvas,(right,y), label=self.GetYLabel(ax,value))
+                self.m_ylabel.Draw()
 
             # save some data for Timed behaviour
             self.m_xylabelMax = (right,bottom)
