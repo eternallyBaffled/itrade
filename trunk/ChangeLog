@@ -5,6 +5,9 @@ On the road for v0.4.5 (Nausicaa)
 
 ===============================================================================
 
+2006-11-09  Gilles Dumortier <dgil at ieee.org>
+	* Nyse Market : error with special tickers (SF bug 1593243)
+
 2006-11-08  Gilles Dumortier <dgil at ieee.org>
 	* Start working on the Graphic Tools ...
 	* valueError Brussels Libre Market (SF bug 1592266)
