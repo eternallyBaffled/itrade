@@ -63,6 +63,75 @@ from matplotlib.axes import Subplot
 from matplotlib.ticker import  IndexLocator, FuncFormatter, NullFormatter, MultipleLocator
 
 # ============================================================================
+# GTool
+# ============================================================================
+
+GTOOL_IND = 0
+GTOOL_HLINE = 1
+GTOOL_VLINE = 2
+GTOOL_OLINE = 3
+GTOOL_FIBO = 4
+GTOOL_TRASH = 255
+
+class GTool(object):
+    def __init__(self,kind,canvas):
+        self.m_kind = kind
+        self.m_canvas = canvas
+
+    def kind(self):
+        return self.m_kind
+
+    def on_click(self,x,y,time,val,axe,chart):
+        info('Tool %s on_click x:%d,y:%d time=%s val=%s chart=%d!' % (self.kind(),x, y, time, val , chart))
+
+    def is_cursor_state(self,chart):
+        return True
+
+class GToolInd(GTool):
+    def __init__(self,canvas):
+        GTool.__init__(self,GTOOL_IND,canvas)
+
+    def is_cursor_state(self,chart):
+        return True
+
+class GToolHLine(GTool):
+    def __init__(self,canvas):
+        GTool.__init__(self,GTOOL_HLINE,canvas)
+
+    def is_cursor_state(self,chart):
+        return True
+
+class GToolVLine(GTool):
+    def __init__(self,canvas):
+        GTool.__init__(self,GTOOL_VLINE,canvas)
+
+    def is_cursor_state(self,chart):
+        return True
+
+class GToolOLine(GTool):
+    def __init__(self,canvas):
+        GTool.__init__(self,GTOOL_OLINE,canvas)
+
+    def is_cursor_state(self,chart):
+        return True
+
+class GToolFibo(GTool):
+    def __init__(self,canvas):
+        GTool.__init__(self,GTOOL_FIBO,canvas)
+
+    def is_cursor_state(self,chart):
+        # Fibo supported only in main chart
+        if chart != 1: return False
+        return True
+
+class GToolTrash(GTool):
+    def __init__(self,canvas):
+        GTool.__init__(self,GTOOL_TRASH,canvas)
+
+    def is_cursor_state(self,chart):
+        return True
+
+# ============================================================================
 # fmtVolumeFunc
 #
 # Formatter function for Volumes
@@ -210,6 +279,10 @@ CURSOR_MODE_FIBO = 4
 CURSOR_MODE_TRASH = 255
 
 # ============================================================================
+# Cursor phase
+# ============================================================================
+
+# ============================================================================
 # iTrade_wxPanelGraph
 # ============================================================================
 
@@ -229,8 +302,8 @@ class iTrade_wxPanelGraph(object):
 
         wx.EVT_LEFT_DOWN(self.m_toolbar, self.OnLeftDown)
 
-        # cursor mode
-        self.set_cursor_mode(CURSOR_MODE_IND)
+        # Default Tool is IND
+        self.OnToolInd(None)
 
         # default parameters
         self.m_hasChart1Vol = False
@@ -260,9 +333,14 @@ class iTrade_wxPanelGraph(object):
             self.m_cursormode = CURSOR_MODE_IND
             self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_TOOL_IND,True)
 
-    def cursorState(self):
+    def cursorState(self,ax):
         # return False if something prevent cursor to show up
-        return True
+        if ax:
+            chart = self.axe2chart(ax)
+            return self.m_tool.is_cursor_state(chart)
+        else:
+            # Timed request : always True
+            return True
 
     def is_display_vcursor(self):
         if self.m_cursormode == CURSOR_MODE_HLINE:
@@ -288,27 +366,33 @@ class iTrade_wxPanelGraph(object):
 
     def OnToolInd(self,event):
         self.m_cursormode = CURSOR_MODE_IND
-        event.Skip()
+        self.m_tool = GToolInd(self.canvas)
+        if event: event.Skip()
 
     def OnToolHLine(self,event):
         self.m_cursormode = CURSOR_MODE_HLINE
-        event.Skip()
+        self.m_tool = GToolHLine(self.canvas)
+        if event: event.Skip()
 
     def OnToolVLine(self,event):
         self.m_cursormode = CURSOR_MODE_VLINE
-        event.Skip()
+        self.m_tool = GToolVLine(self.canvas)
+        if event: event.Skip()
 
     def OnToolOLine(self,event):
         self.m_cursormode = CURSOR_MODE_OLINE
-        event.Skip()
+        self.m_tool = GToolOLine(self.canvas)
+        if event: event.Skip()
 
     def OnToolFibo(self,event):
         self.m_cursormode = CURSOR_MODE_FIBO
-        event.Skip()
+        self.m_tool = GToolFibo(self.canvas)
+        if event: event.Skip()
 
     def OnToolTrash(self,event):
         self.m_cursormode = CURSOR_MODE_TRASH
-        event.Skip()
+        self.m_tool = GToolTrash(self.canvas)
+        if event: event.Skip()
 
     # ---[ MOUSE MANAGEMENT ] -----------------------------------------------
 
@@ -319,7 +403,7 @@ class iTrade_wxPanelGraph(object):
 
     def OnTimer(self,event):
         #debug('OnTimer')
-        if self.cursorState() and (self.m_cursormode == CURSOR_MODE_IND):
+        if self.cursorState(None) and (self.m_cursormode == CURSOR_MODE_IND):
             #debug('OnTimer create label')
             try:
                 self.m_xylabel = iTrade_wxLabel(self.canvas,self.m_xylabelPos,self.m_xylabelMax,label=self.GetXYLabel(self.m_xylabelAxis,self.m_xylabelData),multiline=True)
@@ -331,11 +415,13 @@ class iTrade_wxPanelGraph(object):
                 self.m_xylabel.Draw()
 
     def on_click(self,event):
-        if self.cursorState():
-            info('Click !')
+        if self.cursorState(event.inaxes):
+            chart = self.axe2chart(event.inaxes)
+            if chart>0:
+                self.m_tool.on_click(event.x, event.y, self.GetTime(int(event.xdata)), event.ydata, event.inaxes, chart)
 
     def mouse_move(self,event):
-        if self.cursorState():
+        if self.cursorState(event.inaxes):
             # just in case mouse is bad (PinPoint :-( )
             if self.cursorx<>event.x or self.cursory<>event.y:
                 debug('Move x:%d,y:%d!' %(event.x, event.y))
@@ -464,6 +550,14 @@ class iTrade_wxPanelGraph(object):
         # unmanaged toolbar in your frame
         return self.m_toolbar
 
+    def axe2chart(self,ax):
+        if ax == self.chart1 or ax == self.chart1vol:
+            return 1
+        elif ax == self.chart2 or ax == self.chart2vol:
+            return 2
+        else:
+            return 0
+
     def BeginCharting(self):
         self.figure.clear()
 
@@ -489,6 +583,8 @@ class iTrade_wxPanelGraph(object):
             nullFmt = NullFormatter() # no labels
             self.chart1vol.xaxis.set_major_formatter(nullFmt)
             #self.chart1vol.grid(True)
+        else:
+            self.chart1vol = None
 
         # chart2 for volume
         #                                left, bottom, width, height
@@ -510,6 +606,8 @@ class iTrade_wxPanelGraph(object):
             nullFmt = NullFormatter() # no labels
             self.chart2vol.xaxis.set_major_formatter(nullFmt)
             #self.chart2vol.grid(True)
+        else:
+            self.chart2vol = None
 
         left, top = 0.015, 0.80
         t = self.chart2.text(left, top, message('graph_volume'), fontsize = 7, transform = self.chart2.transAxes)

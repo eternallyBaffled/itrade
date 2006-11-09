@@ -624,20 +624,19 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         self.EndCharting()
 
     def GetPeriod(self,idxtime):
-        if idxtime<0:
-            idxtime = len(self.idx)+idxtime
-        elif idxtime==0:
-            idxtime = len(self.idx)/2
-        dt = self.m_quote.m_daytrades.m_date[self.idx[idxtime]]
+        dt = self.GetTime(idxtime)
         return dt.strftime(' %Y ')
 
     def GetXLabel(self,idxtime):
+        dt = self.GetTime(idxtime)
+        return dt.strftime(' %x ')
+
+    def GetTime(self,idxtime):
         if idxtime<0:
             idxtime = len(self.idx)+idxtime
         elif idxtime==0:
             idxtime = len(self.idx)/2
-        dt = self.m_quote.m_daytrades.m_date[self.idx[idxtime]]
-        return dt.strftime(' %x ')
+        return self.m_quote.m_daytrades.m_date[self.idx[idxtime]]
 
     def GetYLabel(self,ax,value):
         if ax==self.chart1:
