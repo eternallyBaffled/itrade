@@ -6,6 +6,7 @@ On the road for v0.4.5 (Nausicaa)
 ===============================================================================
 
 2006-11-11  Gilles Dumortier <dgil at ieee.org>
+	* Nyse Market : error with special tickers (SF bug 1593243)
 	* Amex/Nyse Markets : Invalid literal for float():N/A (SF bug 1594249)
 
 2006-11-09  Gilles Dumortier <dgil at ieee.org>
