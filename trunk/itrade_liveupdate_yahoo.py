@@ -178,7 +178,12 @@ class LiveUpdate_yahoo(object):
             return None
         value = string.atof (sdata[1])
         date = self.yahooDate (sdata[2])
-        change = string.atof (sdata[4])
+        if (sdata[4]=='N/A'):
+            debug('invalid change : N/A')
+            change = 0.0
+            return None
+        else:
+            change = string.atof (sdata[4])
         if (sdata[5]=='N/A'):
             debug('invalid open : N/A')
             open = 0.0
