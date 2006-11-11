@@ -6,6 +6,7 @@ On the road for v0.4.5 (Nausicaa)
 ===============================================================================
 
 2006-11-11  Gilles Dumortier <dgil at ieee.org>
+	* Portfolio management : not all trades values (SF bug 1594183)
 	* Nyse Market : error with special tickers (SF bug 1593243)
 	* Amex/Nyse Markets : Invalid literal for float():N/A (SF bug 1594249)
 
