@@ -164,7 +164,7 @@ class LiveUpdate_yahoo(object):
         key = quote.key()
 
         sclock = sdata[3][1:-1]
-        if sclock=="N/A" or sdata[2]=='"N/A"':
+        if sclock=="N/A" or sdata[2]=='"N/A"' or len(sclock)<5:
             info('invalid datation for %s' % (quote.ticker()))
             return None
 
