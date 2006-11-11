@@ -183,6 +183,9 @@ class iTrade_wxToolbarGraph(wx.ToolBar):
 
         self._NTB2_TOOL_IND   = wx.NewId()
         self._NTB2_TOOL_HLINE = wx.NewId()
+        self._NTB2_TOOL_VLINE = wx.NewId()
+        self._NTB2_TOOL_OLINE = wx.NewId()
+        self._NTB2_TOOL_FIBO = wx.NewId()
         self._NTB2_TOOL_TRASH = wx.NewId()
 
         self.SetToolBitmapSize(wx.Size(24,24))
@@ -207,6 +210,9 @@ class iTrade_wxToolbarGraph(wx.ToolBar):
 
         self.AddRadioLabelTool(self._NTB2_TOOL_IND, '', wx.Bitmap('res/toolind.png'), wx.NullBitmap, message('tb_tool_ind'), message('tb_tool_ind'))
         self.AddRadioLabelTool(self._NTB2_TOOL_HLINE, '', wx.Bitmap('res/toolhline.png'), wx.NullBitmap, message('tb_tool_hline'), message('tb_tool_hline'))
+        self.AddRadioLabelTool(self._NTB2_TOOL_VLINE, '', wx.Bitmap('res/toolvline.png'), wx.NullBitmap, message('tb_tool_vline'), message('tb_tool_vline'))
+        self.AddRadioLabelTool(self._NTB2_TOOL_OLINE, '', wx.Bitmap('res/toololine.png'), wx.NullBitmap, message('tb_tool_oline'), message('tb_tool_oline'))
+        self.AddRadioLabelTool(self._NTB2_TOOL_FIBO, '', wx.Bitmap('res/toolfibo.png'), wx.NullBitmap, message('tb_tool_fibo'), message('tb_tool_fibo'))
         self.AddRadioLabelTool(self._NTB2_TOOL_TRASH, '', wx.Bitmap('res/tooltrash.png'), wx.NullBitmap, message('tb_tool_trash'), message('tb_tool_trash'))
 
         wx.EVT_TOOL(self, self._NTB2_HOME, self.home)
@@ -219,6 +225,9 @@ class iTrade_wxToolbarGraph(wx.ToolBar):
 
         wx.EVT_TOOL(self, self._NTB2_TOOL_IND, self.toolInd)
         wx.EVT_TOOL(self, self._NTB2_TOOL_HLINE, self.toolHLine)
+        wx.EVT_TOOL(self, self._NTB2_TOOL_VLINE, self.toolVLine)
+        wx.EVT_TOOL(self, self._NTB2_TOOL_OLINE, self.toolOLine)
+        wx.EVT_TOOL(self, self._NTB2_TOOL_FIBO, self.toolFibo)
         wx.EVT_TOOL(self, self._NTB2_TOOL_TRASH, self.toolTrash)
 
         self.Realize()
@@ -246,6 +255,15 @@ class iTrade_wxToolbarGraph(wx.ToolBar):
 
     def toolHLine(self,event):
         self.m_parent.OnToolHLine(event)
+
+    def toolVLine(self,event):
+        self.m_parent.OnToolVLine(event)
+
+    def toolOLine(self,event):
+        self.m_parent.OnToolOLine(event)
+
+    def toolFibo(self,event):
+        self.m_parent.OnToolFibo(event)
 
     def toolTrash(self,event):
         self.m_parent.OnToolTrash(event)
