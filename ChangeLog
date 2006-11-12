@@ -6,6 +6,8 @@ On the road for v0.4.5 (Nausicaa)
 ===============================================================================
 
 2006-11-12  Gilles Dumortier <dgil at ieee.org>
+	* Add a value: can't select it by isin and ticker (SF bug 1591336) in
+	  lowercase
 	* Add new menu in toolbar --> Options (SF bug 1594194)
 
 2006-11-11  Gilles Dumortier <dgil at ieee.org>
