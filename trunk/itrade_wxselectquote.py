@@ -354,7 +354,7 @@ class iTradeQuoteSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         pass
 
     def OnTickerEdited(self,event):
-        self.m_ticker = event.GetString()
+        self.m_ticker = event.GetString().upper()
         print 'ticker: (editing=%d) :' % self.m_editing,self.m_ticker,' currentItem:',self.currentItem
 
         if self.m_ticker!='':
@@ -383,7 +383,7 @@ class iTradeQuoteSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         event.Skip()
 
     def OnISINEdited(self,event):
-        isin = event.GetString()
+        isin = event.GetString().upper()
         if isin!='' and isin!=self.m_isin:
             self.m_isin = isin
             lst = quotes.lookupISIN(self.m_isin,self.m_market)
