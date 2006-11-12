@@ -432,7 +432,7 @@ class LiveUpdate_fortuneo(object):
 
         self.loadPlaces()
 
-        print 'Fortuneo live (%s) - ready to run' % self.m_blowfish
+        debug('Fortuneo live (%s) - ready to run' % self.m_blowfish)
 
     # ---[ reentrant ] ---
     def acquire(self):

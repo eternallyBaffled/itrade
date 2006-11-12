@@ -351,7 +351,7 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         self.ChartRealize()
 
     def OnPaint(self,event=None):
-        info('iTradeQuoteGraphPanel:OnPaint()')
+        #debug('iTradeQuoteGraphPanel:OnPaint()')
         if not event:
             self.ChartRealize()
         self.erase_cursor()
