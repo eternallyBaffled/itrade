@@ -46,7 +46,7 @@ import wx.lib.mixins.listctrl as wxl
 # iTrade system
 import itrade_config
 from itrade_logging import *
-from itrade_local import message
+from itrade_local import message,gMessage
 from itrade_portfolio import loadPortfolio
 from itrade_matrix import *
 from itrade_quotes import *
@@ -114,6 +114,13 @@ ID_LIVE_QUOTE = 311
 #ID_BUY_QUOTE = 320
 #ID_SELL_QUOTE = 321
 ID_PROPERTY_QUOTE = 330
+
+ID_LANG = 399
+ID_LANG_FIRST = 400
+ID_LANG_SYSTEM = 400
+ID_LANG_ENGLISH = 401
+ID_LANG_FRENCH = 402
+ID_LANG_LAST = 402
 
 ID_CONTENT = 500
 ID_SUPPORT = 501
@@ -352,107 +359,9 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
         wx.EVT_CLOSE(self, self.OnCloseWindow)
         wx.EVT_WINDOW_DESTROY(self, self.OnDestroyWindow)
 
-        # the main menu
-        self.filemenu = wx.Menu()
-        self.filemenu.Append(ID_OPEN,message('main_open'),message('main_desc_open'))
-        self.filemenu.Append(ID_NEW,message('main_new'),message('main_desc_new'))
-        self.filemenu.Append(ID_SAVE,message('main_save'),message('main_desc_save'))
-        self.filemenu.Append(ID_SAVEAS,message('main_saveas'),message('main_desc_saveas'))
-        self.filemenu.Append(ID_DELETE,message('main_delete'),message('main_desc_delete'))
-        self.filemenu.AppendSeparator()
-        self.filemenu.Append(ID_EDIT,message('main_edit'),message('main_desc_edit'))
-        self.filemenu.AppendSeparator()
-        self.filemenu.Append(ID_MANAGELIST,message('main_managelist'),message('main_desc_managelist'))
-        self.filemenu.AppendSeparator()
-        self.filemenu.Append(ID_EXIT,message('main_exit'),message('main_desc_exit'))
-
-        self.matrixmenu = wx.Menu()
-        self.matrixmenu.AppendRadioItem(ID_PORTFOLIO, message('main_view_portfolio'),message('main_view_desc_portfolio'))
-        self.matrixmenu.AppendRadioItem(ID_QUOTES, message('main_view_quotes'),message('main_view_desc_quotes'))
-        self.matrixmenu.AppendRadioItem(ID_STOPS, message('main_view_stops'),message('main_view_desc_stops'))
-        self.matrixmenu.AppendRadioItem(ID_INDICATORS, message('main_view_indicators'),message('main_view_desc_indicators'))
-        self.matrixmenu.AppendSeparator()
-        self.matrixmenu.AppendRadioItem(ID_SMALL_VIEW, message('main_view_small'),message('main_view_desc_small'))
-        self.matrixmenu.AppendRadioItem(ID_NORMAL_VIEW, message('main_view_normal'),message('main_view_desc_normal'))
-        self.matrixmenu.AppendRadioItem(ID_BIG_VIEW, message('main_view_big'),message('main_view_desc_big'))
-        self.matrixmenu.AppendSeparator()
-        self.matrixmenu.Append(ID_REFRESH, message('main_view_refresh'),message('main_view_desc_refresh'))
-        self.matrixmenu.AppendCheckItem(ID_AUTOREFRESH, message('main_view_autorefresh'),message('main_view_desc_autorefresh'))
-
-        self.quotemenu = wx.Menu()
-        self.quotemenu.Append(ID_ADD_QUOTE, message('main_quote_add'),message('main_quote_desc_add'))
-        self.quotemenu.Append(ID_REMOVE_QUOTE, message('main_quote_remove'),message('main_quote_desc_add'))
-        self.quotemenu.AppendSeparator()
-        self.quotemenu.Append(ID_GRAPH_QUOTE, message('main_quote_graph'),message('main_quote_desc_graph'))
-        self.quotemenu.Append(ID_LIVE_QUOTE, message('main_quote_live'),message('main_quote_desc_live'))
-        self.quotemenu.AppendSeparator()
-        self.quotemenu.Append(ID_PROPERTY_QUOTE, message('main_quote_property'),message('main_quote_desc_property'))
-
-        self.viewmenu = wx.Menu()
-        self.viewmenu.Append(ID_OPERATIONS, message('main_view_operations'),message('main_view_desc_operations'))
-        self.viewmenu.Append(ID_MONEY, message('main_view_money'),message('main_view_desc_money'))
-        self.viewmenu.AppendSeparator()
-        self.viewmenu.Append(ID_CURRENCIES, message('main_view_currencies'),message('main_view_desc_currencies'))
-        self.viewmenu.Append(ID_ALERTS, message('main_view_alerts'),message('main_view_desc_alerts'))
-        self.viewmenu.AppendSeparator()
-        self.viewmenu.Append(ID_COMPUTE, message('main_view_compute'),message('main_view_desc_compute'))
-
-        self.helpmenu = wx.Menu()
-        self.helpmenu.Append(ID_CONTENT, message('main_help_contents'),message('main_help_desc_contents'))
-        self.helpmenu.AppendSeparator()
-        self.helpmenu.Append(ID_SUPPORT, message('main_help_support'),message('main_help_desc_support'))
-        self.helpmenu.Append(ID_BUG, message('main_help_bugs'),message('main_help_desc_bugs'))
-        self.helpmenu.Append(ID_DONORS, message('main_help_donors'),message('main_help_desc_donors'))
-        self.helpmenu.AppendSeparator()
-        self.helpmenu.Append(ID_ABOUT, message('main_about'), message('main_desc_about'))
-
-        # Creating the menubar
-        menuBar = wx.MenuBar()
-
-        # Adding the "filemenu" to the MenuBar
-        menuBar.Append(self.filemenu,message('main_file'))
-        menuBar.Append(self.matrixmenu,message('main_matrix'))
-        menuBar.Append(self.viewmenu,message('main_view'))
-        menuBar.Append(self.quotemenu,message('main_quote'))
-        menuBar.Append(self.helpmenu,message('main_help'))
-
-        # Adding the MenuBar to the Frame content
-        self.SetMenuBar(menuBar)
-
-        wx.EVT_MENU(self, ID_OPEN, self.OnOpen)
-        wx.EVT_MENU(self, ID_NEW, self.OnNew)
-        wx.EVT_MENU(self, ID_DELETE, self.OnDelete)
-        wx.EVT_MENU(self, ID_SAVE, self.OnSave)
-        wx.EVT_MENU(self, ID_SAVEAS, self.OnSaveAs)
-        wx.EVT_MENU(self, ID_EDIT, self.OnEdit)
-        wx.EVT_MENU(self, ID_MANAGELIST, self.OnManageList)
-        wx.EVT_MENU(self, ID_EXIT, self.OnExit)
-        wx.EVT_MENU(self, ID_SUPPORT, self.OnSupport)
-        wx.EVT_MENU(self, ID_BUG, self.OnBug)
-        wx.EVT_MENU(self, ID_DONORS, self.OnDonors)
-        wx.EVT_MENU(self, ID_PORTFOLIO, self.OnPortfolio)
-        wx.EVT_MENU(self, ID_QUOTES, self.OnQuotes)
-        wx.EVT_MENU(self, ID_STOPS, self.OnStops)
-        wx.EVT_MENU(self, ID_INDICATORS, self.OnIndicators)
-        wx.EVT_MENU(self, ID_OPERATIONS, self.OnOperations)
-        wx.EVT_MENU(self, ID_MONEY, self.OnMoney)
-        wx.EVT_MENU(self, ID_COMPUTE, self.OnCompute)
-        wx.EVT_MENU(self, ID_ALERTS, self.OnAlerts)
-        wx.EVT_MENU(self, ID_CURRENCIES, self.OnCurrencies)
-
-        wx.EVT_MENU(self, ID_ADD_QUOTE, self.OnAddQuote)
-        wx.EVT_MENU(self, ID_REMOVE_QUOTE, self.OnRemoveCurrentQuote)
-        wx.EVT_MENU(self, ID_GRAPH_QUOTE, self.OnGraphQuote)
-        wx.EVT_MENU(self, ID_LIVE_QUOTE, self.OnLiveQuote)
-        wx.EVT_MENU(self, ID_PROPERTY_QUOTE, self.OnPropertyQuote)
-
-        wx.EVT_MENU(self, ID_SMALL_VIEW, self.OnViewSmall)
-        wx.EVT_MENU(self, ID_NORMAL_VIEW, self.OnViewNormal)
-        wx.EVT_MENU(self, ID_BIG_VIEW, self.OnViewBig)
-
-        wx.EVT_MENU(self, ID_REFRESH, self.OnRefresh)
-        wx.EVT_MENU(self, ID_AUTOREFRESH, self.OnAutoRefresh)
-        wx.EVT_MENU(self, ID_ABOUT, self.OnAbout)
+        # Set Lang then buildMenu
+        self.SetLang(bDuringInit=True)
+        self.buildMenu()
 
         # create an image list
         self.m_imagelist = wx.ImageList(16,16)
@@ -502,6 +411,125 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
         wx.PostEvent(self,PostInitEvent())
 
         self.Show(True)
+
+    # --- [ Menus ] ----------------------------------------------------------------
+
+    def buildMenu(self):
+        # the main menu
+        self.filemenu = wx.Menu()
+        self.filemenu.Append(ID_OPEN,message('main_open'),message('main_desc_open'))
+        self.filemenu.Append(ID_NEW,message('main_new'),message('main_desc_new'))
+        self.filemenu.Append(ID_SAVE,message('main_save'),message('main_desc_save'))
+        self.filemenu.Append(ID_SAVEAS,message('main_saveas'),message('main_desc_saveas'))
+        self.filemenu.Append(ID_DELETE,message('main_delete'),message('main_desc_delete'))
+        self.filemenu.AppendSeparator()
+        self.filemenu.Append(ID_EDIT,message('main_edit'),message('main_desc_edit'))
+        self.filemenu.AppendSeparator()
+        self.filemenu.Append(ID_MANAGELIST,message('main_managelist'),message('main_desc_managelist'))
+        self.filemenu.AppendSeparator()
+        self.filemenu.Append(ID_EXIT,message('main_exit'),message('main_desc_exit'))
+
+        self.matrixmenu = wx.Menu()
+        self.matrixmenu.AppendRadioItem(ID_PORTFOLIO, message('main_view_portfolio'),message('main_view_desc_portfolio'))
+        self.matrixmenu.AppendRadioItem(ID_QUOTES, message('main_view_quotes'),message('main_view_desc_quotes'))
+        self.matrixmenu.AppendRadioItem(ID_STOPS, message('main_view_stops'),message('main_view_desc_stops'))
+        self.matrixmenu.AppendRadioItem(ID_INDICATORS, message('main_view_indicators'),message('main_view_desc_indicators'))
+        self.matrixmenu.AppendSeparator()
+        self.matrixmenu.AppendRadioItem(ID_SMALL_VIEW, message('main_view_small'),message('main_view_desc_small'))
+        self.matrixmenu.AppendRadioItem(ID_NORMAL_VIEW, message('main_view_normal'),message('main_view_desc_normal'))
+        self.matrixmenu.AppendRadioItem(ID_BIG_VIEW, message('main_view_big'),message('main_view_desc_big'))
+        self.matrixmenu.AppendSeparator()
+        self.matrixmenu.Append(ID_REFRESH, message('main_view_refresh'),message('main_view_desc_refresh'))
+        self.matrixmenu.AppendCheckItem(ID_AUTOREFRESH, message('main_view_autorefresh'),message('main_view_desc_autorefresh'))
+
+        self.quotemenu = wx.Menu()
+        self.quotemenu.Append(ID_ADD_QUOTE, message('main_quote_add'),message('main_quote_desc_add'))
+        self.quotemenu.Append(ID_REMOVE_QUOTE, message('main_quote_remove'),message('main_quote_desc_add'))
+        self.quotemenu.AppendSeparator()
+        self.quotemenu.Append(ID_GRAPH_QUOTE, message('main_quote_graph'),message('main_quote_desc_graph'))
+        self.quotemenu.Append(ID_LIVE_QUOTE, message('main_quote_live'),message('main_quote_desc_live'))
+        self.quotemenu.AppendSeparator()
+        self.quotemenu.Append(ID_PROPERTY_QUOTE, message('main_quote_property'),message('main_quote_desc_property'))
+
+        self.viewmenu = wx.Menu()
+        self.viewmenu.Append(ID_OPERATIONS, message('main_view_operations'),message('main_view_desc_operations'))
+        self.viewmenu.Append(ID_MONEY, message('main_view_money'),message('main_view_desc_money'))
+        self.viewmenu.AppendSeparator()
+        self.viewmenu.Append(ID_CURRENCIES, message('main_view_currencies'),message('main_view_desc_currencies'))
+        self.viewmenu.Append(ID_ALERTS, message('main_view_alerts'),message('main_view_desc_alerts'))
+        self.viewmenu.AppendSeparator()
+        self.viewmenu.Append(ID_COMPUTE, message('main_view_compute'),message('main_view_desc_compute'))
+
+        self.optionsmenu = wx.Menu()
+        self.langmenu = wx.Menu()
+        self.langmenu.AppendRadioItem(ID_LANG_SYSTEM, message('main_options_lang_default'),message('main_options_lang_default'))
+        self.langmenu.AppendRadioItem(ID_LANG_ENGLISH, message('main_options_lang_english'),message('main_options_lang_english'))
+        self.langmenu.AppendRadioItem(ID_LANG_FRENCH, message('main_options_lang_french'),message('main_options_lang_french'))
+        self.optionsmenu.AppendMenu(ID_LANG,message('main_options_lang'),self.langmenu,message('main_options_desc_lang'))
+        if itrade_config.lang == 255:
+            self.optionsmenu.Enable(ID_LANG,False)
+
+        self.helpmenu = wx.Menu()
+        self.helpmenu.Append(ID_CONTENT, message('main_help_contents'),message('main_help_desc_contents'))
+        self.helpmenu.AppendSeparator()
+        self.helpmenu.Append(ID_SUPPORT, message('main_help_support'),message('main_help_desc_support'))
+        self.helpmenu.Append(ID_BUG, message('main_help_bugs'),message('main_help_desc_bugs'))
+        self.helpmenu.Append(ID_DONORS, message('main_help_donors'),message('main_help_desc_donors'))
+        self.helpmenu.AppendSeparator()
+        self.helpmenu.Append(ID_ABOUT, message('main_about'), message('main_desc_about'))
+
+        # Creating the menubar
+        menuBar = wx.MenuBar()
+
+        # Adding the "filemenu" to the MenuBar
+        menuBar.Append(self.filemenu,message('main_file'))
+        menuBar.Append(self.matrixmenu,message('main_matrix'))
+        menuBar.Append(self.viewmenu,message('main_view'))
+        menuBar.Append(self.quotemenu,message('main_quote'))
+        menuBar.Append(self.optionsmenu,message('main_options'))
+        menuBar.Append(self.helpmenu,message('main_help'))
+
+        # Adding the MenuBar to the Frame content
+        self.SetMenuBar(menuBar)
+
+        wx.EVT_MENU(self, ID_OPEN, self.OnOpen)
+        wx.EVT_MENU(self, ID_NEW, self.OnNew)
+        wx.EVT_MENU(self, ID_DELETE, self.OnDelete)
+        wx.EVT_MENU(self, ID_SAVE, self.OnSave)
+        wx.EVT_MENU(self, ID_SAVEAS, self.OnSaveAs)
+        wx.EVT_MENU(self, ID_EDIT, self.OnEdit)
+        wx.EVT_MENU(self, ID_MANAGELIST, self.OnManageList)
+        wx.EVT_MENU(self, ID_EXIT, self.OnExit)
+        wx.EVT_MENU(self, ID_SUPPORT, self.OnSupport)
+        wx.EVT_MENU(self, ID_BUG, self.OnBug)
+        wx.EVT_MENU(self, ID_DONORS, self.OnDonors)
+        wx.EVT_MENU(self, ID_PORTFOLIO, self.OnPortfolio)
+        wx.EVT_MENU(self, ID_QUOTES, self.OnQuotes)
+        wx.EVT_MENU(self, ID_STOPS, self.OnStops)
+        wx.EVT_MENU(self, ID_INDICATORS, self.OnIndicators)
+        wx.EVT_MENU(self, ID_OPERATIONS, self.OnOperations)
+        wx.EVT_MENU(self, ID_MONEY, self.OnMoney)
+        wx.EVT_MENU(self, ID_COMPUTE, self.OnCompute)
+        wx.EVT_MENU(self, ID_ALERTS, self.OnAlerts)
+        wx.EVT_MENU(self, ID_CURRENCIES, self.OnCurrencies)
+
+        wx.EVT_MENU(self, ID_ADD_QUOTE, self.OnAddQuote)
+        wx.EVT_MENU(self, ID_REMOVE_QUOTE, self.OnRemoveCurrentQuote)
+        wx.EVT_MENU(self, ID_GRAPH_QUOTE, self.OnGraphQuote)
+        wx.EVT_MENU(self, ID_LIVE_QUOTE, self.OnLiveQuote)
+        wx.EVT_MENU(self, ID_PROPERTY_QUOTE, self.OnPropertyQuote)
+
+        wx.EVT_MENU(self, ID_SMALL_VIEW, self.OnViewSmall)
+        wx.EVT_MENU(self, ID_NORMAL_VIEW, self.OnViewNormal)
+        wx.EVT_MENU(self, ID_BIG_VIEW, self.OnViewBig)
+
+        wx.EVT_MENU(self, ID_LANG_SYSTEM, self.OnLangDefault)
+        wx.EVT_MENU(self, ID_LANG_ENGLISH, self.OnLangEnglish)
+        wx.EVT_MENU(self, ID_LANG_FRENCH, self.OnLangFrench)
+
+        wx.EVT_MENU(self, ID_REFRESH, self.OnRefresh)
+        wx.EVT_MENU(self, ID_AUTOREFRESH, self.OnAutoRefresh)
+        wx.EVT_MENU(self, ID_ABOUT, self.OnAbout)
 
     # --- [ wxl.ColumnSorterMixin management ] -------------------------------------
 
@@ -678,6 +706,16 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
         m = self.matrixmenu.FindItemById(ID_BIG_VIEW)
         m.Check(itrade_config.matrixFontSize==3)
 
+        if itrade_config.lang != 255:
+            m = self.langmenu.FindItemById(ID_LANG_SYSTEM)
+            m.Check(itrade_config.lang==0)
+
+            m = self.langmenu.FindItemById(ID_LANG_ENGLISH)
+            m.Check(itrade_config.lang==1)
+
+            m = self.langmenu.FindItemById(ID_LANG_FRENCH)
+            m.Check(itrade_config.lang==2)
+
         # refresh Enable state based on current View
         m = self.quotemenu.FindItemById(ID_ADD_QUOTE)
         m.Enable(self.m_listmode == LISTMODE_QUOTES)
@@ -807,6 +845,49 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
     def OnViewBig(self,e):
         itrade_config.matrixFontSize = 3
         self.OnChangeViewText()
+
+    # --- [ Language management ] -------------------------------------
+
+    def SetLang(self,bDuringInit=False):
+
+        if itrade_config.lang==1:
+            lang = 'us'
+        elif itrade_config.lang==2:
+            lang = 'fr'
+        elif itrade_config.lang==0:
+            lang = gMessage.getAutoDetectedLang('us')
+        else:
+            # has been forced by the command line
+            lang = gMessage.getLang()
+
+        if lang != gMessage.getLang():
+            gMessage.setLang(lang)
+            gMessage.load()
+
+            if not bDuringInit:
+                # restore everything with the new lang
+                self.CloseLinks()
+                self.buildMenu()
+                self.RebuildList()
+
+        if not bDuringInit:
+            self.updateCheckItems()
+
+    def OnChangeLang(self):
+        self.setDirty()
+        self.SetLang()
+
+    def OnLangDefault(self,e):
+        itrade_config.lang = 0
+        self.OnChangeLang()
+
+    def OnLangEnglish(self,e):
+        itrade_config.lang = 1
+        self.OnChangeLang()
+
+    def OnLangFrench(self,e):
+        itrade_config.lang = 2
+        self.OnChangeLang()
 
     # --- [ autorefresh management ] -------------------------------------
 

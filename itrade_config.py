@@ -198,6 +198,10 @@ intradayGraphUrlUseISIN['OTCBB'] = False
 # in ms, time before activating XYPopup
 timerForXYPopup = 500
 
+# default lang = system
+global lang
+lang = 0
+
 # ============================================================================
 # loadConfig()
 # ============================================================================
@@ -209,6 +213,7 @@ def loadConfig():
     global bAutoRefreshCurrencyView
     global matrixFontSize
     global operationFontSize
+    global lang
 
     # create a configuration object
     config = ConfigParser.ConfigParser()
@@ -259,6 +264,16 @@ def loadConfig():
         except:
             operationFontSize = 2
 
+    try:
+        v = config.get("view","lang")
+    except:
+        v = 0
+    if v:
+        try:
+            lang = int(v)
+        except:
+            lang = 0
+
 # ============================================================================
 # saveConfig()
 # ============================================================================
@@ -277,6 +292,8 @@ def saveConfig():
         config.set("view","MatrixFontSize","%d" % matrixFontSize)
     if operationFontSize <> default_operationFontSize:
         config.set("view","OperationFontSize","%d" % operationFontSize)
+    if (lang != 0) and (lang != 255):
+        config.set("view","lang","%d" % lang)
 
     # write the new configuration file
     fn = os.path.join(dirUserData,'usrconfig.txt')

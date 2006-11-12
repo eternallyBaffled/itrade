@@ -80,6 +80,13 @@ main_quote_desc_sell; Opération de vente sur la valeur sélectionnée
 main_quote_property;Propriétés
 main_quote_desc_property; Visualise les propriétés de la valeur sélectionnée
 
+main_options;&Options
+main_options_lang;&Langue
+main_options_desc_lang; Choix de la langue utilisée par le logiciel
+main_options_lang_default;Langue système
+main_options_lang_english;Anglais
+main_options_lang_french;Français
+
 main_help;&Aide
 main_help_contents;&Contenu
 main_help_desc_contents; Contenu de l'aide
