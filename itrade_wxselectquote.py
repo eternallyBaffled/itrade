@@ -318,7 +318,7 @@ class iTradeQuoteSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         self.m_list.SetDimensions(0, 0, w, h)
 
     def SetCurrentItem(self,line):
-        print 'SetCurrentItem: line=%d' % line
+        #print 'SetCurrentItem: line=%d' % line
         if self.currentItem==line: return
 
         if self.currentItem>=0:
@@ -342,7 +342,7 @@ class iTradeQuoteSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         if x>=0:
             key = self.m_list.GetItemData(x)
             quote = self.itemQuoteMap[key]
-            print 'getQuoteOnTheLine(%d) : returns key=%d quote=%s' % (x,key,quote.ticker())
+            #print 'getQuoteOnTheLine(%d) : returns key=%d quote=%s' % (x,key,quote.ticker())
             return quote
         else:
             return None
@@ -355,7 +355,7 @@ class iTradeQuoteSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
 
     def OnTickerEdited(self,event):
         self.m_ticker = event.GetString().upper()
-        print 'ticker: (editing=%d) :' % self.m_editing,self.m_ticker,' currentItem:',self.currentItem
+        #print 'ticker: (editing=%d) :' % self.m_editing,self.m_ticker,' currentItem:',self.currentItem
 
         if self.m_ticker!='':
             if self.m_editing:
@@ -393,12 +393,12 @@ class iTradeQuoteSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
                 self.m_ticker = quote.ticker()
                 self.m_place = quote.place()
                 v = self.wxTickerCtrl.GetLabel()
-                print 'isin:',isin,' label %s=?=%s' % (v,quote.ticker()), 'line=%d' % self.itemLineMap[quote.ticker()]
+                #print 'isin:',isin,' label %s=?=%s' % (v,quote.ticker()), 'line=%d' % self.itemLineMap[quote.ticker()]
                 if v!= quote.ticker():
                     self.wxTickerCtrl.SetLabel(quote.ticker())
             else:
                 self.wxTickerCtrl.SetLabel('')
-        print 'isin:',isin,' currentItem:',self.currentItem
+        #print 'isin:',isin,' currentItem:',self.currentItem
         event.Skip()
 
     def OnItemActivated(self, event):
@@ -407,11 +407,11 @@ class iTradeQuoteSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         event.Skip()
 
     def OnItemSelected(self, event):
-        print 'OnItemSelected --['
+        #print 'OnItemSelected --['
         # be sure we come from a click and not some editing in ticker/isin controls
         self.currentItem = event.m_itemIndex
         quote = self.getQuoteOnTheLine(self.currentItem)
-        print 'OnItemSelected:',quote,' currentItem:',self.currentItem
+        #print 'OnItemSelected:',quote,' currentItem:',self.currentItem
         self.m_editing = False
         self.m_isin = quote.isin()
         self.m_place = quote.place()
@@ -421,11 +421,11 @@ class iTradeQuoteSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         #if self.m_ticker != self.wxTickerCtrl.GetLabel():
         self.wxTickerCtrl.SetLabel(self.m_ticker)
         event.Skip()
-        print ']-- OnItemSelected'
+        #print ']-- OnItemSelected'
 
     def OnValid(self,event):
         self.quote = self.getQuoteOnTheLine(self.currentItem)
-        print 'OnItemSelected:',self.quote,' item:',self.currentItem
+        #print 'OnItemSelected:',self.quote,' item:',self.currentItem
         if self.quote:
             self.EndModal(wx.ID_OK)
 
