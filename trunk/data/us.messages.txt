@@ -53,6 +53,10 @@ main_view_desc_normal; Use normal text size to display the matrix
 main_view_big;Big Text
 main_view_desc_big; Use big text size to display the matrix
 
+main_quote_add;Add ...
+main_quote_desc_add; Add a quote in the list
+main_quote_remove;Remove
+main_quote_desc_remove; Remove current select Quote from the list
 main_quote_graph;Historical Graphs
 main_quote_desc_graph; Display historical graphs for the current selected Quote
 main_quote_live;Live
@@ -71,6 +75,13 @@ main_quote_sell;Sell
 main_quote_desc_sell; Sell operation for the current selected Quote
 main_quote_property;Properties
 main_quote_desc_property; Display properties for the current selected Quote
+
+main_options;&Options
+main_options_lang;&Language
+main_options_desc_lang; Select language used by this software
+main_options_lang_default;System Language
+main_options_lang_english;English
+main_options_lang_french;French
 
 main_help;&Help
 main_help_contents;&Contents

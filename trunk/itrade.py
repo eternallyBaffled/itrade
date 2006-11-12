@@ -118,6 +118,7 @@ def main():
             file = a
         if o in ("-l", "--lang"):
             lang = a
+            itrade_config.lang = 255
         if o in ("-t", "--ticker"):
             quote = quotes.lookupTicker(a)
             if not quote:
@@ -128,8 +129,9 @@ def main():
                 print 'quote %s not found ! format is : <ISINorTICKER>.<EXCHANGE>.<PLACE>' % a
 
     # use the correct pack language
-    gMessage.setLang(lang)
-    gMessage.load()
+    if itrade_config.lang == 255:
+        gMessage.setLang(lang)
+        gMessage.load()
 
     if wx:
         itrade_wxmain.start_iTradeWindow()
