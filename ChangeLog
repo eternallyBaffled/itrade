@@ -5,6 +5,9 @@ On the road for v0.4.5 (Nausicaa)
 
 ===============================================================================
 
+2006-11-15  Gilles Dumortier <dgil at ieee.org>
+	* Euronext Brussels Market : value error (SF bug 1596477)
+
 2006-11-12  Gilles Dumortier <dgil at ieee.org>
 	* Add a value: can't select it by isin and ticker (SF bug 1591336) in
 	  lowercase

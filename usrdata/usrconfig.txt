@@ -1,4 +1,3 @@
 [view]
 lang = 1
-autorefreshview = False
 
