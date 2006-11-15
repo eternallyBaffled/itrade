@@ -120,12 +120,15 @@ class LiveUpdate_Euronext(object):
         return lines
 
     def euronextDate(self,date):
-        adate,sclock = string.split(date,' ')
+        sp = string.split(date,' ')
+        #print 'euronextDate:',sp
 
         # Date part is easy
-        sdate = jjmmaa2yyyymmdd(adate)
+        sdate = jjmmaa2yyyymmdd(sp[0])
 
-        return sdate,sclock
+        if len(sp)==1:
+            return sdate,"00:00"
+        return sdate,sp[1]
 
     def convertClock(self,clock):
         min = clock[-2:]
