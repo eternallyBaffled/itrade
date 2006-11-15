@@ -286,10 +286,13 @@ if __name__=='__main__':
     print 'fr (unknown message):', message('toto')
 
     print
+    import datetime
     setLang('fr')
-    print getLocale()
+    print '6 décembre 2005 en francais (%s) : ' % getLocale(),datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x ')
     setLang('en')
-    print getLocale()
+    print '6th december 2005 in english (%s) : ' % getLocale(),datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x ')
+    setLang()
+    print '6th december 2005 in default lang (%s) : ' % getLocale(),datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x ')
 
 # ============================================================================
 # That's all folks !

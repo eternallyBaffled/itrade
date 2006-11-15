@@ -51,7 +51,7 @@ import wx
 # iTrade system
 from itrade_logging import *
 from itrade_quotes import *
-from itrade_local import message
+from itrade_local import message,setLocale
 from itrade_config import *
 
 from itrade_wxhtml import *
