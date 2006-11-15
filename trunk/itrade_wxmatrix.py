@@ -253,7 +253,7 @@ class iTradeMainToolbar(wx.ToolBar):
                            message('main_view_alerts'), message('main_view_desc_alerts'))
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
         self.AddSimpleTool(self._NTB2_QUOTE, wx.Bitmap('res/graph.png'),
-                           message('main_view_current'), message('main_view_desc_current'))
+                           message('main_quote_graph'), message('main_quote_desc_graph'))
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
         self.AddSimpleTool(self._NTB2_REFRESH, wx.Bitmap('res/refresh.png'),
                            message('main_view_refresh'), message('main_view_desc_refresh'))
