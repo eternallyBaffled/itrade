@@ -358,9 +358,6 @@ class Trades(object):
     def ovb(self,idx):
         if not isinstance(idx,int):
             idx = itrade_datation.gCal.index(idx)
-        if self.m_ovb[idx]<0:
-            print idx,self.m_date[idx]
-        #    self.compute_ovb(idx)
         return self.m_ovb[idx]
 
     def close(self,idx):
@@ -476,7 +473,7 @@ class Trades(object):
         if n>0:
             self.m_vma15[i] = float(s/n)
         else:
-            self.m_vma15[i] = -1.0
+            self.m_vma15[i] = -1
 
     def compute_ovb(self):
         ovb = long(0)
