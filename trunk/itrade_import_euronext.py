@@ -193,8 +193,8 @@ class Import_euronext(object):
         for eachLine in lines:
             sdata = string.split (eachLine, '\t')
             if len(sdata)==6:
+                #print sdata
                 if (sdata[0]<>"Date") and (sdata[5]<>'-'):
-                    #print sdata
                     sdate = jjmmaa2yyyymmdd(sdata[0])
                     open = self.parseFValue(sdata[1])
                     high = self.parseFValue(sdata[2])
