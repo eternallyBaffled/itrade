@@ -40,6 +40,9 @@ from datetime import *
 from math import pow,sqrt
 import logging
 
+# numpy
+from numpy import array
+
 # iTrade system
 from itrade_logging import *
 import itrade_csv
@@ -96,6 +99,15 @@ class Trade(object):
         return self.m_index
 
 # ============================================================================
+# create_array() - function helper
+# ============================================================================
+
+def create_array(defval):
+    n = itrade_datation.gCal.lastindex()+1
+    a = array([defval]*n)
+    return a
+
+# ============================================================================
 # Trades
 # ============================================================================
 #
@@ -117,22 +129,23 @@ class Trades(object):
         self.m_firsttrade = None
         self.m_lasttrade = None
         self.m_lastimport = None
-        self.m_date = {}
-        self.m_inOpen = {}
-        self.m_inClose = {}
-        self.m_inLow = {}
-        self.m_inHigh = {}
-        self.m_inVol = {}
-        self.m_ma20 = {}
-        self.m_ma50 = {}
-        self.m_ma100 = {}
-        self.m_ma150 = {}
-        self.m_vma15 = {}
-        self.m_ovb = {}
 
-        self.m_bollUp = {}
-        self.m_bollM = {}
-        self.m_bollDn = {}
+        self.m_date = {}
+        self.m_inOpen = create_array(-1.0)
+        self.m_inClose = create_array(-1.0)
+        self.m_inLow = create_array(-1.0)
+        self.m_inHigh = create_array(-1.0)
+        self.m_inVol = create_array(long(0))
+        self.m_ma20 = create_array(-1.0)
+        self.m_ma50 = create_array(-1.0)
+        self.m_ma100 = create_array(-1.0)
+        self.m_ma150 = create_array(-1.0)
+        self.m_vma15 = create_array(-1.0)
+        self.m_ovb = create_array(long(0))
+
+        self.m_bollUp = create_array(-1.0)
+        self.m_bollM = create_array(-1.0)
+        self.m_bollDn = create_array(-1.0)
 
         self.m_candles = {}
 
@@ -298,42 +311,42 @@ class Trades(object):
     def ma20(self,idx):
         if not isinstance(idx,int):
             idx = itrade_datation.gCal.index(idx)
-        if not self.m_ma20.has_key(idx):
+        if self.m_ma20[idx]<0.0:
             self.compute_ma20(idx)
         return self.m_ma20[idx]
 
     def ma50(self,idx):
         if not isinstance(idx,int):
             idx = itrade_datation.gCal.index(idx)
-        if not self.m_ma50.has_key(idx):
+        if self.m_ma50[idx]<0.0:
             self.compute_ma50(idx)
         return self.m_ma50[idx]
 
     def ma100(self,idx):
         if not isinstance(idx,int):
             idx = itrade_datation.gCal.index(idx)
-        if not self.m_ma100.has_key(idx):
+        if self.m_ma100[idx]<0.0:
             self.compute_ma100(idx)
         return self.m_ma100[idx]
 
     def ma150(self,idx):
         if not isinstance(idx,int):
             idx = itrade_datation.gCal.index(idx)
-        if not self.m_ma150.has_key(idx):
+        if self.m_ma150[idx]<0.0:
             self.compute_ma150(idx)
         return self.m_ma150[idx]
 
     def vma15(self,idx):
         if not isinstance(idx,int):
             idx = itrade_datation.gCal.index(idx)
-        if not self.m_vma15.has_key(idx):
+        if self.m_vma15[idx]<0.0:
             self.compute_vma15(idx)
         return self.m_vma15[idx]
 
     def bollinger(self,idx,band=1):
         if not isinstance(idx,int):
             idx = itrade_datation.gCal.index(idx)
-        if not self.m_bollM.has_key(idx):
+        if self.m_bollM[idx]<0.0:
             self.compute_bollinger(idx)
         if band==0:
             return self.m_bollDn[idx]
@@ -345,7 +358,7 @@ class Trades(object):
     def ovb(self,idx):
         if not isinstance(idx,int):
             idx = itrade_datation.gCal.index(idx)
-        if not self.m_ovb.has_key(idx):
+        if self.m_ovb[idx]<0:
             print idx,self.m_date[idx]
         #    self.compute_ovb(idx)
         return self.m_ovb[idx]
@@ -353,7 +366,7 @@ class Trades(object):
     def close(self,idx):
         if not isinstance(idx,int):
             idx = itrade_datation.gCal.index(idx)
-        while idx>=0 and (not self.m_inClose.has_key(idx)):
+        while idx>=0 and self.m_inClose[idx]<0.0:
             # seek existing previous close !
             idx = idx - 1
         if idx < 0:
@@ -402,73 +415,73 @@ class Trades(object):
 
     def compute_ma150(self,i):
         debug('%s: compute MA150 [%d,%d]' % (self.m_quote.ticker(),i-150+1,i+1))
-        s = 0
+        s = 0.0
         n = 0
         for j in range(i-150+1,i+1):
-            if self.m_inClose.has_key(j):
+            if self.m_inClose[j]>=0.0:
                 s = s + self.m_inClose[j]
                 n = n + 1
         if n>0:
             self.m_ma150[i] = float(s/n)
         else:
-            self.m_ma150[i] = None
+            self.m_ma150[i] = -1.0
 
     def compute_ma100(self,i):
         debug('%s: compute MA100 [%d,%d]' % (self.m_quote.ticker(),i-100+1,i+1))
-        s = 0
+        s = 0.0
         n = 0
         for j in range(i-100+1,i+1):
-            if self.m_inClose.has_key(j):
+            if self.m_inClose[j]>=0.0:
                 s = s + self.m_inClose[j]
                 n = n + 1
         if n>0:
             self.m_ma100[i] = float(s/n)
         else:
-            self.m_ma100[i] = None
+            self.m_ma100[i] = -1.0
 
     def compute_ma50(self,i):
         debug('%s: compute MA50 [%d,%d]' % (self.m_quote.ticker(),i-50+1,i+1))
         s = 0
         n = 0
         for j in range(i-50+1,i+1):
-            if self.m_inClose.has_key(j):
+            if self.m_inClose[j]>=0.0:
                 s = s + self.m_inClose[j]
                 n = n + 1
         if n>0:
             self.m_ma50[i] = float(s/n)
         else:
-            self.m_ma50[i] = None
+            self.m_ma50[i] = -1.0
 
     def compute_ma20(self,i):
         debug('%s: compute MA20 [%d,%d]' % (self.m_quote.ticker(),i-20+1,i+1))
         s = 0
         n = 0
         for j in range(i-20+1,i+1):
-            if self.m_inClose.has_key(j):
+            if self.m_inClose[j]>=0.0:
                 s = s + self.m_inClose[j]
                 n = n + 1
         if n>0:
             self.m_ma20[i] = float(s/n)
         else:
-            self.m_ma20[i] = None
+            self.m_ma20[i] = -1.0
 
     def compute_vma15(self,i):
         debug('%s: compute VMA15 [%d,%d]' % (self.m_quote.ticker(),i-15+1,i+1))
         s = long(0)
         n = 0
         for j in range(i-15+1,i+1):
-            if self.m_inVol.has_key(j):
+            if self.m_inClose[j]>=0.0:
                 s = s + self.m_inVol[j]
                 n = n + 1
         if n>0:
             self.m_vma15[i] = float(s/n)
         else:
-            self.m_vma15[i] = None
+            self.m_vma15[i] = -1.0
 
     def compute_ovb(self):
         ovb = long(0)
         for j in range(0,itrade_datation.gCal.lastindex()+1):
-            if self.m_inVol.has_key(j):
+            if self.m_inClose[j]>=0.0:
                 pc = self.close(j-1)
                 if self.m_inClose[j]>=pc:
                     ovb = ovb + long(self.m_inVol[j])
@@ -479,11 +492,11 @@ class Trades(object):
 
     def compute_bollinger(self,i):
         debug('%s: compute BOLLINGER n=20,d=2 [%d,%d]' % (self.m_quote.ticker(),i-20+1,i+1))
-        sm = 0
-        ecart = 0
+        sm = 0.0
+        ecart = 0.0
         n = 0
         for j in range(i-20+1,i+1):
-            if self.m_inClose.has_key(j):
+            if self.m_inClose[j]>=0.0:
                 sm = sm + self.m_inClose[j]
                 n = n + 1
         if n>0:
@@ -492,16 +505,16 @@ class Trades(object):
 
             # calculate MA plus 2 standard deviations
             for j in range(i-20+1,i+1):
-                if self.m_inClose.has_key(j):
+                if self.m_inClose[j]>=0.0:
                     ecart = ecart + pow(self.m_inClose[j] - self.m_bollM[i],2)
 
             ecart = 2*sqrt(float(ecart)/n)
             self.m_bollUp[i] = self.m_bollM[i] + ecart
             self.m_bollDn[i] = self.m_bollM[i] - ecart
         else:
-            self.m_bollM[i] = None
-            self.m_bollUp[i] = None
-            self.m_bollDn[i] = None
+            self.m_bollM[i] = -1.0
+            self.m_bollUp[i] = -1.0
+            self.m_bollDn[i] = -1.0
 
 # ============================================================================
 # Test
