@@ -63,7 +63,7 @@ from itrade_wxpropquote import iTradeQuotePropertiesPanel
 
 # matplotlib system
 import matplotlib
-matplotlib.use('WX')
+matplotlib.use('WXAgg')
 matplotlib.rcParams['numerix'] = 'numpy'
 
 from matplotlib.dates import date2num, num2date
@@ -350,47 +350,48 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         #
         self.ChartRealize()
 
-    def OnPaint(self,event=None):
-        #debug('iTradeQuoteGraphPanel:OnPaint()')
-        if not event:
-            self.ChartRealize()
+    def RedrawAll(self):
+        print 'RedrawAll --['
+        self.ChartRealize()
         self.erase_cursor()
         self.canvas.draw()
-        if event:
-            event.Skip()
+        print ']-- RedrawAll'
+
+    def OnPaint(self,event):
+        event.Skip(True)
 
     def OnHome(self,event):
         self.m_nIndex = self.m_quote.lastindex()
         self.zoomLevel = 2
-        self.OnPaint()
+        self.RedrawAll()
 
     def OnPanLeft(self,event):
         if self.m_nIndex > self.zoomPeriod[self.zoomLevel]:
             self.m_nIndex = self.m_nIndex - self.zoomIncPeriod[self.zoomLevel]
             if self.m_nIndex <= self.zoomPeriod[self.zoomLevel]:
                 self.m_nIndex = self.zoomPeriod[self.zoomLevel]
-            self.OnPaint()
+            self.RedrawAll()
 
     def OnPanRight(self,event):
         if self.m_nIndex < self.m_quote.lastindex():
             self.m_nIndex = self.m_nIndex + self.zoomIncPeriod[self.zoomLevel]
             if self.m_nIndex >= self.m_quote.lastindex():
                 self.m_nIndex = self.m_quote.lastindex()
-            self.OnPaint()
+            self.RedrawAll()
 
     def OnZoomOut(self,event):
         if self.zoomLevel < self.zoomMaxLevel:
             self.zoomLevel = self.zoomLevel + 1
             if self.zoomLevel > self.zoomMaxLevel:
                 self.zoomLevel = self.zoomMaxLevel
-            self.OnPaint()
+            self.RedrawAll()
 
     def OnZoomIn(self,event):
         if self.zoomLevel > 0:
             self.zoomLevel = self.zoomLevel - 1
             if self.zoomLevel < 0:
                 self.zoomLevel = 0
-            self.OnPaint()
+            self.RedrawAll()
 
     def OnConfig(self,event):
         if not hasattr(self, "m_popupID_dispMA150"):
@@ -443,58 +444,58 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         self.m_dispChart1Type = 'c'
         m = self.popmenu.FindItemById(self.m_popupID_dispChart1Candlestick)
         m.Check(True)
-        self.OnPaint()
+        self.RedrawAll()
 
     def OnPopup_dispChart1OHLC(self,event):
         self.m_dispChart1Type = 'o'
         m = self.popmenu.FindItemById(self.m_popupID_dispChart1OHLC)
         m.Check(True)
-        self.OnPaint()
+        self.RedrawAll()
 
     def OnPopup_dispChart1Line(self,event):
         self.m_dispChart1Type = 'l'
         m = self.popmenu.FindItemById(self.m_popupID_dispChart1Line)
         m.Check(True)
-        self.OnPaint()
+        self.RedrawAll()
 
     def OnPopup_dispGrid(self,event):
         self.m_dispGrid = not self.m_dispGrid
         m = self.popmenu.FindItemById(self.m_popupID_dispGrid)
         m.Check(self.m_dispGrid)
         self.m_hasGrid = self.m_dispGrid
-        self.OnPaint()
+        self.RedrawAll()
 
     def OnPopup_dispLegend(self,event):
         self.m_dispLegend = not self.m_dispLegend
         m = self.popmenu.FindItemById(self.m_popupID_dispLegend)
         m.Check(self.m_dispLegend)
         self.m_hasLegend = self.m_dispLegend
-        self.OnPaint()
+        self.RedrawAll()
 
     def OnPopup_dispMA150(self,event):
         self.m_dispMA150 = not self.m_dispMA150
         m = self.popmenu.FindItemById(self.m_popupID_dispMA150)
         m.Check(self.m_dispMA150)
-        self.OnPaint()
+        self.RedrawAll()
 
     def OnPopup_dispMA150(self,event):
         self.m_dispMA150 = not self.m_dispMA150
         m = self.popmenu.FindItemById(self.m_popupID_dispMA150)
         m.Check(self.m_dispMA150)
-        self.OnPaint()
+        self.RedrawAll()
 
     def OnPopup_dispBollinger(self,event):
         self.m_dispBollinger = not self.m_dispBollinger
         m = self.popmenu.FindItemById(self.m_popupID_dispBollinger)
         m.Check(self.m_dispBollinger)
-        self.OnPaint()
+        self.RedrawAll()
 
     def OnPopup_dispOverlaidVolume(self,event):
         self.m_dispOverlaidVolume = not self.m_dispOverlaidVolume
         m = self.popmenu.FindItemById(self.m_popupID_dispOverlaidVolume)
         m.Check(self.m_dispOverlaidVolume)
         self.m_hasChart1Vol = self.m_dispOverlaidVolume
-        self.OnPaint()
+        self.RedrawAll()
 
     def getPeriod(self):
         return self.zoomPeriod[self.zoomLevel]

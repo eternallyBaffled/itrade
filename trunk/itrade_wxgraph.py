@@ -49,13 +49,13 @@ from itrade_wxlabel import iTrade_wxLabel
 
 # matplotlib system
 import matplotlib
-matplotlib.use('WX')
+matplotlib.use('WXAgg')
 matplotlib.rcParams['numerix'] = 'numpy'
 
 from pylab import *
 
-from matplotlib.backends.backend_wx import FigureManager,FigureCanvasWx as FigureCanvas
-#from matplotlib.backends.backend_wxagg import Toolbar, FigureCanvasWxAgg as FigureCanvas
+#from matplotlib.backends.backend_wx import FigureManager,FigureCanvasWx as FigureCanvas
+from matplotlib.backends.backend_wxagg import Toolbar, FigureCanvasWxAgg as FigureCanvas
 from matplotlib.backends.backend_wx import NavigationToolbar2Wx,_load_bitmap
 
 from matplotlib.figure import Figure
@@ -423,7 +423,6 @@ class iTrade_wxPanelGraph(object):
         #debug('OnTimer')
         if self.cursorState(None) and (self.m_cursormode == CURSOR_MODE_IND):
             #debug('OnTimer create label')
-            self.m_xylabel = iTrade_wxLabel(self.canvas,self.m_xylabelPos,self.m_xylabelMax,label=self.GetXYLabel(self.m_xylabelAxis,self.m_xylabelData),multiline=True)
             try:
                 self.m_xylabel = iTrade_wxLabel(self.canvas,self.m_xylabelPos,self.m_xylabelMax,label=self.GetXYLabel(self.m_xylabelAxis,self.m_xylabelData),multiline=True)
             except AttributeError:
@@ -559,8 +558,10 @@ class iTrade_wxPanelGraph(object):
     # ---[ GRAPHING EVERYTHING ] --------------------------------------------------------------
 
     def refresh(self):
+        print 'refresh --['
         #self.m_toolbar.update() # Not sure why this is needed - ADS
-        self.OnPaint()
+        self.RedrawAll()
+        print ']-- refresh'
 
     def onEraseBackground(self, evt):
         # this is supposed to prevent redraw flicker on some X servers...
@@ -580,6 +581,8 @@ class iTrade_wxPanelGraph(object):
             return 0
 
     def BeginCharting(self):
+        print 'BeginCharting --['
+
         self.figure.clear()
 
         # by default : no legend
@@ -633,7 +636,11 @@ class iTrade_wxPanelGraph(object):
         left, top = 0.015, 0.80
         t = self.chart2.text(left, top, message('graph_volume'), fontsize = 7, transform = self.chart2.transAxes)
 
+        print ']-- BeginCharting'
+
     def EndCharting(self):
+        print 'EndCharting --['
+
         # adjust all font size
         if self.m_hasLegend:
             if self.legend1:
@@ -657,6 +664,8 @@ class iTrade_wxPanelGraph(object):
         # format times correctly
         self.dateFmt =  IndexDateFormatter(self.times, '%d %b')
         self.chart1.xaxis.set_major_formatter(self.dateFmt)
+
+        print ']-- EndCharting'
 
 # ============================================================================
 # That's all folks !
