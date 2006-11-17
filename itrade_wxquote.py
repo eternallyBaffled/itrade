@@ -358,6 +358,7 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         print ']-- RedrawAll'
 
     def OnPaint(self,event):
+        self.erase_cursor()
         event.Skip(True)
 
     def OnHome(self,event):
