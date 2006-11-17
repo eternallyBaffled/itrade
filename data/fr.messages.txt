@@ -15,7 +15,7 @@ main_exit;Sorti&e
 main_desc_exit; Quitte l'application iTrade
 main_close;&Ferme
 main_desc_close; Ferme cette fenêtre
-main_managelist;Gestion des Symboles
+main_managelist;&Gestion des Symboles
 main_desc_managelist; Gère la liste des valeurs (mise à jour par téléchargement, edition, etc.)
 
 main_window;&Fenêtre
