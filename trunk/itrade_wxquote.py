@@ -505,28 +505,23 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
     def ChartRealize(self):
         self.BeginCharting()
 
-        n = self.m_nIndex
+        end = self.m_nIndex + 1
+        begin = end - self.zoomPeriod[self.zoomLevel]
+        if begin<0: begin = 0
 
-        delta = 0
-        begin = n
-        end = n + 1
-        #print 'begin=',begin
-        while (begin>0) and (delta<self.zoomPeriod[self.zoomLevel]):
-            if self.m_quote.m_daytrades.m_date.has_key(begin):
-                delta = delta + 1
-            begin = begin - 1
-
-        times = []
-        idx = []
+        self.times = []
+        self.idx = []
+        num = 0
 
         for i in range(begin,end): # n-self.zoomPeriod[self.zoomLevel]+1
             if self.m_quote.m_daytrades.m_date.has_key(i):
                 dt = self.m_quote.m_daytrades.m_date[i]
                 d = date2num(dt)
-                times.append(d)
+                self.times.append(d)
+                num = num + 1
             else:
-                times.append(-1)
-            idx.append(i)
+                self.times.append(-1)
+            self.idx.append(i)
             self.m_quote.m_daytrades.ma(20,i)
             self.m_quote.m_daytrades.ma(50,i)
             self.m_quote.m_daytrades.ma(100,i)
@@ -537,43 +532,40 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
             if self.m_dispBollinger:
                 self.m_quote.m_daytrades.bollinger(i,0)
 
-        self.times = times[1:]
-        self.idx = idx[1:]
-        #debug('len(self.times)==%d' % len(self.times))
-        # self.m_quote.m_daytrades.m_[begin+1:end]
+        # self.m_quote.m_daytrades.m_[begin:end]
+        print 'ChartRealize: begin:',begin,' end:',end,' num:',num
 
-        if True: # len(opens)>1:
+        if num>0:
 
             if self.m_dispChart1Type == 'c':
-                #lc = candlestick2(self.chart1, opens[1:], closes[1:], highs[1:], lows[1:], width = self.zoomWidth[self.zoomLevel], colorup = 'g', colordown = 'r', alpha=1.0)
-                lc = candlestick2(self.chart1, self.m_quote.m_daytrades.m_inOpen[begin+1:end], self.m_quote.m_daytrades.m_inClose[begin+1:end], self.m_quote.m_daytrades.m_inHigh[begin+1:end], self.m_quote.m_daytrades.m_inLow[begin+1:end], width = self.zoomWidth[self.zoomLevel], colorup = 'g', colordown = 'r', alpha=1.0)
+                lc = candlestick2(self.chart1, self.m_quote.m_daytrades.m_inOpen[begin:end], self.m_quote.m_daytrades.m_inClose[begin:end], self.m_quote.m_daytrades.m_inHigh[begin:end], self.m_quote.m_daytrades.m_inLow[begin:end], width = self.zoomWidth[self.zoomLevel], colorup = 'g', colordown = 'r', alpha=1.0)
             elif self.m_dispChart1Type == 'l':
-                lc = self.chart1.plot(self.m_quote.m_daytrades.m_inClose[begin+1:end],'k',antialiased=False,linewidth=0.08)
+                lc = self.chart1.plot(self.m_quote.m_daytrades.m_inClose[begin:end],'k',antialiased=False,linewidth=0.08)
             elif self.m_dispChart1Type == 'o':
-                lc = plot_day_summary2(self.chart1, self.m_quote.m_daytrades.m_inOpen[begin+1:end], self.m_quote.m_daytrades.m_inClose[begin+1:end], self.m_quote.m_daytrades.m_inHigh[begin+1:end], self.m_quote.m_daytrades.m_inLow[begin+1:end], ticksize=self.zoomWidth[self.zoomLevel], colorup='k', colordown='r')
+                lc = plot_day_summary2(self.chart1, self.m_quote.m_daytrades.m_inOpen[begin:end], self.m_quote.m_daytrades.m_inClose[begin:end], self.m_quote.m_daytrades.m_inHigh[begin:end], self.m_quote.m_daytrades.m_inLow[begin:end], ticksize=self.zoomWidth[self.zoomLevel], colorup='k', colordown='r')
             else:
                 lc = None
 
             if not self.m_dispBollinger:
-                lma20 = self.chart1.plot(self.m_quote.m_daytrades.m_ma20[begin+1:end],'m')
-            lma50 = self.chart1.plot(self.m_quote.m_daytrades.m_ma50[begin+1:end],'r')
-            lma100 = self.chart1.plot(self.m_quote.m_daytrades.m_ma100[begin+1:end],'b')
+                lma20 = self.chart1.plot(self.m_quote.m_daytrades.m_ma20[begin:end],'m')
+            lma50 = self.chart1.plot(self.m_quote.m_daytrades.m_ma50[begin:end],'r')
+            lma100 = self.chart1.plot(self.m_quote.m_daytrades.m_ma100[begin:end],'b')
             if self.m_dispMA150:
-                lma150 = self.chart1.plot(self.m_quote.m_daytrades.m_ma150[begin+1:end],'c')
+                lma150 = self.chart1.plot(self.m_quote.m_daytrades.m_ma150[begin:end],'c')
 
             if self.m_dispBollinger:
-                lma20 = self.chart1.plot(self.m_quote.m_daytrades.m_bollM[begin+1:end],'m--')
-                lu = self.chart1.plot(self.m_quote.m_daytrades.m_bollUp[begin+1:end],'k')
-                ld = self.chart1.plot(self.m_quote.m_daytrades.m_bollDn[begin+1:end],'k')
+                lma20 = self.chart1.plot(self.m_quote.m_daytrades.m_bollM[begin:end],'m--')
+                lu = self.chart1.plot(self.m_quote.m_daytrades.m_bollUp[begin:end],'k')
+                ld = self.chart1.plot(self.m_quote.m_daytrades.m_bollDn[begin:end],'k')
 
             if self.m_dispOverlaidVolume:
-                volume_overlay2(self.chart1vol, self.m_quote.m_daytrades.m_inClose[begin+1:end], self.m_quote.m_daytrades.m_inVol[begin+1:end], colorup='g', colordown='r', width=self.zoomWidth[self.zoomLevel]+1,alpha=0.5)
-            #l5 = self.chart1vol.plot(self.m_quote.m_daytrades.m_ovb[begin+1:end],'k')
+                volume_overlay2(self.chart1vol, self.m_quote.m_daytrades.m_inClose[begin:end], self.m_quote.m_daytrades.m_inVol[begin:end], colorup='g', colordown='r', width=self.zoomWidth[self.zoomLevel]+1,alpha=0.5)
+            #l5 = self.chart1vol.plot(self.m_quote.m_daytrades.m_ovb[begin:end],'k')
 
-            volume_overlay2(self.chart2, self.m_quote.m_daytrades.m_inClose[begin+1:end], self.m_quote.m_daytrades.m_inVol[begin+1:end], colorup='g', colordown='r', width=self.zoomWidth[self.zoomLevel]+1,alpha=1.0)
-            lvma15 = self.chart2.plot(self.m_quote.m_daytrades.m_vma15[begin+1:end],'r',antialiased=False,linewidth=0.08)
-            lovb = self.chart2vol.plot(self.m_quote.m_daytrades.m_ovb[begin+1:end],'k',antialiased=False,linewidth=0.08)
-            #index_bar(self.chart2, self.m_quote.m_daytrades.m_inVol[begin+1:end], facecolor='g', edgecolor='k', width=4,alpha=1.0)
+            volume_overlay2(self.chart2, self.m_quote.m_daytrades.m_inClose[begin:end], self.m_quote.m_daytrades.m_inVol[begin:end], colorup='g', colordown='r', width=self.zoomWidth[self.zoomLevel]+1,alpha=1.0)
+            lvma15 = self.chart2.plot(self.m_quote.m_daytrades.m_vma15[begin:end],'r',antialiased=False,linewidth=0.08)
+            lovb = self.chart2vol.plot(self.m_quote.m_daytrades.m_ovb[begin:end],'k',antialiased=False,linewidth=0.08)
+            #index_bar(self.chart2, self.m_quote.m_daytrades.m_inVol[begin:end], facecolor='g', edgecolor='k', width=4,alpha=1.0)
 
             if self.m_dispLegend:
                 if self.m_dispMA150:
