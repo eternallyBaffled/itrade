@@ -516,11 +516,11 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
                 delta = delta + 1
             begin = begin - 1
 
-        opens = []
-        closes = []
-        highs = []
-        lows = []
-        volumes = []
+        #opens = []
+        #closes = []
+        #highs = []
+        #lows = []
+        #volumes = []
         times = []
         idx = []
         ma20 = []
@@ -532,23 +532,27 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         bollup = []
         bollm = []
         bolldn = []
+
         for i in range(begin,end): # n-self.zoomPeriod[self.zoomLevel]+1
-            if self.m_quote.m_daytrades.m_date.has_key(i):
-                dt = self.m_quote.m_daytrades.m_date[i]
-                d = date2num(dt)
-                o = self.m_quote.m_daytrades.m_inOpen[i]
-                c = self.m_quote.m_daytrades.m_inClose[i]
-                h = self.m_quote.m_daytrades.m_inHigh[i]
-                l = self.m_quote.m_daytrades.m_inLow[i]
-                v = self.m_quote.m_daytrades.m_inVol[i]
+            if True: #
+                if self.m_quote.m_daytrades.m_date.has_key(i):
+                    dt = self.m_quote.m_daytrades.m_date[i]
+                    d = date2num(dt)
+                    times.append(d)
+                else:
+                    times.append(-1)
+                #o = self.m_quote.m_daytrades.m_inOpen[i]
+                #c = self.m_quote.m_daytrades.m_inClose[i]
+                #h = self.m_quote.m_daytrades.m_inHigh[i]
+                #l = self.m_quote.m_daytrades.m_inLow[i]
+                #v = self.m_quote.m_daytrades.m_inVol[i]
                 #print begin,end,i
                 #o,h,l,c,v = [float(val) for val in o,h,l,c,v]
-                opens.append(o)
-                closes.append(c)
-                highs.append(h)
-                lows.append(l)
-                volumes.append(v)
-                times.append(d)
+                #opens.append(o)
+                #closes.append(c)
+                #highs.append(h)
+                #lows.append(l)
+                #volumes.append(v)
                 idx.append(i)
                 ma50.append(self.m_quote.m_daytrades.ma(50,i))
                 ma100.append(self.m_quote.m_daytrades.ma(100,i))
@@ -567,12 +571,13 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
 
         self.times = times[1:]
         self.idx = idx[1:]
-        debug('len(self.times)==%d' % len(self.times))
+        #debug('len(self.times)==%d' % len(self.times))
 
-        if len(opens)>1:
+        if True: # len(opens)>1:
 
             if self.m_dispChart1Type == 'c':
-                lc = candlestick2(self.chart1, opens[1:], closes[1:], highs[1:], lows[1:], width = self.zoomWidth[self.zoomLevel], colorup = 'g', colordown = 'r', alpha=1.0)
+                #lc = candlestick2(self.chart1, opens[1:], closes[1:], highs[1:], lows[1:], width = self.zoomWidth[self.zoomLevel], colorup = 'g', colordown = 'r', alpha=1.0)
+                lc = candlestick2(self.chart1, self.m_quote.m_daytrades.m_inOpen[begin+1:end], self.m_quote.m_daytrades.m_inClose[begin+1:end], self.m_quote.m_daytrades.m_inHigh[begin+1:end], self.m_quote.m_daytrades.m_inLow[begin+1:end], width = self.zoomWidth[self.zoomLevel], colorup = 'g', colordown = 'r', alpha=1.0)
             elif self.m_dispChart1Type == 'l':
                 lc = self.chart1.plot(closes[1:],'k',antialiased=False,linewidth=0.08)
             elif self.m_dispChart1Type == 'o':
@@ -599,7 +604,7 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
                 volume_overlay2(self.chart1vol, closes, volumes, colorup='g', colordown='r', width=self.zoomWidth[self.zoomLevel]+1,alpha=0.5)
             #l5 = self.chart1vol.plot(ovb,'k')
 
-            volume_overlay2(self.chart2, closes, volumes, colorup='g', colordown='r', width=self.zoomWidth[self.zoomLevel]+1,alpha=1.0)
+            volume_overlay2(self.chart2, self.m_quote.m_daytrades.m_inClose[begin+1:end], self.m_quote.m_daytrades.m_inVol[begin+1:end], colorup='g', colordown='r', width=self.zoomWidth[self.zoomLevel]+1,alpha=1.0)
             lvma15 = self.chart2.plot(vma[1:],'r',antialiased=False,linewidth=0.08)
             lovb = self.chart2vol.plot(ovb[1:],'k',antialiased=False,linewidth=0.08)
             #index_bar(self.chart2, volumes, facecolor='g', edgecolor='k', width=4,alpha=1.0)
@@ -625,18 +630,28 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
 
     def GetPeriod(self,idxtime):
         dt = self.GetTime(idxtime)
-        return dt.strftime(' %Y ')
+        if dt:
+            return dt.strftime(' %Y ')
+        else:
+            return ''
 
     def GetXLabel(self,idxtime):
         dt = self.GetTime(idxtime)
-        return dt.strftime(' %x ')
+        if dt:
+            return dt.strftime(' %x ')
+        else:
+            return ''
 
     def GetTime(self,idxtime):
         if idxtime<0:
             idxtime = len(self.idx)+idxtime
         elif idxtime==0:
             idxtime = len(self.idx)/2
-        return self.m_quote.m_daytrades.m_date[self.idx[idxtime]]
+        idx = self.idx[idxtime]
+        if self.m_quote.m_daytrades.m_date.has_key(idx):
+            return self.m_quote.m_daytrades.m_date[idx]
+        else:
+            return None
 
     def GetYLabel(self,ax,value):
         if ax==self.chart1:
@@ -660,24 +675,28 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         return msg+val
 
     def GetXYLabel(self,ax,data):
-        dt = self.m_quote.m_daytrades.m_date[self.idx[data[0]]]
-        s = 'k, ' + self.m_quote.name() + ' ('+ dt.strftime('%x') + ') \n'
-        s = s + 'k, '+ self.space(message('popup_open'), self.m_quote.sv_open(dt)) + ' \n'
-        s = s + 'k, '+ self.space(message('popup_high'), self.m_quote.sv_high(dt)) + ' \n'
-        s = s + 'k, '+ self.space(message('popup_low'), self.m_quote.sv_low(dt)) + ' \n'
-        s = s + 'k, '+ self.space(message('popup_close'), self.m_quote.sv_close(dt)) + ' \n'
-        s = s + 'k, '+ self.space(message('popup_percent') % self.m_quote.sv_percent(dt), self.m_quote.sv_unitvar(dt)) + ' \n'
-        s = s + 'k, '+ self.space(message('popup_volume') , self.m_quote.sv_volume(dt)) + ' \n'
-        if ax == self.chart2:
-            s = s + 'r, '+ self.space('VMA%s'%15, self.m_quote.sv_vma(15,dt)) + ' \n'
-            s = s + 'k, '+ self.space('OVB', self.m_quote.sv_ovb(dt)) + ' \n'
+        idx = self.idx[data[0]]
+        if self.m_quote.m_daytrades.m_date.has_key(idx):
+            dt = self.m_quote.m_daytrades.m_date[idx]
+            s = 'k, ' + self.m_quote.name() + ' ('+ dt.strftime('%x') + ') \n'
+            s = s + 'k, '+ self.space(message('popup_open'), self.m_quote.sv_open(dt)) + ' \n'
+            s = s + 'k, '+ self.space(message('popup_high'), self.m_quote.sv_high(dt)) + ' \n'
+            s = s + 'k, '+ self.space(message('popup_low'), self.m_quote.sv_low(dt)) + ' \n'
+            s = s + 'k, '+ self.space(message('popup_close'), self.m_quote.sv_close(dt)) + ' \n'
+            s = s + 'k, '+ self.space(message('popup_percent') % self.m_quote.sv_percent(dt), self.m_quote.sv_unitvar(dt)) + ' \n'
+            s = s + 'k, '+ self.space(message('popup_volume') , self.m_quote.sv_volume(dt)) + ' \n'
+            if ax == self.chart2:
+                s = s + 'r, '+ self.space('VMA%s'%15, self.m_quote.sv_vma(15,dt)) + ' \n'
+                s = s + 'k, '+ self.space('OVB', self.m_quote.sv_ovb(dt)) + ' \n'
+            else:
+                s = s + 'm, '+ self.space('MA%s'%20, self.m_quote.sv_ma(20,dt)) + ' \n'
+                s = s + 'r, '+ self.space('MA%s'%50, self.m_quote.sv_ma(50,dt)) + ' \n'
+                s = s + 'b, '+ self.space('MA%s'%100, self.m_quote.sv_ma(100,dt)) + ' \n'
+                if self.m_dispMA150:
+                    s = s + 'c, '+ self.space('MA%s'%150, self.m_quote.sv_ma(150,dt)) + ' \n'
+            return s
         else:
-            s = s + 'm, '+ self.space('MA%s'%20, self.m_quote.sv_ma(20,dt)) + ' \n'
-            s = s + 'r, '+ self.space('MA%s'%50, self.m_quote.sv_ma(50,dt)) + ' \n'
-            s = s + 'b, '+ self.space('MA%s'%100, self.m_quote.sv_ma(100,dt)) + ' \n'
-            if self.m_dispMA150:
-                s = s + 'c, '+ self.space('MA%s'%150, self.m_quote.sv_ma(150,dt)) + ' \n'
-        return s
+            return 'no trade'
 
 # ============================================================================
 # iTradeQuoteNotebookWindow
