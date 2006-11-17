@@ -423,6 +423,7 @@ class iTrade_wxPanelGraph(object):
         #debug('OnTimer')
         if self.cursorState(None) and (self.m_cursormode == CURSOR_MODE_IND):
             #debug('OnTimer create label')
+            self.m_xylabel = iTrade_wxLabel(self.canvas,self.m_xylabelPos,self.m_xylabelMax,label=self.GetXYLabel(self.m_xylabelAxis,self.m_xylabelData),multiline=True)
             try:
                 self.m_xylabel = iTrade_wxLabel(self.canvas,self.m_xylabelPos,self.m_xylabelMax,label=self.GetXYLabel(self.m_xylabelAxis,self.m_xylabelData),multiline=True)
             except AttributeError:

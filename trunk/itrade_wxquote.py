@@ -511,16 +511,11 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
 
         self.times = []
         self.idx = []
-        num = 0
 
         for i in range(begin,end): # n-self.zoomPeriod[self.zoomLevel]+1
-            if self.m_quote.m_daytrades.m_date.has_key(i):
-                dt = self.m_quote.m_daytrades.m_date[i]
-                d = date2num(dt)
-                self.times.append(d)
-                num = num + 1
-            else:
-                self.times.append(-1)
+            dt = gCal.date(i)
+            d = date2num(dt)
+            self.times.append(d)
             self.idx.append(i)
             self.m_quote.m_daytrades.ma(20,i)
             self.m_quote.m_daytrades.ma(50,i)
@@ -533,9 +528,9 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
                 self.m_quote.m_daytrades.bollinger(i,0)
 
         # self.m_quote.m_daytrades.m_[begin:end]
-        print 'ChartRealize: begin:',begin,' end:',end,' num:',num
+        print 'ChartRealize: begin:',begin,' end:',end
 
-        if num>0:
+        if True: #num>0:
 
             if self.m_dispChart1Type == 'c':
                 lc = candlestick2(self.chart1, self.m_quote.m_daytrades.m_inOpen[begin:end], self.m_quote.m_daytrades.m_inClose[begin:end], self.m_quote.m_daytrades.m_inHigh[begin:end], self.m_quote.m_daytrades.m_inLow[begin:end], width = self.zoomWidth[self.zoomLevel], colorup = 'g', colordown = 'r', alpha=1.0)
@@ -588,28 +583,18 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
 
     def GetPeriod(self,idxtime):
         dt = self.GetTime(idxtime)
-        if dt:
-            return dt.strftime(' %Y ')
-        else:
-            return ''
+        return dt.strftime(' %Y ')
 
     def GetXLabel(self,idxtime):
         dt = self.GetTime(idxtime)
-        if dt:
-            return dt.strftime(' %x ')
-        else:
-            return ''
+        return dt.strftime(' %x ')
 
     def GetTime(self,idxtime):
         if idxtime<0:
             idxtime = len(self.idx)+idxtime
         elif idxtime==0:
             idxtime = len(self.idx)/2
-        idx = self.idx[idxtime]
-        if self.m_quote.m_daytrades.m_date.has_key(idx):
-            return self.m_quote.m_daytrades.m_date[idx]
-        else:
-            return None
+        return gCal.date(self.idx[idxtime])
 
     def GetYLabel(self,ax,value):
         if ax==self.chart1:
@@ -634,8 +619,8 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
 
     def GetXYLabel(self,ax,data):
         idx = self.idx[data[0]]
-        if self.m_quote.m_daytrades.m_date.has_key(idx):
-            dt = self.m_quote.m_daytrades.m_date[idx]
+        dt = gCal.date(idx)
+        if self.m_quote.m_daytrades.has_trade(idx):
             s = 'k, ' + self.m_quote.name() + ' ('+ dt.strftime('%x') + ') \n'
             s = s + 'k, '+ self.space(message('popup_open'), self.m_quote.sv_open(dt)) + ' \n'
             s = s + 'k, '+ self.space(message('popup_high'), self.m_quote.sv_high(dt)) + ' \n'
@@ -652,9 +637,11 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
                 s = s + 'b, '+ self.space('MA%s'%100, self.m_quote.sv_ma(100,dt)) + ' \n'
                 if self.m_dispMA150:
                     s = s + 'c, '+ self.space('MA%s'%150, self.m_quote.sv_ma(150,dt)) + ' \n'
-            return s
         else:
-            return 'no trade'
+            s = 'k, ' + self.m_quote.name() + ' ('+ dt.strftime('%x') + ') \n'
+            s = s + ' no trade '
+
+        return s
 
 # ============================================================================
 # iTradeQuoteNotebookWindow

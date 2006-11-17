@@ -46,7 +46,7 @@ from numpy import array
 # iTrade system
 from itrade_logging import *
 import itrade_csv
-import itrade_datation
+from itrade_datation import gCal,Datation
 from itrade_candle import *
 
 # ============================================================================
@@ -103,7 +103,7 @@ class Trade(object):
 # ============================================================================
 
 def create_array(defval):
-    n = itrade_datation.gCal.lastindex()+1
+    n = gCal.lastindex()+1
     a = array([defval]*n)
     return a
 
@@ -130,7 +130,7 @@ class Trades(object):
         self.m_lasttrade = None
         self.m_lastimport = None
 
-        self.m_date = {}
+        #self.m_date = {}
         self.m_inOpen = create_array(-1.0)
         self.m_inClose = create_array(-1.0)
         self.m_inLow = create_array(-1.0)
@@ -216,7 +216,7 @@ class Trades(object):
     def add(self,item,bImporting):
         #debug('Trades::add() before: %s : bImporting=%s' % (item,bImporting));
 
-        idx = itrade_datation.gCal.index(itrade_datation.Datation(item[1]).date())
+        idx = gCal.index(Datation(item[1]).date())
         if idx==-1:
             #debug('invalid data: %s' % item)
             # __x need to save file
@@ -232,7 +232,7 @@ class Trades(object):
         self.m_inLow[idx] = tr.nv_low()
         self.m_inHigh[idx] = tr.nv_high()
         self.m_inVol[idx] = tr.nv_volume()
-        self.m_date[idx] = tr.date()
+        #self.m_date[idx] = tr.date()
 
         #if not bImporting:
         #    print 'lasttrade: %s   new trade : %s' %(self.m_lasttrade.date(),tr.date())
@@ -274,8 +274,8 @@ class Trades(object):
             idx = tc.index()
             while idx > 0:
                 idx = idx - 1
-                if self.m_date.has_key(idx):
-                    return self.m_trades[self.m_date[idx]]
+                if self.m_inClose[idx]>=0.0:
+                    return self.m_trades[gCal.date(idx)]
         return None
 
     def firsttrade(self):
@@ -287,6 +287,9 @@ class Trades(object):
         else:
             #info('trades:trade() not found: %s' % d)
             return None
+
+    def has_trade(self,idx):
+        return self.m_inClose[idx] >= 0.0
 
     def ma(self,period,idx):
         ''' temp '''
@@ -310,42 +313,42 @@ class Trades(object):
 
     def ma20(self,idx):
         if not isinstance(idx,int):
-            idx = itrade_datation.gCal.index(idx)
+            idx = gCal.index(idx)
         if self.m_ma20[idx]<0.0:
             self.compute_ma20(idx)
         return self.m_ma20[idx]
 
     def ma50(self,idx):
         if not isinstance(idx,int):
-            idx = itrade_datation.gCal.index(idx)
+            idx = gCal.index(idx)
         if self.m_ma50[idx]<0.0:
             self.compute_ma50(idx)
         return self.m_ma50[idx]
 
     def ma100(self,idx):
         if not isinstance(idx,int):
-            idx = itrade_datation.gCal.index(idx)
+            idx = gCal.index(idx)
         if self.m_ma100[idx]<0.0:
             self.compute_ma100(idx)
         return self.m_ma100[idx]
 
     def ma150(self,idx):
         if not isinstance(idx,int):
-            idx = itrade_datation.gCal.index(idx)
+            idx = gCal.index(idx)
         if self.m_ma150[idx]<0.0:
             self.compute_ma150(idx)
         return self.m_ma150[idx]
 
     def vma15(self,idx):
         if not isinstance(idx,int):
-            idx = itrade_datation.gCal.index(idx)
+            idx = gCal.index(idx)
         if self.m_vma15[idx]<0.0:
             self.compute_vma15(idx)
         return self.m_vma15[idx]
 
     def bollinger(self,idx,band=1):
         if not isinstance(idx,int):
-            idx = itrade_datation.gCal.index(idx)
+            idx = gCal.index(idx)
         if self.m_bollM[idx]<0.0:
             self.compute_bollinger(idx)
         if band==0:
@@ -357,12 +360,12 @@ class Trades(object):
 
     def ovb(self,idx):
         if not isinstance(idx,int):
-            idx = itrade_datation.gCal.index(idx)
+            idx = gCal.index(idx)
         return self.m_ovb[idx]
 
     def close(self,idx):
         if not isinstance(idx,int):
-            idx = itrade_datation.gCal.index(idx)
+            idx = gCal.index(idx)
         while idx>=0 and self.m_inClose[idx]<0.0:
             # seek existing previous close !
             idx = idx - 1
@@ -477,7 +480,7 @@ class Trades(object):
 
     def compute_ovb(self):
         ovb = long(0)
-        for j in range(0,itrade_datation.gCal.lastindex()+1):
+        for j in range(0,gCal.lastindex()+1):
             if self.m_inClose[j]>=0.0:
                 pc = self.close(j-1)
                 if self.m_inClose[j]>=pc:
