@@ -19,6 +19,7 @@ abc_24;abc_24;;EURONEXT;EUR;1.196000
 alternext_non_cote;alternext_non_cote;;EURONEXT;EUR;1.196000
 alernext;alternext;;EURONEXT;EUR;1.196000
 abc_26;abc_26;;EURONEXT;EUR;1.196000
+generix;Generix;GNX;EURONEXT;EUR;1.196000
 abc_non_cote;abc_non_cote;;EURONEXT;EUR;1.196000
 basic;Basic operations;123;EURONEXT;EUR;1.196000
 sdr3;valeurs sdr3;;EURONEXT;EUR;1.196000
