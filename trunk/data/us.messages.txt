@@ -15,7 +15,7 @@ main_exit;E&xit
 main_desc_exit; Terminate iTrade application
 main_close;&Close
 main_desc_close; Close the window
-main_managelist;Manage Symbols
+main_managelist;&Manage Symbols
 main_desc_managelist; Manage the List of Symbols (update by downloading, editing, etc.)
 
 main_window;&Window
