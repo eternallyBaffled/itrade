@@ -49,7 +49,6 @@ from itrade_quotes import *
 import itrade_import
 import itrade_portfolio
 import itrade_matrix
-import itrade_wxmain
 
 # ============================================================================
 # Usage
@@ -69,6 +68,8 @@ def usage():
     print "--ticker=<n> select a quote by its ticker                    "
     print
     print "--lang=<l>   select the language to be used (fr,us,...)      "
+    print
+    print "--unicode    use unicode version of wxPython (experimental)  "
 
 # ============================================================================
 # Main / Command line analysing
@@ -76,7 +77,7 @@ def usage():
 
 def main():
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "eho:vt:iq:f:l:d", ["help", "output=", "ticker=", "quote=","file=","lang="])
+        opts, args = getopt.getopt(sys.argv[1:], "eho:vt:iq:f:l:d", ["help", "output=", "ticker=", "quote=","file=","lang=","unicode"])
     except getopt.GetoptError:
         # print help information and exit:
         usage()
@@ -114,6 +115,8 @@ def main():
             sys.exit()
         if o in ("-o", "--output"):
             output = a
+        if o in ("--unicode"):
+            itrade_config.unicode = True
         if o in ("-f", "--file"):
             file = a
         if o in ("-l", "--lang"):
@@ -134,6 +137,7 @@ def main():
         gMessage.load()
 
     if wx:
+        import itrade_wxmain
         itrade_wxmain.start_iTradeWindow()
 
     if verbose:

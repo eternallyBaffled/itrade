@@ -28,6 +28,8 @@ Running :
  "python itrade.py --lang=us" 	to start using us language
  "python itrade.py --lang=fr" 	to start using fr language
 
+ "python itrade.py --unicode" 	to start using unicode version of wxPython
+
 ===============================================================================
 Previous release notes
 ===============================================================================

@@ -445,7 +445,8 @@ live_CMP;PMP
 live_FMP;PMR
 
 wxversion_title;wxPython Version Error
-wxversion_msg;The requested version of wxPython is not installed. Please install version %d.%d ANSI
+wxversion_msga;The requested version of wxPython is not installed. Please install version %d.%d ANSI
+wxversion_msgu;The requested version of wxPython is not installed. Please install version %d.%d UNICODE
 
 money_fiscal_year;Fiscal Year
 money_amount_of_taxes;Amount of Taxes
