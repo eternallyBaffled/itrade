@@ -622,6 +622,7 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
     def GetXYLabel(self,ax,data):
         idx = self.idx[data[0]]
         dt = gCal.date(idx)
+        chart = self.axe2chart(ax)
         if self.m_quote.m_daytrades.has_trade(idx):
             s = 'k, ' + self.m_quote.name() + ' ('+ dt.strftime('%x') + ') \n'
             s = s + 'k, '+ self.space(message('popup_open'), self.m_quote.sv_open(dt)) + ' \n'
@@ -630,7 +631,7 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
             s = s + 'k, '+ self.space(message('popup_close'), self.m_quote.sv_close(dt)) + ' \n'
             s = s + 'k, '+ self.space(message('popup_percent') % self.m_quote.sv_percent(dt), self.m_quote.sv_unitvar(dt)) + ' \n'
             s = s + 'k, '+ self.space(message('popup_volume') , self.m_quote.sv_volume(dt)) + ' \n'
-            if ax == self.chart2:
+            if chart==2:
                 s = s + 'r, '+ self.space('VMA%s'%15, self.m_quote.sv_vma(15,dt)) + ' \n'
                 s = s + 'k, '+ self.space('OVB', self.m_quote.sv_ovb(dt)) + ' \n'
             else:
@@ -641,7 +642,7 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
                     s = s + 'c, '+ self.space('MA%s'%150, self.m_quote.sv_ma(150,dt)) + ' \n'
         else:
             s = 'k, ' + self.m_quote.name() + ' ('+ dt.strftime('%x') + ') \n'
-            s = s + ' no trade '
+            s = s + 'k, ' + message('popup_notrade') + ' '
 
         return s
 

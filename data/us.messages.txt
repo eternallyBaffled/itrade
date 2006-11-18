@@ -374,6 +374,7 @@ popup_low;Low
 popup_close;Last
 popup_percent;Var. (%s)
 popup_volume;Volume
+popup_notrade;no trade
 
 save_to_file;Save to file
 export_to_file;Export to file
