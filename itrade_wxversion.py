@@ -29,6 +29,7 @@
 #
 # History       Rev   Description
 # 2006-01-01    dgil  Wrote it from scratch
+# 2006-11-18    dgil  Experiment unicode version of wxPython
 # ============================================================================
 
 # ============================================================================
@@ -49,7 +50,7 @@ import re
 import wxversion
 
 # iTrade system
-from itrade_config import main_is_frozen
+from itrade_config import main_is_frozen,unicode
 from itrade_local import message,setLang
 
 # ============================================================================
@@ -57,19 +58,28 @@ from itrade_local import message,setLang
 # ============================================================================
 
 def resolve_wxversion():
+    if unicode:
+        patt = "%d\.%d[0-9\-\.A-Za-z]*-unicode"
+        patts = "-unicode"
+        msgs = message('wxversion_msgu')
+    else:
+        patt = "%d\.%d[0-9\-\.A-Za-z]*-ansi"
+        patts = "-ansi"
+        msgs = message('wxversion_msga')
+
     versions = wxversion.getInstalled()
-    print 'wxPython Installed :',versions
+    print 'wxPython Installed (%s) :' % patts,versions
 
     # need to select the first one with 'ansi'
     for eachVersion in versions:
-        m = re.search("%d\.%d[0-9\-\.A-Za-z]*-ansi" % (WXVERSION_MAJOR,WXVERSION_MINOR), eachVersion)
+        m = re.search( patt % (WXVERSION_MAJOR,WXVERSION_MINOR), eachVersion)
         if m:
             print 'wxPython Selected  :',eachVersion
             wxversion.select(eachVersion)
             return
 
         if WXVERSION_MINOR > 0:
-            m = re.search("%d\.%d[0-9\-\.A-Za-z]*-ansi" % (WXVERSION_MAJOR,WXVERSION_MINOR-1), eachVersion)
+            m = re.search( patt % (WXVERSION_MAJOR,WXVERSION_MINOR-1), eachVersion)
             if m:
                 print 'wxPython Selected  :',eachVersion,' (deprecated version - think to update)'
                 wxversion.select(eachVersion)
@@ -78,11 +88,12 @@ def resolve_wxversion():
     # no compatible version :-( : try to select an ansi release
     bAnsi = False
     for eachVersion in versions:
-        m = re.search("-ansi", eachVersion)
+        m = re.search(patts, eachVersion)
         if m:
             print 'wxPython Selected  :',eachVersion
             wxversion.select(eachVersion)
             bAnsi = True
+            break
 
     if not bAnsi:
         # only unicode release :-( => use US lang
@@ -90,7 +101,7 @@ def resolve_wxversion():
 
     import sys, wx, webbrowser
     app = wx.PySimpleApp()
-    wx.MessageBox(message('wxversion_msg') % (WXVERSION_MAJOR,WXVERSION_MINOR), message('wxversion_title'))
+    wx.MessageBox(msgs % (WXVERSION_MAJOR,WXVERSION_MINOR), message('wxversion_title'))
     app.MainLoop()
     webbrowser.open("http://wxpython.org/")
     sys.exit()
