@@ -67,7 +67,7 @@ matplotlib.use('WXAgg')
 matplotlib.rcParams['numerix'] = 'numpy'
 
 from matplotlib.dates import date2num, num2date
-from myfinance import candlestick, plot_day_summary2, candlestick2, index_bar, volume_overlay2
+from myfinance import candlestick, plot_day_summary2, candlestick2, index_bar, volume_overlay2, plot_day_summary3
 
 # ============================================================================
 # iTradeQuoteToolbar
@@ -327,9 +327,9 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         self.m_nIndex = self.m_quote.lastindex()
         #print 'm_nIndex=',self.m_nIndex
 
-        self.zoomPeriod = (20,40,80,160)
-        self.zoomIncPeriod = (5,10,20,40)
-        self.zoomWidth = (9,6,3,2)
+        self.zoomPeriod = (20,40,80,160,320)
+        self.zoomIncPeriod = (5,10,20,40,80)
+        self.zoomWidth = (9,6,3,2,1)
         self.zoomLevel = 2
         self.zoomMaxLevel = len(self.zoomPeriod)-1
 
@@ -351,11 +351,9 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         self.ChartRealize()
 
     def RedrawAll(self):
-        print 'RedrawAll --['
         self.ChartRealize()
         self.erase_cursor()
         self.canvas.draw()
-        print ']-- RedrawAll'
 
     def OnPaint(self,event):
         self.erase_cursor()
@@ -367,10 +365,11 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         self.RedrawAll()
 
     def OnPanLeft(self,event):
-        if self.m_nIndex > self.zoomPeriod[self.zoomLevel]:
+        min = self.m_quote.firstindex() + self.zoomPeriod[self.zoomLevel]
+        if self.m_nIndex >= min:
             self.m_nIndex = self.m_nIndex - self.zoomIncPeriod[self.zoomLevel]
-            if self.m_nIndex <= self.zoomPeriod[self.zoomLevel]:
-                self.m_nIndex = self.zoomPeriod[self.zoomLevel]
+            if self.m_nIndex <= min:
+                self.m_nIndex = min
             self.RedrawAll()
 
     def OnPanRight(self,event):
@@ -513,8 +512,10 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
 
         self.times = []
         self.idx = []
+        num = 0
 
-        for i in range(begin,end): # n-self.zoomPeriod[self.zoomLevel]+1
+        for i in range(begin,end):
+            if self.m_quote.m_daytrades.has_trade(i): num = num + 1
             dt = gCal.date(i)
             d = date2num(dt)
             self.times.append(d)
@@ -530,14 +531,15 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
                 self.m_quote.m_daytrades.bollinger(i,0)
 
         # self.m_quote.m_daytrades.m_[begin:end]
-        print 'ChartRealize: begin:',begin,' end:',end
+        # print 'ChartRealize: begin:',begin,' end:',end,' num:',num
 
-        if True: #num>0:
+        if num>0:
 
             if self.m_dispChart1Type == 'c':
                 lc = candlestick2(self.chart1, self.m_quote.m_daytrades.m_inOpen[begin:end], self.m_quote.m_daytrades.m_inClose[begin:end], self.m_quote.m_daytrades.m_inHigh[begin:end], self.m_quote.m_daytrades.m_inLow[begin:end], width = self.zoomWidth[self.zoomLevel], colorup = 'g', colordown = 'r', alpha=1.0)
             elif self.m_dispChart1Type == 'l':
-                lc = self.chart1.plot(self.m_quote.m_daytrades.m_inClose[begin:end],'k',antialiased=False,linewidth=0.08)
+                #lc = self.chart1.plot(self.m_quote.m_daytrades.m_inClose[begin:end],'k',antialiased=False,linewidth=0.08)
+                lc = plot_day_summary3(self.chart1, self.m_quote.m_daytrades.m_inClose[begin:end], ticksize=self.zoomWidth[self.zoomLevel], color='k')
             elif self.m_dispChart1Type == 'o':
                 lc = plot_day_summary2(self.chart1, self.m_quote.m_daytrades.m_inOpen[begin:end], self.m_quote.m_daytrades.m_inClose[begin:end], self.m_quote.m_daytrades.m_inHigh[begin:end], self.m_quote.m_daytrades.m_inLow[begin:end], ticksize=self.zoomWidth[self.zoomLevel], colorup='k', colordown='r')
             else:
