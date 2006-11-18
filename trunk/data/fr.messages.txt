@@ -373,6 +373,7 @@ popup_low;Plus Bas
 popup_close;Dernier
 popup_percent;Var. (%s)
 popup_volume;Volume
+popup_notrade;pas de cotation
 
 save_to_file;Sauver vers fichier
 export_to_file;Exporter vers fichier
