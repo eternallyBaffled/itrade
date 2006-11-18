@@ -679,6 +679,12 @@ class Quote(object):
             return tr.index()
         return -1
 
+    def firstindex(self):
+        tr = self.m_daytrades.firsttrade()
+        if tr:
+            return tr.index()
+        return -1
+
     def nv_close(self,d=None):
         if d==None:
             tr = self.m_daytrades.lasttrade()

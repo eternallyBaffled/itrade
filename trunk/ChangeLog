@@ -6,7 +6,10 @@ On the road for v0.4.5 (Nausicaa)
 ===============================================================================
 
 2006-11-17  Gilles Dumortier <dgil at ieee.org>
-	* Switch to numpy.array representation - VERY INSTABLE (SF bug 1597190)
+	* Partially implement Graph : longer periods (SF bug 1598302)
+	* Graph view implementation is better and more stable - we have a
+	  better back-end to continue developments on the graphic toolbox !
+	* Switch to numpy.array representation (SF bug 1597190)
 
 2006-11-15  Gilles Dumortier <dgil at ieee.org>
 	* Missing some Over picture text (SF bug 1595163)

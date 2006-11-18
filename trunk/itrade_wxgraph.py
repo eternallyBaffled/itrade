@@ -558,10 +558,7 @@ class iTrade_wxPanelGraph(object):
     # ---[ GRAPHING EVERYTHING ] --------------------------------------------------------------
 
     def refresh(self):
-        print 'refresh --['
-        #self.m_toolbar.update() # Not sure why this is needed - ADS
         self.RedrawAll()
-        print ']-- refresh'
 
     def onEraseBackground(self, evt):
         # this is supposed to prevent redraw flicker on some X servers...
@@ -581,7 +578,7 @@ class iTrade_wxPanelGraph(object):
             return 0
 
     def BeginCharting(self):
-        print 'BeginCharting --['
+        #print 'BeginCharting --['
 
         self.figure.clear()
 
@@ -636,10 +633,10 @@ class iTrade_wxPanelGraph(object):
         left, top = 0.015, 0.80
         t = self.chart2.text(left, top, message('graph_volume'), fontsize = 7, transform = self.chart2.transAxes)
 
-        print ']-- BeginCharting'
+        #print ']-- BeginCharting'
 
     def EndCharting(self):
-        print 'EndCharting --['
+        #print 'EndCharting --['
 
         # adjust all font size
         if self.m_hasLegend:
@@ -665,7 +662,7 @@ class iTrade_wxPanelGraph(object):
         self.dateFmt =  IndexDateFormatter(self.times, '%d %b')
         self.chart1.xaxis.set_major_formatter(self.dateFmt)
 
-        print ']-- EndCharting'
+        #print ']-- EndCharting'
 
 # ============================================================================
 # That's all folks !
