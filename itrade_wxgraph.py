@@ -435,7 +435,7 @@ class iTrade_wxPanelGraph(object):
     def on_click(self,event):
         if self.cursorState(event.inaxes):
             chart = self.axe2chart(event.inaxes)
-            if chart>0:
+            if chart>0 and event.xdata!=None:
                 self.m_tool.on_click(event.x, event.y, self.GetTime(int(event.xdata)), event.ydata, event.inaxes, chart)
 
     def mouse_move(self,event):
@@ -591,7 +591,7 @@ class iTrade_wxPanelGraph(object):
         #                                left, bottom, width, height
         self.chart1 = self.figure.add_axes([0.07,0.22,0.86,0.73])
         self.chart1.yaxis.tick_right()
-        self.chart1.xaxis.set_major_locator(MultipleLocator(10))
+        self.chart1.xaxis.set_major_locator(MultipleLocator(self.getMultiple()))
         self.chart1.grid(self.m_hasGrid)
 
         # chart1 for overlayed volume
@@ -601,8 +601,7 @@ class iTrade_wxPanelGraph(object):
             self.chart1vol.yaxis.tick_left()
             volumeFmt = FuncFormatter(fmtVolumeFunc)
             self.chart1vol.yaxis.set_major_formatter(volumeFmt)
-            nullFmt = NullFormatter() # no labels
-            self.chart1vol.xaxis.set_major_formatter(nullFmt)
+            self.chart1vol.xaxis.set_major_locator(MultipleLocator(self.getMultiple()))
             #self.chart1vol.grid(True)
         else:
             self.chart1vol = None
@@ -613,8 +612,7 @@ class iTrade_wxPanelGraph(object):
         self.chart2.yaxis.tick_right()
         volumeFmt = FuncFormatter(fmtVolumeFunc)
         self.chart2.yaxis.set_major_formatter(volumeFmt)
-        nullFmt = NullFormatter() # no labels
-        self.chart2.xaxis.set_major_formatter(nullFmt)
+        self.chart2.xaxis.set_major_locator(MultipleLocator(self.getMultiple()))
         self.chart2.grid(self.m_hasGrid)
 
         # chart2 for overlayed volume
@@ -624,8 +622,7 @@ class iTrade_wxPanelGraph(object):
             self.chart2vol.yaxis.tick_left()
             volumeFmt = FuncFormatter(fmtVolumeFunc0)
             self.chart2vol.yaxis.set_major_formatter(volumeFmt)
-            nullFmt = NullFormatter() # no labels
-            self.chart2vol.xaxis.set_major_formatter(nullFmt)
+            self.chart2vol.xaxis.set_major_locator(MultipleLocator(self.getMultiple()))
             #self.chart2vol.grid(True)
         else:
             self.chart2vol = None
@@ -654,13 +651,21 @@ class iTrade_wxPanelGraph(object):
         setp(self.chart1.get_yticklabels(),fontsize=7)
         if self.m_hasChart1Vol:
             setp(self.chart1vol.get_yticklabels(),fontsize=7)
+            setp(self.chart1vol.get_xticklabels(),fontsize=7)
+        setp(self.chart2.get_xticklabels(),fontsize=7)
         setp(self.chart2.get_yticklabels(),fontsize=7)
         if self.m_hasChart2Vol:
             setp(self.chart2vol.get_yticklabels(),fontsize=7)
+            setp(self.chart2vol.get_xticklabels(),fontsize=7)
 
         # format times correctly
         self.dateFmt =  IndexDateFormatter(self.times, '%d %b')
         self.chart1.xaxis.set_major_formatter(self.dateFmt)
+        self.chart2.xaxis.set_major_formatter(self.dateFmt)
+        if self.m_hasChart1Vol:
+            self.chart1vol.xaxis.set_major_formatter(self.dateFmt)
+        if self.m_hasChart2Vol:
+            self.chart2vol.xaxis.set_major_formatter(self.dateFmt)
 
         #print ']-- EndCharting'
 

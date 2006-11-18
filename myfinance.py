@@ -342,7 +342,11 @@ def plot_day_summary2(ax, opens, closes, highs, lows, ticksize=4,
     assert(len(offsetsClose)==len(colors))
 
     useAA = 0,   # use tuple here
-    lw = 0.5,      # and here
+    if ticksize>1:
+        lw = 0.5,   # and here
+    else:
+        lw = 0.2,
+
     rangeCollection = LineCollection(rangeSegments,
                                      colors       = colors,
                                      linewidths   = lw,
@@ -408,7 +412,11 @@ def plot_day_summary3(ax, closes, ticksize=4,
     color = r,g,b,1
 
     useAA = 0,   # use tuple here
-    lw = 0.5,      # and here
+    if ticksize>1:
+        lw = 0.5,   # and here
+    else:
+        lw = 0.2,
+
     rangeCollection = LineCollection(rangeSegments,
                                      colors       = color,
                                      linewidths   = lw,
@@ -570,7 +578,11 @@ def volume_overlay(ax, opens, closes, volumes,
     offsetsBars = [ (i, 0) for i,v in enumerate(volumes) if v != -1 ]
 
     useAA = 0,  # use tuple here
-    lw = 0.5,   # and here
+    if width>1:
+        lw = 0.5,   # and here
+    else:
+        lw = 0.2,
+
     barCollection = PolyCollection(bars,
                                    facecolors   = colors,
                                    edgecolors   = ( (0,0,0,1), ),
@@ -664,7 +676,11 @@ def volume_overlay3(ax, quotes,
     offsetsBars = [(d, 0) for d in dates]
 
     useAA = 0,  # use tuple here
-    lw = 0.5,   # and here
+    if width>1:
+        lw = 0.5,   # and here
+    else:
+        lw = 0.2,
+
     barCollection = PolyCollection(bars,
                                    facecolors   = colors,
                                    edgecolors   = ( (0,0,0,1), ),

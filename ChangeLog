@@ -5,6 +5,10 @@ On the road for v0.4.5 (Nausicaa)
 
 ===============================================================================
 
+2006-11-18  Gilles Dumortier <dgil at ieee.org>
+	* Graph View : minor issues on display
+	* Graph view : date display is garbage (SF bug 1598697)
+
 2006-11-17  Gilles Dumortier <dgil at ieee.org>
 	* Partially implement Graph : longer periods (SF bug 1598302)
 	* Graph view implementation is better and more stable - we have a
