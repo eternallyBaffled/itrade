@@ -509,7 +509,7 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
 
         end = self.m_nIndex + 1
         begin = end - self.zoomPeriod[self.zoomLevel]
-        if begin<0: begin = 0
+        if begin<1: begin = 1
 
         self.times = []
         self.idx = []
@@ -556,10 +556,10 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
                 ld = self.chart1.plot(self.m_quote.m_daytrades.m_bollDn[begin:end],'k')
 
             if self.m_dispOverlaidVolume:
-                volume_overlay2(self.chart1vol, self.m_quote.m_daytrades.m_inClose[begin:end], self.m_quote.m_daytrades.m_inVol[begin:end], colorup='g', colordown='r', width=self.zoomWidth[self.zoomLevel]+1,alpha=0.5)
+                volume_overlay2(self.chart1vol, self.m_quote.m_daytrades.m_inClose[begin-1:end], self.m_quote.m_daytrades.m_inVol[begin-1:end], colorup='g', colordown='r', width=self.zoomWidth[self.zoomLevel]+1,alpha=0.5)
             #l5 = self.chart1vol.plot(self.m_quote.m_daytrades.m_ovb[begin:end],'k')
 
-            volume_overlay2(self.chart2, self.m_quote.m_daytrades.m_inClose[begin:end], self.m_quote.m_daytrades.m_inVol[begin:end], colorup='g', colordown='r', width=self.zoomWidth[self.zoomLevel]+1,alpha=1.0)
+            volume_overlay2(self.chart2, self.m_quote.m_daytrades.m_inClose[begin-1:end], self.m_quote.m_daytrades.m_inVol[begin-1:end], colorup='g', colordown='r', width=self.zoomWidth[self.zoomLevel]+1,alpha=1.0)
             lvma15 = self.chart2.plot(self.m_quote.m_daytrades.m_vma15[begin:end],'r',antialiased=False,linewidth=0.08)
             lovb = self.chart2vol.plot(self.m_quote.m_daytrades.m_ovb[begin:end],'k',antialiased=False,linewidth=0.08)
             #index_bar(self.chart2, self.m_quote.m_daytrades.m_inVol[begin:end], facecolor='g', edgecolor='k', width=4,alpha=1.0)
