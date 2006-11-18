@@ -330,6 +330,7 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         self.zoomPeriod = (20,40,80,160,320)
         self.zoomIncPeriod = (5,10,20,40,80)
         self.zoomWidth = (9,6,3,2,1)
+        self.zoomMultiple = (2,5,10,20,40)
         self.zoomLevel = 2
         self.zoomMaxLevel = len(self.zoomPeriod)-1
 
@@ -500,6 +501,9 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
     def getPeriod(self):
         return self.zoomPeriod[self.zoomLevel]
 
+    def getMultiple(self):
+        return self.zoomMultiple[self.zoomLevel]
+
     def getTextPeriod(self):
         return '%s %s %s' % (message('graph_period'),self.getPeriod(),message('graph_days'))
 
@@ -567,12 +571,15 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
             #index_bar(self.chart2, self.m_quote.m_daytrades.m_inVol[begin:end], facecolor='g', edgecolor='k', width=4,alpha=1.0)
 
             if self.m_dispLegend:
+                old = matplotlib.rcParams['lines.antialiased']
+                matplotlib.rcParams['lines.antialiased']=False
                 if self.m_dispMA150:
-                    self.legend1 = self.chart1.legend((lma20, lma50, lma100, lma150), ('MA20','MA50','MA100','MA150'), 2) #'upper left'
+                    self.legend1 = self.chart1.legend((lma20, lma50, lma100, lma150), ('MA20','MA50','MA100','MA150'), loc=2, numpoints=2, pad=0.3, axespad=0.025) #'upper left'
                 else:
-                    self.legend1 = self.chart1.legend((lma20, lma50, lma100), ('MA20','MA50','MA100'), 2) #'upper left'
+                    self.legend1 = self.chart1.legend((lma20, lma50, lma100), ('MA20','MA50','MA100'), loc=2, numpoints=2, pad=0.3, axespad=0.025) #'upper left'
 
-                self.legend2 = self.chart2.legend((lvma15, lovb), ('VMA15', 'OVB'), 2) #'upper left'
+                self.legend2 = self.chart2.legend((lvma15, lovb), ('VMA15', 'OVB'), loc=2, numpoints=2, pad=0.3, axespad=0.025) #'upper left'
+                matplotlib.rcParams['lines.antialiased']=old
 
             left, top = 0.005, 1.005
             t = self.chart1.text(left, top, self.GetPeriod(1), fontsize = 7, transform = self.chart1.transAxes)
