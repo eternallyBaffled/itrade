@@ -230,13 +230,13 @@ try:
 except NameError:
     gImportEuronext = Import_euronext()
 
-registerImportConnector('EURONEXT','PAR',gImportEuronext,bDefault=True)
+registerImportConnector('EURONEXT','PAR',gImportEuronext,bDefault=False)
 registerImportConnector('EURONEXT','BRU',gImportEuronext,bDefault=True)
 registerImportConnector('EURONEXT','AMS',gImportEuronext,bDefault=True)
 registerImportConnector('EURONEXT','LIS',gImportEuronext,bDefault=True)
-registerImportConnector('ALTERNEXT','PAR',gImportEuronext,bDefault=True)
+registerImportConnector('ALTERNEXT','PAR',gImportEuronext,bDefault=False)
 registerImportConnector('ALTERNEXT','BRU',gImportEuronext,bDefault=True)
-registerImportConnector('PARIS MARCHE LIBRE','PAR',gImportEuronext,bDefault=True)
+registerImportConnector('PARIS MARCHE LIBRE','PAR',gImportEuronext,bDefault=False)
 registerImportConnector('BRUXELLES MARCHE LIBRE','BRU',gImportEuronext,bDefault=True)
 
 # ============================================================================

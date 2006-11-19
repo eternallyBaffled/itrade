@@ -185,9 +185,9 @@ registerImportConnector('AMEX','NYC',gImportYahoo,bDefault=True)
 registerImportConnector('OTCBB','NYC',gImportYahoo,bDefault=True)
 registerImportConnector('LSE','LON',gImportYahoo,bDefault=True)
 
-registerImportConnector('EURONEXT','PAR',gImportYahoo,bDefault=False)
-registerImportConnector('ALTERNEXT','PAR',gImportYahoo,bDefault=False)
-registerImportConnector('PARIS MARCHE LIBRE','PAR',gImportYahoo,bDefault=False)
+registerImportConnector('EURONEXT','PAR',gImportYahoo,bDefault=True)
+registerImportConnector('ALTERNEXT','PAR',gImportYahoo,bDefault=True)
+registerImportConnector('PARIS MARCHE LIBRE','PAR',gImportYahoo,bDefault=True)
 
 # ============================================================================
 # Test ME

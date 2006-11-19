@@ -5,6 +5,9 @@ On the road for v0.4.5 (Nausicaa)
 
 ===============================================================================
 
+2006-11-19  Gilles Dumortier <dgil at ieee.org>
+	*
+
 2006-11-18  Gilles Dumortier <dgil at ieee.org>
 	* add an experimental commande line --unicode to start with unicode
 	  version of wxPython
