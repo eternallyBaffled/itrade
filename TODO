@@ -3,6 +3,8 @@
 PREFACE
 ===============================================================================
 
+Functionnal features TODO list
+
 This file will go away soon after release beta 0.9. Please use the SourceForge
 tracker to submit any issue found after this release.
 
@@ -13,9 +15,9 @@ Working patches increase the chance to be included in the next release :-)
 KNOWN BUGS
 ===============================================================================
 
-Coca release will focus on portfolio management and alerts mechanism (incl.
-news aggregator). Coca will also polish existing features like indicators,
-charting options and display.
+Nausicaa is focusing on quotes management (list of, download, edit, ...) and
+markets (Yahoo and Euronext connectors, Import/Export of historical data).
+Nausicaa is polishing existing features like indicators, charting and display.
 
 Known problems and major issues are tracked by the sourceforge bug tracker :
 http://sourceforge.net/tracker/?group_id=128261&atid=711187
@@ -29,45 +31,47 @@ TODO ITEMS by VERSION
 
 Version 0.4.5 (Nausicaa)
  + Multi-currencies support in portfolio and matrix
- + List of quotes Management (Downloading, Editing, ...)
- + Yahoo connector fully functionnal for the US market
- + "Points Pivots" feature
+ + Quotes Management (List Downloading, Editing, ...)
+ + Yahoo connector fully functionnal for NASDAQ/AMEX/NYSE markets
+ + Euronext connector for EURONEXT/ALTERNEXT/ML markets
+ + more MMI enhancements
+ + Import / Export historic data
+ ~ "Points Pivots" feature
+ ~ VAT information
+ ~ more Charting enhancements
+ ~ binary installation package for Windows
+
+Version 0.5 (Plume)
  ~ News aggregator (Google, Bourso, Balo)
  ~ Money Computer (preview of Risk Management)
  ~ www.lebalo.com (official french announces)
- ~ VAT information
- ~ more MMI enhancements
  - alerts full back-end and front-end
  - Deferred settlement service (SRD) alerts on dates/events
  - data panel indicators, raw numerical, charting options
- - more efficient indicators management (incl. RSI and MACD)
-
-Version 0.5 (Plume)
- - more indicators (oscillators)
+ - more efficient indicators management (incl. RSI and MACD, oscillators)
+ - more MMI enhancements
+ - more Charting enhancements
  - full stops management
  - daily Japanese candlestick
- - graphical display of portfolio evaluations
- - automated analysis (short and long term)
 
 Version 0.6 (Stella Maris)
  - more indicators (schotastics)
  - weekly Japanese candlestick
  - more Japanese candlestick
  - candlestick patterns
- - Full Risk & Money Management
+ - graphical display of portfolio evaluations
+ - automated analysis (short and long term)
 
 Version 0.7 (Aaricia - The User Preview)
+ - Full Risk & Money Management
  - support and resistance
- - executable pack ?
  - multi-accounts ?
  - full taxes and expenses management ?
  - pressure indicator in the matrix ?
  - split management ?
- - quote window selector can search with partial info ?
 
 Version 0.8 (AlefThau - Alpha Release)
  - file attachement to operations (i.e. official doc from broker)
- - installer ?
  - official alpha release
 
 Version 0.9 (Betadine - Beta Release)
