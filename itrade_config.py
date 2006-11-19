@@ -35,12 +35,9 @@
 # Version management
 # ============================================================================
 
-__revision__ = "$Id: itrade_config.py,v 1.42 2006/05/04 07:55:02 dgil Exp $"
 __author__ = "Gilles Dumortier (dgil@ieee.org)"
 __version__ = "0.4.5"
 __status__ = "alpha"
-__cvsversion__ = "$Revision: 1.42 $"[11:-2]
-__date__ = "$Date: 2006/05/04 07:55:02 $"[7:-2]
 __copyright__ = "Copyright (c) 2004-2006 Gilles Dumortier"
 __license__ = "GPL"
 __credits__ = """Jeremiah Fincher (ansi colors in command line), Mark Pilgrim (Universal Feed Parser http://feedparser.org/)"""
@@ -56,6 +53,23 @@ import imp
 import ConfigParser
 
 # ============================================================================
+# Read REVISION
+# ============================================================================
+
+# open the file
+try:
+    f = open('REVISION','r')
+    infile = f.readlines()
+    f.close()
+    if len(infile)>1:
+        infile = infile[1].split(' ')
+        __svnversion__ = infile[0]
+    else:
+        __svnversion__ = 'r???'
+except IOError:
+    __svnversion__ = 'r???'
+
+# ============================================================================
 # Default configuration
 # ============================================================================
 
@@ -69,7 +83,7 @@ softwareWebsite = 'http://itrade.sourceforge.net/'
 
 # iTrade version (major.minor)
 softwareVersion = __version__
-softwareVersionName = 'Nausicaa - (unstable) (merged)'
+softwareVersionName = 'Nausicaa - (unstable) (%s)' % __svnversion__
 softwareStatus = __status__
 
 print '%s(%s) - %s %s' % (softwareName,softwareStatus,softwareVersion,softwareVersionName)
@@ -367,6 +381,8 @@ loadConfig()
 if __name__=='__main__':
     loadConfig()
     saveConfig()
+
+    print __svnversion__
 
 # ============================================================================
 # That's all folks !
