@@ -42,6 +42,7 @@ import logging
 # iTrade system
 from itrade_logging import *
 from itrade_local import message
+import itrade_csv
 
 # ============================================================================
 # ISIN -> MARKET
@@ -206,12 +207,26 @@ yahoo_suffix = {
     'LSE': '.L',
     }
 
+yahoo_map_tickers = {}
+
 def yahooTicker(ticker,market):
     if yahoo_suffix.has_key(market):
-        return ticker + yahoo_suffix[market]
+        sticker = ticker + yahoo_suffix[market]
     else:
-        return ticker
+        sticker = ticker
 
+    if yahoo_map_tickers.has_key(sticker):
+        return yahoo_map_tickers[sticker]
+
+    return sticker
+
+infile = itrade_csv.read(None,os.path.join(itrade_config.dirSysData,'yahoo_tickers.txt'))
+if infile:
+    # scan each line to read each quote
+    for eachLine in infile:
+        item = itrade_csv.parse(eachLine,2)
+        if item:
+            yahoo_map_tickers[item[0]] = item[1].strip().upper()
 
 # ============================================================================
 # euronext_place2mep
