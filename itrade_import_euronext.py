@@ -232,7 +232,7 @@ except NameError:
 
 registerImportConnector('EURONEXT','PAR',gImportEuronext,bDefault=False)
 registerImportConnector('EURONEXT','BRU',gImportEuronext,bDefault=True)
-registerImportConnector('EURONEXT','AMS',gImportEuronext,bDefault=True)
+registerImportConnector('EURONEXT','AMS',gImportEuronext,bDefault=False)
 registerImportConnector('EURONEXT','LIS',gImportEuronext,bDefault=True)
 registerImportConnector('ALTERNEXT','PAR',gImportEuronext,bDefault=False)
 registerImportConnector('ALTERNEXT','BRU',gImportEuronext,bDefault=True)

@@ -6,7 +6,8 @@ On the road for v0.4.5 (Nausicaa)
 ===============================================================================
 
 2006-11-19  Gilles Dumortier <dgil at ieee.org>
-	*
+	* switch to yahoo connector to import euronext historic data
+	* data/yahoo_tickers.txt to map some symbols between euronext and yahoo
 
 2006-11-18  Gilles Dumortier <dgil at ieee.org>
 	* add an experimental commande line --unicode to start with unicode

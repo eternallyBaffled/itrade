@@ -106,7 +106,7 @@ class Import_yahoo(object):
 
         debug("Import_yahoo:getdata quote:%s begin:%s end:%s" % (quote,d1,d2))
 
-        sname = yahooTicker(quote.ticker(),quote.market())
+        sname = yahooTicker(quote.ticker(),quote.market(),quote.place())
 
         query = (
             ('a', '%02d' % (int(d1[1])-1)),
@@ -186,6 +186,7 @@ registerImportConnector('OTCBB','NYC',gImportYahoo,bDefault=True)
 registerImportConnector('LSE','LON',gImportYahoo,bDefault=True)
 
 registerImportConnector('EURONEXT','PAR',gImportYahoo,bDefault=True)
+registerImportConnector('EURONEXT','AMS',gImportYahoo,bDefault=True)
 registerImportConnector('ALTERNEXT','PAR',gImportYahoo,bDefault=True)
 registerImportConnector('PARIS MARCHE LIBRE','PAR',gImportYahoo,bDefault=True)
 
