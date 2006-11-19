@@ -63,7 +63,7 @@ class Import_yahoo(object):
         return 'yahoo'
 
     def interval_year(self):
-        return 1
+        return 0.5
 
     def connect(self):
         return True

@@ -6,6 +6,7 @@ On the road for v0.4.5 (Nausicaa)
 ===============================================================================
 
 2006-11-19  Gilles Dumortier <dgil at ieee.org>
+	* Yahoo connector was buggy (missing some data from one full year)
 	* Package : SVN revision number (SF bug 1599315)
 	* switch to yahoo connector to import euronext historic data
 	* data/yahoo_tickers.txt to map some symbols between euronext and yahoo

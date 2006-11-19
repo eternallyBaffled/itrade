@@ -256,16 +256,26 @@ def liveupdate_from_internet(quote):
 def cmdline_importQuoteFromInternet(quote,dlg=None):
     year = date.today().year
     ic = quote.importconnector()
+    spl = False
     if ic:
         step = ic.interval_year()
+        if step == 0.5:
+            spl = True
+            step = 1
     else:
         step = 1
     nyear = 0
     bStop = False
     while (not bStop) and (nyear < itrade_config.numTradeYears):
         print '--- update the quote -- %d to %d ---' % (year-step+1,year)
-        if not quote.update(date(year-step+1,1,1),date(year,12,31)):
-            bStop = True
+        if spl:
+            if not quote.update(date(year-step+1,1,1),date(year,6,30)):
+                bStop = True
+            if not bStop and not quote.update(date(year-step+1,7,1),date(year,12,31)):
+                bStop = True
+        else:
+            if not quote.update(date(year-step+1,1,1),date(year,12,31)):
+                bStop = True
         if dlg:
             dlg.Update(nyear)
         nyear = nyear + step
