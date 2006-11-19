@@ -125,7 +125,7 @@ class LiveUpdate_yahoo(object):
         debug("LiveUpdate_yahoo:getdata quote:%s " % quote)
         self.m_connected = False
 
-        sname = yahooTicker(quote.ticker(),quote.market())
+        sname = yahooTicker(quote.ticker(),quote.market(),quote.place())
 
         query = (
           ('f', 'sl1d1t1c1ohgvbap'),

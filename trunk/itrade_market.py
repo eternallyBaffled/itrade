@@ -199,19 +199,20 @@ def market2place(market):
 # ============================================================================
 
 yahoo_suffix = {
-    'EURONEXT': '.PA',
-    'ALTERNEXT': '.PA',
-    'PARIS MARCHE LIBRE': '.PA',
-    'BRUXELLES MARCHE LIBRE': '.BOGUS',
-    'OTCBB': '.OB',
-    'LSE': '.L',
+    'EURONEXT.PAR': '.PA',
+    'EURONEXT.AMS': '.AS',
+    'ALTERNEXT.PAR': '.PA',
+    'PARIS MARCHE LIBRE.PAR': '.PA',
+    'OTCBB.NYC': '.OB',
+    'LSE.LON': '.L',
     }
 
 yahoo_map_tickers = {}
 
-def yahooTicker(ticker,market):
-    if yahoo_suffix.has_key(market):
-        sticker = ticker + yahoo_suffix[market]
+def yahooTicker(ticker,market,place):
+    key = market + '.' + place
+    if yahoo_suffix.has_key(key):
+        sticker = ticker + yahoo_suffix[key]
     else:
         sticker = ticker
 
