@@ -97,8 +97,13 @@ SRD and short positions
 ITEMS DONE by VERSION (History)
 ===============================================================================
 
+Version 0.4.2 (Coca2) - Patch 1 - 2006/10/03
+ + Bug fixing
+ + realtime connector for live data is live again
+
 Version 0.4.2 (Coca2) - 2006/05/28
  + MMI enhancements
+ + realtime connector for live data differed 15 min.
 
 Version 0.4 (Coca) - DONE - 2006/03/11
  + generic live/import quotes data plugins
@@ -154,3 +159,4 @@ Version 0.1 (Pandora - Proof of Concept)	- DONE - 2005/08/16
  + full / live data on a quote -> quick loading of matrix
  + very basic Japanese candlestick
 
+Project Registration / Start of Development - DONE - 2005/01/08
