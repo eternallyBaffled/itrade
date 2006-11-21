@@ -414,65 +414,75 @@ class Trades(object):
         return True
 
     def compute_ma150(self,i):
-        debug('%s: compute MA150 [%d,%d]' % (self.m_quote.ticker(),i-150+1,i+1))
+        debug('%s: compute MA150 [%d]' % (self.m_quote.ticker(),i))
         s = 0.0
         n = 0
-        for j in range(i-150+1,i+1):
+        j = i
+        while n<150 and j>=0:
             if self.m_inClose[j]>=0.0:
                 s = s + self.m_inClose[j]
                 n = n + 1
+            j = j - 1
         if n>0:
             self.m_ma150[i] = float(s/n)
         else:
             self.m_ma150[i] = -1.0
 
     def compute_ma100(self,i):
-        debug('%s: compute MA100 [%d,%d]' % (self.m_quote.ticker(),i-100+1,i+1))
+        debug('%s: compute MA100 [%d]' % (self.m_quote.ticker(),i))
         s = 0.0
         n = 0
-        for j in range(i-100+1,i+1):
+        j = i
+        while n<100 and j>=0:
             if self.m_inClose[j]>=0.0:
                 s = s + self.m_inClose[j]
                 n = n + 1
+            j = j - 1
         if n>0:
             self.m_ma100[i] = float(s/n)
         else:
             self.m_ma100[i] = -1.0
 
     def compute_ma50(self,i):
-        debug('%s: compute MA50 [%d,%d]' % (self.m_quote.ticker(),i-50+1,i+1))
+        debug('%s: compute MA50 [%d]' % (self.m_quote.ticker(),i))
         s = 0
         n = 0
-        for j in range(i-50+1,i+1):
+        j = i
+        while n<50 and j>=0:
             if self.m_inClose[j]>=0.0:
                 s = s + self.m_inClose[j]
                 n = n + 1
+            j = j - 1
         if n>0:
             self.m_ma50[i] = float(s/n)
         else:
             self.m_ma50[i] = -1.0
 
     def compute_ma20(self,i):
-        debug('%s: compute MA20 [%d,%d]' % (self.m_quote.ticker(),i-20+1,i+1))
+        debug('%s: compute MA20 [%d]' % (self.m_quote.ticker(),i))
         s = 0
         n = 0
-        for j in range(i-20+1,i+1):
+        j = i
+        while n<20 and j>=0:
             if self.m_inClose[j]>=0.0:
                 s = s + self.m_inClose[j]
                 n = n + 1
+            j = j - 1
         if n>0:
             self.m_ma20[i] = float(s/n)
         else:
             self.m_ma20[i] = -1.0
 
     def compute_vma15(self,i):
-        debug('%s: compute VMA15 [%d,%d]' % (self.m_quote.ticker(),i-15+1,i+1))
+        debug('%s: compute VMA15 [%d]' % (self.m_quote.ticker(),i))
         s = long(0)
         n = 0
-        for j in range(i-15+1,i+1):
+        j = i
+        while n<15 and j>=0:
             if self.m_inClose[j]>=0.0:
                 s = s + self.m_inVol[j]
                 n = n + 1
+            j = j - 1
         if n>0:
             self.m_vma15[i] = float(s/n)
         else:
@@ -495,18 +505,25 @@ class Trades(object):
         sm = 0.0
         ecart = 0.0
         n = 0
-        for j in range(i-20+1,i+1):
+        j = i
+        while n<20 and j>=0:
             if self.m_inClose[j]>=0.0:
                 sm = sm + self.m_inClose[j]
                 n = n + 1
+            j = j - 1
+
         if n>0:
             # calculate MA20(i)
             self.m_bollM[i] = float(sm/n)
 
             # calculate MA plus 2 standard deviations
-            for j in range(i-20+1,i+1):
+            n = 0
+            j = i
+            while n<20 and j>=0:
                 if self.m_inClose[j]>=0.0:
                     ecart = ecart + pow(self.m_inClose[j] - self.m_bollM[i],2)
+                    n = n + 1
+                j = j - 1
 
             ecart = 2*sqrt(float(ecart)/n)
             self.m_bollUp[i] = self.m_bollM[i] + ecart
