@@ -568,14 +568,24 @@ def volume_overlay(ax, opens, closes, volumes,
     left = -width/2.0
 
 
-    bars = [ ( (left, 0), (left, v), (right, v), (right, 0)) for v in volumes if v != -1 ]
+    bars = [ ( (left, 0), (left, v), (right, v), (right, 0)) for v in volumes if v > 0 ]
 
     sx = ax.figure.dpi * Value(1/72.0)  # scale for points
     sy = (ax.bbox.ur().y() - ax.bbox.ll().y()) / (ax.viewLim.ur().y() - ax.viewLim.ll().y())
 
     barTransform = scale_sep_transform(sx,sy)
 
-    offsetsBars = [ (i, 0) for i,v in enumerate(volumes) if v != -1 ]
+    offsetsBars = [ (i, 0) for i,v in enumerate(volumes) if v > 0 ]
+
+    #print 'len colors = ',len(colors)
+    #print 'len offsetsBars = ',len(offsetsBars)
+    #print 'len bars = ',len(bars)
+    #if (len(colors) != len(bars)):
+    #    print 'closes:',closes
+    #    print 'opens:', opens
+    #    print 'volumes:',volumes
+    assert(len(offsetsBars)==len(colors))
+    assert(len(offsetsBars)==len(bars))
 
     useAA = 0,  # use tuple here
     if width>1:
@@ -593,15 +603,11 @@ def volume_overlay(ax, opens, closes, volumes,
                                    )
     barCollection.set_transform(barTransform)
 
-
-
-
-
-
     minx, maxx = (0, len(offsetsBars))
     miny = 0
-    maxy = max([v for v in volumes if v!=-1])
+    maxy = max([v for v in volumes if v > 0])
     corners = (minx, miny), (maxx, maxy)
+
     ax.update_datalim(corners)
     ax.autoscale_view()
 
@@ -629,7 +635,16 @@ def volume_overlay2(ax, closes, volumes,
 
     """
 
-    return volume_overlay(ax,closes[:-1],closes[1:],volumes[1:],colorup,colordown,width,alpha)
+    opens = nx.array(closes[:-1])
+    last = 0
+    for i in range(0,len(opens)):
+        if opens[i] == -1:
+            opens[i] = last
+        else:
+            last = opens[i]
+
+    return volume_overlay(ax,opens,closes[1:],volumes[1:],colorup,colordown,width,alpha)
+    #return volume_overlay(ax,closes[:-1],closes[1:],volumes[1:],colorup,colordown,width,alpha)
 
 
 def volume_overlay3(ax, quotes,
