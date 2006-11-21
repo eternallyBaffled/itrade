@@ -152,22 +152,23 @@ class Import_yahoo(object):
                 value = string.atof(sdata[6])   #   Adj. Close*
                 volume = string.atoi(sdata[5])
 
-                # encode in EBP format
-                # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME
-                line = (
-                  quote.key(),
-                  sdate,
-                  open,
-                  high,
-                  low,
-                  value,
-                  volume
-                )
-                line = map(lambda (val): '%s' % str(val), line)
-                line = string.join(line, ';')
+                if volume>0:
+                    # encode in EBP format
+                    # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME
+                    line = (
+                      quote.key(),
+                      sdate,
+                      open,
+                      high,
+                      low,
+                      value,
+                      volume
+                    )
+                    line = map(lambda (val): '%s' % str(val), line)
+                    line = string.join(line, ';')
 
-                # append
-                data = data + line + '\r\n'
+                    # append
+                    data = data + line + '\r\n'
         return data
 
 # ============================================================================

@@ -5,6 +5,10 @@ On the road for v0.4.5 (Nausicaa)
 
 ===============================================================================
 
+2006-11-21  Gilles Dumortier <dgil at ieee.org>
+	* Trades : better calculation when no quote
+	* Yahoo connector : be sure volume > 0 (SF bug 1600016)
+
 2006-11-19  Gilles Dumortier <dgil at ieee.org>
 	* Yahoo connector was buggy (missing some data from one full year)
 	* Package : SVN revision number (SF bug 1599315)
