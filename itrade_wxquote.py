@@ -535,14 +535,13 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
                 self.m_quote.m_daytrades.bollinger(i,0)
 
         # self.m_quote.m_daytrades.m_[begin:end]
-        # print 'ChartRealize: begin:',begin,' end:',end,' num:',num
+        print 'ChartRealize: begin:',begin,' end:',end,' num:',num
 
         if num>0:
 
             if self.m_dispChart1Type == 'c':
                 lc = candlestick2(self.chart1, self.m_quote.m_daytrades.m_inOpen[begin:end], self.m_quote.m_daytrades.m_inClose[begin:end], self.m_quote.m_daytrades.m_inHigh[begin:end], self.m_quote.m_daytrades.m_inLow[begin:end], width = self.zoomWidth[self.zoomLevel], colorup = 'g', colordown = 'r', alpha=1.0)
             elif self.m_dispChart1Type == 'l':
-                #lc = self.chart1.plot(self.m_quote.m_daytrades.m_inClose[begin:end],'k',antialiased=False,linewidth=0.08)
                 lc = plot_day_summary3(self.chart1, self.m_quote.m_daytrades.m_inClose[begin:end], ticksize=self.zoomWidth[self.zoomLevel], color='k')
             elif self.m_dispChart1Type == 'o':
                 lc = plot_day_summary2(self.chart1, self.m_quote.m_daytrades.m_inOpen[begin:end], self.m_quote.m_daytrades.m_inClose[begin:end], self.m_quote.m_daytrades.m_inHigh[begin:end], self.m_quote.m_daytrades.m_inLow[begin:end], ticksize=self.zoomWidth[self.zoomLevel], colorup='k', colordown='r')
