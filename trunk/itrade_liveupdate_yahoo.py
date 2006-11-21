@@ -202,7 +202,11 @@ class LiveUpdate_yahoo(object):
             return None
         else:
             low = string.atof (sdata[7])
+
         volume = string.atoi (sdata[8])
+        if volume<=0:
+            debug('volume : invalid negative or zero value %d' % volume)
+            return None
 
         # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME
         data = (
