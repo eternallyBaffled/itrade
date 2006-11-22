@@ -48,7 +48,7 @@ from httplib import *
 import itrade_config
 from itrade_logging import *
 from itrade_quotes import *
-from itrade_import import registerLiveConnector
+from itrade_import import *
 
 # ============================================================================
 # LiveUpdate_ABCBourse()
@@ -257,9 +257,9 @@ try:
 except NameError:
     gLiveABC = LiveUpdate_ABCBourse()
 
-registerLiveConnector('EURONEXT','PAR',gLiveABC,bDefault=False)
-registerLiveConnector('ALTERNEXT','PAR',gLiveABC,bDefault=False)
-registerLiveConnector('PARIS MARCHE LIBRE','PAR',gLiveABC,bDefault=False)
+registerLiveConnector('EURONEXT','PAR',QLIST_ANY,gLiveABC,bDefault=False)
+registerLiveConnector('ALTERNEXT','PAR',QLIST_ANY,gLiveABC,bDefault=False)
+registerLiveConnector('PARIS MARCHE LIBRE','PAR',QLIST_ANY,gLiveABC,bDefault=False)
 
 # ============================================================================
 # Test ME

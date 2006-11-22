@@ -48,7 +48,7 @@ import string
 import itrade_config
 from itrade_logging import *
 from itrade_isin import filterName
-from itrade_import import registerListSymbolConnector
+from itrade_import import *
 
 # ============================================================================
 # Import_ListOfQuotes_BARCHART()
@@ -152,9 +152,9 @@ def Import_ListOfQuotes_BARCHART(quotes,market='NASDAQ'):
 # Export me
 # ============================================================================
 
-registerListSymbolConnector('NASDAQ','NYC',Import_ListOfQuotes_BARCHART)
-registerListSymbolConnector('AMEX','NYC',Import_ListOfQuotes_BARCHART)
-registerListSymbolConnector('OTCBB','NYC',Import_ListOfQuotes_BARCHART)
+registerListSymbolConnector('NASDAQ','NYC',QLIST_ANY,Import_ListOfQuotes_BARCHART)
+registerListSymbolConnector('AMEX','NYC',QLIST_ANY,Import_ListOfQuotes_BARCHART)
+registerListSymbolConnector('OTCBB','NYC',QLIST_ANY,Import_ListOfQuotes_BARCHART)
 
 # ============================================================================
 # Test ME

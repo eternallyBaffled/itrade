@@ -50,7 +50,7 @@ from itrade_local import message,gMessage
 from itrade_portfolio import loadPortfolio
 from itrade_matrix import *
 from itrade_quotes import *
-from itrade_import import getLiveConnector
+from itrade_import import *
 from itrade_currency import currencies
 
 # iTrade wx system
@@ -346,7 +346,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
         self.m_matrix = matrix
 
         self.m_market = self.m_portfolio.market()
-        self.m_connector = getLiveConnector(self.m_market)
+        self.m_connector = getLiveConnector(self.m_market,QLIST_INDICES)
 
         # link to other windows
         self.m_hOperation = None
@@ -625,7 +625,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
 
         self.m_matrix = createMatrix(dp.filename(),dp)
         self.m_market = self.m_portfolio.market()
-        self.m_connector = getLiveConnector(self.m_market)
+        self.m_connector = getLiveConnector(self.m_market,QLIST_INDICES)
 
         # should be enough !
         wx.SetCursor(wx.STANDARD_CURSOR)

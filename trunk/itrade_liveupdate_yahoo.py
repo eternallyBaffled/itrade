@@ -47,7 +47,7 @@ import time
 import itrade_config
 from itrade_logging import *
 from itrade_quotes import *
-from itrade_import import registerLiveConnector
+from itrade_import import *
 from itrade_market import yahooTicker
 
 # ============================================================================
@@ -307,15 +307,15 @@ try:
 except NameError:
     gLiveYahoo = LiveUpdate_yahoo()
 
-registerLiveConnector('NASDAQ','NYC',gLiveYahoo,bDefault=True)
-registerLiveConnector('NYSE','NYC',gLiveYahoo,bDefault=True)
-registerLiveConnector('AMEX','NYC',gLiveYahoo,bDefault=True)
-registerLiveConnector('OTCBB','NYC',gLiveYahoo,bDefault=True)
-registerLiveConnector('LSE','LON',gLiveYahoo,bDefault=True)
+registerLiveConnector('NASDAQ','NYC',QLIST_ANY,gLiveYahoo,bDefault=True)
+registerLiveConnector('NYSE','NYC',QLIST_ANY,gLiveYahoo,bDefault=True)
+registerLiveConnector('AMEX','NYC',QLIST_ANY,gLiveYahoo,bDefault=True)
+registerLiveConnector('OTCBB','NYC',QLIST_ANY,gLiveYahoo,bDefault=True)
+registerLiveConnector('LSE','LON',QLIST_ANY,gLiveYahoo,bDefault=True)
 
-registerLiveConnector('EURONEXT','PAR',gLiveYahoo,bDefault=False)
-registerLiveConnector('ALTERNEXT','PAR',gLiveYahoo,bDefault=False)
-registerLiveConnector('PARIS MARCHE LIBRE','PAR',gLiveYahoo,bDefault=False)
+registerLiveConnector('EURONEXT','PAR',QLIST_ANY,gLiveYahoo,bDefault=False)
+registerLiveConnector('ALTERNEXT','PAR',QLIST_ANY,gLiveYahoo,bDefault=False)
+registerLiveConnector('PARIS MARCHE LIBRE','PAR',QLIST_ANY,gLiveYahoo,bDefault=False)
 
 # ============================================================================
 # Test ME

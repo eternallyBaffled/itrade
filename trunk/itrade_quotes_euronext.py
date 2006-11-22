@@ -49,7 +49,7 @@ import string
 import itrade_config
 from itrade_logging import *
 from itrade_isin import checkISIN,filterName
-from itrade_import import registerListSymbolConnector
+from itrade_import import *
 
 # ============================================================================
 # Import_ListOfQuotes_Euronext()
@@ -127,10 +127,10 @@ def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT'):
 # Export me
 # ============================================================================
 
-registerListSymbolConnector('EURONEXT','PAR',Import_ListOfQuotes_Euronext)
-registerListSymbolConnector('ALTERNEXT','PAR',Import_ListOfQuotes_Euronext)
-registerListSymbolConnector('PARIS MARCHE LIBRE','PAR',Import_ListOfQuotes_Euronext)
-registerListSymbolConnector('BRUXELLES MARCHE LIBRE','BRU',Import_ListOfQuotes_Euronext)
+registerListSymbolConnector('EURONEXT','PAR',QLIST_ANY,Import_ListOfQuotes_Euronext)
+registerListSymbolConnector('ALTERNEXT','PAR',QLIST_ANY,Import_ListOfQuotes_Euronext)
+registerListSymbolConnector('PARIS MARCHE LIBRE','PAR',QLIST_ANY,Import_ListOfQuotes_Euronext)
+registerListSymbolConnector('BRUXELLES MARCHE LIBRE','BRU',QLIST_ANY,Import_ListOfQuotes_Euronext)
 
 # ============================================================================
 # Test ME

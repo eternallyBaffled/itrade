@@ -50,7 +50,7 @@ from itrade_logging import *
 from itrade_quotes import *
 from itrade_local import message
 from itrade_config import *
-from itrade_import import listImportConnector,listLiveConnector
+from itrade_import import *
 from itrade_wxselectquote import select_iTradeQuote
 
 # ============================================================================
@@ -190,31 +190,15 @@ class iTradeQuotePropertiesPanel(wx.Window):
         self.editLiveConnector = wx.ComboBox(self,-1, "", size=wx.Size(120,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
         box.Add(self.editLiveConnector, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        count = 0
-        for aname,amarket,aplace,adefaut,aconnector in listLiveConnector(self.m_quote.market(),self.m_quote.place()):
-            self.editLiveConnector.Append(aname,aname)
-            if aname==self.m_quote.liveconnector().name():
-                idx = count
-            count = count + 1
-
-        self.editLiveConnector.SetSelection(idx)
-
         label = wx.StaticText(self, -1, message('prop_impconnector'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         self.editImportConnector = wx.ComboBox(self,-1, "", size=wx.Size(120,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
         box.Add(self.editImportConnector, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        count = 0
-        for aname,aplace,amarket,adefaut,aconnector in listImportConnector(self.m_quote.market(),self.m_quote.place()):
-            self.editImportConnector.Append(aname,aname)
-            if aname==self.m_quote.importconnector().name():
-                idx = count
-            count = count + 1
-
-        self.editImportConnector.SetSelection(idx)
-
         thebox.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
+
+        self.fillConnectors(bInit=True)
 
         # ---[ Restore/Set Market / Connectors Properties ]---
 
@@ -349,10 +333,29 @@ class iTradeQuotePropertiesPanel(wx.Window):
         # then refresh the display
         self.saveThenDisplayReference()
 
+    def fillConnectors(self,bInit=False):
+        count = 0
+        idx = 0
+        for aname,amarket,aplace,adefaut,aconnector,aqlist in listLiveConnector(self.m_quote.market(),self.m_quote.list(),self.m_quote.place()):
+            if bInit: self.editLiveConnector.Append(aname,aname)
+            if aname==self.m_quote.liveconnector().name():
+                idx = count
+            count = count + 1
+
+        self.editLiveConnector.SetSelection(idx)
+
+        count = 0
+        idx = 0
+        for aname,aplace,amarket,adefaut,aconnector,aqlist in listImportConnector(self.m_quote.market(),self.m_quote.list(),self.m_quote.place()):
+            if bInit: self.editImportConnector.Append(aname,aname)
+            if aname==self.m_quote.importconnector().name():
+                idx = count
+            count = count + 1
+
+        self.editImportConnector.SetSelection(idx)
+
     def saveThenDisplayConnector(self):
-        self.editLiveConnector.SetLabel(self.m_quote.liveconnector().name())
-        self.editImportConnector.SetLabel(self.m_quote.importconnector().name())
-        self.liveText.SetLabel(self.m_quote.sv_type_of_clock(bDisplayTime=True))
+        self.fillConnectors()
         if self.m_port:
             self.m_port.saveProperties()
 

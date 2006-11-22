@@ -48,7 +48,7 @@ from datetime import *
 from itrade_logging import *
 from itrade_quotes import *
 from itrade_datation import Datation,jjmmaa2yyyymmdd
-from itrade_import import registerLiveConnector
+from itrade_import import *
 from itrade_market import euronext_place2mep
 
 # ============================================================================
@@ -333,14 +333,14 @@ except NameError:
     gLiveEuronext = LiveUpdate_Euronext('euronext')
     gLiveAlternext = LiveUpdate_Euronext('alternext')
 
-registerLiveConnector('EURONEXT','PAR',gLiveEuronext,bDefault=False)
-registerLiveConnector('EURONEXT','BRU',gLiveEuronext,bDefault=True)
-registerLiveConnector('EURONEXT','AMS',gLiveEuronext,bDefault=True)
-registerLiveConnector('EURONEXT','LIS',gLiveEuronext,bDefault=True)
-registerLiveConnector('ALTERNEXT','PAR',gLiveAlternext,bDefault=False)
-registerLiveConnector('ALTERNEXT','BRU',gLiveAlternext,bDefault=True)
-registerLiveConnector('PARIS MARCHE LIBRE','PAR',gLiveEuronext,bDefault=False)
-registerLiveConnector('BRUXELLES MARCHE LIBRE','BRU',gLiveEuronext,bDefault=True)
+registerLiveConnector('EURONEXT','PAR',QLIST_ANY,gLiveEuronext,bDefault=False)
+registerLiveConnector('EURONEXT','BRU',QLIST_ANY,gLiveEuronext,bDefault=True)
+registerLiveConnector('EURONEXT','AMS',QLIST_ANY,gLiveEuronext,bDefault=True)
+registerLiveConnector('EURONEXT','LIS',QLIST_ANY,gLiveEuronext,bDefault=True)
+registerLiveConnector('ALTERNEXT','PAR',QLIST_ANY,gLiveAlternext,bDefault=False)
+registerLiveConnector('ALTERNEXT','BRU',QLIST_ANY,gLiveAlternext,bDefault=True)
+registerLiveConnector('PARIS MARCHE LIBRE','PAR',QLIST_ANY,gLiveEuronext,bDefault=False)
+registerLiveConnector('BRUXELLES MARCHE LIBRE','BRU',QLIST_ANY,gLiveEuronext,bDefault=True)
 
 # ============================================================================
 # Test ME

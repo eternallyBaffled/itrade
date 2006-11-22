@@ -46,7 +46,7 @@ from datetime import *
 from itrade_logging import *
 from itrade_quotes import *
 from itrade_datation import Datation,jjmmaa2yyyymmdd
-from itrade_import import registerImportConnector
+from itrade_import import *
 from itrade_market import euronext_place2mep
 
 # ============================================================================
@@ -230,14 +230,29 @@ try:
 except NameError:
     gImportEuronext = Import_euronext()
 
-registerImportConnector('EURONEXT','PAR',gImportEuronext,bDefault=False)
-registerImportConnector('EURONEXT','BRU',gImportEuronext,bDefault=True)
-registerImportConnector('EURONEXT','AMS',gImportEuronext,bDefault=False)
-registerImportConnector('EURONEXT','LIS',gImportEuronext,bDefault=True)
-registerImportConnector('ALTERNEXT','PAR',gImportEuronext,bDefault=False)
-registerImportConnector('ALTERNEXT','BRU',gImportEuronext,bDefault=True)
-registerImportConnector('PARIS MARCHE LIBRE','PAR',gImportEuronext,bDefault=False)
-registerImportConnector('BRUXELLES MARCHE LIBRE','BRU',gImportEuronext,bDefault=True)
+registerImportConnector('EURONEXT','PAR',QLIST_ANY,gImportEuronext,bDefault=False)
+registerImportConnector('EURONEXT','PAR',QLIST_INDICES,gImportEuronext,bDefault=True)
+registerImportConnector('EURONEXT','PAR',QLIST_TRACKERS,gImportEuronext,bDefault=True)
+
+registerImportConnector('EURONEXT','BRU',QLIST_ANY,gImportEuronext,bDefault=True)
+
+registerImportConnector('EURONEXT','AMS',QLIST_ANY,gImportEuronext,bDefault=False)
+registerImportConnector('EURONEXT','AMS',QLIST_INDICES,gImportEuronext,bDefault=True)
+registerImportConnector('EURONEXT','AMS',QLIST_TRACKERS,gImportEuronext,bDefault=True)
+
+registerImportConnector('EURONEXT','LIS',QLIST_ANY,gImportEuronext,bDefault=True)
+
+registerImportConnector('ALTERNEXT','PAR',QLIST_ANY,gImportEuronext,bDefault=False)
+registerImportConnector('ALTERNEXT','PAR',QLIST_INDICES,gImportEuronext,bDefault=True)
+registerImportConnector('ALTERNEXT','PAR',QLIST_TRACKERS,gImportEuronext,bDefault=True)
+
+registerImportConnector('ALTERNEXT','BRU',QLIST_ANY,gImportEuronext,bDefault=True)
+
+registerImportConnector('PARIS MARCHE LIBRE','PAR',QLIST_ANY,gImportEuronext,bDefault=False)
+registerImportConnector('PARIS MARCHE LIBRE','PAR',QLIST_INDICES,gImportEuronext,bDefault=True)
+registerImportConnector('PARIS MARCHE LIBRE','PAR',QLIST_TRACKERS,gImportEuronext,bDefault=True)
+
+registerImportConnector('BRUXELLES MARCHE LIBRE','BRU',QLIST_ANY,gImportEuronext,bDefault=True)
 
 # ============================================================================
 # Test ME

@@ -57,7 +57,7 @@ import datetime
 import itrade_config
 from itrade_logging import *
 from itrade_quotes import *
-from itrade_import import registerLiveConnector
+from itrade_import import *
 
 # ============================================================================
 # Flux to Place
@@ -827,9 +827,9 @@ except NameError:
     gLiveFortuneo = LiveUpdate_fortuneo()
 
 # __x test the connection, and register only if working ...
-registerLiveConnector('EURONEXT','PAR',gLiveFortuneo,bDefault=True)
-registerLiveConnector('ALTERNEXT','PAR',gLiveFortuneo,bDefault=True)
-registerLiveConnector('PARIS MARCHE LIBRE','PAR',gLiveFortuneo,bDefault=True)
+registerLiveConnector('EURONEXT','PAR',QLIST_ANY,gLiveFortuneo,bDefault=True)
+registerLiveConnector('ALTERNEXT','PAR',QLIST_ANY,gLiveFortuneo,bDefault=True)
+registerLiveConnector('PARIS MARCHE LIBRE','PAR',QLIST_ANY,gLiveFortuneo,bDefault=True)
 
 # ============================================================================
 # Test ME

@@ -47,6 +47,17 @@ import itrade_config
 from itrade_market import market2place
 
 # ============================================================================
+# LIST
+# ============================================================================
+
+QLIST_ALL      = 0
+QLIST_ANY      = 0
+QLIST_SYSTEM   = 1
+QLIST_USER     = 2
+QLIST_INDICES  = 3
+QLIST_TRACKERS = 4
+
+# ============================================================================
 # ConnectorRegistry
 # ============================================================================
 
@@ -54,29 +65,30 @@ class ConnectorRegistry(object):
     def __init__(self):
         self.m_conn = []
 
-    def register(self,market,place,connector,bDefault=True):
-        self.m_conn.append((market,place,bDefault,connector))
+    def register(self,market,place,qlist,connector,bDefault=True):
+        self.m_conn.append((market,place,bDefault,connector,qlist))
+        #print 'Register %s for market :' % self, market,' qlist:',qlist
         return True
 
-    def get(self,market,place=None,name=None):
+    def get(self,market,qlist,place=None,name=None):
         if place==None:
             place = market2place(market)
         if name:
-            for amarket,aplace,adefault,aconnector in self.m_conn:
-                if market==amarket and place==aplace and aconnector.name()==name:
+            for amarket,aplace,adefault,aconnector,aqlist in self.m_conn:
+                if market==amarket and place==aplace and aconnector.name()==name and (aqlist==QLIST_ANY or aqlist==qlist):
                     return aconnector
         else:
-            for amarket,aplace,adefault,aconnector in self.m_conn:
-                if market==amarket and place==aplace and adefault:
+            for amarket,aplace,adefault,aconnector,aqlist in self.m_conn:
+                if market==amarket and place==aplace and (aqlist==QLIST_ANY or qlist==aqlist) and adefault:
                     return aconnector
-        print 'No default connector for market :',market
+        print 'No default connector %s for market :' % self,market,' qlist:',qlist
         return None
 
-    def list(self,market,place):
+    def list(self,market,qlist,place):
         lst = []
-        for amarket,aplace,adefault,aconnector in self.m_conn:
-            if amarket==market and aplace==place:
-                lst.append((aconnector.name(),amarket,aplace,adefault,aconnector))
+        for amarket,aplace,adefault,aconnector,aqlist in self.m_conn:
+            if amarket==market and aplace==place and (aqlist==QLIST_ANY or aqlist==qlist):
+                lst.append((aconnector.name(),amarket,aplace,adefault,aconnector,aqlist))
         return lst
 
 # ============================================================================
