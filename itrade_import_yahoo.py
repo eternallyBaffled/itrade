@@ -46,7 +46,7 @@ from datetime import *
 from itrade_logging import *
 from itrade_quotes import *
 from itrade_datation import Datation,dd_mmm_yy2yyyymmdd
-from itrade_import import registerImportConnector
+from itrade_import import *
 from itrade_market import yahooTicker
 
 # ============================================================================
@@ -180,16 +180,20 @@ try:
 except NameError:
     gImportYahoo = Import_yahoo()
 
-registerImportConnector('NASDAQ','NYC',gImportYahoo,bDefault=True)
-registerImportConnector('NYSE','NYC',gImportYahoo,bDefault=True)
-registerImportConnector('AMEX','NYC',gImportYahoo,bDefault=True)
-registerImportConnector('OTCBB','NYC',gImportYahoo,bDefault=True)
-registerImportConnector('LSE','LON',gImportYahoo,bDefault=True)
+registerImportConnector('NASDAQ','NYC',QLIST_ANY,gImportYahoo,bDefault=True)
+registerImportConnector('NYSE','NYC',QLIST_ANY,gImportYahoo,bDefault=True)
+registerImportConnector('AMEX','NYC',QLIST_ANY,gImportYahoo,bDefault=True)
+registerImportConnector('OTCBB','NYC',QLIST_ANY,gImportYahoo,bDefault=True)
+registerImportConnector('LSE','LON',QLIST_ANY,gImportYahoo,bDefault=True)
 
-registerImportConnector('EURONEXT','PAR',gImportYahoo,bDefault=True)
-registerImportConnector('EURONEXT','AMS',gImportYahoo,bDefault=True)
-registerImportConnector('ALTERNEXT','PAR',gImportYahoo,bDefault=True)
-registerImportConnector('PARIS MARCHE LIBRE','PAR',gImportYahoo,bDefault=True)
+registerImportConnector('EURONEXT','PAR',QLIST_SYSTEM,gImportYahoo,bDefault=True)
+registerImportConnector('EURONEXT','PAR',QLIST_USER,gImportYahoo,bDefault=True)
+registerImportConnector('EURONEXT','AMS',QLIST_SYSTEM,gImportYahoo,bDefault=True)
+registerImportConnector('EURONEXT','AMS',QLIST_USER,gImportYahoo,bDefault=True)
+registerImportConnector('ALTERNEXT','PAR',QLIST_SYSTEM,gImportYahoo,bDefault=True)
+registerImportConnector('ALTERNEXT','PAR',QLIST_USER,gImportYahoo,bDefault=True)
+registerImportConnector('PARIS MARCHE LIBRE','PAR',QLIST_SYSTEM,gImportYahoo,bDefault=True)
+registerImportConnector('PARIS MARCHE LIBRE','PAR',QLIST_USER,gImportYahoo,bDefault=True)
 
 # ============================================================================
 # Test ME

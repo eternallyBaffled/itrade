@@ -48,7 +48,7 @@ import string
 import itrade_config
 from itrade_logging import *
 from itrade_isin import buildISIN,extractCUSIP,filterName
-from itrade_import import registerListSymbolConnector
+from itrade_import import *
 
 # ============================================================================
 # Import_ListOfQuotes_NYSE()
@@ -103,7 +103,7 @@ def Import_ListOfQuotes_NYSE(quotes,market='NYSE'):
 # Export me
 # ============================================================================
 
-registerListSymbolConnector('NYSE','NYC',Import_ListOfQuotes_NYSE)
+registerListSymbolConnector('NYSE','NYC',QLIST_ANY,Import_ListOfQuotes_NYSE)
 
 # ============================================================================
 # Test ME
