@@ -122,11 +122,16 @@ ID_LANG_ENGLISH = 401
 ID_LANG_FRENCH = 402
 ID_LANG_LAST = 402
 
-ID_CONTENT = 500
-ID_SUPPORT = 501
-ID_BUG = 502
-ID_DONORS = 503
-ID_ABOUT = 510
+ID_CACHE = 499
+ID_CACHE_ERASE_DATA = 500
+ID_CACHE_ERASE_NEWS = 501
+ID_CACHE_ERASE_ALL = 510
+
+ID_CONTENT = 800
+ID_SUPPORT = 801
+ID_BUG = 802
+ID_DONORS = 803
+ID_ABOUT = 810
 
 # ============================================================================
 # view mode
@@ -469,6 +474,13 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
         if itrade_config.lang == 255:
             self.optionsmenu.Enable(ID_LANG,False)
 
+        self.cachemenu = wx.Menu()
+        self.cachemenu.Append(ID_CACHE_ERASE_DATA, message('main_cache_erase_data'),message('main_cache_desc_erase_data'))
+        self.cachemenu.Append(ID_CACHE_ERASE_NEWS, message('main_cache_erase_news'),message('main_cache_desc_erase_news'))
+        self.cachemenu.AppendSeparator()
+        self.cachemenu.Append(ID_CACHE_ERASE_ALL, message('main_cache_erase_all'),message('main_cache_desc_erase_all'))
+        self.optionsmenu.AppendMenu(ID_CACHE,message('main_options_cache'),self.cachemenu,message('main_options_desc_cache'))
+
         self.helpmenu = wx.Menu()
         self.helpmenu.Append(ID_CONTENT, message('main_help_contents'),message('main_help_desc_contents'))
         self.helpmenu.AppendSeparator()
@@ -526,6 +538,10 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
         wx.EVT_MENU(self, ID_LANG_SYSTEM, self.OnLangDefault)
         wx.EVT_MENU(self, ID_LANG_ENGLISH, self.OnLangEnglish)
         wx.EVT_MENU(self, ID_LANG_FRENCH, self.OnLangFrench)
+
+        wx.EVT_MENU(self, ID_CACHE_ERASE_DATA, self.OnCacheEraseData)
+        wx.EVT_MENU(self, ID_CACHE_ERASE_NEWS, self.OnCacheEraseNews)
+        wx.EVT_MENU(self, ID_CACHE_ERASE_ALL, self.OnCacheEraseAll)
 
         wx.EVT_MENU(self, ID_REFRESH, self.OnRefresh)
         wx.EVT_MENU(self, ID_AUTOREFRESH, self.OnAutoRefresh)
@@ -888,6 +904,32 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
     def OnLangFrench(self,e):
         itrade_config.lang = 2
         self.OnChangeLang()
+
+    # --- [ cache management ] -------------------------------------
+
+    def OnCacheEraseData(self,e):
+        dlg = wx.MessageDialog(self, message('cache_erase_confirm_data'), message('cache_erase_confirm_title'), wx.YES_NO | wx.YES_DEFAULT | wx.ICON_QUESTION)
+        idRet = dlg.ShowModal()
+        if idRet == wx.ID_YES:
+            # __x
+            pass
+        dlg.Destroy()
+
+    def OnCacheEraseNews(self,e):
+        dlg = wx.MessageDialog(self, message('cache_erase_confirm_news'), message('cache_erase_confirm_title'), wx.YES_NO | wx.YES_DEFAULT | wx.ICON_QUESTION)
+        idRet = dlg.ShowModal()
+        if idRet == wx.ID_YES:
+            # __x
+            pass
+        dlg.Destroy()
+
+    def OnCacheEraseAll(self,e):
+        dlg = wx.MessageDialog(self, message('cache_erase_confirm_all'), message('cache_erase_confirm_title'), wx.YES_NO | wx.YES_DEFAULT | wx.ICON_QUESTION)
+        idRet = dlg.ShowModal()
+        if idRet == wx.ID_YES:
+            # __x
+            pass
+        dlg.Destroy()
 
     # --- [ autorefresh management ] -------------------------------------
 
