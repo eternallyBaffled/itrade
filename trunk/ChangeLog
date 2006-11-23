@@ -5,6 +5,9 @@ On the road for v0.4.5 (Nausicaa)
 
 ===============================================================================
 
+2006-11-23  Gilles Dumortier <dgil at ieee.org>
+	* us.messages.txt : fix some text (SF bug 1601477)
+
 2006-11-21  Gilles Dumortier <dgil at ieee.org>
 	Generate a tarball for michel - check Download section in SourceForge
 	* Python error in view graph when no historic data (SF bug 1599651)
