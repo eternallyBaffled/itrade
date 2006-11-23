@@ -65,8 +65,8 @@ main_quote_intraday;Intraday
 main_quote_desc_intraday; Display intraday for the current selected Quote
 main_quote_news;Informations
 main_quote_desc_news; Display news for the current selected Quote
-main_quote_table;Données Brutes
-main_quote_desc_table; Display brut data for the current selected Quote
+main_quote_table;Raw Data
+main_quote_desc_table; Display raw data for the current selected Quote
 main_quote_analysis;Analyses
 main_quote_desc_analysis; Display Technical Analysis for the current selected Quote
 main_quote_buy;Buy
