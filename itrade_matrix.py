@@ -107,6 +107,21 @@ class TradingMatrix(object):
         for eachQuote in self.list():
             eachQuote.loadTrades(fi)
 
+    # flush historic caches on the matrix
+    def flushTrades(self):
+        for eachQuote in self.list():
+            eachQuote.flushTrades()
+
+    # flush historic caches on the matrix
+    def flushNews(self):
+        for eachQuote in self.list():
+            eachQuote.flushNews()
+
+    # flush everything
+    def flushAll(self):
+        self.flushTrades()
+        self.flushNews()
+
     # (re-)build the matrix list using quotes (monitored or traded)
     def build(self):
         self.reinit()

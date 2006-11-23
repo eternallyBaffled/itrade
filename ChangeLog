@@ -6,6 +6,7 @@ On the road for v0.4.5 (Nausicaa)
 ===============================================================================
 
 2006-11-23  Gilles Dumortier <dgil at ieee.org>
+	* Option to remove cache file (SF bug 1386537)
 	* suppress some useless traces in the console
 	* us.messages.txt : fix some text (SF bug 1601477)
 

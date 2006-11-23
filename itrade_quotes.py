@@ -659,89 +659,100 @@ class Quote(object):
     # ---[ current / live values on the quote ] ---
 
     def index(self,d=None):
-        if d==None:
-            tr = self.m_daytrades.lasttrade()
-        else:
-            tr = self.m_daytrades.trade(d)
-        if tr:
-            return tr.index()
+        if self.m_daytrades:
+            if d==None:
+                tr = self.m_daytrades.lasttrade()
+            else:
+                tr = self.m_daytrades.trade(d)
+            if tr:
+                return tr.index()
         return -1
 
     def lastindex(self):
-        tr = self.m_daytrades.lasttrade()
-        if tr:
-            return tr.index()
+        if self.m_daytrades:
+            tr = self.m_daytrades.lasttrade()
+            if tr:
+                return tr.index()
         return -1
 
     def firstindex(self):
-        tr = self.m_daytrades.firsttrade()
-        if tr:
-            return tr.index()
+        if self.m_daytrades:
+            tr = self.m_daytrades.firsttrade()
+            if tr:
+                return tr.index()
         return -1
 
     def nv_close(self,d=None):
-        if d==None:
-            tr = self.m_daytrades.lasttrade()
-        else:
-            tr = self.m_daytrades.trade(d)
-        if tr:
-            return tr.nv_close()
+        if self.m_daytrades:
+            if d==None:
+                tr = self.m_daytrades.lasttrade()
+            else:
+                tr = self.m_daytrades.trade(d)
+            if tr:
+                return tr.nv_close()
         return None
 
     def nv_open(self,d=None):
-        if d==None:
-            tr = self.m_daytrades.lasttrade()
-        else:
-            tr = self.m_daytrades.trade(d)
-        if tr:
-            return tr.nv_open()
+        if self.m_daytrades:
+            if d==None:
+                tr = self.m_daytrades.lasttrade()
+            else:
+                tr = self.m_daytrades.trade(d)
+            if tr:
+                return tr.nv_open()
         return None
 
     def nv_low(self,d=None):
-        if d==None:
-            tr = self.m_daytrades.lasttrade()
-        else:
-            tr = self.m_daytrades.trade(d)
-        if tr:
-            return tr.nv_low()
+        if self.m_daytrades:
+            if d==None:
+                tr = self.m_daytrades.lasttrade()
+            else:
+                tr = self.m_daytrades.trade(d)
+            if tr:
+                return tr.nv_low()
         return None
 
     def nv_high(self,d=None):
-        if d==None:
-            tr = self.m_daytrades.lasttrade()
-        else:
-            tr = self.m_daytrades.trade(d)
-        if tr:
-            return tr.nv_high()
+        if self.m_daytrades:
+            if d==None:
+                tr = self.m_daytrades.lasttrade()
+            else:
+                tr = self.m_daytrades.trade(d)
+            if tr:
+                return tr.nv_high()
         return None
 
     def nv_volume(self,d=None):
-        if d==None:
-            tr = self.m_daytrades.lasttrade()
-        else:
-            tr = self.m_daytrades.trade(d)
-        if tr:
-            return tr.nv_volume()
+        if self.m_daytrades:
+            if d==None:
+                tr = self.m_daytrades.lasttrade()
+            else:
+                tr = self.m_daytrades.trade(d)
+            if tr:
+                return tr.nv_volume()
         return None
 
     def nv_prevclose(self,d=None):
-        tc = self.m_daytrades.prevtrade(d)
-        if tc:
-            return tc.nv_close()
+        if self.m_daytrades:
+            tc = self.m_daytrades.prevtrade(d)
+            if tc:
+                return tc.nv_close()
         return None
 
     def nv_unitvar(self,d=None):
-        tc = self.nv_close(d)
-        tp = self.nv_prevclose(d)
-        if tc and tp:
-            return tc - tp
+        if self.m_daytrades:
+            tc = self.nv_close(d)
+            tp = self.nv_prevclose(d)
+            if tc and tp:
+                return tc - tp
         return None
 
     def nv_percent(self,d=None):
-        tc = self.nv_close(d)
-        tp = self.nv_prevclose(d)
-        if tc and tp:
-            return ((tc/tp)*100)-100
+        if self.m_daytrades:
+            tc = self.nv_close(d)
+            tp = self.nv_prevclose(d)
+            if tc and tp:
+                return ((tc/tp)*100)-100
         return None
 
     # ---[ same current / live data on quote but string ] ------------------
@@ -820,33 +831,34 @@ class Quote(object):
     # ---[ object value ] ---
 
     def ov_candle(self,d=None):
-        if d==None:
-            tr = self.m_daytrades.lasttrade()
-        else:
-            tr = self.m_daytrades.trade(d)
-        if tr==None:
-            return None
-        d = Datation(tr.date()).date()
-        tc = self.m_daytrades.candle(d)
+        if self.m_daytrades:
+            if d==None:
+                tr = self.m_daytrades.lasttrade()
+            else:
+                tr = self.m_daytrades.trade(d)
+            if tr==None:
+                return None
+            d = Datation(tr.date()).date()
+            tc = self.m_daytrades.candle(d)
         return tc
 
     def ov_pivots(self):
-        tc = self.m_daytrades.lasttrade()
-        if tc:
-            #debug('ov_pivots(): tc=%s tc_date=%s ... need to get prev ...' % (tc,tc.date()))
-            tc = self.m_daytrades.prevtrade()
-        if tc:
-            H = tc.nv_high()
-            B = tc.nv_low()
-            C = tc.nv_close()
-            pivot = (H + B + C) / 3
-            s1 = (2 * pivot) - H
-            s2 = pivot - (H - B)
-            r1 = (2 * pivot) - B
-            r2 = pivot + (H - B)
-            return (s2,s1,pivot,r1,r2)
-        else:
-            return (-1.0,-1.0,-1.0,-1.0,-1.0)
+        if self.m_daytrades:
+            tc = self.m_daytrades.lasttrade()
+            if tc:
+                #debug('ov_pivots(): tc=%s tc_date=%s ... need to get prev ...' % (tc,tc.date()))
+                tc = self.m_daytrades.prevtrade()
+            if tc:
+                H = tc.nv_high()
+                B = tc.nv_low()
+                C = tc.nv_close()
+                pivot = (H + B + C) / 3
+                s1 = (2 * pivot) - H
+                s2 = pivot - (H - B)
+                r1 = (2 * pivot) - B
+                r2 = pivot + (H - B)
+                return (s2,s1,pivot,r1,r2)
+        return (-1.0,-1.0,-1.0,-1.0,-1.0)
 
     def sv_pivots(self):
         if self.sv_status()=='OK':
@@ -880,12 +892,13 @@ class Quote(object):
     # ---[ market open/close ] ---
 
     def date(self,d=None):
-        if d==None:
-            tr = self.m_daytrades.lasttrade()
-        else:
-            tr = self.m_daytrades.trade(d)
-        if tr:
-            return tr.date()
+        if self.m_daytrades:
+            if d==None:
+                tr = self.m_daytrades.lasttrade()
+            else:
+                tr = self.m_daytrades.trade(d)
+            if tr:
+                return tr.date()
         return None
 
     def sv_date(self,bDisplayShort=False):
@@ -924,31 +937,33 @@ class Quote(object):
 
     def compute(self,todate=None):
         debug('%s: compute [%s]' % (self.ticker(),todate))
-        if self.m_daytrades!=None:
+        if self.m_daytrades:
             self.m_daytrades.compute(todate)
 
     # ---[ Trends ] ---
 
     def colorTrend(self,d=None):
-        if d==None:
-            tc = self.m_daytrades.lasttrade()
-            #print 'colorTrend: lastrade close : %.2f date : %s ' % (tc.nv_close(),tc.date())
-        else:
-            tc = self.m_daytrades.trade(d)
-            #print 'colorTrend: specific close : %.2f date : %s ' % (tc.nv_close(),tc.date())
-        tp = self.m_daytrades.prevtrade(d)
-        if not tp:
-            return QUOTE_INVALID
-        #print 'colorTrend: previous close : %.2f date : %s ' % (tp.nv_close(),tp.date())
-        if tc.nv_close()==tp.nv_close():
-            #print 'colorTrend: no change '
-            return QUOTE_NOCHANGE
-        elif tc.nv_close()<tp.nv_close():
-            #print 'colorTrend: RED '
-            return QUOTE_RED
-        else:
-            #print 'colorTrend: GREEN '
-            return QUOTE_GREEN
+        if self.m_daytrades:
+            if d==None:
+                tc = self.m_daytrades.lasttrade()
+                #print 'colorTrend: lastrade close : %.2f date : %s ' % (tc.nv_close(),tc.date())
+            else:
+                tc = self.m_daytrades.trade(d)
+                #print 'colorTrend: specific close : %.2f date : %s ' % (tc.nv_close(),tc.date())
+            tp = self.m_daytrades.prevtrade(d)
+            if not tp:
+                return QUOTE_INVALID
+            #print 'colorTrend: previous close : %.2f date : %s ' % (tp.nv_close(),tp.date())
+            if tc.nv_close()==tp.nv_close():
+                #print 'colorTrend: no change '
+                return QUOTE_NOCHANGE
+            elif tc.nv_close()<tp.nv_close():
+                #print 'colorTrend: RED '
+                return QUOTE_RED
+            else:
+                #print 'colorTrend: GREEN '
+                return QUOTE_GREEN
+        return QUOTE_INVALID
 
     def colorStop(self):
         cl = self.nv_close()
@@ -1039,11 +1054,22 @@ class Quote(object):
     # ---[ flush and reload ] ---
 
     def flushAndReload(self,dlg):
+        self.flushTrades()
+        cmdline_importQuoteFromInternet(self,dlg)
+        self.compute()
+
+    def flushTrades(self):
         if self.m_daytrades:
             self.m_daytrades.reset()
             self.m_daytrades = None
-        cmdline_importQuoteFromInternet(self,dlg)
-        self.compute()
+        self.m_pluginId = None
+
+    def flushNews(self):
+        newsfile = os.path.join(itrade_config.dirCacheData,'%s.htm' % self.key())
+        try:
+            os.remove(newsfile)
+        except OSError:
+            pass
 
     # ---[ Persistent Properties ] ------------------------
 

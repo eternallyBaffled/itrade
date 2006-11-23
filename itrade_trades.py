@@ -161,6 +161,11 @@ class Trades(object):
     def reset(self,infile=None):
         self._init_()
         if not infile:
+            idfile = os.path.join(itrade_config.dirCacheData,self.m_quote.key())+'.id'
+            try:
+                os.remove(idfile)
+            except OSError:
+                pass
             infile = os.path.join(itrade_config.dirCacheData,self.m_quote.key())+'.txt'
         try:
             os.remove(infile)
