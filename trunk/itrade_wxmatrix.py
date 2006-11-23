@@ -911,24 +911,21 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
         dlg = wx.MessageDialog(self, message('cache_erase_confirm_data'), message('cache_erase_confirm_title'), wx.YES_NO | wx.YES_DEFAULT | wx.ICON_QUESTION)
         idRet = dlg.ShowModal()
         if idRet == wx.ID_YES:
-            # __x
-            pass
+            self.m_matrix.flushTrades()
         dlg.Destroy()
 
     def OnCacheEraseNews(self,e):
         dlg = wx.MessageDialog(self, message('cache_erase_confirm_news'), message('cache_erase_confirm_title'), wx.YES_NO | wx.YES_DEFAULT | wx.ICON_QUESTION)
         idRet = dlg.ShowModal()
         if idRet == wx.ID_YES:
-            # __x
-            pass
+            self.m_matrix.flushNews()
         dlg.Destroy()
 
     def OnCacheEraseAll(self,e):
         dlg = wx.MessageDialog(self, message('cache_erase_confirm_all'), message('cache_erase_confirm_title'), wx.YES_NO | wx.YES_DEFAULT | wx.ICON_QUESTION)
         idRet = dlg.ShowModal()
         if idRet == wx.ID_YES:
-            # __x
-            pass
+            self.m_matrix.flushAll()
         dlg.Destroy()
 
     # --- [ autorefresh management ] -------------------------------------
@@ -1591,6 +1588,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
             #                    self.getColumnText(self.m_currentItem, 1),
             #                    self.getColumnText(self.m_currentItem, 2)))
             # __x if self.m_currentItem == self.m_maxlines, launch eval !
+            pass
         event.Skip()
 
     def OnRightClick(self, event):

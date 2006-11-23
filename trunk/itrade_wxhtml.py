@@ -165,7 +165,7 @@ class iTradeRSSPanel(wx.Panel):
         self.saveCache()
 
     def deleteCache(self):
-        fn = os.path.join(itrade_config.dirCacheData,'%s.htm' % self.m_quote.isin())
+        fn = os.path.join(itrade_config.dirCacheData,'%s.htm' % self.m_quote.key())
         info('deleteCache(%s)' % fn)
         try:
             os.remove(fn)
@@ -173,7 +173,7 @@ class iTradeRSSPanel(wx.Panel):
             pass
 
     def loadCache(self):
-        fn = os.path.join(itrade_config.dirCacheData,'%s.htm' % self.m_quote.isin())
+        fn = os.path.join(itrade_config.dirCacheData,'%s.htm' % self.m_quote.key())
         if os.path.exists(fn):
             try:
                 f = open(fn,'r')
@@ -191,7 +191,7 @@ class iTradeRSSPanel(wx.Panel):
             info('loadCache(%s) : no cache -> empty page' % fn)
 
     def saveCache(self):
-        fn = os.path.join(itrade_config.dirCacheData,'%s.htm' % self.m_quote.isin())
+        fn = os.path.join(itrade_config.dirCacheData,'%s.htm' % self.m_quote.key())
 
         # open the file
         try:

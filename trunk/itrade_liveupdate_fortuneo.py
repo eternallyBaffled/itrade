@@ -500,7 +500,7 @@ class LiveUpdate_fortuneo(object):
         val = (int(hour)*60) + int(min)
         #print clo,hour,min,val
         if val>self.m_lastclock:
-            print "lastclock was :",self.m_lastclock," then is : ",val
+            #print "lastclock was :",self.m_lastclock," then is : ",val
             self.m_lastclock = val
         return "%d:%02d" % (val/60,val%60)
 
