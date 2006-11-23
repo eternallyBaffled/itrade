@@ -1138,7 +1138,7 @@ class Portfolios(object):
         self.m_portfolios = {}
 
     def reinit(self):
-        info('Portfolios::reinit')
+        debug('Portfolios::reinit')
         for eachPortfolio in self.list():
             eachPortfolio.reinit()
 
@@ -1171,7 +1171,7 @@ class Portfolios(object):
         else:
             del self.m_portfolios[filename]
             self.m_portfolios[filename] = Portfolio(filename,name,accountref,market,currency,vat)
-            info('Portfolios::editPortfolio(): %s' % self.m_portfolios[filename])
+            debug('Portfolios::editPortfolio(): %s' % self.m_portfolios[filename])
             return self.m_portfolios[filename]
 
     def renamePortfolio(self,filename,newfilename):

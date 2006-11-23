@@ -252,7 +252,7 @@ class iTradeQuoteInfoWindow(wx.Window):
         self.m_low_threshold.SetLabel("%.2f" % self.m_quote.low_threshold())
 
     def refresh(self,nquote=None,live=False):
-        info('QuoteInfoWindow::refresh %s' % self.m_quote.ticker())
+        debug('QuoteInfoWindow::refresh %s' % self.m_quote.ticker())
         if nquote and nquote<>self.m_quote:
             self.m_quote = nquote
             self.m_logo = None
@@ -535,7 +535,7 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
                 self.m_quote.m_daytrades.bollinger(i,0)
 
         # self.m_quote.m_daytrades.m_[begin:end]
-        print 'ChartRealize: begin:',begin,' end:',end,' num:',num
+        # print 'ChartRealize: begin:',begin,' end:',end,' num:',num
 
         if num>0:
 

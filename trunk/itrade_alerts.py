@@ -251,10 +251,10 @@ class Alerts(object):
 
     def register(self,name,plugin):
         if self.m_plugins.has_key(name):
-            info("Alerts: can't register %s:%s : already registered !" % (name,plugin))
+            warning("Alerts: can't register %s:%s : already registered !" % (name,plugin))
             return False
         self.m_plugins[name] = plugin
-        info('Alerts: register %s:%s : ok' % (name,plugin))
+        debug('Alerts: register %s:%s : ok' % (name,plugin))
         return True
 
     def numOfPlugins(self):

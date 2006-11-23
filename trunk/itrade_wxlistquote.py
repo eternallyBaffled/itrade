@@ -634,32 +634,32 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
     # --- [ OnQuote handlers management ] --------------------------------
 
     def OnNewQuote(self,event):
-        info("OnNewQuote currentItem=%d",self.currentItem)
+        debug("OnNewQuote currentItem=%d",self.currentItem)
         aRet = edit_iTradeQuoteList(self,None,QLIST_ADD)
         if aRet:
-            info('OnNewQuote: %s' % aRet[0])
+            debug('OnNewQuote: %s' % aRet[0])
             quotes.addQuote(aRet[0],aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6],list=QLIST_USER,debug=True)
             self.m_dirty = True
             self.PopulateList()
 
     def OnDeleteQuote(self,event):
         quote = self.getQuoteOnTheLine(self.currentItem)
-        info("OnDeleteQuote currentItem=%d quote=%s",self.currentItem,quote)
+        debug("OnDeleteQuote currentItem=%d quote=%s",self.currentItem,quote)
         if quote:
             aRet = edit_iTradeQuoteList(self,quote,QLIST_DELETE)
             if aRet:
-                info('OnDeleteQuote: %s' % aRet[0])
+                debug('OnDeleteQuote: %s' % aRet[0])
                 quotes.removeQuote(quote.key())
                 self.m_dirty = True
                 self.PopulateList()
 
     def OnEditQuote(self, event):
         quote = self.getQuoteOnTheLine(self.currentItem)
-        info("OnEditQuote currentItem=%d quote=%s",self.currentItem,quote)
+        debug("OnEditQuote currentItem=%d quote=%s",self.currentItem,quote)
         if quote:
             aRet = edit_iTradeQuoteList(self,quote,QLIST_MODIFY)
             if aRet:
-                info('OnEditQuote: %s' % aRet[0])
+                debug('OnEditQuote: %s' % aRet[0])
                 quotes.removeQuote(quote.key())
                 quotes.addQuote(aRet[0],aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6],list=QLIST_USER,debug=True)
                 self.m_dirty = True

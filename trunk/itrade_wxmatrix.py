@@ -1314,7 +1314,8 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
     # ---[ Populate view ] -----------------------------------------
 
     def populate(self,bDuringInit):
-        info('populate duringinit=%d'%bDuringInit)
+        debug('populate duringinit=%d' % bDuringInit)
+
         # clear current population
         self.stopLive(bBusy=False)
         self.unregisterLive()
@@ -1553,7 +1554,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
         self.x = event.GetX()
         self.y = event.GetY()
         item, flags = self.m_list.HitTest((self.x, self.y))
-        debug("OnRightDown: x, y = %s item=%d max=%d" % (str((self.x, self.y)), item,self.m_maxlines))
+        #debug("OnRightDown: x, y = %s item=%d max=%d" % (str((self.x, self.y)), item,self.m_maxlines))
         if flags & wx.LIST_HITTEST_ONITEM:
             pass
         else:
@@ -1576,7 +1577,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
     def OnItemActivated(self, event):
         self.m_currentItem = event.m_itemIndex
         if (self.m_currentItem>=0) and (self.m_currentItem<self.m_maxlines):
-            debug("OnItemActivated: %s" % self.m_list.GetItemText(self.m_currentItem))
+            #debug("OnItemActivated: %s" % self.m_list.GetItemText(self.m_currentItem))
             self.openCurrentQuote()
             # __x if self.m_currentItem == self.m_maxlines, launch eval !
 
@@ -1584,11 +1585,11 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
         self.m_currentItem = event.m_itemIndex
         self.updateQuoteItems()
         if (self.m_currentItem>=0) and (self.m_currentItem<self.m_maxlines):
-            debug("OnItemSelected: %s, %s, %s, %s\n" %
-                               (self.m_currentItem,
-                                self.m_list.GetItemText(self.m_currentItem),
-                                self.getColumnText(self.m_currentItem, 1),
-                                self.getColumnText(self.m_currentItem, 2)))
+            #debug("OnItemSelected: %s, %s, %s, %s\n" %
+            #                   (self.m_currentItem,
+            #                    self.m_list.GetItemText(self.m_currentItem),
+            #                    self.getColumnText(self.m_currentItem, 1),
+            #                    self.getColumnText(self.m_currentItem, 2)))
             # __x if self.m_currentItem == self.m_maxlines, launch eval !
         event.Skip()
 
@@ -1599,7 +1600,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
         else:
             inList = True
             quote,item = self.getQuoteAndItemOnTheLine(self.m_currentItem)
-            info("OnRightClick %s : %s\n" % (self.m_list.GetItemText(self.m_currentItem),quote))
+            #debug("OnRightClick %s : %s\n" % (self.m_list.GetItemText(self.m_currentItem),quote))
 
         # only do this part the first time so the events are only bound once
         if not hasattr(self, "m_popupID_Update"):

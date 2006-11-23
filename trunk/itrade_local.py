@@ -136,9 +136,9 @@ class LocalMessages(object):
         # try to setup the C runtime (_locale)
         if lang==None:
             lang = self.m_lang
-            info('setLocale(): default to %s' % lang)
+            debug('setLocale(): default to %s' % lang)
         else:
-            info('setLocale(): set to %s' % lang)
+            debug('setLocale(): set to %s' % lang)
 
         if sys.platform == 'darwin':
             # do nothing :-( (locale support on MacOSX is minimal)
