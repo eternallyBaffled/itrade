@@ -168,7 +168,7 @@ class iTrade_wxFrame(object):
             self._config['size'] = self.GetRestoredSize()
             try:
                 path = os.path.join(itrade_config.dirCacheData,'%s.win' % self.m_name)
-                info('saveConfig: %s' % path)
+                debug('saveConfig: %s' % path)
                 f = open(path, "w")
                 pprint.pprint(self._config, f)
                 f.close()

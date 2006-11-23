@@ -923,7 +923,7 @@ class Quote(object):
     # ---[ compute all the data ] ---
 
     def compute(self,todate=None):
-        info('%s: compute [%s]' % (self.ticker(),todate))
+        debug('%s: compute [%s]' % (self.ticker(),todate))
         if self.m_daytrades!=None:
             self.m_daytrades.compute(todate)
 

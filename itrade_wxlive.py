@@ -303,7 +303,7 @@ cNEGATIF = wx.Colour(255,51,51)
 
 class iTrade_wxLive(wx.Panel):
     def __init__(self, parent,quote):
-        info('iTrade_wxLive::__init__')
+        debug('iTrade_wxLive::__init__')
         wx.Panel.__init__(self,parent,-1)
         self.m_parent = parent
         self.m_quote = quote

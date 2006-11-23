@@ -166,7 +166,7 @@ class Currencies(object):
 
     def convert(self,curTo,curFrom,Value):
         rate = self.rate(curTo,curFrom)
-        print 'convert: value:%f from:%s to:%s rate=%f retval=%f' % (Value,curFrom,curTo,rate,Value*rate)
+        #print 'convert: value:%f from:%s to:%s rate=%f retval=%f' % (Value,curFrom,curTo,rate,Value*rate)
         return Value * rate
 
     # ---[ Currency in use or not ? ] ---
@@ -177,7 +177,7 @@ class Currencies(object):
         key = self.key(curTo,curFrom)
         if self.m_currencies.has_key(key):
             used,rate = self.m_currencies[key]
-            print 'used >>> currency : ',key,' inUse: ',used,' rate: ',rate
+            #print 'used >>> currency : ',key,' inUse: ',used,' rate: ',rate
             return used
         else:
             return False
@@ -189,10 +189,10 @@ class Currencies(object):
         if self.m_currencies.has_key(key):
             used,rate = self.m_currencies[key]
             self.m_currencies[key] = (bInUse,rate)
-            print 'inuse >>> currency : ',key,' inUse: ',bInUse,' rate: ',rate
+            #print 'inuse >>> currency : ',key,' inUse: ',bInUse,' rate: ',rate
 
     def reset(self):
-        print '>>> currency reset'
+        #print '>>> currency reset'
         for key in self.m_currencies.keys():
             used,rate = self.m_currencies[key]
             self.m_currencies[key] = (False,rate)
@@ -210,7 +210,7 @@ class Currencies(object):
         buf = f.read()
         sdata = string.split(buf, ',')
 
-        print 'get: %s %s rate = %.4f' %(curTo,curFrom,float(sdata[1]))
+        #print 'get: %s %s rate = %.4f' %(curTo,curFrom,float(sdata[1]))
         return self.update(curTo,curFrom,float(sdata[1]))
 
     def getlasttrade(self,bAllEvenNotInUse=False):
