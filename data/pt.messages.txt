@@ -1,0 +1,494 @@
+main_file;&Ficheiro
+main_open;&Abrir ...
+main_desc_open; Abrir uma conta
+main_new;&Novo
+main_desc_new; Criar uma nova conta
+main_delete;&Eliminar
+main_desc_delete; Eliminar uma conta
+main_save;&Guardar
+main_desc_save; Guardar os dados desta conta
+main_saveas;&Guardar como ...
+main_desc_saveas; Guardar conta sob um nome novo
+main_edit;&Propriedades
+main_desc_edit; Editar as propriedades da conta actual
+main_exit;S&air
+main_desc_exit; Terminar a aplicação iTrade
+main_close;&Fechar
+main_desc_close; Fechar a janela
+main_managelist;&Controlar símbolos
+main_desc_managelist; Controlar a lista dos símbolos (update por download , de edição, etc.)
+
+main_window;&Janela
+
+main_view;&Vistas
+main_quote;&Cotação
+main_matrix;&Matriz
+
+main_view_portfolio;&Conta
+main_view_desc_portfolio; Mudar a vista actual para a vista da conta
+main_view_quotes;&Cotações
+main_view_desc_quotes; Mudar a vista actual para a vista das acções
+main_view_stops;&Stops
+main_view_desc_stops; Mudar a vista actual para a vista dos Stops
+main_view_indicators;&Indicadores
+main_view_desc_indicators; Mudar a vista actual para a vista dos indicadores
+
+main_view_operations;&Transacções
+main_view_desc_operations; Gerir as transacções na conta actual
+main_view_money;&Gestão de dinheiro
+main_view_desc_money; Gestão de dinheiro
+
+main_view_compute;&Computador
+main_view_desc_compute; Computador
+
+main_view_refresh;&Actualizar agora
+main_view_desc_refresh; Actualizar agora a vista actual
+main_view_autorefresh;Actualizar automaticamente
+main_view_desc_autorefresh; Actualizar automaticamente a vista actual
+
+main_view_small;Texto pequeno
+main_view_desc_small; Usar o tamanho pequeno do texto para visualizar a matriz
+main_view_normal;Texto normal
+main_view_desc_normal; Usar o tamanho de texto normal para visualizar a matriz
+main_view_big;Texto grande
+main_view_desc_big; Usar o tamanho de texto grande para vizualizar a matriz
+
+main_quote_add;Adicionar ...
+main_quote_desc_add; Adicionar uma acção na lista
+main_quote_remove;Apagar
+main_quote_desc_remove; Apagar a presente selecção de acções da lista
+main_quote_graph;Gráficos históricos
+main_quote_desc_graph; Visualizar os gráficos históricos para as acções actualmente seleccionadas
+main_quote_live;Live
+main_quote_desc_live; Visualizar o bloco de notas para as acções actualmente seleccionadas
+main_quote_intraday;Intraday
+main_quote_desc_intraday; Visualizar intraday para as acções actualmente seleccionadas
+main_quote_news;Informações
+main_quote_desc_news; Visualizar as notícias para as acções actualmente seleccionadas
+main_quote_table;Raw Data
+main_quote_desc_table; Visualizar os dados brut para as acções actualmente seleccionadas
+main_quote_analysis;Análises
+main_quote_desc_analysis; Visualizar a análise técnica para as acções actualmente seleccionadas
+main_quote_buy;Comprar
+main_quote_desc_buy; Operação de compra para as acções actualmente seleccionadas
+main_quote_sell;Vender
+main_quote_desc_sell; Operação de venda para as acções actualmente seleccionadas
+main_quote_property;Propriedades
+main_quote_desc_property; Visualizar as propriedades para as acções actualmente seleccionadas
+
+main_options;&Opções
+main_options_lang;&Língua
+main_options_desc_lang; Seleccionar a língua usada por este software
+main_options_lang_default;Língua do sistema
+main_options_lang_english;Inglês
+main_options_lang_french;Francês
+main_options_lang_portuguese;Portuguese
+main_options_lang_deutch;Deutch
+
+main_options_cache;&Caching
+main_options_desc_cache; Caching management
+main_cache_erase_data;Erase &History Data
+main_cache_desc_erase_data;Erase all history data from the cache folder
+main_cache_erase_news;Erase &News
+main_cache_desc_erase_news;Erase all news from the cache folder
+main_cache_erase_all;Erase &All
+main_cache_desc_erase_all; Erase all data (news, historic, ...) from the cache folder
+
+main_help;&Ajuda
+main_help_contents;&Índices
+main_help_desc_contents; Índices de ajuda
+main_help_support;&Suporte técnico ...
+main_help_desc_support; Como obter o suporte técnico?
+main_help_bugs;Criar o relatório do &Bug ...
+main_help_desc_bugs; Criar o relatório de erro tracker do projecto
+main_help_donors;&Doar o dinheiro…
+main_help_desc_donors; Como doar o dinheiro para suportar este projecto
+
+main_about;&Sobre ...
+main_desc_about; Informação sobre o iTrade
+
+main_save_matrix_data;Guardar os dados da matriz?
+main_save_operation_data;Guardar os dados da transacção?
+
+main_title_portfolio;iTrade - Conta %s: %s
+main_title_quotes;iTrade - Matriz %s: %s
+main_title_stops;iTrade - Batentes %s: %s
+main_title_indicators;iTrade - Indicadores %s: %s
+
+main_refreshing;Actualizando os dados
+
+mixin_exit;Saindo da aplicação do iTrade
+mixin_close;Fechando esta vista
+mixin_open;Alteração de contexto
+
+main_popup_refreshall;Actualizar tudo
+main_popup_buy;Comprar
+main_popup_sell;Vender
+main_popup_remove;Remover
+main_popup_delete;Eliminar
+main_popup_add;Adicionar ...
+main_popup_view;Vista
+main_popup_live;Live
+main_popup_properties;Propriedades
+main_popup_edit;Editar
+
+main_valuation;Avaliação
+
+html_connecting;Conectando ...
+html_noconnect;Nenhuma conexão
+
+ok;Validar
+ok_desc;Este botão valida e depois termina o diálogo
+cancel;Cancelar
+cancel_desc;O botão de cancelamento cancela o diálogo (Duh!)
+close;Fechar
+close_desc;O botão de fecho encerra o diálogo
+
+isin;ISIN
+ticker;Mnemo
+quote;Cotações
+variation;Var.
+date;
+time;em
+name;Nome
+volume;Volume
+last;Último
+open;Aberto
+low;Baixo
+high;Elevado
+prev;Prev.
+pivots;Pivôs
+status;Status
+reopen;Reabrir
+high_threshold;Thres H
+low_threshold;Thres L
+cmp; WAQ
+qty; Qty
+perfday;Dia %
+perfper;Perf %
+profit;Lucro
+sell;Vender
+buy;Comprar
+UPP;UPP
+USP;USP
+market;Mercado
+place;Lugar
+all_markets;Todos os mercados
+invalid_isin;O código de ISIN %s é inválido
+symbol_not_found;O Código de ISIN %s ou nome %s não encontrado
+
+download_symbols_onelist;Lista de Update
+download_symbols_onedesc;Actualizar a lista dos símbolos por download dos dados da rede
+download_symbols_alllists;Actualizar todas as listas
+download_symbols_alldesc;Actualizar todas as listas dos símbolos por download dos dados da rede
+clear_symbols_onelist;Limpar a lista
+clear_symbols_onedesc;limpar todos os símbolos para esta lista
+clear_symbols_alllists;Limpar todas as listas
+clear_symbols_alldesc;limpar todos os símbolos para todas as listas
+listquote_clear_confirm_title;Operação irreversível
+listquote_clear_confirm;Para %s, confirmar a operação (%s)?
+listquote_new;Novo
+listquote_edit;Editar
+listquote_delete;Eliminar
+listquote_new_desc;Criar um símbolo novo
+listquote_edit_desc;Editar o símbolo actual na lista
+listquote_delete_desc;Eliminar o símbolo actual na lista
+listquote_duplicate_ref;O símbolo %s já existe!
+listquote_save;Guardar
+listquote_save_desc;Guardar a lista dos símbolos
+listquote_saved;A lista dos símbolos foi guardada
+listquote_dirty_save;Você quer guardar a modificação que você fez à lista dos símbolos?
+listquote_nodirty_save;As suas modificações não foram guardadas e não persistirão na sessão actual
+
+listquote_modify_title;Editar o símbolo %s
+listquote_new_title;Novo símbolo
+listquote_delete_title;Eliminar o símbolo %s
+
+quote_title;iTrade - Acção
+quote_select_title;Seleccionar um símbolo
+quote_list_title;Gestão dos símbolos
+
+quote_select_isin; ISIN:
+quote_select_ticker;Mnemo/nome:
+quote_select_market;Mercado :
+quote_select_list;Lista :
+quote_select_alllist;Nenhum filtro
+quote_select_syslist;Stocks
+quote_select_usrlist;Utilizador editado
+quote_select_indiceslist;Índices
+quote_select_trackerslist;Trackers
+quote_select_filterfield;Somente acções negociadas
+
+quote_graphdaily; Diário
+quote_live;Live
+quote_graphweekly;Semanal
+quote_news;Notícias
+quote_analysis;Análises
+quote_table;Tabela
+quote_intraday;Jornada
+quote_properties;Propriedades
+
+alerts_title; iTrade - Notícias e alertas
+alerts_alerts;Alertas
+alerts_news;Notícias
+
+money_title;iTrade - gerência de dinheiro
+
+money_evaluation;Desempenho
+money_compute;Cálculo
+money_evaluationchart;Gráfico
+money_money;Gerência de risco
+main_view_alerts;&Notícias e alertas
+main_view_desc_alerts; Notícias e alertas
+main_view_currencies;&Moedas correntes
+main_view_desc_currencies; Moedas correntes
+
+portfolio_title;iTrade - transação
+portfolio_select_title;Selecionar uma conta
+portfolio_delete_title;Eliminar uma conta
+portfolio_properties_edit;Editar propriedades da conta
+portfolio_properties_create;Criar uma nova conta
+portfolio_properties_delete;Eliminar a conta
+portfolio_properties_rename;Renomear a conta
+
+portfolio_delete_confirm;Você quer realmente a eliminação da conta “%s”?
+portfolio_delete_confirm_title;Eliminar a conta
+portfolio_exist_info;O ficheiro de referência à conta “%s” já existe!
+portfolio_exist_info_title;Criar uma conta
+portfolio_rename_confirm;Você confirma a nova referência “%s”?
+portfolio_rename_confirm_title;Renomear a conta
+
+portfolio_properties_btncreate;Criar
+portfolio_properties_btncreatedesc;Criar uma conta nova
+portfolio_properties_btndelete;Eliminar
+portfolio_properties_btndeletedesc;Eliminar esta conta (irreversível)
+portfolio_properties_btnedit;Modificar
+portfolio_properties_btneditdesc;Validar as propriedades novas desta conta
+portfolio_properties_btnrename;Renomear
+portfolio_properties_btnrenamedesc;Renomear o nome desta conta
+portfolio_properties_btnselect;Abrir
+portfolio_properties_btnselectdesc;Abrir esta conta
+
+portfolio_filename;Referência
+portfolio_name;Descrição
+portfolio_accountref;Número da conta
+portfolio_market;Mercado principal
+portfolio_select_textfield;Referência :
+portfolio_currency;Moeda corrente
+portfolio_indicator;Indicador principal
+
+portfolio_modify;Modificar
+portfolio_new;Novo
+portfolio_delete;Eliminar
+portfolio_date;Data da transação:
+portfolio_operation;Transação :
+portfolio_description;Descrição :
+portfolio_quote;Acções :
+portfolio_pre_expenses1;incl.
+portfolio_pre_expenses2;e
+portfolio_post_expenses; das despesas
+portfolio_quantity;Quantidade :
+
+portfolio_field_credit;Crédito :
+portfolio_field_debit;Débito :
+portfolio_field_freeofcharges;Livre de despesas
+portfolio_field_valorization;Valorização :
+
+portfolio_ctrl_sell;Vender
+portfolio_ctrl_sell_srd;Vender SRD
+portfolio_ctrl_buy;Comprar
+portfolio_ctrl_buy_srd;Comprar SRD
+portfolio_ctrl_debit;Levantamento
+portfolio_ctrl_credit;Depósito
+portfolio_ctrl_fee;Taxa
+portfolio_ctrl_interest;Interessses
+portfolio_ctrl_detachment;Destacamento (non taxable)
+portfolio_ctrl_dividend;Dividendo (taxable)
+portfolio_ctrl_liquidation;Liquidação SRD
+portfolio_ctrl_quote;Dividendo com partes
+portfolio_ctrl_register;Registo público
+
+portfolio_list_date;Data
+portfolio_list_operation;Transação
+portfolio_list_description;Descrição
+portfolio_list_number; Quantidade
+portfolio_list_debit;  Débito
+portfolio_list_credit; Crédito
+portfolio_list_expense;Despesa
+portfolio_list_balance; Balanço
+portfolio_list_srd;    SRD
+
+Portfolio_sell;Vender
+Portfolio_sell_srd;Vender SRD
+Portfolio_buy;Comprar
+Portfolio_buy_srd;comprar SRD
+Portfolio_credit;depósito
+Portfolio_debit;levantamento
+Portfolio_fee;taxa
+Portfolio_interest;interesses
+Portfolio_split;split
+Portfolio_detachment;destacamento
+Portfolio_dividend;dividendo
+Portfolio_liquidation;liquidação
+Portfolio_quote;dividendo nas partes
+Portfolio_register;Registo público
+
+portfolio_dispall;&Todos
+portfolio_desc_dispall; Visualizar a lista de todas as transações
+portfolio_dispquotes;&Cotações
+portfolio_desc_dispquotes; Visualizar a lista de transações relacionadas com as acções
+portfolio_dispcash;&Dinheiro
+portfolio_desc_dispcash; Visualizar a lista de transações relacionadas com o dinheiro
+portfolio_dispvalues;&Valores
+portfolio_desc_dispvalues; Visualizar a lista de transações relacionadas com os +/- valores
+portfolio_dispsrd;&SRD
+portfolio_desc_dispsrd; Visualizar a lista de transações relacionadas com SRD
+
+portfolio_opadd;&Adicionar ...
+portfolio_desc_opadd; Adicionar uma transação nova
+portfolio_opdelete;&Eliminar
+portfolio_desc_opdelete; Eliminar a transação actual
+portfolio_opmodify;&Modificar
+portfolio_desc_opmodify; Modificar a transação actual
+
+portfolio_view_small;Texto pequeno
+portfolio_view_desc_small; Usar o tamanho pequeno de texto para visualizar as transações
+portfolio_view_normal;Texto normal
+portfolio_view_desc_normal; Usar o tamanho normal de texto para visualizar as transações
+portfolio_view_big;Texto grande
+portfolio_view_desc_big; Usar o tamanho grande de texto para visualizar as transações
+
+portfolio_per30days;&30 dias
+portfolio_desc_per30days; Visualizar os últimos 30 dias
+portfolio_per90days;&90 dias
+portfolio_desc_per90days; Visualizar os últimos 90 dias
+portfolio_peryear;&Ano
+portfolio_desc_peryear; Visualizar o presente ano
+portfolio_perall;&Todos
+portfolio_desc_perall; Visualizar todas as transações desde o começo
+
+portfolio_menu_file;&Ficheiro
+portfolio_menu_disp;&Visualizar
+portfolio_menu_op;&Transações
+portfolio_menu_per;&Filtro
+
+graph_price;Preço
+graph_volume;Volume
+graph_period;Período:
+graph_days;dias
+
+backtolist;Retroceder para a lista
+
+popup_open;Aberto
+popup_high;Elevado
+popup_low;Baixo
+popup_close;Último
+popup_percent;Var. (%s)
+popup_volume;Volume
+popup_notrade;nenhum comércio
+
+save_to_file;Guardar para o ficheiro
+export_to_file;Exportar para o ficheiro
+import_from_file;Importar do ficheiro
+exported_to_file;O ficheiro %s foi exportado
+imported_from_file;O ficheiro %s foi importado
+
+tb_pan_left;Bandeja à esquerda
+tb_pan_right;Bandeja à direita
+tb_save_file;Guardar o gráfico no ficheiro
+tb_config;Configuração do gráfico
+tb_home;Restaurar a posição original
+tb_zoom_out;Aumentar o período
+tb_zoom_in;Diminuir o período
+
+quote_popup_dispMA150;Média movimentada 150 dias
+quote_popup_dispBollinger;Faixas de Bollinger
+quote_popup_dispOverlaidVolume;Volumes de Overlaid
+quote_popup_dispLegend;Legenda
+quote_popup_dispGrid;Grade
+quote_popup_dispChart1Candlestick;Candlesticks
+quote_popup_dispChart1OHLC; Barras de OHLC
+quote_popup_dispChart1Line; Linhas
+
+prop_reference;Referência
+prop_marketandconnector;Mercado e conector
+prop_tradingstyle;Informação de negócio
+prop_ref;Referência :
+prop_isin;ISIN :
+prop_name;Nome :
+prop_ticker;Mnemo :
+prop_reload;Recarregar
+prop_desc_reload;Recarregar todos os dados
+prop_rename;Renomear
+prop_desc_rename;Renomear o Mnemo desta acção
+prop_import;Importar
+prop_desc_importe;Importação dos dados da acção
+prop_export;Exportação
+prop_desc_exporte;Exportação dos dados da acção
+prop_restore;Reiniciar
+prop_desc_restore;Restaurar os valores de origem
+prop_market;Troca :
+prop_country;País :
+prop_place;Lugar :
+prop_currency;Moeda corrente :
+prop_typeofclock;Atraso :
+prop_islive;Tempo real
+prop_isslive;Live
+prop_isdiffered;Diferido
+prop_isnotlive;Tempo diferido (%d minuts)
+prop_liveconnector;Conector Live :
+prop_impconnector;Conector da importação:
+prop_set;Validar
+prop_desc_set;Validar a informação do mercado novo e do conector
+prop_term;Período de investimento (no mês) :
+prop_risk;Nível de risco (em %):
+
+live_busy;Aguarde um momento por favor, a conecção live está a encerrar…
+live_notebook;Bloco de notas
+live_lasttrades;últimas transações
+live_hours;Horas
+live_qty;Qty
+live_price;Preço
+live_buy;Compra
+live_sell;Vende
+live_number;Nb
+live_CMP;PMP
+live_FMP;PMR
+
+wxversion_title;Erro da versão do wxPython
+wxversion_msga;A versão requerida do wxPython não está instalada. Instalar por favor a versão %d%d ANSI
+wxversion_msgu;A versão requerida do wxPython não está instalada. Instalar por favor a versão %d%d UNICODE
+
+money_fiscal_year;Ano fiscal
+money_amount_of_taxes;Quantidade de impostos
+money_taxable_amounts;Quantidades Taxáveis
+money_financial_appreciation;Apreciação financeira
+money_total_of_transfers;Total de transferências
+money_expenses_vat;Despesas (VAT, ...)
+money_portfolio;Conta
+money_description;Descrição
+money_account_number;Número de conta
+money_percent_of_portfolio;% da conta
+money_quote;Cotações
+money_srd;SRD
+money_cash;Dinheiro
+money_initial_investment;Investimento inicial
+money_value;Valor
+money_performance;Desempenho
+money_investment_evaluation;Avaliação
+
+currencies_title;Moedas correntes
+currency_menu_file;&Ficheiro
+currency_menu_view;&Vista
+
+currency_to;A
+currency_from;Converter
+currency_rate;Taxa
+currency_refreshing;Actualizar os dados actuais
+
+cache_erase_confirm_title; Erase cache data
+cache_erase_confirm_data; Erase all historic data from the cache ? (data will be regenerated)
+cache_erase_confirm_news; Erase all news from the cache ? (data will be regenerated)
+cache_erase_confirm_all; Erase all data (historic, news, ...) from the cache ? (data will be regenerated)
+
+test;Mensagem de teste

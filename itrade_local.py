@@ -52,18 +52,24 @@ import itrade_csv
 
 nl_supported = {
     'fr': "Français",
+    'pt': "Portuguese",
+    'de': "Deutch",
     'en': 'English',
     'us': 'English'
     }
 
 nl_posix = {
     'fr': 'fr_FR',
+    'pt': 'pt_PT',
+    'de': 'de_DE',
     'en': 'en_US',
-    'us': 'en_US'
+    'us': 'en_US',
     }
 
 nl_autodetect = {
     'fr_FR': 'fr',
+    'pt_PT': 'pt',
+    'de_DE': 'de',
     'en_US': 'en',
     'English_United States': 'en'
     }
@@ -76,21 +82,39 @@ nl_convert = {
 # getNumSep
 # ============================================================================
 
+nl_numsep = {
+    'fr' : ' ',
+    'pt' : ' ',
+    'de' : ' ',
+    'en' : ',',
+    'us' : ','
+    }
+
 def getNumSep():
-    if getLang()=='fr':
-        return ' '
+    ll = getLang()
+    if nl_numsep.has_key(ll):
+        return nl_numsep[ll]
     else:
-        return ','
+        return ' '
 
 # ============================================================================
 # getShortDateFmt
 # ============================================================================
 
+nl_shortdatefmt = {
+    'fr' : '%d.%m',
+    'pt' : '%d.%m',
+    'de' : '%d.%m',
+    'en' : '%m.%d',
+    'us' : '%m.%d'
+    }
+
 def getShortDateFmt():
-    if getLang()=='fr':
-        return '%d.%m'
+    ll = getLang()
+    if nl_shortdatefmt.has_key(ll):
+        return nl_shortdatefmt[ll]
     else:
-        return '%m.%d'
+        return '%d.%m'
 
 # ============================================================================
 # LocalMessages
@@ -130,7 +154,7 @@ class LocalMessages(object):
             print 'Language Pack %s : %s' % (self.m_lang,self.m_llang[self.m_lang])
         else:
             print 'No Language Pack for %s !' % self.m_lang
-            raise('lang %s not found !' % self.m_lang)
+            #raise('lang %s not found !' % self.m_lang)
 
     def setLocale(self,lang=None):
         # try to setup the C runtime (_locale)
@@ -147,12 +171,12 @@ class LocalMessages(object):
             try:
                 locale.setlocale(locale.LC_ALL, lang)
             except locale.Error:
-                print 'setlocale %s : %s' % (lang,'')
+                print 'setlocale %s : %s' % (lang,'locale unknown in this windows configuration ?')
         else:
             try:
                 locale.setlocale(locale.LC_ALL, nl_posix[lang])
             except locale.Error:
-                print 'setlocale %s : %s' % (nl_posix[lang],'')
+                print 'setlocale %s : %s' % (nl_posix[lang],'locale unknown in this configuration ?')
 
         # strptime is bugged :
         # first call will reset the TimeRE cache but continue using the previous TimeRE (bad lang) :-( !
@@ -270,6 +294,12 @@ if __name__=='__main__':
     setLang('en')
     gMessage.load()
     print 'pack en: %s' % gMessage.getLangFile()
+    setLang('pt')
+    gMessage.load()
+    print 'pack pt: %s' % gMessage.getLangFile()
+    setLang('de')
+    gMessage.load()
+    print 'pack de: %s' % gMessage.getLangFile()
     print
 
     setLang('fr')
@@ -278,6 +308,10 @@ if __name__=='__main__':
     print 'en:', message('test')
     setLang('us')
     print 'us:', message('test')
+    setLang('pt')
+    print 'pt:', message('test')
+    setLang('de')
+    print 'de:', message('test')
     setLang('ar')
     print 'ar:', message('test')
 
@@ -291,6 +325,10 @@ if __name__=='__main__':
     print '6 décembre 2005 en francais (%s) : ' % getLocale(),datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x ')
     setLang('en')
     print '6th december 2005 in english (%s) : ' % getLocale(),datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x ')
+    setLang('pt')
+    print '6th december 2005 in portuguese (%s) : ' % getLocale(),datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x ')
+    setLang('de')
+    print '6th december 2005 in deutch (%s) : ' % getLocale(),datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x ')
     setLang()
     print '6th december 2005 in default lang (%s) : ' % getLocale(),datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x ')
 

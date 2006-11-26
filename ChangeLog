@@ -5,6 +5,16 @@ On the road for v0.4.5 (Nausicaa)
 
 ===============================================================================
 
+2006-11-26  Gilles Dumortier <dgil at ieee.org>
+	* Add Portuguese and Deutch support in the software (deutch translation
+	not yet available).
+
+2006-11-24  Michel Legrand <m_leg at users.sourceforge.net>
+	* Translation to portuguese !
+	Collaboration of Catherine Pedrosa and Guilherme (guigui for friends)
+	which has translated “iTrade” into Portuguese Version. Some words will
+	be surely to check during the use.
+
 2006-11-23  Gilles Dumortier <dgil at ieee.org>
 	* Option to remove cache file (SF bug 1386537)
 	* suppress some useless traces in the console
