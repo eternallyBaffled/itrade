@@ -11,6 +11,7 @@ On the road for v0.4.5 (Nausicaa)
 	not yet available).
 
 2006-11-26  Michel Legrand <m_leg at users.sourceforge.net>
+	* Indices "US" : false tickers in indices.txt (SF bug 1602719)
 	* Some updates in places.txt (better Fortuneo plugin live support)
 
 2006-11-24  Michel Legrand <m_leg at users.sourceforge.net>
