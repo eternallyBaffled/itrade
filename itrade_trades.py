@@ -161,19 +161,19 @@ class Trades(object):
     def reset(self,infile=None):
         self._init_()
         if not infile:
-            idfile = os.path.join(itrade_config.dirCacheData,self.m_quote.key())+'.id'
+            idfile = os.path.join(itrade_config.dirCacheData,'%s.id' % self.m_quote.key())
             try:
                 os.remove(idfile)
             except OSError:
                 pass
-            infile = os.path.join(itrade_config.dirCacheData,self.m_quote.key())+'.txt'
+            infile = os.path.join(itrade_config.dirCacheData,'%s.txt' % self.m_quote.key())
         try:
             os.remove(infile)
         except OSError:
             pass
 
     def load(self,infile=None):
-        infile = itrade_csv.read(infile,os.path.join(itrade_config.dirCacheData,self.m_quote.key())+'.txt')
+        infile = itrade_csv.read(infile,os.path.join(itrade_config.dirCacheData,'%s.txt' % self.m_quote.key()))
         #print 'Trades:load::',infile
         if infile:
             # scan each line to read each trade
@@ -211,7 +211,7 @@ class Trades(object):
                 tr = None
 
             # save all trades (except today)
-            itrade_csv.write(outfile,os.path.join(itrade_config.dirCacheData,self.m_quote.key())+'.txt',self.m_trades.values())
+            itrade_csv.write(outfile,os.path.join(itrade_config.dirCacheData,'%s.txt' % self.m_quote.key()),self.m_trades.values())
             self.m_dirty = False
 
             # restore today trade

@@ -47,7 +47,7 @@ from itrade_logging import *
 from itrade_quotes import *
 from itrade_datation import Datation,jjmmaa2yyyymmdd
 from itrade_import import *
-from itrade_market import euronext_place2mep
+from itrade_market import euronext_place2mep,euronext_InstrumentId
 
 # ============================================================================
 # Import_euronext()
@@ -104,42 +104,9 @@ class Import_euronext(object):
         return lines
 
     def getdata(self,quote,datedebut=None,datefin=None):
-        # get instrument ID
-        IdInstrument = quote.get_pluginID()
-        if IdInstrument==None:
 
-            url = self.m_urlid+quote.isin()
-
-            debug("Import_euronext:getdata: urlID=%s ",url)
-            try:
-                f = urllib.urlopen(url)
-            except:
-                debug('Import_euronext:unable to connect :-(')
-                return None
-            buf = f.read()
-            #print buf
-            sid = re.search("isinCode=%s&selectedMep=%d&idInstrument=" % (quote.isin(),euronext_place2mep(quote.place())),buf,re.IGNORECASE|re.MULTILINE)
-            if sid:
-                sid = sid.end()
-                sexch = re.search("&quotes=stock",buf[sid:sid+20],re.IGNORECASE|re.MULTILINE)
-                if not sexch:
-                    sexch = re.search('\"',buf[sid:sid+20],re.IGNORECASE|re.MULTILINE)
-                if sexch:
-                    sexch = sexch.start()
-                    data = buf[sid:sid+20]
-                    IdInstrument = data[:sexch]
-                else:
-                    print 'seq-2 not found'
-            else:
-                print 'seq-1 not found'
-            #print 'isinCode=%s&selectedMep=%d&idInstrument=' % (quote.isin(),euronext_place2mep(quote.place()))
-
-            if IdInstrument==None:
-                print "Import_euronext:can't get IdInstrument for %s " % quote.isin()
-                return None
-            else:
-                print "Import_euronext:IdInstrument for %s is %s" % (quote.isin(),IdInstrument)
-                quote.set_pluginID(IdInstrument)
+        IdInstrument = euronext_InstrumentId(quote)
+        if IdInstrument == None: return None
 
         # get historic data itself !
         if not datefin:

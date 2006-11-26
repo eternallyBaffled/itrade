@@ -6,6 +6,7 @@ On the road for v0.4.5 (Nausicaa)
 ===============================================================================
 
 2006-11-26  Gilles Dumortier <dgil at ieee.org>
+	* Euronext Connector : InstrumentID should be cached (SF bug 1599154)
 	* Indices "PAR" :KeyError "CSA_VOL_JOUR" (SF bug 1602220)
 	* Add Portuguese and Deutch support in the software (deutch translation
 	not yet available).
