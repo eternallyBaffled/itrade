@@ -86,6 +86,8 @@ main_options_desc_lang; Choix de la langue utilisée par le logiciel
 main_options_lang_default;Langue système
 main_options_lang_english;Anglais
 main_options_lang_french;Français
+main_options_lang_portuguese;Portugais
+main_options_lang_deutch;Allemand
 
 main_options_cache;&Cache
 main_options_desc_cache; Gestion des données cachées

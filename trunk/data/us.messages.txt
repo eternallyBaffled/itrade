@@ -82,6 +82,9 @@ main_options_desc_lang; Select language used by this software
 main_options_lang_default;System Language
 main_options_lang_english;English
 main_options_lang_french;French
+main_options_lang_portuguese;Portuguese
+main_options_lang_deutch;Deutch
+
 main_options_cache;&Caching
 main_options_desc_cache; Caching management
 main_cache_erase_data;Erase &History Data
