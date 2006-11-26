@@ -49,7 +49,7 @@ from itrade_logging import *
 from itrade_quotes import *
 from itrade_datation import Datation,jjmmaa2yyyymmdd
 from itrade_import import *
-from itrade_market import euronext_place2mep
+from itrade_market import euronext_place2mep,euronext_InstrumentId
 
 # ============================================================================
 # LiveUpdate_Euronext()
@@ -70,7 +70,6 @@ class LiveUpdate_Euronext(object):
         self.m_lastclock = "::"
         self.m_livelock = thread.allocate_lock()
         self.m_market = market
-        self.m_urlid = 'http://www.euronext.com/tools/datacentre/results/0,5773,1732_204211370,00.html?fromsearchbox=true&matchpattern='
         self.m_url = 'http://www.euronext.com/tools/datacentre/dataCentreDownloadExcell/0,5822,1732_2276422,00.html'
 
     # ---[ reentrant ] ---
@@ -157,41 +156,8 @@ class LiveUpdate_Euronext(object):
         self.m_connected = False
         debug("LiveUpdate_Euronext:getdata quote:%s market:%s" % (quote,self.m_market))
 
-        # get instrument ID
-        IdInstrument = quote.get_pluginID()
-        if IdInstrument==None:
-
-            url = self.m_urlid+quote.isin()
-
-            debug("LiveUpdate_Euronext:getdata: urlID=%s ",url)
-            try:
-                f = urllib.urlopen(url)
-            except:
-                debug('LiveUpdate_Euronext:unable to connect :-(')
-                return None
-            buf = f.read()
-            sid = re.search("isinCode=%s&selectedMep=%d&idInstrument=" % (quote.isin(),euronext_place2mep(quote.place())),buf,re.IGNORECASE|re.MULTILINE)
-            if sid:
-                sid = sid.end()
-                sexch = re.search("&quotes=stock",buf[sid:sid+20],re.IGNORECASE|re.MULTILINE)
-                if not sexch:
-                    sexch = re.search('\"',buf[sid:sid+20],re.IGNORECASE|re.MULTILINE)
-                if sexch:
-                    sexch = sexch.start()
-                    data = buf[sid:sid+20]
-                    IdInstrument = data[:sexch]
-                else:
-                    print 'seq-2 not found'
-            else:
-                print 'seq-1 not found'
-            #print 'isinCode=%s&selectedMep=%d&idInstrument=' % (quote.isin(),euronext_place2mep(quote.place()))
-
-            if IdInstrument==None:
-                print "LiveUpdate_Euronext:can't get IdInstrument for %s " % quote.isin()
-                return None
-            else:
-                print "LiveUpdate_euronext:IdInstrument for %s is %s" % (quote.isin(),IdInstrument)
-                quote.set_pluginID(IdInstrument)
+        IdInstrument = euronext_InstrumentId(quote)
+        if IdInstrument == None: return None
 
         query = (
             ('idInstrument', IdInstrument),

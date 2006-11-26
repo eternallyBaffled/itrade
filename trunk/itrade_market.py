@@ -38,6 +38,9 @@
 
 # python system
 import logging
+import re
+import string
+import urllib
 
 # iTrade system
 from itrade_logging import *
@@ -246,6 +249,69 @@ def euronext_place2mep(place):
     else:
         # default to PARIS
         return 1
+
+# ============================================================================
+# euronext_IntrusmentId()
+# ============================================================================
+
+def euronext_InstrumentId(quote):
+    #
+    urlid = 'http://www.euronext.com/tools/datacentre/results/0,5773,1732_204211370,00.html?fromsearchbox=true&matchpattern='
+
+    # get instrument ID
+    IdInstrument = quote.get_pluginID()
+    if IdInstrument == None:
+
+        try:
+            f = open(os.path.join(itrade_config.dirCacheData,'%s.id' % quote.key()),'r')
+            IdInstrument = f.read().strip()
+            f.close()
+            #print "euronext_InstrumentId: get id from file for %s " % quote.isin()
+        except IOError:
+            #print "euronext_InstrumentId: can't get id file for %s " % quote.isin()
+            pass
+
+        if IdInstrument == None:
+            url = urlid+quote.isin()
+
+            debug("euronext_InstrumentId: urlID=%s ",url)
+            try:
+                f = urllib.urlopen(url)
+            except:
+                print 'euronext_InstrumentId: %s exception error' % url
+                return None
+            buf = f.read()
+            sid = re.search("isinCode=%s&selectedMep=%d&idInstrument=" % (quote.isin(),euronext_place2mep(quote.place())),buf,re.IGNORECASE|re.MULTILINE)
+            if sid:
+                sid = sid.end()
+                sexch = re.search("&quotes=stock",buf[sid:sid+20],re.IGNORECASE|re.MULTILINE)
+                if not sexch:
+                    sexch = re.search('\"',buf[sid:sid+20],re.IGNORECASE|re.MULTILINE)
+                if sexch:
+                    sexch = sexch.start()
+                    data = buf[sid:sid+20]
+                    IdInstrument = data[:sexch]
+                else:
+                    print 'euronext_InstrumentId: seq-2 not found'
+            else:
+                print 'euronext_InstrumentId: seq-1 not found'
+            #print 'isinCode=%s&selectedMep=%d&idInstrument=' % (quote.isin(),euronext_place2mep(quote.place()))
+
+        if IdInstrument == None:
+            print "euronext_InstrumentId:can't get IdInstrument for %s " % quote.isin()
+            return None
+        else:
+            print "euronext_InstrumentId: IdInstrument for %s is %s" % (quote.isin(),IdInstrument)
+            quote.set_pluginID(IdInstrument)
+            try:
+                f = open(os.path.join(itrade_config.dirCacheData,'%s.id' % quote.key()),'w')
+                f.write('%s' % IdInstrument)
+                f.close()
+            except IOError:
+                #print "euronext_InstrumentId: can't write id file for %s " % quote.isin()
+                pass
+
+    return IdInstrument
 
 # ============================================================================
 # That's all folks !
