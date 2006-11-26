@@ -9,6 +9,9 @@ On the road for v0.4.5 (Nausicaa)
 	* Add Portuguese and Deutch support in the software (deutch translation
 	not yet available).
 
+2006-11-26  Michel Legrand <m_leg at users.sourceforge.net>
+	* Some updates in places.txt (better Fortuneo plugin live support)
+
 2006-11-24  Michel Legrand <m_leg at users.sourceforge.net>
 	* Translation to portuguese !
 	Collaboration of Catherine Pedrosa and Guilherme (guigui for friends)
