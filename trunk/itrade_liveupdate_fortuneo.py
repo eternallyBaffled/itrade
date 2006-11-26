@@ -581,6 +581,8 @@ class LiveUpdate_fortuneo(object):
         dcmpd['CSA_FMP_OFF'] = '0.00'
         dcmpd['CSA_CRS_CMP'] = '0.00'
 
+        dcmpd['CSA_VOL_JOUR'] = '0'
+
         # read the streaming flux
         while 1:
             # get index
