@@ -135,7 +135,7 @@ class Trades(object):
         self.m_inClose = create_array(-1.0)
         self.m_inLow = create_array(-1.0)
         self.m_inHigh = create_array(-1.0)
-        self.m_inVol = create_array(long(0))
+        self.m_inVol = create_array(long(-1))
         self.m_ma20 = create_array(-1.0)
         self.m_ma50 = create_array(-1.0)
         self.m_ma100 = create_array(-1.0)

@@ -146,6 +146,7 @@ class LiveUpdate_Euronext(object):
         return string.atof(ret)
 
     def parseLValue(self,d):
+        if d=='-': return 0
         val = string.split(d,',')
         ret = ''
         for val in val:
@@ -199,7 +200,7 @@ class LiveUpdate_Euronext(object):
                     sdate,sclock = self.euronextDate(sdata[10])
 
                     # be sure not an oldest day !
-                    if (c_date==sdate) and (sdata[8]<>'-'):
+                    if (c_date==sdate) and (quote.list() == QLIST_INDICES or sdata[8]<>'-'):
 
                         #
                         key = quote.key()

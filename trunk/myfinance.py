@@ -568,14 +568,14 @@ def volume_overlay(ax, opens, closes, volumes,
     left = -width/2.0
 
 
-    bars = [ ( (left, 0), (left, v), (right, v), (right, 0)) for v in volumes if v > 0 ]
+    bars = [ ( (left, 0), (left, v), (right, v), (right, 0)) for v in volumes if v >= 0 ]
 
     sx = ax.figure.dpi * Value(1/72.0)  # scale for points
     sy = (ax.bbox.ur().y() - ax.bbox.ll().y()) / (ax.viewLim.ur().y() - ax.viewLim.ll().y())
 
     barTransform = scale_sep_transform(sx,sy)
 
-    offsetsBars = [ (i, 0) for i,v in enumerate(volumes) if v > 0 ]
+    offsetsBars = [ (i, 0) for i,v in enumerate(volumes) if v >= 0 ]
 
     #print 'len colors = ',len(colors)
     #print 'len offsetsBars = ',len(offsetsBars)
@@ -605,7 +605,7 @@ def volume_overlay(ax, opens, closes, volumes,
 
     minx, maxx = (0, len(offsetsBars))
     miny = 0
-    maxy = max([v for v in volumes if v > 0])
+    maxy = max([v for v in volumes if v >= 0])
     corners = (minx, miny), (maxx, maxy)
 
     ax.update_datalim(corners)

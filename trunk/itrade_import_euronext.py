@@ -86,6 +86,7 @@ class Import_euronext(object):
         return string.atof(ret)
 
     def parseLValue(self,d):
+        if d=='-': return 0
         val = string.split(d,',')
         ret = ''
         for val in val:
@@ -161,7 +162,7 @@ class Import_euronext(object):
             sdata = string.split (eachLine, '\t')
             if len(sdata)==6:
                 #print sdata
-                if (sdata[0]<>"Date") and (sdata[5]<>'-'):
+                if (sdata[0]<>"Date") and (quote.list() == QLIST_INDICES or sdata[5]<>'-'):
                     sdate = jjmmaa2yyyymmdd(sdata[0])
                     open = self.parseFValue(sdata[1])
                     high = self.parseFValue(sdata[2])
