@@ -27,3 +27,8 @@ d49c30b2544b41b8aadf28908f54c45e0
 
 Suffix (seems to be always the same) :
 30d264263654dbf30
+
+Validation (2006-12-02 20:28 Paris Time) : build a working code
+Code 437a80b2720feb61e32252c688831e5e28ca2bb84dfafe06d49c30b2544b41b8ea69684fa67649130d264263654dbf30 has been
+built using prefix and real account suffix but with a working demonstration account central part ! This code
+is working (2006-12-02 20:28 Paris Time)
