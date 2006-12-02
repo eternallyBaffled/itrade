@@ -492,9 +492,12 @@ currency_from;Converter
 currency_rate;Taxa
 currency_refreshing;Actualizar os dados actuais
 
-cache_erase_confirm_title; Erase cache data
-cache_erase_confirm_data; Erase all historic data from the cache ? (data will be regenerated)
-cache_erase_confirm_news; Erase all news from the cache ? (data will be regenerated)
-cache_erase_confirm_all; Erase all data (historic, news, ...) from the cache ? (data will be regenerated)
+cache_erase_confirm_title;__x Erase cache data
+cache_erase_confirm_data;__x Erase all historic data from the cache ? (data will be regenerated)
+cache_erase_confirm_news;__x Erase all news from the cache ? (data will be regenerated)
+cache_erase_confirm_all;__x Erase all data (historic, news, ...) from the cache ? (data will be regenerated)
+
+connector_change_confirm_title;__x Option to Download Data
+connector_change_confirm;__x This option selection requires that you restart the software to be activated.
 
 test;Mensagem de teste

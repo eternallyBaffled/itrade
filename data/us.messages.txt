@@ -497,4 +497,7 @@ cache_erase_confirm_data; Erase all historic data from the cache ? (data will be
 cache_erase_confirm_news; Erase all news from the cache ? (data will be regenerated)
 cache_erase_confirm_all; Erase all data (historic, news, ...) from the cache ? (data will be regenerated)
 
+connector_change_confirm_title; Option to Download Data
+connector_change_confirm; This option selection requires that you restart the software to be activated
+
 test;test message
