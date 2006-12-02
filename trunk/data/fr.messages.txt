@@ -496,4 +496,7 @@ cache_erase_confirm_data; Confirmez-vous l'effacement de toutes les données hist
 cache_erase_confirm_news; Confirmez-vous l'effacement de toutes les informations du cache ? (ces données seront regénérées)
 cache_erase_confirm_all; Confirmez-vous l'effacement de toutes les données (historiques,infos,...) du cache ? (ces données seront regénérées)
 
+connector_change_confirm_title; Option de récupération des données
+connector_change_confirm; Ce changement d'option nécessite le redémarrage du logiciel pour sa prise en compte
+
 test;message de test

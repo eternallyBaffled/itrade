@@ -874,7 +874,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
     # --- [ Text font size management ] -------------------------------------
 
     def OnChangeViewText(self):
-        self.setDirty()
+        itrade_config.saveConfig()
         self.updateCheckItems()
         self.m_list.SetFont(FontFromSize(itrade_config.matrixFontSize))
         for i in range(0,IDC_LAST+1):
@@ -924,7 +924,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
             self.updateCheckItems()
 
     def OnChangeLang(self):
-        self.setDirty()
+        itrade_config.saveConfig()
         self.SetLang()
 
     def OnLangDefault(self,e):
@@ -949,17 +949,19 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
 
     # --- [ connector management ] -------------------------------------
 
-    def OnConnectorLive(self,e):
-        itrade_config.setDiffered(False)
-        self.setDirty()
+    def SetDefaultConnector(self,differed):
+        itrade_config.setDiffered(differed)
+        itrade_config.saveConfig()
         self.updateCheckItems()
-        self.RebuildList()
+        dlg = wx.MessageDialog(self, message('connector_change_confirm'), message('connector_change_confirm_title'), wx.OK | wx.ICON_INFORMATION)
+        idRet = dlg.ShowModal()
+        dlg.Destroy()
+
+    def OnConnectorLive(self,e):
+        self.SetDefaultConnector(differed=False)
 
     def OnConnectorDiffered(self,e):
-        itrade_config.setDiffered(True)
-        self.setDirty()
-        self.updateCheckItems()
-        self.RebuildList()
+        self.SetDefaultConnector(differed=True)
 
     # --- [ cache management ] -------------------------------------
 
@@ -988,7 +990,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
 
     def OnAutoRefresh(self,e):
         itrade_config.bAutoRefreshMatrixView = not itrade_config.bAutoRefreshMatrixView
-        self.setDirty()
+        itrade_config.saveConfig()
         self.updateCheckItems()
         if itrade_config.bAutoRefreshMatrixView:
             self.startLive()
