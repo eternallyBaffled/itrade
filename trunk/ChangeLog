@@ -6,6 +6,9 @@ On the road for v0.4.5 (Nausicaa)
 ===============================================================================
 
 2006-12-02  Gilles Dumortier <dgil at ieee.org>
+	* Graph view : line before first quote date (SF bug 1601162)
+	* Be sure usrdata/live.txt can have multiple lines - only the first one
+	  is used to read the security cookie
 	* Default configuration is to force usage of Differed Time connectors
 	* Live connection : switch mechanism from/to differed (SF bug 1607288)
 	* Commit a cookie for the Live Connector

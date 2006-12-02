@@ -512,7 +512,9 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
 
         end = self.m_nIndex + 1
         begin = end - self.zoomPeriod[self.zoomLevel]
-        if begin<1: begin = 1
+        min = self.m_quote.firstindex()
+        if begin<min:
+            begin = min
 
         self.times = []
         self.idx = []
