@@ -5,6 +5,11 @@ On the road for v0.4.5 (Nausicaa)
 
 ===============================================================================
 
+2006-12-02  Gilles Dumortier <dgil at ieee.org>
+	* Default configuration is to force usage of Differed Time connectors
+	* Live connection : switch mechanism from/to differed (SF bug 1607288)
+	* Commit a cookie for the Live Connector
+
 2006-11-26  Gilles Dumortier <dgil at ieee.org>
 	* Euronext Connector : InstrumentID should be cached (SF bug 1599154)
 	* Indices "PAR" :KeyError "CSA_VOL_JOUR" (SF bug 1602220)

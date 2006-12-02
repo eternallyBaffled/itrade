@@ -98,6 +98,12 @@ main_cache_desc_erase_news; Efface toutes les informations du cache
 main_cache_erase_all;Efface &Tout
 main_cache_desc_erase_all; Efface toutes les données (infos,historiques,...) du cache
 
+main_options_connector;&Récupération des données
+main_connector_live;Priorité aux connecteurs temps réel
+main_connector_desc_live; Donne la Priorité aux connecteurs temps réel (fortuneo par exemple)
+main_connector_differed;Force connecteurs temps différé
+main_connector_desc_differed; Force l'utilisation des connecteurs temps différé (euronext ou yahoo par exemple)
+
 main_help;&Aide
 main_help_contents;&Contenu
 main_help_desc_contents; Contenu de l'aide

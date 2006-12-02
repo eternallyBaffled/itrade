@@ -424,6 +424,7 @@ class LiveUpdate_fortuneo(object):
             f.close()
         except IOError:
             self.m_blowfish = '437a80b2720feb61e32252c688831e5e28ca2bb84dfafe06a243b2aadbe610c984d57f79f3d334f30d264263654dbf31'
+            self.m_blowfish = '3ff349e66a9ed1766328b3759968230728ca2bb84dfafe06817e7b5f8c76ce961f5ca64f1345a17e0d264263654dbf30'
 
         self.m_livelock = thread.allocate_lock()
         self.m_dcmpd = {}
@@ -518,13 +519,13 @@ class LiveUpdate_fortuneo(object):
 
         # init params and headers
         headers = {
-                    "Content-Type":"application/x-www-form-urlencoded",
                     "Connection":"keep-alive",
                     "Accept":"text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
                     "Host":self.m_default_host,
-                    "User-Agent":"Mozilla/4.0 (Windows)",
+                    "User-Agent":"Mozilla/4.0 (Windows XP 5.1) Java/1.5.0_06",
                     "Pragma":"no-cache",
-                    "Cache-Control":"no-cache"
+                    "Cache-Control":"no-cache",
+                    "Content-Type":"application/x-www-form-urlencoded"
                     }
 
         cac = "FR0003500008"
@@ -828,10 +829,9 @@ try:
 except NameError:
     gLiveFortuneo = LiveUpdate_fortuneo()
 
-# __x test the connection, and register only if working ...
-registerLiveConnector('EURONEXT','PAR',QLIST_ANY,gLiveFortuneo,bDefault=True)
-registerLiveConnector('ALTERNEXT','PAR',QLIST_ANY,gLiveFortuneo,bDefault=True)
-registerLiveConnector('PARIS MARCHE LIBRE','PAR',QLIST_ANY,gLiveFortuneo,bDefault=True)
+registerLiveConnector('EURONEXT','PAR',QLIST_ANY,QTAG_LIVE,gLiveFortuneo,bDefault=True)
+registerLiveConnector('ALTERNEXT','PAR',QLIST_ANY,QTAG_LIVE,gLiveFortuneo,bDefault=True)
+registerLiveConnector('PARIS MARCHE LIBRE','PAR',QLIST_ANY,QTAG_LIVE,gLiveFortuneo,bDefault=True)
 
 # ============================================================================
 # Test ME

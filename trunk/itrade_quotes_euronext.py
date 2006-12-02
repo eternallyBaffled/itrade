@@ -127,10 +127,10 @@ def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT'):
 # Export me
 # ============================================================================
 
-registerListSymbolConnector('EURONEXT','PAR',QLIST_ANY,Import_ListOfQuotes_Euronext)
-registerListSymbolConnector('ALTERNEXT','PAR',QLIST_ANY,Import_ListOfQuotes_Euronext)
-registerListSymbolConnector('PARIS MARCHE LIBRE','PAR',QLIST_ANY,Import_ListOfQuotes_Euronext)
-registerListSymbolConnector('BRUXELLES MARCHE LIBRE','BRU',QLIST_ANY,Import_ListOfQuotes_Euronext)
+registerListSymbolConnector('EURONEXT','PAR',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_Euronext)
+registerListSymbolConnector('ALTERNEXT','PAR',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_Euronext)
+registerListSymbolConnector('PARIS MARCHE LIBRE','PAR',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_Euronext)
+registerListSymbolConnector('BRUXELLES MARCHE LIBRE','BRU',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_Euronext)
 
 # ============================================================================
 # Test ME

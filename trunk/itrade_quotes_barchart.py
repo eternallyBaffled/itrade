@@ -152,9 +152,9 @@ def Import_ListOfQuotes_BARCHART(quotes,market='NASDAQ'):
 # Export me
 # ============================================================================
 
-registerListSymbolConnector('NASDAQ','NYC',QLIST_ANY,Import_ListOfQuotes_BARCHART)
-registerListSymbolConnector('AMEX','NYC',QLIST_ANY,Import_ListOfQuotes_BARCHART)
-registerListSymbolConnector('OTCBB','NYC',QLIST_ANY,Import_ListOfQuotes_BARCHART)
+registerListSymbolConnector('NASDAQ','NYC',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_BARCHART)
+registerListSymbolConnector('AMEX','NYC',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_BARCHART)
+registerListSymbolConnector('OTCBB','NYC',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_BARCHART)
 
 # ============================================================================
 # Test ME
