@@ -58,6 +58,16 @@ QLIST_INDICES  = 3
 QLIST_TRACKERS = 4
 
 # ============================================================================
+# TAG
+# ============================================================================
+
+QTAG_ANY = 0
+QTAG_LIVE = 1
+QTAG_DIFFERED = 2
+QTAG_IMPORT = 3
+QTAG_LIST = 4
+
+# ============================================================================
 # ConnectorRegistry
 # ============================================================================
 
@@ -65,30 +75,29 @@ class ConnectorRegistry(object):
     def __init__(self):
         self.m_conn = []
 
-    def register(self,market,place,qlist,connector,bDefault=True):
-        self.m_conn.append((market,place,bDefault,connector,qlist))
-        #print 'Register %s for market :' % self, market,' qlist:',qlist
+    def register(self,market,place,qlist,qtag,connector,bDefault=True):
+        self.m_conn.append((market,place,bDefault,connector,qlist,qtag))
+        #print 'Register %s for market :' % self, market,' qlist:',qlist,' qtag:',qtag
         return True
 
-    def get(self,market,qlist,place=None,name=None):
+    def get(self,market,qlist,qtag,place=None,name=None):
         if place==None:
             place = market2place(market)
         if name:
-            for amarket,aplace,adefault,aconnector,aqlist in self.m_conn:
-                if market==amarket and place==aplace and aconnector.name()==name and (aqlist==QLIST_ANY or aqlist==qlist):
+            for amarket,aplace,adefault,aconnector,aqlist,aqtag in self.m_conn:
+                if market==amarket and place==aplace and aconnector.name()==name and (aqlist==QLIST_ANY or aqlist==qlist) and (aqtag==QTAG_ANY or aqtag==qtag):
                     return aconnector
         else:
-            for amarket,aplace,adefault,aconnector,aqlist in self.m_conn:
-                if market==amarket and place==aplace and (aqlist==QLIST_ANY or qlist==aqlist) and adefault:
+            for amarket,aplace,adefault,aconnector,aqlist,aqtag in self.m_conn:
+                if market==amarket and place==aplace and (aqlist==QLIST_ANY or qlist==aqlist) and adefault and (aqtag==QTAG_ANY or aqtag==qtag):
                     return aconnector
-        print 'No default connector %s for market :' % self,market,' qlist:',qlist
         return None
 
     def list(self,market,qlist,place):
         lst = []
-        for amarket,aplace,adefault,aconnector,aqlist in self.m_conn:
+        for amarket,aplace,adefault,aconnector,aqlist,aqtag in self.m_conn:
             if amarket==market and aplace==place and (aqlist==QLIST_ANY or aqlist==qlist):
-                lst.append((aconnector.name(),amarket,aplace,adefault,aconnector,aqlist))
+                lst.append((aconnector.name(),amarket,aplace,adefault,aconnector,aqlist,aqtag))
         return lst
 
 # ============================================================================
@@ -103,6 +112,20 @@ except NameError:
 registerLiveConnector = gLiveRegistry.register
 getLiveConnector = gLiveRegistry.get
 listLiveConnector = gLiveRegistry.list
+
+def getDefaultLiveConnector(market,list,place=None):
+    if itrade_config.isDiffered():
+        # force differed connector
+        ret = getLiveConnector(market,list,QTAG_DIFFERED,place)
+    else:
+        # try live connector
+        ret = getLiveConnector(market,list,QTAG_LIVE,place)
+        if ret==None:
+            # no live connector : fall-back to differed connector
+            ret = getLiveConnector(market,list,QTAG_DIFFERED,place)
+    if ret==None:
+        print 'No default connector %s for market :' % self,market,' qlist:',qlist
+    return ret
 
 try:
     ignore(gImportRegistry)

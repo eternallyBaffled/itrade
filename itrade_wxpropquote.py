@@ -336,7 +336,7 @@ class iTradeQuotePropertiesPanel(wx.Window):
     def fillConnectors(self,bInit=False):
         count = 0
         idx = 0
-        for aname,amarket,aplace,adefaut,aconnector,aqlist in listLiveConnector(self.m_quote.market(),self.m_quote.list(),self.m_quote.place()):
+        for aname,amarket,aplace,adefaut,aconnector,aqlist,aqtag in listLiveConnector(self.m_quote.market(),self.m_quote.list(),self.m_quote.place()):
             if bInit: self.editLiveConnector.Append(aname,aname)
             if aname==self.m_quote.liveconnector().name():
                 idx = count
@@ -346,7 +346,7 @@ class iTradeQuotePropertiesPanel(wx.Window):
 
         count = 0
         idx = 0
-        for aname,aplace,amarket,adefaut,aconnector,aqlist in listImportConnector(self.m_quote.market(),self.m_quote.list(),self.m_quote.place()):
+        for aname,aplace,amarket,adefaut,aconnector,aqlist,aqtag in listImportConnector(self.m_quote.market(),self.m_quote.list(),self.m_quote.place()):
             if bInit: self.editImportConnector.Append(aname,aname)
             if aname==self.m_quote.importconnector().name():
                 idx = count

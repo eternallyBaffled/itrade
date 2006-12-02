@@ -307,15 +307,15 @@ try:
 except NameError:
     gLiveYahoo = LiveUpdate_yahoo()
 
-registerLiveConnector('NASDAQ','NYC',QLIST_ANY,gLiveYahoo,bDefault=True)
-registerLiveConnector('NYSE','NYC',QLIST_ANY,gLiveYahoo,bDefault=True)
-registerLiveConnector('AMEX','NYC',QLIST_ANY,gLiveYahoo,bDefault=True)
-registerLiveConnector('OTCBB','NYC',QLIST_ANY,gLiveYahoo,bDefault=True)
-registerLiveConnector('LSE','LON',QLIST_ANY,gLiveYahoo,bDefault=True)
+registerLiveConnector('NASDAQ','NYC',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('NYSE','NYC',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('AMEX','NYC',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('OTCBB','NYC',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('LSE','LON',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 
-registerLiveConnector('EURONEXT','PAR',QLIST_ANY,gLiveYahoo,bDefault=False)
-registerLiveConnector('ALTERNEXT','PAR',QLIST_ANY,gLiveYahoo,bDefault=False)
-registerLiveConnector('PARIS MARCHE LIBRE','PAR',QLIST_ANY,gLiveYahoo,bDefault=False)
+registerLiveConnector('EURONEXT','PAR',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('ALTERNEXT','PAR',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('PARIS MARCHE LIBRE','PAR',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 
 # ============================================================================
 # Test ME

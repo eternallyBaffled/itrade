@@ -182,9 +182,9 @@ try:
 except NameError:
     gImportABC = Import_ABCBourse()
 
-registerImportConnector('EURONEXT','PAR',QLIST_ANY,gImportABC,bDefault=False)
-registerImportConnector('ALTERNEXT','PAR',QLIST_ANY,gImportABC,bDefault=False)
-registerImportConnector('PARIS MARCHE LIBRE','PAR',QLIST_ANY,gImportABC,bDefault=False)
+registerImportConnector('EURONEXT','PAR',QLIST_ANY,QTAG_IMPORT,gImportABC,bDefault=False)
+registerImportConnector('ALTERNEXT','PAR',QLIST_ANY,QTAG_IMPORT,gImportABC,bDefault=False)
+registerImportConnector('PARIS MARCHE LIBRE','PAR',QLIST_ANY,QTAG_IMPORT,gImportABC,bDefault=False)
 
 # ============================================================================
 # Test ME
