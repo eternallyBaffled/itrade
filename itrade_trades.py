@@ -566,6 +566,30 @@ class Trades(object):
             self.m_stoK[i] = -1.0
 
     def compute_stoD(self,i):
+        # fplusHaut = HIGHEST[NbPeriode](HIGH)
+        # fplusBas = LOWEST[NbPeriode](LOW)
+        #
+        # eLigneK = (CLOSE - fplusBas) / (fplusHaut - fplusBas) * 100
+        #
+        # eLigneKLisse = AVERAGE[NbLissage](eLigneK)
+        #
+        # // iCpt est initialisé avec le nombre de periode demandées sur le %D - 1
+        # // La période en cours pour le calcul la période en cours étant 0
+        # // c'est donc bien CLOSE[0] à CLOSE[NbPeriodeLigneD - 1] qu'il faut prendre en compte.
+        # // Pour balayer NbPeriodeLigneD périodes
+        #
+        # iCpt = NbPeriodeLigneD - 1
+        # eNumerateur = 0
+        # eDenominateur = 0
+        # WHILE (iCpt >= 0) DO
+        #     eNumerateur = eNumerateur + CLOSE[iCpt] - fplusBas[iCpt]
+        #     eDenominateur = eDenominateur + fplusHaut[iCpt] - fplusBas[iCpt]
+        #     iCpt = iCpt - 1
+        # WEND
+
+        eLigneD = 100*(eNumerateur/eDenominateur)
+
+        RETURN eLigneK AS "%K", eLigneKLisse AS "%K lisse", eligneD AS "%D"
         #debug('%s: compute STO D [%d]' % (self.m_quote.ticker(),i))
         s = 0.0
         n = 0
