@@ -408,6 +408,7 @@ tb_zoom_out;period Zoom out
 tb_zoom_in;period Zoom in
 
 quote_popup_dispMA150;Moving Average 150 days
+quote_popup_dispRSI14;RSI 14 days
 quote_popup_dispBollinger;Bollinger Bands
 quote_popup_dispOverlaidVolume;Overlaid Volumes
 quote_popup_dispLegend;Legend

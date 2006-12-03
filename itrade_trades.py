@@ -142,6 +142,7 @@ class Trades(object):
         self.m_ma150 = create_array(-1.0)
         self.m_vma15 = create_array(-1.0)
         self.m_ovb = create_array(long(0))
+        self.m_rsi14 = create_array(-1.0)
 
         self.m_bollUp = create_array(-1.0)
         self.m_bollM = create_array(-1.0)
@@ -344,6 +345,20 @@ class Trades(object):
             self.compute_ma150(idx)
         return self.m_ma150[idx]
 
+    def rsi(self,period,idx):
+        ''' temp '''
+        if period==14:
+            return self.rsi14(idx)
+        else:
+            return None
+
+    def rsi14(self,idx):
+        if not isinstance(idx,int):
+            idx = gCal.index(idx)
+        if self.m_rsi14[idx]<0.0:
+            self.compute_rsi14(idx)
+        return self.m_rsi14[idx]
+
     def vma15(self,idx):
         if not isinstance(idx,int):
             idx = gCal.index(idx)
@@ -411,6 +426,7 @@ class Trades(object):
         self.compute_ma50(idx)
         self.compute_ma100(idx)
         self.compute_ma150(idx)
+        self.compute_rsi14(idx)
 
         # volumes indicators
         self.compute_vma15(idx)
@@ -419,7 +435,7 @@ class Trades(object):
         return True
 
     def compute_ma150(self,i):
-        debug('%s: compute MA150 [%d]' % (self.m_quote.ticker(),i))
+        #debug('%s: compute MA150 [%d]' % (self.m_quote.ticker(),i))
         s = 0.0
         n = 0
         j = i
@@ -434,7 +450,7 @@ class Trades(object):
             self.m_ma150[i] = -1.0
 
     def compute_ma100(self,i):
-        debug('%s: compute MA100 [%d]' % (self.m_quote.ticker(),i))
+        #debug('%s: compute MA100 [%d]' % (self.m_quote.ticker(),i))
         s = 0.0
         n = 0
         j = i
@@ -449,7 +465,7 @@ class Trades(object):
             self.m_ma100[i] = -1.0
 
     def compute_ma50(self,i):
-        debug('%s: compute MA50 [%d]' % (self.m_quote.ticker(),i))
+        #debug('%s: compute MA50 [%d]' % (self.m_quote.ticker(),i))
         s = 0
         n = 0
         j = i
@@ -464,7 +480,7 @@ class Trades(object):
             self.m_ma50[i] = -1.0
 
     def compute_ma20(self,i):
-        debug('%s: compute MA20 [%d]' % (self.m_quote.ticker(),i))
+        #debug('%s: compute MA20 [%d]' % (self.m_quote.ticker(),i))
         s = 0
         n = 0
         j = i
@@ -478,8 +494,31 @@ class Trades(object):
         else:
             self.m_ma20[i] = -1.0
 
+    def compute_rsi14(self,i):
+        #debug('%s: compute RSI14 [%d]' % (self.m_quote.ticker(),i))
+        h = 0.0
+        b = 0.0
+        n = 0
+        j = i
+        while n<14 and j>=0:
+            if self.m_inClose[j]>=0.0:
+                pc = self.close(j-1)
+                if self.m_inClose[j]>pc:
+                    h = h + self.m_inClose[j]
+                if self.m_inClose[j]<pc:
+                    b = b + self.m_inClose[j]
+                n = n + 1
+            j = j - 1
+        if n>0:
+            if b==0.0:
+                self.m_rsi14[i] = 100.0
+            else:
+                self.m_rsi14[i] = 100.0 - (100.0/(1.0+(h / b)))
+        else:
+            self.m_rsi14[i] = -1.0
+
     def compute_vma15(self,i):
-        debug('%s: compute VMA15 [%d]' % (self.m_quote.ticker(),i))
+        #debug('%s: compute VMA15 [%d]' % (self.m_quote.ticker(),i))
         s = long(0)
         n = 0
         j = i
@@ -506,7 +545,7 @@ class Trades(object):
             self.m_ovb[j] = ovb
 
     def compute_bollinger(self,i):
-        debug('%s: compute BOLLINGER n=20,d=2 [%d,%d]' % (self.m_quote.ticker(),i-20+1,i+1))
+        #debug('%s: compute BOLLINGER n=20,d=2 [%d,%d]' % (self.m_quote.ticker(),i-20+1,i+1))
         sm = 0.0
         ecart = 0.0
         n = 0
