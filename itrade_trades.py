@@ -518,7 +518,7 @@ class Trades(object):
         #debug('%s: compute RSI14 [%d]' % (self.m_quote.ticker(),i))
         h = 0.0
         b = 0.0
-        n = 14*8
+        n = 14*10
         if i<n: n=i
         while n>=0:
             if self.m_inClose[i-n]>=0.0:
