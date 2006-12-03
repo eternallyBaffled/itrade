@@ -407,6 +407,7 @@ tb_zoom_out;period Zoom out
 tb_zoom_in;period Zoom in
 
 quote_popup_dispMA150;Moyenne Mobile 150 jours
+quote_popup_dispSto;Stochastique
 quote_popup_dispRSI14;RSI 14 jours
 quote_popup_dispBollinger;Bandes de Bollinger
 quote_popup_dispOverlaidVolume;Volumes en incrustation
