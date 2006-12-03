@@ -586,10 +586,10 @@ class Trades(object):
         #     eDenominateur = eDenominateur + fplusHaut[iCpt] - fplusBas[iCpt]
         #     iCpt = iCpt - 1
         # WEND
-
-        eLigneD = 100*(eNumerateur/eDenominateur)
-
-        RETURN eLigneK AS "%K", eLigneKLisse AS "%K lisse", eligneD AS "%D"
+        #
+        # eLigneD = 100*(eNumerateur/eDenominateur)
+        #
+        # RETURN eLigneK AS "%K", eLigneKLisse AS "%K lisse", eligneD AS "%D"
         #debug('%s: compute STO D [%d]' % (self.m_quote.ticker(),i))
         s = 0.0
         n = 0
