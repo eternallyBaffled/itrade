@@ -341,6 +341,7 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         self.m_dispLegend = True
         self.m_dispGrid = True
         self.m_dispChart1Type = 'c'
+        self.m_dispRSI14 = True
 
         # parameter iTrade_wxPanelGraph
         self.m_hasChart1Vol = self.m_dispOverlaidVolume
@@ -398,6 +399,8 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         if not hasattr(self, "m_popupID_dispMA150"):
             self.m_popupID_dispMA150 = wx.NewId()
             wx.EVT_MENU(self, self.m_popupID_dispMA150, self.OnPopup_dispMA150)
+            self.m_popupID_dispRSI14 = wx.NewId()
+            wx.EVT_MENU(self, self.m_popupID_dispRSI14, self.OnPopup_dispRSI14)
             self.m_popupID_dispBollinger = wx.NewId()
             wx.EVT_MENU(self, self.m_popupID_dispBollinger, self.OnPopup_dispBollinger)
             self.m_popupID_dispOverlaidVolume = wx.NewId()
@@ -430,6 +433,8 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         self.popmenu.AppendSeparator()
         i = self.popmenu.AppendCheckItem(self.m_popupID_dispMA150, message('quote_popup_dispMA150'))
         i.Check(self.m_dispMA150)
+        i = self.popmenu.AppendCheckItem(self.m_popupID_dispRSI14, message('quote_popup_dispRSI14'))
+        i.Check(self.m_dispRSI14)
         i = self.popmenu.AppendCheckItem(self.m_popupID_dispBollinger, message('quote_popup_dispBollinger'))
         i.Check(self.m_dispBollinger)
         self.popmenu.AppendSeparator()
@@ -473,10 +478,10 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         self.m_hasLegend = self.m_dispLegend
         self.RedrawAll()
 
-    def OnPopup_dispMA150(self,event):
-        self.m_dispMA150 = not self.m_dispMA150
-        m = self.popmenu.FindItemById(self.m_popupID_dispMA150)
-        m.Check(self.m_dispMA150)
+    def OnPopup_dispRSI14(self,event):
+        self.m_dispRSI14 = not self.m_dispRSI14
+        m = self.popmenu.FindItemById(self.m_popupID_dispRSI14)
+        m.Check(self.m_dispRSI14)
         self.RedrawAll()
 
     def OnPopup_dispMA150(self,event):
@@ -508,7 +513,11 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         return '%s %s %s' % (message('graph_period'),self.getPeriod(),message('graph_days'))
 
     def ChartRealize(self):
-        self.BeginCharting()
+        if self.m_dispRSI14:
+            nchart = 3
+        else:
+            nchart = 2
+        self.BeginCharting(nchart)
 
         end = self.m_nIndex + 1
         begin = end - self.zoomPeriod[self.zoomLevel]
@@ -527,6 +536,8 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
                 d = date2num(dt)
                 self.times.append(d)
                 self.idx.append(i)
+                if self.m_dispRSI14:
+                    self.m_quote.m_daytrades.rsi14(i)
                 self.m_quote.m_daytrades.ma(20,i)
                 self.m_quote.m_daytrades.ma(50,i)
                 self.m_quote.m_daytrades.ma(100,i)
@@ -568,19 +579,27 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
             #l5 = self.chart1vol.plot(self.m_quote.m_daytrades.m_ovb[begin:end],'k')
 
             volume_overlay2(self.chart2, self.m_quote.m_daytrades.m_inClose[begin-1:end], self.m_quote.m_daytrades.m_inVol[begin-1:end], colorup='g', colordown='r', width=self.zoomWidth[self.zoomLevel]+1,alpha=1.0)
-            lvma15 = self.chart2.plot(self.m_quote.m_daytrades.m_vma15[begin:end],'r',antialiased=False,linewidth=0.08)
-            lovb = self.chart2vol.plot(self.m_quote.m_daytrades.m_ovb[begin:end],'k',antialiased=False,linewidth=0.08)
+            lvma15 = self.chart2.plot(self.m_quote.m_daytrades.m_vma15[begin:end],'r',antialiased=False,linewidth=0.05)
+            lovb = self.chart2vol.plot(self.m_quote.m_daytrades.m_ovb[begin:end],'k',antialiased=False,linewidth=0.05)
             #index_bar(self.chart2, self.m_quote.m_daytrades.m_inVol[begin:end], facecolor='g', edgecolor='k', width=4,alpha=1.0)
+
+            if self.m_dispRSI14:
+                rsi14 = self.chart3.plot(self.m_quote.m_daytrades.m_rsi14[begin:end],'k',antialiased=False,linewidth=0.05)
 
             if self.m_dispLegend:
                 old = matplotlib.rcParams['lines.antialiased']
                 matplotlib.rcParams['lines.antialiased']=False
-                if self.m_dispMA150:
-                    self.legend1 = self.chart1.legend((lma20, lma50, lma100, lma150), ('MA20','MA50','MA100','MA150'), loc=2, numpoints=2, pad=0.3, axespad=0.025) #'upper left'
-                else:
-                    self.legend1 = self.chart1.legend((lma20, lma50, lma100), ('MA20','MA50','MA100'), loc=2, numpoints=2, pad=0.3, axespad=0.025) #'upper left'
 
-                self.legend2 = self.chart2.legend((lvma15, lovb), ('VMA15', 'OVB'), loc=2, numpoints=2, pad=0.3, axespad=0.025) #'upper left'
+                if self.m_dispMA150:
+                    self.legend1 = self.chart1.legend((lma20, lma50, lma100, lma150), ('MMA(20)','MMA(50)','MMA(100)','MMA(150)'), loc=2, numpoints=2, pad=0.3, axespad=0.025) #'upper left'
+                else:
+                    self.legend1 = self.chart1.legend((lma20, lma50, lma100), ('MMA(20)','MMA(50)','MMA(100)'), loc=2, numpoints=2, pad=0.3, axespad=0.025) #'upper left'
+
+                self.legend2 = self.chart2.legend((lvma15, lovb), ('VMA(15)', 'OVB'), loc=2, numpoints=2, pad=0.3, axespad=0.025) #'upper left'
+
+                if self.m_dispRSI14:
+                    self.legend3 = self.chart3.legend((rsi14,), ('RSI(14)',), loc=2, numpoints=2, pad=0.3, axespad=0.025) #'upper left'
+
                 matplotlib.rcParams['lines.antialiased']=old
 
             left, top = 0.005, 1.005
@@ -618,6 +637,8 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
             return ' %s ' % fmtVolumeFunc(value,1)
         elif self.m_hasChart2Vol and (ax==self.chart2vol):
             return ' %s ' % fmtVolumeFunc(value,1)
+        elif ax==self.chart3:
+            return ' %.2f%% ' % value
         else:
            return ' unknown axis '
 
@@ -642,7 +663,10 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
             s = s + 'k, '+ self.space(message('popup_close'), self.m_quote.sv_close(dt)) + ' \n'
             s = s + 'k, '+ self.space(message('popup_percent') % self.m_quote.sv_percent(dt), self.m_quote.sv_unitvar(dt)) + ' \n'
             s = s + 'k, '+ self.space(message('popup_volume') , self.m_quote.sv_volume(dt)) + ' \n'
-            if chart==2:
+            if chart==3:
+                if self.m_dispRSI14:
+                    s = s + 'c, '+ self.space('RSI%s'%14, self.m_quote.sv_rsi(14,dt)) + ' \n'
+            elif chart==2:
                 s = s + 'r, '+ self.space('VMA%s'%15, self.m_quote.sv_vma(15,dt)) + ' \n'
                 s = s + 'k, '+ self.space('OVB', self.m_quote.sv_ovb(dt)) + ' \n'
             else:

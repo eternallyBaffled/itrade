@@ -1004,6 +1004,22 @@ class Quote(object):
             return "%3.3f" % x
         return " ---.--- "
 
+    def nv_rsi(self,period=14,d=None):
+        if d==None:
+            d = self.m_daytrades.lasttrade()
+            if d:
+                d = d.date()
+            else:
+                return None
+        rsi = self.m_daytrades.rsi(period,d)
+        return rsi
+
+    def sv_rsi(self,period=14,d=None):
+        x = self.nv_rsi(period,d)
+        if x!=None:
+            return "%3.3f" % x
+        return " ---.--- "
+
     def nv_vma(self,period=15,d=None):
         if d==None:
             if d:

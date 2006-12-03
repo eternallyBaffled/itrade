@@ -1301,6 +1301,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
             self.m_list.SetStringItem(x,IDC_MA20,quote.sv_ma(20))
             self.m_list.SetStringItem(x,IDC_MA50,quote.sv_ma(50))
             self.m_list.SetStringItem(x,IDC_MA100,quote.sv_ma(100))
+            self.m_list.SetStringItem(x,IDC_RSI,quote.sv_rsi(14))
         else:
             # no information
             self.m_list.SetStringItem(x,IDC_MA20," ---.--- ")

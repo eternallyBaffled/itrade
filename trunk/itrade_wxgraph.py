@@ -162,6 +162,18 @@ def fmtVolumeFunc0(x,pos):
         return ''
 
 # ============================================================================
+# fmtPercentFunc
+#
+# Formatter function for Percent
+# ============================================================================
+
+def fmtPercentFunc(x,pos):
+    if x==30 or x==50 or x==70:
+        return '%d %%' % x
+    else:
+        return ''
+
+# ============================================================================
 # iTrade_wxToolbarGraph
 # ============================================================================
 
@@ -576,13 +588,29 @@ class iTrade_wxPanelGraph(object):
             return 1
         elif ax == self.chart2 or ax == self.chart2vol:
             return 2
+        elif ax == self.chart3:
+            return 3
         else:
             return 0
 
-    def BeginCharting(self):
+    def BeginCharting(self,nchart=2):
         #print 'BeginCharting --['
 
         self.figure.clear()
+
+        if nchart==2:
+            # left, bottom, width, height
+            ra1 = [0.07,0.22,0.86,0.73]
+            ra1ovl = [0.07,0.22,0.86,0.15]
+            ra2 = [0.07,0.02,0.86,0.15]
+            ra2ovl = [0.07,0.02,0.86,0.15]
+        else:
+            # left, bottom, width, height
+            ra1 = [0.07,0.33,0.86,0.62]
+            ra1ovl = [0.07,0.33,0.86,0.12]
+            ra2 = [0.07,0.15,0.86,0.15]
+            ra2ovl = [0.07,0.15,0.86,0.15]
+            ra3 = [0.07,0.02,0.86,0.10]
 
         # by default : no legend
         self.legend1 = None
@@ -590,16 +618,14 @@ class iTrade_wxPanelGraph(object):
         self.legend3 = None
 
         # chart1 for pricing
-        #                                left, bottom, width, height
-        self.chart1 = self.figure.add_axes([0.07,0.22,0.86,0.73])
+        self.chart1 = self.figure.add_axes(ra1)
         self.chart1.yaxis.tick_right()
         self.chart1.xaxis.set_major_locator(MultipleLocator(self.getMultiple()))
         self.chart1.grid(self.m_hasGrid)
 
         # chart1 for overlayed volume
-        #                                left, bottom, width, height
         if self.m_hasChart1Vol:
-            self.chart1vol = self.figure.add_axes([0.07,0.22,0.86,0.15],frameon=False)
+            self.chart1vol = self.figure.add_axes(ra1ovl,frameon=False)
             self.chart1vol.yaxis.tick_left()
             volumeFmt = FuncFormatter(fmtVolumeFunc)
             self.chart1vol.yaxis.set_major_formatter(volumeFmt)
@@ -609,8 +635,7 @@ class iTrade_wxPanelGraph(object):
             self.chart1vol = None
 
         # chart2 for volume
-        #                                left, bottom, width, height
-        self.chart2 = self.figure.add_axes([0.07,0.02,0.86,0.15])
+        self.chart2 = self.figure.add_axes(ra2)
         self.chart2.yaxis.tick_right()
         volumeFmt = FuncFormatter(fmtVolumeFunc)
         self.chart2.yaxis.set_major_formatter(volumeFmt)
@@ -618,9 +643,8 @@ class iTrade_wxPanelGraph(object):
         self.chart2.grid(self.m_hasGrid)
 
         # chart2 for overlayed volume
-        #                                left, bottom, width, height
         if self.m_hasChart2Vol:
-            self.chart2vol = self.figure.add_axes([0.07,0.02,0.86,0.15],frameon=False)
+            self.chart2vol = self.figure.add_axes(ra2ovl,frameon=False)
             self.chart2vol.yaxis.tick_left()
             volumeFmt = FuncFormatter(fmtVolumeFunc0)
             self.chart2vol.yaxis.set_major_formatter(volumeFmt)
@@ -631,6 +655,16 @@ class iTrade_wxPanelGraph(object):
 
         left, top = 0.015, 0.80
         t = self.chart2.text(left, top, message('graph_volume'), fontsize = 7, transform = self.chart2.transAxes)
+
+        if nchart==3:
+            self.chart3 = self.figure.add_axes(ra3)
+            self.chart3.yaxis.tick_right()
+            percentFmt = FuncFormatter(fmtPercentFunc)
+            self.chart3.yaxis.set_major_formatter(percentFmt)
+            self.chart3.xaxis.set_major_locator(MultipleLocator(self.getMultiple()))
+            self.chart3.grid(self.m_hasGrid)
+        else:
+            self.chart3 = None
 
         #print ']-- BeginCharting'
 
@@ -657,13 +691,18 @@ class iTrade_wxPanelGraph(object):
         setp(self.chart2.get_xticklabels(),fontsize=7)
         setp(self.chart2.get_yticklabels(),fontsize=7)
         if self.m_hasChart2Vol:
-            setp(self.chart2vol.get_yticklabels(),fontsize=7)
             setp(self.chart2vol.get_xticklabels(),fontsize=7)
+            setp(self.chart2vol.get_yticklabels(),fontsize=7)
+        if self.chart3:
+            setp(self.chart3.get_xticklabels(),fontsize=7)
+            setp(self.chart3.get_yticklabels(),fontsize=7)
 
         # format times correctly
         self.dateFmt =  IndexDateFormatter(self.times, '%d %b')
         self.chart1.xaxis.set_major_formatter(self.dateFmt)
         self.chart2.xaxis.set_major_formatter(self.dateFmt)
+        if self.chart3:
+            self.chart3.xaxis.set_major_formatter(self.dateFmt)
         if self.m_hasChart1Vol:
             self.chart1vol.xaxis.set_major_formatter(self.dateFmt)
         if self.m_hasChart2Vol:
