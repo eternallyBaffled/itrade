@@ -512,8 +512,10 @@ class iTrade_wxPanelGraph(object):
 
         time, value = event.xdata, event.ydata
 
-        newx = left+((width/self.getPeriod())*int(time))
-        debug('newx=%d width=%d period=%d time=%d' % (newx,width,self.getPeriod(),int(time)))
+        a,b = ax.get_xlim()
+        period = b - a
+        newx = left+((width/period)*int(time))
+        #debug('newx=%d width=%d period=%d time=%d' % (newx,width,period,int(time)))
 
         dc = wx.ClientDC(self.canvas)
         dc.SetLogicalFunction(wx.XOR)
