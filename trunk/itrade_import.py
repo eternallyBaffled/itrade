@@ -85,11 +85,12 @@ class ConnectorRegistry(object):
             place = market2place(market)
         if name:
             for amarket,aplace,adefault,aconnector,aqlist,aqtag in self.m_conn:
-                if market==amarket and place==aplace and aconnector.name()==name and (aqlist==QLIST_ANY or aqlist==qlist) and (aqtag==QTAG_ANY or aqtag==qtag):
+                #print amarket,aqlist,aqtag,aplace,aconnector.name(),adefault
+                if market==amarket and place==aplace and aconnector.name()==name and (aqlist==QLIST_ANY or aqlist==qlist) and (qtag==QTAG_ANY or aqtag==qtag):
                     return aconnector
         else:
             for amarket,aplace,adefault,aconnector,aqlist,aqtag in self.m_conn:
-                if market==amarket and place==aplace and (aqlist==QLIST_ANY or qlist==aqlist) and adefault and (aqtag==QTAG_ANY or aqtag==qtag):
+                if market==amarket and place==aplace and (aqlist==QLIST_ANY or qlist==aqlist) and adefault and (qtag==QTAG_ANY or aqtag==qtag):
                     return aconnector
         return None
 

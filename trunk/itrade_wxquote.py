@@ -523,18 +523,19 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         for i in range(begin,end):
             if self.m_quote.m_daytrades.has_trade(i): num = num + 1
             dt = gCal.date(i)
-            d = date2num(dt)
-            self.times.append(d)
-            self.idx.append(i)
-            self.m_quote.m_daytrades.ma(20,i)
-            self.m_quote.m_daytrades.ma(50,i)
-            self.m_quote.m_daytrades.ma(100,i)
-            if self.m_dispMA150:
-                self.m_quote.m_daytrades.ma(150,i)
-            self.m_quote.m_daytrades.vma(15,i)
-            self.m_quote.m_daytrades.ovb(i)
-            if self.m_dispBollinger:
-                self.m_quote.m_daytrades.bollinger(i,0)
+            if dt:
+                d = date2num(dt)
+                self.times.append(d)
+                self.idx.append(i)
+                self.m_quote.m_daytrades.ma(20,i)
+                self.m_quote.m_daytrades.ma(50,i)
+                self.m_quote.m_daytrades.ma(100,i)
+                if self.m_dispMA150:
+                    self.m_quote.m_daytrades.ma(150,i)
+                self.m_quote.m_daytrades.vma(15,i)
+                self.m_quote.m_daytrades.ovb(i)
+                if self.m_dispBollinger:
+                    self.m_quote.m_daytrades.bollinger(i,0)
 
         # self.m_quote.m_daytrades.m_[begin:end]
         # print 'ChartRealize: begin:',begin,' end:',end,' num:',num
