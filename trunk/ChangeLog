@@ -6,7 +6,7 @@ On the road for v0.4.5 (Nausicaa)
 ===============================================================================
 
 2006-12-03  Gilles Dumortier <dgil at ieee.org>
-	* Stochastic Indicator
+	* Stochastic Indicator (formula still bogus)
 	* RSI Indicator (SF bug 1361988)
 	* EURONEXT Connector : start of day (SF bug 1604308)
 	* Be able again to change the live connector for a quote (regression)
