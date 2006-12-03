@@ -1569,12 +1569,12 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
     def populateIndicators(self):
         self.populateMatrixBegin()
 
-        self.m_list.InsertColumn(IDC_MA20, 'ma20', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_MA50, 'ma50', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_MA100, 'ma100', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_RSI, 'RSI', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_MA20, 'MMA20', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_MA50, 'MMA50', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_MA100, 'MMA100', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_RSI, 'RSI (%s)'%14, wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
         self.m_list.InsertColumn(IDC_MACD, 'MACD', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_STOCH, 'STOCH', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_STOCH, 'STO %K (%D)', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
         self.m_list.InsertColumn(IDC_DMI, 'DMI', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
         self.m_list.InsertColumn(IDC_EMV, 'EMV', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
         self.m_list.InsertColumn(IDC_OVB, 'OVB', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)

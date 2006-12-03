@@ -168,7 +168,7 @@ def fmtVolumeFunc0(x,pos):
 # ============================================================================
 
 def fmtPercentFunc(x,pos):
-    if x==30 or x==50 or x==70:
+    if x==10 or x==20 or x==30 or x==40 or x==50 or x==60 or x==70 or x==80 or x==90:
         return '%d %%' % x
     else:
         return ''
@@ -600,17 +600,17 @@ class iTrade_wxPanelGraph(object):
 
         if nchart==2:
             # left, bottom, width, height
-            ra1 = [0.07,0.22,0.86,0.73]
-            ra1ovl = [0.07,0.22,0.86,0.15]
+            ra1 = [0.07,0.20,0.86,0.76]
+            ra1ovl = [0.07,0.20,0.86,0.15]
             ra2 = [0.07,0.02,0.86,0.15]
             ra2ovl = [0.07,0.02,0.86,0.15]
         else:
             # left, bottom, width, height
-            ra1 = [0.07,0.33,0.86,0.62]
-            ra1ovl = [0.07,0.33,0.86,0.12]
-            ra2 = [0.07,0.15,0.86,0.15]
-            ra2ovl = [0.07,0.15,0.86,0.15]
-            ra3 = [0.07,0.02,0.86,0.10]
+            ra1 = [0.07,0.38,0.86,0.58]
+            ra1ovl = [0.07,0.38,0.86,0.15]
+            ra2 = [0.07,0.20,0.86,0.15]
+            ra2ovl = [0.07,0.20,0.86,0.15]
+            ra3 = [0.07,0.02,0.86,0.15]
 
         # by default : no legend
         self.legend1 = None
