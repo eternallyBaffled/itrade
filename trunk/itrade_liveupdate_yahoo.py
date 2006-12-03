@@ -116,7 +116,7 @@ class LiveUpdate_yahoo(object):
         per = clock[-2:]
         #if per=='pm':
         #    val = val + 12*60
-        # print clo,hour,min,val,per
+        print clock,clo,hour,min,val,per
         if val>self.m_lastclock:
             self.m_lastclock = val
         return "%d:%02d" % (val/60,val%60)
@@ -165,7 +165,7 @@ class LiveUpdate_yahoo(object):
 
         sclock = sdata[3][1:-1]
         if sclock=="N/A" or sdata[2]=='"N/A"' or len(sclock)<5:
-            info('invalid datation for %s' % (quote.ticker()))
+            info('invalid datation for %s : %s %s' % (quote.ticker(),sclock,sdata[2]))
             return None
 
         self.m_dcmpd[key] = sdata

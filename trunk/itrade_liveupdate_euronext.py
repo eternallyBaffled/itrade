@@ -200,15 +200,15 @@ class LiveUpdate_Euronext(object):
                     sdate,sclock = self.euronextDate(sdata[10])
 
                     # be sure not an oldest day !
-                    if (c_date==sdate) and (quote.list() == QLIST_INDICES or sdata[8]<>'-'):
+                    if (quote.list() == QLIST_INDICES or sdata[8]<>'-'):
 
-                        #
-                        key = quote.key()
-                        self.m_dcmpd[key] = sdate
-                        self.m_clock[key] = self.convertClock(sclock)
+                        if (c_date==sdate):
+                            key = quote.key()
+                            self.m_dcmpd[key] = sdate
+                            self.m_clock[key] = self.convertClock(sclock)
 
-                        # __x
-                        self.m_lastclock = sclock
+                            # __x
+                            self.m_lastclock = sclock
 
                         #
                         open = self.parseFValue(sdata[15])
