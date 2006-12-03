@@ -1226,7 +1226,7 @@ class Quotes(object):
             self._addLines(infile,list=QLIST_TRACKERS,debug=False)
 
         # them open and read user file
-        infile = itrade_csv.read(fn,os.path.join(itrade_config.dirUserData,'quotes.txt'))
+        infile = itrade_csv.read(fn,os.path.join(itrade_config.dirUserData,'usrquotes.txt'))
         if infile:
             self._addLines(infile,list=QLIST_USER,debug=False)
 
@@ -1248,7 +1248,7 @@ class Quotes(object):
                 props.append(eachQuote.__repr__())
         #
         # open and write the file with these quotes information
-        itrade_csv.write(fn,os.path.join(itrade_config.dirUserData,'quotes.txt'),props)
+        itrade_csv.write(fn,os.path.join(itrade_config.dirUserData,'usrquotes.txt'),props)
         print 'User List of symbols saved.'
 
     # ---[ removeQuotes from the list ] ---
