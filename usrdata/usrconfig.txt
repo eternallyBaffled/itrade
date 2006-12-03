@@ -1,6 +1,4 @@
 [connector]
-differed = False
 
 [view]
-autorefreshview = False
 
