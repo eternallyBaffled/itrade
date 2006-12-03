@@ -1,4 +1,5 @@
 [connector]
 
 [view]
+autorefreshview = False
 

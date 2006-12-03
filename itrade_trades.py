@@ -446,7 +446,6 @@ class Trades(object):
         self.compute_rsi14(idx)
 
         # compute stochastic (14 days)
-        self.compute_stoK(idx)
         self.compute_stoD(idx)
 
         # volumes indicators
@@ -466,7 +465,7 @@ class Trades(object):
                 n = n + 1
             j = j - 1
         if n>0:
-            self.m_ma150[i] = float(s/n)
+            self.m_ma150[i] = s/float(n)
         else:
             self.m_ma150[i] = -1.0
 
@@ -481,13 +480,13 @@ class Trades(object):
                 n = n + 1
             j = j - 1
         if n>0:
-            self.m_ma100[i] = float(s/n)
+            self.m_ma100[i] = s/float(n)
         else:
             self.m_ma100[i] = -1.0
 
     def compute_ma50(self,i):
         #debug('%s: compute MA50 [%d]' % (self.m_quote.ticker(),i))
-        s = 0
+        s = 0.0
         n = 0
         j = i
         while n<50 and j>=0:
@@ -496,13 +495,13 @@ class Trades(object):
                 n = n + 1
             j = j - 1
         if n>0:
-            self.m_ma50[i] = float(s/n)
+            self.m_ma50[i] = s/float(n)
         else:
             self.m_ma50[i] = -1.0
 
     def compute_ma20(self,i):
         #debug('%s: compute MA20 [%d]' % (self.m_quote.ticker(),i))
-        s = 0
+        s = 0.0
         n = 0
         j = i
         while n<20 and j>=0:
@@ -511,7 +510,7 @@ class Trades(object):
                 n = n + 1
             j = j - 1
         if n>0:
-            self.m_ma20[i] = float(s/n)
+            self.m_ma20[i] = s/float(n)
         else:
             self.m_ma20[i] = -1.0
 
@@ -519,24 +518,20 @@ class Trades(object):
         #debug('%s: compute RSI14 [%d]' % (self.m_quote.ticker(),i))
         h = 0.0
         b = 0.0
-        n = 0
-        j = i
-        while n<14 and j>=0:
-            if self.m_inClose[j]>=0.0:
-                pc = self.close(j-1)
-                if self.m_inClose[j]>pc:
-                    h = h + self.m_inClose[j]
-                if self.m_inClose[j]<pc:
-                    b = b + self.m_inClose[j]
-                n = n + 1
-            j = j - 1
-        if n>0:
-            if b==0.0:
-                self.m_rsi14[i] = 100.0
-            else:
-                self.m_rsi14[i] = 100.0 - (100.0/(1.0+(h / b)))
+        n = 200
+        if i<n: n=i
+        while n>=0:
+            if self.m_inClose[i-n]>=0.0:
+                t = self.m_inClose[i-n] - self.close(i-n-1)
+                if t>0:
+                    h = ((13.0*h) + t) / 14.0
+                if t<0:
+                    b = ((13.0*b) + abs(t) ) / 14.0
+            n = n - 1
+        if b==0.0:
+            self.m_rsi14[i] = 100.0
         else:
-            self.m_rsi14[i] = -1.0
+            self.m_rsi14[i] = 100.0 - (100.0/(1.0+(h / b)))
 
     def compute_stoK(self,i):
         #debug('%s: compute STO K [%d]' % (self.m_quote.ticker(),i))
@@ -575,12 +570,12 @@ class Trades(object):
                 n = n + 1
             j = j - 1
         if n>0:
-            self.m_stoD[i] = float(s/n)
+            self.m_stoD[i] = s/float(n)
         else:
             self.m_stoD[i] = -1
 
     def compute_vma15(self,i):
-        #debug('%s: compute VMA15 [%d]' % (self.m_quote.ticker(),i))
+        #debug(<'%s: compute VMA15 [%d]' % (self.m_quote.ticker(),i))
         s = long(0)
         n = 0
         j = i
