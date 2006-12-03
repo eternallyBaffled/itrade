@@ -2,4 +2,5 @@
 differed = False
 
 [view]
+autorefreshview = False
 
