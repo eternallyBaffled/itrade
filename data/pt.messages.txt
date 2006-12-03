@@ -408,6 +408,7 @@ tb_zoom_out;Aumentar o período
 tb_zoom_in;Diminuir o período
 
 quote_popup_dispMA150;Média movimentada 150 dias
+quote_popup_dispSto;__xStochastic
 quote_popup_dispRSI14;__xRSI 14 days
 quote_popup_dispBollinger;Faixas de Bollinger
 quote_popup_dispOverlaidVolume;Volumes de Overlaid

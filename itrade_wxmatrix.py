@@ -1302,17 +1302,18 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
             self.m_list.SetStringItem(x,IDC_MA50,quote.sv_ma(50))
             self.m_list.SetStringItem(x,IDC_MA100,quote.sv_ma(100))
             self.m_list.SetStringItem(x,IDC_RSI,quote.sv_rsi(14))
+            self.m_list.SetStringItem(x,IDC_STOCH,'%s (%s)' % (quote.sv_stoK(),quote.sv_stoD()))
         else:
             # no information
-            self.m_list.SetStringItem(x,IDC_MA20," ---.--- ")
-            self.m_list.SetStringItem(x,IDC_MA50," ---.--- ")
-            self.m_list.SetStringItem(x,IDC_MA100," ---.--- ")
+            self.m_list.SetStringItem(x,IDC_MA20," ---.-- ")
+            self.m_list.SetStringItem(x,IDC_MA50," ---.-- ")
+            self.m_list.SetStringItem(x,IDC_MA100," ---.-- ")
             self.m_list.SetStringItem(x,IDC_RSI," ---.-- ")
             self.m_list.SetStringItem(x,IDC_MACD," ---.-- ")
-            self.m_list.SetStringItem(x,IDC_STOCH," ---.-- ")
+            self.m_list.SetStringItem(x,IDC_STOCH," ---.-- (---.--) ")
             self.m_list.SetStringItem(x,IDC_DMI," ---.-- ")
             self.m_list.SetStringItem(x,IDC_EMV," ---.-- ")
-            self.m_list.SetStringItem(x,IDC_OVB," ---.-- ")
+            self.m_list.SetStringItem(x,IDC_OVB," ------ ")
             self.m_list.SetStringItem(x,IDC_LAST," ---.-- %s" % quote.currency_symbol())
             color = QUOTE_NOCHANGE
 

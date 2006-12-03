@@ -144,6 +144,9 @@ class Trades(object):
         self.m_ovb = create_array(long(0))
         self.m_rsi14 = create_array(-1.0)
 
+        self.m_stoK = create_array(-1.0)
+        self.m_stoD = create_array(-1.0)
+
         self.m_bollUp = create_array(-1.0)
         self.m_bollM = create_array(-1.0)
         self.m_bollDn = create_array(-1.0)
@@ -359,6 +362,20 @@ class Trades(object):
             self.compute_rsi14(idx)
         return self.m_rsi14[idx]
 
+    def stoK(self,idx):
+        if not isinstance(idx,int):
+            idx = gCal.index(idx)
+        if self.m_stoK[idx]<0.0:
+            self.compute_stoK(idx)
+        return self.m_stoK[idx]
+
+    def stoD(self,idx):
+        if not isinstance(idx,int):
+            idx = gCal.index(idx)
+        if self.m_stoD[idx]<0.0:
+            self.compute_stoD(idx)
+        return self.m_stoD[idx]
+
     def vma15(self,idx):
         if not isinstance(idx,int):
             idx = gCal.index(idx)
@@ -427,6 +444,10 @@ class Trades(object):
         self.compute_ma100(idx)
         self.compute_ma150(idx)
         self.compute_rsi14(idx)
+
+        # compute stochastic (14 days)
+        self.compute_stoK(idx)
+        self.compute_stoD(idx)
 
         # volumes indicators
         self.compute_vma15(idx)
@@ -516,6 +537,47 @@ class Trades(object):
                 self.m_rsi14[i] = 100.0 - (100.0/(1.0+(h / b)))
         else:
             self.m_rsi14[i] = -1.0
+
+    def compute_stoK(self,i):
+        #debug('%s: compute STO K [%d]' % (self.m_quote.ticker(),i))
+        l = 9999999.0
+        h = 0.0
+        n = 0
+        j = i
+        while n<14 and j>=0:
+            if self.m_inClose[j]>=0.0:
+                if self.m_inHigh[j]>h:
+                    h = self.m_inHigh[j]
+
+                if self.m_inLow[j]<l:
+                    l = self.m_inLow[j]
+
+                n = n + 1
+            j = j - 1
+
+        if n>0:
+
+            t = ((self.m_inClose[i] - l) / (h - l)) * 100.0
+            if t<0.0: t=0.0
+            if t>100.0: t=100.0
+            self.m_stoK[i] = t
+        else:
+            self.m_stoK[i] = -1.0
+
+    def compute_stoD(self,i):
+        #debug('%s: compute STO D [%d]' % (self.m_quote.ticker(),i))
+        s = 0.0
+        n = 0
+        j = i
+        while n<14 and j>=0:
+            if self.m_inClose[j]>=0.0:
+                s = s + self.stoK(j)
+                n = n + 1
+            j = j - 1
+        if n>0:
+            self.m_stoD[i] = float(s/n)
+        else:
+            self.m_stoD[i] = -1
 
     def compute_vma15(self,i):
         #debug('%s: compute VMA15 [%d]' % (self.m_quote.ticker(),i))

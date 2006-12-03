@@ -1001,8 +1001,8 @@ class Quote(object):
     def sv_ma(self,period=20,d=None):
         x = self.nv_ma(period,d)
         if x!=None:
-            return "%3.3f" % x
-        return " ---.--- "
+            return "%3.2f" % x
+        return " ---.-- "
 
     def nv_rsi(self,period=14,d=None):
         if d==None:
@@ -1017,8 +1017,40 @@ class Quote(object):
     def sv_rsi(self,period=14,d=None):
         x = self.nv_rsi(period,d)
         if x!=None:
-            return "%3.3f" % x
-        return " ---.--- "
+            return "%3.2f" % x
+        return " ---.-- "
+
+    def nv_stoK(self,d=None):
+        if d==None:
+            d = self.m_daytrades.lasttrade()
+            if d:
+                d = d.date()
+            else:
+                return None
+        sto = self.m_daytrades.stoK(d)
+        return sto
+
+    def sv_stoK(self,d=None):
+        x = self.nv_stoK(d)
+        if x!=None:
+            return "%3.2f" % x
+        return " ---.-- "
+
+    def nv_stoD(self,d=None):
+        if d==None:
+            d = self.m_daytrades.lasttrade()
+            if d:
+                d = d.date()
+            else:
+                return None
+        sto = self.m_daytrades.stoD(d)
+        return sto
+
+    def sv_stoD(self,d=None):
+        x = self.nv_stoD(d)
+        if x!=None:
+            return "%3.2f" % x
+        return " ---.-- "
 
     def nv_vma(self,period=15,d=None):
         if d==None:

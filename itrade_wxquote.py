@@ -342,6 +342,7 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         self.m_dispGrid = True
         self.m_dispChart1Type = 'c'
         self.m_dispRSI14 = True
+        self.m_dispSto = False
 
         # parameter iTrade_wxPanelGraph
         self.m_hasChart1Vol = self.m_dispOverlaidVolume
@@ -401,6 +402,8 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
             wx.EVT_MENU(self, self.m_popupID_dispMA150, self.OnPopup_dispMA150)
             self.m_popupID_dispRSI14 = wx.NewId()
             wx.EVT_MENU(self, self.m_popupID_dispRSI14, self.OnPopup_dispRSI14)
+            self.m_popupID_dispSto = wx.NewId()
+            wx.EVT_MENU(self, self.m_popupID_dispSto, self.OnPopup_dispSto)
             self.m_popupID_dispBollinger = wx.NewId()
             wx.EVT_MENU(self, self.m_popupID_dispBollinger, self.OnPopup_dispBollinger)
             self.m_popupID_dispOverlaidVolume = wx.NewId()
@@ -433,6 +436,8 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         self.popmenu.AppendSeparator()
         i = self.popmenu.AppendCheckItem(self.m_popupID_dispMA150, message('quote_popup_dispMA150'))
         i.Check(self.m_dispMA150)
+        i = self.popmenu.AppendCheckItem(self.m_popupID_dispSto, message('quote_popup_dispSto'))
+        i.Check(self.m_dispSto)
         i = self.popmenu.AppendCheckItem(self.m_popupID_dispRSI14, message('quote_popup_dispRSI14'))
         i.Check(self.m_dispRSI14)
         i = self.popmenu.AppendCheckItem(self.m_popupID_dispBollinger, message('quote_popup_dispBollinger'))
@@ -478,6 +483,12 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         self.m_hasLegend = self.m_dispLegend
         self.RedrawAll()
 
+    def OnPopup_dispSto(self,event):
+        self.m_dispSto = not self.m_dispSto
+        m = self.popmenu.FindItemById(self.m_popupID_dispSto)
+        m.Check(self.m_dispSto)
+        self.RedrawAll()
+
     def OnPopup_dispRSI14(self,event):
         self.m_dispRSI14 = not self.m_dispRSI14
         m = self.popmenu.FindItemById(self.m_popupID_dispRSI14)
@@ -513,7 +524,7 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         return '%s %s %s' % (message('graph_period'),self.getPeriod(),message('graph_days'))
 
     def ChartRealize(self):
-        if self.m_dispRSI14:
+        if self.m_dispRSI14 or self.m_dispSto:
             nchart = 3
         else:
             nchart = 2
@@ -538,6 +549,9 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
                 self.idx.append(i)
                 if self.m_dispRSI14:
                     self.m_quote.m_daytrades.rsi14(i)
+                if self.m_dispSto:
+                    self.m_quote.m_daytrades.stoK(i)
+                    self.m_quote.m_daytrades.stoD(i)
                 self.m_quote.m_daytrades.ma(20,i)
                 self.m_quote.m_daytrades.ma(50,i)
                 self.m_quote.m_daytrades.ma(100,i)
@@ -585,6 +599,15 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
 
             if self.m_dispRSI14:
                 rsi14 = self.chart3.plot(self.m_quote.m_daytrades.m_rsi14[begin:end],'k',antialiased=False,linewidth=0.05)
+            else:
+                rsi14 = None
+
+            if self.m_dispSto:
+                stoK = self.chart3.plot(self.m_quote.m_daytrades.m_stoK[begin:end],'b',antialiased=False,linewidth=0.05)
+                stoD = self.chart3.plot(self.m_quote.m_daytrades.m_stoD[begin:end],'m--',antialiased=False,linewidth=0.05)
+            else:
+                stoK = None
+                stoD = None
 
             if self.m_dispLegend:
                 old = matplotlib.rcParams['lines.antialiased']
@@ -598,7 +621,21 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
                 self.legend2 = self.chart2.legend((lvma15, lovb), ('VMA(15)', 'OVB'), loc=2, numpoints=2, pad=0.3, axespad=0.025) #'upper left'
 
                 if self.m_dispRSI14:
-                    self.legend3 = self.chart3.legend((rsi14,), ('RSI(14)',), loc=2, numpoints=2, pad=0.3, axespad=0.025) #'upper left'
+                    if self.m_dispSto:
+                        ll1 = (rsi14,stoK,stoD)
+                        ll2 = ('RSI(14)','Sto %K','Sto %D')
+                    else:
+                        ll1 = (rsi14,)
+                        ll2 = ('RSI(14)',)
+                else:
+                    if self.m_dispSto:
+                        ll1 = (stoK,stoD)
+                        ll2 = ('Sto %K','Sto %D')
+                    else:
+                        ll1 = None
+                        ll2 = None
+                if ll1:
+                    self.legend3 = self.chart3.legend(ll1, ll2, loc=2, numpoints=2, pad=0.3, axespad=0.025) #'upper left'
 
                 matplotlib.rcParams['lines.antialiased']=old
 
@@ -665,7 +702,10 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
             s = s + 'k, '+ self.space(message('popup_volume') , self.m_quote.sv_volume(dt)) + ' \n'
             if chart==3:
                 if self.m_dispRSI14:
-                    s = s + 'c, '+ self.space('RSI%s'%14, self.m_quote.sv_rsi(14,dt)) + ' \n'
+                    s = s + 'k, '+ self.space('RSI (%s)'%14, self.m_quote.sv_rsi(14,dt)) + ' \n'
+                if self.m_dispSto:
+                    s = s + 'b, '+ self.space('STO %%K (%s)'%14, self.m_quote.sv_stoK(dt)) + ' \n'
+                    s = s + 'm, '+ self.space('STO %%D (%s)'%14, self.m_quote.sv_stoD(dt)) + ' \n'
             elif chart==2:
                 s = s + 'r, '+ self.space('VMA%s'%15, self.m_quote.sv_vma(15,dt)) + ' \n'
                 s = s + 'k, '+ self.space('OVB', self.m_quote.sv_ovb(dt)) + ' \n'
