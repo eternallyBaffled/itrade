@@ -1001,8 +1001,8 @@ class Quote(object):
     def sv_ma(self,period=20,d=None):
         x = self.nv_ma(period,d)
         if x!=None:
-            return "%3.2f" % x
-        return " ---.-- "
+            return "%3.3f" % x
+        return " ---.--- "
 
     def nv_rsi(self,period=14,d=None):
         if d==None:
@@ -1017,8 +1017,8 @@ class Quote(object):
     def sv_rsi(self,period=14,d=None):
         x = self.nv_rsi(period,d)
         if x!=None:
-            return "%3.2f" % x
-        return " ---.-- "
+            return "%3.3f" % x
+        return " ---.--- "
 
     def nv_stoK(self,d=None):
         if d==None:

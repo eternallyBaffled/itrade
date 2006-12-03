@@ -1305,11 +1305,11 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
             self.m_list.SetStringItem(x,IDC_STOCH,'%s (%s)' % (quote.sv_stoK(),quote.sv_stoD()))
         else:
             # no information
-            self.m_list.SetStringItem(x,IDC_MA20," ---.-- ")
-            self.m_list.SetStringItem(x,IDC_MA50," ---.-- ")
-            self.m_list.SetStringItem(x,IDC_MA100," ---.-- ")
-            self.m_list.SetStringItem(x,IDC_RSI," ---.-- ")
-            self.m_list.SetStringItem(x,IDC_MACD," ---.-- ")
+            self.m_list.SetStringItem(x,IDC_MA20," ---.--- ")
+            self.m_list.SetStringItem(x,IDC_MA50," ---.--- ")
+            self.m_list.SetStringItem(x,IDC_MA100," ---.--- ")
+            self.m_list.SetStringItem(x,IDC_RSI," ---.--- ")
+            self.m_list.SetStringItem(x,IDC_MACD," ---.--- ")
             self.m_list.SetStringItem(x,IDC_STOCH," ---.-- (---.--) ")
             self.m_list.SetStringItem(x,IDC_DMI," ---.-- ")
             self.m_list.SetStringItem(x,IDC_EMV," ---.-- ")
