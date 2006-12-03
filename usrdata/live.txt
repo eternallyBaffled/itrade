@@ -1,4 +1,9 @@
-437a80b2720feb61e32252c688831e5e28ca2bb84dfafe0685f623b780310e5084d57f79f3d334f30d264263654dbf30
+437a80b2720feb61e32252c688831e5e28ca2bb84dfafe0685f623b780310e50ea69684fa67649130d264263654dbf30
+
+437a80b2720feb61e32252c688831e5e28ca2bb84dfafe0685f623b780310e50f04d1cd2fafd30280d264263654dbf30
+
+3ff349e66a9ed1766328b3759968230728ca2bb84dfafe062743f71b2a0ebaff207bd93f21f468820d264263654dbf30
+3ff349e66a9ed1766328b3759968230728ca2bb84dfafe062743f71b2a0ebafff04d1cd2fafd30280d264263654dbf30
 
 === Code Status 2006-12-03 =====================================================================
 
@@ -31,11 +36,17 @@ Prefix : 3 x 16 digits
 
 Central part : meaning ?? __x  2 x 16 digits
 
-First 16 digits seems to encode the date
+First 16 digits seems to encode more than the date (part of time ?)
 Second 16 digits seems to be not important (except must be a valid suite of digits)
 
-85f623b780310e50 1f11390a88039cf0 2006-12-03
-85f623b780310e50 af4203b246cf83a8 2006-12-03
+2743f71b2a0ebaff 207bd93f21f46882 2006-12-03  9h2x
+2743f71b2a0ebaff f04d1cd2fafd3028 2006-12-03  9h2x
+
+2743f71b2a0ebaff 1f11390a88039cf0 2006-12-03  combining 9h2x and 8hxx
+85f623b780310e50 f04d1cd2fafd3028 2006-12-03  combining 9h2x and 8hxx
+
+85f623b780310e50 1f11390a88039cf0 2006-12-03  8hxx
+85f623b780310e50 af4203b246cf83a8 2006-12-03  8hxx
 
 d49c30b2544b41b8 ea69684fa6764913 2006-12-02
 d49c30b2544b41b8 aadf28908f54c45e 2006-12-02
@@ -61,3 +72,14 @@ code : the new code is working !
 Change only one digit in this second 16 digits part of the central part, the code stop to work
 
 => the only important part of the cookie is the first 16 digits of the central part.
+
+
+
+
+d    4    9    c    3    0    b    2    5    4    4    b    4    1    b    8
+1101 0100 1001 1100 0011 0000 1001 0010 0101 0100 0100 1001 0100 0001 1001 1000
+
+8    5    f    6    2    3    b    7    8    0    3    1    0    e    5    0
+1000 0101 1111 0110 0010 0011 1001 0111 1000 0000 0011 0001 0000 1110 0101 0000
+
+
