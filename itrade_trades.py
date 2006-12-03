@@ -539,65 +539,44 @@ class Trades(object):
         else:
             self.m_rsi14[i] = 100.0 - (100.0/(1.0+(h / b)))
 
-    def compute_stoK(self,i):
-        #debug('%s: compute STO K [%d]' % (self.m_quote.ticker(),i))
+    def compute_minmax(self,i,period):
         l = 9999999.0
         h = 0.0
         n = 0
         j = i
-        while n<14 and j>=0:
-            if self.m_inClose[j]>=0.0:
-                if self.m_inHigh[j]>h:
-                    h = self.m_inHigh[j]
+        while n<period and j>=0:
+            if self.m_inHigh[j]>h:
+                h = self.m_inHigh[j]
 
-                if self.m_inLow[j]<l:
-                    l = self.m_inLow[j]
+            if self.m_inLow[j]<l:
+                l = self.m_inLow[j]
 
-                n = n + 1
+            n = n + 1
             j = j - 1
+        return l,h
 
-        if n>0:
+    def compute_stoK(self,i):
+        #debug('%s: compute STO K [%d]' % (self.m_quote.ticker(),i))
+        mc = (self.close(i) + self.close(i-1) + self.close(i-2))/3
+        l1,h1 = self.compute_minmax(i,14)
+        l2,h2 = self.compute_minmax(i-1,14)
+        l3,h3 = self.compute_minmax(i-2,14)
+        ml = (l1 + l2 + l3) / 3
+        mh = (h1 + h2 + h3) / 3
 
-            t = ((self.m_inClose[i] - l) / (h - l)) * 100.0
-            if t<0.0: t=0.0
-            if t>100.0: t=100.0
-            self.m_stoK[i] = t
-        else:
-            self.m_stoK[i] = -1.0
+        t = ((mc - ml) / (mh - ml)) * 100.0
+        if t<0.0: t=0.0
+        if t>100.0: t=100.0
+        self.m_stoK[i] = t
 
     def compute_stoD(self,i):
-        # fplusHaut = HIGHEST[NbPeriode](HIGH)
-        # fplusBas = LOWEST[NbPeriode](LOW)
-        #
-        # eLigneK = (CLOSE - fplusBas) / (fplusHaut - fplusBas) * 100
-        #
-        # eLigneKLisse = AVERAGE[NbLissage](eLigneK)
-        #
-        # // iCpt est initialisé avec le nombre de periode demandées sur le %D - 1
-        # // La période en cours pour le calcul la période en cours étant 0
-        # // c'est donc bien CLOSE[0] à CLOSE[NbPeriodeLigneD - 1] qu'il faut prendre en compte.
-        # // Pour balayer NbPeriodeLigneD périodes
-        #
-        # iCpt = NbPeriodeLigneD - 1
-        # eNumerateur = 0
-        # eDenominateur = 0
-        # WHILE (iCpt >= 0) DO
-        #     eNumerateur = eNumerateur + CLOSE[iCpt] - fplusBas[iCpt]
-        #     eDenominateur = eDenominateur + fplusHaut[iCpt] - fplusBas[iCpt]
-        #     iCpt = iCpt - 1
-        # WEND
-        #
-        # eLigneD = 100*(eNumerateur/eDenominateur)
-        #
-        # RETURN eLigneK AS "%K", eLigneKLisse AS "%K lisse", eligneD AS "%D"
         #debug('%s: compute STO D [%d]' % (self.m_quote.ticker(),i))
         s = 0.0
         n = 0
         j = i
-        while n<14 and j>=0:
-            if self.m_inClose[j]>=0.0:
-                s = s + self.stoK(j)
-                n = n + 1
+        while n<5 and j>=0:
+            s = s + self.stoK(j)
+            n = n + 1
             j = j - 1
         if n>0:
             self.m_stoD[i] = s/float(n)
