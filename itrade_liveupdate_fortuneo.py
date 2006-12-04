@@ -410,7 +410,7 @@ class LiveUpdate_fortuneo(object):
             self.m_blowfish = infile[0].strip()
             f.close()
         except IOError:
-            self.m_blowfish = '437a80b2720feb61e32252c688831e5e28ca2bb84dfafe06d49c30b2544b41b8ea69684fa67649130d264263654dbf30'
+            self.m_blowfish = '3ff349e66a9ed1766328b3759968230728ca2bb84dfafe06001abf69f00c076fb5a5a632b378faed0d264263654dbf30'
 
         self.m_livelock = thread.allocate_lock()
         self.m_dcmpd = {}
