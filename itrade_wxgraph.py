@@ -45,7 +45,7 @@ import wx
 # iTrade system
 from itrade_logging import *
 from itrade_local import message
-from itrade_wxlabel import iTrade_wxLabel
+from itrade_wxlabel import iTrade_wxLabelPopup,DrawRectLabel
 
 # matplotlib system
 import matplotlib
@@ -74,50 +74,133 @@ GTOOL_FIBO = 4
 GTOOL_TRASH = 255
 
 class GTool(object):
-    def __init__(self,kind,canvas):
+    def __init__(self,kind,parent,canvas):
         self.m_kind = kind
+        self.m_parent = parent
         self.m_canvas = canvas
 
     def kind(self):
         return self.m_kind
 
-    def on_click(self,x,y,time,val,axe,chart):
+    def parent(self):
+        return self.m_parent
+
+    def canvas(self):
+        return self.m_canvas
+
+    def on_click(self,x,y,time,val,chart):
         info('Tool %s on_click x:%d,y:%d time=%s val=%s chart=%d!' % (self.kind(),x, y, time, val , chart))
 
     def is_cursor_state(self,chart):
         return True
 
 class GToolInd(GTool):
-    def __init__(self,canvas):
-        GTool.__init__(self,GTOOL_IND,canvas)
+    def __init__(self,parent,canvas):
+        GTool.__init__(self,GTOOL_IND,parent,canvas)
 
     def is_cursor_state(self,chart):
         return True
 
 class GToolHLine(GTool):
-    def __init__(self,canvas):
-        GTool.__init__(self,GTOOL_HLINE,canvas)
+    def __init__(self,parent,canvas):
+        GTool.__init__(self,GTOOL_HLINE,parent,canvas)
 
     def is_cursor_state(self,chart):
         return True
+
+    def on_click(self,x,y,time,val,chart):
+        # create the object
+        obj = (self,chart,time,val)
+
+        # stack it
+        self.m_parent.stackObject(obj)
+
+        # draw it
+        self.m_parent.drawObject(obj)
+
+    def draw(self,parent,dc,obj,rect):
+        # obj: (self,chart,time,val)
+        # rect: (left,top,right,bottom,width,height)
+        axe = parent.chart2axe(obj[1])
+
+        a,b = axe.get_ylim()
+        y = rect[3] - int( (obj[3] - a) * (rect[5] / (b-a)) )
+
+        #print 'rect:',rect,'y range:',a,b,b-a,' val=',obj[3],(obj[3] - a),' y=',y
+        if y<=rect[3] and y>=rect[1]:
+            lc = wx.NamedColor("BLACK")
+            bg = wx.NamedColor("BLUE")
+            font = wx.Font(8, wx.ROMAN, wx.NORMAL, wx.NORMAL)
+
+            dc.SetPen(wx.Pen(lc, 1, wx.SOLID))
+            dc.DrawLine(rect[0], y, rect[2], y)
+
+            label = parent.GetYLabel(axe,obj[3])
+            textExtent = self.m_parent.GetFullTextExtent(label,font)
+
+            DrawRectLabel(dc,label,rect[0],y,textExtent[0], textExtent[1],lc,bg,font,vert='top',horz='right')
 
 class GToolVLine(GTool):
-    def __init__(self,canvas):
-        GTool.__init__(self,GTOOL_VLINE,canvas)
+    def __init__(self,parent,canvas):
+        GTool.__init__(self,GTOOL_VLINE,parent,canvas)
 
     def is_cursor_state(self,chart):
         return True
 
+    def on_click(self,x,y,time,val,chart):
+        # create the object
+        obj = (self,chart,time,val,self.m_parent.GetIndexTime(0),self.m_parent.getPeriod())
+
+        # stack it
+        self.m_parent.stackObject(obj)
+
+        # draw it
+        self.m_parent.drawObject(obj)
+
+    def draw(self,parent,dc,obj,rect):
+        # obj: (self,chart,time,val,offtime,periodtime)
+        # rect: (left,top,right,bottom,width,height)
+        axe = parent.chart2axe(obj[1])
+        time = obj[2]
+
+        #print 'time',time,' initial:',obj[4],' current:',parent.GetIndexTime(0),' new time:',obj[4] - parent.GetIndexTime(0) + time
+        time = obj[4]-parent.GetIndexTime(0)+time
+
+        # update time on the grid
+        a,b = axe.get_xlim()
+        period = b - a
+
+        #print 'period:',period,' inital period:',obj[5],' delta:',obj[5]-period, ' new time:',time - (obj[5]-period) / 2
+
+        time = time - int((obj[5]-period) / 2)
+
+        if time>=a and time<=b:
+            x = rect[0] + int( (time - a) * (rect[4] / period) )
+
+            #print 'rect:',rect,'x range:',a,b,b-a,' val=',time,(time - a),' x=',x
+
+            lc = wx.NamedColor("BLACK")
+            bg = wx.NamedColor("BLUE")
+            font = wx.Font(8, wx.ROMAN, wx.NORMAL, wx.NORMAL)
+
+            dc.SetPen(wx.Pen(lc, 1, wx.SOLID))
+            dc.DrawLine(x, rect[1], x, rect[3])
+
+            label = parent.GetXLabel(time)
+            textExtent = self.m_parent.GetFullTextExtent(label,font)
+
+            DrawRectLabel(dc,label,x,rect[3], textExtent[0], textExtent[1],lc,bg,font,vert='bottom',horz='center')
+
 class GToolOLine(GTool):
-    def __init__(self,canvas):
-        GTool.__init__(self,GTOOL_OLINE,canvas)
+    def __init__(self,parent,canvas):
+        GTool.__init__(self,GTOOL_OLINE,parent,canvas)
 
     def is_cursor_state(self,chart):
         return True
 
 class GToolFibo(GTool):
-    def __init__(self,canvas):
-        GTool.__init__(self,GTOOL_FIBO,canvas)
+    def __init__(self,parent,canvas):
+        GTool.__init__(self,GTOOL_FIBO,parent,canvas)
 
     def is_cursor_state(self,chart):
         # Fibo supported only in main chart
@@ -125,11 +208,63 @@ class GToolFibo(GTool):
         return True
 
 class GToolTrash(GTool):
-    def __init__(self,canvas):
-        GTool.__init__(self,GTOOL_TRASH,canvas)
+    def __init__(self,parent,canvas):
+        GTool.__init__(self,GTOOL_TRASH,parent,canvas)
 
     def is_cursor_state(self,chart):
         return True
+
+    def on_click(self,x,y,time,val,chart):
+        lst = self.m_parent.listObjects()
+
+# ============================================================================
+# GObject
+# ============================================================================
+
+class GObject(object):
+    def __init__(self,canvas):
+        self.canvas = canvas
+        self.objects = []
+
+    def listObjects(self):
+        return self.objects
+
+    def stackObject(self,obj):
+        self.objects.append(obj)
+
+    def unstackObject(self,obj):
+        self.objects.remove(obj)
+
+    def removeAllObjects(self):
+        self.objects = []
+
+    def drawObject(self,obj):
+        # obj: (self,chart,time,val,...)
+        axe = self.chart2axe(obj[1])
+
+        # compute rect
+        figheight = self.canvas.figure.bbox.height()
+        left,bottom,width,height = axe.bbox.get_bounds()
+        bottom = figheight-bottom
+        top = bottom - height
+        right = left + width
+
+        rect = (int(left),int(top),int(right),int(bottom),int(width),int(height))
+
+        # start drawing in the DC
+        dc = wx.ClientDC(self.canvas)
+        dc.ResetBoundingBox()
+        dc.BeginDrawing()
+
+        # callback object to draw itself
+        obj[0].draw(self,dc,obj,rect)
+
+        # end of drawing in the DC
+        dc.EndDrawing()
+
+    def drawAllObjects(self):
+        for eachObj in self.objects:
+            self.drawObject(eachObj)
 
 # ============================================================================
 # fmtVolumeFunc
@@ -316,7 +451,7 @@ CURSOR_MODE_TRASH = 255
 # iTrade_wxPanelGraph
 # ============================================================================
 
-class iTrade_wxPanelGraph(object):
+class iTrade_wxPanelGraph(GObject):
     def __init__(self, parent, id, size):
         self.m_parent = parent
 
@@ -325,6 +460,9 @@ class iTrade_wxPanelGraph(object):
         # figure me
         self.figure = Figure(size, dpi = 96)
         self.canvas = FigureCanvas(self, -1, self.figure)
+
+        GObject.__init__(self,self.canvas)
+
         self.canvas.mpl_connect('motion_notify_event', self.mouse_move)
         self.canvas.mpl_connect('button_press_event', self.on_click)
 
@@ -396,32 +534,32 @@ class iTrade_wxPanelGraph(object):
 
     def OnToolInd(self,event):
         self.m_cursormode = CURSOR_MODE_IND
-        self.m_tool = GToolInd(self.canvas)
+        self.m_tool = GToolInd(self,self.canvas)
         if event: event.Skip()
 
     def OnToolHLine(self,event):
         self.m_cursormode = CURSOR_MODE_HLINE
-        self.m_tool = GToolHLine(self.canvas)
+        self.m_tool = GToolHLine(self,self.canvas)
         if event: event.Skip()
 
     def OnToolVLine(self,event):
         self.m_cursormode = CURSOR_MODE_VLINE
-        self.m_tool = GToolVLine(self.canvas)
+        self.m_tool = GToolVLine(self,self.canvas)
         if event: event.Skip()
 
     def OnToolOLine(self,event):
         self.m_cursormode = CURSOR_MODE_OLINE
-        self.m_tool = GToolOLine(self.canvas)
+        self.m_tool = GToolOLine(self,self.canvas)
         if event: event.Skip()
 
     def OnToolFibo(self,event):
         self.m_cursormode = CURSOR_MODE_FIBO
-        self.m_tool = GToolFibo(self.canvas)
+        self.m_tool = GToolFibo(self,self.canvas)
         if event: event.Skip()
 
     def OnToolTrash(self,event):
         self.m_cursormode = CURSOR_MODE_TRASH
-        self.m_tool = GToolTrash(self.canvas)
+        self.m_tool = GToolTrash(self,self.canvas)
         if event: event.Skip()
 
     # ---[ MOUSE MANAGEMENT ] -----------------------------------------------
@@ -436,7 +574,7 @@ class iTrade_wxPanelGraph(object):
         if self.cursorState(None) and (self.m_cursormode == CURSOR_MODE_IND):
             #debug('OnTimer create label')
             try:
-                self.m_xylabel = iTrade_wxLabel(self.canvas,self.m_xylabelPos,self.m_xylabelMax,label=self.GetXYLabel(self.m_xylabelAxis,self.m_xylabelData),multiline=True)
+                self.m_xylabel = iTrade_wxLabelPopup(self.canvas,self.m_xylabelPos,self.m_xylabelMax,label=self.GetXYLabel(self.m_xylabelAxis,self.m_xylabelData),multiline=True)
             except AttributeError:
                 info('axis not managed')
                 pass
@@ -448,7 +586,9 @@ class iTrade_wxPanelGraph(object):
         if self.cursorState(event.inaxes):
             chart = self.axe2chart(event.inaxes)
             if chart>0 and event.xdata!=None:
-                self.m_tool.on_click(event.x, event.y, self.GetTime(int(event.xdata)), event.ydata, event.inaxes, chart)
+                self.erase_cursor()
+                self.m_tool.on_click(event.x, event.y, int(event.xdata), event.ydata, chart)
+                self.draw_cursor(event)
 
     def mouse_move(self,event):
         if self.cursorState(event.inaxes):
@@ -531,10 +671,8 @@ class iTrade_wxPanelGraph(object):
 
         dc = wx.ClientDC(self.canvas)
         dc.SetLogicalFunction(wx.XOR)
-        wbrush = wx.Brush(wx.Colour(255,255,255), wx.TRANSPARENT)
-        wpen = wx.Pen(wx.Colour(200, 200, 200), 1, wx.SOLID)
-        dc.SetBrush(wbrush)
-        dc.SetPen(wpen)
+        dc.SetBrush(wx.Brush(wx.Colour(255,255,255), wx.TRANSPARENT))
+        dc.SetPen(wx.Pen(wx.Colour(200, 200, 200), 1, wx.SOLID))
 
         dc.ResetBoundingBox()
         dc.BeginDrawing()
@@ -548,17 +686,17 @@ class iTrade_wxPanelGraph(object):
 
         if self.is_display_vcursor(): dc.DrawLine(*line1) # draw new
         if self.is_display_hcursor(): dc.DrawLine(*line2) # draw new
-        dc.EndDrawing()
+        #dc.EndDrawing()
 
         debug("Time=%d  Value=%f"% (time, value))
 
         # add x and y labels
         if int(time)<len(self.times):
             if self.is_display_vcursor():
-                self.m_xlabel = iTrade_wxLabel(self.canvas,(x,bottom), label=self.GetXLabel(int(time)))
+                self.m_xlabel = iTrade_wxLabelPopup(self.canvas,(x,bottom), label=self.GetXLabel(int(time)))
                 self.m_xlabel.Draw()
             if self.is_display_hcursor():
-                self.m_ylabel = iTrade_wxLabel(self.canvas,(right,y), label=self.GetYLabel(ax,value))
+                self.m_ylabel = iTrade_wxLabelPopup(self.canvas,(right,y), label=self.GetYLabel(ax,value))
                 self.m_ylabel.Draw()
 
             # save some data for Timed behaviour
@@ -592,6 +730,16 @@ class iTrade_wxPanelGraph(object):
             return 3
         else:
             return 0
+
+    def chart2axe(self,chart):
+        if chart==1:
+            return self.chart1
+        elif chart==2:
+            return self.chart2
+        elif chart==3:
+            return self.chart3
+        else:
+            return None
 
     def BeginCharting(self,nchart=2):
         #print 'BeginCharting --['

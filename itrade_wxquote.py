@@ -357,14 +357,17 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         self.ChartRealize()
         self.erase_cursor()
         self.canvas.draw()
+        self.drawAllObjects()
 
     def OnPaint(self,event):
         self.erase_cursor()
+        self.drawAllObjects()
         event.Skip(True)
 
     def OnHome(self,event):
         self.m_nIndex = self.m_quote.lastindex()
         self.zoomLevel = 2
+        self.removeAllObjects()
         self.RedrawAll()
 
     def OnPanLeft(self,event):
@@ -659,11 +662,14 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         return dt.strftime(' %x ')
 
     def GetTime(self,idxtime):
+        return gCal.date(self.GetIndexTime(idxtime))
+
+    def GetIndexTime(self,idxtime):
         if idxtime<0:
             idxtime = len(self.idx)+idxtime
         elif idxtime==0:
             idxtime = len(self.idx)/2
-        return gCal.date(self.idx[idxtime])
+        return self.idx[idxtime]
 
     def GetYLabel(self,ax,value):
         if ax==self.chart1:
