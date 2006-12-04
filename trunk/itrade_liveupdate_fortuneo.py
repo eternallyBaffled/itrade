@@ -401,6 +401,7 @@ class LiveUpdate_fortuneo(object):
     def __init__(self):
         debug('LiveUpdate_fortuneo:__init__')
         self.m_default_host = "streaming.fortuneo.fr"
+        #self.m_default_host = "81.255.56.22"
         self.m_conn = None
         self.m_connected = False
 
