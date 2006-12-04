@@ -5,6 +5,9 @@ On the road for v0.4.5 (Nausicaa)
 
 ===============================================================================
 
+2006-12-04  Gilles Dumortier <dgil at ieee.org>
+	* Prepare 0.4.5 official release
+
 2006-12-03  Gilles Dumortier <dgil at ieee.org>
 	* Stochastic Indicator (formula still bogus)
 	* RSI Indicator (SF bug 1361988)
