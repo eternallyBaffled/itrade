@@ -864,7 +864,7 @@ def test(ticker):
 if __name__=='__main__':
     setLevel(logging.INFO)
 
-    test('EADT')
+    test('SAF')
 
 # ============================================================================
 # That's all folks !
