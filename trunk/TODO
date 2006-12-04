@@ -36,10 +36,14 @@ Version 0.4.5 (Nausicaa)
  + Euronext connector for EURONEXT/ALTERNEXT/ML markets
  + more MMI enhancements
  + Import / Export historic data
+ + binary installation package for Windows
+ + RSI and Stochastic indicators
+
+Version 0.4.8 (Nausicaa2)
  ~ "Points Pivots" feature
  ~ VAT information
  ~ more Charting enhancements
- ~ binary installation package for Windows
+ ~ main market indicator
 
 Version 0.5 (Plume)
  ~ News aggregator (Google, Bourso, Balo)
