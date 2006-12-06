@@ -1,0 +1,1 @@
+default;<default portfolio>;18331;EURONEXT;EUR;1.196000
