@@ -1,5 +1,0 @@
-[connector]
-
-[view]
-autorefreshview = False
-
