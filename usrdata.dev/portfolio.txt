@@ -59,3 +59,24 @@ prop;Prop bug hunting;Prop bug hunting;EURONEXT;EUR;1.196000
 michel-1447310;SF Bug 1447310;0000;EURONEXT;EUR;1.196000
 sf1592003;SF bug 1592003;1592003;EURONEXT;EUR;1.196000
 mala;MALA;MALA;EURONEXT;EUR;1.196000
+amex_001;amex_001;;AMEX;USD;1.196000
+Amsterdam_001;Amsterdam_001;;EURONEXT;EUR;1.196000
+Bruxelles_001;Bruxelles_001;;EURONEXT;EUR;1.196000
+indices_amsterdam;indices_amsterdam;;EURONEXT;EUR;1.196000
+indices_bruxelles;indices_bruxelles;;EURONEXT;EUR;1.196000
+indices_lisbonne;indices_lisbonne;;EURONEXT;EUR;1.196000
+indices_paris;indices_paris;;EURONEXT;EUR;1.196000
+indices_us_nasdaq;indices_us_nasdaq;;NASDAQ;EUR;1.196000
+indices_us_nyse;indices_us_nyse;;NYSE;USD;1.196000
+Lisbonne;Lisbonne;;EURONEXT;EUR;1.196000
+Marche_Libre_Bruxelles;Marche_Libre_Bruxelles;;BRUXELLES MARCHE LIBRE;EUR;1.196000
+Marche_Libre_Paris_01;Marche_Libre_Paris_01;;EURONEXT;EUR;1.196000
+nasd_001;nasd_001;;NASDAQ;USD;1.196000
+nyse_001;nyse_001;;NYSE;USD;1.196000
+otcb_001;otcb_001;;OTCBB;USD;1.196000
+trackers_01;trackers_01;;EURONEXT;EUR;1.196000
+trackers_02;trackers_02;;EURONEXT;EUR;1.196000
+trackers_03;trackers_03;;EURONEXT;EUR;1.196000
+trackers_04;trackers_04;;EURONEXT;EUR;1.196000
+trackers_05;trackers_05;;EURONEXT;EUR;1.196000
+trackers_06;trackers_06;;EURONEXT;EUR;1.196000
