@@ -69,6 +69,8 @@ def usage():
     print
     print "--lang=<l>   select the language to be used (fr,us,...)      "
     print
+    print "--user=<p>   select usrerdata/ specific folder               "
+    print
     print "--unicode    use unicode version of wxPython (experimental)  "
 
 # ============================================================================
@@ -77,7 +79,7 @@ def usage():
 
 def main():
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "eho:vt:iq:f:l:d", ["help", "output=", "ticker=", "quote=","file=","lang=","unicode"])
+        opts, args = getopt.getopt(sys.argv[1:], "eho:vt:iq:f:l:du:", ["help", "output=", "ticker=", "quote=","file=","lang=","unicode","user="])
     except getopt.GetoptError:
         # print help information and exit:
         usage()
@@ -115,7 +117,12 @@ def main():
             sys.exit()
         if o in ("-o", "--output"):
             output = a
-        if o in ("--unicode"):
+        if o in ("-u","--user"):
+            itrade_config.dirUserData = a
+            if not os.path.exists(itrade_config.dirUserData):
+                print 'userdata folder %s not found !' % a
+                sys.exit()
+        if o  == "--unicode":
             itrade_config.unicode = True
         if o in ("-f", "--file"):
             file = a
@@ -130,6 +137,9 @@ def main():
             quote = quotes.lookupKey(a)
             if not quote:
                 print 'quote %s not found ! format is : <ISINorTICKER>.<EXCHANGE>.<PLACE>' % a
+
+    # load configuration
+    itrade_config.loadConfig()
 
     # use the correct pack language
     if itrade_config.lang == 255:
