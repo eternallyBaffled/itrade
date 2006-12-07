@@ -44,9 +44,10 @@ from itrade_logging import *
 import itrade_datation
 from itrade_quotes import quotes,QUOTE_CASH,QUOTE_CREDIT,QUOTE_BOTH
 from itrade_matrix import *
-from itrade_local import message
+from itrade_local import message,getLang
 import itrade_csv
 from itrade_currency import currency2symbol,currencies
+from itrade_vat import country2vat
 
 # ============================================================================
 # Operation
@@ -638,7 +639,7 @@ class Fees(object):
 # ============================================================================
 
 class Portfolio(object):
-    def __init__(self,filename='default',name='<Portfolio>',accountref='000000000',market='EURONEXT',currency='EUR',vat=1.196):
+    def __init__(self,filename='default',name='<Portfolio>',accountref='000000000',market='EURONEXT',currency='EUR',vat=1.0):
         debug('Portfolio::__init__ fn=%s name=%s account=%s' % (filename,name,accountref))
         self.m_filename = filename
         self.m_name = name
@@ -1201,7 +1202,7 @@ class Portfolios(object):
                 item = itrade_csv.parse(eachLine,6)
                 if item:
                     #debug('%s :: %s' % (eachLine,item))
-                    vat = 1.196
+                    vat = country2vat(getLang())
                     if len(item)>=5:
                         currency = item[4]
                         if len(item)>=6:
@@ -1246,7 +1247,7 @@ def loadPortfolio(fn=None):
     if p==None:
         # portfolio does not exist !
         print "Portfolio '%s' does not exist ... create it" % fn
-        p = portfolios.addPortfolio(fn,fn,'','EURONEXT','EUR')
+        p = portfolios.addPortfolio(fn,fn,'noref','EURONEXT','EUR',country2vat('fr'))
 
     # load properties
     p.loadProperties()

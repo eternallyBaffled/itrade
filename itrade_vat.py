@@ -3,7 +3,7 @@
 # Project Name : iTrade
 # Module Name  : itrade_vat.py
 #
-# Description: VAT
+# Description: VAT & TAXES (per country, per exchange, per broker, ...)
 #
 # The Original Code is iTrade code (http://itrade.sourceforge.net).
 #
