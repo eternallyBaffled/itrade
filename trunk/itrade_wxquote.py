@@ -669,6 +669,8 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
             idxtime = len(self.idx)+idxtime
         elif idxtime==0:
             idxtime = len(self.idx)/2
+        elif idxtime>=len(self.idx):
+            idxtime = len(self.idx)-1
         return self.idx[idxtime]
 
     def GetYLabel(self,ax,value):
