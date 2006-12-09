@@ -36,7 +36,7 @@
 # ============================================================================
 
 __author__ = "Gilles Dumortier (dgil@ieee.org)"
-__version__ = "0.4.5"
+__version__ = "0.4.8"
 __status__ = "alpha"
 __copyright__ = "Copyright (c) 2004-2006 Gilles Dumortier"
 __license__ = "GPL"
@@ -83,7 +83,7 @@ softwareWebsite = 'http://itrade.sourceforge.net/'
 
 # iTrade version (major.minor)
 softwareVersion = __version__
-softwareVersionName = 'Nausicaa - (unstable) (%s)' % __svnversion__
+softwareVersionName = 'Nausicaa2 - (unstable) (%s)' % __svnversion__
 softwareStatus = __status__
 
 print '%s(%s) - %s %s' % (softwareName,softwareStatus,softwareVersion,softwareVersionName)

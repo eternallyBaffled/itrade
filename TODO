@@ -15,9 +15,7 @@ Working patches increase the chance to be included in the next release :-)
 KNOWN BUGS
 ===============================================================================
 
-Nausicaa is focusing on quotes management (list of, download, edit, ...) and
-markets (Yahoo and Euronext connectors, Import/Export of historical data).
-Nausicaa is polishing existing features like indicators, charting and display.
+Nausicaa2 is polishing existing features like indicators, charting and display.
 
 Known problems and major issues are tracked by the sourceforge bug tracker :
 http://sourceforge.net/tracker/?group_id=128261&atid=711187
@@ -28,16 +26,6 @@ TODO ITEMS by VERSION
  + : done
  ~ : in progress
 ===============================================================================
-
-Version 0.4.5 (Nausicaa)
- + Multi-currencies support in portfolio and matrix
- + Quotes Management (List Downloading, Editing, ...)
- + Yahoo connector fully functionnal for NASDAQ/AMEX/NYSE markets
- + Euronext connector for EURONEXT/ALTERNEXT/ML markets
- + more MMI enhancements
- + Import / Export historic data
- + binary installation package for Windows
- + RSI and Stochastic indicators
 
 Version 0.4.8 (Nausicaa2)
  ~ "Points Pivots" feature
@@ -100,6 +88,16 @@ SRD and short positions
 ===============================================================================
 ITEMS DONE by VERSION (History)
 ===============================================================================
+
+Version 0.4.5 (Nausicaa) - 2006/12/10
+ + Multi-currencies support in portfolio and matrix
+ + Quotes Management (List Downloading, Editing, ...)
+ + Yahoo connector fully functionnal for NASDAQ/AMEX/NYSE markets
+ + Euronext connector for EURONEXT/ALTERNEXT/ML markets
+ + more MMI enhancements
+ + Import / Export historic data
+ + binary installation package for Windows
+ + RSI and Stochastic indicators
 
 Version 0.4.2 (Coca2) - Patch 1 - 2006/10/03
  + Bug fixing

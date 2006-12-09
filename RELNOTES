@@ -2,7 +2,7 @@
 ===============================================================================
 
 -------------------------------------------------------------------------------
-Version 0.4.5 - Nausicaa
+Version 0.4.8 - Nausicaa2
 -------------------------------------------------------------------------------
 
 We recommend you to install :
@@ -35,6 +35,37 @@ Running :
 ===============================================================================
 Previous release notes
 ===============================================================================
+
+-------------------------------------------------------------------------------
+Version 0.4.5 - Nausicaa
+-------------------------------------------------------------------------------
+
+We recommend you to install :
+
+ Python		http://www.python.org			v 2.5 or better
+ wxPython	http://www.wxpython.org			v 2.7.x or better(ANSI)
+ numpy		http://sourceforge.net/projects/numpy	v 1.0 or better
+ matplotlib	http://matplotlib.sourceforge.net	v 0.87.7 or better
+
+Attention :
+If you have some trouble running iTrade after migrating from a previous version,
+be sure you have uninstalled Matplotlib and NumArray/Numpy before installing
+the new versions of these libraries.
+
+Running :
+ "python itrade.py --help"	for command line help
+
+ "python itrade.py -e" 		to display portfolio evaluation
+
+ "python itrade.py" 		to start using default language
+ "python itrade.py -d"		to start without network connection
+
+ "python itrade.py --lang=us" 	to start using us language
+ "python itrade.py --lang=fr" 	to start using fr language
+
+ "python itrade.py --unicode" 	to start using unicode version of wxPython
+
+ "python itrade.py -u <path>"	to start using a specific usrdata/ folder
 
 -------------------------------------------------------------------------------
 Version 0.4 - Coca
