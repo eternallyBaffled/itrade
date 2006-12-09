@@ -1,9 +1,15 @@
 /iTrade/ChangeLog
 ===============================================================================
 
-On the road for v0.4.5 (Nausicaa)
+On the road for v0.4.8 (Nausica2)
 
 ===============================================================================
+
+===============================================================================
+
+2006-12-09  Gilles Dumortier <dgil at ieee.org>
+	* Prepare 0.4.5 official release
+		SVN branch : ITRADE_0_4_5_NAUSICAA_BRANCH
 
 2006-12-08  Gilles Dumortier <dgil at ieee.org>
 	* As requested by Sourceforge, migrate website to the new subversion :
