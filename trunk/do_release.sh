@@ -9,7 +9,7 @@
 to_be_removed='do_release.sh ethereal/* data/quotes.txt.org cache/*'
 
 target="$HOME/itrade_snapshot_`date +'%F'`.tar.gz"
-#target="$HOME/itrade_0_4_5_nausicaa_`date +'%F'`.tar.gz"
+#target="$HOME/itrade_0_4_8_nausicaa2_`date +'%F'`.tar.gz"
 #export SVN_RSH=ssh
 
 cd /tmp
