@@ -177,7 +177,7 @@ class iTradeRSSPanel(wx.Panel):
         if os.path.exists(fn):
             try:
                 f = open(fn,'r')
-                txt = f.read()
+                txt = f.read().decode('utf-8')
             except IOError:
                 self.emptyPage()
                 info('loadCache(%s) : IOError -> empty page' % fn)
@@ -201,7 +201,7 @@ class iTradeRSSPanel(wx.Panel):
             info('saveCache(%s) : IOError :-(' % fn)
             return False
 
-        f.write(self.m_content)
+        f.write(self.m_content.encode('utf-8'))
 
         # close the file
         f.close()

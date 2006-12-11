@@ -1,11 +1,12 @@
 /iTrade/ChangeLog
 ===============================================================================
 
-On the road for v0.4.8 (Nausica2)
+On the road for v0.4.8 (Nausicaa2)
 
 ===============================================================================
 
 2006-12-12  Gilles Dumortier <dgil at ieee.org>
+	* News : saving the cache with non ASCII char (SF bug 1613121) / UTF8
 	* Fix list of portfolio files when using a specific usrdata/ folder
 
 ===============================================================================
