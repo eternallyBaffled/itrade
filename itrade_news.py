@@ -74,10 +74,11 @@ class News(object):
     def feedQuote(self,quote,lang=None):
         if lang==None:
             lang = quote.country()
+        print 'feedQuote: lang=%s' % lang
 
         # __x very temporary : need to aggregate news from various sources
         #                      using callback to notify the progress
-        if lang=='fr':
+        if lang.upper()=='xFR':
             return gNewsBoursorama.feedQuote(quote,lang)
         else:
             return gNewsGoogle.feedQuote(quote,lang)
