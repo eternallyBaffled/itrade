@@ -6,6 +6,7 @@ On the road for v0.4.8 (Nausicaa2)
 ===============================================================================
 
 2006-12-12  Gilles Dumortier <dgil at ieee.org>
+	* Money Management : HTML generated page use iso-8859-1 charset
 	* News : Boursorama News provider was buggy (SF bug 1612349)
 	* News : saving the cache with non ASCII char (SF bug 1613121) / UTF8
 	* Fix list of portfolio files when using a specific usrdata/ folder
@@ -14,6 +15,7 @@ On the road for v0.4.8 (Nausicaa2)
 
 2006-12-09  Gilles Dumortier <dgil at ieee.org>
 	* Prepare 0.4.5 official release
+		SVN tag : ITRADE_0_4_5_NAUSICAA_TAG
 		SVN branch : ITRADE_0_4_5_NAUSICAA_BRANCH
 
 2006-12-08  Gilles Dumortier <dgil at ieee.org>

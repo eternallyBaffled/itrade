@@ -152,7 +152,7 @@ class News_Balo(object):
         buf = re.search('<tr>[ \t\n\r]*<td>.*</table>',buf,re.IGNORECASE|re.MULTILINE|re.DOTALL)
         if buf:
             buf = buf.group()[:-8]
-            page = "<html><body>" + "<br><a href=':back'>%s</a><H3>" % message('backtolist') + title + "</H3>" + buf + "<br><br><a href=':back'>%s</a>" % message('backtolist')  + "</body></html>"
+            page = '<html><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><body>' + "<br><a href=':back'>%s</a><H3>" % message('backtolist') + title + "</H3>" + buf + "<br><br><a href=':back'>%s</a>" % message('backtolist')  + "</body></html>"
 
             if html:
                 html.SetPageWithoutCache(page)
