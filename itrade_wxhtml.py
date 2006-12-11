@@ -113,7 +113,7 @@ class iTradeHtmlPanel(wx.Panel):
         self.html.SetSize(self.GetSizeTuple())
 
     def paint0(self):
-        self.html.SetPage("<html><body>")
+        self.html.SetPage('<html><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><body>')
         self.html.AppendToPage("<head>%s</head>" % message('html_connecting'))
         self.html.AppendToPage("</body></html>")
 
@@ -139,9 +139,7 @@ class iTradeRSSPanel(wx.Panel):
     # ---[ HeaderPage / AppendToPage / TrailerPage must use buffered content ]---
 
     def HeaderPage(self):
-        self.m_html.SetPage("<html>")
-        self.m_html.AppendToPage('<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">')
-        self.m_html.AppendToPage("<body>")
+        self.m_html.SetPage('<html><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><body>')
         self.m_html.AppendToPage("<a href=':scan'>%s</a> " % message('rss_scan'))
         self.m_html.AppendToPage("<a href=':clear'>%s</a>" % message('rss_clear'))
 

@@ -137,7 +137,7 @@ class iTradeEvaluationPanel(wx.Window):
         self.m_port.computeOperations()
         # __x localisation + better look + previous year information + ...
         # __x hopefully for next release :-)
-        self.html.SetPage("<html><body>")
+        self.html.SetPage('<html><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><body>')
         self.html.AppendToPage('<table border="1" cellpadding="2" cellspacing="1" class="bright">')
         self.html.AppendToPage(' <tr align="right" class="T20">')
         self.html.AppendToPage('   <td align="left" nowrap><b>%s</b></td>' % message('money_portfolio'))
