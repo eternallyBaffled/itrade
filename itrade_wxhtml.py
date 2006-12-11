@@ -139,7 +139,9 @@ class iTradeRSSPanel(wx.Panel):
     # ---[ HeaderPage / AppendToPage / TrailerPage must use buffered content ]---
 
     def HeaderPage(self):
-        self.m_html.SetPage("<html><body>")
+        self.m_html.SetPage("<html>")
+        self.m_html.AppendToPage('<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">')
+        self.m_html.AppendToPage("<body>")
         self.m_html.AppendToPage("<a href=':scan'>%s</a> " % message('rss_scan'))
         self.m_html.AppendToPage("<a href=':clear'>%s</a>" % message('rss_clear'))
 
@@ -177,7 +179,7 @@ class iTradeRSSPanel(wx.Panel):
         if os.path.exists(fn):
             try:
                 f = open(fn,'r')
-                txt = f.read().decode('utf-8')
+                txt = f.read()
             except IOError:
                 self.emptyPage()
                 info('loadCache(%s) : IOError -> empty page' % fn)
@@ -201,7 +203,7 @@ class iTradeRSSPanel(wx.Panel):
             info('saveCache(%s) : IOError :-(' % fn)
             return False
 
-        f.write(self.m_content.encode('utf-8'))
+        f.write(self.m_content)
 
         # close the file
         f.close()
