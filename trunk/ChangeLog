@@ -5,6 +5,9 @@ On the road for v0.4.8 (Nausica2)
 
 ===============================================================================
 
+2006-12-12  Gilles Dumortier <dgil at ieee.org>
+	* Fix list of portfolio files when using a specific usrdata/ folder
+
 ===============================================================================
 
 2006-12-09  Gilles Dumortier <dgil at ieee.org>
