@@ -122,6 +122,9 @@ def main():
             if not os.path.exists(itrade_config.dirUserData):
                 print 'userdata folder %s not found !' % a
                 sys.exit()
+            itrade_portfolio.portfolios._init_()
+            itrade_portfolio.portfolios.load()
+
         if o  == "--unicode":
             itrade_config.unicode = True
         if o in ("-f", "--file"):
