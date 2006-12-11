@@ -78,7 +78,7 @@ class News(object):
 
         # __x very temporary : need to aggregate news from various sources
         #                      using callback to notify the progress
-        if lang.upper()=='xFR':
+        if lang.upper()=='FR':
             return gNewsBoursorama.feedQuote(quote,lang)
         else:
             return gNewsGoogle.feedQuote(quote,lang)
