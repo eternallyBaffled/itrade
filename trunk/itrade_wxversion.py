@@ -33,11 +33,12 @@
 # ============================================================================
 
 # ============================================================================
-# wxPython version required : 2.7.x
+# wxPython version required : 2.8.x, 2.7.x, 2.6.x
 # ============================================================================
 
 WXVERSION_MAJOR     = 2
-WXVERSION_MINOR     = 7
+WXVERSION_MINOR1    = 6
+WXVERSION_MINOR2    = 8
 
 # ============================================================================
 # Imports
@@ -72,16 +73,14 @@ def resolve_wxversion():
 
     # need to select the first one with 'ansi'
     for eachVersion in versions:
-        m = re.search( patt % (WXVERSION_MAJOR,WXVERSION_MINOR), eachVersion)
-        if m:
-            print 'wxPython Selected  :',eachVersion
-            wxversion.select(eachVersion)
-            return
-
-        if WXVERSION_MINOR > 0:
-            m = re.search( patt % (WXVERSION_MAJOR,WXVERSION_MINOR-1), eachVersion)
+        for min in range(WXVERSION_MINOR1,WXVERSION_MINOR2+1):
+            if min == WXVERSION_MINOR2:
+                msg = ''
+            else:
+                msg = ' (deprecated version - think to update)'
+            m = re.search( patt % (WXVERSION_MAJOR,min), eachVersion)
             if m:
-                print 'wxPython Selected  :',eachVersion,' (deprecated version - think to update)'
+                print 'wxPython Selected  :',eachVersion,msg
                 wxversion.select(eachVersion)
                 return
 
@@ -101,7 +100,7 @@ def resolve_wxversion():
 
     import sys, wx, webbrowser
     app = wx.PySimpleApp()
-    wx.MessageBox(msgs % (WXVERSION_MAJOR,WXVERSION_MINOR), message('wxversion_title'))
+    wx.MessageBox(msgs % (WXVERSION_MAJOR,WXVERSION_MINOR2), message('wxversion_title'))
     app.MainLoop()
     webbrowser.open("http://wxpython.org/")
     sys.exit()
