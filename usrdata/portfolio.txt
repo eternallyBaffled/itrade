@@ -1,1 +1,2 @@
 default;<default portfolio>;18331;EURONEXT;EUR;1.196000
+safran;Safran en live;;EURONEXT;EUR;1.196000
