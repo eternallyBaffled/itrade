@@ -502,4 +502,8 @@ cache_erase_confirm_all; Erase all data (historic, news, ...) from the cache ? (
 connector_change_confirm_title; Option to Download Data
 connector_change_confirm; This option selection requires that you restart the software to be activated
 
+indicator_autorefresh;Auto Refresh
+indicator_noautorefresh;Manual Refresh
+indicator_disconnected;Disconnected
+
 test;test message

@@ -271,8 +271,9 @@ class iTradeMainToolbar(wx.ToolBar):
         self.AddSimpleTool(self._NTB2_ABOUT, wx.Bitmap('res/about.png'),
                            message('main_about'), message('main_desc_about'))
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
-        self.m_indicator = wx.StaticText(self, -1, "::", size=(180,15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
+        self.m_indicator = wx.StaticText(self, -1, "", size=(180,15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
         self.AddControl(self.m_indicator)
+        self.ClearIndicator()
 
         wx.EVT_TOOL(self, self._NTB2_EXIT, self.onExit)
         wx.EVT_TOOL(self, self._NTB2_NEW, self.onNew)
@@ -325,9 +326,18 @@ class iTradeMainToolbar(wx.ToolBar):
 
     # ---[ Market Indicator management ] ---
 
+    def ClearIndicator(self):
+        if itrade_config.bAutoRefreshMatrixView:
+            label = message('indicator_autorefresh')
+        else:
+            label = message('indicator_noautorefresh')
+        self.m_indicator.SetBackgroundColour(wx.NullColour)
+        self.m_indicator.ClearBackground()
+        self.m_indicator.SetLabel(label)
+
     def SetIndicator(self,market,clock):
         if clock=="::":
-            label = market + ": Disconnected"
+            label = market + ": " + message('indicator_disconnected')
             self.m_indicator.SetBackgroundColour(cDISCONNECTED)
         else:
             label = market + ": " + clock
@@ -992,6 +1002,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
         itrade_config.bAutoRefreshMatrixView = not itrade_config.bAutoRefreshMatrixView
         itrade_config.saveConfig()
         self.updateCheckItems()
+        self.m_toolbar.ClearIndicator()
         if itrade_config.bAutoRefreshMatrixView:
             self.startLive()
         else:

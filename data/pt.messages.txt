@@ -502,4 +502,8 @@ cache_erase_confirm_all;__x Erase all data (historic, news, ...) from the cache 
 connector_change_confirm_title;__x Option to Download Data
 connector_change_confirm;__x This option selection requires that you restart the software to be activated.
 
+indicator_autorefresh;__xAuto Refresh
+indicator_noautorefresh;__xManual Refresh
+indicator_disconnected;__xDisconnected
+
 test;Mensagem de teste

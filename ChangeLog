@@ -5,7 +5,13 @@ On the road for v0.4.8 (Nausicaa2)
 
 ===============================================================================
 
+2006-12-13  Gilles Dumortier <dgil at ieee.org>
+	* Display 'Manual Refresh' when Auto Refresh is Off
+	* Prepare website to switch to 0.4.5 official release
+	* Be sure to select the latest wxPython release
+
 2006-12-12  Gilles Dumortier <dgil at ieee.org>
+	* Disable menu for "not implemented" features (SF bug 1613536)
 	* wxPython 2.8 : non-regression testing (SF bug 1614304)
 	* Money Management : HTML generated page use iso-8859-1 charset
 	* News : Boursorama News provider was buggy (SF bug 1612349)
