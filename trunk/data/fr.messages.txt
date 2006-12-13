@@ -501,4 +501,8 @@ cache_erase_confirm_all; Confirmez-vous l'effacement de toutes les données (hist
 connector_change_confirm_title; Option de récupération des données
 connector_change_confirm; Ce changement d'option nécessite le redémarrage du logiciel pour sa prise en compte
 
+indicator_autorefresh;Raffraichissement Automatique
+indicator_noautorefresh;Raffraichissement Manuel
+indicator_disconnected;Déconnecté
+
 test;message de test
