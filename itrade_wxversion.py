@@ -71,18 +71,23 @@ def resolve_wxversion():
     versions = wxversion.getInstalled()
     print 'wxPython Installed (%s) :' % patts,versions
 
-    # need to select the first one with 'ansi'
+    # need to select the more recent one with 'ansi'
+    vSelected = None
+    vSelectedMsg = ''
     for eachVersion in versions:
         for min in range(WXVERSION_MINOR1,WXVERSION_MINOR2+1):
-            if min == WXVERSION_MINOR2:
-                msg = ''
-            else:
-                msg = ' (deprecated version - think to update)'
             m = re.search( patt % (WXVERSION_MAJOR,min), eachVersion)
             if m:
-                print 'wxPython Selected  :',eachVersion,msg
-                wxversion.select(eachVersion)
-                return
+                if min == WXVERSION_MINOR2:
+                    vSelectedMsg = ''
+                else:
+                    vSelectedMsg = ' (deprecated version - think to update)'
+                vSelected = eachVersion
+
+    if vSelected:
+        print 'wxPython Selected  :',vSelected,vSelectedMsg
+        wxversion.select(vSelected)
+        return
 
     # no compatible version :-( : try to select an ansi release
     bAnsi = False
