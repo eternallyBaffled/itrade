@@ -210,6 +210,12 @@ class iTradeQuoteInfoWindow(wx.Window):
             dc.DrawRectangle(60,33,80,62)
 
             fn = os.path.join(itrade_config.dirImageData,'%s.gif' % self.m_quote.ticker())
+            if not exists(fn):
+                fn = os.path.join(itrade_config.dirImageData,'%s.png' % self.m_quote.ticker())
+            if not exists(fn):
+                fn = os.path.join(itrade_config.dirImageData,'%s.bmp' % self.m_quote.ticker())
+            if not exists(fn):
+                fn = os.path.join(itrade_config.dirImageData,'%s.jpg' % self.m_quote.ticker())
             if exists(fn):
                 self.m_logo = wx.Bitmap(fn)
                 if self.m_logo:
