@@ -5,7 +5,12 @@ On the road for v0.4.8 (Nausicaa2)
 
 ===============================================================================
 
+2006-12-14  Michel Legrand <m_leg at users.sourceforge.net>
+	* Cac40 matrix
+	* Cac40 icons
+
 2006-12-14  Gilles Dumortier <dgil at ieee.org>
+	* Quote View : Icon reference <ticker>-<market>.<ext> (SF bug 1616019)
 	* Quote view : icon should also support .PNG (SF bug 1615945)
 
 2006-12-13  Gilles Dumortier <dgil at ieee.org>

@@ -200,6 +200,9 @@ class iTradeQuoteInfoWindow(wx.Window):
     def OnExit(self, evt):
         self.m_parent.OnExit(evt)
 
+    def suffixLogo(self,ext):
+        return '%s-%s.%s' % (self.m_quote.ticker().lower(),self.m_quote.market().lower(),ext)
+
     def paintLogo(self,dc):
         if self.m_logo == None:
             bgc = self.GetBackgroundColour()
@@ -209,13 +212,13 @@ class iTradeQuoteInfoWindow(wx.Window):
             dc.SetPen(wpen)
             dc.DrawRectangle(60,33,80,62)
 
-            fn = os.path.join(itrade_config.dirImageData,'%s.gif' % self.m_quote.ticker())
+            fn = os.path.join(itrade_config.dirImageData,self.suffixLogo('gif'))
             if not exists(fn):
-                fn = os.path.join(itrade_config.dirImageData,'%s.png' % self.m_quote.ticker())
+                fn = os.path.join(itrade_config.dirImageData,self.suffixLogo('png'))
             if not exists(fn):
-                fn = os.path.join(itrade_config.dirImageData,'%s.bmp' % self.m_quote.ticker())
+                fn = os.path.join(itrade_config.dirImageData,self.suffixLogo('bmp'))
             if not exists(fn):
-                fn = os.path.join(itrade_config.dirImageData,'%s.jpg' % self.m_quote.ticker())
+                fn = os.path.join(itrade_config.dirImageData,self.suffixLogo('jpg'))
             if exists(fn):
                 self.m_logo = wx.Bitmap(fn)
                 if self.m_logo:
