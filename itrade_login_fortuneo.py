@@ -39,73 +39,23 @@
 # python system
 import logging
 import re
-#import string
-#import thread
-#import datetime
-#import os
-#import socket
+import os
 import httplib
 import mimetypes
 
 # iTrade system
-#import itrade_config
+import itrade_config
 from itrade_logging import *
-#from itrade_quotes import *
 from itrade_login import *
 
 # ============================================================================
-# http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/146306/index_txt
-# ============================================================================
-
-def post_multipart(host, selector, fields, files):
-    """
-    Post fields and files to an http host as multipart/form-data.
-    fields is a sequence of (name, value) elements for regular form fields.
-    files is a sequence of (name, filename, value) elements for data to be uploaded as files
-    Return the server's response page.
-    """
-    content_type, body = encode_multipart_formdata(fields, files)
-    h = httplib.HTTP(host)
-    h.putrequest('POST', selector)
-    h.putheader('content-type', content_type)
-    h.putheader('content-length', str(len(body)))
-    h.endheaders()
-    h.send(body)
-    errcode, errmsg, headers = h.getreply()
-    print errcode, errmsg, headers
-    return h.file.read()
-
-def encode_multipart_formdata(fields, files):
-    """
-    fields is a sequence of (name, value) elements for regular form fields.
-    files is a sequence of (name, filename, value) elements for data to be uploaded as files
-    Return (content_type, body) ready for httplib.HTTP instance
-    """
-    BOUNDARY = '----------ThIs_Is_tHe_bouNdaRY_$'
-    CRLF = '\r\n'
-    L = []
-    for (key, value) in fields:
-        L.append('--' + BOUNDARY)
-        L.append('Content-Disposition: form-data; name="%s"' % key)
-        L.append('')
-        L.append(value)
-    for (key, filename, value) in files:
-        L.append('--' + BOUNDARY)
-        L.append('Content-Disposition: form-data; name="%s"; filename="%s"' % (key, filename))
-        L.append('Content-Type: %s' % get_content_type(filename))
-        L.append('')
-        L.append(value)
-    L.append('--' + BOUNDARY + '--')
-    L.append('')
-    body = CRLF.join(L)
-    content_type = 'multipart/form-data; boundary=%s' % BOUNDARY
-    return content_type, body
-
-def get_content_type(filename):
-    return mimetypes.guess_type(filename)[0] or 'application/octet-stream'
-
-# ============================================================================
 # Login_fortuneo()
+#
+#   login(user,passwd)
+#       store cookie after login
+#
+#   logout()
+#       nop
 #
 # ============================================================================
 
@@ -113,7 +63,9 @@ class Login_fortuneo(object):
     def __init__(self):
         debug('LiveUpdate_fortuneo:__init__')
         self.m_default_host = "www.fortuneo.fr"
-        self.m_default_url = "/cgi-bin/webact/WebBank/scripts/FRT5.2/loginFRT.jsp"
+        self.m_login_url =  "/cgi-bin/webact/WebBank/scripts/FRT5.2/loginFRT.jsp"
+        self.m_ack_url   =  "/cgi-bin/webact/WebBank/scripts/FRT5.2/mainFRT.jsp"
+        self.m_trader_url = "/cgi-bin/webact/WebBank/scripts/FRT5.2/outils/traderQuotes/TraderQuotes.jsp?place_indice=025&plisin=025_FR0000130007&pageAccueil=synthese&BV_SessionID=%s&BV_EngineID=%s"
         self.m_logged = False
 
         debug('Fortuneo login (%s) - ready to run' % self.m_default_host)
@@ -146,18 +98,19 @@ class Login_fortuneo(object):
                     }
 
 
-        # POST quote request
+        # POST login request
         try:
-            self.m_conn.request("POST", self.m_default_url, params, headers)
+            self.m_conn.request("POST", self.m_login_url, params, headers)
             flux = self.m_conn.getresponse()
         except:
-            info('Login_fortuneo:POST failure')
+            print 'Login_fortuneo:POST login failure %s' % self.m_login_url
             return None
 
         if flux.status != 200:
-            info('Login_fortuneo: status==%d!=200 reason:%s' % (flux.status,flux.reason))
+            print 'Login_fortuneo: login status==%d!=200 reason:%s' % (flux.status,flux.reason)
             return None
 
+        # OK : we are logged to the service ... we can extract Session and Engine ID
         buf = flux.read()
         #print buf
 
@@ -179,9 +132,58 @@ class Login_fortuneo(object):
 
         print 'BV_EngineID = ',BV_EngineID
 
-        # __x OK ! GOOD ! use BV_SessionID and BV_EngineID to get secure cookie
+        # OK ! GOOD ! use BV_SessionID and BV_EngineID to get secure cookie
+
+        # POST ACK
+        params = "BV_SessionID=%s&BV_EngineID=%s\r\n" % (BV_SessionID,BV_EngineID)
+
+        try:
+            self.m_conn.request("POST", self.m_ack_url, params, headers)
+            flux = self.m_conn.getresponse()
+        except:
+            print 'Login_fortuneo:POST ack failure %s' % self.m_ack_url
+            return None
+
+        if flux.status != 200:
+            print 'Login_fortuneo: ack status==%d!=200 reason:%s' % (flux.status,flux.reason)
+            return None
+
+        buf = flux.read()
+        #print buf
+
+        # GET trader request
+        try:
+            self.m_conn.request("GET", self.m_trader_url % (BV_SessionID,BV_EngineID), None, headers)
+            flux = self.m_conn.getresponse()
+        except:
+            print 'Login_fortuneo:GET trader failure %s' % self.m_trader_url
+            return None
+
+        if flux.status != 200:
+            print 'Login_fortuneo: trader status==%d!=200 reason:%s' % (flux.status,flux.reason)
+            return None
+
+        buf = flux.read()
+
+        # extract cookie
+        m = re.search('startStreaming\( \"\S+\",',buf,re.IGNORECASE|re.MULTILINE)
+        if m==None:
+            print 'Login_fortuneo: cookie statement not found !'
+            return None
+
+        cookie = m.group()[17:-11]
+        #print len(cookie),cookie
+        if len(cookie)!=96:
+            print 'Login_fortuneo: cookie len is invalid (%d != 96) !' % len(cookie)
 
         self.m_logged = True
+
+        # save the cookie for later use
+        f = open(os.path.join(itrade_config.dirUserData,'live.txt'),'w')
+        f.write(cookie)
+        f.close()
+
+        self.m_conn.close()
 
         return True
 
