@@ -406,7 +406,7 @@ class LiveUpdate_fortuneo(object):
         self.m_connected = False
 
         try:
-            f = open(os.path.join(itrade_config.dirUserData,'live.txt'),'r')
+            f = open(os.path.join(itrade_config.dirUserData,'fortuneo_live.txt'),'r')
             infile = f.readlines()
             self.m_blowfish = infile[0].strip()
             f.close()

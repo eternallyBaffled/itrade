@@ -47,6 +47,7 @@ import mimetypes
 import itrade_config
 from itrade_logging import *
 from itrade_login import *
+from itrade_local import message
 
 # ============================================================================
 # Login_fortuneo()
@@ -68,6 +69,11 @@ class Login_fortuneo(object):
         self.m_trader_url = "/cgi-bin/webact/WebBank/scripts/FRT5.2/outils/traderQuotes/TraderQuotes.jsp?place_indice=025&plisin=025_FR0000130007&pageAccueil=synthese&BV_SessionID=%s&BV_EngineID=%s"
         self.m_logged = False
 
+        # __x temp
+        self.m_username = 'DEMO6C23NH6'
+        self.m_password = 'e109'
+        self.saveUserInfo()
+
         debug('Fortuneo login (%s) - ready to run' % self.m_default_host)
 
     # ---[ properties ] ---
@@ -75,9 +81,39 @@ class Login_fortuneo(object):
     def name(self):
         return 'fortuneo'
 
+    def desc(self):
+        return message('login_fortuneo_desc')
+
+    # ---[ userinfo ] ---
+    def saveUserInfo(self):
+        f = open(os.path.join(itrade_config.dirUserData,'fortuneo_userinfo.txt'),'w')
+        s = self.m_username + ',' + self.m_password
+        f.write(s)
+        f.close()
+
+    def loadUserInfo(self):
+        try:
+            f = open(os.path.join(itrade_config.dirUserData,'fortuneo_userinfo.txt'),'r')
+        except IOError:
+            return False
+        s = f.read().strip()
+        f.close()
+        v = s.split(',')
+        if len(v)==2:
+            self.m_username = v[0]
+            self.m_password = v[1]
+            return True
+        return False
+
     # ---[ login ] ---
 
-    def login(self,user,passwd):
+    def login(self):
+        # load username / password
+        if not self.loadUserInfo():
+            print 'login: userinfo are invalid - please reenter Access Information'
+            return False
+
+        # create the HTTPS connexion
         self.m_conn = httplib.HTTPSConnection(self.m_default_host,443)
         if self.m_conn == None:
             print 'login: not connected on %s' % self.m_default_host
@@ -85,7 +121,7 @@ class Login_fortuneo(object):
 
         self.m_logged = False
 
-        params = "sourceB2B=FTO&username=%s&password=%s&pageAccueil=synthese\r\n" % (user,passwd)
+        params = "sourceB2B=FTO&username=%s&password=%s&pageAccueil=synthese\r\n" % (self.m_username,self.m_password)
 
         headers = {
                     "Connection":"keep-alive",
@@ -121,7 +157,7 @@ class Login_fortuneo(object):
 
         BV_SessionID = m.group()[27:-1]
 
-        print 'BV_SessionID = ',BV_SessionID
+        #print 'BV_SessionID = ',BV_SessionID
 
         m = re.search("name=\"BV_EngineID\"\s*value=\"\S+\"",buf,re.IGNORECASE|re.MULTILINE)
         if m==None:
@@ -130,7 +166,7 @@ class Login_fortuneo(object):
 
         BV_EngineID = m.group()[26:-1]
 
-        print 'BV_EngineID = ',BV_EngineID
+        #print 'BV_EngineID = ',BV_EngineID
 
         # OK ! GOOD ! use BV_SessionID and BV_EngineID to get secure cookie
 
@@ -172,14 +208,14 @@ class Login_fortuneo(object):
             return None
 
         cookie = m.group()[17:-11]
-        #print len(cookie),cookie
+        #print len(cookie),':',cookie
         if len(cookie)!=96:
             print 'Login_fortuneo: cookie len is invalid (%d != 96) !' % len(cookie)
 
         self.m_logged = True
 
         # save the cookie for later use
-        f = open(os.path.join(itrade_config.dirUserData,'live.txt'),'w')
+        f = open(os.path.join(itrade_config.dirUserData,'fortuneo_live.txt'),'w')
         f.write(cookie)
         f.close()
 
@@ -212,7 +248,7 @@ registerLoginConnector(gLoginFortuneo.name(),gLoginFortuneo)
 if __name__=='__main__':
     setLevel(logging.INFO)
 
-    gLoginFortuneo.login('DEMO6C23NH6','e109')
+    gLoginFortuneo.login()
     gLoginFortuneo.logout()
 
 # ============================================================================

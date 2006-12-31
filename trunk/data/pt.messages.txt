@@ -506,4 +506,11 @@ indicator_autorefresh;__xAuto Refresh
 indicator_noautorefresh;__xManual Refresh
 indicator_disconnected;__xDisconnected
 
+login_title;__xAccount Access
+login_fortuneo_desc;__xEnter your Fortuneo account number (real or demonstration account)
+login_set;__xSet
+login_setdesc; __xSet the entered access information
+login_username;__xUser idendity :
+login_password;__xUser password :
+
 test;Mensagem de teste
