@@ -77,6 +77,10 @@ main_quote_property;Propriedades
 main_quote_desc_property; Visualizar as propriedades para as acções actualmente seleccionadas
 
 main_options;&Opções
+
+main_options_access;__x&Access
+main_options_desc_access;__x Access parameters for some connectors
+
 main_options_lang;&Língua
 main_options_desc_lang; Seleccionar a língua usada por este software
 main_options_lang_default;Língua do sistema
@@ -509,8 +513,12 @@ indicator_disconnected;__xDisconnected
 login_title;__xAccount Access
 login_fortuneo_desc;__xEnter your Fortuneo account number (real or demonstration account)
 login_set;__xSet
-login_setdesc; __xSet the entered access information
+login_setdesc;__x Set the entered access information
 login_username;__xUser idendity :
 login_password;__xUser password :
+login_test;__xTest
+login_testdesc;__x Try service's access using the entered information
+login_test_ok;__xAccess to the service is working
+login_test_nok;__xAccess to the service is not working
 
 test;Mensagem de teste

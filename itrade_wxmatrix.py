@@ -51,6 +51,7 @@ from itrade_portfolio import loadPortfolio
 from itrade_matrix import *
 from itrade_quotes import *
 from itrade_import import *
+from itrade_login import *
 from itrade_currency import currencies
 
 # iTrade wx system
@@ -65,6 +66,7 @@ from itrade_wxabout import iTradeAboutBox
 from itrade_wxhtml import iTradeHtmlWindow,iTradeLaunchBrowser
 from itrade_wxutil import FontFromSize
 from itrade_wxlistquote import list_iTradeQuote
+from itrade_wxlogin import login_UI
 
 from itrade_wxmixin import iTrade_wxFrame
 from itrade_wxlive import iTrade_wxLiveMixin,EVT_UPDATE_LIVE
@@ -114,6 +116,9 @@ ID_LIVE_QUOTE = 311
 #ID_BUY_QUOTE = 320
 #ID_SELL_QUOTE = 321
 ID_PROPERTY_QUOTE = 330
+
+ID_ACCESS = 350
+# ... free up 399
 
 ID_LANG = 399
 ID_LANG_FIRST = 400
@@ -482,6 +487,14 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
         self.viewmenu.Append(ID_COMPUTE, message('main_view_compute'),message('main_view_desc_compute'))
 
         self.optionsmenu = wx.Menu()
+        self.accessmenu = wx.Menu()
+
+        ncon = 0
+        for aname,acon in listLoginConnector():
+            self.accessmenu.Append(ID_ACCESS+ncon+1, acon.name(), acon.desc())
+            ncon = ncon + 1
+        self.optionsmenu.AppendMenu(ID_ACCESS,message('main_options_access'),self.accessmenu,message('main_options_desc_access'))
+
         self.langmenu = wx.Menu()
         self.langmenu.AppendRadioItem(ID_LANG_SYSTEM, message('main_options_lang_default'),message('main_options_lang_default'))
         self.langmenu.AppendRadioItem(ID_LANG_ENGLISH, message('main_options_lang_english'),message('main_options_lang_english'))
@@ -557,6 +570,9 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
         wx.EVT_MENU(self, ID_SMALL_VIEW, self.OnViewSmall)
         wx.EVT_MENU(self, ID_NORMAL_VIEW, self.OnViewNormal)
         wx.EVT_MENU(self, ID_BIG_VIEW, self.OnViewBig)
+
+        for i in range(0,ncon):
+            wx.EVT_MENU(self, ID_ACCESS+i+1, self.OnAccess)
 
         wx.EVT_MENU(self, ID_LANG_SYSTEM, self.OnLangDefault)
         wx.EVT_MENU(self, ID_LANG_ENGLISH, self.OnLangEnglish)
@@ -901,6 +917,17 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
     def OnViewBig(self,e):
         itrade_config.matrixFontSize = 3
         self.OnChangeViewText()
+
+    # --- [ Access management ] -------------------------------------
+
+    def OnAccess(self,e):
+        m = self.accessmenu.FindItemById(e.GetId())
+        m = m.GetText()
+        c = getLoginConnector(m)
+        if c:
+            u,p = c.loadUserInfo()
+            u,p = login_UI(self,u,p,c)
+            c.saveUserInfo(u,p)
 
     # --- [ Language management ] -------------------------------------
 

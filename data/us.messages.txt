@@ -77,6 +77,10 @@ main_quote_property;Properties
 main_quote_desc_property; Display properties for the current selected Quote
 
 main_options;&Options
+
+main_options_access;&Access
+main_options_desc_access; Access parameters for some connectors
+
 main_options_lang;&Language
 main_options_desc_lang; Select language used by this software
 main_options_lang_default;System Language
@@ -512,5 +516,9 @@ login_set;Set
 login_setdesc; Set the entered access information
 login_username;User idendity :
 login_password;User password :
+login_test;Test
+login_testdesc; Try service's access using the entered information
+login_test_ok;Access to the service is working
+login_test_nok;Access to the service is not working
 
 test;test message
