@@ -70,9 +70,7 @@ class Login_fortuneo(object):
         self.m_logged = False
 
         # __x temp
-        self.m_username = 'DEMO6C23NH6'
-        self.m_password = 'e109'
-        self.saveUserInfo()
+        self.saveUserInfo('DEMO6C23NH6','e109')
 
         debug('Fortuneo login (%s) - ready to run' % self.m_default_host)
 
@@ -85,9 +83,9 @@ class Login_fortuneo(object):
         return message('login_fortuneo_desc')
 
     # ---[ userinfo ] ---
-    def saveUserInfo(self):
+    def saveUserInfo(self,u,p):
         f = open(os.path.join(itrade_config.dirUserData,'fortuneo_userinfo.txt'),'w')
-        s = self.m_username + ',' + self.m_password
+        s = u + ',' + p
         f.write(s)
         f.close()
 
@@ -100,16 +98,15 @@ class Login_fortuneo(object):
         f.close()
         v = s.split(',')
         if len(v)==2:
-            self.m_username = v[0]
-            self.m_password = v[1]
-            return True
-        return False
+            return v[0],v[1]
+        return None,None
 
     # ---[ login ] ---
 
     def login(self):
         # load username / password
-        if not self.loadUserInfo():
+        u,p = self.loadUserInfo()
+        if not u or not p:
             print 'login: userinfo are invalid - please reenter Access Information'
             return False
 
@@ -121,7 +118,7 @@ class Login_fortuneo(object):
 
         self.m_logged = False
 
-        params = "sourceB2B=FTO&username=%s&password=%s&pageAccueil=synthese\r\n" % (self.m_username,self.m_password)
+        params = "sourceB2B=FTO&username=%s&password=%s&pageAccueil=synthese\r\n" % (u,p)
 
         headers = {
                     "Connection":"keep-alive",
