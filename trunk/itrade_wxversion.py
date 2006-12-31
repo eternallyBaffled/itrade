@@ -83,6 +83,9 @@ def resolve_wxversion():
                 else:
                     vSelectedMsg = ' (deprecated version - think to update)'
                 vSelected = eachVersion
+                break
+        if m:
+            break
 
     if vSelected:
         print 'wxPython Selected  :',vSelected,vSelectedMsg

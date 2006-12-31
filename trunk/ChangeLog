@@ -5,6 +5,9 @@ On the road for v0.4.8 (Nausicaa2)
 
 ===============================================================================
 
+2006-12-31 Elmo Mäntynen <elmo13 at jippii dot fi>
+	* The selected version of wx is the lowest accepted version
+
 2006-12-14  Michel Legrand <m_leg at users.sourceforge.net>
 	* Cac40 matrix
 	* Cac40 icons
