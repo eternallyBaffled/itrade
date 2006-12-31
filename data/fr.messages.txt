@@ -505,4 +505,11 @@ indicator_autorefresh;Raffraichissement Automatique
 indicator_noautorefresh;Raffraichissement Manuel
 indicator_disconnected;Déconnecté
 
+login_title;Accès Client
+login_fortuneo_desc;Entrez votre identifiant Fortuneo (compte réel ou de démonstration)
+login_set;Valide
+login_setdesc; Valide les informations d'accès saisies
+login_username;Identifiant :
+login_password;Mot de passe :
+
 test;message de test
