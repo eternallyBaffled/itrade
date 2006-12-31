@@ -38,7 +38,7 @@
 
 # python system
 import logging
-#import re
+import re
 #import string
 #import thread
 #import datetime
@@ -158,8 +158,28 @@ class Login_fortuneo(object):
             info('Login_fortuneo: status==%d!=200 reason:%s' % (flux.status,flux.reason))
             return None
 
-        print flux.read()
-        # __x OK ! GOOD ! BV_SessionID and BV_EngineID could be extracted
+        buf = flux.read()
+        #print buf
+
+        m = re.search("name=\"BV_SessionID\"\s*value=\"\S+\"",buf,re.IGNORECASE|re.MULTILINE)
+        if m==None:
+            print 'Login_fortuneo: BV_SessionID statement not found !'
+            return None
+
+        BV_SessionID = m.group()[27:-1]
+
+        print 'BV_SessionID = ',BV_SessionID
+
+        m = re.search("name=\"BV_EngineID\"\s*value=\"\S+\"",buf,re.IGNORECASE|re.MULTILINE)
+        if m==None:
+            print 'Login_fortuneo: BV_EngineID statement not found !'
+            return None
+
+        BV_EngineID = m.group()[26:-1]
+
+        print 'BV_EngineID = ',BV_EngineID
+
+        # __x OK ! GOOD ! use BV_SessionID and BV_EngineID to get secure cookie
 
         self.m_logged = True
 
