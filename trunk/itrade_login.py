@@ -64,7 +64,7 @@ class LoginRegistry(object):
                 return aconnector
         return None
 
-    def list(self,name):
+    def list(self,name=None):
         lst = []
         for aname,aconnector in self.m_log:
             if name==None or (name==aname):

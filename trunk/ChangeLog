@@ -6,6 +6,7 @@ On the road for v0.4.8 (Nausicaa2)
 ===============================================================================
 
 2006-12-31  Gilles Dumortier <dgil at ieee.org>
+	* Add itrade_wxlogin.py to enter username/password for brokers login
 	* Change (c) to 2004-2007 on every file
 	* Add itrade_login.py and itrade_login_fortuneo.py modules to log to a
 	  broker service. missing UI to enter username/password

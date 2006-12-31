@@ -63,10 +63,19 @@ class iTradeLoginDialog(wx.Dialog):
 
         self.m_username = username
         self.m_password = password
+        self.m_connector = connector
 
         wx.EVT_SIZE(self, self.OnSize)
 
         sizer = wx.BoxSizer(wx.VERTICAL)
+
+        # info
+        box = wx.BoxSizer(wx.HORIZONTAL)
+
+        label = wx.StaticText(self, -1, connector.desc())
+        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+
+        sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
         # username
         box = wx.BoxSizer(wx.HORIZONTAL)
@@ -105,6 +114,12 @@ class iTradeLoginDialog(wx.Dialog):
         box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_BUTTON(self, wx.ID_OK, self.OnValid)
 
+        # TEST
+        btn = wx.Button(self, wx.ID_REFRESH, message('login_test'))
+        btn.SetHelpText(message('login_testdesc'))
+        box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        wx.EVT_BUTTON(self, wx.ID_REFRESH, self.OnTest)
+
         # CANCEL
         btn = wx.Button(self, wx.ID_CANCEL, message('cancel'))
         btn.SetHelpText(message('cancel_desc'))
@@ -123,12 +138,29 @@ class iTradeLoginDialog(wx.Dialog):
         self.m_password = self.wxPasswordCtrl.GetLabel().strip()
         self.EndModal(wx.ID_OK)
 
+    def OnTest(self,event):
+        u = self.wxUsernameCtrl.GetLabel().strip()
+        p = self.wxPasswordCtrl.GetLabel().strip()
+        ret = self.m_connector.login(u,p)
+        self.m_connector.logout()
+        if ret:
+            dlg = wx.MessageDialog(self, message('login_test_ok'), message('login_testdesc') + ' - ' + self.m_connector.name(), wx.OK | wx.ICON_INFORMATION)
+        else:
+            dlg = wx.MessageDialog(self, message('login_test_nok'), message('login_testdesc') + ' - ' + self.m_connector.name(), wx.OK | wx.ICON_INFORMATION)
+        dlg.ShowModal()
+        dlg.Destroy()
+
 # ============================================================================
 # login_UI
 #
 # ============================================================================
 
 def login_UI(win,username,password,connector):
+    if username == None:
+        username = ''
+    if password == None:
+        password = ''
+
     dlg = iTradeLoginDialog(win,username,password,connector)
     if dlg.ShowModal()==wx.ID_OK:
         username = dlg.m_username

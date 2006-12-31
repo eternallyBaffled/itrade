@@ -81,6 +81,10 @@ main_quote_property;Propriétés
 main_quote_desc_property; Visualise les propriétés de la valeur sélectionnée
 
 main_options;&Options
+
+main_options_access;&Accès
+main_options_desc_access; Paramètres d'accès à certains connecteurs
+
 main_options_lang;&Langue
 main_options_desc_lang; Choix de la langue utilisée par le logiciel
 main_options_lang_default;Langue système
@@ -511,5 +515,10 @@ login_set;Valide
 login_setdesc; Valide les informations d'accès saisies
 login_username;Identifiant :
 login_password;Mot de passe :
+login_test;Essaye
+login_testdesc; Essaye l'accès au service avec les informations fournies
+login_test_ok;L'accès au service fonctionne avec ces informations
+login_test_nok;L'accès au service ne fonctionne pas avec ces informations
+
 
 test;message de test

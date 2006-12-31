@@ -69,9 +69,6 @@ class Login_fortuneo(object):
         self.m_trader_url = "/cgi-bin/webact/WebBank/scripts/FRT5.2/outils/traderQuotes/TraderQuotes.jsp?place_indice=025&plisin=025_FR0000130007&pageAccueil=synthese&BV_SessionID=%s&BV_EngineID=%s"
         self.m_logged = False
 
-        # __x temp
-        self.saveUserInfo('DEMO6C23NH6','e109')
-
         debug('Fortuneo login (%s) - ready to run' % self.m_default_host)
 
     # ---[ properties ] ---
@@ -103,12 +100,14 @@ class Login_fortuneo(object):
 
     # ---[ login ] ---
 
-    def login(self):
-        # load username / password
-        u,p = self.loadUserInfo()
-        if not u or not p:
-            print 'login: userinfo are invalid - please reenter Access Information'
-            return False
+    def login(self,u,p):
+        # load username / password (if required)
+        if u==None or p==None:
+            u,p = self.loadUserInfo()
+            if u==None or p==None:
+                print 'login: userinfo are invalid - please reenter Access Information'
+                return False
+        print 'log:',u,p
 
         # create the HTTPS connexion
         self.m_conn = httplib.HTTPSConnection(self.m_default_host,443)
@@ -245,7 +244,7 @@ registerLoginConnector(gLoginFortuneo.name(),gLoginFortuneo)
 if __name__=='__main__':
     setLevel(logging.INFO)
 
-    gLoginFortuneo.login()
+    gLoginFortuneo.login('DEMO6C23NH6','e109')
     gLoginFortuneo.logout()
 
 # ============================================================================
