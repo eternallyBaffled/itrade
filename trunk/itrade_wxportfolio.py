@@ -173,7 +173,7 @@ class iTradePortfolioSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         self.m_list.InsertColumnInfo(2, info)
 
         x = 0
-        self.currentItem = 0
+        self.currentItem = -1
 
         self.itemDataMap = {}
         for eachPortfolio in portfolios.list():
@@ -194,11 +194,12 @@ class iTradePortfolioSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
             self.m_list.SetStringItem(x, 2, data[2])
             self.m_list.SetItemData(x, key)
 
-        self.m_list.SetColumnWidth(0, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(1, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(2, wx.LIST_AUTOSIZE)
-        self.m_list.SetItemState(self.currentItem, wx.LIST_STATE_SELECTED, wx.LIST_STATE_SELECTED)
-        self.m_list.EnsureVisible(self.currentItem)
+        self.m_list.SetColumnWidth(0, wx.LIST_AUTOSIZE_USEHEADER)
+        self.m_list.SetColumnWidth(1, wx.LIST_AUTOSIZE_USEHEADER)
+        self.m_list.SetColumnWidth(2, wx.LIST_AUTOSIZE_USEHEADER)
+        if self.currentItem>=0:
+            self.m_list.SetItemState(self.currentItem, wx.LIST_STATE_SELECTED, wx.LIST_STATE_SELECTED)
+            self.m_list.EnsureVisible(self.currentItem)
 
     def OnSize(self, event):
         w,h = self.GetClientSizeTuple()
@@ -217,14 +218,12 @@ class iTradePortfolioSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
 
     def OnItemActivated(self, event):
         self.currentItem = event.m_itemIndex
-        debug("OnItemActivated: %s\nTopItem: %s" %
-                           (self.m_list.GetItemText(self.currentItem), self.m_list.GetTopItem()))
+        #debug("OnItemActivated: %s\nTopItem: %s" % (self.m_list.GetItemText(self.currentItem), self.m_list.GetTopItem()))
         self.OnValid(event)
 
     def OnItemSelected(self, event):
         self.currentItem = event.m_itemIndex
-        debug("OnItemSelected: %s\nTopItem: %s" %
-                           (self.m_list.GetItemText(self.currentItem), self.m_list.GetTopItem()))
+        #debug("OnItemSelected: %s\nTopItem: %s" % (self.m_list.GetItemText(self.currentItem), self.m_list.GetTopItem()))
         portfolio = portfolios.portfolio(self.m_list.GetItemText(self.currentItem))
         self.wxNameCtrl.SetLabel(portfolio.filename())
         event.Skip()
@@ -232,6 +231,7 @@ class iTradePortfolioSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
     def OnValid(self,event):
         name = self.wxNameCtrl.GetLabel()
         portfolio = portfolios.portfolio(name)
+        #print 'OnValid:', name
         if not portfolio:
             portfolio = portfolios.portfolio(name.lower())
 

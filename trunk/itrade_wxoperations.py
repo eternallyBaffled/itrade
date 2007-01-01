@@ -44,7 +44,7 @@ import logging
 import itrade_wxversion
 import wx
 import wx.lib.mixins.listctrl as wxl
-from wxPython.lib.maskededit import wxMaskedTextCtrl
+import wx.lib.masked as masked
 
 # iTrade system
 from itrade_logging import *
@@ -270,7 +270,7 @@ class iTradeOperationDialog(wx.Dialog):
         self.wxValueLabel = wx.StaticText(self, -1, message('portfolio_field_credit'))
         box.Add(self.wxValueLabel, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.wxValueCtrl = wxMaskedTextCtrl(self, -1, mask="#{9}.##", formatcodes="SF_-R")
+        self.wxValueCtrl = masked.TextCtrl(self, -1, mask="#{9}.##", formatcodes="SF_-R")
         self.wxValueCtrl.SetFieldParameters(0, formatcodes='r<', validRequired=True)  # right-insert, require explicit cursor movement to change fields
         self.wxValueCtrl.SetFieldParameters(1, defaultValue='00')                     # don't allow blank fraction
         wx.EVT_TEXT( self, self.wxValueCtrl.GetId(), self.OnValueChange )
@@ -283,7 +283,7 @@ class iTradeOperationDialog(wx.Dialog):
         self.wxExpPreTxt = wx.StaticText(self, -1, '')
         box.Add(self.wxExpPreTxt, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.wxExpensesCtrl = wxMaskedTextCtrl(self, -1, mask="#{4}.##", formatcodes="SF_R")
+        self.wxExpensesCtrl = masked.TextCtrl(self, -1, mask="#{4}.##", formatcodes="SF_R")
         self.wxExpensesCtrl.SetFieldParameters(0, formatcodes='r<', validRequired=True)  # right-insert, require explicit cursor movement to change fields
         self.wxExpensesCtrl.SetFieldParameters(1, defaultValue='00')                     # don't allow blank fraction
         box.Add(self.wxExpensesCtrl, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
@@ -300,7 +300,7 @@ class iTradeOperationDialog(wx.Dialog):
         label = wx.StaticText(self, -1, message('portfolio_quantity'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.wxNumberCtrl = wxMaskedTextCtrl(self, -1, mask="#{9}", formatcodes='SFR')
+        self.wxNumberCtrl = masked.TextCtrl(self, -1, mask="#{9}", formatcodes='SFR')
         box.Add(self.wxNumberCtrl, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_TEXT( self, self.wxNumberCtrl.GetId(), self.OnNumberChange )
 
