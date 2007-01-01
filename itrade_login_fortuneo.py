@@ -100,14 +100,14 @@ class Login_fortuneo(object):
 
     # ---[ login ] ---
 
-    def login(self,u,p):
+    def login(self,u=None,p=None):
         # load username / password (if required)
         if u==None or p==None:
             u,p = self.loadUserInfo()
             if u==None or p==None:
                 print 'login: userinfo are invalid - please reenter Access Information'
                 return False
-        print 'log:',u,p
+        #print 'log:',u,p
 
         # create the HTTPS connexion
         self.m_conn = httplib.HTTPSConnection(self.m_default_host,443)
@@ -136,11 +136,11 @@ class Login_fortuneo(object):
             flux = self.m_conn.getresponse()
         except:
             print 'Login_fortuneo:POST login failure %s' % self.m_login_url
-            return None
+            return False
 
         if flux.status != 200:
             print 'Login_fortuneo: login status==%d!=200 reason:%s' % (flux.status,flux.reason)
-            return None
+            return False
 
         # OK : we are logged to the service ... we can extract Session and Engine ID
         buf = flux.read()
@@ -149,7 +149,7 @@ class Login_fortuneo(object):
         m = re.search("name=\"BV_SessionID\"\s*value=\"\S+\"",buf,re.IGNORECASE|re.MULTILINE)
         if m==None:
             print 'Login_fortuneo: BV_SessionID statement not found !'
-            return None
+            return False
 
         BV_SessionID = m.group()[27:-1]
 
@@ -158,7 +158,7 @@ class Login_fortuneo(object):
         m = re.search("name=\"BV_EngineID\"\s*value=\"\S+\"",buf,re.IGNORECASE|re.MULTILINE)
         if m==None:
             print 'Login_fortuneo: BV_EngineID statement not found !'
-            return None
+            return False
 
         BV_EngineID = m.group()[26:-1]
 
@@ -174,11 +174,11 @@ class Login_fortuneo(object):
             flux = self.m_conn.getresponse()
         except:
             print 'Login_fortuneo:POST ack failure %s' % self.m_ack_url
-            return None
+            return False
 
         if flux.status != 200:
             print 'Login_fortuneo: ack status==%d!=200 reason:%s' % (flux.status,flux.reason)
-            return None
+            return False
 
         buf = flux.read()
         #print buf
@@ -189,11 +189,11 @@ class Login_fortuneo(object):
             flux = self.m_conn.getresponse()
         except:
             print 'Login_fortuneo:GET trader failure %s' % self.m_trader_url
-            return None
+            return False
 
         if flux.status != 200:
             print 'Login_fortuneo: trader status==%d!=200 reason:%s' % (flux.status,flux.reason)
-            return None
+            return False
 
         buf = flux.read()
 
@@ -201,7 +201,7 @@ class Login_fortuneo(object):
         m = re.search('startStreaming\( \"\S+\",',buf,re.IGNORECASE|re.MULTILINE)
         if m==None:
             print 'Login_fortuneo: cookie statement not found !'
-            return None
+            return False
 
         cookie = m.group()[17:-11]
         #print len(cookie),':',cookie
