@@ -90,7 +90,7 @@ class Login_fortuneo(object):
         try:
             f = open(os.path.join(itrade_config.dirUserData,'fortuneo_userinfo.txt'),'r')
         except IOError:
-            return False
+            return None,None
         s = f.read().strip()
         f.close()
         v = s.split(',')

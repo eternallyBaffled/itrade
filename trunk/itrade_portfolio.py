@@ -854,6 +854,7 @@ class Portfolio(object):
             for eachQuote in quotes.list():
                 if eachQuote.isMatrix():
                     name = eachQuote.liveconnector().name()
+                    #print 'loginToServices:',eachQuote.ticker(),name
                     if not maperr.has_key(name):
                         con = getLoginConnector(name)
                         if con:
@@ -1237,7 +1238,7 @@ class Portfolios(object):
             for eachLine in infile:
                 item = itrade_csv.parse(eachLine,6)
                 if item:
-                    #debug('%s :: %s' % (eachLine,item))
+                    #info('%s :: %s' % (eachLine,item))
                     vat = country2vat(getLang())
                     if len(item)>=5:
                         currency = item[4]
@@ -1284,6 +1285,7 @@ def loadPortfolio(fn=None):
         # portfolio does not exist !
         print "Portfolio '%s' does not exist ... create it" % fn
         p = portfolios.addPortfolio(fn,fn,'noref','EURONEXT','EUR',country2vat('fr'))
+        portfolios.save()
 
     # load properties
     p.loadProperties()
@@ -1297,9 +1299,6 @@ def loadPortfolio(fn=None):
 
     # load fees rules
     p.loadFeesRules()
-
-    # log to services
-    p.loginToServices()
 
     # save current file
     scf = {}

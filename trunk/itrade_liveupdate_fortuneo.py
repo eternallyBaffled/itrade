@@ -405,22 +405,24 @@ class LiveUpdate_fortuneo(object):
         self.m_conn = None
         self.m_connected = False
 
-        try:
-            f = open(os.path.join(itrade_config.dirUserData,'fortuneo_live.txt'),'r')
-            infile = f.readlines()
-            self.m_blowfish = infile[0].strip()
-            f.close()
-        except IOError:
-            self.m_blowfish = '3ff349e66a9ed1766328b3759968230728ca2bb84dfafe06001abf69f00c076fb5a5a632b378faed0d264263654dbf30'
-
         self.m_livelock = thread.allocate_lock()
         self.m_dcmpd = {}
         self.m_clock = {}
         self.m_lastclock = 0
 
-        self.loadPlaces()
+        self.m_cookie = None
+        self.m_places = None
 
-        debug('Fortuneo live (%s) - ready to run' % self.m_blowfish)
+    # ---[ read cookie ] ---
+    def readCookie(self):
+        if self.m_cookie==None:
+            try:
+                f = open(os.path.join(itrade_config.dirUserData,'fortuneo_live.txt'),'r')
+                infile = f.readlines()
+                self.m_cookie = infile[0].strip()
+                f.close()
+            except IOError:
+                self.m_cookie = ''
 
     # ---[ reentrant ] ---
     def acquire(self):
@@ -445,6 +447,9 @@ class LiveUpdate_fortuneo(object):
             print 'live: not connected on %s' % self.m_default_host
             return False
 
+        self.readCookie()
+        self.loadPlaces()
+
         #print 'live: connected on %s' % self.m_conn
         return True
 
@@ -466,14 +471,15 @@ class LiveUpdate_fortuneo(object):
     # ---[ specific code to manage place ] ---
 
     def loadPlaces(self):
-        self.m_places = {}
-        infile = itrade_csv.read(None,os.path.join(itrade_config.dirSysData,'places.txt'))
-        if infile:
-            # scan each line to read each quote
-            for eachLine in infile:
-                item = itrade_csv.parse(eachLine,2)
-                if item:
-                    self.m_places[item[0]] = place2code(item[1].strip().upper())
+        if self.m_places == None:
+            self.m_places = {}
+            infile = itrade_csv.read(None,os.path.join(itrade_config.dirSysData,'places.txt'))
+            if infile:
+                # scan each line to read each quote
+                for eachLine in infile:
+                    item = itrade_csv.parse(eachLine,2)
+                    if item:
+                        self.m_places[item[0]] = place2code(item[1].strip().upper())
 
     def place(self,isin):
         if self.m_places.has_key(isin) : return self.m_places[isin]
@@ -516,7 +522,7 @@ class LiveUpdate_fortuneo(object):
                     }
 
         cac = "FR0003500008"
-        params = "subscriptions={%s,%s}&userinfo=%s\r\n" % (isin2subscriptions(isin,self.place(isin)),indice2subscriptions(cac,self.place(cac)),self.m_blowfish)
+        params = "subscriptions={%s,%s}&userinfo=%s\r\n" % (isin2subscriptions(isin,self.place(isin)),indice2subscriptions(cac,self.place(cac)),self.m_cookie)
         #print params
 
         # POST quote request
