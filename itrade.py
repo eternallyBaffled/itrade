@@ -45,7 +45,7 @@ import itrade_config
 from itrade_local import *
 from itrade_logging import *
 setLevel(logging.INFO)
-from itrade_quotes import *
+import itrade_quotes
 import itrade_import
 import itrade_portfolio
 import itrade_matrix
@@ -143,6 +143,7 @@ def main():
 
     # load configuration
     itrade_config.loadConfig()
+    itrade_quotes.initModule()
 
     # use the correct pack language
     if itrade_config.lang == 255:

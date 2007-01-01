@@ -180,6 +180,9 @@ def createMatrix(fn='default',dp=None):
     if dp:
         dp.setupCurrencies()
 
+        # log to services
+        dp.loginToServices()
+
     return m
 
 # ============================================================================

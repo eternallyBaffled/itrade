@@ -1376,6 +1376,19 @@ except NameError:
 quotes.load()
 
 # ============================================================================
+# initModule()
+# ============================================================================
+
+def initModule():
+    for quote in quotes.list():
+        quote.m_defaultliveconnector = getDefaultLiveConnector(quote.m_market,quote.m_list,quote.m_place)
+        if quote.m_defaultliveconnector == None:
+            print 'no default live connector for %s (list:%d)' % (quote,quote.m_list)
+        quote.m_defaultimportconnector = getImportConnector(quote.m_market,quote.m_list,QTAG_IMPORT,quote.m_place)
+        if quote.m_defaultimportconnector == None:
+            print 'no default import connector for %s (list:%d)' % (quote,quote.m_list)
+
+# ============================================================================
 # Test
 # ============================================================================
 
