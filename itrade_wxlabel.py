@@ -137,7 +137,7 @@ class iTrade_wxLabelPopup(object):
     def EndPaint(self,dc):
         dc.SelectObject(wx.NullBitmap)
         dc.EndDrawing()
-        mask = wx.MaskColour(self.bmp, self.bg)
+        mask = wx.Mask(self.bmp, self.bg)
         self.bmp.SetMask(mask)
 
     def GetRect(self):
@@ -195,7 +195,7 @@ def DrawRectLabel(dc,label,x,y,w,h,colorpen,colorbg,font,vert='top',horz='center
         #memDC.SelectObject(wx.NullBitmap)
         memDC.EndDrawing()
 
-        #mask = wx.MaskColour(bmp, bg)
+        #mask = wx.Mask(bmp, bg)
         #bmp.SetMask(mask)
         #memDC.SelectObject(bmp)
 

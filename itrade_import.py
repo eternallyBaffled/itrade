@@ -204,10 +204,10 @@ def import_from_internet(quote,fromdate=None,todate=None):
                     quote.importTrades(data,bLive=False)
                     bRet = True
                 else:
-                    info("import_from_internet(%s): nodata" % quote.ticker())
+                    print "import_from_internet(%s): nodata [%s,%s)" % (quote.ticker(),fromdate,todate)
                     bRet = False
             else:
-                print "import_from_internet(%s): getdata() failure :-(" % quote.ticker()
+                print "import_from_internet(%s): nodata [%s,%s)" % (quote.ticker(),fromdate,todate)
                 bRet = False
         else:
             print "import_from_internet(%s): getstate() failure :-(" % quote.ticker()
@@ -305,13 +305,17 @@ def cmdline_importQuoteFromInternet(quote,dlg=None):
     while (not bStop) and (nyear < itrade_config.numTradeYears):
         print '--- update the quote -- %d to %d ---' % (year-step+1,year)
         if spl:
-            if not quote.update(date(year-step+1,1,1),date(year,6,30)):
+            if not import_from_internet(quote,date(year-step+1,1,1),date(year,6,30)):
                 bStop = True
-            if not bStop and not quote.update(date(year-step+1,7,1),date(year,12,31)):
+            if not bStop and not import_from_internet(quote,date(year-step+1,7,1),date(year,12,31)):
                 bStop = True
         else:
-            if not quote.update(date(year-step+1,1,1),date(year,12,31)):
+            if not import_from_internet(quote,date(year-step+1,1,1),date(year,12,31)):
                 bStop = True
+        if year == date.today().year:
+            # SF bug 1625731 : at the year begins, it's possible import_from_internet returns no data
+            # but iTrade needs to continue importing previous years ...
+            bStop = False
         if dlg:
             dlg.Update(nyear)
         nyear = nyear + step

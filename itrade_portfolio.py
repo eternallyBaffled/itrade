@@ -841,6 +841,10 @@ class Portfolio(object):
             else:
                 info('ignore %s' % (eachOp.name()))
 
+    def logToServices(self):
+        # log to service
+        print 'log to service :'
+
     # --- [ manage multi-currency on the portfolio ] ---
 
     def setupCurrencies(self):
@@ -1261,6 +1265,9 @@ def loadPortfolio(fn=None):
 
     # load fees rules
     p.loadFeesRules()
+
+    # log to services
+    p.logToServices()
 
     # save current file
     scf = {}
