@@ -48,6 +48,7 @@ from itrade_local import message,getLang
 import itrade_csv
 from itrade_currency import currency2symbol,currencies
 from itrade_vat import country2vat
+from itrade_login import getLoginConnector
 
 # ============================================================================
 # Operation
@@ -841,9 +842,23 @@ class Portfolio(object):
             else:
                 info('ignore %s' % (eachOp.name()))
 
+    # --- [ manage login to services ] ---
+
     def logToServices(self):
-        # log to service
-        print 'log to service :'
+        if itrade_config.isConnected():
+            # temp map
+            maperr = {}
+
+            # log to service
+            for eachQuote in quotes.list():
+                if eachQuote.isMatrix():
+                    name = eachQuote.liveconnector().name()
+                    if not maperr.has_key(name):
+                        con = getLoginConnector(name)
+                        if con:
+                            if not con.logged():
+                                print 'login to service :',name
+                                maperr[name] = con.login()
 
     # --- [ manage multi-currency on the portfolio ] ---
 
