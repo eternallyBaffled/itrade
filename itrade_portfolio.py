@@ -715,6 +715,7 @@ class Portfolio(object):
 
     def reinit(self):
         debug('Portfolio::%s::reinit' %(self.name()))
+        self.logoutFromServices()
         quotes.reinit()
         self._init_()
 
@@ -844,7 +845,7 @@ class Portfolio(object):
 
     # --- [ manage login to services ] ---
 
-    def logToServices(self):
+    def loginToServices(self):
         if itrade_config.isConnected():
             # temp map
             maperr = {}
@@ -859,6 +860,22 @@ class Portfolio(object):
                             if not con.logged():
                                 print 'login to service :',name
                                 maperr[name] = con.login()
+
+    def logoutFromServices(self):
+        if itrade_config.isConnected():
+            # temp map
+            maperr = {}
+
+            # log to service
+            for eachQuote in quotes.list():
+                if eachQuote.isMatrix():
+                    name = eachQuote.liveconnector().name()
+                    if not maperr.has_key(name):
+                        con = getLoginConnector(name)
+                        if con:
+                            if con.logged():
+                                print 'logout from service :',name
+                                maperr[name] = con.logout()
 
     # --- [ manage multi-currency on the portfolio ] ---
 
@@ -1282,7 +1299,7 @@ def loadPortfolio(fn=None):
     p.loadFeesRules()
 
     # log to services
-    p.logToServices()
+    p.loginToServices()
 
     # save current file
     scf = {}
