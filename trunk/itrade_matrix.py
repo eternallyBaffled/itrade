@@ -137,8 +137,11 @@ class TradingMatrix(object):
     # update the matrix
     def update(self,fromdate=None,todate=None):
         for eachQuote in self.list():
+            # update information
             debug('matrix::update: %s - %s' % (eachQuote.key(),eachQuote.ticker()))
             eachQuote.update(fromdate,todate)
+
+            # compute information
             info('matrix::compute: %s - %s' % (eachQuote.key(),eachQuote.ticker()))
             eachQuote.compute(todate)
 

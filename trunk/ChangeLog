@@ -6,6 +6,7 @@ On the road for v0.4.8 (Nausicaa2)
 ===============================================================================
 
 2007-01-01  Gilles Dumortier <dgil at ieee.org>
+	* all versions : crash starting during importation (SF bug 1625731)
 	* Delete a portfolio (first file of the list) (SF bug 1612175)
 	* Backport from v0.4.5 : remove deprecated warning from wxPython
 

@@ -231,7 +231,6 @@ class iTradePortfolioSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
     def OnValid(self,event):
         name = self.wxNameCtrl.GetLabel()
         portfolio = portfolios.portfolio(name)
-        #print 'OnValid:', name
         if not portfolio:
             portfolio = portfolios.portfolio(name.lower())
 
