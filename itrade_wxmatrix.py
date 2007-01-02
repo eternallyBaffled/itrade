@@ -921,13 +921,22 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
     # --- [ Access management ] -------------------------------------
 
     def OnAccess(self,e):
+        # get the connector
         m = self.accessmenu.FindItemById(e.GetId())
         m = m.GetText()
         c = getLoginConnector(m)
         if c:
+            # with the connector, load user info and open UI
             u,p = c.loadUserInfo()
             u,p = login_UI(self,u,p,c)
+
+            # now, save new user info
+            wx.SetCursor(wx.HOURGLASS_CURSOR)
             c.saveUserInfo(u,p)
+            if itrade_config.isConnected():
+                # and apply these ne login info
+                c.login(u,p)
+            wx.SetCursor(wx.STANDARD_CURSOR)
 
     # --- [ Language management ] -------------------------------------
 

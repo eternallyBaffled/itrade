@@ -5,6 +5,9 @@ On the road for v0.4.8 (Nausicaa2)
 
 ===============================================================================
 
+2007-01-02  Gilles Dumortier <dgil at ieee.org>
+	* login just after userinfo has been changed (avoid software restart)
+
 2007-01-01  Gilles Dumortier <dgil at ieee.org>
 	* Add value in differed mode and change live connector (SF bug 1613230)
 	* automatically log to live broker services (if required)
