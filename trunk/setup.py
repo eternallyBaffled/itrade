@@ -71,7 +71,7 @@ setup(windows=["itrade.py"],
       data_files=matplotlibdata_files,
       options = {"py2exe":
                  {"packages": ['matplotlib','pytz'],
-                  "excludes": ['_tkagg', '_gtkagg','distutils','Tkinter','Tkcontants','Tcl','pywin','pywin.debugger','pywin.debugger.dbgcon','pywin.dialogs','pywin.dialogs.list'],
+                  "excludes": ['_tkagg', '_gtkagg','Tkinter','Tkcontants','Tcl','pywin','pywin.debugger','pywin.debugger.dbgcon','pywin.dialogs','pywin.dialogs.list'],
                   "dll_excludes": ['libgdk_pixbuf-2.0-0.dll','libgdk-win32-2.0-0.dll','libgobject-2.0-0.dll','wxmsw26uh_vc.dll','gdiplus.dll']
                   }
                 },
