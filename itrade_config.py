@@ -212,6 +212,8 @@ intradayGraphUrl['AMEX'] = "http://ichart.finance.yahoo.com/b?s=%s"
 intradayGraphUrlUseISIN['AMEX'] = False
 intradayGraphUrl['OTCBB'] = "http://ichart.finance.yahoo.com/b?s=%s.OB"
 intradayGraphUrlUseISIN['OTCBB'] = False
+intradayGraphUrl['ASX'] = "http://ichart.finance.yahoo.com/b?s=%s.AX"
+intradayGraphUrlUseISIN['ASX'] = False
 
 # in ms, time before activating XYPopup
 timerForXYPopup = 500

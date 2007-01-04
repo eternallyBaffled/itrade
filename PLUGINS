@@ -18,7 +18,8 @@ NASDAQ		NYC	YAHOO FINANCE
 NYSE		NYC	YAHOO FINANCE
 AMEX		NYC	YAHOO FINANCE
 OTCBB		NYC	YAHOO FINANCE
-LSE		LONs	YAHOO FINANCE
+LSE		LON	YAHOO FINANCE
+ASX		SYD	YAHOO FINANCE
 
 ===============================================================================
 History data
@@ -38,6 +39,7 @@ NYSE		NYC	YAHOO FINANCE
 AMEX		NYC	YAHOO FINANCE
 OTCBB		NYC	YAHOO FINANCE
 LSE		LON	YAHOO FINANCE
+ASX		SYD	YAHOO FINANCE
 
 ===============================================================================
 List of quotes
@@ -57,6 +59,7 @@ NYSE		NYC	NYSE
 AMEX		NYC	BARCHART
 OTCBB		NYC	BARCHART
 LSE		LON	not available yet
+ASX		SYD	ASX
 
 ===============================================================================
 Intraday data
@@ -76,5 +79,6 @@ NYSE		NYC	not available yet
 AMEX		NYC	not available yet
 OTCBB		NYC	not available yet
 LSE		LON	not available yet
+ASX		SYD	not available yet
 
 ===============================================================================

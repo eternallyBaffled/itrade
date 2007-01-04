@@ -58,7 +58,8 @@ isin_market = {
     'es': 'EURONEXT',
     'qs': 'EURONEXT',
     'uk': 'LSE',
-    'us': 'NASDAQ'
+    'us': 'NASDAQ',
+    'au': 'ASX'
     }
 
 def isin2market(isin):
@@ -87,6 +88,7 @@ market_currency = {
     'AMEX': 'USD',
     'OTCBB': 'USD',
     'LSE': 'GBP',
+    'ASX': 'AUD',
     }
 
 def market2currency(market):
@@ -109,6 +111,7 @@ def list_of_markets(bFilterMode=False):
     lom.append('NYSE')
     lom.append('AMEX')
     lom.append('OTCBB')
+    lom.append('ASX')
     return lom
 
 # ============================================================================
@@ -143,6 +146,8 @@ def compute_country(isin,market,place):
             return 'US'
         if market=='OTCBB':
             return 'US'
+        if market=='ASX':
+            return 'AU'
     return '??'
 
 # ============================================================================
@@ -172,6 +177,8 @@ def list_of_places(market):
         lop.append('NYC')
     if market=='LSE':
         lop.append('LON')
+    if market=='ASX':
+        lop.append('SYD')
     return lop
 
 # ============================================================================
@@ -188,6 +195,7 @@ market_place = {
     'AMEX': 'NYC',
     'OTCBB': 'NYC',
     'LSE': 'LON',
+    'ASX': 'SYD'
     }
 
 def market2place(market):
@@ -208,6 +216,7 @@ yahoo_suffix = {
     'PARIS MARCHE LIBRE.PAR': '.PA',
     'OTCBB.NYC': '.OB',
     'LSE.LON': '.L',
+    'ASX.SYD': '.AX'
     }
 
 yahoo_map_tickers = {}
