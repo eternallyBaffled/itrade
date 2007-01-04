@@ -5,6 +5,9 @@ On the road for v0.4.8 (Nausicaa2)
 
 ===============================================================================
 
+2007-01-02  Peter Mills <peter_m_mills at bigpond dot com>
+	* Add module for ASX - Australian Stock Exchange
+
 2007-01-02  Gilles Dumortier <dgil at ieee.org>
 	* login just after userinfo has been changed (avoid software restart)
 
@@ -22,7 +25,7 @@ On the road for v0.4.8 (Nausicaa2)
 	  broker service. missing UI to enter username/password
 	* Update data/closed.txt and data/srd.txt (SF bug 1622981)
 
-2006-12-31 Elmo Mäntynen <elmo13 at jippii dot fi>
+2006-12-31  Elmo Mäntynen <elmo13 at jippii dot fi>
 	* The selected version of wx is the lowest accepted version
 
 2006-12-16  Michel Legrand <m_leg at users.sourceforge.net>

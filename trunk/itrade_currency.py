@@ -50,21 +50,14 @@ from itrade_local import message
 # currency <-> symbol conversion
 #
 #   currency2symbol
-#   symbol2currency
 # ============================================================================
 
 currencies_CUR = {
     'EUR' : '€',
     'USD' : '$',
     'JPY' : '¥',
-    'GBP' : '£'
-    }
-
-currencies_SYMB = {
-     '€' : 'EUR',
-     '$' : 'USD',
-     '¥' : 'JPY',
-     '£' : 'GBP'
+    'GBP' : '£',
+    'AUD' : '$'
     }
 
 def currency2symbol(cur):
@@ -73,14 +66,8 @@ def currency2symbol(cur):
     else:
         return cur
 
-def symbol2currency(symb):
-    if currencies_SYMB.has_key(symb):
-        return currencies_SYMB[symb]
-    else:
-        return symb
-
 def list_of_currencies():
-    return ('EUR','USD','JPY','GBP')
+    return ('EUR','USD','JPY','GBP','AUD')
 
 # ============================================================================
 # Build list of supported currencies
@@ -88,8 +75,8 @@ def list_of_currencies():
 
 def buildListOfSupportedCurrencies():
     lst = []
-    for eachCur1 in currencies_SYMB.values():
-        for eachCur2 in currencies_SYMB.values():
+    for eachCur1 in currencies_CUR.keys():
+        for eachCur2 in currencies_CUR.keys():
             lst.append((eachCur1,eachCur2))
     return lst
 
@@ -250,12 +237,14 @@ if __name__=='__main__':
     currencies.inuse('USD','EUR',True)
     currencies.inuse('USD','GBP',True)
     currencies.inuse('USD','GBP',False)
+    currencies.inuse('USD','AUD',True)
     currencies.getlasttrade()
 
     print 'From updated cache file : '
     print '1 EUR = %.2f EUR' % convert('EUR','EUR',1)
     print '1 EUR = %.2f USD' % convert('USD','EUR',1)
     print '1 USD = %.2f EUR' % convert('EUR','USD',1)
+    print '1 USD = %.2f AUD' % convert('AUD','USD',1)
 
 # ============================================================================
 # That's all folks !

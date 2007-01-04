@@ -313,6 +313,8 @@ registerLiveConnector('AMEX','NYC',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=T
 registerLiveConnector('OTCBB','NYC',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 registerLiveConnector('LSE','LON',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 
+registerLiveConnector('ASX','SYD',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+
 registerLiveConnector('EURONEXT','PAR',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 registerLiveConnector('ALTERNEXT','PAR',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 registerLiveConnector('PARIS MARCHE LIBRE','PAR',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)

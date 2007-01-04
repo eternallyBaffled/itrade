@@ -167,12 +167,14 @@ import itrade_liveupdate_abcbourse
 import itrade_import_yahoo
 import itrade_liveupdate_yahoo
 
-# list of symbols : Euronext, Nyse, BarChart (Amex,Nasdaq,OTCBB)
+# list of symbols : Euronext, Nyse, BarChart (Amex,Nasdaq,OTCBB), ASX
 import itrade_quotes_euronext
 
 import itrade_quotes_nyse
 
 import itrade_quotes_barchart
+
+import itrade_quotes_asx
 
 # ============================================================================
 # Importation from internet : HISTORIC

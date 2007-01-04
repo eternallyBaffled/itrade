@@ -186,6 +186,8 @@ registerImportConnector('AMEX','NYC',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault
 registerImportConnector('OTCBB','NYC',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
 registerImportConnector('LSE','LON',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
 
+registerImportConnector('ASX','SYD',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
+
 registerImportConnector('EURONEXT','PAR',QLIST_SYSTEM,QTAG_IMPORT,gImportYahoo,bDefault=True)
 registerImportConnector('EURONEXT','PAR',QLIST_USER,QTAG_IMPORT,gImportYahoo,bDefault=True)
 registerImportConnector('EURONEXT','AMS',QLIST_SYSTEM,QTAG_IMPORT,gImportYahoo,bDefault=True)
