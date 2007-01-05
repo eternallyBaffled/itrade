@@ -6,6 +6,7 @@ On the road for v0.4.8 (Nausicaa2)
 ===============================================================================
 
 2007-01-05  Gilles Dumortier <dgil at ieee.org>
+	* better project information (HACKING, RELEASE, ...)
 	* Fix KeyError during importing (SF bug 1628463)
 	* Fix NamedError when using --quote or --ticker option
 

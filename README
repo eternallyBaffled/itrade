@@ -1,0 +1,29 @@
+/iTrade/README
+===============================================================================
+
+The iTrade project is an open source initiative to provide a charting and
+trading system written in Python language.
+
+o Official web site : http://itrade.sourceforge.net
+
+o License : GPL with some disclaimers - read ./LICENSE and ./AUTHORS files
+
+o iTrade information : read ./RELNOTES, ./TODO and ./ChangeLog files
+
+o Developer Informations : read ./HACKING and ./RELEASE files
+
+o Donators : read ./DONORS file
+
+o To report a bug : read ./BUGS file
+
+o Supported markets / exchanges : read ./PLUGINS file
+
+-------------------------------------------------------------------------------
+History
+-------------------------------------------------------------------------------
+
+Project Registration / Start of Development : 2005/01/08
+
+<tbw>
+
+===============================================================================
