@@ -42,11 +42,23 @@ from datetime import *
 import time
 import logging
 import string
+import re
 
 # iTrade system
 from itrade_logging import *
 from itrade_local import getShortDateFmt
 import itrade_csv
+
+# ============================================================================
+# some patterns for date
+# ============================================================================
+
+re_p3_1 = re.compile('\d\d\d\d-\d\d-\d\d')
+re_p3_2 = re.compile('\d\d\d\d/\d\d/\d\d')
+re_p4_1 = re.compile('\d\d-\d\d-\d\d')
+re_p4_2 = re.compile('\d\d-\d\d-\d\d\d\d')
+re_p4_3 = re.compile('\d\d/\d\d/\d\d')
+re_p4_4 = re.compile('\d\d/\d\d/\d\d\d\d')
 
 # ============================================================================
 # some convertion

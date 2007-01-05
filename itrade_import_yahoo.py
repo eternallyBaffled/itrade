@@ -45,7 +45,7 @@ from datetime import *
 # iTrade system
 from itrade_logging import *
 from itrade_quotes import *
-from itrade_datation import Datation,dd_mmm_yy2yyyymmdd
+from itrade_datation import Datation,dd_mmm_yy2yyyymmdd,re_p3_1
 from itrade_import import *
 from itrade_market import yahooTicker
 
@@ -145,7 +145,10 @@ class Import_yahoo(object):
             sdata = string.split (eachLine, ',')
             sdate = sdata[0]
             if (sdate<>"Date"):
-                sdate = dd_mmm_yy2yyyymmdd(sdate)
+                if re_p3_1.match(sdate):
+                    print 'already good format ! ',sdate,sdata
+                else:
+                    sdate = dd_mmm_yy2yyyymmdd(sdate)
                 open = string.atof(sdata[1])
                 high = string.atof(sdata[2])
                 low = string.atof(sdata[3])
