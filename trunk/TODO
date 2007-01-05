@@ -1,6 +1,6 @@
 /iTrade/TODO
 ===============================================================================
-PREFACE
+INTRODUCTION
 ===============================================================================
 
 Functionnal features TODO list
@@ -10,10 +10,6 @@ tracker to submit any issue found after this release.
 
 Before reporting please check, whether someone else has already reported this.
 Working patches increase the chance to be included in the next release :-)
-
-===============================================================================
-KNOWN BUGS
-===============================================================================
 
 Nausicaa2 is polishing existing features like indicators, charting and display.
 
@@ -28,6 +24,7 @@ TODO ITEMS by VERSION
 ===============================================================================
 
 Version 0.4.8 (Nausicaa2)
+ + Australian Market
  ~ "Points Pivots" feature
  ~ VAT information
  ~ more Charting enhancements
@@ -73,7 +70,7 @@ Version 1.0 (iTrade - Final Release)
  - final release
 
 ===============================================================================
-ITEMS POSTPONED FOR POST 1.0 RELEASE
+ITEMS POSTPONED (POST 1.0 RELEASE)
 ===============================================================================
 
 Screening
@@ -81,8 +78,8 @@ Screening
  - more quotes screening
  - full featured quotes screening
 
-SRD and short positions
- - full SRD management
+SDR and short positions
+ - full SDR management
  - alerts for short
 
 ===============================================================================
