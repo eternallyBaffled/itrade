@@ -89,6 +89,7 @@ listLoginConnector = gLoginRegistry.list
 # ============================================================================
 
 import itrade_login_fortuneo
+import itrade_login_boursorama
 
 # ============================================================================
 # Test ME

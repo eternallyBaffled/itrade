@@ -512,6 +512,7 @@ indicator_disconnected;Disconnected
 
 login_title;Account Access
 login_fortuneo_desc;Enter your Fortuneo account number (real or demonstration account)
+login_boursorama_desc;Enter your Boursorama account number (Customer account or nickname)
 login_set;Set
 login_setdesc; Set the entered access information
 login_username;User idendity :

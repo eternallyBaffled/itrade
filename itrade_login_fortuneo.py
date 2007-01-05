@@ -129,7 +129,6 @@ class Login_fortuneo(object):
                     "Content-Type":"application/x-www-form-urlencoded"
                     }
 
-
         # POST login request
         try:
             self.m_conn.request("POST", self.m_login_url, params, headers)
