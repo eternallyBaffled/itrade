@@ -511,6 +511,7 @@ indicator_disconnected;Déconnecté
 
 login_title;Accès Client
 login_fortuneo_desc;Entrez votre identifiant Fortuneo (compte réel ou de démonstration)
+login_boursorama_desc;Entrez votre identifiant Boursorama (compte client ou pseudo)
 login_set;Valide
 login_setdesc; Valide les informations d'accès saisies
 login_username;Identifiant :
