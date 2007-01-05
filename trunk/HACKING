@@ -1,9 +1,101 @@
 /iTrade/HACKING
 ===============================================================================
 
--------------------------------------------------------------------------------
+Read everything below before hacking something in the iTrade project. If you
+have any doubt, ask to one the Lead Developers.
 
 -------------------------------------------------------------------------------
+Development Process
+-------------------------------------------------------------------------------
+
+o Create a tracker to indicate you are going to work on something. So everyone
+  involved in the project is aware of the new development.
+
+  Submit New : https://sourceforge.net/tracker/?group_id=128261&atid=711187
+
+	Category : must be filled
+
+		General : a general feature/bug fix
+		Linux Specific : a feature/bug fix related to the linux
+		MMI : feature/bug fix is only MMI (front-end - wxpython)
+		Process : feature/bug fix is only Process (back-end)
+		Release : feature/bug fix on the ./RELEASE process itself
+		Website : feature/bug fix on the website
+
+	Group : the iTrade release targetted by the feature/bug fix
+
+		NB: do not use this field to indicate the release where the
+		issue has been found but to indicate the release where the
+		issue will be solved.
+
+		Use "TBD" when you don't know yet the targetted release.
+
+	Priority : everything should be 5 :)
+
+	Assigned To : who is working on the tracker.
+
+o Change the "Resolution" field of the tracker to "Accepted" when :
+   - you are really working on it (feature)
+   - you are really fixing it (bug)
+
+  It means also for everyone involved in the project that you have take lead on
+  the subject.
+
+  You can comment the traker with information about your status on the subject.
+
+o Delivery new code (new module or modified module) :
+
+  => update the ChangeLog file (notice the change, indicate the Tracker unique
+     number)
+
+  => commit everything related to the feature / bug fix using SVN comment filed
+     with the ChangeLog information
+
+  => change the tracker "Resolution" field to "Fixed"
+
+o Change the "Status" field of the tracker to "Closed" after the final deliver
+  has been committed (see section above) but also after you have conducted real
+  Test Session to be sure the tracker can be really closed.
+
+  Check with the Testing Team (michel :) if you have any doubt.
+
+o Derogation to the Development Process
+
+  You can bypass the Development Process for light weight code change (very
+  small feature or very small bug never seen before) :
+
+  => update the ChangeLog file (notice the change)
+
+  => commit everything related to code change using SVN comment filed with the
+     ChangeLog information
+
+-------------------------------------------------------------------------------
+Developement Policies
+-------------------------------------------------------------------------------
+
+o Create a module
+
+  => discuss the module content and architecture with the Lead Developer
+
+o Developing an "impacting" new feature
+  by "impacting", we mean something touching a lot of files with potential huge
+  number of regressions and/or API changes
+
+  => discuss the "impacting" new feature architecture with the Lead Developer
+
+  => create a temporary development branch to isolate the changes until
+     everything is stabilized (Gilles did it for the new reference mechanism
+     by using a specific ITRADE_0_4_5_new_quote_reference branch)
+
+     branch name : ITRADE_x_y_z_feature
+	where x.y.z   is the iTrade release number (more info in ./RELEASE)
+	      feature is the name of the new feature
+
+-------------------------------------------------------------------------------
+Plugin Architecture
+-------------------------------------------------------------------------------
+
+<tbw>
 
 -------------------------------------------------------------------------------
 Current Development notes
