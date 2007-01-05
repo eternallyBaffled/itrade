@@ -5,7 +5,11 @@ On the road for v0.4.8 (Nausicaa2)
 
 ===============================================================================
 
-2007-01-02  Peter Mills <peter_m_mills at bigpond dot com>
+2007-01-05  Gilles Dumortier <dgil at ieee.org>
+	* Fix KeyError during importing (SF bug 1628463)
+	* Fix NamedError when using --quote or --ticker option
+
+2007-01-04  Peter Mills <peter_m_mills at bigpond dot com>
 	* Add module for ASX - Australian Stock Exchange
 
 2007-01-02  Gilles Dumortier <dgil at ieee.org>

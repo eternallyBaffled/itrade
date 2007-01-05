@@ -133,11 +133,11 @@ def main():
             lang = a
             itrade_config.lang = 255
         if o in ("-t", "--ticker"):
-            quote = quotes.lookupTicker(a)
+            quote = itrade_quotes.quotes.lookupTicker(a)
             if not quote:
                 print 'quote %s not found !' % a
         if o in ("-q","--quote"):
-            quote = quotes.lookupKey(a)
+            quote = itrade_quotes.quotes.lookupKey(a)
             if not quote:
                 print 'quote %s not found ! format is : <ISINorTICKER>.<EXCHANGE>.<PLACE>' % a
 
