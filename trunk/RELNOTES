@@ -8,7 +8,7 @@ Version 0.4.8 - Nausicaa2
 We recommend you to install :
 
  Python		http://www.python.org			v 2.5 or better
- wxPython	http://www.wxpython.org			v 2.7.x or better(ANSI)
+ wxPython	http://www.wxpython.org			v 2.8.x or better(ANSI)
  numpy		http://sourceforge.net/projects/numpy	v 1.0 or better
  matplotlib	http://matplotlib.sourceforge.net	v 0.87.7 or better
 
@@ -31,90 +31,35 @@ Running :
  "python itrade.py --unicode" 	to start using unicode version of wxPython
 
  "python itrade.py -u <path>"	to start using a specific usrdata/ folder
+
+-------------------------------------------------------------------------------
+Known Issues
+-------------------------------------------------------------------------------
+
+- Missing some Menu or Button labels
+  (accents not well supported on some Linux distribution)
+  https://sourceforge.net/tracker/index.php?func=detail&aid=1595157&group_id=128261&atid=711187
+
+- Portfolio with many lines are very long to refresh at starting
+  https://sourceforge.net/tracker/index.php?func=detail&aid=1611122&group_id=128261&atid=711187
+
+- at launchtime, I got an alert box saying a specific DLL is not found (wxmsw26uh_vc.dll)
+  This is known issue from the matplotlib library - can be safely ignored
+  https://sourceforge.net/tracker/index.php?func=detail&aid=1550926&group_id=128261&atid=711187
+
+- The probability to have a crash at the end of the exit is very high. But
+  this crash has  no impact (crash in a event kind of thread) except filling
+  the console or log file
+  https://sourceforge.net/tracker/index.php?func=detail&aid=1597926&group_id=128261&atid=711187
+
+- Proxy is not supported (historical data, list of quotes and live data cannot
+  be obtain through a proxy)
 
 ===============================================================================
 Previous release notes
 ===============================================================================
 
--------------------------------------------------------------------------------
-Version 0.4.5 - Nausicaa
--------------------------------------------------------------------------------
-
-We recommend you to install :
-
- Python		http://www.python.org			v 2.5 or better
- wxPython	http://www.wxpython.org			v 2.7.x or better(ANSI)
- numpy		http://sourceforge.net/projects/numpy	v 1.0 or better
- matplotlib	http://matplotlib.sourceforge.net	v 0.87.7 or better
-
-Attention :
-If you have some trouble running iTrade after migrating from a previous version,
-be sure you have uninstalled Matplotlib and NumArray/Numpy before installing
-the new versions of these libraries.
-
-Running :
- "python itrade.py --help"	for command line help
-
- "python itrade.py -e" 		to display portfolio evaluation
-
- "python itrade.py" 		to start using default language
- "python itrade.py -d"		to start without network connection
-
- "python itrade.py --lang=us" 	to start using us language
- "python itrade.py --lang=fr" 	to start using fr language
-
- "python itrade.py --unicode" 	to start using unicode version of wxPython
-
- "python itrade.py -u <path>"	to start using a specific usrdata/ folder
-
--------------------------------------------------------------------------------
-Version 0.4 - Coca
--------------------------------------------------------------------------------
-
-We recommend you to install :
-
- Python		http://www.python.org			version 2.4.2 or better
- wxPython	http://www.wxpython.org			version 2.6.1 (ANSI)
- numarray	http://sourceforge.net/projects/numpy	version 1.3.3
- matplotlib	http://matplotlib.sourceforge.net	version 0.85 or 0.86.2
-
-Running :
- "python itrade.py --help"	for command line help
-
- "python itrade.py -e" 		to display portfolio evaluation
-
- "python itrade.py" 		to start using default language
- "python itrade.py -d"		to start without network connection
-
- "python itrade.py --lang=us" 	to start using us language
- "python itrade.py --lang=fr" 	to start using fr language
-
--------------------------------------------------------------------------------
-Version 0.3 - Popotka
--------------------------------------------------------------------------------
-
-Important : with version 0.3, we have migrated from the packaged Entought
-Edition to the newer versions of the packages we are really using.
-
-Installation was :
- Python		http://www.python.org			version 2.4
- wxPython	http://www.wxpython.org			version 2.6.1 (ANSI)
- numarray	http://sourceforge.net/projects/numpy	version 1.3.3
- matplotlib	http://matplotlib.sourceforge.net	version 0.85
-
--------------------------------------------------------------------------------
-Version 0.2 - Antiplona
--------------------------------------------------------------------------------
-
-Installation was :
- http://www.enthought.com/python	version 2.3.3
- http://matplotlib.sourceforge.net	version 0.73.1
-
--------------------------------------------------------------------------------
-Version 0.1 - Pandora
--------------------------------------------------------------------------------
-
-	no specific release note
+Nothing really interesting to keep
 
 ===============================================================================
 Current Development notes
