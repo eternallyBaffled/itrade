@@ -72,6 +72,7 @@ def usage():
     print "--user=<p>   select usrerdata/ specific folder               "
     print
     print "--unicode    use unicode version of wxPython (experimental)  "
+    print "--nopsyco    do not use psyco                                "
 
 # ============================================================================
 # Main / Command line analysing
@@ -79,26 +80,34 @@ def usage():
 
 def main():
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "eho:vt:iq:f:l:du:", ["help", "output=", "ticker=", "quote=","file=","lang=","unicode","user="])
+        opts, args = getopt.getopt(sys.argv[1:], "eho:vt:iq:f:l:du:", ["help", "output=", "ticker=", "quote=","file=","lang=","unicode","user=","nopsyco"])
     except getopt.GetoptError:
         # print help information and exit:
         usage()
         sys.exit(2)
+
+    # default values
     output = None
     verbose = False
     quote = None
     file = None
     wx = True
+    nopsyco = False
+
     lang = gMessage.getAutoDetectedLang('us')
     for o, a in opts:
+
         if o == "-d":
             itrade_config.setDisconnected(True)
+
         if o == "-v":
             verbose = True
             wx = False
+
         if o == "-e":
             itrade_portfolio.cmdline_evaluatePortfolio()
             wx = False
+
         if o == "-i":
             if quote:
                 if file:
@@ -112,12 +121,15 @@ def main():
                 else:
                     itrade_import.cmdline_importMatrixFromInternet(matrix)
             wx = False
-        if o in ("-h", "--help"):
+
+        if o == "-h" or o == "--help":
             usage()
             sys.exit()
-        if o in ("-o", "--output"):
+
+        if o == "-o" or o == "--output":
             output = a
-        if o in ("-u","--user"):
+
+        if o == "-u" or o == "--user":
             itrade_config.dirUserData = a
             if not os.path.exists(itrade_config.dirUserData):
                 print 'userdata folder %s not found !' % a
@@ -127,19 +139,37 @@ def main():
 
         if o  == "--unicode":
             itrade_config.unicode = True
-        if o in ("-f", "--file"):
+
+        if o  == "--nopsyco":
+            nopsyco = True
+
+        if o == "-f" or o == "--file":
             file = a
-        if o in ("-l", "--lang"):
+
+        if o == "-l" or o == "--lang":
             lang = a
             itrade_config.lang = 255
-        if o in ("-t", "--ticker"):
+
+        if o == "-t" or o == "--ticker":
             quote = itrade_quotes.quotes.lookupTicker(a)
             if not quote:
                 print 'quote %s not found !' % a
-        if o in ("-q","--quote"):
+
+        if o == "-q" or o == "--quote":
             quote = itrade_quotes.quotes.lookupKey(a)
             if not quote:
                 print 'quote %s not found ! format is : <ISINorTICKER>.<EXCHANGE>.<PLACE>' % a
+
+    # Import Psyco if available
+    if not nopsyco:
+        try:
+            import psyco
+            psyco.full()
+            print 'Psyco is running'
+        except ImportError:
+            print 'Psyco is not running (library not found)'
+    else:
+        print 'Psyco is not running (forced by command line)'
 
     # load configuration
     itrade_config.loadConfig()
