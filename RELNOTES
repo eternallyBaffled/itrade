@@ -30,6 +30,8 @@ Running :
 
  "python itrade.py --unicode" 	to start using unicode version of wxPython
 
+ "python itrade.py --nopsyco" 	to stop using psyco library if installed
+
  "python itrade.py -u <path>"	to start using a specific usrdata/ folder
 
 -------------------------------------------------------------------------------
