@@ -36,7 +36,7 @@
 # ============================================================================
 
 __author__ = "Gilles Dumortier (dgil@ieee.org)"
-__version__ = "0.4.8"
+__version__ = "0.4.6"
 __status__ = "alpha"
 __copyright__ = "Copyright (c) 2004-2007 Gilles Dumortier"
 __license__ = "GPL"
