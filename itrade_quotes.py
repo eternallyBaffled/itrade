@@ -925,7 +925,7 @@ class Quote(object):
                 return False
         else:
             # today is closed : check previous open
-            if self.m_daytrades.prevtrade():
+            if self.m_daytrades and self.m_daytrades.prevtrade():
                 # a trade exists !
                 return True
             else:
@@ -1373,13 +1373,12 @@ try:
 except NameError:
     quotes = Quotes()
 
-quotes.load()
-
 # ============================================================================
 # initModule()
 # ============================================================================
 
 def initModule():
+    quotes.load()
     for quote in quotes.list():
         quote.m_defaultliveconnector = getDefaultLiveConnector(quote.m_market,quote.m_list,quote.m_place)
         if quote.m_defaultliveconnector == None:
@@ -1394,6 +1393,8 @@ def initModule():
 
 if __name__=='__main__':
     setLevel(logging.INFO)
+
+    initModule()
 
     info('test1 %s' % quotes.lookupISIN('FR0000072621'));
     quote = quotes.lookupTicker('OSI','EURONEXT')

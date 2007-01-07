@@ -6,6 +6,8 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-01-07  Gilles Dumortier <dgil at ieee.org>
+	* Fix a crash with FCP FR0010086520 (note: only abcbourse is able to
+	  import historic data and live data for this quote)
 	* v0.4.6 Nausicaa2 vs v0.4.8 Nausicaa2 (need one more 0.4.x release)
 	* Alternext Amsterdam Market no present (SF bug 1629435)
 	* add -nopsyco command line option
