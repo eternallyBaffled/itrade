@@ -6,6 +6,7 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-01-07  Gilles Dumortier <dgil at ieee.org>
+	* Alternext Amsterdam Market no present (SF bug 1629435)
 	* add -nopsyco command line option
 	* use psyco library if installed
 

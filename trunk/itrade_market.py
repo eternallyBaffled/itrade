@@ -163,6 +163,8 @@ def list_of_places(market):
         lop.append('LIS')
     if market=='ALTERNEXT':
         lop.append('PAR')
+        lop.append('BRU')
+        lop.append('AMS')
     if market=='PARIS MARCHE LIBRE':
         lop.append('PAR')
     if market=='BRUXELLES MARCHE LIBRE':
