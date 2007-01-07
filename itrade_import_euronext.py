@@ -215,6 +215,7 @@ registerImportConnector('ALTERNEXT','PAR',QLIST_INDICES,QTAG_IMPORT,gImportEuron
 registerImportConnector('ALTERNEXT','PAR',QLIST_TRACKERS,QTAG_IMPORT,gImportEuronext,bDefault=True)
 
 registerImportConnector('ALTERNEXT','BRU',QLIST_ANY,QTAG_IMPORT,gImportEuronext,bDefault=True)
+registerImportConnector('ALTERNEXT','AMS',QLIST_ANY,QTAG_IMPORT,gImportEuronext,bDefault=True)
 
 registerImportConnector('PARIS MARCHE LIBRE','PAR',QLIST_ANY,QTAG_IMPORT,gImportEuronext,bDefault=False)
 registerImportConnector('PARIS MARCHE LIBRE','PAR',QLIST_INDICES,QTAG_IMPORT,gImportEuronext,bDefault=True)
