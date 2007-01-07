@@ -94,6 +94,9 @@ def main():
     wx = True
     nopsyco = False
 
+    vticker = None
+    vquote  = None
+
     lang = gMessage.getAutoDetectedLang('us')
     for o, a in opts:
 
@@ -134,8 +137,6 @@ def main():
             if not os.path.exists(itrade_config.dirUserData):
                 print 'userdata folder %s not found !' % a
                 sys.exit()
-            itrade_portfolio.portfolios._init_()
-            itrade_portfolio.portfolios.load()
 
         if o  == "--unicode":
             itrade_config.unicode = True
@@ -151,14 +152,10 @@ def main():
             itrade_config.lang = 255
 
         if o == "-t" or o == "--ticker":
-            quote = itrade_quotes.quotes.lookupTicker(a)
-            if not quote:
-                print 'quote %s not found !' % a
+            vticker = a
 
         if o == "-q" or o == "--quote":
-            quote = itrade_quotes.quotes.lookupKey(a)
-            if not quote:
-                print 'quote %s not found ! format is : <ISINorTICKER>.<EXCHANGE>.<PLACE>' % a
+            vquote = a
 
     # Import Psyco if available
     if not nopsyco:
@@ -174,11 +171,25 @@ def main():
     # load configuration
     itrade_config.loadConfig()
     itrade_quotes.initModule()
+    itrade_portfolio.initModule()
 
     # use the correct pack language
     if itrade_config.lang == 255:
         gMessage.setLang(lang)
         gMessage.load()
+
+    # commands
+    if vticker:
+        quote = itrade_quotes.quotes.lookupTicker(vticker)
+        if not quote:
+            print 'ticker %s not found !' % vticker
+            sys.exit()
+
+    if vquote:
+        quote = itrade_quotes.quotes.lookupKey(vquote)
+        if not quote:
+            print 'quote %s not found ! format is : <ISINorTICKER>.<EXCHANGE>.<PLACE>' % vquote
+            sys.exit()
 
     if wx:
         import itrade_wxmain

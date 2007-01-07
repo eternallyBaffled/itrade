@@ -186,7 +186,7 @@ def import_from_internet(quote,fromdate=None,todate=None):
 
     if quote.ticker()=='':
         info("import_from_internet(%s): no ticker" % quote.isin())
-        return bRet
+        #return bRet
 
     if not itrade_config.isConnected():
         info("import_from_internet(%s): no connexion" % quote.ticker())
