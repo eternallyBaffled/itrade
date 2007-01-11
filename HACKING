@@ -2,7 +2,7 @@
 ===============================================================================
 
 Read everything below before hacking something in the iTrade project. If you
-have any doubt, ask to one the Lead Developers.
+have any doubt, ask to one of the Lead Developers.
 
 -------------------------------------------------------------------------------
 Access the source
@@ -14,15 +14,16 @@ and you will need a SVN client.
 The following are supported SVN clients :
 
     * TortoiseSVN 1.2.6 and above, for Microsoft Windows
-	=> download : http://tortoisesvn.net/downloads
-	=> documentation : http://sourceforge.net/docs/F07/en/#top
-	=> FAQ : http://tortoisesvn.net/node/131
+
+       => download : http://tortoisesvn.net/downloads
+       => documentation : http://sourceforge.net/docs/F07/en/#top
+       => FAQ : http://tortoisesvn.net/node/131
 
     * The official SVN client, included in most Linux and BSD distributions;
       available for Linux, BSD, Mac OS X, and Windows.
 
-	=> download : http://subversion.tigris.org/
-	=> documentation : http://sourceforge.net/docs/F06/en/#top
+       => download : http://subversion.tigris.org/
+       => documentation : http://sourceforge.net/docs/F06/en/#top
 
 Project URL : https://itrade.svn.sourceforge.net/svnroot/itrade
 
