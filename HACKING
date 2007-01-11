@@ -5,6 +5,37 @@ Read everything below before hacking something in the iTrade project. If you
 have any doubt, ask to one the Lead Developers.
 
 -------------------------------------------------------------------------------
+Access the source
+-------------------------------------------------------------------------------
+
+In order to access the sources, you need to setup access to our SVN repository,
+and you will need a SVN client.
+
+The following are supported SVN clients :
+
+    * TortoiseSVN 1.2.6 and above, for Microsoft Windows
+	=> download : http://tortoisesvn.net/downloads
+	=> documentation : http://sourceforge.net/docs/F07/en/#top
+	=> FAQ : http://tortoisesvn.net/node/131
+
+    * The official SVN client, included in most Linux and BSD distributions;
+      available for Linux, BSD, Mac OS X, and Windows.
+
+	=> download : http://subversion.tigris.org/
+	=> documentation : http://sourceforge.net/docs/F06/en/#top
+
+Project URL : https://itrade.svn.sourceforge.net/svnroot/itrade
+
+Typical command line to check out everything (trunk, branches and tags) :
+
+	svn co https://itrade.svn.sourceforge.net/svnroot/itrade itrade
+
+In most cases, you will want to add '/trunk' to the HTTPS URL above to check
+out only trunk (main development line) :
+
+Project trunk URL : https://itrade.svn.sourceforge.net/svnroot/itrade/trunk
+
+-------------------------------------------------------------------------------
 Development Process
 -------------------------------------------------------------------------------
 
