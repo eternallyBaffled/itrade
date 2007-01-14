@@ -95,6 +95,8 @@ class CSV(object):
         for eachItem in lines:
             txt = eachItem.__repr__()
             #print txt[0],txt[-1],'>>>',txt
+            if txt[:2] in ('u"', "u'"):
+                txt = txt[1:]
             if txt[0]=="'" and txt[-1]=="'":
                 txt = txt[1:-1]
             if txt[0]=='"' and txt[-1]=='"':
