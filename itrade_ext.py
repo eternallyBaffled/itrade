@@ -46,6 +46,7 @@ import imp
 from itrade_logging import *
 import itrade_config
 from itrade_market import market2place
+from itrade_login import loggedLoginConnector
 
 # ============================================================================
 # globals
@@ -122,15 +123,15 @@ getLiveConnector = gLiveRegistry.get
 listLiveConnector = gLiveRegistry.list
 
 def getDefaultLiveConnector(market,list,place=None):
-    if itrade_config.isDiffered():
-        # force differed connector
-        ret = getLiveConnector(market,list,QTAG_DIFFERED,place)
-    else:
-        # try live connector
-        ret = getLiveConnector(market,list,QTAG_LIVE,place)
-        if ret==None:
-            # no live connector : fall-back to differed connector
-            ret = getLiveConnector(market,list,QTAG_DIFFERED,place)
+    # try live connector
+    ret = getLiveConnector(market,list,QTAG_LIVE,place)
+    if ret:
+        # check live connector is logged
+        if loggedLoginConnector(ret.name()):
+            return ret
+
+    # no live connector or not logged : fall-back to differed connector
+    ret = getLiveConnector(market,list,QTAG_DIFFERED,place)
     if ret==None:
         print 'No default connector %s for market :' % market,' qlist:',list
     return ret

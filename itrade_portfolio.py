@@ -853,7 +853,7 @@ class Portfolio(object):
             # log to service
             for eachQuote in quotes.list():
                 if eachQuote.isMatrix():
-                    name = eachQuote.liveconnector().name()
+                    name = eachQuote.liveconnector(bForceLive=True).name()
                     #print 'loginToServices:',eachQuote.ticker(),name
                     if not maperr.has_key(name):
                         con = getLoginConnector(name)

@@ -145,9 +145,7 @@ class Quote(object):
 
         self.m_market = market
 
-        self.m_defaultliveconnector = getDefaultLiveConnector(self.m_market,self.m_list,self.m_place)
-        if self.m_defaultliveconnector == None:
-            print 'no default import connector for %s (list:%d)' % (self,self.m_list)
+        self.m_defaultliveconnector = None
         self.m_defaultimportconnector = getImportConnector(self.m_market,self.m_list,QTAG_IMPORT,self.m_place)
         if self.m_defaultimportconnector == None:
             print 'no default import connector for %s (list:%d)' % (self,self.m_list)
@@ -355,9 +353,16 @@ class Quote(object):
         return self.m_market
 
     def delay(self):
-        return self.m_liveconnector.delay()
+        return self.liveconnector().delay()
 
-    def liveconnector(self):
+    def liveconnector(self,bForceLive=False):
+        if bForceLive:
+            ret = getLiveConnector(self.m_market,self.m_list,QTAG_LIVE,self.m_place)
+            if ret: return ret
+
+        if not self.m_liveconnector:
+            self.m_liveconnector = getDefaultLiveConnector(self.m_market,self.m_list,self.m_place)
+            #print 'quote:',self,self.m_liveconnector
         return self.m_liveconnector
 
     def importconnector(self):
@@ -398,18 +403,18 @@ class Quote(object):
     # ---[ notebook of order ] ----------------------------
 
     def hasNotebook(self):
-        return self.m_liveconnector.hasNotebook()
+        return self.liveconnector().hasNotebook()
 
     def currentNotebook(self):
         if self.hasNotebook():
-            return self.m_liveconnector.currentNotebook(self)
+            return self.liveconnector().currentNotebook(self)
         else:
             return None
 
     # ---[ status ] ---------------------------------------
 
     def hasStatus(self):
-        return self.m_liveconnector.hasStatus()
+        return self.liveconnector().hasStatus()
 
     def currentStatus(self):
         # current status (status,reopen,RB,RH,clock) could be :
@@ -417,7 +422,7 @@ class Quote(object):
         #   clock = time string of status in local market time
         if self.hasStatus():
             # get the real status
-            cs,r,rb,rh,cl = self.m_liveconnector.currentStatus(self)
+            cs,r,rb,rh,cl = self.liveconnector().currentStatus(self)
             if cs=="OK" and not self.hasOpened():
                 cs = "CLOSED"
             if cs=="UNKNOWN" and not self.isOpen():
@@ -488,7 +493,7 @@ class Quote(object):
     def currentMeans(self):
         # means: sell,buy,last
         if self.hasStatus():
-            return self.m_liveconnector.currentMeans(self)
+            return self.liveconnector().currentMeans(self)
         else:
             return "-","-","-"
 
@@ -1381,9 +1386,7 @@ except NameError:
 def initModule():
     quotes.load()
     for quote in quotes.list():
-        quote.m_defaultliveconnector = getDefaultLiveConnector(quote.m_market,quote.m_list,quote.m_place)
-        if quote.m_defaultliveconnector == None:
-            print 'no default live connector for %s (list:%d)' % (quote,quote.m_list)
+        quote.m_defaultliveconnector = None
         quote.m_defaultimportconnector = getImportConnector(quote.m_market,quote.m_list,QTAG_IMPORT,quote.m_place)
         if quote.m_defaultimportconnector == None:
             print 'no default import connector for %s (list:%d)' % (quote,quote.m_list)

@@ -134,10 +134,6 @@ ID_CACHE_ERASE_DATA = 500
 ID_CACHE_ERASE_NEWS = 501
 ID_CACHE_ERASE_ALL = 510
 
-ID_CONNECTOR = 599
-ID_CONNECTOR_LIVE = 600
-ID_CONNECTOR_DIFFERED = 601
-
 ID_CONTENT = 800
 ID_SUPPORT = 801
 ID_BUG = 802
@@ -512,11 +508,6 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
         self.cachemenu.Append(ID_CACHE_ERASE_ALL, message('main_cache_erase_all'),message('main_cache_desc_erase_all'))
         self.optionsmenu.AppendMenu(ID_CACHE,message('main_options_cache'),self.cachemenu,message('main_options_desc_cache'))
 
-        self.connectormenu = wx.Menu()
-        self.connectormenu.AppendRadioItem(ID_CONNECTOR_LIVE, message('main_connector_live'),message('main_connector_desc_live'))
-        self.connectormenu.AppendRadioItem(ID_CONNECTOR_DIFFERED, message('main_connector_differed'),message('main_connector_desc_differed'))
-        self.optionsmenu.AppendMenu(ID_CONNECTOR,message('main_options_connector'),self.connectormenu,message('main_options_desc_connector'))
-
         self.helpmenu = wx.Menu()
         self.helpmenu.Append(ID_CONTENT, message('main_help_contents'),message('main_help_desc_contents'))
         self.helpmenu.AppendSeparator()
@@ -583,9 +574,6 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
         wx.EVT_MENU(self, ID_CACHE_ERASE_DATA, self.OnCacheEraseData)
         wx.EVT_MENU(self, ID_CACHE_ERASE_NEWS, self.OnCacheEraseNews)
         wx.EVT_MENU(self, ID_CACHE_ERASE_ALL, self.OnCacheEraseAll)
-
-        wx.EVT_MENU(self, ID_CONNECTOR_LIVE, self.OnConnectorLive)
-        wx.EVT_MENU(self, ID_CONNECTOR_DIFFERED, self.OnConnectorDiffered)
 
         wx.EVT_MENU(self, ID_REFRESH, self.OnRefresh)
         wx.EVT_MENU(self, ID_AUTOREFRESH, self.OnAutoRefresh)
@@ -781,12 +769,6 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
 
             m = self.langmenu.FindItemById(ID_LANG_DEUTCH)
             m.Check(itrade_config.lang==4)
-
-        m = self.connectormenu.FindItemById(ID_CONNECTOR_DIFFERED)
-        m.Check(itrade_config.isDiffered())
-
-        m = self.connectormenu.FindItemById(ID_CONNECTOR_LIVE)
-        m.Check(not itrade_config.isDiffered())
 
         # refresh Enable state based on current View
         m = self.quotemenu.FindItemById(ID_ADD_QUOTE)
@@ -992,22 +974,6 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
     def OnLangDeutch(self,e):
         itrade_config.lang = 4
         self.OnChangeLang()
-
-    # --- [ connector management ] -------------------------------------
-
-    def SetDefaultConnector(self,differed):
-        itrade_config.setDiffered(differed)
-        itrade_config.saveConfig()
-        self.updateCheckItems()
-        dlg = wx.MessageDialog(self, message('connector_change_confirm'), message('connector_change_confirm_title'), wx.OK | wx.ICON_INFORMATION)
-        idRet = dlg.ShowModal()
-        dlg.Destroy()
-
-    def OnConnectorLive(self,e):
-        self.SetDefaultConnector(differed=False)
-
-    def OnConnectorDiffered(self,e):
-        self.SetDefaultConnector(differed=True)
 
     # --- [ cache management ] -------------------------------------
 
