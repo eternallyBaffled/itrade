@@ -55,7 +55,7 @@ from itrade_local import message
 from itrade_config import *
 from itrade_market import list_of_markets,market2place
 from itrade_isin import checkISIN
-#from itrade_import import *
+from itrade_ext import *
 
 from itrade_wxmixin import iTradeSelectorListCtrl
 

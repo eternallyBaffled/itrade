@@ -434,10 +434,10 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         box2.Add(self.wxNEW, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_BUTTON(self, wx.ID_NEW, self.OnNewQuote)
 
-        self.wxEDIT = wx.Button(self, wx.ID_EDIT, message('listquote_edit'))
+        self.wxEDIT = wx.Button(self, wx.ID_PROPERTIES, message('listquote_edit'))
         self.wxEDIT.SetHelpText(message('listquote_edit_desc'))
         box2.Add(self.wxEDIT, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
-        wx.EVT_BUTTON(self, wx.ID_EDIT, self.OnEditQuote)
+        wx.EVT_BUTTON(self, wx.ID_PROPERTIES, self.OnEditQuote)
 
         self.wxDELETE = wx.Button(self, wx.ID_DELETE, message('listquote_delete'))
         self.wxDELETE.SetHelpText(message('listquote_delete_desc'))
