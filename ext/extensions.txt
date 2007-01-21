@@ -36,6 +36,10 @@ itrade_quotes_barchart.py
 itrade_quotes_euronext.py
 itrade_quotes_nyse.py
 
+# login
+itrade_login_fortuneo.py
+itrade_login_boursorama.py
+
 # -----------------------------------------------------------------------------
 # deprecated extensions still enabled in the official builds
 # -----------------------------------------------------------------------------
