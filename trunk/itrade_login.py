@@ -37,14 +37,9 @@
 
 # python system
 import logging
-#import thread
-#from datetime import *
 
 # iTrade system
 from itrade_logging import *
-#from itrade_datation import Datation
-#import itrade_config
-#from itrade_market import market2place
 
 # ============================================================================
 # LoginRegistry
@@ -83,13 +78,6 @@ except NameError:
 registerLoginConnector = gLoginRegistry.register
 getLoginConnector = gLoginRegistry.get
 listLoginConnector = gLoginRegistry.list
-
-# ============================================================================
-# __x be more dynamic ...
-# ============================================================================
-
-import itrade_login_fortuneo
-import itrade_login_boursorama
 
 # ============================================================================
 # Test ME
