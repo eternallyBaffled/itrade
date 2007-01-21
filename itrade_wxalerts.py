@@ -133,16 +133,20 @@ class iTradeAlertsPanel(wx.Window):
 
             x = x + 1
 
-        # default selection
-        self.m_currentItem = 0
-        self.m_list.SetItemState(0, wx.LIST_STATE_SELECTED, wx.LIST_STATE_SELECTED)
-
         # adjust columns
         self.m_list.SetColumnWidth(IDC_DATE, wx.LIST_AUTOSIZE)
         self.m_list.SetColumnWidth(IDC_TYPE, wx.LIST_AUTOSIZE)
         self.m_list.SetColumnWidth(IDC_SOURCE, wx.LIST_AUTOSIZE)
         self.m_list.SetColumnWidth(IDC_ISIN, wx.LIST_AUTOSIZE)
         self.m_list.SetColumnWidth(IDC_TITLE, wx.LIST_AUTOSIZE)
+
+        # default selection
+        if x>0:
+            self.m_currentItem = 0
+            self.m_list.SetItemState(0, wx.LIST_STATE_SELECTED, wx.LIST_STATE_SELECTED)
+            self.m_list.EnsureVisible(self.m_currentItem)
+        else:
+            self.m_currentItem = -1
 
 # ============================================================================
 # iTradeNewsPanel

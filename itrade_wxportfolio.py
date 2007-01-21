@@ -197,6 +197,7 @@ class iTradePortfolioSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         self.m_list.SetColumnWidth(0, wx.LIST_AUTOSIZE_USEHEADER)
         self.m_list.SetColumnWidth(1, wx.LIST_AUTOSIZE_USEHEADER)
         self.m_list.SetColumnWidth(2, wx.LIST_AUTOSIZE_USEHEADER)
+
         if self.currentItem>=0:
             self.m_list.SetItemState(self.currentItem, wx.LIST_STATE_SELECTED, wx.LIST_STATE_SELECTED)
             self.m_list.EnsureVisible(self.currentItem)

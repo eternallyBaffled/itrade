@@ -925,8 +925,12 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
         self.m_list.SetColumnWidth(IDC_DESCRIPTION, wx.LIST_AUTOSIZE)
 
         # default selection
-        self.m_currentItem = 0
-        self.m_list.SetItemState(0, wx.LIST_STATE_SELECTED, wx.LIST_STATE_SELECTED)
+        if len(items)>0:
+            self.m_currentItem = 0
+            self.m_list.SetItemState(0, wx.LIST_STATE_SELECTED, wx.LIST_STATE_SELECTED)
+            self.m_list.EnsureVisible(self.m_currentItem)
+        else:
+            self.m_currentItem = -1
 
     # --- [ menu ] -------------------------------------
 
