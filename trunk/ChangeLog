@@ -5,6 +5,9 @@ On the road for v0.4.6 (Nausicaa2)
 
 ===============================================================================
 
+2007-01-21  Gilles Dumortier <dgil at ieee.org>
+	* Extensions Infrastructure (SF bug 1631835)
+
 2007-01-14  Elmo Mäntynen <elmo13 at jippii dot fi>
 	* Handling of unicode objects in CSV.write()
 

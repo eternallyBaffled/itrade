@@ -171,6 +171,11 @@ def main():
 
     # load configuration
     itrade_config.loadConfig()
+
+    # load extensions
+    itrade_ext.loadExtensions()
+
+    # init modules
     itrade_quotes.initModule()
     itrade_portfolio.initModule()
 
