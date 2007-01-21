@@ -17,6 +17,9 @@
 # experimental - use with caution
 # -----------------------------------------------------------------------------
 
+# login
+itrade_login_boursorama.py
+
 # -----------------------------------------------------------------------------
 # standard extensions enabled in the official builds
 # -----------------------------------------------------------------------------
@@ -38,7 +41,6 @@ itrade_quotes_nyse.py
 
 # login
 itrade_login_fortuneo.py
-itrade_login_boursorama.py
 
 # -----------------------------------------------------------------------------
 # deprecated extensions still enabled in the official builds
