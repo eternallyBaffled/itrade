@@ -1459,7 +1459,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
         self.m_list.SetColumnWidth(IDC_TICKER, wx.LIST_AUTOSIZE_USEHEADER)
 
         # default selection
-        if x>0:
+        if len(items)>0:
             self.m_currentItem = 0
             self.m_list.SetItemState(0, wx.LIST_STATE_SELECTED, wx.LIST_STATE_SELECTED)
             self.m_list.EnsureVisible(self.m_currentItem)
