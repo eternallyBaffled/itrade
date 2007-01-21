@@ -1,0 +1,62 @@
+/iTrade/ext/README
+===============================================================================
+
+This file contains information for all official plugins and extensions
+distributed with iTrade
+
+-------------------------------------------------------------------------------
+What is an extension ?
+-------------------------------------------------------------------------------
+
+An extension is a .py file that appears in iTrade's ext folder. iTrade tries to
+import all such files while starting up. During the importation, each extension
+register to a service.
+
+-------------------------------------------------------------------------------
+What is a service ?
+-------------------------------------------------------------------------------
+
+iTrade automatically calls service code at various time during iTrade's
+execution. Supported services are :
+- import historical data from a source
+- import live data from a source
+- import list of quotes (ISIN referenced or not) from a source
+
+iTrade will add more services (menu hooking, panel hooking) in future releases
+
+-------------------------------------------------------------------------------
+How do extensions work ?
+-------------------------------------------------------------------------------
+
+Exensions register themselves when iTrade imports them using specific code,
+which should appear as the outer level of the .py file.
+
+Import historical data from a source :
+	registerImportConnector(
+		market,		# name of the market (itrade_market.py)
+		place,		# place within the market (itrade_market.py)
+		qlist,          # kind of list (itrade_import.py) : QLIST_xxx
+		qtag,		# kind of service (itrade_ext.py) : QTAG_IMPORT
+		connector,	# global var of the connector
+		bDefault=True	# default connector for <market,place,qlist>
+		)
+
+	example : itrade_import_yahoo.py
+
+Import live data from a source :
+	registerLiveConnector(
+		market,		# name of the market (itrade_market.py)
+		place,		# place within the market (itrade_market.py)
+		qlist,          # kind of list (itrade_import.py) : QLIST_xxx
+		qtag,		# kind of service (itrade_ext.py) : QTAG_xxx
+		connector,	# global var of the connector
+		bDefault=True	# default connector for <market,place,qlist>
+		)
+
+		QTAG_xxx can be QTAG_DIFFERED or QTAG_LIVE. iTrade will always
+		try to use a QTAG_LIVE service then fallback to a QTAG_DIFFERED
+		service.
+
+	example : itrade_live_yahoo.py
+
+===============================================================================

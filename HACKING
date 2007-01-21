@@ -124,10 +124,12 @@ o Developing an "impacting" new feature
 	      feature is the name of the new feature
 
 -------------------------------------------------------------------------------
-Plugin Architecture
+Extensions / Plugins Architecture
 -------------------------------------------------------------------------------
 
-<tbw>
+Extensions and Plugins files are in the ./ext folder.
+
+Read ./ext/README file for more information.
 
 -------------------------------------------------------------------------------
 Current Development notes
