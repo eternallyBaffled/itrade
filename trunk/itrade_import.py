@@ -29,6 +29,7 @@
 #
 # History       Rev   Description
 # 2005-03-20    dgil  Wrote it from scratch
+# 2007-01-21    dgil  Move to the new extension mechanism
 # ============================================================================
 
 # ============================================================================
@@ -37,144 +38,11 @@
 
 # python system
 import logging
-import thread
 from datetime import *
 
 # iTrade system
 from itrade_logging import *
-from itrade_datation import Datation
 import itrade_config
-from itrade_market import market2place
-
-# ============================================================================
-# LIST
-# ============================================================================
-
-QLIST_ALL      = 0
-QLIST_ANY      = 0
-QLIST_SYSTEM   = 1
-QLIST_USER     = 2
-QLIST_INDICES  = 3
-QLIST_TRACKERS = 4
-
-# ============================================================================
-# TAG
-# ============================================================================
-
-QTAG_ANY = 0
-QTAG_LIVE = 1
-QTAG_DIFFERED = 2
-QTAG_IMPORT = 3
-QTAG_LIST = 4
-
-# ============================================================================
-# ConnectorRegistry
-# ============================================================================
-
-class ConnectorRegistry(object):
-    def __init__(self):
-        self.m_conn = []
-
-    def register(self,market,place,qlist,qtag,connector,bDefault=True):
-        self.m_conn.append((market,place,bDefault,connector,qlist,qtag))
-        #print 'Register %s for market :' % self, market,' qlist:',qlist,' qtag:',qtag
-        return True
-
-    def get(self,market,qlist,qtag,place=None,name=None):
-        if place==None:
-            place = market2place(market)
-        if name:
-            for amarket,aplace,adefault,aconnector,aqlist,aqtag in self.m_conn:
-                #print amarket,aqlist,aqtag,aplace,aconnector.name(),adefault
-                if market==amarket and place==aplace and aconnector.name()==name and (aqlist==QLIST_ANY or aqlist==qlist) and (qtag==QTAG_ANY or aqtag==qtag):
-                    return aconnector
-        else:
-            for amarket,aplace,adefault,aconnector,aqlist,aqtag in self.m_conn:
-                if market==amarket and place==aplace and (aqlist==QLIST_ANY or qlist==aqlist) and adefault and (qtag==QTAG_ANY or aqtag==qtag):
-                    return aconnector
-        return None
-
-    def list(self,market,qlist,place):
-        lst = []
-        for amarket,aplace,adefault,aconnector,aqlist,aqtag in self.m_conn:
-            if amarket==market and aplace==place and (aqlist==QLIST_ANY or aqlist==qlist):
-                lst.append((aconnector.name(),amarket,aplace,adefault,aconnector,aqlist,aqtag))
-        return lst
-
-# ============================================================================
-# Export Live and Import Registries
-# ============================================================================
-
-try:
-    ignore(gLiveRegistry)
-except NameError:
-    gLiveRegistry = ConnectorRegistry()
-
-registerLiveConnector = gLiveRegistry.register
-getLiveConnector = gLiveRegistry.get
-listLiveConnector = gLiveRegistry.list
-
-def getDefaultLiveConnector(market,list,place=None):
-    if itrade_config.isDiffered():
-        # force differed connector
-        ret = getLiveConnector(market,list,QTAG_DIFFERED,place)
-    else:
-        # try live connector
-        ret = getLiveConnector(market,list,QTAG_LIVE,place)
-        if ret==None:
-            # no live connector : fall-back to differed connector
-            ret = getLiveConnector(market,list,QTAG_DIFFERED,place)
-    if ret==None:
-        print 'No default connector %s for market :' % self,market,' qlist:',qlist
-    return ret
-
-try:
-    ignore(gImportRegistry)
-except NameError:
-    gImportRegistry = ConnectorRegistry()
-
-registerImportConnector = gImportRegistry.register
-getImportConnector = gImportRegistry.get
-listImportConnector = gImportRegistry.list
-
-# ============================================================================
-# Export ListSymbol Registry
-# ============================================================================
-
-try:
-    ignore(gListSymbolRegistry)
-except NameError:
-    gListSymbolRegistry = ConnectorRegistry()
-
-registerListSymbolConnector = gListSymbolRegistry.register
-getListSymbolConnector = gListSymbolRegistry.get
-listListSymbolConnector = gListSymbolRegistry.list
-
-# ============================================================================
-# __x be more dynamic ...
-# ============================================================================
-
-# Euronext market connectors : ABCBourse (deprecated), Euronext or Fortuneo
-import itrade_import_euronext
-import itrade_liveupdate_euronext
-
-import itrade_liveupdate_fortuneo
-
-import itrade_import_abcbourse
-import itrade_liveupdate_abcbourse
-
-# all others market connectors (incl. euronext) : Yahoo
-import itrade_import_yahoo
-import itrade_liveupdate_yahoo
-
-# list of symbols : Euronext, Nyse, BarChart (Amex,Nasdaq,OTCBB), ASX
-import itrade_quotes_euronext
-
-import itrade_quotes_nyse
-
-import itrade_quotes_barchart
-
-import itrade_quotes_asx
 
 # ============================================================================
 # Importation from internet : HISTORIC

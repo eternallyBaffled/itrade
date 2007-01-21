@@ -49,7 +49,7 @@ import string
 import itrade_config
 from itrade_logging import *
 from itrade_isin import checkISIN,filterName
-from itrade_import import *
+from itrade_ext import *
 
 # ============================================================================
 # Import_ListOfQuotes_Euronext()

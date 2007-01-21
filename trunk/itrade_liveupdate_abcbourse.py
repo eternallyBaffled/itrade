@@ -48,7 +48,7 @@ from httplib import *
 import itrade_config
 from itrade_logging import *
 from itrade_quotes import *
-from itrade_import import *
+from itrade_ext import *
 
 # ============================================================================
 # LiveUpdate_ABCBourse()

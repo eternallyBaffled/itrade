@@ -16,11 +16,14 @@ register to a service.
 What is a service ?
 -------------------------------------------------------------------------------
 
-iTrade automatically calls service code at various time during iTrade's
-execution. Supported services are :
+iTrade automatically calls service code at various time during it's execution.
+
+Supported services are :
 - import historical data from a source
 - import live data from a source
 - import list of quotes (ISIN referenced or not) from a source
+- import news from a source
+- login to a source
 
 iTrade will add more services (menu hooking, panel hooking) in future releases
 
@@ -32,6 +35,7 @@ Exensions register themselves when iTrade imports them using specific code,
 which should appear as the outer level of the .py file.
 
 Import historical data from a source :
+
 	registerImportConnector(
 		market,		# name of the market (itrade_market.py)
 		place,		# place within the market (itrade_market.py)
@@ -44,6 +48,7 @@ Import historical data from a source :
 	example : itrade_import_yahoo.py
 
 Import live data from a source :
+
 	registerLiveConnector(
 		market,		# name of the market (itrade_market.py)
 		place,		# place within the market (itrade_market.py)
@@ -58,5 +63,30 @@ Import live data from a source :
 		service.
 
 	example : itrade_live_yahoo.py
+
+Import list of quotes from a source :
+
+	registerListSymbolConnector(
+		market,		# name of the market (itrade_market.py)
+		place,		# place within the market (itrade_market.py)
+		qlist,          # kind of list (itrade_import.py) : QLIST_xxx
+		qtag,		# kind of service (itrade_ext.py) : QTAG_LIST
+		connector,	# global var of the connector
+		bDefault=True	# default connector for <market,place,qlist>
+		)
+
+	example : itrade_quotes_nyse.py
+
+Import News from a source :
+
+<under construction>
+
+	example : itrade_news_google.py
+
+Login to a source :
+
+<under construction>
+
+	example : itrade_login_fortuneo.py
 
 ===============================================================================
