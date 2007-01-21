@@ -6,6 +6,8 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-01-21  Gilles Dumortier <dgil at ieee.org>
+	* Live connection : Switch from/to Differed (SF bug 1607288)
+	* new tarball
 	* Be sure iTrade still working correctly with wxPython 2.6 - unicode
 	* Attempt to fix "Error while opening Suivi/Opérations" under linux
           (SF bug 1595171)

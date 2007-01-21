@@ -66,6 +66,14 @@ class LoginRegistry(object):
                 lst.append((aconnector.name(),aconnector))
         return lst
 
+    def logged(self,name):
+        con = self.get(name)
+        if con:
+            return con.logged()
+        else:
+            # connector not found : no need to log !
+            return True
+
 # ============================================================================
 # Export Login Registry
 # ============================================================================
@@ -78,6 +86,7 @@ except NameError:
 registerLoginConnector = gLoginRegistry.register
 getLoginConnector = gLoginRegistry.get
 listLoginConnector = gLoginRegistry.list
+loggedLoginConnector = gLoginRegistry.logged
 
 # ============================================================================
 # Test ME

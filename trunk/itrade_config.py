@@ -92,10 +92,6 @@ print '%s(%s) - %s %s' % (softwareName,softwareStatus,softwareVersion,softwareVe
 global gbDisconnected
 gbDisconnected = False
 
-default_bDiffered = True
-global gbDiffered
-gbDiffered = True
-
 # support
 supportURL = 'http://itrade.sourceforge.net/support.htm'
 bugTrackerURL = 'http://sourceforge.net/tracker/?group_id=128261&atid=711187'
@@ -239,7 +235,6 @@ def loadConfig():
     global matrixFontSize
     global operationFontSize
     global lang
-    global gbDiffered
 
     # create a configuration object
     config = ConfigParser.ConfigParser()
@@ -300,14 +295,6 @@ def loadConfig():
         except:
             lang = 0
 
-    try:
-        v = config.get("connector","differed")
-    except:
-        v = None
-        setDiffered(default_bDiffered)
-    if v:
-        setDiffered(v!="False")
-
 # ============================================================================
 # saveConfig()
 # ============================================================================
@@ -315,11 +302,6 @@ def loadConfig():
 def saveConfig():
     # create a configuration object
     config = ConfigParser.ConfigParser()
-
-    # create "Connector" section
-    config.add_section("connector")
-    if gbDiffered <> default_bDiffered:
-        config.set("connector", "differed", gbDiffered)
 
     # create "View" section
     config.add_section("view")
@@ -388,26 +370,6 @@ def isConnected():
 
     #print 'isConnected(): %s' % (not gbDisconnected)
     return not gbDisconnected
-
-# ============================================================================
-# differed
-# ============================================================================
-
-def setDiffered(status):
-    global gbDiffered
-
-    if status:
-        gbDiffered = True
-        print 'Data Connector : force to Differed'
-    else:
-        gbDiffered = False
-        print 'Data Connector : priority to Live'
-
-def isDiffered():
-    global gbDiffered
-
-    #print 'isDiffered(): %s' % (gbDiffered)
-    return gbDiffered
 
 # ============================================================================
 # During import

@@ -102,12 +102,6 @@ main_cache_desc_erase_news; Efface toutes les informations du cache
 main_cache_erase_all;Efface &Tout
 main_cache_desc_erase_all; Efface toutes les données (infos,historiques,...) du cache
 
-main_options_connector;&Récupération des données
-main_connector_live;Priorité aux connecteurs temps réel
-main_connector_desc_live; Donne la Priorité aux connecteurs temps réel (fortuneo par exemple)
-main_connector_differed;Force connecteurs temps différé
-main_connector_desc_differed; Force l'utilisation des connecteurs temps différé (euronext ou yahoo par exemple)
-
 main_help;&Aide
 main_help_contents;&Contenu
 main_help_desc_contents; Contenu de l'aide
@@ -500,9 +494,6 @@ cache_erase_confirm_title; Effacement de données du cache
 cache_erase_confirm_data; Confirmez-vous l'effacement de toutes les données historiques du cache ? (ces données seront regénérées)
 cache_erase_confirm_news; Confirmez-vous l'effacement de toutes les informations du cache ? (ces données seront regénérées)
 cache_erase_confirm_all; Confirmez-vous l'effacement de toutes les données (historiques,infos,...) du cache ? (ces données seront regénérées)
-
-connector_change_confirm_title; Option de récupération des données
-connector_change_confirm; Ce changement d'option nécessite le redémarrage du logiciel pour sa prise en compte
 
 indicator_autorefresh;Raffraichissement Automatique
 indicator_noautorefresh;Raffraichissement Manuel

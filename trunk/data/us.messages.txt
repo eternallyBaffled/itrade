@@ -98,12 +98,6 @@ main_cache_desc_erase_news;Erase all news from the cache folder
 main_cache_erase_all;Erase &All
 main_cache_desc_erase_all; Erase all data (news, historic, ...) from the cache folder
 
-main_options_connector;Data &Download
-main_connector_live;Priority to real-time connectors
-main_connector_desc_live; Give priority to real-time connectors (like Fortuneo)
-main_connector_differed;Force Differed time connectors
-main_connector_desc_differed; Force usage of Differed time connectors (like Euronext or Yahoo)
-
 main_help;&Help
 main_help_contents;&Contents
 main_help_desc_contents; Help Contents
@@ -501,9 +495,6 @@ cache_erase_confirm_title; Erase cache data
 cache_erase_confirm_data; Erase all historic data from the cache ? (data will be regenerated)
 cache_erase_confirm_news; Erase all news from the cache ? (data will be regenerated)
 cache_erase_confirm_all; Erase all data (historic, news, ...) from the cache ? (data will be regenerated)
-
-connector_change_confirm_title; Option to Download Data
-connector_change_confirm; This option selection requires that you restart the software to be activated
 
 indicator_autorefresh;Auto Refresh
 indicator_noautorefresh;Manual Refresh
