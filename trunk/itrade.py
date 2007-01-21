@@ -72,7 +72,6 @@ def usage():
     print
     print "--user=<p>   select usrerdata/ specific folder               "
     print
-    print "--unicode    use unicode version of wxPython (experimental)  "
     print "--nopsyco    do not use psyco                                "
 
 # ============================================================================
@@ -81,7 +80,7 @@ def usage():
 
 def main():
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "eho:vt:iq:f:l:du:", ["help", "output=", "ticker=", "quote=","file=","lang=","unicode","user=","nopsyco"])
+        opts, args = getopt.getopt(sys.argv[1:], "eho:vt:iq:f:l:du:", ["help", "output=", "ticker=", "quote=","file=","lang=","user=","nopsyco"])
     except getopt.GetoptError:
         # print help information and exit:
         usage()
@@ -138,9 +137,6 @@ def main():
             if not os.path.exists(itrade_config.dirUserData):
                 print 'userdata folder %s not found !' % a
                 sys.exit()
-
-        if o  == "--unicode":
-            itrade_config.unicode = True
 
         if o  == "--nopsyco":
             nopsyco = True
