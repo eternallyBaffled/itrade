@@ -146,7 +146,8 @@ class Import_yahoo(object):
             sdate = sdata[0]
             if (sdate<>"Date"):
                 if re_p3_1.match(sdate):
-                    print 'already good format ! ',sdate,sdata
+                    #print 'already good format ! ',sdate,sdata
+                    pass
                 else:
                     sdate = dd_mmm_yy2yyyymmdd(sdate)
                 open = string.atof(sdata[1])

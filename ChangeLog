@@ -5,6 +5,9 @@ On the road for v0.4.6 (Nausicaa2)
 
 ===============================================================================
 
+2007-01-14  Elmo Mäntynen <elmo13 at jippii dot fi>
+	* Handling of unicode objects in CSV.write()
+
 2007-01-07  Gilles Dumortier <dgil at ieee.org>
 	* Fix a crash with FCP FR0010086520 (note: only abcbourse is able to
 	  import historic data and live data for this quote)
