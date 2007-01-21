@@ -1,6 +1,10 @@
 /iTrade/PLUGINS
 ===============================================================================
 
+This file is documentation for the plugins officially supported by iTrade.
+
+Extensions and Plugins can be found in the ./ext folder.
+
 ===============================================================================
 Live / End Of Day data
 ===============================================================================
