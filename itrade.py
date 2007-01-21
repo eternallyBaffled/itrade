@@ -46,6 +46,7 @@ from itrade_local import *
 from itrade_logging import *
 setLevel(logging.INFO)
 import itrade_quotes
+import itrade_ext
 import itrade_import
 import itrade_portfolio
 import itrade_matrix

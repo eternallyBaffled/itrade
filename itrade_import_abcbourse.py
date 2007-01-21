@@ -46,7 +46,7 @@ from httplib import *
 from itrade_logging import *
 from itrade_quotes import *
 from itrade_datation import Datation
-from itrade_import import *
+from itrade_ext import *
 
 # ============================================================================
 # Import_ABCBourse()

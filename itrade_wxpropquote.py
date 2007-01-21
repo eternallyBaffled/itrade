@@ -50,7 +50,7 @@ from itrade_logging import *
 from itrade_quotes import *
 from itrade_local import message
 from itrade_config import *
-from itrade_import import *
+#from itrade_import import *
 from itrade_wxselectquote import select_iTradeQuote
 
 # ============================================================================

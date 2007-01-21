@@ -48,7 +48,7 @@ from datetime import *
 from itrade_logging import *
 from itrade_quotes import *
 from itrade_datation import Datation,jjmmaa2yyyymmdd
-from itrade_import import *
+from itrade_ext import *
 from itrade_market import euronext_place2mep,euronext_InstrumentId
 
 # ============================================================================

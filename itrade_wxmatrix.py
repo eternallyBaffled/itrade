@@ -50,7 +50,7 @@ from itrade_local import message,gMessage
 from itrade_portfolio import loadPortfolio
 from itrade_matrix import *
 from itrade_quotes import *
-from itrade_import import *
+#from itrade_import import *
 from itrade_login import *
 from itrade_currency import currencies
 
