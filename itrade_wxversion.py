@@ -30,6 +30,7 @@
 # History       Rev   Description
 # 2006-01-01    dgil  Wrote it from scratch
 # 2006-11-18    dgil  Experiment unicode version of wxPython
+# 2007-01-21    dgil  Switch definitively to unicode version of wxPython
 # ============================================================================
 
 # ============================================================================
@@ -51,7 +52,7 @@ import re
 import wxversion
 
 # iTrade system
-from itrade_config import main_is_frozen,unicode
+from itrade_config import main_is_frozen
 from itrade_local import message,setLang
 
 # ============================================================================
@@ -59,19 +60,14 @@ from itrade_local import message,setLang
 # ============================================================================
 
 def resolve_wxversion():
-    if unicode:
-        patt = "%d\.%d[0-9\-\.A-Za-z]*-unicode"
-        patts = "-unicode"
-        msgs = message('wxversion_msgu')
-    else:
-        patt = "%d\.%d[0-9\-\.A-Za-z]*-ansi"
-        patts = "-ansi"
-        msgs = message('wxversion_msga')
+    patt = "%d\.%d[0-9\-\.A-Za-z]*-unicode"
+    patts = "-unicode"
+    msgs = message('wxversion_msg')
 
     versions = wxversion.getInstalled()
-    print 'wxPython Installed (%s) :' % patts,versions
+    print 'wxPython Installed :',versions
 
-    # need to select the more recent one with 'ansi'
+    # need to select the more recent one with 'unicode'
     vSelected = None
     vSelectedMsg = ''
     for eachVersion in versions:
@@ -92,18 +88,18 @@ def resolve_wxversion():
         wxversion.select(vSelected)
         return
 
-    # no compatible version :-( : try to select an ansi release
-    bAnsi = False
+    # no compatible version :-( : try to select any release
+    bUnicode = False
     for eachVersion in versions:
         m = re.search(patts, eachVersion)
         if m:
             print 'wxPython Selected  :',eachVersion
             wxversion.select(eachVersion)
-            bAnsi = True
+            bUnicode = True
             break
 
-    if not bAnsi:
-        # only unicode release :-( => use US lang
+    if not bUnicode:
+        # only ansi release :-( => use US lang
         setLang('us')
 
     import sys, wx, webbrowser
