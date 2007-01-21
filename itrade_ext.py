@@ -132,7 +132,7 @@ def getDefaultLiveConnector(market,list,place=None):
             # no live connector : fall-back to differed connector
             ret = getLiveConnector(market,list,QTAG_DIFFERED,place)
     if ret==None:
-        print 'No default connector %s for market :' % self,market,' qlist:',qlist
+        print 'No default connector %s for market :' % market,' qlist:',list
     return ret
 
 try:
