@@ -5,6 +5,9 @@ On the road for v0.4.6 (Nausicaa2)
 
 ===============================================================================
 
+2007-01-22  Gilles Dumortier <dgil at ieee.org>
+	* Verbose mode (SF bug 1641482)
+
 2007-01-21  Gilles Dumortier <dgil at ieee.org>
 	* Live connection : Switch from/to Differed (SF bug 1607288)
 	* new tarball

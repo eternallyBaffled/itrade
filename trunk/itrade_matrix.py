@@ -138,11 +138,13 @@ class TradingMatrix(object):
     def update(self,fromdate=None,todate=None):
         for eachQuote in self.list():
             # update information
-            debug('matrix::update: %s - %s' % (eachQuote.key(),eachQuote.ticker()))
+            if itrade_config.verbose:
+                info('matrix::update: %s - %s' % (eachQuote.key(),eachQuote.ticker()))
             eachQuote.update(fromdate,todate)
 
             # compute information
-            info('matrix::compute: %s - %s' % (eachQuote.key(),eachQuote.ticker()))
+            if itrade_config.verbose:
+                info('matrix::compute: %s - %s' % (eachQuote.key(),eachQuote.ticker()))
             eachQuote.compute(todate)
 
     # add a quote in the matrix

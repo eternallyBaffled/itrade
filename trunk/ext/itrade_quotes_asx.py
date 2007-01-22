@@ -49,7 +49,7 @@ import string
 # iTrade system
 import itrade_config
 from itrade_logging import *
-from itrade_isin import buildISIN,extractCUSIP,filterName
+from itrade_isin import buildISIN,extractCUSIP
 from itrade_ext import *
 
 # ============================================================================

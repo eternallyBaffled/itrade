@@ -124,9 +124,9 @@ def filterName(name):
     while True:
         pos = name.find(';')
         if pos >-1:
-            print pos,name
+            #print pos,name
             name = name[:pos] + name[pos+1:]
-            print name
+            #print name
         else:
             return name
 

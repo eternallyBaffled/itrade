@@ -52,7 +52,7 @@ import re
 import wxversion
 
 # iTrade system
-from itrade_config import main_is_frozen
+from itrade_config import main_is_frozen,verbose
 from itrade_local import message,setLang
 
 # ============================================================================
@@ -65,7 +65,8 @@ def resolve_wxversion():
     msgs = message('wxversion_msg')
 
     versions = wxversion.getInstalled()
-    print 'wxPython Installed :',versions
+    if verbose:
+        print 'wxPython Installed :',versions
 
     # need to select the more recent one with 'unicode'
     vSelected = None
