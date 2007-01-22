@@ -450,7 +450,8 @@ class LiveUpdate_fortuneo(object):
         self.readCookie()
         self.loadPlaces()
 
-        #print 'live: connected on %s' % self.m_conn
+        if itrade_config.verbose:
+            print 'live: connected on %s' % self.m_conn
         return True
 
     def disconnect(self):
@@ -504,7 +505,7 @@ class LiveUpdate_fortuneo(object):
             raise('LiveUpdate_fortuneo:no connection / missing connect() call !')
             return None
 
-        info("LiveUpdate_fortuneo:getdata quote:%s " % quote)
+        #info("LiveUpdate_fortuneo:getdata quote:%s " % quote)
 
         isin = quote.isin()
 

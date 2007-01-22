@@ -103,9 +103,11 @@ def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT'):
                         quotes.addQuote(isin=data[1],name=name,ticker=data[4],market=market,currency=data[7],place=data[3],country=None)
                         count = count + 1
                     else:
-                        print 'unknown ALTERNEXT place : ',data
+                        if itrade_config.verbose:
+                            print 'unknown ALTERNEXT place : ',data
                 else:
-                    print 'invalid ISIN : ',data
+                    if itrade_config.verbose:
+                        print 'invalid ISIN : ',data
 
         if len(data)==34:
             if data[1]!='ISIN':
@@ -115,9 +117,11 @@ def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT'):
                         quotes.addQuote(isin=data[1],name=name,ticker=data[4],market=market,currency=data[6],place=data[3],country=None,debug=True)
                         count = count + 1
                     else:
-                        print 'unknown EURONEXT place : ',data
+                        if itrade_config.verbose:
+                            print 'unknown EURONEXT place : ',data
                 else:
-                    print 'invalid ISIN : ',data
+                    if itrade_config.verbose:
+                        print 'invalid ISIN : ',data
 
     print 'Imported %d/%d lines from %s data.' % (count,len(lines),market)
 
