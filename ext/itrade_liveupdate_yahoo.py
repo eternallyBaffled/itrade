@@ -116,7 +116,7 @@ class LiveUpdate_yahoo(object):
         per = clock[-2:]
         #if per=='pm':
         #    val = val + 12*60
-        print clock,clo,hour,min,val,per
+        #print clock,clo,hour,min,val,per
         if val>self.m_lastclock:
             self.m_lastclock = val
         return "%d:%02d" % (val/60,val%60)
@@ -147,12 +147,14 @@ class LiveUpdate_yahoo(object):
         data = f.read()[:-2] # Get rid of CRLF
         s400 = re.search("400 Bad Request",data,re.IGNORECASE|re.MULTILINE)
         if s400:
-            info('unknown %s quote (400 Bad Request) from Yahoo' % (quote.ticker()))
+            if itrade_config.verbose:
+                info('unknown %s quote (400 Bad Request) from Yahoo' % (quote.ticker()))
             return None
 
         sdata = string.split (data, ',')
         if len (sdata) < 9:
-            info('invalid data (bad answer length) for %s quote' % (quote.ticker()))
+            if itrade_config.verbose:
+                info('invalid data (bad answer length) for %s quote' % (quote.ticker()))
             return None
 
         #print sdata
@@ -165,7 +167,8 @@ class LiveUpdate_yahoo(object):
 
         sclock = sdata[3][1:-1]
         if sclock=="N/A" or sdata[2]=='"N/A"' or len(sclock)<5:
-            info('invalid datation for %s : %s %s' % (quote.ticker(),sclock,sdata[2]))
+            if itrade_config.verbose:
+                info('invalid datation for %s : %s %s' % (quote.ticker(),sclock,sdata[2]))
             return None
 
         self.m_dcmpd[key] = sdata
@@ -174,7 +177,8 @@ class LiveUpdate_yahoo(object):
         # start decoding
         symbol = sdata[0][1:-1]
         if symbol<>sname:
-            info('invalid ticker : ask for %s and receive %s' % (sname,symbol))
+            if itrade_config.verbose:
+                info('invalid ticker : ask for %s and receive %s' % (sname,symbol))
             return None
         value = string.atof (sdata[1])
         date = self.yahooDate (sdata[2])
@@ -221,7 +225,7 @@ class LiveUpdate_yahoo(object):
         data = map(lambda (val): '%s' % str(val), data)
         data = string.join(data, ';')
 
-        print data
+        #print data
         return data
 
     # ---[ cache management on data ] ---
