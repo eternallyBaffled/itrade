@@ -224,7 +224,11 @@ global lang
 lang = 0
 
 # verbose mode
-verbose = False
+if __svnversion__ != 'r???':
+    verbose = False
+else:
+    print 'Verbose mode : forced ON (under development release)'
+    verbose = True
 
 # ============================================================================
 # loadConfig()
