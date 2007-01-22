@@ -12,6 +12,8 @@ o iTrade information : read ./RELNOTES, ./TODO and ./ChangeLog files
 
 o Developer Informations : read ./HACKING and ./RELEASE files
 
+o How to write an extension / plugin : read ./ext/README file
+
 o Donators : read ./DONORS file
 
 o To report a bug : read ./BUGS file
