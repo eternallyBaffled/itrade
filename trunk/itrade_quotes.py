@@ -145,7 +145,8 @@ class Quote(object):
 
         self.m_market = market
 
-        self.m_defaultliveconnector = None
+        self.m_userliveconnector = None
+
         self.m_defaultimportconnector = getImportConnector(self.m_market,self.m_list,QTAG_IMPORT,self.m_place)
         if self.m_defaultimportconnector == None:
             print 'no default import connector for %s (list:%d)' % (self,self.m_list)
@@ -179,7 +180,7 @@ class Quote(object):
         self.m_stoploss = 0.0
         self.m_stopwin = 0.0
         self.m_hasStops = False
-        self.m_liveconnector = self.m_defaultliveconnector
+        self.m_liveconnector = None
         self.m_importconnector = self.m_defaultimportconnector
         self.m_name = self.m_defaultname
         self.m_ticker = self.m_defaultticker
@@ -360,31 +361,37 @@ class Quote(object):
             ret = getLiveConnector(self.m_market,self.m_list,QTAG_LIVE,self.m_place)
             if ret: return ret
 
+        if self.m_userliveconnector:
+            # priority to connector selected by the user
+            return self.m_userliveconnector
+
         if not self.m_liveconnector:
             self.m_liveconnector = getDefaultLiveConnector(self.m_market,self.m_list,self.m_place)
-            #print 'quote:',self,self.m_liveconnector
         return self.m_liveconnector
 
     def importconnector(self):
         return self.m_importconnector
 
-    def default_liveconnector(self):
-        return self.m_defaultliveconnector
+    def user_liveconnector(self):
+        if self.m_userliveconnector:
+            return self.m_userliveconnector
+        return self.m_liveconnector
 
     def default_importconnector(self):
         return self.m_defaultimportconnector
 
     def restore_defaultconnectors(self):
-        self.m_liveconnector = getDefaultLiveConnector(self.m_market,self.m_list,self.m_place)
+        self.m_userliveconnector = None
+        #self.m_liveconnector = getDefaultLiveConnector(self.m_market,self.m_list,self.m_place)
         self.m_importconnector = getImportConnector(self.m_market,self.m_list,QTAG_IMPORT,self.m_place)
         self.m_pluginId = None
 
     def set_liveconnector(self,name):
-        #print 'set_liveconnector for ',self.m_market,self.m_list,QTAG_ANY,self.m_place,name
+        print 'set_liveconnector for ',self.m_market,self.m_list,QTAG_ANY,self.m_place,name
         conn = getLiveConnector(self.m_market,self.m_list,QTAG_ANY,self.m_place,name)
-        #print ' returns',conn
+        print ' returns',conn
         if conn:
-            self.m_liveconnector = conn
+            self.m_userliveconnector = conn
             self.m_pluginId = None
 
     def set_importconnector(self,name):
@@ -1152,8 +1159,8 @@ class Quote(object):
             prop.append('%s;%s;%s' % (self.key(),'name',self.name()))
         if self.ticker()!=self.default_ticker():
             prop.append('%s;%s;%s' % (self.key(),'ticker',self.ticker()))
-        if self.liveconnector()!=self.default_liveconnector():
-            prop.append('%s;%s;%s' % (self.key(),'live',self.liveconnector().name()))
+        if self.m_userliveconnector and (self.m_userliveconnector != self.m_liveconnector):
+            prop.append('%s;%s;%s' % (self.key(),'live',self.user_liveconnector().name()))
         if self.importconnector()!=self.default_importconnector():
             prop.append('%s;%s;%s' % (self.key(),'import',self.importconnector().name()))
         return prop
