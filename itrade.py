@@ -59,7 +59,6 @@ def usage():
     print "%s %s - %s version - %s" % (itrade_config.softwareName,itrade_config.softwareVersion,itrade_config.softwareLicense,itrade_config.softwareCopyright)
     print
     print "-h / --help  this help                                       "
-    print "-v           verbose / debug mode                            "
     print "-e           connect live and display portfolio evaluation   "
     print "-i           connect and import a ticker (or isin)           "
     print "-d           disconnected (no live update / no network)      "
@@ -73,6 +72,7 @@ def usage():
     print "--user=<p>   select usrerdata/ specific folder               "
     print
     print "--nopsyco    do not use psyco                                "
+    print "--verbose    verbose mode (usefull for debugging)            "
 
 # ============================================================================
 # Main / Command line analysing
@@ -80,7 +80,7 @@ def usage():
 
 def main():
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "eho:vt:iq:f:l:du:", ["help", "output=", "ticker=", "quote=","file=","lang=","user=","nopsyco"])
+        opts, args = getopt.getopt(sys.argv[1:], "eho:vt:iq:f:l:du:", ["verbose","help", "output=", "ticker=", "quote=","file=","lang=","user=","nopsyco"])
     except getopt.GetoptError:
         # print help information and exit:
         usage()
@@ -88,7 +88,6 @@ def main():
 
     # default values
     output = None
-    verbose = False
     quote = None
     file = None
     wx = True
@@ -103,9 +102,8 @@ def main():
         if o == "-d":
             itrade_config.setDisconnected(True)
 
-        if o == "-v":
-            verbose = True
-            wx = False
+        if o == "-v" or o == "--verbose":
+            itrade_config.verbose = True
 
         if o == "-e":
             itrade_portfolio.cmdline_evaluatePortfolio()
@@ -197,12 +195,11 @@ def main():
         import itrade_wxmain
         itrade_wxmain.start_iTradeWindow()
 
-    if verbose:
-        if quote:
-            portfolio = itrade_portfolio.loadPortfolio()
-            quote.update()
-            quote.compute()
-            quote.printInfo()
+    if quote:
+        portfolio = itrade_portfolio.loadPortfolio()
+        quote.update()
+        quote.compute()
+        quote.printInfo()
 
     # save the user configuration
     # __x ? itrade_config.saveConfig()

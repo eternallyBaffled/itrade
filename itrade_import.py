@@ -74,10 +74,12 @@ def import_from_internet(quote,fromdate=None,todate=None):
                     quote.importTrades(data,bLive=False)
                     bRet = True
                 else:
-                    print "import_from_internet(%s): nodata [%s,%s)" % (quote.ticker(),fromdate,todate)
+                    if itrade_config.verbose:
+                        print "import_from_internet(%s): nodata [%s,%s)" % (quote.ticker(),fromdate,todate)
                     bRet = False
             else:
-                print "import_from_internet(%s): nodata [%s,%s)" % (quote.ticker(),fromdate,todate)
+                if itrade_config.verbose:
+                    print "import_from_internet(%s): nodata [%s,%s)" % (quote.ticker(),fromdate,todate)
                 bRet = False
         else:
             print "import_from_internet(%s): getstate() failure :-(" % quote.ticker()
@@ -135,9 +137,11 @@ def liveupdate_from_internet(quote):
                     bRet = False
             else:
                 if abc.alive():
-                    print "liveupdate_from_internet(%s): alive but no trade yet" % quote.ticker()
+                    if itrade_config.verbose:
+                        print "liveupdate_from_internet(%s): alive but no trade yet" % quote.ticker()
                 else:
-                    print "liveupdate_from_internet(%s): not alive yet" % quote.ticker()
+                    if itrade_config.verbose:
+                        print "liveupdate_from_internet(%s): not alive yet" % quote.ticker()
                 bRet = False
         else:
             print "liveupdate_from_internet(%s): getstate() failure :-(" % quote.ticker()
@@ -173,7 +177,8 @@ def cmdline_importQuoteFromInternet(quote,dlg=None):
     nyear = 0
     bStop = False
     while (not bStop) and (nyear < itrade_config.numTradeYears):
-        print '--- update the quote -- %d to %d ---' % (year-step+1,year)
+        if itrade_config.verbose:
+            print '--- update the quote -- %d to %d ---' % (year-step+1,year)
         if spl:
             if not import_from_internet(quote,date(year-step+1,1,1),date(year,6,30)):
                 bStop = True
@@ -190,19 +195,22 @@ def cmdline_importQuoteFromInternet(quote,dlg=None):
             dlg.Update(nyear)
         nyear = nyear + step
         year = year - step
-    print '--- save the quote data ------'
+    if itrade_config.verbose:
+        print '--- save the quote data ------'
     quote.saveTrades()
     return True
 
 def cmdline_importQuoteFromFile(quote,file):
-    print '--- load data from file ------'
+    if itrade_config.verbose:
+        print '--- load data from file ------'
     if not os.access(file,os.R_OK):
         file = os.path.join(itrade_config.dirImport,file)
         if not os.access(file,os.R_OK):
-            print 'file not found !'
+            print 'file not found %s!' % file
             return False
     quote.loadTrades(file)
-    print '--- save the quote data ------'
+    if itrade_config.verbose:
+        print '--- save the quote data ------'
     quote.saveTrades()
     return True
 
@@ -214,25 +222,29 @@ def cmdline_importMatrixFromInternet(matrix,dlg=None):
     year = date.today().year
     nyear = 0
     while nyear < itrade_config.numTradeYears:
-        print '--- update the matrix --%d--' % year
+        if itrade_config.verbose:
+            print '--- update the matrix --%d--' % year
         matrix.update(date(year,1,1),date(year,12,31))
         if dlg:
             dlg.Update(nyear)
         nyear = nyear + 1
         year = year -1
-    print '--- save the matrix data -----'
+    if itrade_config.verbose:
+        print '--- save the matrix data -----'
     matrix.saveTrades()
     return True
 
 def cmdline_importMatrixFromFile(matrix,file):
-    print '--- load data from file ------ %s' % file
+    if itrade_config.verbose:
+        print '--- load data from file ------ %s' % file
     if not os.access(file,os.R_OK):
         file = os.path.join(itrade_config.dirImport,file)
         if not os.access(file,os.R_OK):
-            print 'file not found !'
+            print 'file not found %s !' % file
             return False
     matrix.loadTrades(file)
-    print '--- save the matrix data -----'
+    if itrade_config.verbose:
+        print '--- save the matrix data -----'
     matrix.saveTrades()
     return True
 

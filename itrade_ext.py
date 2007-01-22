@@ -238,7 +238,8 @@ def loadOneExtension(ext):
     if not module:
         print "Can't load %s" % moduleName
     else:
-        print 'Load %s' % moduleName
+        if itrade_config.verbose:
+            print 'Load %s' % moduleName
 
     return module
 

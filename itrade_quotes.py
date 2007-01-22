@@ -507,7 +507,8 @@ class Quote(object):
     def setStops(self,loss,win):
         self.m_stoploss = float(loss)
         self.m_stopwin = float(win)
-        info('%s::setStops %f %f' %(self.name(),self.m_stoploss,self.m_stopwin))
+        if itrade_config.verbose:
+            info('%s::setStops %f %f' %(self.name(),self.m_stoploss,self.m_stopwin))
         self.m_hasStops = True
 
     def nv_stoploss(self):
@@ -577,12 +578,14 @@ class Quote(object):
             # full importation ?
             tr = self.m_daytrades.lastimport()
             if tr==None:
-                print '%s *** no trade at all ! : need to import ...' % self.key()
+                if itrade_config.verbose:
+                    print '%s *** no trade at all ! : need to import ...' % self.key()
                 if not cmdline_importQuoteFromInternet(self):
                     print 'error importing full data ...'
                     return False
             elif tr.date() != ajd:
-                print '%s *** from = %s today = %s : need to import ...' % (self.key(),tr.date(),ajd)
+                if itrade_config.verbose:
+                    print '%s *** from = %s today = %s : need to import ...' % (self.key(),tr.date(),ajd)
                 if not import_from_internet(self,tr.date(),ajd):
                     print 'error importing partial data ...'
                     return False
@@ -590,13 +593,15 @@ class Quote(object):
 
             # live update today
             if self.isOpen():
-                print '%s / %s *** liveupdate today = %s ...' % (self.key(),self.market(),date.today())
+                if itrade_config.verbose:
+                    print '%s / %s *** liveupdate today = %s ...' % (self.key(),self.market(),date.today())
                 return liveupdate_from_internet(self)
             else:
                 return True
         else:
             # history importation
-            info('history importation for %s '%self.key())
+            if itrade_config.verbose:
+                print 'history importation for %s ' %self.key()
             if import_from_internet(self,fromdate,todate):
                 #self.saveTrades()
                 return True
@@ -1385,11 +1390,11 @@ except NameError:
 
 def initModule():
     quotes.load()
-    for quote in quotes.list():
-        quote.m_defaultliveconnector = None
-        quote.m_defaultimportconnector = getImportConnector(quote.m_market,quote.m_list,QTAG_IMPORT,quote.m_place)
-        if quote.m_defaultimportconnector == None:
-            print 'no default import connector for %s (list:%d)' % (quote,quote.m_list)
+    #for quote in quotes.list():
+    #    quote.m_defaultliveconnector = None
+    #    quote.m_defaultimportconnector = getImportConnector(quote.m_market,quote.m_list,QTAG_IMPORT,quote.m_place)
+    #    if quote.m_defaultimportconnector == None:
+    #        print 'no default import connector for %s (list:%d)' % (quote,quote.m_list)
 
 # ============================================================================
 # Test

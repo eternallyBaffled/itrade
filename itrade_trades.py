@@ -210,7 +210,8 @@ class Trades(object):
             if self.m_trades.has_key(ajd):
                 tr = self.m_trades[ajd]
                 del self.m_trades[ajd]
-                info('Do not save ajd=%s:%s' % (ajd,tr))
+                if itrade_config.verbose:
+                    info('Do not save ajd=%s:%s' % (ajd,tr))
             else:
                 tr = None
 
