@@ -387,9 +387,11 @@ class Quote(object):
         self.m_pluginId = None
 
     def set_liveconnector(self,name):
-        print 'set_liveconnector for ',self.m_market,self.m_list,QTAG_ANY,self.m_place,name
+        if itrade_config.verbose:
+            print 'set_liveconnector for ',self.m_market,self.m_list,QTAG_ANY,self.m_place,name
         conn = getLiveConnector(self.m_market,self.m_list,QTAG_ANY,self.m_place,name)
-        print ' returns',conn
+        if itrade_config.verbose:
+            print ' returns',conn
         if conn:
             self.m_userliveconnector = conn
             self.m_pluginId = None
