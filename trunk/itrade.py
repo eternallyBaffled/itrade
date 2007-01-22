@@ -104,6 +104,7 @@ def main():
 
         if o == "-v" or o == "--verbose":
             itrade_config.verbose = True
+            print 'Verbose mode : ON'
 
         if o == "-e":
             itrade_portfolio.cmdline_evaluatePortfolio()

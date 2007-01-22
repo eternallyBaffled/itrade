@@ -444,14 +444,14 @@ class LiveUpdate_fortuneo(object):
     def connect(self):
         self.m_conn = httplib.HTTPConnection(self.m_default_host,80)
         if self.m_conn == None:
-            print 'live: not connected on %s' % self.m_default_host
+            print 'live: not connected on %s:80' % self.m_default_host
             return False
 
         self.readCookie()
         self.loadPlaces()
 
-        if itrade_config.verbose:
-            print 'live: connected on %s' % self.m_conn
+        #if itrade_config.verbose:
+        #    print 'live: connected on %s:80' % self.m_default_host
         return True
 
     def disconnect(self):
