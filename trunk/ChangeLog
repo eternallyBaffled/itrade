@@ -7,6 +7,7 @@ On the road for v0.4.6 (Nausicaa2)
 
 2007-01-22  Gilles Dumortier <dgil at ieee.org>
 	* Some typo on some information files
+	* new tarball
 	* Finish : Live connection : Switch from/to Differed (SF bug 1607288)
 	* Verbose mode (SF bug 1641482)
 
