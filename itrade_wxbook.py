@@ -336,7 +336,7 @@ class iTradeMainNotebookWindow(wx.Notebook):
         info('OnPageChanged,  old:%d, new:%d, sel:%d\n' % (old, new, sel))
         if old<>new:
             self.win[old].DoneCurrentPage()
-            self.win[new].InitCurrentPage(False)
+            self.win[new].InitCurrentPage()
             self.m_parent.updateCheckItems(new)
         event.Skip()
 
@@ -351,9 +351,17 @@ class iTradeMainNotebookWindow(wx.Notebook):
         sel = self.GetSelection()
         self.win[sel].OnRefresh(event)
 
-    def InitCurrentPage(self,bReset=True):
+    def InitCurrentPage(self,bReset):
+        # reset all pages
+        self.win[ID_PAGE_PORTFOLIO].m_mustInit = True
+        self.win[ID_PAGE_QUOTES].m_mustInit = True
+        self.win[ID_PAGE_STOPS].m_mustInit = True
+        self.win[ID_PAGE_INDICATORS].m_mustInit = True
+        self.win[ID_PAGE_EVALUATION].m_mustInit = True
+
+        # Init current page
         sel = self.GetSelection()
-        self.win[sel].InitCurrentPage(bReset)
+        self.win[sel].InitCurrentPage()
 
     def DoneCurrentPage(self):
         sel = self.GetSelection()
@@ -564,7 +572,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
     def OnPostInit(self,event):
         self.updateTitle()
         self.updateCheckItems()
-        self.InitCurrentPage(True)
+        self.InitCurrentPage(bReset=True)
 
     def OnRefresh(self,event):
         self.m_book.OnRefresh(event)
@@ -602,7 +610,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         if evt.GetId()==self.m_id:
             self.CloseLinks()
 
-    def InitCurrentPage(self,bReset=True):
+    def InitCurrentPage(self,bReset):
         self.m_book.InitCurrentPage(bReset)
 
     def DoneCurrentPage(self):

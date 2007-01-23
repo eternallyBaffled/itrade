@@ -515,4 +515,10 @@ login_testdesc;__x Try service's access using the entered information
 login_test_ok;__xAccess to the service is working
 login_test_nok;__xAccess to the service is not working
 
+page_portfolio;__xPortfolio
+page_quotes;__xMatrix
+page_stops;__xStops
+page_indicators;__xIndicators
+page_evaluation;__xPerformance
+
 test;Mensagem de teste

@@ -514,5 +514,10 @@ login_testdesc; Essaye l'accès au service avec les informations fournies
 login_test_ok;L'accès au service fonctionne avec ces informations
 login_test_nok;L'accès au service ne fonctionne pas avec ces informations
 
+page_portfolio;Portefeuille
+page_quotes;Matrice
+page_stops;Stops
+page_indicators;Indicateurs
+page_evaluation;Performance
 
 test;message de test
