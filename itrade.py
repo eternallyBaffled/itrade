@@ -72,6 +72,7 @@ def usage():
     print "--user=<p>   select usrerdata/ specific folder               "
     print
     print "--nopsyco    do not use psyco                                "
+    print "-x           activate experimental features                  "
     print "--verbose    verbose mode (usefull for debugging)            "
 
 # ============================================================================
@@ -80,7 +81,7 @@ def usage():
 
 def main():
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "eho:vt:iq:f:l:du:", ["verbose","help", "output=", "ticker=", "quote=","file=","lang=","user=","nopsyco"])
+        opts, args = getopt.getopt(sys.argv[1:], "xeho:vt:iq:f:l:du:", ["verbose","help", "output=", "ticker=", "quote=","file=","lang=","user=","nopsyco"])
     except getopt.GetoptError:
         # print help information and exit:
         usage()
@@ -105,6 +106,9 @@ def main():
         if o == "-v" or o == "--verbose":
             itrade_config.verbose = True
             print 'Verbose mode : ON'
+
+        if o == "-x":
+            itrade_config.experimental = True
 
         if o == "-e":
             itrade_portfolio.cmdline_evaluatePortfolio()

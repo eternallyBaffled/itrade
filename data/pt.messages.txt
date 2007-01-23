@@ -37,6 +37,8 @@ main_view_operations;&Transacções
 main_view_desc_operations; Gerir as transacções na conta actual
 main_view_money;&Gestão de dinheiro
 main_view_desc_money; Gestão de dinheiro
+main_view_evaluation;__x &Performance
+main_view_desc_evaluation;__x  Performance evaluation
 
 main_view_compute;&Computador
 main_view_desc_compute; Computador
@@ -118,6 +120,7 @@ main_title_portfolio;iTrade - Conta %s: %s
 main_title_quotes;iTrade - Matriz %s: %s
 main_title_stops;iTrade - Batentes %s: %s
 main_title_indicators;iTrade - Indicadores %s: %s
+main_title_evaluation;iTrade - Desempenho %s: %s
 
 main_refreshing;Actualizando os dados
 

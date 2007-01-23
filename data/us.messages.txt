@@ -37,6 +37,8 @@ main_view_operations;&Transactions
 main_view_desc_operations; Manage the transactions on the current portfolio
 main_view_money;&Money Management
 main_view_desc_money; Money Management
+main_view_evaluation;&Performance
+main_view_desc_evaluation; Performance evaluation of the portfolio
 
 main_view_compute;&Computer
 main_view_desc_compute; Computer
@@ -118,6 +120,7 @@ main_title_portfolio;iTrade - Portfolio %s:%s
 main_title_quotes;iTrade - Matrix %s:%s
 main_title_stops;iTrade - Stops %s:%s
 main_title_indicators;iTrade - Indicators %s:%s
+main_title_evaluation;iTrade - Performance %s:%s
 
 main_refreshing;Refreshing data
 

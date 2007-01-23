@@ -46,6 +46,7 @@ import wx
 
 # iTrade system
 from itrade_logging import *
+import itrade_config
 from itrade_local import message
 from itrade_quotes import QUOTE_BOTH,QUOTE_CASH,QUOTE_CREDIT
 from itrade_portfolio import *
@@ -123,7 +124,10 @@ class iTradeEvaluationPanel(wx.Window):
 
         wx.EVT_SIZE(self, self.OnSize)
 
-        self.refresh()
+        if not itrade_config.experimental:
+            self.refresh()
+        else:
+            self.html.Show(False)
 
     def OnSize(self, event):
         w,h = self.GetClientSizeTuple()
@@ -132,6 +136,18 @@ class iTradeEvaluationPanel(wx.Window):
     def compute(self,year):
         self.m_port.computeOperations(year)
         return (self.m_port.nv_expenses(),self.m_port.nv_transfer(),self.m_port.nv_appreciation(),self.m_port.nv_taxable(),self.m_port.nv_taxes())
+
+    def InitCurrentPage(self):
+        # update portfolio and matrix (just in case)
+        self.m_portfolio = self.m_parent.m_portfolio
+        self.m_matrix = self.m_parent.m_matrix
+
+        # refresh page content
+        self.refresh()
+        self.html.Show(True)
+
+    def DoneCurrentPage(self):
+        self.html.Show(False)
 
     def refresh(self):
         self.m_port.computeOperations()
@@ -252,8 +268,8 @@ class iTradeMoneyNotebookWindow(wx.Notebook):
         self.m_quote = quote
         self.init()
 
-        wx.EVT_NOTEBOOK_PAGE_CHANGED(self, self.GetId(), self.OnPageChanged)
-        wx.EVT_NOTEBOOK_PAGE_CHANGING(self, self.GetId(), self.OnPageChanging)
+        wx.EVT_NOTEBOOK_PAGE_CHANGED(self, id, self.OnPageChanged)
+        wx.EVT_NOTEBOOK_PAGE_CHANGING(self, id, self.OnPageChanging)
 
         # __x select page
 

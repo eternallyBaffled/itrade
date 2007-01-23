@@ -5,6 +5,11 @@ On the road for v0.4.6 (Nausicaa2)
 
 ===============================================================================
 
+2007-01-23  Gilles Dumortier <dgil at ieee.org>
+	* Start working on Indicators Back-End (SF bug 1608292). Add new module
+	  itrade_indicators.py to define generic behaviour
+	* Start working on Use wxNotebook for Matrix (SF bug 1290903)
+
 2007-01-22  Gilles Dumortier <dgil at ieee.org>
 	* Some typo on some information files
 	* new tarball

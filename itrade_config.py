@@ -237,6 +237,9 @@ else:
     print 'Verbose mode : forced ON (under development release)'
     verbose = True
 
+# experimental features
+experimental = False
+
 # ============================================================================
 # loadConfig()
 # ============================================================================
