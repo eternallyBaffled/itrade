@@ -26,13 +26,20 @@ TODO ITEMS by VERSION
 Version 0.4.6 (Nausicaa2)
  + Australian Market
  + Extensions & Plugins basic Mechanism
- ~ Live brokers (Fortuneo/Boursorama)
+ + Matrix use the Notebook display
+ + Fortuneo Live broker
+ ~ Boursorama Live broker ?
+ ~ Extensible Indicators back-end
+ ~ Nordic Market ?
+ ~ better Linux support
 
 Version 0.4.8 (Nausicaa3)
  ~ "Points Pivots" feature
  ~ VAT information
  ~ more Charting enhancements
  ~ main market indicator
+ - BourseDirect Live broker ?
+ - full linux support ?
 
 Version 0.5 (Plume)
  ~ News aggregator (Google, Bourso, Balo)
@@ -41,14 +48,14 @@ Version 0.5 (Plume)
  - alerts full back-end and front-end
  - Deferred settlement service (SRD) alerts on dates/events
  - data panel indicators, raw numerical, charting options
- - more efficient indicators management (incl. RSI and MACD, oscillators)
+ - more indicators (incl. RSI and MACD, oscillators)
  - more MMI enhancements
  - more Charting enhancements
  - full stops management
  - daily Japanese candlestick
 
 Version 0.6 (Stella Maris)
- - more indicators (schotastics)
+ - more indicators (schocastics)
  - weekly Japanese candlestick
  - more Japanese candlestick
  - candlestick patterns
