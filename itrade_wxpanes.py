@@ -428,7 +428,7 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
                     if idview == self.m_id:
                         #debug('%s: %s' % (evt.quote.key(),evt.param))
                         self.OnLiveQuote(evt.quote,xline)
-                        self.refreshConnexion()
+                        self.m_parent.refreshConnexion()
                     else:
                         debug('%s: %s - bad : other view' % (evt.quote.key(),evt.param))
         else:
