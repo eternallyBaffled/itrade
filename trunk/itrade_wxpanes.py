@@ -138,6 +138,8 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
         self.m_matrix = matrix
         self.m_id = id
 
+        self.m_mustbeinit = True
+
         # create an image list
         self.m_imagelist = wx.ImageList(16,16)
 
@@ -395,16 +397,19 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
 
     # --- [ manage current page ] -------------------------------------
 
-    def InitCurrentPage(self):
+    def InitCurrentPage(self,bReset=True):
         self.m_list.Show(True)
 
-        # update portfolio and matrix (just in case)
-        self.m_portfolio = self.m_parent.m_portfolio
-        self.m_matrix = self.m_parent.m_matrix
+        if bReset or self.m_mustbeinit:
+            # update portfolio and matrix (just in case)
+            self.m_portfolio = self.m_parent.m_portfolio
+            self.m_matrix = self.m_parent.m_matrix
 
-        # create and display the list
-        self.populate(bDuringInit=True)
-        self.OnRefresh(None)
+            # create and display the list
+            self.populate(bDuringInit=True)
+            self.OnRefresh(None)
+
+            self.m_mustbeinit = False
 
         if itrade_config.bAutoRefreshMatrixView:
             self.startLive()
@@ -960,7 +965,7 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
             dlg.Destroy()
 
     def OnLiveQuote(self,quote,xline):
-        self.refreshStopsLine(xline,True)
+        self.refreshStopLine(xline,True)
 
     # ---[ popup menu management ] --------------------------------------------
 
