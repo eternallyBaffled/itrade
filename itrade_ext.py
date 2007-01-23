@@ -162,20 +162,23 @@ listListSymbolConnector = gListSymbolRegistry.list
 # loadExtensions()
 #
 # load all enabled extensions from the extension folder
+#
+#   file:   name of the file to manage the extension
+#   folder: path of the folder to load the extension from
 # ============================================================================
 
-def loadExtensions():
+def loadExtensions(file,folder):
 
     # file to manage list of extensions
-    extFile = os.path.join(itrade_config.dirExtData,"extensions.txt")
+    extFile = os.path.join(folder,file)
     if not os.path.exists(extFile):
-        print 'Load extensions: extensions.txt file not found !'
+        print 'Load (%s) : %s file not found !' % (folder,file)
         return False
 
     # list of potential files to load
-    files = glob.glob(os.path.join(itrade_config.dirExtData,"*.py"))
+    files = glob.glob(os.path.join(folder,"*.py"))
     if not files:
-        print 'Load extensions: no extension file found !'
+        print 'Load (%s) : no extension file found !' % folder
         return False
 
     # list of enabled / disabled Files
@@ -187,7 +190,7 @@ def loadExtensions():
         lines = ext.readlines()
         ext.close()
     except IOError:
-        print "Load extensions: can't open %s file !" % extFile
+        print "Load (%s) : can't open %s file !" % (folder,extFile)
 
     for s in lines:
         #print s
@@ -196,12 +199,12 @@ def loadExtensions():
             s = s[1:].strip()
             if s and s.find(' ') == -1 and s[-3:] == '.py':
                 # file commented -> disabled
-                path = os.path.join(itrade_config.dirExtData,s)
+                path = os.path.join(folder,s)
                 if path not in enabledFiles and path not in disabledFiles:
                     disabledFiles.append(path)
         else:
             if s and s.find(' ') == -1 and s[-3:] == '.py':
-                path = os.path.join(itrade_config.dirExtData,s)
+                path = os.path.join(folder,s)
                 if path not in enabledFiles and path not in disabledFiles:
                     #print 'add:',path
                     enabledFiles.append(path)
@@ -210,13 +213,13 @@ def loadExtensions():
     if files and enabledFiles:
         for f in enabledFiles:
             if f in files:
-                loadOneExtension(f)
+                loadOneExtension(f,folder)
 
     return True
 
-def loadOneExtension(ext):
+def loadOneExtension(ext,folder):
 
-    global loadedModules,loadingModuleNameStack
+    global loadedModules
 
     # extract module name
     if ext[-3:] == ".py":
@@ -228,18 +231,18 @@ def loadOneExtension(ext):
     # check module not loaded
     if isLoaded(moduleName):
         module = loadedModules.get(moduleName)
-        print 'Extension %s already loaded' % moduleName
+        print 'Extension (%s) %s already loaded' % (folder,moduleName)
         return module
 
     # import the module
-    module = importFromPath (moduleName,itrade_config.dirExtData)
+    module = importFromPath (moduleName,folder)
 
     # return the moduler reference
     if not module:
-        print "Can't load %s" % moduleName
+        print "Can't load (%s) %s" % (folder,moduleName)
     else:
         if itrade_config.verbose:
-            print 'Load %s' % moduleName
+            print 'Load (%s) %s' % (folder,moduleName)
 
     return module
 
@@ -273,7 +276,8 @@ def importFromPath(moduleName,path):
 if __name__=='__main__':
     setLevel(logging.INFO)
 
-    loadExtensions()
+    loadExtensions(itrade_config.fileExtData,itrade_config.dirExtData)
+    loadExtensions(itrade_config.fileIndData,itrade_config.dirIndData)
 
 # ============================================================================
 # That's all folks !

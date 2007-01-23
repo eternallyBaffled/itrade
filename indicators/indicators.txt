@@ -1,0 +1,33 @@
+# ./indicators/indicators.txt
+# -----------------------------------------------------------------------------
+#
+# iTrade loads indicators in the order they appear in this file.
+#
+# The first mention of an indicar in this file controls whether the indicator
+# is enabled or not:
+#   - if the indicator's name is commented out, it is disabled, otherwise it is
+#     enabled
+#   - Indicators not appearing in this file are disabled.
+#
+# File names may be indented as desired
+#
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------
+# standard indicators enabled in the official builds
+# -----------------------------------------------------------------------------
+
+
+# -----------------------------------------------------------------------------
+# experimental - use with caution
+# -----------------------------------------------------------------------------
+
+
+# -----------------------------------------------------------------------------
+# deprecated indicators still enabled in the official builds
+# -----------------------------------------------------------------------------
+
+
+# -----------------------------------------------------------------------------
+# That's all folks !
+# -----------------------------------------------------------------------------

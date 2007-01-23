@@ -109,6 +109,13 @@ if not os.path.exists(dirSysData):
 dirExtData = 'ext'
 if not os.path.exists(dirExtData):
     raise('invalid installation ! %s folder does not exist !' % dirExtData)
+fileExtData = 'extensions.txt'
+
+# directory for indicators
+dirIndData = 'indicators'
+if not os.path.exists(dirIndData):
+    raise('invalid installation ! %s folder does not exist !' % dirIndData)
+fileIndData = 'indicators.txt'
 
 # directory for user data
 dirUserData = 'usrdata'
