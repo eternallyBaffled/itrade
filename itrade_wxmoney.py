@@ -137,10 +137,11 @@ class iTradeEvaluationPanel(wx.Window):
         self.m_port.computeOperations(year)
         return (self.m_port.nv_expenses(),self.m_port.nv_transfer(),self.m_port.nv_appreciation(),self.m_port.nv_taxable(),self.m_port.nv_taxes())
 
-    def InitCurrentPage(self):
-        # update portfolio and matrix (just in case)
-        self.m_portfolio = self.m_parent.m_portfolio
-        self.m_matrix = self.m_parent.m_matrix
+    def InitCurrentPage(self,bReset=True):
+        if bReset:
+            # update portfolio and matrix (just in case)
+            self.m_portfolio = self.m_parent.m_portfolio
+            self.m_matrix = self.m_parent.m_matrix
 
         # refresh page content
         self.refresh()
