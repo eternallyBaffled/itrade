@@ -337,7 +337,7 @@ class iTradeMainNotebookWindow(wx.Notebook):
         if old<>new:
             self.win[old].DoneCurrentPage()
             self.win[new].InitCurrentPage()
-            self.m_parent.updateCheckItems(new)
+            self.m_parent.updateTitle(new)
         event.Skip()
 
     def OnPageChanging(self, event):
@@ -437,10 +437,10 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         self.filemenu.Append(ID_EXIT,message('main_exit'),message('main_desc_exit'))
 
         self.matrixmenu = wx.Menu()
-        self.matrixmenu.AppendCheckItem(ID_PORTFOLIO, message('main_view_portfolio'),message('main_view_desc_portfolio'))
-        self.matrixmenu.AppendCheckItem(ID_QUOTES, message('main_view_quotes'),message('main_view_desc_quotes'))
-        self.matrixmenu.AppendCheckItem(ID_STOPS, message('main_view_stops'),message('main_view_desc_stops'))
-        self.matrixmenu.AppendCheckItem(ID_INDICATORS, message('main_view_indicators'),message('main_view_desc_indicators'))
+        self.matrixmenu.Append(ID_PORTFOLIO, message('main_view_portfolio'),message('main_view_desc_portfolio'))
+        self.matrixmenu.Append(ID_QUOTES, message('main_view_quotes'),message('main_view_desc_quotes'))
+        self.matrixmenu.Append(ID_STOPS, message('main_view_stops'),message('main_view_desc_stops'))
+        self.matrixmenu.Append(ID_INDICATORS, message('main_view_indicators'),message('main_view_desc_indicators'))
         self.matrixmenu.AppendSeparator()
         self.matrixmenu.AppendRadioItem(ID_SMALL_VIEW, message('main_view_small'),message('main_view_desc_small'))
         self.matrixmenu.AppendRadioItem(ID_NORMAL_VIEW, message('main_view_normal'),message('main_view_desc_normal'))
@@ -460,7 +460,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
 
         self.viewmenu = wx.Menu()
         self.viewmenu.Append(ID_OPERATIONS, message('main_view_operations'),message('main_view_desc_operations'))
-        self.viewmenu.AppendCheckItem(ID_EVALUATION, message('main_view_evaluation'),message('main_view_desc_evaluation'))
+        self.viewmenu.Append(ID_EVALUATION, message('main_view_evaluation'),message('main_view_desc_evaluation'))
         self.viewmenu.AppendSeparator()
         self.viewmenu.Append(ID_CURRENCIES, message('main_view_currencies'),message('main_view_desc_currencies'))
         self.viewmenu.Append(ID_ALERTS, message('main_view_alerts'),message('main_view_desc_alerts'))
@@ -696,27 +696,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         d.ShowModal()
         d.Destroy()
 
-    def updateCheckItems(self,page=None):
-        # get current page
-        if not page:
-            page = self.m_book.GetSelection()
-
-        # refresh Check state based on current View
-        m = self.matrixmenu.FindItemById(ID_PORTFOLIO)
-        m.Check(page == ID_PAGE_PORTFOLIO)
-
-        m = self.matrixmenu.FindItemById(ID_QUOTES)
-        m.Check(page == ID_PAGE_QUOTES)
-
-        m = self.matrixmenu.FindItemById(ID_STOPS)
-        m.Check(page == ID_PAGE_STOPS)
-
-        m = self.matrixmenu.FindItemById(ID_INDICATORS)
-        m.Check(page == ID_PAGE_INDICATORS)
-
-        m = self.viewmenu.FindItemById(ID_EVALUATION)
-        m.Check(page == ID_PAGE_EVALUATION)
-
+    def updateCheckItems(self):
         m = self.matrixmenu.FindItemById(ID_AUTOREFRESH)
         m.Check(itrade_config.bAutoRefreshMatrixView)
 
@@ -747,12 +727,9 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
 
         # refresh Enable state based on current View
         m = self.quotemenu.FindItemById(ID_ADD_QUOTE)
-        m.Enable(page == ID_PAGE_QUOTES)
+        m.Enable(self.m_book.GetSelection() == ID_PAGE_QUOTES)
 
     def updateQuoteItems(self,op1,quote):
-        # get current page
-        page = self.m_book.GetSelection()
-
         m = self.quotemenu.FindItemById(ID_GRAPH_QUOTE)
         m.Enable(op1)
         m = self.quotemenu.FindItemById(ID_LIVE_QUOTE)
@@ -761,11 +738,12 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         m.Enable(op1)
 
         m = self.quotemenu.FindItemById(ID_REMOVE_QUOTE)
-        m.Enable((page == ID_PAGE_QUOTES) and op1 and not quote.isTraded())
+        m.Enable((self.m_book.GetSelection() == ID_PAGE_QUOTES) and op1 and not quote.isTraded())
 
-    def updateTitle(self):
+    def updateTitle(self,page=None):
         # get current page
-        page = self.m_book.GetSelection()
+        if page == None:
+            page = self.m_book.GetSelection()
 
         if page == ID_PAGE_PORTFOLIO:
             title = message('main_title_portfolio')
@@ -791,44 +769,36 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         if self.m_book.GetSelection() != ID_PAGE_PORTFOLIO:
             self.m_book.SetSelection(ID_PAGE_PORTFOLIO)
         self.updateTitle()
-        self.updateCheckItems()
 
     def OnQuotes(self,e):
         # check current page
         if self.m_book.GetSelection() != ID_PAGE_QUOTES:
             self.m_book.SetSelection(ID_PAGE_QUOTES)
         self.updateTitle()
-        self.updateCheckItems()
 
     def OnStops(self,e):
         # check current page
         if self.m_book.GetSelection() != ID_PAGE_STOPS:
             self.m_book.SetSelection(ID_PAGE_STOPS)
         self.updateTitle()
-        self.updateCheckItems()
 
     def OnIndicators(self,e):
         # check current page
         if self.m_book.GetSelection() != ID_PAGE_INDICATORS:
             self.m_book.SetSelection(ID_PAGE_INDICATORS)
         self.updateTitle()
-        self.updateCheckItems()
 
     def OnEvaluation(self,e):
         # check current page
         if self.m_book.GetSelection() != ID_PAGE_EVALUATION:
             self.m_book.SetSelection(ID_PAGE_EVALUATION)
         self.updateTitle()
-        self.updateCheckItems()
 
     def OnOperations(self,e):
         open_iTradeOperations(self,self.m_portfolio)
 
     def OnCompute(self,e):
-        if self.m_currentItem>=0:
-            quote,item = self.getQuoteAndItemOnTheLine(self.m_currentItem)
-        else:
-            quote = None
+        quote = self.currentQuote()
         open_iTradeMoney(self,1,self.m_portfolio,quote)
 
     def OnAlerts(self,e):
@@ -838,19 +808,47 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         open_iTradeCurrencies(self)
 
     def OnGraphQuote(self,e):
-        if self.m_currentItem>=0:
-            debug("OnGraphQuote: %s" % self.m_list.GetItemText(self.m_currentItem))
+        if self.currentItem()>=0:
+            debug("OnGraphQuote: %s" % self.currentItemText())
             self.openCurrentQuote(page=1)
 
     def OnLiveQuote(self,e):
-        if self.m_currentItem>=0:
-            debug("OnLiveQuote: %s" % self.m_list.GetItemText(self.m_currentItem))
+        if self.currentItem()>=0:
+            debug("OnLiveQuote: %s" % self.currentItemText())
             self.openCurrentQuote(page=2)
 
     def OnPropertyQuote(self,e):
-        if self.m_currentItem>=0:
-            debug("OnPropertyQuote: %s" % self.m_list.GetItemText(self.m_currentItem))
+        if self.currentItem()>=0:
+            debug("OnPropertyQuote: %s" % self.currentItemText())
             self.openCurrentQuote(page=7)
+
+    # --- [ item management ] -----------------------------------------------
+
+    def currentItem(self):
+        sel = self.m_book.GetSelection()
+        win = self.m_book.win[sel]
+        return win.m_currentItem
+
+    def currentItemText(self):
+        sel = self.m_book.GetSelection()
+        win = self.m_book.win[sel]
+        return win.m_list.GetItemText(win.m_currentItem)
+
+    def currentQuote(self):
+        sel = self.m_book.GetSelection()
+        win = self.m_book.win[sel]
+        if win.m_currentItem>=0:
+            quote,item = win.getQuoteAndItemOnTheLine(win.m_currentItem)
+        else:
+            quote = None
+        return quote
+
+    def openCurrentQuote(self,page=1):
+        quote = self.currentQuote()
+        if page==7:
+            open_iTradeQuoteProperty(self,self.m_portfolio,quote)
+        else:
+            open_iTradeQuote(self,self.m_portfolio,quote,page)
 
     # --- [ Text font size management ] -------------------------------------
 
@@ -994,7 +992,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
             self.OnQuotes(None)
 
     def OnRemoveCurrentQuote(self,e):
-        quote,item = self.getQuoteAndItemOnTheLine(self.m_currentItem)
+        quote = self.currentQuote()
         if removeFromMatrix_iTradeQuote(self,self.m_matrix,quote):
             self.m_portfolio.setupCurrencies()
             self.setDirty()
