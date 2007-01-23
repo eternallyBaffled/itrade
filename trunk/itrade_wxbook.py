@@ -354,6 +354,7 @@ class iTradeMainNotebookWindow(wx.Notebook):
 
     def ResetPages(self):
         # reset all pages
+        print 'Reset All Pages'
         self.win[ID_PAGE_PORTFOLIO].m_mustInit = True
         self.win[ID_PAGE_QUOTES].m_mustInit = True
         self.win[ID_PAGE_STOPS].m_mustInit = True
@@ -778,9 +779,6 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
     def OnQuotes(self,e):
         # check current page
         if self.m_book.GetSelection() != ID_PAGE_QUOTES:
-            if e==None:
-                # need to reset the pages !
-                self.m_book.ResetPages()
             self.m_book.SetSelection(ID_PAGE_QUOTES)
         self.updateTitle()
 
@@ -995,16 +993,18 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
     def OnAddQuote(self,e):
         quote = addInMatrix_iTradeQuote(self,self.m_matrix,self.m_portfolio)
         if quote:
+            print 'OnAddQuote:',quote
             self.m_portfolio.setupCurrencies()
             self.setDirty()
-            self.OnQuotes(None)
+            self.RebuildList()
 
     def OnRemoveCurrentQuote(self,e):
         quote = self.currentQuote()
         if removeFromMatrix_iTradeQuote(self,self.m_matrix,quote):
+            print 'OnRemoveCurrentQuote:',quote
             self.m_portfolio.setupCurrencies()
             self.setDirty()
-            self.OnQuotes(None)
+            self.RebuildList()
 
 # ============================================================================
 # That's all folks !
