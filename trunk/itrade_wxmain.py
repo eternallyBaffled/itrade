@@ -30,6 +30,7 @@
 # History       Rev   Description
 # 2005-03-20    dgil  Wrote it from scratch
 # 2006-01-2x    dgil  Split module. itrade_wxmatrix.py for matrix code !
+# 2007-01-2x    dgil  Notebook re-architecture -> itrade_wxbook.py
 # ============================================================================
 
 # ============================================================================
@@ -53,7 +54,6 @@ from itrade_portfolio import loadPortfolio
 from itrade_matrix import createMatrix
 
 # iTrade wx system
-from itrade_wxmatrix import iTradeMainWindow
 
 # ============================================================================
 # iTrade_SplashScreen
@@ -74,7 +74,11 @@ class iTrade_SplashScreen(wx.SplashScreen):
         print '--- build a matrix -----------'
         self.m_matrix = createMatrix(self.m_portfolio.filename(),self.m_portfolio)
 
-        self.m_frame = iTradeMainWindow(None, -1,self.m_portfolio,self.m_matrix)
+        if itrade_config.experimental:
+            from itrade_wxbook import iTradeMainWindow
+        else:
+            from itrade_wxmatrix import iTradeMainWindow
+        self.m_frame = iTradeMainWindow(None,self.m_portfolio,self.m_matrix)
         app.SetTopWindow(self.m_frame)
 
     def OnClose(self,evt):

@@ -41,6 +41,8 @@ main_view_alerts;&Information et Alertes
 main_view_desc_alerts; Information et alertes
 main_view_currencies;&Devises
 main_view_desc_currencies; Devises
+main_view_evaluation;&Performance
+main_view_desc_evaluation; Evaluation de la performance du portefeuille
 
 main_view_compute;&Calculette
 main_view_desc_compute; Calculette
@@ -122,6 +124,7 @@ main_title_portfolio;iTrade - Portefeuille %s:%s
 main_title_quotes;iTrade - Matrice %s:%s
 main_title_stops;iTrade - Stops %s:%s
 main_title_indicators;iTrade - Indicateurs %s:%s
+main_title_evaluation;iTrade - Performance %s:%s
 
 main_refreshing;Mise à jour des données
 

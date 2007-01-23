@@ -18,6 +18,7 @@ be sure you have uninstalled Matplotlib and NumArray/Numpy before installing
 the new versions of these libraries.
 
 Running :
+
  "python itrade.py --help"	for command line help
 
  "python itrade.py -e" 		to display portfolio evaluation
@@ -33,6 +34,8 @@ Running :
  "python itrade.py --nopsyco" 	to stop using psyco library if installed
 
  "python itrade.py -u <path>"	to start using a specific usrdata/ folder
+
+ "python itrade.py -x"		to activate experimental features
 
 -------------------------------------------------------------------------------
 Known Issues

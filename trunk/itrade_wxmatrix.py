@@ -358,7 +358,7 @@ import wx.lib.newevent
 (PostInitEvent,EVT_POSTINIT) = wx.lib.newevent.NewEvent()
 
 class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSorterMixin):
-    def __init__(self,parent,id,portfolio,matrix):
+    def __init__(self,parent,portfolio,matrix):
         self.m_id = wx.NewId()
         wx.Frame.__init__(self,parent,self.m_id, "", size = ( 640,480), style = wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE)
         iTrade_wxFrame.__init__(self,parent, 'main')
