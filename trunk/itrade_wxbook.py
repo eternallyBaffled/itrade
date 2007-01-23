@@ -56,7 +56,8 @@ from itrade_login import *
 from itrade_currency import currencies
 
 # iTrade wx system
-from itrade_wxquote import addInMatrix_iTradeQuote,removeFromMatrix_iTradeQuote
+from itrade_wxquote import open_iTradeQuote,addInMatrix_iTradeQuote,removeFromMatrix_iTradeQuote
+from itrade_wxpropquote import open_iTradeQuoteProperty
 from itrade_wxportfolio import select_iTradePortfolio,properties_iTradePortfolio
 from itrade_wxoperations import open_iTradeOperations
 from itrade_wxmoney import open_iTradeMoney
