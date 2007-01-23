@@ -1,0 +1,45 @@
+/iTrade/indicators/README
+===============================================================================
+
+This file contains information for all official indicators distributed with
+iTrade
+
+-------------------------------------------------------------------------------
+What is an indicator ?
+-------------------------------------------------------------------------------
+
+An indicator is a .py file that appears in iTrade's indicators folder. iTrade
+tries to import all such files while starting up. During the importation, each
+indicator register to the system.
+
+-------------------------------------------------------------------------------
+How do indicators work ?
+-------------------------------------------------------------------------------
+
+Indicators register themselves when iTrade imports them using specific code,
+which should appear as the outer level of the .py file.
+
+<under construction>
+
+-------------------------------------------------------------------------------
+Indicators Management
+-------------------------------------------------------------------------------
+
+iTrade loads indicators in the order they appear in the file
+./indicators/indicators.txt
+
+The first mention of an indicator in this file controls whether the indicator
+is enabled or not:
+   - if the indicator's name is commented out, it is disabled, otherwise it is
+     enabled
+   - Indicators not appearing in this file are disabled.
+
+File names may be indented as desired
+
+-------------------------------------------------------------------------------
+Official Indicators
+-------------------------------------------------------------------------------
+
+<under construction>
+
+===============================================================================

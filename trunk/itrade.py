@@ -168,7 +168,7 @@ def main():
     itrade_config.loadConfig()
 
     # load extensions
-    itrade_ext.loadExtensions()
+    itrade_ext.loadExtensions(itrade_config.fileExtData,itrade_config.dirExtData)
 
     # init modules
     itrade_quotes.initModule()
