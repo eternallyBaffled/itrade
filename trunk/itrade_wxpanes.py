@@ -138,7 +138,7 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
         self.m_matrix = matrix
         self.m_id = id
 
-        self.m_mustbeinit = True
+        self.m_mustInit = True
 
         # create an image list
         self.m_imagelist = wx.ImageList(16,16)
@@ -397,10 +397,10 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
 
     # --- [ manage current page ] -------------------------------------
 
-    def InitCurrentPage(self,bReset=True):
+    def InitCurrentPage(self):
         self.m_list.Show(True)
 
-        if bReset or self.m_mustbeinit:
+        if self.m_mustInit:
             # update portfolio and matrix (just in case)
             self.m_portfolio = self.m_parent.m_portfolio
             self.m_matrix = self.m_parent.m_matrix
@@ -409,7 +409,7 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
             self.populate(bDuringInit=True)
             self.OnRefresh(None)
 
-            self.m_mustbeinit = False
+            self.m_mustInit = False
 
         if itrade_config.bAutoRefreshMatrixView:
             self.startLive()
