@@ -352,13 +352,17 @@ class iTradeMainNotebookWindow(wx.Notebook):
         sel = self.GetSelection()
         self.win[sel].OnRefresh(event)
 
-    def InitCurrentPage(self,bReset):
+    def ResetPages(self):
         # reset all pages
         self.win[ID_PAGE_PORTFOLIO].m_mustInit = True
         self.win[ID_PAGE_QUOTES].m_mustInit = True
         self.win[ID_PAGE_STOPS].m_mustInit = True
         self.win[ID_PAGE_INDICATORS].m_mustInit = True
         self.win[ID_PAGE_EVALUATION].m_mustInit = True
+
+    def InitCurrentPage(self,bReset):
+        if bReset:
+            self.ResetPages()
 
         # Init current page
         sel = self.GetSelection()
@@ -774,6 +778,9 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
     def OnQuotes(self,e):
         # check current page
         if self.m_book.GetSelection() != ID_PAGE_QUOTES:
+            if e==None:
+                # need to reset the pages !
+                self.m_book.ResetPages()
             self.m_book.SetSelection(ID_PAGE_QUOTES)
         self.updateTitle()
 
