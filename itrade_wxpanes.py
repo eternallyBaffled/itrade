@@ -49,6 +49,7 @@ from itrade_logging import *
 from itrade_local import message
 from itrade_matrix import *
 from itrade_quotes import *
+from itrade_currency import currencies
 
 # iTrade wx system
 from itrade_wxquote import open_iTradeQuote
