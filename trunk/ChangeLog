@@ -6,6 +6,7 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-01-24  Gilles Dumortier <dgil at ieee.org>
+	* r504 (-x) : new index are always in french (SF bug 1643662)
 	* r504 (-x) : Old portfolio's name in main view (SF bug 1643660)
 	* r504 (-x) : can't add a quote in different currency (SF bug 1643654)
 
