@@ -311,6 +311,7 @@ class iTradeMainNotebookWindow(wx.Notebook):
     # --- [ page management ] -------------------------------------
 
     def init(self,parent):
+        #print 'book init --['
         self.win = {}
         self.DeleteAllPages()
 
@@ -328,6 +329,7 @@ class iTradeMainNotebookWindow(wx.Notebook):
 
         self.win[ID_PAGE_EVALUATION] = iTradeEvaluationPanel(self,wx.NewId(),self.m_portfolio)
         self.AddPage(self.win[ID_PAGE_EVALUATION], message('page_evaluation'))
+        #print ']-- book init'
 
     def OnPageChanged(self, event):
         old = event.GetOldSelection()
@@ -335,9 +337,11 @@ class iTradeMainNotebookWindow(wx.Notebook):
         sel = self.GetSelection()
         info('OnPageChanged,  old:%d, new:%d, sel:%d\n' % (old, new, sel))
         if old<>new:
-            self.win[old].DoneCurrentPage()
-            self.win[new].InitCurrentPage()
-            self.m_parent.updateTitle(new)
+            if old>=0:
+                self.win[old].DoneCurrentPage()
+            if new>=0:
+                self.win[new].InitCurrentPage()
+                self.m_parent.updateTitle(new)
         event.Skip()
 
     def OnPageChanging(self, event):
@@ -922,6 +926,8 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
                 # restore everything with the new lang
                 self.CloseLinks()
                 self.buildMenu()
+                self.m_book.DoneCurrentPage()
+                self.m_book.init(self)
                 self.RebuildList()
 
         if not bDuringInit:
