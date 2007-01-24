@@ -652,7 +652,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         wx.SetCursor(wx.STANDARD_CURSOR)
 
         # populate current view and refresh
-        self.InitCurrentPage(True)
+        self.OnPostInit(None)
 
     def OnNew(self,e):
         if self.manageDirty(message('main_save_matrix_data'),fnt='open'):
