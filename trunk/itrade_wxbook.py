@@ -87,8 +87,8 @@ ID_MANAGELIST = 110
 
 ID_EXIT = 150
 
-ID_PORTFOLIO = 200
-ID_QUOTES = 201
+ID_QUOTES = 200
+ID_PORTFOLIO = 201
 ID_STOPS = 202
 ID_INDICATORS = 203
 
@@ -145,8 +145,8 @@ ID_ABOUT = 810
 # Notebook Page identifier
 # ============================================================================
 
-ID_PAGE_PORTFOLIO = 0
-ID_PAGE_QUOTES = 1
+ID_PAGE_QUOTES = 0
+ID_PAGE_PORTFOLIO = 1
 ID_PAGE_STOPS = 2
 ID_PAGE_INDICATORS = 3
 ID_PAGE_EVALUATION = 4
@@ -315,11 +315,11 @@ class iTradeMainNotebookWindow(wx.Notebook):
         self.win = {}
         self.DeleteAllPages()
 
-        self.win[ID_PAGE_PORTFOLIO] = iTrade_MatrixPortfolioPanel(self,parent,wx.NewId(),self.m_portfolio,self.m_matrix)
-        self.AddPage(self.win[ID_PAGE_PORTFOLIO], message('page_portfolio'))
-
         self.win[ID_PAGE_QUOTES] = iTrade_MatrixQuotesPanel(self,parent,wx.NewId(),self.m_portfolio,self.m_matrix)
         self.AddPage(self.win[ID_PAGE_QUOTES], message('page_quotes'))
+
+        self.win[ID_PAGE_PORTFOLIO] = iTrade_MatrixPortfolioPanel(self,parent,wx.NewId(),self.m_portfolio,self.m_matrix)
+        self.AddPage(self.win[ID_PAGE_PORTFOLIO], message('page_portfolio'))
 
         self.win[ID_PAGE_STOPS] = iTrade_MatrixStopsPanel(self,parent,wx.NewId(),self.m_portfolio,self.m_matrix)
         self.AddPage(self.win[ID_PAGE_STOPS], message('page_stops'))
@@ -358,8 +358,8 @@ class iTradeMainNotebookWindow(wx.Notebook):
     def ResetPages(self):
         # reset all pages
         print 'Reset All Pages'
-        self.win[ID_PAGE_PORTFOLIO].m_mustInit = True
         self.win[ID_PAGE_QUOTES].m_mustInit = True
+        self.win[ID_PAGE_PORTFOLIO].m_mustInit = True
         self.win[ID_PAGE_STOPS].m_mustInit = True
         self.win[ID_PAGE_INDICATORS].m_mustInit = True
         self.win[ID_PAGE_EVALUATION].m_mustInit = True
@@ -446,8 +446,8 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         self.filemenu.Append(ID_EXIT,message('main_exit'),message('main_desc_exit'))
 
         self.matrixmenu = wx.Menu()
-        self.matrixmenu.Append(ID_PORTFOLIO, message('main_view_portfolio'),message('main_view_desc_portfolio'))
         self.matrixmenu.Append(ID_QUOTES, message('main_view_quotes'),message('main_view_desc_quotes'))
+        self.matrixmenu.Append(ID_PORTFOLIO, message('main_view_portfolio'),message('main_view_desc_portfolio'))
         self.matrixmenu.Append(ID_STOPS, message('main_view_stops'),message('main_view_desc_stops'))
         self.matrixmenu.Append(ID_INDICATORS, message('main_view_indicators'),message('main_view_desc_indicators'))
         self.matrixmenu.AppendSeparator()
