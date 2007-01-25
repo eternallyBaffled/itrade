@@ -11,6 +11,7 @@ On the road for v0.4.6 (Nausicaa2)
 	* r504 (-x) : new index are always in french (SF bug 1643662)
 	* r504 (-x) : Old portfolio's name in main view (SF bug 1643660)
 	* r504 (-x) : can't add a quote in different currency (SF bug 1643654)
+	* Start working on Quote View : Manage Raw Data (SF bug 1643577)
 
 2007-01-23  Gilles Dumortier <dgil at ieee.org>
 	* Start working on Indicators Back-End (SF bug 1608292). Add new module
