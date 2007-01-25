@@ -312,10 +312,10 @@ cPOSITIF = wx.Colour(51,255,51)
 cNEGATIF = wx.Colour(255,51,51)
 
 class iTrade_wxLive(wx.Panel):
-    def __init__(self, parent,quote):
+    def __init__(self, parent, wn, quote):
         debug('iTrade_wxLive::__init__')
         wx.Panel.__init__(self,parent,-1)
-        self.m_parent = parent
+        self.m_parent = wn
         self.m_quote = quote
         self.m_live = quote.liveconnector()
 
@@ -390,6 +390,12 @@ class iTrade_wxLive(wx.Panel):
         self.displayMeans(m)
         cl = self.m_live.currentClock(self.m_quote)
         self.displayDiode(cl)
+
+    def InitPage(self):
+        self.m_parent.startLive(self.m_quote)
+
+    def DonePage(self):
+        self.m_parent.stopLive(self.m_quote)
 
     def cell(self,ref,nvalue):
         c = ref.GetLabel()
@@ -549,7 +555,7 @@ if __name__=='__main__':
         def __init__(self, parent,quote):
             wx.Frame.__init__(self,parent,wx.NewId(), 'WndTest', size = (600,190), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE)
             iTrade_wxLiveMixin.__init__(self)
-            self.m_live = iTrade_wxLive(self,quote)
+            self.m_live = iTrade_wxLive(self,parent,quote)
             self.m_quote = quote
             self.registerLive(quote,itrade_config.refreshLive,quote.key())
 

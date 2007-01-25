@@ -709,8 +709,8 @@ class iTrade_wxPanelGraph(GObject):
 
     # ---[ GRAPHING EVERYTHING ] --------------------------------------------------------------
 
-    def refresh(self):
-        self.RedrawAll()
+    #def refresh(self):
+    #    self.RedrawAll()
 
     def onEraseBackground(self, evt):
         # this is supposed to prevent redraw flicker on some X servers...

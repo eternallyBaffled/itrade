@@ -102,9 +102,10 @@ class iTradeHtmlWindow(wxhtml.HtmlWindow):
 # ============================================================================
 
 class iTradeHtmlPanel(wx.Panel):
-    def __init__(self, parent, id, url=None):
+    def __init__(self, parent,id, url=None):
         wx.Panel.__init__(self, parent, id, size = (800,600), style = wx.TAB_TRAVERSAL|wx.CLIP_CHILDREN|wx.NO_FULL_REPAINT_ON_RESIZE)
         self.url = url
+        self.m_parent = parent
         self.html = iTradeHtmlWindow(self, -1)
 
         wx.EVT_SIZE(self, self.OnSize)
@@ -122,6 +123,12 @@ class iTradeHtmlPanel(wx.Panel):
             self.paint0()
             info('iTradeHtmlPanel::url=%s',self.url)
             self.html.LoadPage(self.url)
+
+    def InitPage(self):
+        self.refresh()
+
+    def DonePage(self):
+        pass
 
 # ============================================================================
 # iTradeRSSPanel
@@ -215,6 +222,12 @@ class iTradeRSSPanel(wx.Panel):
 
     def refresh(self):
         self.buildPage()
+
+    def InitPage(self):
+        self.refresh()
+
+    def DonePage(self):
+        pass
 
     # ---[ display content ]---
 

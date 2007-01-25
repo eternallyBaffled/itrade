@@ -47,6 +47,7 @@ import locale
 # wxPython system
 import itrade_wxversion
 import wx
+import  wx.grid as gridlib
 
 # iTrade system
 from itrade_logging import *
@@ -281,21 +282,143 @@ class iTradeQuoteInfoWindow(wx.Window):
 #   Table
 # ============================================================================
 
-class iTradeQuoteTablePanel(wx.Window):
+class CustomDataTable(gridlib.PyGridTableBase):
+
+    def __init__(self):
+        gridlib.PyGridTableBase.__init__(self)
+
+        self.colLabels = ['ID', 'Description', 'Severity', 'Priority', 'Platform',
+                          'Opened?', 'Fixed?', 'Tested?', 'TestFloat']
+
+        self.dataTypes = [gridlib.GRID_VALUE_NUMBER,
+                          gridlib.GRID_VALUE_STRING,
+                          gridlib.GRID_VALUE_CHOICE + ':only in a million years!,wish list,minor,normal,major,critical',
+                          gridlib.GRID_VALUE_NUMBER + ':1,5',
+                          gridlib.GRID_VALUE_CHOICE + ':all,MSW,GTK,other',
+                          gridlib.GRID_VALUE_BOOL,
+                          gridlib.GRID_VALUE_BOOL,
+                          gridlib.GRID_VALUE_BOOL,
+                          gridlib.GRID_VALUE_FLOAT + ':6,2',
+                          ]
+
+        self.data = [
+            [1010, "The foo doesn't bar", "major", 1, 'MSW', 1, 1, 1, 1.12],
+            [1011, "I've got a wicket in my wocket", "wish list", 2, 'other', 0, 0, 0, 1.50],
+            [1012, "Rectangle() returns a triangle", "critical", 5, 'all', 0, 0, 0, 1.56]
+            ]
+
+    # ---[ required methods for the wxPyGridTableBase interface ] -------------------
+
+    def GetNumberRows(self):
+        return len(self.data) + 1
+
+    def GetNumberCols(self):
+        return len(self.data[0])
+
+    def IsEmptyCell(self, row, col):
+        try:
+            return not self.data[row][col]
+        except IndexError:
+            return True
+
+    # Get/Set values in the table.  The Python version of these
+    # methods can handle any data-type, (as long as the Editor and
+    # Renderer understands the type too,) not just strings as in the
+    # C++ version.
+    def GetValue(self, row, col):
+        try:
+            return self.data[row][col]
+        except IndexError:
+            return ''
+
+    def SetValue(self, row, col, value):
+        try:
+            self.data[row][col] = value
+        except IndexError:
+            # add a new row
+            self.data.append([''] * self.GetNumberCols())
+            self.SetValue(row, col, value)
+            # tell the grid we've added a row
+            msg = gridlib.GridTableMessage(self,            # The table
+                    gridlib.GRIDTABLE_NOTIFY_ROWS_APPENDED, # what we did to it
+                    1                                       # how many
+                    )
+            self.GetView().ProcessTableMessage(msg)
+
+    # ---[ Some optional methods ] ---------------------------------------
+
+    # Called when the grid needs to display labels
+    def GetColLabelValue(self, col):
+        return self.colLabels[col]
+
+    # Called to determine the kind of editor/renderer to use by
+    # default, doesn't necessarily have to be the same type used
+    # natively by the editor/renderer if they know how to convert.
+    def GetTypeName(self, row, col):
+        return self.dataTypes[col]
+
+    # Called to determine how the data can be fetched and stored by the
+    # editor and renderer.  This allows you to enforce some type-safety
+    # in the grid.
+    def CanGetValueAs(self, row, col, typeName):
+        colType = self.dataTypes[col].split(':')[0]
+        if typeName == colType:
+            return True
+        else:
+            return False
+
+    def CanSetValueAs(self, row, col, typeName):
+        return self.CanGetValueAs(row, col, typeName)
+
+class CustTableGrid(gridlib.Grid):
+
+    def __init__(self, parent):
+        gridlib.Grid.__init__(self, parent, -1)
+        table = CustomDataTable()
+        # The second parameter means that the grid is to take ownership of the
+        # table and will destroy it when done.  Otherwise you would need to keep
+        # a reference to it and call it's Destroy method later.
+        self.SetTable(table, True)
+        self.SetRowLabelSize(0)
+        self.SetMargins(0,0)
+        self.AutoSizeColumns(False)
+        gridlib.EVT_GRID_CELL_LEFT_DCLICK(self, self.OnLeftDClick)
+
+    # I do this because I don't like the default behaviour of not starting the
+    # cell editor on double clicks, but only a second click.
+    def OnLeftDClick(self, evt):
+        if self.CanEnableCellControl():
+            self.EnableCellEditControl()
+
+class iTradeQuoteTablePanel(wx.Panel):
 
     def __init__(self,parent,id,quote):
-        wx.Window.__init__(self, parent, id)
+        wx.Panel.__init__(self, parent, id)
         self.m_id = id
         self.m_quote = quote
         self.m_parent = parent
         self.m_port = parent.portfolio()
 
-    def paint(self):
-        pass
+        # create the grid
+        self.m_grid = CustTableGrid(self)
 
-    def refresh(self):
-        info('QuoteTablePanel::refresh %s' % self.m_quote.ticker())
-        self.paint()
+        # --- vertical sizer
+        bs = wx.BoxSizer(wx.VERTICAL)
+        bs.Add(self.m_grid, 1, wx.GROW|wx.ALL, 5)
+        self.SetSizer(bs)
+
+    #def paint(self):
+    #    pass
+    #
+    #def refresh(self):
+    #    info('QuoteTablePanel::refresh %s' % self.m_quote.ticker())
+    #    self.paint()
+
+    def DonePage(self):
+        self.m_grid.Show(False)
+
+    def InitPage(self):
+        self.m_grid.Show(True)
 
 # ============================================================================
 # iTradeQuoteAnalysisPanel
@@ -315,12 +438,18 @@ class iTradeQuoteAnalysisPanel(wx.Window):
         txt = wx.StaticText(self, -1, "Candle : ", wx.Point(5,25), wx.Size(70, 20))
         self.m_candle = wx.StaticText(self, -1, "???", wx.Point(80,25), wx.Size(120, 20))
 
-    def paint(self):
+    #def paint(self):
+    #    self.m_candle.SetLabel(self.m_quote.ov_candle().__str__())
+    #
+    #def refresh(self):
+    #    info('QuoteAnalysisPanel::refresh %s' % self.m_quote.ticker())
+    #    self.paint()
+
+    def InitPage(self):
         self.m_candle.SetLabel(self.m_quote.ov_candle().__str__())
 
-    def refresh(self):
-        info('QuoteAnalysisPanel::refresh %s' % self.m_quote.ticker())
-        self.paint()
+    def DonePage(self):
+        pass
 
 # ============================================================================
 # iTradeQuoteGraphPanel
@@ -359,8 +488,11 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         self.m_hasGrid = self.m_dispGrid
         self.m_hasLegend = self.m_dispLegend
 
-        #
-        self.ChartRealize()
+    def InitPage(self):
+        self.RedrawAll()
+
+    def DonePage(self):
+        pass
 
     def RedrawAll(self):
         self.ChartRealize()
@@ -767,12 +899,9 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
         sel = self.GetSelection()
         info('OnPageChanged,  old:%d, new:%d, sel:%d\n' % (old, new, sel))
         if old<>new:
-            if old==self.ID_PAGE_LIVE:
-                self.m_parent.stopLive(self.m_quote)
-            if new==self.ID_PAGE_LIVE:
-                self.m_parent.startLive(self.m_quote)
             self.m_curpage = new
-            self.win[self.m_curpage].refresh()
+            self.win[old].DonePage()
+            self.win[new].InitPage()
         event.Skip()
 
     def OnPageChanging(self, event):
@@ -808,7 +937,7 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
             self.AddPage(self.win[self.ID_PAGE_GRAPH], message('quote_graphdaily'))
 
             if self.ID_PAGE_LIVE<>99:
-                self.win[self.ID_PAGE_LIVE] = iTrade_wxLive(self,self.m_quote)
+                self.win[self.ID_PAGE_LIVE] = iTrade_wxLive(self,self.m_parent,self.m_quote)
                 self.AddPage(self.win[self.ID_PAGE_LIVE], message('quote_live'))
 
             url = itrade_config.intradayGraphUrl[self.m_quote.market()]

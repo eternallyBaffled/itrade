@@ -59,7 +59,7 @@ from itrade_wxselectquote import select_iTradeQuote
 #   Properties of a quote : cache flush/reload, Short/Long Term, Fixing, ...
 # ============================================================================
 
-class iTradeQuotePropertiesPanel(wx.Window):
+class iTradeQuotePropertiesPanel(wx.Panel):
 
     def __init__(self,parent,id,quote):
         wx.Window.__init__(self, parent, id)
@@ -267,6 +267,12 @@ class iTradeQuotePropertiesPanel(wx.Window):
     def refresh(self):
         info('QuotePropertiesPanel::refresh %s' % self.m_quote.ticker())
         self.paint()
+
+    def InitPage(self):
+        self.refresh()
+
+    def DonePage(self):
+        pass
 
     def OnSize(self,event):
         debug('QuotePropertiesPanel::OnSize')
