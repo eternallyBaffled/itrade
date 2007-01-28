@@ -52,27 +52,27 @@ from itrade_local import message,getLang
 class MyPrintout(wx.Printout):
     def __init__(self, canvas):
         wx.Printout.__init__(self)
-        self.canvas = canvas
+        self.m_canvas = canvas
 
     def OnBeginDocument(self, start, end):
         info("MyPrintout.OnBeginDocument\n")
-        return super(MyPrintout, self).OnBeginDocument(start, end)
+        self.base_OnBeginDocument(start,end)
 
     def OnEndDocument(self):
         info("MyPrintout.OnEndDocument\n")
-        super(MyPrintout, self).OnEndDocument()
+        self.base_OnEndDocument()
 
     def OnBeginPrinting(self):
         info("MyPrintout.OnBeginPrinting\n")
-        super(MyPrintout, self).OnBeginPrinting()
+        self.base_OnBeginPrinting()
 
     def OnEndPrinting(self):
         info("MyPrintout.OnEndPrinting\n")
-        super(MyPrintout, self).OnEndPrinting()
+        self.base_OnEndPrinting()
 
     def OnPreparePrinting(self):
         info("MyPrintout.OnPreparePrinting\n")
-        super(MyPrintout, self).OnPreparePrinting()
+        self.base_OnPreparePrinting()
 
     def HasPage(self, page):
         info("MyPrintout.HasPage: %d\n" % page)
@@ -92,8 +92,8 @@ class MyPrintout(wx.Printout):
         #-------------------------------------------
         # One possible method of setting scaling factors...
 
-        maxX = self.canvas.getWidth()
-        maxY = self.canvas.getHeight()
+        width,height = self.m_canvas.GetSizeTuple()
+        maxX,maxY = width,height
 
         # Let's have at least 50 device units margin
         marginX = 50
@@ -114,8 +114,8 @@ class MyPrintout(wx.Printout):
         actualScale = min(scaleX, scaleY)
 
         # Calculate the position on the DC for centering the graphic
-        posX = (w - (self.canvas.getWidth() * actualScale)) / 2.0
-        posY = (h - (self.canvas.getHeight() * actualScale)) / 2.0
+        posX = (w - (width * actualScale)) / 2.0
+        posY = (h - (height * actualScale)) / 2.0
 
         # Set the scale and origin
         dc.SetUserScale(actualScale, actualScale)
@@ -123,8 +123,8 @@ class MyPrintout(wx.Printout):
 
         #-------------------------------------------
 
-        self.canvas.DoDrawing(dc, True)
-        dc.DrawText("Page: %d" % page, marginX/2, maxY-marginY)
+        # __x self.m_canvas.DoDrawing(dc, True)
+        dc.DrawText(message('print_page') % page, marginX/2, maxY-marginY)
 
         return True
 
@@ -167,15 +167,15 @@ class iTrade_wxPrintPanel(object):
 
     def OnPrintPreview(self, event):
         data = wx.PrintDialogData(self.m_pd)
-        printout = self.m_po(self.canvas)
-        printout2 = self.m_po(self.canvas)
+        printout = self.m_po(self.m_canvas)
+        printout2 = self.m_po(self.m_canvas)
         self.preview = wx.PrintPreview(printout, printout2, data)
 
         if not self.preview.Ok():
             info("Houston, we have a problem...\n")
             return
 
-        pfrm = wx.PreviewFrame(self.preview, self.m_parent, "This is a print preview")
+        pfrm = wx.PreviewFrame(self.preview, self.m_parent, message('print_preview'))
 
         pfrm.Initialize()
         pfrm.SetPosition(self.m_parent.GetPosition())
@@ -183,13 +183,13 @@ class iTrade_wxPrintPanel(object):
         pfrm.Show(True)
 
     def OnDoPrint(self, event):
-        pdd = wx.PrintDialogData(m_pd)
+        pdd = wx.PrintDialogData(self.m_pd)
         pdd.SetToPage(2)
         printer = wx.Printer(pdd)
-        printout = self.m_po(self.canvas)
+        printout = self.m_po(self.m_canvas)
 
         if not printer.Print(self.m_parent, printout, True):
-            wx.MessageBox("There was a problem printing.\nPerhaps your current printer is not set correctly?", "Printing", wx.OK)
+            wx.MessageBox(message('print_errprinting'), message('print_printing'), wx.OK)
         else:
             self.m_pd = wx.PrintData( printer.GetPrintDialogData().GetPrintData() )
         printout.Destroy()
@@ -207,8 +207,9 @@ class MyTestPanel(wx.Panel,iTrade_wxPrintPanel):
 
         self.box = wx.BoxSizer(wx.VERTICAL)
 
-        self.canvas = None#ScrolledWindow.MyCanvas(self)
-        #self.box.Add(self.canvas, 1, wx.GROW)
+        from itrade_wxhtml import iTradeHtmlPanel
+        self.m_canvas = iTradeHtmlPanel(self,wx.NewId(),"")
+        self.box.Add(self.m_canvas, 1, wx.GROW)
 
         subbox = wx.BoxSizer(wx.HORIZONTAL)
         btn = wx.Button(self, -1, "Page Setup")
