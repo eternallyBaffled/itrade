@@ -357,12 +357,9 @@ class iTrade_wxToolbarGraph(wx.ToolBar):
                            message('tb_config'), message('tb_config'))
         self.AddSimpleTool(self._NTB2_SAVE, wx.ArtProvider.GetBitmap(wx.ART_FILE_SAVE, wx.ART_TOOLBAR),
                            message('tb_save_file'), message('tb_save_file'))
-        self.AddSimpleTool(self._NTB2_SETUP, wx.ArtProvider.GetBitmap(wx.ART_PRINT, wx.ART_TOOLBAR),
-                           message('tb_setup'), message('tb_setup'))
-        self.AddSimpleTool(self._NTB2_PRINT, wx.ArtProvider.GetBitmap(wx.ART_PRINT, wx.ART_TOOLBAR),
-                           message('tb_print'), message('tb_print'))
-        self.AddSimpleTool(self._NTB2_PREVIEW, wx.ArtProvider.GetBitmap(wx.ART_PRINT, wx.ART_TOOLBAR),
-                           message('tb_preview'), message('tb_preview'))
+        self.AddSimpleTool(self._NTB2_SETUP, wx.Bitmap('res/printsetup.png'), message('tb_setup'), message('tb_setup'))
+        self.AddSimpleTool(self._NTB2_PRINT, wx.Bitmap('res/print.png'), message('tb_print'), message('tb_print'))
+        self.AddSimpleTool(self._NTB2_PREVIEW, wx.Bitmap('res/printpreview.png'), message('tb_preview'), message('tb_preview'))
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
 
         self.AddRadioLabelTool(self._NTB2_TOOL_IND, '', wx.Bitmap('res/toolind.png'), wx.NullBitmap, message('tb_tool_ind'), message('tb_tool_ind'))

@@ -963,6 +963,8 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
             self.win[self.ID_PAGE_PROP] = iTradeQuotePropertiesPanel(self,wx.NewId(),self.m_quote)
             self.AddPage(self.win[self.ID_PAGE_PROP], message('quote_properties'))
 
+            self.win[page].InitPage()
+
             return page
 
     def refresh(self,nquote=None,live=False):

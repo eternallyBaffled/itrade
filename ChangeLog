@@ -6,6 +6,7 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-01-28  Gilles Dumortier <dgil at ieee.org>
+	* Graph View : add a print command (SF bug 1645949)
 	* more code to preview and print something
 
 2007-01-27  Gilles Dumortier <dgil at ieee.org>
