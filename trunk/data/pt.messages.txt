@@ -37,8 +37,8 @@ main_view_operations;&Transacções
 main_view_desc_operations; Gerir as transacções na conta actual
 main_view_money;&Gestão de dinheiro
 main_view_desc_money; Gestão de dinheiro
-main_view_evaluation;__x &Performance
-main_view_desc_evaluation;__x  Performance evaluation
+main_view_evaluation; &Desempenho
+main_view_desc_evaluation; Avaliação do desempenho da carteira
 
 main_view_compute;&Computador
 main_view_desc_compute; Computador
@@ -80,8 +80,8 @@ main_quote_desc_property; Visualizar as propriedades para as acções actualmente 
 
 main_options;&Opções
 
-main_options_access;__x&Access
-main_options_desc_access;__x Access parameters for some connectors
+main_options_access;&acesso
+main_options_desc_access; Parâmetros de acesso por alguns conectores
 
 main_options_lang;&Língua
 main_options_desc_lang; Seleccionar a língua usada por este software
@@ -91,14 +91,21 @@ main_options_lang_french;Francês
 main_options_lang_portuguese;Portuguese
 main_options_lang_deutch;Deutch
 
-main_options_cache;__x&Caching
-main_options_desc_cache;__x Caching management
-main_cache_erase_data;__xErase &History Data
-main_cache_desc_erase_data;__xErase all history data from the cache folder
-main_cache_erase_news;__xErase &News
-main_cache_desc_erase_news;__x Erase all news from the cache folder
-main_cache_erase_all;__xErase &All
-main_cache_desc_erase_all;__x Erase all data (news, historic, ...) from the cache folder
+main_options_cache;&"cache"
+main_options_desc_cache; Gestão do "cache"
+
+main_cache_erase_data; Apagar os dados históricos
+
+main_cache_desc_erase_data; Apagar todos os dados históricos do "cache"
+
+main_cache_erase_news; Apagar as &Informações
+main_cache_desc_erase_news; Apagar todas as informações do "cache"
+
+
+main_cache_erase_all; Apagar &tudo
+main_cache_desc_erase_all; Apagar todos os dados (noticia, historiais...) do "cache"
+
+
 
 main_help;&Ajuda
 main_help_contents;&Índices
@@ -407,22 +414,10 @@ tb_config;Configuração do gráfico
 tb_home;Restaurar a posição original
 tb_zoom_out;Aumentar o período
 tb_zoom_in;Diminuir o período
-tb_setup;__xPrinting Configuration
-tb_print;__xPrint
-tb_preview;__xPreview
-
-tb_tool_ind;__xDisplay Popup
-tb_tool_hline;__xDraw Horizontal line
-tb_tool_vline;__xDraw Vertical line
-tb_tool_oline;__xDraw Oblic line
-tb_tool_trash;__xSuppress object
-tb_tool_fibo;__xDraw Fibonacci object
-tb_tool_text;__xDraw Text
-tb_tool_prop;__xObject properties
 
 quote_popup_dispMA150;Média movimentada 150 dias
-quote_popup_dispSto;__xStochastic
-quote_popup_dispRSI14;__xRSI 14 days
+quote_popup_dispSto;Estocástico
+quote_popup_dispRSI14;RSI 14 dias
 quote_popup_dispBollinger;Faixas de Bollinger
 quote_popup_dispOverlaidVolume;Volumes de Overlaid
 quote_popup_dispLegend;Legenda
@@ -506,36 +501,51 @@ currency_from;Converter
 currency_rate;Taxa
 currency_refreshing;Actualizar os dados actuais
 
-cache_erase_confirm_title;__x Erase cache data
-cache_erase_confirm_data;__x Erase all historic data from the cache ? (data will be regenerated)
-cache_erase_confirm_news;__x Erase all news from the cache ? (data will be regenerated)
-cache_erase_confirm_all;__x Erase all data (historic, news, ...) from the cache ? (data will be regenerated)
+cache_erase_confirm_title; Apagar dados do "cache"
 
-indicator_autorefresh;__xAuto Refresh
-indicator_noautorefresh;__xManual Refresh
-indicator_disconnected;__xDisconnected
+cache_erase_confirm_data; Apagar todos os dados históricos do "cache" ?(os dados serão regenerados)
 
-login_title;__xAccount Access
-login_fortuneo_desc;__xEnter your Fortuneo account number (real or demonstration account)
-login_boursorama_desc;__xEnter your Boursorama account number (Customer account or nickname)
-login_set;__xSet
-login_setdesc;__x Set the entered access information
-login_username;__xUser idendity :
-login_password;__xUser password :
-login_test;__xTest
-login_testdesc;__x Try service's access using the entered information
-login_test_ok;__xAccess to the service is working
-login_test_nok;__xAccess to the service is not working
+cache_erase_confirm_news; Apagar toda a notícia do "cache" ? (os dados serão regenerados) 
 
-page_portfolio;__xPortfolio
-page_quotes;__xMatrix
-page_stops;__xStops
-page_indicators;__xIndicators
-page_evaluation;__xPerformance
+cache_erase_confirm_all; Apagar todos os dados (historiais, notícia...) do "cache"? (os dados serão regenerados)
 
-print_preview;__xPrint Preview
-print_printing;__xPrinting
-print_errprinting;__xThere was a problem printing.\nPerhaps your current printer is not set correctly ?
-print_page;__xPage: %d
+
+
+
+indicator_autorefresh;Regeneração automática
+indicator_noautorefresh;Regeneração manual
+
+indicator_disconnected;Desconectado
+
+login_title;Acesso Cliente
+login_fortuneo_desc;Entrar o vosso identificador Fortuneo (conta real ou da demonstração)
+
+login_boursorama_desc;Entrar o vosso identificador Boursorama (conta cliente ou pseudónimo) 
+login_set;Validar
+login_setdesc;Válidar as informações de acesso apreendidas
+login_username;Identificador :
+
+login_password;Senha :
+
+login_test;Testar
+login_testdesc; Tentar o acesso ao serviço com as informações fornecidas 
+
+login_test_ok;O acesso ao serviço funciona com estas informações
+
+login_test_nok;O acesso ao serviço não funciona com estas informações 		
+
+
+page_portfolio;Conta
+page_quotes;Matriz
+page_stops;Stops
+page_indicators;Indicadores
+page_evaluation;Desempenho
+
+print_preview;Visualizar impressão
+print_printing;Imprimir...
+print_errprinting;Erro de impressão.\nVerificar a configuração corrente?
+print_page;Página: %d
+
+
 
 test;Mensagem de teste
