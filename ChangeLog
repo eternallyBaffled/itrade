@@ -5,6 +5,12 @@ On the road for v0.4.6 (Nausicaa2)
 
 ===============================================================================
 
+2007-01-28  Gilles Dumortier <dgil at ieee.org>
+	* more code to preview and print something
+
+2007-01-27  Gilles Dumortier <dgil at ieee.org>
+	* new module for printing panels (itrade_wxprint.py)
+
 2007-01-24  Gilles Dumortier <dgil at ieee.org>
 	* new tarball
 	* r504 (-x) : Change Tabs order (Quotes first, then Portfolio)
