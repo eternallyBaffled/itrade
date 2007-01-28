@@ -407,6 +407,9 @@ tb_config;Chart configuration
 tb_home;Restore default position
 tb_zoom_out;period Zoom out
 tb_zoom_in;period Zoom in
+tb_setup;Printing Configuration
+tb_print;Print
+tb_preview;Preview
 
 quote_popup_dispMA150;Moving Average 150 days
 quote_popup_dispSto;Stochastic
@@ -520,5 +523,10 @@ page_quotes;Matrix
 page_stops;Stops
 page_indicators;Indicators
 page_evaluation;Performance
+
+print_preview;Print Preview
+print_printing;Printing
+print_errpriting;There was a problem printing.\nPerhaps your current printer is not set correctly ?
+print_page;Page: %d
 
 test;test message

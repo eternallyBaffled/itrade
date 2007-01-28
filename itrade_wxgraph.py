@@ -46,6 +46,7 @@ import wx
 from itrade_logging import *
 from itrade_local import message
 from itrade_wxlabel import iTrade_wxLabelPopup,DrawRectLabel
+from itrade_wxprint import iTrade_wxPanelPrint as PanelPrint
 
 # matplotlib system
 import matplotlib
@@ -56,7 +57,7 @@ from pylab import *
 
 #from matplotlib.backends.backend_wx import FigureCanvasWx as FigureCanvas
 from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as FigureCanvas
-from matplotlib.backends.backend_wx import NavigationToolbar2Wx,_load_bitmap
+from matplotlib.backends.backend_wx import NavigationToolbar2Wx,_load_bitmap,PrintoutWx
 
 from matplotlib.figure import Figure
 from matplotlib.axes import Subplot
@@ -223,7 +224,7 @@ class GToolTrash(GTool):
 
 class GObject(object):
     def __init__(self,canvas):
-        self.canvas = canvas
+        self.m_canvas = canvas
         self.objects = []
 
     def listObjects(self):
@@ -243,7 +244,7 @@ class GObject(object):
         axe = self.chart2axe(obj[1])
 
         # compute rect
-        figheight = self.canvas.figure.bbox.height()
+        figheight = self.m_canvas.figure.bbox.height()
         left,bottom,width,height = axe.bbox.get_bounds()
         bottom = figheight-bottom
         top = bottom - height
@@ -252,7 +253,7 @@ class GObject(object):
         rect = (int(left),int(top),int(right),int(bottom),int(width),int(height))
 
         # start drawing in the DC
-        dc = wx.ClientDC(self.canvas)
+        dc = wx.ClientDC(self.m_canvas)
         dc.ResetBoundingBox()
         dc.BeginDrawing()
 
@@ -316,7 +317,7 @@ class iTrade_wxToolbarGraph(wx.ToolBar):
     def __init__(self, canvas):
         self.m_parent = canvas.GetParent()
         wx.ToolBar.__init__(self, self.m_parent, -1)
-        self.canvas = canvas
+        self.m_canvas = canvas
         self._init_toolbar()
 
     def _init_toolbar(self):
@@ -327,6 +328,9 @@ class iTrade_wxToolbarGraph(wx.ToolBar):
         self._NTB2_ZOOMIN = wx.NewId()
         self._NTB2_CONFIG = wx.NewId()
         self._NTB2_SAVE = wx.NewId()
+        self._NTB2_PRINT = wx.NewId()
+        self._NTB2_SETUP = wx.NewId()
+        self._NTB2_PREVIEW = wx.NewId()
 
         self._NTB2_TOOL_IND   = wx.NewId()
         self._NTB2_TOOL_HLINE = wx.NewId()
@@ -352,7 +356,13 @@ class iTrade_wxToolbarGraph(wx.ToolBar):
         self.AddSimpleTool(self._NTB2_CONFIG, wx.ArtProvider.GetBitmap(wx.ART_TICK_MARK, wx.ART_TOOLBAR),
                            message('tb_config'), message('tb_config'))
         self.AddSimpleTool(self._NTB2_SAVE, wx.ArtProvider.GetBitmap(wx.ART_FILE_SAVE, wx.ART_TOOLBAR),
-                           message('tb_save_plot'), message('tb_save_plot'))
+                           message('tb_save_file'), message('tb_save_file'))
+        self.AddSimpleTool(self._NTB2_SETUP, wx.ArtProvider.GetBitmap(wx.ART_PRINT, wx.ART_TOOLBAR),
+                           message('tb_setup'), message('tb_setup'))
+        self.AddSimpleTool(self._NTB2_PRINT, wx.ArtProvider.GetBitmap(wx.ART_PRINT, wx.ART_TOOLBAR),
+                           message('tb_print'), message('tb_print'))
+        self.AddSimpleTool(self._NTB2_PREVIEW, wx.ArtProvider.GetBitmap(wx.ART_PRINT, wx.ART_TOOLBAR),
+                           message('tb_preview'), message('tb_preview'))
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
 
         self.AddRadioLabelTool(self._NTB2_TOOL_IND, '', wx.Bitmap('res/toolind.png'), wx.NullBitmap, message('tb_tool_ind'), message('tb_tool_ind'))
@@ -369,6 +379,9 @@ class iTrade_wxToolbarGraph(wx.ToolBar):
         wx.EVT_TOOL(self, self._NTB2_ZOOMIN, self.zoomIn)
         wx.EVT_TOOL(self, self._NTB2_CONFIG, self.config)
         wx.EVT_TOOL(self, self._NTB2_SAVE, self.save)
+        wx.EVT_TOOL(self, self._NTB2_SETUP, self.printSetup)
+        wx.EVT_TOOL(self, self._NTB2_PRINT, self.doPrint)
+        wx.EVT_TOOL(self, self._NTB2_PREVIEW, self.doPreview)
 
         wx.EVT_TOOL(self, self._NTB2_TOOL_IND, self.toolInd)
         wx.EVT_TOOL(self, self._NTB2_TOOL_HLINE, self.toolHLine)
@@ -416,18 +429,27 @@ class iTrade_wxToolbarGraph(wx.ToolBar):
         self.m_parent.OnToolTrash(event)
 
     def save(self,event):
-        filetypes = self.canvas._get_imagesave_wildcards()
+        filetypes = self.m_canvas._get_imagesave_wildcards()
         dlg = wx.FileDialog(self.m_parent, message('save_to_file'), itrade_config.dirSnapshots, "", filetypes, wx.SAVE|wx.OVERWRITE_PROMPT|wx.CHANGE_DIR)
         if dlg.ShowModal() == wx.ID_OK:
             dirname  = dlg.GetDirectory()
             filename = dlg.GetFilename()
             debug('Save file dir:%s name:%s' % (dirname, filename))
-            self.canvas.print_figure(os.path.join(dirname, filename))
+            self.m_canvas.print_figure(os.path.join(dirname, filename))
         dlg.Destroy()
+
+    def doPreview(self,event):
+        self.m_parent.OnPrintPreview(event)
+
+    def doPrint(self,event):
+        self.m_parent.OnDoPrint(event)
+
+    def printSetup(self,event):
+        self.m_parent.OnPageSetup(event)
 
     def set_cursor(self, cursor):
         cursor = wx.StockCursor(cursord[cursor])
-        self.canvas.SetCursor( cursor )
+        self.m_canvas.SetCursor( cursor )
 
     def update(self):
         pass
@@ -448,10 +470,12 @@ CURSOR_MODE_TRASH = 255
 # ============================================================================
 
 # ============================================================================
+
+# ============================================================================
 # iTrade_wxPanelGraph
 # ============================================================================
 
-class iTrade_wxPanelGraph(GObject):
+class iTrade_wxPanelGraph(GObject,PanelPrint):
     def __init__(self, parent, id, size):
         self.m_parent = parent
 
@@ -459,14 +483,15 @@ class iTrade_wxPanelGraph(GObject):
 
         # figure me
         self.figure = Figure(size, dpi = 96)
-        self.canvas = FigureCanvas(self, -1, self.figure)
+        self.m_canvas = FigureCanvas(self, -1, self.figure)
 
-        GObject.__init__(self,self.canvas)
+        GObject.__init__(self,self.m_canvas)
+        PanelPrint.__init__(self,parent,PrintoutWx,orientation = wx.LANDSCAPE)
 
-        self.canvas.mpl_connect('motion_notify_event', self.mouse_move)
-        self.canvas.mpl_connect('button_press_event', self.on_click)
+        self.m_canvas.mpl_connect('motion_notify_event', self.mouse_move)
+        self.m_canvas.mpl_connect('button_press_event', self.on_click)
 
-        self.m_toolbar = iTrade_wxToolbarGraph(self.canvas)
+        self.m_toolbar = iTrade_wxToolbarGraph(self.m_canvas)
 
         wx.EVT_LEFT_DOWN(self.m_toolbar, self.OnLeftDown)
 
@@ -479,7 +504,7 @@ class iTrade_wxPanelGraph(GObject):
 
         # size everything to fit in panel
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(self.canvas, 1, wx.LEFT | wx.TOP | wx.GROW)
+        sizer.Add(self.m_canvas, 1, wx.LEFT | wx.TOP | wx.GROW)
         sizer.Add(self.m_toolbar, 0, wx.GROW)
         self.SetSizerAndFit(sizer)
         wx.EVT_PAINT(self, self.OnPaint)
@@ -534,32 +559,32 @@ class iTrade_wxPanelGraph(GObject):
 
     def OnToolInd(self,event):
         self.m_cursormode = CURSOR_MODE_IND
-        self.m_tool = GToolInd(self,self.canvas)
+        self.m_tool = GToolInd(self,self.m_canvas)
         if event: event.Skip()
 
     def OnToolHLine(self,event):
         self.m_cursormode = CURSOR_MODE_HLINE
-        self.m_tool = GToolHLine(self,self.canvas)
+        self.m_tool = GToolHLine(self,self.m_canvas)
         if event: event.Skip()
 
     def OnToolVLine(self,event):
         self.m_cursormode = CURSOR_MODE_VLINE
-        self.m_tool = GToolVLine(self,self.canvas)
+        self.m_tool = GToolVLine(self,self.m_canvas)
         if event: event.Skip()
 
     def OnToolOLine(self,event):
         self.m_cursormode = CURSOR_MODE_OLINE
-        self.m_tool = GToolOLine(self,self.canvas)
+        self.m_tool = GToolOLine(self,self.m_canvas)
         if event: event.Skip()
 
     def OnToolFibo(self,event):
         self.m_cursormode = CURSOR_MODE_FIBO
-        self.m_tool = GToolFibo(self,self.canvas)
+        self.m_tool = GToolFibo(self,self.m_canvas)
         if event: event.Skip()
 
     def OnToolTrash(self,event):
         self.m_cursormode = CURSOR_MODE_TRASH
-        self.m_tool = GToolTrash(self,self.canvas)
+        self.m_tool = GToolTrash(self,self.m_canvas)
         if event: event.Skip()
 
     # ---[ MOUSE MANAGEMENT ] -----------------------------------------------
@@ -574,7 +599,7 @@ class iTrade_wxPanelGraph(GObject):
         if self.cursorState(None) and (self.m_cursormode == CURSOR_MODE_IND):
             #debug('OnTimer create label')
             try:
-                self.m_xylabel = iTrade_wxLabelPopup(self.canvas,self.m_xylabelPos,self.m_xylabelMax,label=self.GetXYLabel(self.m_xylabelAxis,self.m_xylabelData),multiline=True)
+                self.m_xylabel = iTrade_wxLabelPopup(self.m_canvas,self.m_xylabelPos,self.m_xylabelMax,label=self.GetXYLabel(self.m_xylabelAxis,self.m_xylabelData),multiline=True)
             except AttributeError:
                 info('axis not managed')
                 pass
@@ -653,7 +678,7 @@ class iTrade_wxPanelGraph(GObject):
             self.erase_cursor()
             return
 
-        figheight = self.canvas.figure.bbox.height()
+        figheight = self.m_canvas.figure.bbox.height()
         ax = event.inaxes
         left,bottom,width,height = ax.bbox.get_bounds()
         bottom = figheight-bottom
@@ -669,7 +694,7 @@ class iTrade_wxPanelGraph(GObject):
         newx = left+((width/period)*int(time))
         #debug('newx=%d width=%d period=%d time=%d' % (newx,width,period,int(time)))
 
-        dc = wx.ClientDC(self.canvas)
+        dc = wx.ClientDC(self.m_canvas)
         dc.SetLogicalFunction(wx.XOR)
         dc.SetBrush(wx.Brush(wx.Colour(255,255,255), wx.TRANSPARENT))
         dc.SetPen(wx.Pen(wx.Colour(200, 200, 200), 1, wx.SOLID))
@@ -693,10 +718,10 @@ class iTrade_wxPanelGraph(GObject):
         # add x and y labels
         if int(time)<len(self.times):
             if self.is_display_vcursor():
-                self.m_xlabel = iTrade_wxLabelPopup(self.canvas,(x,bottom), label=self.GetXLabel(int(time)))
+                self.m_xlabel = iTrade_wxLabelPopup(self.m_canvas,(x,bottom), label=self.GetXLabel(int(time)))
                 self.m_xlabel.Draw()
             if self.is_display_hcursor():
-                self.m_ylabel = iTrade_wxLabelPopup(self.canvas,(right,y), label=self.GetYLabel(ax,value))
+                self.m_ylabel = iTrade_wxLabelPopup(self.m_canvas,(right,y), label=self.GetYLabel(ax,value))
                 self.m_ylabel.Draw()
 
             # save some data for Timed behaviour

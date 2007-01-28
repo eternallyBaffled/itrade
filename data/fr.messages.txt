@@ -406,6 +406,9 @@ tb_config;Paramètrage des graphiques
 tb_home;Restaure la position par défaut
 tb_zoom_out;period Zoom out
 tb_zoom_in;period Zoom in
+tb_setup;Configuration Impression
+tb_print;Impression
+tb_preview;Prévisualisation
 
 quote_popup_dispMA150;Moyenne Mobile 150 jours
 quote_popup_dispSto;Stochastique
@@ -519,5 +522,10 @@ page_quotes;Titres
 page_stops;Stops
 page_indicators;Indicateurs
 page_evaluation;Performance
+
+print_preview;Prévisualisation de l'impression
+print_printing;Impression
+print_errpriting;Il y a eu un problème d'impression.\nPeut être que votre imprimante n'est pas configuré correctement ?
+print_page;Page: %d
 
 test;message de test

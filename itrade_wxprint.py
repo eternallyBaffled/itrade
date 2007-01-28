@@ -129,13 +129,13 @@ class MyPrintout(wx.Printout):
         return True
 
 # ============================================================================
-# iTrade_wxPrintPanel
+# iTrade_wxPanelPrint
 #
 #   m_parent        parent panel or frame or window
 #   m_pd            PrintData
 # ============================================================================
 
-class iTrade_wxPrintPanel(object):
+class iTrade_wxPanelPrint(object):
     def __init__(self, parent , po, orientation = wx.PORTRAIT):
         self.m_parent = parent
 
@@ -175,7 +175,13 @@ class iTrade_wxPrintPanel(object):
             info("Houston, we have a problem...\n")
             return
 
-        pfrm = wx.PreviewFrame(self.preview, self.m_parent, message('print_preview'))
+        # be sure to have a Frame object
+        frameInst = self
+        while not isinstance(frameInst, wx.Frame):
+            frameInst = frameInst.GetParent()
+
+        # create the Frame for previewing
+        pfrm = wx.PreviewFrame(self.preview, frameInst, message('print_preview'))
 
         pfrm.Initialize()
         pfrm.SetPosition(self.m_parent.GetPosition())
@@ -199,11 +205,11 @@ class iTrade_wxPrintPanel(object):
 # Test me
 # ============================================================================
 
-class MyTestPanel(wx.Panel,iTrade_wxPrintPanel):
+class MyTestPanel(wx.Panel,iTrade_wxPanelPrint):
 
     def __init__(self, parent):
         wx.Panel.__init__(self, parent, -1, wx.DefaultPosition, wx.DefaultSize)
-        iTrade_wxPrintPanel.__init__(self,parent,MyPrintout)
+        iTrade_wxPanelPrint.__init__(self,parent,MyPrintout)
 
         self.box = wx.BoxSizer(wx.VERTICAL)
 
