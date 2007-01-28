@@ -410,6 +410,15 @@ tb_setup;Configuration Impression
 tb_print;Impression
 tb_preview;Prévisualisation
 
+tb_tool_ind;Affichage des Popups
+tb_tool_hline;Dessine ligne Horizontale
+tb_tool_vline;Dessine ligne Verticale
+tb_tool_oline;Dessine ligne Oblique
+tb_tool_trash;Supprime un objet
+tb_tool_fibo;Dessine un objet Fibonacci
+tb_tool_text;Dessine un Texte
+tb_tool_prop;Propriétés d'un objet
+
 quote_popup_dispMA150;Moyenne Mobile 150 jours
 quote_popup_dispSto;Stochastique
 quote_popup_dispRSI14;RSI 14 jours
@@ -525,7 +534,7 @@ page_evaluation;Performance
 
 print_preview;Prévisualisation de l'impression
 print_printing;Impression
-print_errpriting;Il y a eu un problème d'impression.\nPeut être que votre imprimante n'est pas configuré correctement ?
+print_errprinting;Il y a eu un problème d'impression.\nPeut être que votre imprimante n'est pas configuré correctement ?
 print_page;Page: %d
 
 test;message de test

@@ -195,7 +195,8 @@ class iTrade_wxPanelPrint(object):
         printout = self.m_po(self.m_canvas)
 
         if not printer.Print(self.m_parent, printout, True):
-            wx.MessageBox(message('print_errprinting'), message('print_printing'), wx.OK)
+            #wx.MessageBox(message('print_errprinting'), message('print_printing'), wx.OK)
+            pass
         else:
             self.m_pd = wx.PrintData( printer.GetPrintDialogData().GetPrintData() )
         printout.Destroy()

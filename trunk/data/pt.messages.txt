@@ -411,6 +411,15 @@ tb_setup;__xPrinting Configuration
 tb_print;__xPrint
 tb_preview;__xPreview
 
+tb_tool_ind;__xDisplay Popup
+tb_tool_hline;__xDraw Horizontal line
+tb_tool_vline;__xDraw Vertical line
+tb_tool_oline;__xDraw Oblic line
+tb_tool_trash;__xSuppress object
+tb_tool_fibo;__xDraw Fibonacci object
+tb_tool_text;__xDraw Text
+tb_tool_prop;__xObject properties
+
 quote_popup_dispMA150;Média movimentada 150 dias
 quote_popup_dispSto;__xStochastic
 quote_popup_dispRSI14;__xRSI 14 days
@@ -526,7 +535,7 @@ page_evaluation;__xPerformance
 
 print_preview;__xPrint Preview
 print_printing;__xPrinting
-print_errpriting;__xThere was a problem printing.\nPerhaps your current printer is not set correctly ?
+print_errprinting;__xThere was a problem printing.\nPerhaps your current printer is not set correctly ?
 print_page;__xPage: %d
 
 test;Mensagem de teste

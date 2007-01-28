@@ -411,6 +411,15 @@ tb_setup;Printing Configuration
 tb_print;Print
 tb_preview;Preview
 
+tb_tool_ind;Display Popup
+tb_tool_hline;Draw Horizontal line
+tb_tool_vline;Draw Vertical line
+tb_tool_oline;Draw Oblic line
+tb_tool_trash;Suppress object
+tb_tool_fibo;Draw Fibonacci object
+tb_tool_text;Draw Text
+tb_tool_prop;Object properties
+
 quote_popup_dispMA150;Moving Average 150 days
 quote_popup_dispSto;Stochastic
 quote_popup_dispRSI14;RSI 14 days
@@ -526,7 +535,7 @@ page_evaluation;Performance
 
 print_preview;Print Preview
 print_printing;Printing
-print_errpriting;There was a problem printing.\nPerhaps your current printer is not set correctly ?
+print_errprinting;There was a problem printing.\nPerhaps your current printer is not set correctly ?
 print_page;Page: %d
 
 test;test message
