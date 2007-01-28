@@ -42,7 +42,7 @@ import logging
 
 # iTrade system
 from itrade_logging import *
-from itrade_local import message
+from itrade_local import message,getNumSep
 import itrade_csv
 import itrade_trades
 from itrade_import import *
