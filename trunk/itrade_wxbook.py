@@ -138,7 +138,8 @@ ID_CACHE_ERASE_ALL = 510
 ID_CONTENT = 800
 ID_SUPPORT = 801
 ID_BUG = 802
-ID_DONORS = 803
+ID_FORUM = 803
+ID_DONORS = 804
 ID_ABOUT = 810
 
 # ============================================================================
@@ -509,6 +510,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         self.helpmenu.AppendSeparator()
         self.helpmenu.Append(ID_SUPPORT, message('main_help_support'),message('main_help_desc_support'))
         self.helpmenu.Append(ID_BUG, message('main_help_bugs'),message('main_help_desc_bugs'))
+        self.helpmenu.Append(ID_FORUM, message('main_help_forum'),message('main_help_desc_forum'))
         self.helpmenu.Append(ID_DONORS, message('main_help_donors'),message('main_help_desc_donors'))
         self.helpmenu.AppendSeparator()
         self.helpmenu.Append(ID_ABOUT, message('main_about'), message('main_desc_about'))
@@ -535,8 +537,10 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         wx.EVT_MENU(self, ID_EDIT, self.OnEdit)
         wx.EVT_MENU(self, ID_MANAGELIST, self.OnManageList)
         wx.EVT_MENU(self, ID_EXIT, self.OnExit)
+        wx.EVT_MENU(self, ID_CONTENT, self.OnContent)
         wx.EVT_MENU(self, ID_SUPPORT, self.OnSupport)
         wx.EVT_MENU(self, ID_BUG, self.OnBug)
+        wx.EVT_MENU(self, ID_FORUM, self.OnForum)
         wx.EVT_MENU(self, ID_DONORS, self.OnDonors)
         wx.EVT_MENU(self, ID_PORTFOLIO, self.OnPortfolio)
         wx.EVT_MENU(self, ID_QUOTES, self.OnQuotes)
@@ -691,10 +695,26 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         self.clearDirty()
 
     def OnSupport(self,e):
-        iTradeLaunchBrowser(itrade_config.supportURL,new=True)
+        id = getLang()
+        if itrade_config.supportURL.has_key(id):
+            url = itrade_config.supportURL[id]
+        else:
+            url = itrade_config.supportURL['en']
+        iTradeLaunchBrowser(url,new=True)
+
+    def OnContent(self,e):
+        id = getLang()
+        if itrade_config.manualURL.has_key(id):
+            url = itrade_config.manualURL[id]
+        else:
+            url = itrade_config.manualURL['en']
+        iTradeLaunchBrowser(url,new=True)
 
     def OnBug(self,e):
         iTradeLaunchBrowser(itrade_config.bugTrackerURL,new=True)
+
+    def OnForum(self,e):
+        iTradeLaunchBrowser(itrade_config.forumURL,new=True)
 
     def OnDonors(self,e):
         iTradeLaunchBrowser(itrade_config.donorsTrackerURL,new=True)
