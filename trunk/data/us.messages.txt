@@ -414,7 +414,7 @@ tb_preview;Preview
 tb_tool_ind;Display Popup
 tb_tool_hline;Draw Horizontal line
 tb_tool_vline;Draw Vertical line
-tb_tool_oline;Draw Oblic line
+tb_tool_oline;Draw Oblique line
 tb_tool_trash;Suppress object
 tb_tool_fibo;Draw Fibonacci object
 tb_tool_text;Draw Text

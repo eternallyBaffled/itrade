@@ -415,6 +415,15 @@ tb_home;Restaurar a posição original
 tb_zoom_out;Aumentar o período
 tb_zoom_in;Diminuir o período
 
+tb_tool_ind;__xDisplay Popup
+tb_tool_hline;__xDraw Horizontal line
+tb_tool_vline;__xDraw Vertical line
+tb_tool_oline;__xDraw Oblique line
+tb_tool_trash;__xSuppress object
+tb_tool_fibo;__xDraw Fibonacci object
+tb_tool_text;__xDraw Text
+tb_tool_prop;__xObject properties
+
 quote_popup_dispMA150;Média movimentada 150 dias
 quote_popup_dispSto;Estocástico
 quote_popup_dispRSI14;RSI 14 dias
@@ -508,8 +517,6 @@ cache_erase_confirm_data; Apagar todos os dados históricos do "cache" ?(os dados
 cache_erase_confirm_news; Apagar toda a notícia do "cache" ? (os dados serão regenerados) 
 
 cache_erase_confirm_all; Apagar todos os dados (historiais, notícia...) do "cache"? (os dados serão regenerados)
-
-
 
 
 indicator_autorefresh;Regeneração automática

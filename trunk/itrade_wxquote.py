@@ -494,11 +494,14 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
     def DonePage(self):
         pass
 
-    def RedrawAll(self):
-        self.ChartRealize()
+    def draw(self,dc=None):
         self.erase_cursor()
         self.m_canvas.draw()
-        self.drawAllObjects()
+        self.drawAllObjects(dc)
+
+    def RedrawAll(self):
+        self.ChartRealize()
+        self.draw()
 
     def OnPaint(self,event):
         self.erase_cursor()

@@ -46,7 +46,7 @@ import wx
 from itrade_logging import *
 from itrade_local import message
 from itrade_wxlabel import iTrade_wxLabelPopup,DrawRectLabel
-from itrade_wxprint import iTrade_wxPanelPrint as PanelPrint
+from itrade_wxprint import iTrade_wxPanelPrint as PanelPrint,CanvasPrintout
 
 # matplotlib system
 import matplotlib
@@ -57,7 +57,7 @@ from pylab import *
 
 #from matplotlib.backends.backend_wx import FigureCanvasWx as FigureCanvas
 from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as FigureCanvas
-from matplotlib.backends.backend_wx import NavigationToolbar2Wx,_load_bitmap,PrintoutWx
+from matplotlib.backends.backend_wx import NavigationToolbar2Wx,_load_bitmap
 
 from matplotlib.figure import Figure
 from matplotlib.axes import Subplot
@@ -239,7 +239,7 @@ class GObject(object):
     def removeAllObjects(self):
         self.objects = []
 
-    def drawObject(self,obj):
+    def drawObject(self,obj,dc=None):
         # obj: (self,chart,time,val,...)
         axe = self.chart2axe(obj[1])
 
@@ -253,8 +253,10 @@ class GObject(object):
         rect = (int(left),int(top),int(right),int(bottom),int(width),int(height))
 
         # start drawing in the DC
-        dc = wx.ClientDC(self.m_canvas)
-        dc.ResetBoundingBox()
+        if not dc:
+            dc = wx.ClientDC(self.m_canvas)
+            dc.ResetBoundingBox()
+
         dc.BeginDrawing()
 
         # callback object to draw itself
@@ -263,9 +265,9 @@ class GObject(object):
         # end of drawing in the DC
         dc.EndDrawing()
 
-    def drawAllObjects(self):
+    def drawAllObjects(self,dc=None):
         for eachObj in self.objects:
-            self.drawObject(eachObj)
+            self.drawObject(eachObj,dc)
 
 # ============================================================================
 # fmtVolumeFunc
@@ -481,9 +483,10 @@ class iTrade_wxPanelGraph(GObject,PanelPrint):
         # figure me
         self.figure = Figure(size, dpi = 96)
         self.m_canvas = FigureCanvas(self, -1, self.figure)
+        self.m_canvas.m_parent = self
 
         GObject.__init__(self,self.m_canvas)
-        PanelPrint.__init__(self,parent,PrintoutWx,orientation = wx.LANDSCAPE)
+        PanelPrint.__init__(self,parent,CanvasPrintout,orientation = wx.LANDSCAPE)
 
         self.m_canvas.mpl_connect('motion_notify_event', self.mouse_move)
         self.m_canvas.mpl_connect('button_press_event', self.on_click)
