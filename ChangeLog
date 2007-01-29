@@ -6,6 +6,7 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-01-29  Gilles Dumortier <dgil at ieee.org>
+	* Toolbar not updated after language change (SF bug 1645596)
 	* r509: can't see another graph when first view opened (SF bug 1646846)
 
 2007-01-28  Gilles Dumortier <dgil at ieee.org>
