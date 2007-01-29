@@ -75,14 +75,14 @@ def resolve_wxversion():
         for min in range(WXVERSION_MINOR1,WXVERSION_MINOR2+1):
             m = re.search( patt % (WXVERSION_MAJOR,min), eachVersion)
             if m:
-                #if min == WXVERSION_MINOR2:
-                #    vSelectedMsg = ''
-                #else:
-                #    vSelectedMsg = ' (deprecated version - think to update)'
+                if min == WXVERSION_MINOR2:
+                    vSelectedMsg = ''
+                else:
+                    vSelectedMsg = ' (deprecated version - think to update)'
                 vSelected = eachVersion
-    #            break
-    #    if m:
-    #        break
+                break
+        if m:
+            break
 
     if vSelected:
         print 'wxPython Selected  :',vSelected,vSelectedMsg
