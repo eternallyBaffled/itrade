@@ -167,6 +167,8 @@ class iTradeMainToolbar(wx.ToolBar):
         self._init_toolbar()
 
     def _init_toolbar(self):
+        self.ClearTools()
+
         self._NTB2_EXIT = wx.NewId()
         self._NTB2_NEW = wx.NewId()
         self._NTB2_OPEN = wx.NewId()
@@ -926,6 +928,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
                 # restore everything with the new lang
                 self.CloseLinks()
                 self.buildMenu()
+                self.m_toolbar._init_toolbar()
                 self.m_book.DoneCurrentPage()
                 self.m_book.init(self)
                 self.RebuildList()
