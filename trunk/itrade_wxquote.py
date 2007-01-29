@@ -902,9 +902,11 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
         sel = self.GetSelection()
         info('OnPageChanged,  old:%d, new:%d, sel:%d\n' % (old, new, sel))
         if old<>new:
-            self.m_curpage = new
-            self.win[old].DonePage()
-            self.win[new].InitPage()
+            if old>=0:
+                self.win[old].DonePage()
+            if new>=0:
+                self.m_curpage = new
+                self.win[new].InitPage()
         event.Skip()
 
     def OnPageChanging(self, event):
