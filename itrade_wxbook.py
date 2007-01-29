@@ -47,7 +47,7 @@ import wx.lib.mixins.listctrl as wxl
 # iTrade system
 import itrade_config
 from itrade_logging import *
-from itrade_local import message,gMessage
+from itrade_local import message,gMessage,getLang
 from itrade_portfolio import loadPortfolio
 from itrade_matrix import *
 from itrade_quotes import *
