@@ -63,7 +63,7 @@ from itrade_wxmoney import open_iTradeMoney
 from itrade_wxalerts import open_iTradeAlerts
 from itrade_wxcurrency import open_iTradeCurrencies
 from itrade_wxabout import iTradeAboutBox
-from itrade_wxhtml import iTradeHtmlWindow,iTradeLaunchBrowser
+from itrade_wxhtml import iTradeLaunchBrowser
 from itrade_wxutil import FontFromSize
 from itrade_wxlistquote import list_iTradeQuote
 from itrade_wxlogin import login_UI

@@ -910,16 +910,19 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
         event.Skip()
 
     def OnPageChanging(self, event):
+        # not used - only traces
         old = event.GetOldSelection()
         new = event.GetSelection()
         sel = self.GetSelection()
-        info('OnPageChanging, old:%d, new:%d, sel:%d\n' % (old, new, sel))
+        debug('OnPageChanging, old:%d, new:%d, sel:%d\n' % (old, new, sel))
         event.Skip()
 
     def init(self,nquote=None,page=1):
+        # check new quote
         if nquote<>self.m_quote:
             self.m_quote = nquote
 
+            # regenerate pages with the new quote
             self.win = {}
             self.DeleteAllPages()
 
@@ -968,6 +971,7 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
             self.win[self.ID_PAGE_PROP] = iTradeQuotePropertiesPanel(self,wx.NewId(),self.m_quote)
             self.AddPage(self.win[self.ID_PAGE_PROP], message('quote_properties'))
 
+            # be sure to init & display the selected page
             self.win[page].InitPage()
 
             return page
@@ -987,18 +991,25 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
 # ============================================================================
 # iTradeQuoteWindow
 #
+# Container to display information and panels on a specific quote
 # ============================================================================
 
 class iTradeQuoteWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin):
 
     def __init__(self,parent,id,port,quote,dpage=1):
         self.m_id = wx.NewId()
+
+        # init mixins
         wx.Frame.__init__(self,None,self.m_id, size = ( 800,480), style = wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE)
         iTrade_wxFrame.__init__(self,parent,'view',hasStatusBar=False)
         iTrade_wxLiveMixin.__init__(self)
+
+        # store linked information
         self.m_quote = quote
         self.m_parent = parent
         self.m_port = port
+
+        # register live mechanism (-> OnLive handler must be implemented)
         self.registerLive(quote,itrade_config.refreshLive)
 
         # fix title
@@ -1008,32 +1019,30 @@ class iTradeQuoteWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin):
         self.m_infowindow = iTradeQuoteInfoWindow(self, -1, size=wx.DefaultSize ,quote=self.m_quote)
         self.m_notewindow = iTradeQuoteNotebookWindow(self, -1, size=wx.DefaultSize ,quote=self.m_quote, page=dpage)
 
+        # handlers
         wx.EVT_WINDOW_DESTROY(self, self.OnDestroy)
         wx.EVT_SIZE(self, self.OnSize)
         EVT_UPDATE_LIVE(self, self.OnLive)
 
-    def OnLive(self, evt):
-        # be sure this quote is still under population
-        if self.isRunning(evt.quote):
-            info('%s: %s' % (evt.quote.key(),evt.param))
-            self.refresh(live=True)
-        else:
-            info('%s: %s - bad' % (evt.quote.key(),evt.param))
+    # ---[ Linked information accessors ] -------------------------------------
 
     def portfolio(self):
         return self.m_port
 
-    def OnSize(self, event):
-        debug('QuoteWindow::OnSize')
-        w,h = self.GetClientSizeTuple()
-        self.m_infowindow.SetDimensions(0, 0, 130, h)
-        self.m_notewindow.SetDimensions(130, 0, w-130, h)
-        self.setTitle()
-        event.Skip(False)
+    def parent(self):
+        return self.m_parent
+
+    def quote(self):
+        return self.m_quote
+
+    # ---[ Change the current window title ] ----------------------------------
 
     def setTitle(self):
+        # __x display also window size to help debug - to be removed later
         w,h = self.GetClientSizeTuple()
         self.SetTitle("%s %s - %s : %s (%d,%d)" % (message('quote_title'),self.m_quote.key(),self.m_quote.ticker(),self.m_quote.name(),w,h))
+
+    # ---[ Select a new quote ] -----------------------------------------------
 
     def SelectQuote(self,nquote=None):
         if not nquote:
@@ -1049,19 +1058,49 @@ class iTradeQuoteWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin):
             self.setTitle()
             self.m_notewindow.Show()
 
+    # ---[ Refresh mechanism ] ------------------------------------------------
+
     def refresh(self,nquote=None,live=False):
         info('QuoteWindow::refresh %s' % self.m_quote.ticker())
         self.m_infowindow.refresh(nquote,live)
         self.m_notewindow.refresh(nquote,live)
 
+    def OnLive(self, evt):
+        # be sure this quote is still under population
+        if self.isRunning(evt.quote):
+            info('%s: %s' % (evt.quote.key(),evt.param))
+            self.refresh(live=True)
+        else:
+            info('%s: %s - bad' % (evt.quote.key(),evt.param))
+
+    # ---[ Default Windows handlers ] -----------------------------------------
+
+    # Default OnSize handler
+    def OnSize(self, event):
+        debug('QuoteWindow::OnSize')
+        w,h = self.GetClientSizeTuple()
+        self.m_infowindow.SetDimensions(0, 0, 130, h)
+        self.m_notewindow.SetDimensions(130, 0, w-130, h)
+        self.setTitle()
+        event.Skip(False)
+
+
+    # Default OnDestroy handler
     def OnDestroy(self, evt):
+        # stop & unregister live
         self.stopLive(self.m_quote)
         self.unregisterLive(self.m_quote)
+
+        # remove view from the parent stack
         if self.m_parent and (self.m_id == evt.GetId()):
             self.m_parent.m_hView = None
 
+    # Default OnExit handler
     def OnExit(self, evt):
+        # save any configuration
         self.saveConfig()
+
+        # close the view
         self.Close()
 
 # ============================================================================

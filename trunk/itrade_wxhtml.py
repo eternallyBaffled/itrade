@@ -29,6 +29,7 @@
 #
 # History       Rev   Description
 # 2005-09-1x    dgil  Wrote it from scratch
+# 2007-01-2x    dgil  Change the way OnLinkClick handler is managed
 # ============================================================================
 
 # ============================================================================
@@ -55,50 +56,31 @@ from itrade_logging import *
 from itrade_news import gNews
 
 # ============================================================================
-# iTradeHtmlWindow
+# wxUrlClickHtmlWindow
 #
-# trap the link :
-#   detect ':back', ... in a news
-#   launch external browser
-#   or
-#   render page on the internal browser
+# HTML window that generates and OnLinkClicked event
+# Use this to avoid having to override HtmlWindow
 # ============================================================================
 
-class iTradeHtmlWindow(wxhtml.HtmlWindow):
-    def __init__(self, parent, id, bUseFromFeed=False, size=None):
-        wxhtml.HtmlWindow.__init__(self, parent, id, style = wx.NO_FULL_REPAINT_ON_RESIZE)
-        self.m_bUseFromFeed = bUseFromFeed
-        self.m_parent = parent
-        if size:
-            self.SetSize(size)
+wxEVT_HTML_URL_CLICK = wx.NewId()
+EVT_HTML_URL_CLICK = wx.PyEventBinder(wxEVT_HTML_URL_CLICK)
+
+class wxHtmlWindowUrlClick(wx.PyEvent):
+    def __init__(self, linkinfo):
+        wx.PyEvent.__init__(self)
+        self.SetEventType(wxEVT_HTML_URL_CLICK)
+        self.linkinfo = (linkinfo.GetHref(), linkinfo.GetTarget())
+
+class wxUrlClickHtmlWindow(wxhtml.HtmlWindow):
 
     def OnLinkClicked(self, linkinfo):
-        info('OnLinkClicked: %s\n' % linkinfo.GetHref())
-
-        if linkinfo.GetHref()==':back':
-            # special case : return to the list
-            self.m_parent.OnBack()
-            return
-
-        if linkinfo.GetHref()==':scan':
-            # special case : return to the list
-            self.m_parent.OnScan()
-            return
-
-        if linkinfo.GetHref()==':clear':
-            # special case : return to the list
-            self.m_parent.OnClear()
-            return
-
-        if not self.m_bUseFromFeed:
-            # launch external browser
-            webbrowser.open(linkinfo.GetHref())
-        else:
-            # used from feed : will render the page on the HTML object
-            gNews.goto(self.m_parent,linkinfo.GetHref())
+        wx.PostEvent(self, wxHtmlWindowUrlClick(linkinfo))
 
 # ============================================================================
 # iTradeHtmlPanel
+#
+# trap the link :
+#   launch external browser
 # ============================================================================
 
 class iTradeHtmlPanel(wx.Panel):
@@ -106,23 +88,36 @@ class iTradeHtmlPanel(wx.Panel):
         wx.Panel.__init__(self, parent, id, size = (800,600), style = wx.TAB_TRAVERSAL|wx.CLIP_CHILDREN|wx.NO_FULL_REPAINT_ON_RESIZE)
         self.url = url
         self.m_parent = parent
-        self.html = iTradeHtmlWindow(self, -1)
+
+        self.m_html = wxUrlClickHtmlWindow(self, -1)
+        EVT_HTML_URL_CLICK(self.m_html, self.OnLinkClick)
 
         wx.EVT_SIZE(self, self.OnSize)
 
+    # ---[ Default OnLinkClick handler ] --------------------------------------
+
+    def OnLinkClick(self, event):
+        info('OnLinkClick: %s\n' % event.linkinfo[0])
+        clicked = event.linkinfo[0]
+
+        # launch external browser
+        webbrowser.open(clicked)
+
+    # ---[ Window Management ] ------------------------------------------------
+
     def OnSize(self, evt):
-        self.html.SetSize(self.GetSizeTuple())
+        self.m_html.SetSize(self.GetSizeTuple())
 
     def paint0(self):
-        self.html.SetPage('<html><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><body>')
-        self.html.AppendToPage("<head>%s</head>" % message('html_connecting'))
-        self.html.AppendToPage("</body></html>")
+        self.m_html.SetPage('<html><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><body>')
+        self.m_html.AppendToPage("<head>%s</head>" % message('html_connecting'))
+        self.m_html.AppendToPage("</body></html>")
 
     def refresh(self):
         if self.url:
             self.paint0()
             info('iTradeHtmlPanel::url=%s',self.url)
-            self.html.LoadPage(self.url)
+            self.m_html.LoadPage(self.url)
 
     def InitPage(self):
         self.refresh()
@@ -132,16 +127,50 @@ class iTradeHtmlPanel(wx.Panel):
 
 # ============================================================================
 # iTradeRSSPanel
+#
+# trap the link :
+#   detect ':back', ... in a news
+#   launch external browser
+#   or
+#   render page on the internal browser
 # ============================================================================
 
 class iTradeRSSPanel(wx.Panel):
     def __init__(self, parent, id, quote):
         wx.Panel.__init__(self, parent, id, size = (800,600), style=wx.TAB_TRAVERSAL|wx.CLIP_CHILDREN|wx.NO_FULL_REPAINT_ON_RESIZE)
         self.m_quote = quote
-        self.m_html = iTradeHtmlWindow(self, -1, bUseFromFeed=True)
+
+        self.m_html = wxUrlClickHtmlWindow(self, -1)
+        EVT_HTML_URL_CLICK(self.m_html, self.OnLinkClick)
+
         self.m_feed = None
         self.m_content = ''
+
         wx.EVT_SIZE(self, self.OnSize)
+
+    # ---[ Default OnLinkClick handler ] --------------------------------------
+
+    def OnLinkClick(self, event):
+        info('iTradeRSSPanel:OnLinkClick: %s\n' % event.linkinfo[0])
+        clicked = event.linkinfo[0]
+
+        if clicked == ':back':
+            # special case : return to the list
+            self.OnBack()
+            return
+
+        elif clicked == ':scan':
+            # special case : return to the list
+            self.OnScan()
+            return
+
+        elif clicked == ':clear':
+            # special case : return to the list
+            self.OnClear()
+            return
+
+        # render the page on the HTML object
+        gNews.goto(self.m_parent,clicked)
 
     # ---[ HeaderPage / AppendToPage / TrailerPage must use buffered content ]---
 
@@ -215,7 +244,7 @@ class iTradeRSSPanel(wx.Panel):
 
         info('saveCache(%s) : OK' % fn)
 
-    # ---[ window management ]---
+    # ---[ Window Management ]-------------------------------------------------
 
     def OnSize(self, evt):
         self.m_html.SetSize(self.GetSizeTuple())

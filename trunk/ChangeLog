@@ -9,6 +9,9 @@ On the road for v0.4.6 (Nausicaa2)
 	* Link to the forum (SF bug 1647465)
 	* Toolbar not updated after language change (SF bug 1645596)
 	* r509: can't see another graph when first view opened (SF bug 1646846)
+	* more on preview and printing information
+	* r509 (-x) : Performance View : Scrollbar inactive (SF bug 1644135)
+	* Better About Box (SF bug 1612813)
 
 2007-01-28  Gilles Dumortier <dgil at ieee.org>
 	* Graph View : add a print command (SF bug 1645949)

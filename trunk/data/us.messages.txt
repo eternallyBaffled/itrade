@@ -540,4 +540,7 @@ print_printing;Printing
 print_errprinting;There was a problem printing.\nPerhaps your current printer is not set correctly ?
 print_page;Page: %d
 
+about_url;Please point your browser at : %s
+about_title;About iTrade
+
 test;test message
