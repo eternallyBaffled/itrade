@@ -5,6 +5,9 @@ On the road for v0.4.6 (Nausicaa2)
 
 ===============================================================================
 
+2007-01-30  Gilles Dumortier <dgil at ieee.org>
+	* Add functions to encapsulate Information, Error and YesNo Boxes
+
 2007-01-29  Gilles Dumortier <dgil at ieee.org>
 	* Link to the forum (SF bug 1647465)
 	* Toolbar not updated after language change (SF bug 1645596)
