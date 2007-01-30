@@ -170,7 +170,7 @@ class iTradeRSSPanel(wx.Panel):
             return
 
         # render the page on the HTML object
-        gNews.goto(self.m_parent,clicked)
+        gNews.goto(self,clicked)
 
     # ---[ HeaderPage / AppendToPage / TrailerPage must use buffered content ]---
 
