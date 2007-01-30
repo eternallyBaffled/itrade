@@ -539,4 +539,7 @@ print_printing;Impression
 print_errprinting;Il y a eu un problème d'impression.\nPeut être que votre imprimante n'est pas configuré correctement ?
 print_page;Page: %d
 
+about_url;Lancez votre navigateur vers le lien : %s
+about_title;A propos de iTrade
+
 test;message de test

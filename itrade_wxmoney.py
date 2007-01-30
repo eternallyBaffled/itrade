@@ -51,7 +51,7 @@ from itrade_local import message
 from itrade_quotes import QUOTE_BOTH,QUOTE_CASH,QUOTE_CREDIT
 from itrade_portfolio import *
 
-from itrade_wxhtml import iTradeHtmlWindow
+from itrade_wxhtml import wxUrlClickHtmlWindow,EVT_HTML_URL_CLICK
 import itrade_wxres
 from itrade_wxmixin import iTrade_wxFrame
 
@@ -120,22 +120,28 @@ class iTradeEvaluationPanel(wx.Window):
         self.m_parent = parent
         self.m_port = port
 
-        self.html = iTradeHtmlWindow(self.m_parent,-1)
+        self.m_html = wxUrlClickHtmlWindow(self, -1)
+        EVT_HTML_URL_CLICK(self.m_html, self.OnLinkClick)
 
         wx.EVT_SIZE(self, self.OnSize)
 
         if not itrade_config.experimental:
             self.refresh()
         else:
-            self.html.Show(False)
+            self.m_html.Show(False)
+
+    # ---[ Default OnLinkClick handler ] --------------------------------------
+
+    def OnLinkClick(self, event):
+        info('iTradeEvaluationPanel::OnLinkClick: %s - ignore it' % event.linkinfo[0])
+        #clicked = event.linkinfo[0]
+        pass
+
+    # ---[ Window Management ]-------------------------------------------------
 
     def OnSize(self, event):
         w,h = self.GetClientSizeTuple()
-        self.html.SetDimensions(5, 24, w-5, h-8)
-
-    def compute(self,year):
-        self.m_port.computeOperations(year)
-        return (self.m_port.nv_expenses(),self.m_port.nv_transfer(),self.m_port.nv_appreciation(),self.m_port.nv_taxable(),self.m_port.nv_taxes())
+        self.m_html.SetDimensions(5, 24, w-5, h-8)
 
     def InitCurrentPage(self,bReset=True):
         if bReset:
@@ -145,112 +151,118 @@ class iTradeEvaluationPanel(wx.Window):
 
         # refresh page content
         self.refresh()
-        self.html.Show(True)
+        self.m_html.Show(True)
 
     def DoneCurrentPage(self):
-        self.html.Show(False)
+        self.m_html.Show(False)
+
+    # ---[ Compute & Display Evaluation ]--------------------------------------
+
+    def compute(self,year):
+        self.m_port.computeOperations(year)
+        return (self.m_port.nv_expenses(),self.m_port.nv_transfer(),self.m_port.nv_appreciation(),self.m_port.nv_taxable(),self.m_port.nv_taxes())
 
     def refresh(self):
         self.m_port.computeOperations()
         # __x localisation + better look + previous year information + ...
         # __x hopefully for next release :-)
-        self.html.SetPage('<html><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><body>')
-        self.html.AppendToPage('<table border="1" cellpadding="2" cellspacing="1" class="bright">')
-        self.html.AppendToPage(' <tr align="right" class="T20">')
-        self.html.AppendToPage('   <td align="left" nowrap><b>%s</b></td>' % message('money_portfolio'))
-        self.html.AppendToPage('   <td align="left" nowrap>%s</td>' % self.m_port.filename())
-        self.html.AppendToPage(' </tr>')
-        self.html.AppendToPage(' <tr align="right" class="L20">')
-        self.html.AppendToPage('   <td align="left" nowrap>%s</td>' % message('money_description'))
-        self.html.AppendToPage('   <td align="left" nowrap>%s</td>' % self.m_port.name())
-        self.html.AppendToPage(' </tr>')
-        self.html.AppendToPage(' <tr align="right" class="L20">')
-        self.html.AppendToPage('   <td align="left" nowrap>%s</td>' % message('money_account_number'))
-        self.html.AppendToPage('   <td align="left" nowrap>%s</td>' % self.m_port.accountref())
-        self.html.AppendToPage(' </tr>')
-        self.html.AppendToPage('</table>')
-        self.html.AppendToPage('<br><br>')
-        self.html.AppendToPage('<table border="1" cellpadding="2" cellspacing="1" width="100%" class="bright">')
-        self.html.AppendToPage(' <tr align="right" class="T20">')
-        self.html.AppendToPage('   <td align="left" nowrap></td>')
-        self.html.AppendToPage('   <td align="right" ><b>%s</b></td>' % message('money_initial_investment'))
-        self.html.AppendToPage('   <td align="right" nowrap><b>%s %s</b></td>' % (message('money_value'),date.today()))
-        self.html.AppendToPage('   <td align="right" nowrap><b>%s</b></td>' % message('money_performance'))
-        self.html.AppendToPage('   <td align="center" nowrap><b>%</b></td>')
-        self.html.AppendToPage(' </tr>')
-        self.html.AppendToPage(' <tr align="right" class="L20">')
-        self.html.AppendToPage('   <td align="left" nowrap><b>%s</b></td>' % message('money_investment_evaluation'))
-        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</b></td>' % (self.m_port.nv_invest(),self.m_port.currency_symbol()))
-        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</b></td>' % (self.m_port.nv_totalValue(),self.m_port.currency_symbol()))
-        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</b></td>' % (self.m_port.nv_perfTotal(),self.m_port.currency_symbol()))
-        self.html.AppendToPage('   <td align="right" nowrap>%2.2f %%</b></td>' % self.m_port.nv_perfTotalPercent())
-        self.html.AppendToPage(' </tr>')
-        self.html.AppendToPage(' <tr align="right" class="L20">')
-        self.html.AppendToPage('   <td align="left" nowrap>%s</td>' % (message('money_srd')))
-        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</b></td>' % (self.m_port.nv_credit(),self.m_port.currency_symbol()))
-        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</b></td>' % (self.m_port.nv_value(QUOTE_CREDIT),self.m_port.currency_symbol()))
-        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</b></td>' % (self.m_port.nv_perf(QUOTE_CREDIT),self.m_port.currency_symbol()))
-        self.html.AppendToPage('   <td align="center" nowrap>%2.2f%%</td>' % self.m_port.nv_perfPercent(QUOTE_CREDIT))
-        self.html.AppendToPage(' </tr>') # __x
-        self.html.AppendToPage(' <tr align="right" class="L20">')
-        self.html.AppendToPage('   <td align="left" nowrap>%s (%2.2f%s)</td>' % (message('money_cash'),self.m_port.nv_percentCash(QUOTE_CASH),message('money_percent_of_portfolio')))
-        self.html.AppendToPage('   <td align="right" nowrap></td>')
-        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</b></td>' % (self.m_port.nv_cash(),self.m_port.currency_symbol()))
-        self.html.AppendToPage(' </tr>')
-        self.html.AppendToPage(' <tr align="right" class="L20">')
-        self.html.AppendToPage('   <td align="left" nowrap>%s (%2.2f%s)</td>' % (message('money_quote'),self.m_port.nv_percentQuotes(QUOTE_CASH),message('money_percent_of_portfolio')))
-        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</b></td>' % (self.m_port.nv_buy(QUOTE_CASH),self.m_port.currency_symbol()))
-        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</b></td>' % (self.m_port.nv_value(QUOTE_CASH),self.m_port.currency_symbol()))
-        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</b></td>' % (self.m_port.nv_perf(QUOTE_CASH),self.m_port.currency_symbol()))
-        self.html.AppendToPage('   <td align="center" nowrap>%2.2f%%</td>' % self.m_port.nv_perfPercent(QUOTE_CASH))
-        self.html.AppendToPage(' </tr>')
-        self.html.AppendToPage('</table>')
-        self.html.AppendToPage('<br>')
-        self.html.AppendToPage('<br>')
-        self.html.AppendToPage('<table border="1" cellpadding="2" cellspacing="1" width="320" class="bright">')
-        self.html.AppendToPage(' <tr align="right" class="T20">')
-        self.html.AppendToPage('   <td align="left" nowrap><b>%s</b></td>' % message('money_fiscal_year'))
-        self.html.AppendToPage('   <td align="right" class="percent" nowrap><b>%d</b></td>' % (date.today().year-2))
-        self.html.AppendToPage('   <td align="right" class="percent" nowrap><b>%d</b></td>' % (date.today().year-1))
-        self.html.AppendToPage('   <td align="right" class="percent" nowrap><b>%d</b></td>' % date.today().year)
-        self.html.AppendToPage(' </tr>')
+        self.m_html.SetPage('<html><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><body>')
+        self.m_html.AppendToPage('<table border="1" cellpadding="2" cellspacing="1" class="bright">')
+        self.m_html.AppendToPage(' <tr align="right" class="T20">')
+        self.m_html.AppendToPage('   <td align="left" nowrap><b>%s</b></td>' % message('money_portfolio'))
+        self.m_html.AppendToPage('   <td align="left" nowrap>%s</td>' % self.m_port.filename())
+        self.m_html.AppendToPage(' </tr>')
+        self.m_html.AppendToPage(' <tr align="right" class="L20">')
+        self.m_html.AppendToPage('   <td align="left" nowrap>%s</td>' % message('money_description'))
+        self.m_html.AppendToPage('   <td align="left" nowrap>%s</td>' % self.m_port.name())
+        self.m_html.AppendToPage(' </tr>')
+        self.m_html.AppendToPage(' <tr align="right" class="L20">')
+        self.m_html.AppendToPage('   <td align="left" nowrap>%s</td>' % message('money_account_number'))
+        self.m_html.AppendToPage('   <td align="left" nowrap>%s</td>' % self.m_port.accountref())
+        self.m_html.AppendToPage(' </tr>')
+        self.m_html.AppendToPage('</table>')
+        self.m_html.AppendToPage('<br><br>')
+        self.m_html.AppendToPage('<table border="1" cellpadding="2" cellspacing="1" width="100%" class="bright">')
+        self.m_html.AppendToPage(' <tr align="right" class="T20">')
+        self.m_html.AppendToPage('   <td align="left" nowrap></td>')
+        self.m_html.AppendToPage('   <td align="right" ><b>%s</b></td>' % message('money_initial_investment'))
+        self.m_html.AppendToPage('   <td align="right" nowrap><b>%s %s</b></td>' % (message('money_value'),date.today()))
+        self.m_html.AppendToPage('   <td align="right" nowrap><b>%s</b></td>' % message('money_performance'))
+        self.m_html.AppendToPage('   <td align="center" nowrap><b>%</b></td>')
+        self.m_html.AppendToPage(' </tr>')
+        self.m_html.AppendToPage(' <tr align="right" class="L20">')
+        self.m_html.AppendToPage('   <td align="left" nowrap><b>%s</b></td>' % message('money_investment_evaluation'))
+        self.m_html.AppendToPage('   <td align="right" nowrap>%.2f %s</b></td>' % (self.m_port.nv_invest(),self.m_port.currency_symbol()))
+        self.m_html.AppendToPage('   <td align="right" nowrap>%.2f %s</b></td>' % (self.m_port.nv_totalValue(),self.m_port.currency_symbol()))
+        self.m_html.AppendToPage('   <td align="right" nowrap>%.2f %s</b></td>' % (self.m_port.nv_perfTotal(),self.m_port.currency_symbol()))
+        self.m_html.AppendToPage('   <td align="right" nowrap>%2.2f %%</b></td>' % self.m_port.nv_perfTotalPercent())
+        self.m_html.AppendToPage(' </tr>')
+        self.m_html.AppendToPage(' <tr align="right" class="L20">')
+        self.m_html.AppendToPage('   <td align="left" nowrap>%s</td>' % (message('money_srd')))
+        self.m_html.AppendToPage('   <td align="right" nowrap>%.2f %s</b></td>' % (self.m_port.nv_credit(),self.m_port.currency_symbol()))
+        self.m_html.AppendToPage('   <td align="right" nowrap>%.2f %s</b></td>' % (self.m_port.nv_value(QUOTE_CREDIT),self.m_port.currency_symbol()))
+        self.m_html.AppendToPage('   <td align="right" nowrap>%.2f %s</b></td>' % (self.m_port.nv_perf(QUOTE_CREDIT),self.m_port.currency_symbol()))
+        self.m_html.AppendToPage('   <td align="center" nowrap>%2.2f%%</td>' % self.m_port.nv_perfPercent(QUOTE_CREDIT))
+        self.m_html.AppendToPage(' </tr>') # __x
+        self.m_html.AppendToPage(' <tr align="right" class="L20">')
+        self.m_html.AppendToPage('   <td align="left" nowrap>%s (%2.2f%s)</td>' % (message('money_cash'),self.m_port.nv_percentCash(QUOTE_CASH),message('money_percent_of_portfolio')))
+        self.m_html.AppendToPage('   <td align="right" nowrap></td>')
+        self.m_html.AppendToPage('   <td align="right" nowrap>%.2f %s</b></td>' % (self.m_port.nv_cash(),self.m_port.currency_symbol()))
+        self.m_html.AppendToPage(' </tr>')
+        self.m_html.AppendToPage(' <tr align="right" class="L20">')
+        self.m_html.AppendToPage('   <td align="left" nowrap>%s (%2.2f%s)</td>' % (message('money_quote'),self.m_port.nv_percentQuotes(QUOTE_CASH),message('money_percent_of_portfolio')))
+        self.m_html.AppendToPage('   <td align="right" nowrap>%.2f %s</b></td>' % (self.m_port.nv_buy(QUOTE_CASH),self.m_port.currency_symbol()))
+        self.m_html.AppendToPage('   <td align="right" nowrap>%.2f %s</b></td>' % (self.m_port.nv_value(QUOTE_CASH),self.m_port.currency_symbol()))
+        self.m_html.AppendToPage('   <td align="right" nowrap>%.2f %s</b></td>' % (self.m_port.nv_perf(QUOTE_CASH),self.m_port.currency_symbol()))
+        self.m_html.AppendToPage('   <td align="center" nowrap>%2.2f%%</td>' % self.m_port.nv_perfPercent(QUOTE_CASH))
+        self.m_html.AppendToPage(' </tr>')
+        self.m_html.AppendToPage('</table>')
+        self.m_html.AppendToPage('<br>')
+        self.m_html.AppendToPage('<br>')
+        self.m_html.AppendToPage('<table border="1" cellpadding="2" cellspacing="1" width="320" class="bright">')
+        self.m_html.AppendToPage(' <tr align="right" class="T20">')
+        self.m_html.AppendToPage('   <td align="left" nowrap><b>%s</b></td>' % message('money_fiscal_year'))
+        self.m_html.AppendToPage('   <td align="right" class="percent" nowrap><b>%d</b></td>' % (date.today().year-2))
+        self.m_html.AppendToPage('   <td align="right" class="percent" nowrap><b>%d</b></td>' % (date.today().year-1))
+        self.m_html.AppendToPage('   <td align="right" class="percent" nowrap><b>%d</b></td>' % date.today().year)
+        self.m_html.AppendToPage(' </tr>')
 
         expenses0,transfer0,appr0,taxable0,taxes0 = self.compute(date.today().year-2)
         expenses1,transfer1,appr1,taxable1,taxes1 = self.compute(date.today().year-1)
         expenses2,transfer2,appr2,taxable2,taxes2 = self.compute(date.today().year)
 
-        self.html.AppendToPage(' <tr align="right" class="T20">')
-        self.html.AppendToPage('   <td align="left" nowrap>%s</td>' % message('money_expenses_vat'))
-        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (expenses0,self.m_port.currency_symbol()))
-        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (expenses1,self.m_port.currency_symbol()))
-        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (expenses2,self.m_port.currency_symbol()))
-        self.html.AppendToPage(' </tr>')
-        self.html.AppendToPage(' <tr align="right" class="T20">')
-        self.html.AppendToPage('   <td align="left" nowrap>%s</td>' % message('money_total_of_transfers'))
-        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (transfer0,self.m_port.currency_symbol()))
-        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (transfer1,self.m_port.currency_symbol()))
-        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (transfer2,self.m_port.currency_symbol()))
-        self.html.AppendToPage(' </tr>')
-        self.html.AppendToPage(' <tr align="right" class="T20">')
-        self.html.AppendToPage('   <td align="left" nowrap>%s</td>' % message('money_financial_appreciation'))
-        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (appr0,self.m_port.currency_symbol()))
-        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (appr1,self.m_port.currency_symbol()))
-        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (appr2,self.m_port.currency_symbol()))
-        self.html.AppendToPage(' </tr>')
-        self.html.AppendToPage(' <tr align="right" class="T20">')
-        self.html.AppendToPage('   <td align="left" nowrap>%s</td>' % message('money_taxable_amounts'))
-        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (taxable0,self.m_port.currency_symbol()))
-        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (taxable1,self.m_port.currency_symbol()))
-        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (taxable2,self.m_port.currency_symbol()))
-        self.html.AppendToPage(' </tr>')
-        self.html.AppendToPage(' <tr align="right" class="T20">')
-        self.html.AppendToPage('   <td align="left" nowrap>%s</td>' % message('money_amount_of_taxes'))
-        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (taxes0,self.m_port.currency_symbol()))
-        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (taxes1,self.m_port.currency_symbol()))
-        self.html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (taxes2,self.m_port.currency_symbol()))
-        self.html.AppendToPage(' </tr>')
-        self.html.AppendToPage('</table>')
-        self.html.AppendToPage("</body></html>")
+        self.m_html.AppendToPage(' <tr align="right" class="T20">')
+        self.m_html.AppendToPage('   <td align="left" nowrap>%s</td>' % message('money_expenses_vat'))
+        self.m_html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (expenses0,self.m_port.currency_symbol()))
+        self.m_html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (expenses1,self.m_port.currency_symbol()))
+        self.m_html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (expenses2,self.m_port.currency_symbol()))
+        self.m_html.AppendToPage(' </tr>')
+        self.m_html.AppendToPage(' <tr align="right" class="T20">')
+        self.m_html.AppendToPage('   <td align="left" nowrap>%s</td>' % message('money_total_of_transfers'))
+        self.m_html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (transfer0,self.m_port.currency_symbol()))
+        self.m_html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (transfer1,self.m_port.currency_symbol()))
+        self.m_html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (transfer2,self.m_port.currency_symbol()))
+        self.m_html.AppendToPage(' </tr>')
+        self.m_html.AppendToPage(' <tr align="right" class="T20">')
+        self.m_html.AppendToPage('   <td align="left" nowrap>%s</td>' % message('money_financial_appreciation'))
+        self.m_html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (appr0,self.m_port.currency_symbol()))
+        self.m_html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (appr1,self.m_port.currency_symbol()))
+        self.m_html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (appr2,self.m_port.currency_symbol()))
+        self.m_html.AppendToPage(' </tr>')
+        self.m_html.AppendToPage(' <tr align="right" class="T20">')
+        self.m_html.AppendToPage('   <td align="left" nowrap>%s</td>' % message('money_taxable_amounts'))
+        self.m_html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (taxable0,self.m_port.currency_symbol()))
+        self.m_html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (taxable1,self.m_port.currency_symbol()))
+        self.m_html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (taxable2,self.m_port.currency_symbol()))
+        self.m_html.AppendToPage(' </tr>')
+        self.m_html.AppendToPage(' <tr align="right" class="T20">')
+        self.m_html.AppendToPage('   <td align="left" nowrap>%s</td>' % message('money_amount_of_taxes'))
+        self.m_html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (taxes0,self.m_port.currency_symbol()))
+        self.m_html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (taxes1,self.m_port.currency_symbol()))
+        self.m_html.AppendToPage('   <td align="right" nowrap>%.2f %s</td>' % (taxes2,self.m_port.currency_symbol()))
+        self.m_html.AppendToPage(' </tr>')
+        self.m_html.AppendToPage('</table>')
+        self.m_html.AppendToPage("</body></html>")
 
 # ============================================================================
 # iTradeMoneyNotebookWindow

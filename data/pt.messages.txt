@@ -516,7 +516,7 @@ cache_erase_confirm_title; Apagar dados do "cache"
 
 cache_erase_confirm_data; Apagar todos os dados históricos do "cache" ?(os dados serão regenerados)
 
-cache_erase_confirm_news; Apagar toda a notícia do "cache" ? (os dados serão regenerados) 
+cache_erase_confirm_news; Apagar toda a notícia do "cache" ? (os dados serão regenerados)
 
 cache_erase_confirm_all; Apagar todos os dados (historiais, notícia...) do "cache"? (os dados serão regenerados)
 
@@ -529,7 +529,7 @@ indicator_disconnected;Desconectado
 login_title;Acesso Cliente
 login_fortuneo_desc;Entrar o vosso identificador Fortuneo (conta real ou da demonstração)
 
-login_boursorama_desc;Entrar o vosso identificador Boursorama (conta cliente ou pseudónimo) 
+login_boursorama_desc;Entrar o vosso identificador Boursorama (conta cliente ou pseudónimo)
 login_set;Validar
 login_setdesc;Válidar as informações de acesso apreendidas
 login_username;Identificador :
@@ -537,11 +537,11 @@ login_username;Identificador :
 login_password;Senha :
 
 login_test;Testar
-login_testdesc; Tentar o acesso ao serviço com as informações fornecidas 
+login_testdesc; Tentar o acesso ao serviço com as informações fornecidas
 
 login_test_ok;O acesso ao serviço funciona com estas informações
 
-login_test_nok;O acesso ao serviço não funciona com estas informações 		
+login_test_nok;O acesso ao serviço não funciona com estas informações
 
 
 page_portfolio;Conta
@@ -555,6 +555,7 @@ print_printing;Imprimir...
 print_errprinting;Erro de impressão.\nVerificar a configuração corrente?
 print_page;Página: %d
 
-
+about_url;__xPlease point your browser at : %s
+about_title;__xAbout iTrade
 
 test;Mensagem de teste
