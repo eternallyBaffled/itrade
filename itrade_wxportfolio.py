@@ -458,7 +458,7 @@ class iTradePortfolioPropertiesDialog(wx.Dialog):
             #__xdlg = wx.MessageDialog(self, message('portfolio_exist_info')%self.m_filename, message('portfolio_exist_info_title'), wx.OK | wx.ICON_ERROR)
             #__xdlg.ShowModal()
             #__xdlg.Destroy()
-            iTradeError(self, message('portfolio_exist_info')%self.m_filename, message('portfolio_exist_info_title'))
+            iTradeError(self, message('portfolio_exist_info') % self.m_filename, message('portfolio_exist_info_title'))
             return
 
         self.m_name = self.wxNameCtrl.GetLabel().strip()

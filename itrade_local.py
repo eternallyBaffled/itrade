@@ -230,14 +230,16 @@ class LocalMessages(object):
         key = '%s%s' % (self.m_lang,m[0])
         if self.m_msg.has_key(key):
             raise('addMsg:: key %s already exist' % key)
-        self.m_msg[key] = m[1]
+        self.m_msg[key] = unicode(m[1],encoding='iso-8859-1')
 
     def getMsg(self,ref):
         if not self.m_lang:
             # package not initialized :-(
             lang = gMessage.getAutoDetectedLang('us')
+            #print 'getMsg: need to setLang :',lang," during ref:",ref
             gMessage.setLang(lang)
         if len(self.m_msg)==0:
+            #print 'getMsg: need to load lang pack :',lang
             gMessage.load()
 
         key = '%s%s' % (self.m_lang,ref)
@@ -318,6 +320,7 @@ if __name__=='__main__':
     print
     setLang('fr')
     print 'fr (unknown message):', message('toto')
+    print 'fr (accents message):', message('portfolio_exist_info')
 
     print
     import datetime

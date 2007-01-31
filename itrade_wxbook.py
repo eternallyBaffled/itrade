@@ -72,8 +72,6 @@ from itrade_wxmixin import iTrade_wxFrame
 from itrade_wxpanes import iTrade_MatrixPortfolioPanel,iTrade_MatrixQuotesPanel,iTrade_MatrixStopsPanel,iTrade_MatrixIndicatorsPanel
 from itrade_wxmoney import iTradeEvaluationPanel
 
-from itrade_wxutil import iTradeYesNo
-
 # ============================================================================
 # menu identifier
 # ============================================================================
@@ -402,6 +400,9 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         self.m_market = self.m_portfolio.market()
         self.m_connector = getDefaultLiveConnector(self.m_market,QLIST_INDICES)
 
+        # Set Lang
+        self.SetLang(bDuringInit=True)
+
         self.m_bookId = wx.NewId()
         self.m_book = iTradeMainNotebookWindow(self, self.m_bookId, page=-1, portfolio=self.m_portfolio,matrix=self.m_matrix)
 
@@ -416,8 +417,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         wx.EVT_CLOSE(self, self.OnCloseWindow)
         wx.EVT_WINDOW_DESTROY(self, self.OnDestroyWindow)
 
-        # Set Lang then buildMenu
-        self.SetLang(bDuringInit=True)
+        # Build the main menu
         self.buildMenu()
 
         # Toolbar
@@ -1028,6 +1028,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         if quote:
             print 'OnAddQuote:',quote
             self.m_portfolio.setupCurrencies()
+            self.m_portfolio.loginToServices(quote)
             self.setDirty()
             self.RebuildList()
 

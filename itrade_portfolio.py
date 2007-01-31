@@ -845,22 +845,29 @@ class Portfolio(object):
 
     # --- [ manage login to services ] ---
 
-    def loginToServices(self):
+    def loginToServices(self,quote=None):
+
+        def login(quote):
+            name = quote.liveconnector(bForceLive=True).name()
+            #print 'loginToServices:',quote.ticker(),name
+            if not maperr.has_key(name):
+                con = getLoginConnector(name)
+                if con:
+                    if not con.logged():
+                        print 'login to service :',name
+                        maperr[name] = con.login()
+
         if itrade_config.isConnected():
             # temp map
             maperr = {}
 
             # log to service
-            for eachQuote in quotes.list():
-                if eachQuote.isMatrix():
-                    name = eachQuote.liveconnector(bForceLive=True).name()
-                    #print 'loginToServices:',eachQuote.ticker(),name
-                    if not maperr.has_key(name):
-                        con = getLoginConnector(name)
-                        if con:
-                            if not con.logged():
-                                print 'login to service :',name
-                                maperr[name] = con.login()
+            if quote:
+                login(quote)
+            else:
+                for eachQuote in quotes.list():
+                    if eachQuote.isMatrix():
+                        login(eachQuote)
 
     def logoutFromServices(self):
         if itrade_config.isConnected():
@@ -1316,6 +1323,21 @@ def loadPortfolio(fn=None):
 
 def newPortfolio(fn=None):
     debug('newPortfolio %s',fn)
+
+    # create the porfolio
+    portfolios.reinit()
+    p = portfolios.portfolio(fn)
+    if p==None:
+        # portfolio does not exist !
+        pass
+
+    # save current file
+    scf = {}
+    scf[0] = currentCell(fn)
+    itrade_csv.write(None,os.path.join(itrade_config.dirUserData,'default.txt'),scf.values())
+
+    # return the portfolio
+    return p
 
 # ============================================================================
 # CommandLine : -e / evaluate portfolio
