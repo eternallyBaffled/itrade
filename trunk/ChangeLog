@@ -6,6 +6,7 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-01-31  Gilles Dumortier <dgil at ieee.org>
+	* MessageBox use user local, not itrade current locale (SF bug 1646074)
 	* Finish MessageDialog conversion to HTMLDialog
 
 2007-01-30  Gilles Dumortier <dgil at ieee.org>
