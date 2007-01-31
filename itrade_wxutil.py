@@ -411,14 +411,6 @@ class HTMLDialog(wx.Dialog):
         else:
             imstr1 = ""
 
-        #if (image and string.lower(image[-4:]) == '.gif'):
-        #    wx.Image_AddHandler(wx.GIFHandler())
-        #if (image and string.lower(image[-4:]) == '.png'):
-        #    wx.Image_AddHandler(wx.PNGHandler())
-
-        imstr2 = ""
-        ci = ""
-
         # colors
         if fgcolor is not None:
             colourstring1 = 'fgcolor="%s"' % fgcolor
