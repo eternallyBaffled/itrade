@@ -1,2 +1,0 @@
-NL0000400653.EURONEXT.PAR;live;abcbourse
-NL0000400653.EURONEXT.PAR;import;euronext
