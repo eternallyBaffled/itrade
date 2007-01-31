@@ -73,6 +73,10 @@ class wxHtmlWindowUrlClick(wx.PyEvent):
 
 class wxUrlClickHtmlWindow(wxhtml.HtmlWindow):
 
+    # __init__ ?
+    #if "gtk2" in wx.PlatformInfo:
+    #    self.NormalizeFontSizes()
+
     def OnLinkClicked(self, linkinfo):
         wx.PostEvent(self, wxHtmlWindowUrlClick(linkinfo))
 

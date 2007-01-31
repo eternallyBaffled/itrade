@@ -150,12 +150,16 @@ main_valuation;Evaluation
 html_connecting;Connexion en cours ...
 html_noconnect;Pas de connexion
 
-ok;Valide
+ok;OK
 ok_desc;Ce bouton valide la boite de dialogue
+valid;Valide
+valid_desc;Ce bouton valide la boite de dialogue
 cancel;Abandon
 cancel_desc;Le bouton Abandon abandonne la boite de dialogue (Duh!)
 close;Ferme
 close_desc;Ferme cette fenêtre
+yes;Oui
+no;Non
 
 isin;ISIN
 ticker;Titre
@@ -541,5 +545,8 @@ print_page;Page: %d
 
 about_url;Lancez votre navigateur vers le lien : %s
 about_title;A propos de iTrade
+
+info_caption;iTrade - Information
+alert_caption;iTrade - Erreur
 
 test;message de test

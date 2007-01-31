@@ -61,6 +61,8 @@ import itrade_ext
 
 from itrade_wxmixin import iTradeSelectorListCtrl
 
+from itrade_wxutil import iTradeInformation,iTradeError,iTradeYesNo
+
 # ============================================================================
 # iTradeQuoteListDialog
 # ============================================================================
@@ -260,18 +262,20 @@ class iTradeQuoteListDialog(wx.Dialog):
                 # check validity
                 if self.m_isin!='':
                     if not checkISIN(self.m_isin):
-                        dlg = wx.MessageDialog(self, message('invalid_isin') % self.m_isin, self.tt, wx.OK | wx.ICON_ERROR)
-                        idRet = dlg.ShowModal()
-                        dlg.Destroy()
+                        #__xdlg = wx.MessageDialog(self, message('invalid_isin') % self.m_isin, self.tt, wx.OK | wx.ICON_ERROR)
+                        #__xidRet = dlg.ShowModal()
+                        #__xdlg.Destroy()
+                        iTradeError(self, message('invalid_isin') % self.m_isin, self.tt)
                         self.editISIN.SetFocus()
                         return
 
                 # check uniqueness
                 ref = quote_reference(self.m_isin,self.m_ticker,self.m_market,self.m_place)
                 if quotes.lookupKey(ref):
-                    dlg = wx.MessageDialog(self, message('listquote_duplicate_ref') % ref, self.tt, wx.OK | wx.ICON_ERROR)
-                    idRet = dlg.ShowModal()
-                    dlg.Destroy()
+                    #__xdlg = wx.MessageDialog(self, message('listquote_duplicate_ref') % ref, self.tt, wx.OK | wx.ICON_ERROR)
+                    #__xidRet = dlg.ShowModal()
+                    #__xdlg.Destroy()
+                    iTradeError(self, message('listquote_duplicate_ref') % ref, self.tt)
                     return
 
             # isin,name,ticker,market,currency,place,country
@@ -713,9 +717,10 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
     def OnSave(self,event):
         self.m_dirty = False
         quotes.saveListOfQuotes()
-        dlg = wx.MessageDialog(self, message('listquote_saved'), message('listquote_save_desc'), wx.OK | wx.OK | wx.ICON_INFORMATION)
-        dlg.ShowModal()
-        dlg.Destroy()
+        #__xdlg = wx.MessageDialog(self, message('listquote_saved'), message('listquote_save_desc'), wx.OK | wx.OK | wx.ICON_INFORMATION)
+        #__xdlg.ShowModal()
+        #__xdlg.Destroy()
+        iTradeInformation(self, message('listquote_saved'), message('listquote_save_desc'))
 
     def OnClear(self,event):
         if self.m_market==None:
@@ -724,9 +729,10 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         else:
             market = self.m_market
             txt = message('clear_symbols_onedesc')
-        dlg = wx.MessageDialog(self, message('listquote_clear_confirm')%(market,txt), message('listquote_clear_confirm_title'), wx.YES_NO | wx.YES_DEFAULT | wx.ICON_QUESTION)
-        idRet = dlg.ShowModal()
-        dlg.Destroy()
+        #__xdlg = wx.MessageDialog(self, message('listquote_clear_confirm')%(market,txt), message('listquote_clear_confirm_title'), wx.YES_NO | wx.YES_DEFAULT | wx.ICON_QUESTION)
+        #__xidRet = dlg.ShowModal()
+        #__xdlg.Destroy()
+        idRet = iTradeYesNo(self, message('listquote_clear_confirm')%(market,txt), message('listquote_clear_confirm_title'))
         if idRet == wx.ID_NO: return
 
         wx.SetCursor(wx.HOURGLASS_CURSOR)
@@ -736,19 +742,21 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
 
     def OnCancel(self,event):
         if self.m_dirty:
-            dlg = wx.MessageDialog(self, message('listquote_dirty_save'), message('listquote_save_desc'), wx.CANCEL | wx.YES_NO | wx.YES_DEFAULT | wx.ICON_QUESTION)
-            idRet = dlg.ShowModal()
+            #__dlg = wx.MessageDialog(self, message('listquote_dirty_save'), message('listquote_save_desc'), wx.CANCEL | wx.YES_NO | wx.YES_DEFAULT | wx.ICON_QUESTION)
+            #__idRet = dlg.ShowModal()
+            #__xdlg.Destroy()
+            idRet = iTradeYesNo(self, message('listquote_dirty_save'), message('listquote_save_desc'),bCanCancel=True)
             if idRet == wx.ID_YES:
                 self.OnSave(None)
                 res = True
             elif idRet == wx.ID_NO:
-                dlg = wx.MessageDialog(self, message('listquote_nodirty_save'), message('listquote_save_desc'), wx.OK | wx.ICON_INFORMATION)
-                dlg.ShowModal()
-                dlg.Destroy()
+                #__xdlg = wx.MessageDialog(self, message('listquote_nodirty_save'), message('listquote_save_desc'), wx.OK | wx.ICON_INFORMATION)
+                #__xdlg.ShowModal()
+                #__xdlg.Destroy()
+                iTradeInformation(self, message('listquote_nodirty_save'), message('listquote_save_desc'))
                 res = True
             else:
                 res = False
-            dlg.Destroy()
         else:
             res = True
         if res:

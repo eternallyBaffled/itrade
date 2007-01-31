@@ -203,9 +203,9 @@ class iTradeQuoteSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
             box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         # OK
-        self.wxOK = wx.Button(self, wx.ID_OK, message('ok'))
+        self.wxOK = wx.Button(self, wx.ID_OK, message('valid'))
         self.wxOK.SetDefault()
-        self.wxOK.SetHelpText(message('ok_desc'))
+        self.wxOK.SetHelpText(message('valid_desc'))
         box.Add(self.wxOK, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_BUTTON(self, wx.ID_OK, self.OnValid)
 

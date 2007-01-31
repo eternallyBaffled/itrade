@@ -50,6 +50,8 @@ import itrade_config
 from itrade_logging import *
 from itrade_local import message
 
+from itrade_wxutil import iTradeYesNo
+
 # ============================================================================
 # iTrade_wxFrame
 #
@@ -115,8 +117,10 @@ class iTrade_wxFrame(object):
             msg2 = message('mixin_open')
         if self.isDirty():
             # __x wx.CANCEL : user parameter
-            dlg = wx.MessageDialog(self, msg, msg2, wx.CANCEL | wx.YES_NO | wx.YES_DEFAULT | wx.ICON_QUESTION)
-            idRet = dlg.ShowModal()
+            #__xdlg = wx.MessageDialog(self, msg, msg2, wx.CANCEL | wx.YES_NO | wx.YES_DEFAULT | wx.ICON_QUESTION)
+            #__xidRet = dlg.ShowModal()
+            #__xdlg.Destroy()
+            idRet = iTradeYesNo(self, msg, msg2,bCanCancel=True)
             if idRet == wx.ID_YES:
                 self.OnSave(None)
             elif idRet == wx.ID_NO:
@@ -125,7 +129,6 @@ class iTrade_wxFrame(object):
             elif idRet == wx.ID_CANCEL:
                 # do not touch dirty flag !
                 ret = False
-            dlg.Destroy()
         return ret
 
     def onEraseBackground(self, evt):

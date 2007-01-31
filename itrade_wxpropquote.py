@@ -52,6 +52,7 @@ from itrade_local import message
 from itrade_config import *
 #from itrade_import import *
 from itrade_wxselectquote import select_iTradeQuote
+from itrade_wxutil import iTradeInformation
 
 # ============================================================================
 # iTradeQuotePropertiesPanel
@@ -295,9 +296,10 @@ class iTradeQuotePropertiesPanel(wx.Panel):
             self.m_quote.loadTrades(file)
             self.m_quote.saveTrades()
 
-            dlg2 = wx.MessageDialog(self, message('imported_from_file') % file, message('import_from_file'), wx.OK | wx.ICON_INFORMATION)
-            dlg2.ShowModal()
-            dlg2.Destroy()
+            # __xdlg2 = wx.MessageDialog(self, message('imported_from_file') % file, message('import_from_file'), wx.OK | wx.ICON_INFORMATION)
+            # __xdlg2.ShowModal()
+            # __xdlg2.Destroy()
+            iTradeInformation(self, message('imported_from_file') % file, message('import_from_file'))
 
         dlg.Destroy()
 
@@ -311,9 +313,10 @@ class iTradeQuotePropertiesPanel(wx.Panel):
 
             self.m_quote.saveTrades(file)
 
-            dlg2 = wx.MessageDialog(self, message('exported_to_file') % file, message('export_to_file'), wx.OK | wx.ICON_INFORMATION)
-            dlg2.ShowModal()
-            dlg2.Destroy()
+            #__xdlg2 = wx.MessageDialog(self, message('exported_to_file') % file, message('export_to_file'), wx.OK | wx.ICON_INFORMATION)
+            #__xdlg2.ShowModal()
+            #__xdlg2.Destroy()
+            iTradeInformation(self,message('exported_to_file') % file, message('export_to_file'))
 
             #
         dlg.Destroy()

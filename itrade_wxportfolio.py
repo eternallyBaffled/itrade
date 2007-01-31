@@ -55,6 +55,7 @@ from itrade_currency import list_of_currencies
 
 import itrade_wxres
 from itrade_wxmixin import iTradeSelectorListCtrl
+from itrade_wxutil import iTradeError,iTradeYesNo
 
 # ============================================================================
 # iTradePortfolioSelector
@@ -125,8 +126,8 @@ class iTradePortfolioSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
             msg = message('portfolio_properties_btnselect')
             msgdesc = message('portfolio_properties_btnselectdesc')
         else:
-            msg = message('ok')
-            msgdesc = message('ok_desc')
+            msg = message('valid')
+            msgdesc = message('valid_desc')
 
         box = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -392,8 +393,8 @@ class iTradePortfolioPropertiesDialog(wx.Dialog):
             msgdesc = message('portfolio_properties_btnrenamedesc')
             fnt = self.OnValid
         else:
-            msg = message('ok')
-            msgdesc = message('ok_desc')
+            msg = message('valid')
+            msgdesc = message('valid_desc')
             fnt = self.OnValid
 
         box = wx.BoxSizer(wx.HORIZONTAL)
@@ -449,25 +450,31 @@ class iTradePortfolioPropertiesDialog(wx.Dialog):
 
     def OnValid(self,event):
         self.m_filename = self.wxFilenameCtrl.GetLabel().lower().strip()
+
         if (self.m_operation=='create' or self.m_operation=='rename') and portfolios.existPortfolio(self.m_filename):
             self.wxFilenameCtrl.SetLabel('')
             self.wxFilenameCtrl.SetFocus()
-            dlg = wx.MessageDialog(self, message('portfolio_exist_info')%self.m_filename, message('portfolio_exist_info_title'), wx.OK | wx.ICON_ERROR)
-            dlg.ShowModal()
-            dlg.Destroy()
+
+            #__xdlg = wx.MessageDialog(self, message('portfolio_exist_info')%self.m_filename, message('portfolio_exist_info_title'), wx.OK | wx.ICON_ERROR)
+            #__xdlg.ShowModal()
+            #__xdlg.Destroy()
+            iTradeError(self, message('portfolio_exist_info')%self.m_filename, message('portfolio_exist_info_title'))
             return
+
         self.m_name = self.wxNameCtrl.GetLabel().strip()
         self.m_accountref = self.wxAccountRefCtrl.GetLabel().strip()
         if self.m_operation=='delete':
-            dlg = wx.MessageDialog(self, message('portfolio_delete_confirm')%self.m_name, message('portfolio_delete_confirm_title'), wx.YES_NO | wx.YES_DEFAULT | wx.ICON_QUESTION)
-            idRet = dlg.ShowModal()
-            dlg.Destroy()
+            #__xdlg = wx.MessageDialog(self, message('portfolio_delete_confirm')%self.m_name, message('portfolio_delete_confirm_title'), wx.YES_NO | wx.YES_DEFAULT | wx.ICON_QUESTION)
+            #__xidRet = dlg.ShowModal()
+            #__xdlg.Destroy()
+            idRet = iTradeYesNo(self, message('portfolio_delete_confirm')%self.m_name, message('portfolio_delete_confirm_title'))
             if idRet == wx.ID_NO:
                 return
         if self.m_operation=='rename':
-            dlg = wx.MessageDialog(self, message('portfolio_rename_confirm')%self.m_filename, message('portfolio_rename_confirm_title'), wx.YES_NO | wx.YES_DEFAULT | wx.ICON_QUESTION)
-            idRet = dlg.ShowModal()
-            dlg.Destroy()
+            #__xdlg = wx.MessageDialog(self, message('portfolio_rename_confirm')%self.m_filename, message('portfolio_rename_confirm_title'), wx.YES_NO | wx.YES_DEFAULT | wx.ICON_QUESTION)
+            #__xidRet = dlg.ShowModal()
+            #__xdlg.Destroy()
+            idRet = iTradeYesNo(self, message('portfolio_rename_confirm')%self.m_filename, message('portfolio_rename_confirm_title'))
             if idRet == wx.ID_NO:
                 return
         self.EndModal(wx.ID_OK)

@@ -207,7 +207,7 @@ class iTradeAboutBox(wx.Dialog):
         try:
             import webbrowser
         except ImportError:
-            wxMessageBox(message('about_url') % url)
+            wx.MessageBox(message('about_url') % url)
         else:
             webbrowser.open(url)
 

@@ -85,9 +85,9 @@ class iTradeDatePicker(wx.Dialog):
 
         # buttons
         box = wx.BoxSizer(wx.HORIZONTAL)
-        btn = wx.Button(self, wx.ID_OK, message('ok'))
+        btn = wx.Button(self, wx.ID_OK, message('valid'))
         btn.SetDefault()
-        btn.SetHelpText(message('ok_desc'))
+        btn.SetHelpText(message('valid_desc'))
         box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_BUTTON(self, btn.GetId(), self.OnValid)
 
