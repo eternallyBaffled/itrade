@@ -41,8 +41,11 @@ From principal author feeling :
 1.0.z : iTrade (official final release)
 
 ===============================================================================
-HOW TO RELEASE - TECHNICAL OPERATIONS
+HOW TO RELEASE an OFFICIAL RELEASE - TECHNICAL OPERATIONS
 ===============================================================================
+
+NB: use "light" process for a tarball (non official, non supported interim
+release) : no branch, no tag, minimal testing, minimal news, ...
 
 -------------------------------------------------------------------------------
 When ?
@@ -79,7 +82,7 @@ Configuration Management
 	svn log https://svn.sourceforge.net/svnroot/itrade/branches/ITRADE_x_y_z_name_BRANCH > itrade/REVISION
 
 @1:
-- package source pack (tarball gz file format)
+- package source pack (tarball gz file format) by executing ./do_release.sh script
 - non regression testing of the source package
 - fix any critical issue then loop @1
 
