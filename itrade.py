@@ -69,7 +69,7 @@ def usage():
     print
     print "--lang=<l>   select the language to be used (fr,us,...)      "
     print
-    print "--user=<p>   select usrerdata/ specific folder               "
+    print "--user=<p>   select userdata/ specific folder                "
     print
     print "--nopsyco    do not use psyco                                "
     print "-x           activate experimental features                  "
