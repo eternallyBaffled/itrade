@@ -297,7 +297,7 @@ class HTMLDialog(wx.Dialog):
         wx.Dialog.__init__(self, parent, -1, caption, style = wx.TAB_TRAVERSAL | wx.DEFAULT_DIALOG_STYLE, size = size)
 
         # container
-        self.m_html = wxUrlClickHtmlWindow(self, -1, style = wx.CLIP_CHILDREN | wx.html.HW_NO_SELECTION | wx.TAB_TRAVERSAL)
+        self.m_html = wxUrlClickHtmlWindow(self, -1, style = wx.CLIP_CHILDREN | wx.html.HW_SCROLLBAR_NEVER | wx.TAB_TRAVERSAL)
         EVT_HTML_URL_CLICK(self.m_html, self.OnLinkClick)
 
         # set the content
@@ -366,8 +366,8 @@ class HTMLDialog(wx.Dialog):
             <center>
             <table cellpadding="5" bgcolor="%s" width="100%%">
               <tr>
+                <td align="left">
                 %s
-                <td align="center">
                 %s
                 </td>
               </tr>
@@ -378,10 +378,8 @@ class HTMLDialog(wx.Dialog):
             '''
 
     ImageHTML='''\
-        <td align="left">
-          <a href="%s"><img src="%s" align=top width=%d
-               height=%d alt="%s" border=0></a>
-        </td>'''
+          <a href="%s"><img src="%s" align=top alt="%s" border=0></a>&nbsp;
+            '''
 
     def SetContents(self,
                     name="",
@@ -395,9 +393,9 @@ class HTMLDialog(wx.Dialog):
                     imagedir = "res",
                     imageurl = "",
                     size = None,
-                    fgcolor = None,
-                    bgcolor = None,
-                    boxcolor="#458154"):
+                    fgcolor = "#000000",
+                    bgcolor = "#EEEEEE",
+                    boxcolor= "#EEEEEE"):
 
         # always one button : OK
         if buttons is None:
@@ -408,18 +406,14 @@ class HTMLDialog(wx.Dialog):
 
         # some image ?
         if image:
-            if not width:
-                width = 100
-            if not height:
-                height = width
-            imstr1 = self.ImageHTML % (imageurl,os.path.join(imagedir,image),width,height,"['%s']" % image)
+            imstr1 = self.ImageHTML % (imageurl,os.path.join(imagedir,image),"['%s']" % image)
         else:
             imstr1 = ""
 
-        if (image and string.lower(image[-4:]) == '.gif'):
-            wx.Image_AddHandler(wx.GIFHandler())
-        if (image and string.lower(image[-4:]) == '.png'):
-            wx.Image_AddHandler(wx.PNGHandler())
+        #if (image and string.lower(image[-4:]) == '.gif'):
+        #    wx.Image_AddHandler(wx.GIFHandler())
+        #if (image and string.lower(image[-4:]) == '.png'):
+        #    wx.Image_AddHandler(wx.PNGHandler())
 
         imstr2 = ""
         ci = ""
@@ -450,27 +444,6 @@ class HTMLDialog(wx.Dialog):
 
         self.m_html.SetPage(self.theHTMLpage)
 
-        # size
-        #if size is None:
-        #    # now try to `shrink' dialog, only so far as no scrollbar nec.,,
-        #    # mantaining aspect ratio of display.
-        #    w = 320
-        #    ds = wx.DisplaySize()
-        #    c = self.m_html.GetInternalRepresentation()
-        #    while w < ds[0]:
-        #        c.Layout(w)
-        #        if c.GetHeight() < (w+20) * ds[1]/ds[0] - 50:
-        #            self.m_html.SetSize(wx.Size(w,int ((w) * ds[1]/ds[0])))
-        #            self.SetSize(wx.Size(w+20,int ((w+0) * ds[1]/ds[0])))
-        #            break
-        #        w = w + 20
-        #    else:
-        #        self.SetSize(wx.Size(defaultsize))
-        #        self.m_html.SetSize(wx.Size (map(operator.sub,defaultsize,(10,10))))
-        #else:
-        #    self.SetSize(wx.Size(size))
-        #    self.m_html.SetSize(wx.Size (map(operator.sub,size,(10,10))))
-
         if size is None:
             w,h = defaultsize
         else:
@@ -478,7 +451,7 @@ class HTMLDialog(wx.Dialog):
 
         c = self.m_html.GetInternalRepresentation()
         c.Layout(w-10)
-        self.SetSize(wx.Size(c.GetWidth()+10,c.GetHeight()+45))
+        self.SetSize(wx.Size(c.GetWidth()+10,c.GetHeight()+35))
 
         # layout everything
         self.Layout()
@@ -507,7 +480,7 @@ class HTMLDialog(wx.Dialog):
 # ============================================================================
 
 def iTradeInformation(parent,text,caption=message('info_caption')):
-    dlg = HTMLDialog(parent=parent,caption=caption,text=text,buttons=OKButton(makedefault=1))
+    dlg = HTMLDialog(parent=parent,caption=caption,text=text,buttons=OKButton(makedefault=1),image="box_info.png")
     idRet = dlg.ShowModal()
     dlg.Destroy()
     return idRet
@@ -522,7 +495,7 @@ def iTradeInformation(parent,text,caption=message('info_caption')):
 # ============================================================================
 
 def iTradeError(parent,text,caption=message('alert_caption')):
-    dlg = HTMLDialog(parent=parent,caption=caption,text=text,buttons=OKButton(makedefault=1))
+    dlg = HTMLDialog(parent=parent,caption=caption,text=text,buttons=OKButton(makedefault=1),image="box_alert.png")
     idRet = dlg.ShowModal()
     dlg.Destroy()
     return idRet
@@ -542,7 +515,7 @@ def iTradeYesNo(parent,text,caption,bCanCancel=False,bYesDefault=True):
     buttons = YesButton(makedefault=bYesDefault)+NoButton(makedefault=not bYesDefault)
     if bCanCancel:
         buttons = buttons+CancelButton(makedefault=0)
-    dlg = HTMLDialog(parent=parent,caption=caption,text=text,buttons=buttons)
+    dlg = HTMLDialog(parent=parent,caption=caption,text=text,buttons=buttons,image="box_yesno.png")
 
     idRet = dlg.ShowModal()
     dlg.Destroy()
