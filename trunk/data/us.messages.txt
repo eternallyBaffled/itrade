@@ -148,10 +148,14 @@ html_noconnect;No connection
 
 ok;OK
 ok_desc;This button validates then completes the dialog
+valid;Apply
+valid_desc;This button validates then completes the dialog
 cancel;Cancel
 cancel_desc;The Cancel button cancels the dialog (Duh!)
 close;Close
 close_desc;The Close button close the dialog
+yes;Yes
+no;No
 
 isin;ISIN
 ticker;Ticker
@@ -542,5 +546,8 @@ print_page;Page: %d
 
 about_url;Please point your browser at : %s
 about_title;About iTrade
+
+info_caption;iTrade - Information
+alert_caption;iTrade - Error
 
 test;test message

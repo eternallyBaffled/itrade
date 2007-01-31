@@ -153,12 +153,16 @@ main_valuation;Avaliação
 html_connecting;Conectando ...
 html_noconnect;Nenhuma conexão
 
-ok;Validar
+ok;OK
 ok_desc;Este botão valida e depois termina o diálogo
+valid;Validar
+valid_desc;Este botão valida e depois termina o diálogo
 cancel;Cancelar
 cancel_desc;O botão de cancelamento cancela o diálogo (Duh!)
 close;Fechar
 close_desc;O botão de fecho encerra o diálogo
+yes;__xYes
+no;__xNo
 
 isin;ISIN
 ticker;Mnemo
@@ -557,5 +561,8 @@ print_page;Página: %d
 
 about_url;__xPlease point your browser at : %s
 about_title;__xAbout iTrade
+
+info_caption;__xiTrade - Information
+alert_caption;__xiTrade - Error
 
 test;Mensagem de teste

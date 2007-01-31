@@ -48,6 +48,8 @@ import wx.lib.mixins.listctrl as wxl
 from itrade_logging import *
 from itrade_local import message
 
+from itrade_wxutil import iTradeInformation,iTradeError
+
 # ============================================================================
 # iTradeLoginDialog
 #
@@ -144,11 +146,13 @@ class iTradeLoginDialog(wx.Dialog):
         ret = self.m_connector.login(u,p)
         self.m_connector.logout()
         if ret:
-            dlg = wx.MessageDialog(self, message('login_test_ok'), message('login_testdesc') + ' - ' + self.m_connector.name(), wx.OK | wx.ICON_INFORMATION)
+            #__xdlg = wx.MessageDialog(self, message('login_test_ok'), message('login_testdesc') + ' - ' + self.m_connector.name(), wx.OK | wx.ICON_INFORMATION)
+            iTradeInformation(self, message('login_test_ok'), message('login_testdesc') + ' - ' + self.m_connector.name())
         else:
-            dlg = wx.MessageDialog(self, message('login_test_nok'), message('login_testdesc') + ' - ' + self.m_connector.name(), wx.OK | wx.ICON_INFORMATION)
-        dlg.ShowModal()
-        dlg.Destroy()
+            #__xdlg = wx.MessageDialog(self, message('login_test_nok'), message('login_testdesc') + ' - ' + self.m_connector.name(), wx.OK | wx.ICON_INFORMATION)
+            iTradeError(self, message('login_test_nok'), message('login_testdesc') + ' - ' + self.m_connector.name())
+        #__xdlg.ShowModal()
+        #__xdlg.Destroy()
 
 # ============================================================================
 # login_UI

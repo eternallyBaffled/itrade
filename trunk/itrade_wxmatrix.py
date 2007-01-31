@@ -71,6 +71,8 @@ from itrade_wxlogin import login_UI
 from itrade_wxmixin import iTrade_wxFrame
 from itrade_wxlive import iTrade_wxLiveMixin,EVT_UPDATE_LIVE
 
+from itrade_wxutil import iTradeYesNo
+
 # ============================================================================
 # menu identifier
 # ============================================================================
@@ -1001,25 +1003,28 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
     # --- [ cache management ] -------------------------------------
 
     def OnCacheEraseData(self,e):
-        dlg = wx.MessageDialog(self, message('cache_erase_confirm_data'), message('cache_erase_confirm_title'), wx.YES_NO | wx.YES_DEFAULT | wx.ICON_QUESTION)
-        idRet = dlg.ShowModal()
+        #__xdlg = wx.MessageDialog(self, message('cache_erase_confirm_data'), message('cache_erase_confirm_title'), wx.YES_NO | wx.YES_DEFAULT | wx.ICON_QUESTION)
+        #__xidRet = dlg.ShowModal()
+        #__xdlg.Destroy()
+        idRet = iTradeYesNo(self, message('cache_erase_confirm_data'), message('cache_erase_confirm_title'))
         if idRet == wx.ID_YES:
             self.m_matrix.flushTrades()
-        dlg.Destroy()
 
     def OnCacheEraseNews(self,e):
-        dlg = wx.MessageDialog(self, message('cache_erase_confirm_news'), message('cache_erase_confirm_title'), wx.YES_NO | wx.YES_DEFAULT | wx.ICON_QUESTION)
-        idRet = dlg.ShowModal()
+        #__xdlg = wx.MessageDialog(self, message('cache_erase_confirm_news'), message('cache_erase_confirm_title'), wx.YES_NO | wx.YES_DEFAULT | wx.ICON_QUESTION)
+        #__xidRet = dlg.ShowModal()
+        #__xdlg.Destroy()
+        idRet = iTradeYesNo(self, message('cache_erase_confirm_news'), message('cache_erase_confirm_title'))
         if idRet == wx.ID_YES:
             self.m_matrix.flushNews()
-        dlg.Destroy()
 
     def OnCacheEraseAll(self,e):
-        dlg = wx.MessageDialog(self, message('cache_erase_confirm_all'), message('cache_erase_confirm_title'), wx.YES_NO | wx.YES_DEFAULT | wx.ICON_QUESTION)
-        idRet = dlg.ShowModal()
+        #__xdlg = wx.MessageDialog(self, message('cache_erase_confirm_all'), message('cache_erase_confirm_title'), wx.YES_NO | wx.YES_DEFAULT | wx.ICON_QUESTION)
+        #__xidRet = dlg.ShowModal()
+        #__xdlg.Destroy()
+        idRet = iTradeYesNo(self, message('cache_erase_confirm_all'), message('cache_erase_confirm_title'))
         if idRet == wx.ID_YES:
             self.m_matrix.flushAll()
-        dlg.Destroy()
 
     # --- [ autorefresh management ] -------------------------------------
 
