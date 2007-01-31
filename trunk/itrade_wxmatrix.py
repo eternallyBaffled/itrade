@@ -1821,6 +1821,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
         quote = addInMatrix_iTradeQuote(self,self.m_matrix,self.m_portfolio)
         if quote:
             self.m_portfolio.setupCurrencies()
+            self.m_portfolio.loginToServices(quote)
             self.setDirty()
             self.m_listmode = LISTMODE_INIT
             self.OnQuotes(None)

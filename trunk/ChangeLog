@@ -6,6 +6,9 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-01-31  Gilles Dumortier <dgil at ieee.org>
+	* convert from iso-8859-1 to unicode *.messages.txt during reading
+	* Lang was not correctly set for the Tabs (-x mode)
+	* Open new file : live connector not correct (SF bug 1644602)
 	* MessageBox use user local, not itrade current locale (SF bug 1646074)
 	* Finish MessageDialog conversion to HTMLDialog
 

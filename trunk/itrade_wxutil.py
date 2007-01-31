@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: iso-8859-1 -*-
 # ============================================================================
 # Project Name : iTrade
 # Module Name  : itrade_wxutil.py
@@ -530,11 +531,11 @@ if __name__=='__main__':
 
     app = wx.PySimpleApp()
 
-    iRet = iTradeYesNo(None,"message","caption")
+    iRet = iTradeYesNo(None,"message without cancel and default to Yes","caption")
     if iRet == wx.ID_YES:
-        iRet = iTradeYesNo(None,"message","caption",bCanCancel=True,bYesDefault=False)
+        iRet = iTradeYesNo(None,"message with cancel and default to No","caption",bCanCancel=True,bYesDefault=False)
         if iRet == wx.ID_YES:
-            iTradeInformation(None,"confirmation message")
+            iTradeInformation(None,message('portfolio_exist_info')% "message with some accents in French ... איט")
         elif iRet == wx.ID_NO:
             iTradeInformation(None,"unconfirmation message")
         else:

@@ -62,7 +62,6 @@ from itrade_local import message,setLang
 def resolve_wxversion():
     patt = "%d\.%d[0-9\-\.A-Za-z]*-unicode"
     patts = "-unicode"
-    msgs = message('wxversion_msg')
 
     versions = wxversion.getInstalled()
     if verbose:
@@ -105,7 +104,7 @@ def resolve_wxversion():
 
     import sys, wx, webbrowser
     app = wx.PySimpleApp()
-    wx.MessageBox(msgs % (WXVERSION_MAJOR,WXVERSION_MINOR2), message('wxversion_title'))
+    wx.MessageBox(message('wxversion_msg') % (WXVERSION_MAJOR,WXVERSION_MINOR2), message('wxversion_title'))
     app.MainLoop()
     webbrowser.open("http://wxpython.org/")
     sys.exit()
