@@ -220,7 +220,7 @@ class iTradeAboutBox(wx.Dialog):
         elif clicked == 'iTrade':
             self.gotoInternetUrl(itrade_config.softwareWebsite)
         elif clicked == 'Authors':
-            self.gotoInternetUrl(itrade_config.softwareWebsite+'contacts.htm')
+            self.gotoInternetUrl(itrade_config.softwareWebsite+'contact.htm')
         elif clicked == 'Python':
             self.gotoInternetUrl('http://www.python.org')
         elif clicked == 'wxPython':
