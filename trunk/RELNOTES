@@ -58,7 +58,7 @@ Known Issues
   https://sourceforge.net/tracker/index.php?func=detail&aid=1550926&group_id=128261&atid=711187
 
 - The probability to have a crash at the end of the exit is very high. But
-  this crash has  no impact (crash in a event kind of thread) except filling
+  this crash has no impact (crash in a event kind of thread) except filling
   the console or log file
   https://sourceforge.net/tracker/index.php?func=detail&aid=1597926&group_id=128261&atid=711187
 
