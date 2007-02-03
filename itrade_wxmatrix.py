@@ -1791,10 +1791,14 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
             menu.Enable(self.m_popupID_Edit,inList)
             menu.Append(self.m_popupID_Remove, message('main_popup_remove'))
             menu.Enable(self.m_popupID_Remove,inList)
-            # __x temp (not yet available)
-            menu.Enable(self.m_popupID_Add,False)
-            menu.Enable(self.m_popupID_Edit,False)
-            menu.Enable(self.m_popupID_Remove,False)
+            if quote.hasStops():
+                menu.Enable(self.m_popupID_Add,False)
+                menu.Enable(self.m_popupID_Edit,True)
+                menu.Enable(self.m_popupID_Remove,True)
+            else:
+                menu.Enable(self.m_popupID_Add,True)
+                menu.Enable(self.m_popupID_Edit,False)
+                menu.Enable(self.m_popupID_Remove,False)
 
         # Popup the menu.  If an item is selected then its handler
         # will be called before PopupMenu returns.
