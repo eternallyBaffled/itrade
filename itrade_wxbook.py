@@ -66,7 +66,7 @@ from itrade_wxabout import iTradeAboutBox
 from itrade_wxhtml import iTradeLaunchBrowser
 from itrade_wxlistquote import list_iTradeQuote
 from itrade_wxlogin import login_UI
-
+from itrade_wxstops import addOrEditStops_iTradeQuote,removeStops_iTradeQuote
 from itrade_wxmixin import iTrade_wxFrame
 
 from itrade_wxpanes import iTrade_MatrixPortfolioPanel,iTrade_MatrixQuotesPanel,iTrade_MatrixStopsPanel,iTrade_MatrixIndicatorsPanel
@@ -692,6 +692,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
 
     def OnSave(self,e):
         self.m_matrix.save(self.m_portfolio.filename())
+        self.m_portfolio.saveStops()
         itrade_config.saveConfig()
         self.saveConfig()
         self.clearDirty()
@@ -1039,6 +1040,26 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
             self.m_portfolio.setupCurrencies()
             self.setDirty()
             self.RebuildList()
+
+    # ---[ Stops ] -----------------------------------------
+
+    def OnAddStops(self,e):
+        quote,item = self.getQuoteAndItemOnTheLine(self.m_currentItem)
+        if addOrEditStops_iTradeQuote(self,quote):
+            self.setDirty()
+            self.OnStops(e)
+
+    def OnRemoveStops(self,e):
+        quote,item = self.getQuoteAndItemOnTheLine(self.m_currentItem)
+        if removeStops_iTradeQuote(self,quote):
+            self.setDirty()
+            self.OnStops(e)
+
+    def OnEditStops(self,e):
+        quote,item = self.getQuoteAndItemOnTheLine(self.m_currentItem)
+        if addOrEditStops_iTradeQuote(self,quote):
+            self.setDirty()
+            self.OnRefresh(e)
 
 # ============================================================================
 # That's all folks !

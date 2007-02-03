@@ -794,6 +794,8 @@ class Portfolio(object):
         self.m_cTaxable = 0.0
         self.m_cAppreciation = 0.0
 
+    # ---[ load, save and apply Rules ] ---------------------------------------
+
     def loadFeesRules(self):
         fn = self.filepath('fees')
         self.m_fees.load(fn)
@@ -812,9 +814,17 @@ class Portfolio(object):
         # no rule apply -> no fee
         return fee
 
+    # ---[ load, save stops ] -------------------------------------------------
+
     def loadStops(self):
         fn = self.filepath('stops')
         quotes.loadStops(fn)
+
+    def saveStops(self):
+        fn = self.filepath('stops')
+        quotes.saveStops(fn)
+
+    # ---[ load, save local properties ] --------------------------------------
 
     def loadProperties(self):
         fn = self.filepath('properties')
@@ -823,6 +833,8 @@ class Portfolio(object):
     def saveProperties(self):
         fn = self.filepath('properties')
         quotes.saveProperties(fn)
+
+    # ---[ load, save and apply Operations ] ----------------------------------
 
     def loadOperations(self):
         fn = self.filepath('operations')
@@ -843,7 +855,7 @@ class Portfolio(object):
             else:
                 info('ignore %s' % (eachOp.name()))
 
-    # --- [ manage login to services ] ---
+    # --- [ manage login to services ] ----------------------------------------
 
     def loginToServices(self,quote=None):
 
@@ -885,7 +897,7 @@ class Portfolio(object):
                                 print 'logout from service :',name
                                 maperr[name] = con.logout()
 
-    # --- [ manage multi-currency on the portfolio ] ---
+    # --- [ manage multi-currency on the portfolio ] --------------------------
 
     def setupCurrencies(self):
         currencies.reset()
@@ -900,7 +912,7 @@ class Portfolio(object):
                     return True
         return False
 
-    # --- [ compute the operations ] ---
+    # --- [ compute the operations ] ------------------------------------------
 
     def sameyear(self,op,cd=None):
         if cd==None:
@@ -997,7 +1009,8 @@ class Portfolio(object):
             else:
                 raise TypeError("computeOperations(): operation::type() unknown %s",eachOp.type())
 
-    # --- [ compute the value ] ---
+    # --- [ compute the value ] -----------------------------------------------
+
     def computeValue(self):
         self.m_cDIRValue = 0.0
         self.m_cSRDValue = 0.0
@@ -1014,7 +1027,7 @@ class Portfolio(object):
                 self.m_cDIRBuy = self.m_cDIRBuy + eachQuote.nv_pr(QUOTE_CASH)
                 self.m_cSRDBuy = self.m_cSRDBuy + eachQuote.nv_pr(QUOTE_CREDIT)
 
-    # --- [ operations API ] ---
+    # --- [ operations API ] --------------------------------------------------
 
     def addOperation(self,item):
         self.m_operations.add(item,True)
@@ -1025,7 +1038,8 @@ class Portfolio(object):
     def getOperation(self,ref):
         return self.m_operations.get(ref)
 
-    # --- [ value API ] ---
+    # --- [ value API ] -------------------------------------------------------
+
     def nv_cash(self):
         return self.m_cCash
 
@@ -1113,7 +1127,7 @@ class Portfolio(object):
         else:
             return (total-self.nv_cash())/total*100.0
 
-    # --- [ string API ] ---
+    # --- [ string API ] ------------------------------------------------------
 
     def sv_cash(self,fmt="%.2f"):
         return fmt % self.nv_cash()

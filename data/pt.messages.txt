@@ -565,4 +565,7 @@ about_title;__xAbout iTrade
 info_caption;__xiTrade - Information
 alert_caption;__xiTrade - Error
 
+stops_remove_caption;__xRemove Stops
+stops_remove_text;__xDo you confirm stops removing for quote %s ?
+
 test;Mensagem de teste

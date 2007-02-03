@@ -550,4 +550,7 @@ about_title;About iTrade
 info_caption;iTrade - Information
 alert_caption;iTrade - Error
 
+stops_remove_caption;Remove Stops
+stops_remove_text;Do you confirm stops removing for quote %s ?
+
 test;test message

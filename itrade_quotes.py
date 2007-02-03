@@ -524,7 +524,7 @@ class Quote(object):
         self.m_stoploss = 0.0
         self.m_stopwin = 0.0
         if itrade_config.verbose:
-            info('%s::clrStops')
+            info('%s::clrStops' % self.name())
         self.m_hasStops = False
 
     def nv_stoploss(self):

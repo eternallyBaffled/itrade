@@ -549,4 +549,7 @@ about_title;A propos de iTrade
 info_caption;iTrade - Information
 alert_caption;iTrade - Erreur
 
+stops_remove_caption;Suppression des Stops
+stops_remove_text;Confirmez-vous la suppression des stops de la valeur %s ?
+
 test;message de test

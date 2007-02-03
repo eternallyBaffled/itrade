@@ -995,7 +995,7 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
         menu.Append(self.m_popupID_Remove, message('main_popup_remove'))
         menu.Enable(self.m_popupID_Remove,inList)
 
-        if quote.hasStops():
+        if inList and quote.hasStops():
             menu.Enable(self.m_popupID_Add,False)
             menu.Enable(self.m_popupID_Edit,True)
             menu.Enable(self.m_popupID_Remove,True)
@@ -1008,16 +1008,16 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
         return menu
 
     def OnPopup_Add(self, event):
-        debug("OnPopup_Add")
-        pass
+        #debug("OnPopup_Add")
+        self.m_parent.OnAddStops(event)
 
     def OnPopup_Edit(self, event):
-        debug("OnPopup_Edit")
-        pass
+        #debug("OnPopup_Edit")
+        self.m_parent.OnEditStops(event)
 
     def OnPopup_Remove(self, event):
-        debug("OnPopup_Remove")
-        pass
+        #debug("OnPopup_Remove")
+        self.m_parent.OnRemoveStops(event)
 
 # ============================================================================
 # iTrade_MatrixIndicatorsPanel
