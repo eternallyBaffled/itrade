@@ -520,6 +520,13 @@ class Quote(object):
             info('%s::setStops %f %f' %(self.name(),self.m_stoploss,self.m_stopwin))
         self.m_hasStops = True
 
+    def clrStops(self):
+        self.m_stoploss = 0.0
+        self.m_stopwin = 0.0
+        if itrade_config.verbose:
+            info('%s::clrStops')
+        self.m_hasStops = False
+
     def nv_stoploss(self):
         return self.m_stoploss
 
@@ -1221,6 +1228,10 @@ class Quotes(object):
     def addStops(self,key,loss,win):
         if self.m_quotes.has_key(key):
             self.m_quotes[key].setStops(loss,win)
+
+    def removeStops(self,key):
+        if self.m_quotes.has_key(key):
+            self.m_quotes[key].clrStops()
 
     def loadStops(self,fs=None):
         # open and read the file to load stops information
