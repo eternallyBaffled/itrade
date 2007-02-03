@@ -67,7 +67,7 @@ from itrade_wxhtml import iTradeLaunchBrowser
 from itrade_wxutil import FontFromSize
 from itrade_wxlistquote import list_iTradeQuote
 from itrade_wxlogin import login_UI
-
+from itrade_wxstops import addOrEditStops_iTradeQuote,removeStops_iTradeQuote
 from itrade_wxmixin import iTrade_wxFrame
 from itrade_wxlive import iTrade_wxLiveMixin,EVT_UPDATE_LIVE
 
@@ -715,6 +715,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
 
     def OnSave(self,e):
         self.m_matrix.save(self.m_portfolio.filename())
+        self.m_portfolio.saveStops()
         itrade_config.saveConfig()
         self.saveConfig()
         self.clearDirty()
@@ -1791,7 +1792,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
             menu.Enable(self.m_popupID_Edit,inList)
             menu.Append(self.m_popupID_Remove, message('main_popup_remove'))
             menu.Enable(self.m_popupID_Remove,inList)
-            if quote.hasStops():
+            if inList and quote.hasStops():
                 menu.Enable(self.m_popupID_Add,False)
                 menu.Enable(self.m_popupID_Edit,True)
                 menu.Enable(self.m_popupID_Remove,True)
@@ -1821,6 +1822,33 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
         debug("OnPopup_Properties")
         self.openCurrentQuote(page=7)
 
+    def OnPopup_Add(self, event):
+        #debug("OnPopup_Add")
+        if self.m_listmode == LISTMODE_STOPS:
+            self.OnAddStops(event)
+        elif self.m_listmode == LISTMODE_QUOTES:
+            self.OnAddQuote(event)
+
+    def OnPopup_Edit(self, event):
+        #debug("OnPopup_Edit")
+        if self.m_listmode == LISTMODE_STOPS:
+            self.OnEditStops(event)
+
+    def OnPopup_Remove(self, event):
+        #debug("OnPopup_Remove")
+        if self.m_listmode == LISTMODE_STOPS:
+            self.OnRemoveStops(event)
+        elif self.m_listmode == LISTMODE_QUOTES:
+            self.OnRemoveCurrentQuote(event)
+
+    def OnPopup_Buy(self, event):
+        debug("OnPopup_Buy")
+
+    def OnPopup_Sell(self, event):
+        debug("OnPopup_Sell")
+
+    # ---[ Quotes ] -----------------------------------------
+
     def OnAddQuote(self,e):
         quote = addInMatrix_iTradeQuote(self,self.m_matrix,self.m_portfolio)
         if quote:
@@ -1828,19 +1856,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
             self.m_portfolio.loginToServices(quote)
             self.setDirty()
             self.m_listmode = LISTMODE_INIT
-            self.OnQuotes(None)
-
-    def OnPopup_Add(self, event):
-        debug("OnPopup_Add")
-        if self.m_listmode == LISTMODE_STOPS:
-            pass
-        elif self.m_listmode == LISTMODE_QUOTES:
-            self.OnAddQuote(None)
-
-    def OnPopup_Edit(self, event):
-        debug("OnPopup_Edit")
-        if self.m_listmode == LISTMODE_STOPS:
-            pass
+            self.OnQuotes(e)
 
     def OnRemoveCurrentQuote(self,e):
         quote,item = self.getQuoteAndItemOnTheLine(self.m_currentItem)
@@ -1848,20 +1864,24 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
             self.m_portfolio.setupCurrencies()
             self.setDirty()
             self.m_listmode = LISTMODE_INIT
-            self.OnQuotes(None)
+            self.OnQuotes(e)
 
-    def OnPopup_Remove(self, event):
-        debug("OnPopup_Remove")
-        if self.m_listmode == LISTMODE_STOPS:
-            pass
-        elif self.m_listmode == LISTMODE_QUOTES:
-            self.OnRemoveCurrentQuote(None)
+    # ---[ Stops ] -----------------------------------------
 
-    def OnPopup_Buy(self, event):
-        debug("OnPopup_Buy")
+    def OnAddStops(self,e):
+        quote,item = self.getQuoteAndItemOnTheLine(self.m_currentItem)
+        if addOrEditStops_iTradeQuote(self,quote):
+            self.OnStops(e)
 
-    def OnPopup_Sell(self, event):
-        debug("OnPopup_Sell")
+    def OnRemoveStops(self,e):
+        quote,item = self.getQuoteAndItemOnTheLine(self.m_currentItem)
+        if removeStops_iTradeQuote(self,quote):
+            self.OnStops(e)
+
+    def OnEditStops(self,e):
+        quote,item = self.getQuoteAndItemOnTheLine(self.m_currentItem)
+        if addOrEditStops_iTradeQuote(self,quote):
+            self.OnRefresh(e)
 
 # ============================================================================
 # That's all folks !
