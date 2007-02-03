@@ -5,6 +5,12 @@ On the road for v0.4.6 (Nausicaa2)
 
 ===============================================================================
 
+2007-02-03  Gilles Dumortier <dgil at ieee.org>
+	* Working on add/remove/edit stops (SF bug 1302894)
+
+2007-02-01  Gilles Dumortier <dgil at ieee.org>
+	* New tarball
+
 2007-01-31  Gilles Dumortier <dgil at ieee.org>
 	* convert from iso-8859-1 to unicode *.messages.txt during reading
 	* Lang was not correctly set for the Tabs (-x mode)
