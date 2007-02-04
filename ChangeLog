@@ -6,6 +6,7 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-02-03  Gilles Dumortier <dgil at ieee.org>
+	* new tarball
 	* r556 (-x) Money management-Attribute Error (SF bug 1651923)
 	* Finish add/remove/edit stops (SF bug 1302894)
 	* Operations screen : use the NumCtrl object
