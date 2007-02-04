@@ -45,21 +45,14 @@ import logging
 # wxPython system
 import itrade_wxversion
 import wx
-#import  wx.grid as gridlib
+from wx.lib import masked
 
 # iTrade system
 from itrade_logging import *
 from itrade_quotes import *
-#from itrade_local import message,setLocale
-#from itrade_config import *
+from itrade_local import message,getGroupChar,getDecimalChar
 
-#from itrade_wxhtml import *
-#from itrade_wxmixin import iTrade_wxFrame
-#from itrade_wxgraph import iTrade_wxPanelGraph,fmtVolumeFunc,fmtVolumeFunc0
-#from itrade_wxlive import iTrade_wxLive,iTrade_wxLiveMixin,EVT_UPDATE_LIVE
-#from itrade_wxselectquote import select_iTradeQuote
-#from itrade_wxpropquote import iTradeQuotePropertiesPanel
-
+from itrade_wxselectquote import select_iTradeQuote
 from itrade_wxutil import iTradeYesNo
 
 # ============================================================================
@@ -120,20 +113,28 @@ class iTradeStopsDialog(wx.Dialog):
         box = wx.BoxSizer(wx.HORIZONTAL)
 
         label = wx.StaticText(self, -1, msgb)
-        box.Add(label, 0, wx.ALIGN_LEFT|wx.ALL, 5)
+        box.Add(label, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_LEFT|wx.ALL, 5)
 
-        label = wx.StaticText(self, -1, quote.sv_stoploss(bDispCurrency=True))
-        box.Add(label, 0, wx.ALIGN_LEFT|wx.ALL, 5)
+        self.wxLoss = masked.Ctrl( self, integerWidth=6, fractionWidth=2, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupChar=getGroupChar(), decimalChar=getDecimalChar() )
+        box.Add(self.wxLoss, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_LEFT|wx.ALL, 5)
+        if quote.hasStops(): self.wxLoss.SetValue(quote.nv_stoploss())
+
+        label = wx.StaticText(self, -1, quote.currency_symbol())
+        box.Add(label, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_LEFT|wx.ALL, 5)
 
         sizer.AddSizer(box, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
         box = wx.BoxSizer(wx.HORIZONTAL)
 
         label = wx.StaticText(self, -1, msgh)
-        box.Add(label, 0, wx.ALIGN_LEFT|wx.ALL, 5)
+        box.Add(label, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_LEFT|wx.ALL, 5)
 
-        label = wx.StaticText(self, -1, quote.sv_stopwin(bDispCurrency=True))
-        box.Add(label, 0, wx.ALIGN_LEFT|wx.ALL, 5)
+        self.wxWin = masked.Ctrl( self, integerWidth=6, fractionWidth=2, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupChar=getGroupChar(), decimalChar=getDecimalChar() )
+        box.Add(self.wxWin, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_LEFT|wx.ALL, 5)
+        if quote.hasStops(): self.wxWin.SetValue(quote.nv_stopwin())
+
+        label = wx.StaticText(self, -1, quote.currency_symbol())
+        box.Add(label, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_LEFT|wx.ALL, 5)
 
         sizer.AddSizer(box, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
@@ -170,6 +171,20 @@ class iTradeStopsDialog(wx.Dialog):
         self.SetSizerAndFit(sizer)
 
     def OnValid(self,event):
+        # get values
+        loss = self.wxLoss.GetValue()
+        win  = self.wxWin.GetValue()
+
+        # be sure to be in the right order !
+        if loss>win:
+            temp = win
+            win = loss
+            loss = temp
+
+        # add the stops
+        quotes.addStops(self.m_quote.key(),loss,win)
+
+        # close modal box
         self.EndModal(wx.ID_OK)
 
 # ============================================================================
@@ -180,10 +195,13 @@ class iTradeStopsDialog(wx.Dialog):
 # ============================================================================
 
 def addOrEditStops_iTradeQuote(win,quote,bAdd=True):
+    if quote == None:
+        quote = select_iTradeQuote(win,quote,filter=True)
+        if not quote: return False
     if not isinstance(quote,Quote):
         quote = quotes.lookupKey(quote)
     if quote:
-        dlg = iTradeStopsDialog(win,quote,bAdd)
+        dlg = iTradeStopsDialog(win,quote,bAdd=bAdd)
         idRet = dlg.ShowModal()
         dlg.Destroy()
         if idRet == wx.ID_OK:

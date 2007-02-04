@@ -42,7 +42,7 @@ import logging
 
 # iTrade system
 from itrade_logging import *
-from itrade_local import message,getNumSep
+from itrade_local import message,getGroupChar
 import itrade_csv
 import itrade_trades
 from itrade_import import *
@@ -74,7 +74,7 @@ QUOTE_BOTH      = 3
 # ============================================================================
 
 def fmtVolume(x):
-    sep = getNumSep()
+    sep = getGroupChar()
     val = '%d' % x
     ret = ''
     i   = len(val)
@@ -538,6 +538,9 @@ class Quote(object):
         if itrade_config.verbose:
             info('%s::setStops %f %f' %(self.name(),self.m_stoploss,self.m_stopwin))
         self.m_hasStops = True
+
+    def getStops(self):
+        return '%s;%s;%s' % (self.key(),self.sv_stoploss(),self.sv_stopwin())
 
     def clrStops(self):
         # clear (remove) the stops
@@ -1287,7 +1290,8 @@ class Quotes(object):
     def saveStops(self,fp=None):
         stops = []
         for eachQuote in self.list():
-            stops.append(eachQuote.getStops())
+            if eachQuote.hasStops():
+                stops.append(eachQuote.getStops())
         itrade_csv.write(fp,os.path.join(itrade_config.dirUserData,'default.stops.txt'),stops)
 
     # ---[ Quotes ] ---

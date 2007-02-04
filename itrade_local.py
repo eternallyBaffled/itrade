@@ -79,10 +79,10 @@ nl_convert = {
     }
 
 # ============================================================================
-# getNumSep
+# getGroupChar
 # ============================================================================
 
-nl_numsep = {
+nl_groupsep = {
     'fr' : ' ',
     'pt' : ' ',
     'de' : ' ',
@@ -90,12 +90,31 @@ nl_numsep = {
     'us' : ','
     }
 
-def getNumSep():
+def getGroupChar():
     ll = getLang()
-    if nl_numsep.has_key(ll):
-        return nl_numsep[ll]
+    if nl_groupsep.has_key(ll):
+        return nl_groupsep[ll]
     else:
         return ' '
+
+# ============================================================================
+# getDecimalChar
+# ============================================================================
+
+nl_decsep = {
+    'fr' : ',',
+    'pt' : ',',
+    'de' : ',',
+    'en' : '.',
+    'us' : '.'
+    }
+
+def getDecimalChar():
+    ll = getLang()
+    if nl_decsep.has_key(ll):
+        return nl_decsep[ll]
+    else:
+        return '.'
 
 # ============================================================================
 # getShortDateFmt

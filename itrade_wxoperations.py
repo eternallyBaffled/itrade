@@ -44,13 +44,14 @@ import logging
 import itrade_wxversion
 import wx
 import wx.lib.mixins.listctrl as wxl
-import wx.lib.masked as masked
+from wx.lib import masked
 
 # iTrade system
 from itrade_logging import *
-from itrade_local import message
+from itrade_local import message,getGroupChar,getDecimalChar
 from itrade_quotes import *
 from itrade_portfolio import *
+from itrade_currency import currency2symbol
 
 #from itrade_wxdatation import itrade_datePicker
 from itrade_wxselectquote import select_iTradeQuote
@@ -197,7 +198,7 @@ class iTradeOperationDialog(wx.Dialog):
             self.tt = tb
 
         # post-init
-        pre.Create(parent, -1, self.tt, size=(420, 420))
+        pre.Create(parent, -1, self.tt, size=(420, 480))
         self.PostCreate(pre)
 
         #
@@ -270,26 +271,22 @@ class iTradeOperationDialog(wx.Dialog):
         self.wxValueLabel = wx.StaticText(self, -1, message('portfolio_field_credit'))
         box.Add(self.wxValueLabel, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.wxValueCtrl = masked.TextCtrl(self, -1, mask="#{9}.##", formatcodes="SF_-R")
-        self.wxValueCtrl.SetFieldParameters(0, formatcodes='r<', validRequired=True)  # right-insert, require explicit cursor movement to change fields
-        self.wxValueCtrl.SetFieldParameters(1, defaultValue='00')                     # don't allow blank fraction
+        self.wxValueCtrl = masked.Ctrl( self, integerWidth=9, fractionWidth=2, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupChar=getGroupChar(), decimalChar=getDecimalChar() )
         wx.EVT_TEXT( self, self.wxValueCtrl.GetId(), self.OnValueChange )
 
         box.Add(self.wxValueCtrl, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.wxValueTxt = wx.StaticText(self, -1, "€")
+        self.wxValueTxt = wx.StaticText(self, -1, currency2symbol('EUR')) # __x currency pb
         box.Add(self.wxValueTxt, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         self.wxExpPreTxt = wx.StaticText(self, -1, '')
         box.Add(self.wxExpPreTxt, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.wxExpensesCtrl = masked.TextCtrl(self, -1, mask="#{4}.##", formatcodes="SF_R")
-        self.wxExpensesCtrl.SetFieldParameters(0, formatcodes='r<', validRequired=True)  # right-insert, require explicit cursor movement to change fields
-        self.wxExpensesCtrl.SetFieldParameters(1, defaultValue='00')                     # don't allow blank fraction
+        self.wxExpensesCtrl = masked.Ctrl( self, integerWidth=4, fractionWidth=2, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupChar=getGroupChar(), decimalChar=getDecimalChar() )
         box.Add(self.wxExpensesCtrl, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_TEXT( self, self.wxExpensesCtrl.GetId(), self.OnExpensesChange )
 
-        self.wxExpPostTxt = wx.StaticText(self, -1, "€ %s" % message('portfolio_post_expenses'))
+        self.wxExpPostTxt = wx.StaticText(self, -1, "%s %s" % (currency2symbol('EUR'),message('portfolio_post_expenses')))   # __x currency pb
         box.Add(self.wxExpPostTxt, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         self.m_sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
@@ -300,7 +297,7 @@ class iTradeOperationDialog(wx.Dialog):
         label = wx.StaticText(self, -1, message('portfolio_quantity'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.wxNumberCtrl = masked.TextCtrl(self, -1, mask="#{9}", formatcodes='SFR')
+        self.wxNumberCtrl = masked.Ctrl( self, integerWidth=9, fractionWidth=0, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupChar=getGroupChar(), decimalChar=getDecimalChar() )
         box.Add(self.wxNumberCtrl, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_TEXT( self, self.wxNumberCtrl.GetId(), self.OnNumberChange )
 
@@ -349,9 +346,9 @@ class iTradeOperationDialog(wx.Dialog):
 
     def refreshPage(self):
         self.wxDateCtrl.SetValue(wx.DateTimeFromDMY(self.m_date.day,self.m_date.month-1,self.m_date.year))
-        self.wxValueCtrl.SetLabel('%12.2f' % self.m_value)
-        self.wxExpensesCtrl.SetLabel('%6.2f' % self.m_expenses)
-        self.wxNumberCtrl.SetValue('%6d' % self.m_number)
+        self.wxValueCtrl.SetValue(self.m_value)
+        self.wxExpensesCtrl.SetValue(self.m_expenses)
+        self.wxNumberCtrl.SetValue(self.m_number)
         self.wxNameCtrl.SetLabel(self.m_name)
 
         if isOperationTypeIncludeTaxes(self.m_type):
