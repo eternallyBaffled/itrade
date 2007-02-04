@@ -195,12 +195,30 @@ class iTradeStopsDialog(wx.Dialog):
 # ============================================================================
 
 def addOrEditStops_iTradeQuote(win,quote,bAdd=True):
-    if quote == None:
-        quote = select_iTradeQuote(win,quote,filter=True)
+    # no quote : select one
+    if not quote:
+        print 'addOrEditStops_iTradeQuote() : need to select a quote'
+
+        # select one quote from the matrix list
+        quote = select_iTradeQuote(win,quote,filter=True,filterEnabled=False)
+
+        # cancel -> exit
         if not quote: return False
+
+        # be sure Add or Edit
+        if bAdd:
+            if quote.hasStops(): bAdd = False
+        else:
+            if not quote.hasStops(): bAdd = True
+
+    # quote is a key refence : found the quote object
     if not isinstance(quote,Quote):
         quote = quotes.lookupKey(quote)
+
+    # still a quote, open the dialog to manage the Stops
     if quote:
+        print 'addOrEditStops_iTradeQuote() : Add?(%d) quote : %s' % (bAdd,quote)
+
         dlg = iTradeStopsDialog(win,quote,bAdd=bAdd)
         idRet = dlg.ShowModal()
         dlg.Destroy()

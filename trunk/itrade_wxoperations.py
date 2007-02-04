@@ -430,7 +430,7 @@ class iTradeOperationDialog(wx.Dialog):
 
     def OnQuote(self,evt):
         quote = quotes.lookupKey(self.m_name)
-        quote = select_iTradeQuote(self,quote,filter=True,market=None)
+        quote = select_iTradeQuote(self,quote,filter=True,market=None,filterEnabled=False)
         if quote:
             debug('onQuote: %s - %s' % (quote.ticker(),quote.key()))
             self.m_name = quote.key()

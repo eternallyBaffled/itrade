@@ -979,7 +979,7 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
             self.m_popupID_Edit = wx.NewId()
             wx.EVT_MENU(self, self.m_popupID_Update, self.OnPopup_Update)
             wx.EVT_MENU(self, self.m_popupID_Add, self.OnPopup_Add)
-            wx.EVT_MENU(self, self.m_popupID_Edit, self.OnPopup_Add)
+            wx.EVT_MENU(self, self.m_popupID_Edit, self.OnPopup_Edit)
             wx.EVT_MENU(self, self.m_popupID_Remove, self.OnPopup_Remove)
 
         # make a menu
