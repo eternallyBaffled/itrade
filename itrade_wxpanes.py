@@ -988,11 +988,11 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
         # add some items
         menu.Append(self.m_popupID_Update, message('main_popup_refreshall'))
         menu.AppendSeparator()
-        menu.Append(self.m_popupID_Add, message('main_popup_add'))
+        menu.Append(self.m_popupID_Add, message('main_popup_add_stops'))
         menu.AppendSeparator()
-        menu.Append(self.m_popupID_Edit, message('main_popup_edit'))
+        menu.Append(self.m_popupID_Edit, message('main_popup_edit_stops'))
         menu.Enable(self.m_popupID_Edit,inList)
-        menu.Append(self.m_popupID_Remove, message('main_popup_remove'))
+        menu.Append(self.m_popupID_Remove, message('main_popup_remove_stops'))
         menu.Enable(self.m_popupID_Remove,inList)
 
         menu.Enable(self.m_popupID_Add,True)

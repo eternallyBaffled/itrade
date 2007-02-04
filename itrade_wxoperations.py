@@ -1095,7 +1095,7 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
         # add some items
         menu.Append(self.m_popupID_Modify, message('main_popup_edit'))
         menu.Enable(self.m_popupID_Modify,inList)
-        menu.Append(self.m_popupID_Delete, message('main_popup_delete'))
+        menu.Append(self.m_popupID_Delete, message('main_popup_remove'))
         menu.Enable(self.m_popupID_Delete,inList)
         menu.AppendSeparator()
         menu.Append(self.m_popupID_Add, message('main_popup_add'))
