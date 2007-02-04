@@ -28,6 +28,7 @@ Version 0.4.6 (Nausicaa2)
  + Extensions & Plugins basic Mechanism
  + Matrix use the Notebook display
  + Fortuneo Live broker
+ + Basic Stops Management
  ~ Printing module
  ~ Boursorama Live broker ?
  ~ Extensible Indicators back-end
@@ -46,13 +47,13 @@ Version 0.5 (Plume)
  ~ News aggregator (Google, Bourso, Balo)
  ~ Money Computer (preview of Risk Management)
  ~ www.lebalo.com (official french announces)
+ ~ full stops management
  - alerts full back-end and front-end
  - Deferred settlement service (SRD) alerts on dates/events
  - data panel indicators, raw numerical, charting options
  - more indicators (incl. RSI and MACD, oscillators)
  - more MMI enhancements
  - more Charting enhancements
- - full stops management
  - daily Japanese candlestick
 
 Version 0.6 (Stella Maris)
