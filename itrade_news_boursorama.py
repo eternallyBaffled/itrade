@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: iso-8859-1 -*-
 # ============================================================================
 # Project Name : iTrade
 # Module Name  : itrade_news_boursorama.py
@@ -164,6 +165,7 @@ class News_Boursorama(object):
         info('goto %s',url)
 
         buf = self.getdata(url)
+        buf = unicode(buf,'iso-8859-1')
         #print buf
 
         if not buf:
