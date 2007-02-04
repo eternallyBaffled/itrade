@@ -284,9 +284,14 @@ class Quote(object):
         # return PRU in the default currency (i.e. portfolio currency)
         return fmt % self.nv_pru(box)
 
-    def sv_pr(self,box=QUOTE_BOTH,fmt="%.2f"):
+    def sv_pr(self,box=QUOTE_BOTH,fmt="%.2f",bDispCurrency=False):
         # return PR in the default currency (i.e. portfolio currency)
-        return fmt % self.nv_pr(box)
+        if bDispCurrency:
+            sc = ' '+self.m_symbcurr+' '
+        else:
+            sc = ''
+        fmt = fmt + "%s"
+        return fmt % (self.nv_pr(box),sc)
 
     def nv_pv(self,currency,box=QUOTE_BOTH):
         # return PV in the requested currency
@@ -527,6 +532,7 @@ class Quote(object):
     # ---[ stops ] ----------------------------------------
 
     def setStops(self,loss,win):
+        # set the stops
         self.m_stoploss = float(loss)
         self.m_stopwin = float(win)
         if itrade_config.verbose:
@@ -534,6 +540,7 @@ class Quote(object):
         self.m_hasStops = True
 
     def clrStops(self):
+        # clear (remove) the stops
         self.m_stoploss = 0.0
         self.m_stopwin = 0.0
         if itrade_config.verbose:
@@ -541,18 +548,31 @@ class Quote(object):
         self.m_hasStops = False
 
     def nv_stoploss(self):
+        # return threshold low
         return self.m_stoploss
 
-    def sv_stoploss(self):
-        return "%.2f" % self.nv_stoploss()
-
     def nv_stopwin(self):
+        # return threshold high
         return self.m_stopwin
 
-    def sv_stopwin(self):
-        return "%.2f" % self.nv_stopwin()
+    def sv_stoploss(self,bDispCurrency=False):
+        # return a string with optional currency
+        if bDispCurrency:
+            sc = ' '+self.m_symbcurr+' '
+        else:
+            sc = ''
+        return "%.2f%s" % (self.nv_stoploss(),sc)
+
+    def sv_stopwin(self,bDispCurrency=False):
+        # return a string with optional currency
+        if bDispCurrency:
+            sc = ' '+self.m_symbcurr+' '
+        else:
+            sc = ''
+        return "%.2f%s" % (self.nv_stopwin(),sc)
 
     def nv_riskmoney(self,currency):
+        # calculate the money at risk
         sl = itrade_currency.convert(currency,self.m_currency,self.nv_stoploss())
         x = (self.nv_pru()-sl)*self.nv_number()
         if x>0:
@@ -560,10 +580,17 @@ class Quote(object):
         else:
             return 0.0
 
-    def sv_riskmoney(self,currency):
-        return "%.2f" % self.nv_riskmoney(currency)
+    def sv_riskmoney(self,currency,CurrencySymbolToDisplay=None):
+        # return a string with optional currency
+        if CurrencySymbolToDisplay:
+            sc = ' '+CurrencySymbolToDisplay+' '
+        else:
+            sc = ''
+        return "%.2f%s" % (self.nv_riskmoney(currency),sc)
 
     def hasStops(self):
+        # return True if the quote has threshold, False otherwise
+        # getting API on stops can be called only if the quote has threshold
         return self.m_hasStops
 
     # ---[ load or import trades / date is unique key ] ---

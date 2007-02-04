@@ -87,9 +87,57 @@ class iTradeStopsDialog(wx.Dialog):
         # sizers
         sizer = wx.BoxSizer(wx.VERTICAL)
 
+        # current quote
         box = wx.BoxSizer(wx.HORIZONTAL)
 
+        label = wx.StaticText(self, -1, quote.name())
+        box.Add(label, 0, wx.ALIGN_LEFT|wx.ALL, 5)
 
+        label = wx.StaticText(self, -1, message('stops_last'))
+        box.Add(label, 0, wx.ALIGN_LEFT|wx.ALL, 5)
+
+        label = wx.StaticText(self, -1, quote.sv_close(bDispCurrency=True))
+        box.Add(label, 0, wx.ALIGN_LEFT|wx.ALL, 5)
+
+        sizer.AddSizer(box, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
+
+        # Thresholds
+        if quote.nv_number()==0:
+            msgb = message('stops_noshares_loss')
+            msgh = message('stops_noshares_win')
+        else:
+            msgb = message('stops_shares_loss')
+            msgh = message('stops_shares_win')
+
+            box = wx.BoxSizer(wx.HORIZONTAL)
+
+            label = wx.StaticText(self, -1, message('stops_portfolio') % (quote.nv_number(),quote.sv_pr(bDispCurrency=True)) )
+            box.Add(label, 0, wx.ALIGN_LEFT|wx.ALL, 5)
+
+            sizer.AddSizer(box, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
+
+
+        box = wx.BoxSizer(wx.HORIZONTAL)
+
+        label = wx.StaticText(self, -1, msgb)
+        box.Add(label, 0, wx.ALIGN_LEFT|wx.ALL, 5)
+
+        label = wx.StaticText(self, -1, quote.sv_stoploss(bDispCurrency=True))
+        box.Add(label, 0, wx.ALIGN_LEFT|wx.ALL, 5)
+
+        sizer.AddSizer(box, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
+
+        box = wx.BoxSizer(wx.HORIZONTAL)
+
+        label = wx.StaticText(self, -1, msgh)
+        box.Add(label, 0, wx.ALIGN_LEFT|wx.ALL, 5)
+
+        label = wx.StaticText(self, -1, quote.sv_stopwin(bDispCurrency=True))
+        box.Add(label, 0, wx.ALIGN_LEFT|wx.ALL, 5)
+
+        sizer.AddSizer(box, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
+
+        # Commands (OK / CANCEL / Help)
         box = wx.BoxSizer(wx.HORIZONTAL)
 
         # context help
@@ -98,6 +146,13 @@ class iTradeStopsDialog(wx.Dialog):
             box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         # OK
+        if bAdd:
+            msg = message('stops_add')
+            msgdesc = message('stops_add_desc')
+        else:
+            msg = message('stops_edit')
+            msgdesc = message('stops_edit_desc')
+
         btn = wx.Button(self, wx.ID_OK, msg)
         btn.SetDefault()
         btn.SetHelpText(msgdesc)
@@ -129,7 +184,11 @@ def addOrEditStops_iTradeQuote(win,quote,bAdd=True):
         quote = quotes.lookupKey(quote)
     if quote:
         if not quote.hasStops():
-            return iTradeStopsDialog(win,quote,bAdd)
+            dlg = iTradeStopsDialog(win,quote,bAdd)
+            idRet = dlg.ShowModal()
+            dlg.Destroy()
+            if idRet == wx.ID_OK:
+                return True
     return False
 
 # ============================================================================

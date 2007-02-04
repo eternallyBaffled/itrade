@@ -487,7 +487,7 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
                     self.m_list.SetStringItem(x,IDC_TICKER,eachQuote.ticker())
                     self.m_list.SetStringItem(x,IDC_QTY,eachQuote.sv_number(QUOTE_CASH))
                     self.m_list.SetStringItem(x,IDC_PRU,"%s %s" % (eachQuote.sv_pru(QUOTE_CASH),self.m_portfolio.currency_symbol()))
-                    self.m_list.SetStringItem(x,IDC_PR,"%s %s" % (eachQuote.sv_pr(QUOTE_CASH,fmt="%.0f"),self.m_portfolio.currency_symbol()))
+                    self.m_list.SetStringItem(x,IDC_PR, eachQuote.sv_pr(QUOTE_CASH,fmt="%.0f",bDispCurrency=True))
                     self.m_list.SetStringItem(x,IDC_NAME,eachQuote.name())
 
                     self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),x,x,x,x,x,x,x,x,eachQuote.name())
@@ -503,7 +503,7 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
                     self.m_list.SetStringItem(x,IDC_TICKER,"%s (%s)" % (eachQuote.ticker(),message("money_srd")))
                     self.m_list.SetStringItem(x,IDC_QTY,eachQuote.sv_number(QUOTE_CREDIT))
                     self.m_list.SetStringItem(x,IDC_PRU,"%s %s" % (eachQuote.sv_pru(QUOTE_CREDIT),self.m_portfolio.currency_symbol()))
-                    self.m_list.SetStringItem(x,IDC_PR,"%s %s" % (eachQuote.sv_pr(QUOTE_CREDIT),self.m_portfolio.currency_symbol()))
+                    self.m_list.SetStringItem(x,IDC_PR, eachQuote.sv_pr(QUOTE_CREDIT,bDispCurrency=True))
                     self.m_list.SetStringItem(x,IDC_NAME,eachQuote.name())
 
                     self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),x,x,x,x,x,x,x,x,eachQuote.name())
@@ -877,8 +877,8 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
             if eachQuote.hasStops() and (eachQuote.isTraded() or eachQuote.isMonitored()):
                 self.m_list.InsertImageStringItem(x, eachQuote.isin(), self.idx_tbref)
                 self.m_list.SetStringItem(x,IDC_TICKER,eachQuote.ticker())
-                self.m_list.SetStringItem(x,IDC_INVEST,"%s %s" % (eachQuote.sv_pr(fmt="%.0f"),self.m_portfolio.currency_symbol()))
-                self.m_list.SetStringItem(x,IDC_RISKM,"%s %s" % (eachQuote.sv_riskmoney(self.m_portfolio.currency()),self.m_portfolio.currency_symbol()))
+                self.m_list.SetStringItem(x,IDC_INVEST, eachQuote.sv_pr(fmt="%.0f",bDispCurrency=True))
+                self.m_list.SetStringItem(x,IDC_RISKM, eachQuote.sv_riskmoney(self.m_portfolio.currency(),self.m_portfolio.currency_symbol()))
                 self.m_list.SetStringItem(x,IDC_STOPLOSS,"~ %s " % eachQuote.sv_stoploss())
                 self.m_list.SetStringItem(x,IDC_CURRENT,eachQuote.sv_close(bDispCurrency=True))
                 self.m_list.SetStringItem(x,IDC_STOPWIN,"~ %s " % eachQuote.sv_stopwin())
@@ -995,12 +995,12 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
         menu.Append(self.m_popupID_Remove, message('main_popup_remove'))
         menu.Enable(self.m_popupID_Remove,inList)
 
-        if inList and quote.hasStops():
-            menu.Enable(self.m_popupID_Add,False)
-            menu.Enable(self.m_popupID_Edit,True)
-            menu.Enable(self.m_popupID_Remove,True)
+        if inList:
+            menu.Enable(self.m_popupID_Add,not quote.hasStops())
+            menu.Enable(self.m_popupID_Edit,quote.hasStops())
+            menu.Enable(self.m_popupID_Remove,quote.hasStops())
         else:
-            menu.Enable(self.m_popupID_Add,True)
+            menu.Enable(self.m_popupID_Add,False)
             menu.Enable(self.m_popupID_Edit,False)
             menu.Enable(self.m_popupID_Remove,False)
 
