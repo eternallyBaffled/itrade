@@ -1792,12 +1792,11 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
             menu.Enable(self.m_popupID_Edit,inList)
             menu.Append(self.m_popupID_Remove, message('main_popup_remove'))
             menu.Enable(self.m_popupID_Remove,inList)
+            menu.Enable(self.m_popupID_Add,True)
             if inList:
-                menu.Enable(self.m_popupID_Add,not quote.hasStops())
                 menu.Enable(self.m_popupID_Edit,quote.hasStops())
                 menu.Enable(self.m_popupID_Remove,quote.hasStops())
             else:
-                menu.Enable(self.m_popupID_Add,False)
                 menu.Enable(self.m_popupID_Edit,False)
                 menu.Enable(self.m_popupID_Remove,False)
 
@@ -1869,8 +1868,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
     # ---[ Stops ] -----------------------------------------
 
     def OnAddStops(self,e):
-        quote,item = self.getQuoteAndItemOnTheLine(self.m_currentItem)
-        if addOrEditStops_iTradeQuote(self,quote,bAdd=True):
+        if addOrEditStops_iTradeQuote(self,None,bAdd=True):
             self.OnStops(e)
 
     def OnRemoveStops(self,e):

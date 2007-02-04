@@ -1044,8 +1044,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
     # ---[ Stops ] -----------------------------------------
 
     def OnAddStops(self,e):
-        quote,item = self.getQuoteAndItemOnTheLine(self.m_currentItem)
-        if addOrEditStops_iTradeQuote(self,quote,bAdd=True):
+        if addOrEditStops_iTradeQuote(self,None,bAdd=True):
             self.setDirty()
             self.OnStops(e)
 

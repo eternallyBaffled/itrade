@@ -995,12 +995,11 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
         menu.Append(self.m_popupID_Remove, message('main_popup_remove'))
         menu.Enable(self.m_popupID_Remove,inList)
 
+        menu.Enable(self.m_popupID_Add,True)
         if inList:
-            menu.Enable(self.m_popupID_Add,not quote.hasStops())
             menu.Enable(self.m_popupID_Edit,quote.hasStops())
             menu.Enable(self.m_popupID_Remove,quote.hasStops())
         else:
-            menu.Enable(self.m_popupID_Add,False)
             menu.Enable(self.m_popupID_Edit,False)
             menu.Enable(self.m_popupID_Remove,False)
 
