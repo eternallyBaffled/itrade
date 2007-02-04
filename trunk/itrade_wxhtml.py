@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: iso-8859-1 -*-
 # ============================================================================
 # Project Name : iTrade
 # Module Name  : itrade_wxhtml.py
@@ -179,12 +180,15 @@ class iTradeRSSPanel(wx.Panel):
     # ---[ HeaderPage / AppendToPage / TrailerPage must use buffered content ]---
 
     def HeaderPage(self):
+        self.m_content = ""
         self.m_html.SetPage('<html><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><body>')
         self.m_html.AppendToPage("<a href=':scan'>%s</a> " % message('rss_scan'))
         self.m_html.AppendToPage("<a href=':clear'>%s</a>" % message('rss_clear'))
 
     def AppendToPage(self,content):
-        self.m_content = self.m_content + content + '\n'
+        print 'AppendToPage:',self.m_content,content
+        self.m_content = self.m_content + content
+        self.m_content = self.m_content + '\n'
         self.m_html.AppendToPage(content)
 
     def TrailerPage(self):
@@ -198,7 +202,6 @@ class iTradeRSSPanel(wx.Panel):
     def emptyPage(self):
         # generate default content
         self.HeaderPage()
-        self.m_content = ""
         self.TrailerPage()
 
         # save it

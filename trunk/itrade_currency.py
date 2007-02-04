@@ -53,11 +53,11 @@ from itrade_local import message
 # ============================================================================
 
 currencies_CUR = {
-    'EUR' : '€',
-    'USD' : '$',
-    'JPY' : '¥',
-    'GBP' : '£',
-    'AUD' : '$'
+    'EUR' : u'\u20AC', #" '€',
+    'USD' : u'\u0024', # '$'
+    'JPY' : u'\u00A5', # '¥',
+    'GBP' : u'\u00A3', # '£',
+    'AUD' : u'\u0024', # '$'
     }
 
 def currency2symbol(cur):
@@ -245,6 +245,8 @@ if __name__=='__main__':
     print '1 EUR = %.2f USD' % convert('USD','EUR',1)
     print '1 USD = %.2f EUR' % convert('EUR','USD',1)
     print '1 USD = %.2f AUD' % convert('AUD','USD',1)
+
+    print 'EUR = %s',currency2symbol('EUR')
 
 # ============================================================================
 # That's all folks !
