@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: iso-8859-1 -*-
 # ============================================================================
 # Project Name : iTrade
 # Module Name  : itrade_news_google.py
@@ -98,19 +99,23 @@ class News_Google(object):
         flux.feed = _FeedEntry()
         flux.feed.title = feed.feed.title
 
+        # force local to 'en' : strptime() will work correctly
         setLocale('en')
+
         for eachEntry in feed.entries:
             entry = _FeedEntry()
             entry.link = "google::%s" % eachEntry.link
-            entry.title = eachEntry.title
+            entry.title = "%s" % eachEntry.title
 
-            # convert datetime in the right locale then restore locale
+            # convert datetime in the right locale
             entry.date = time.strptime(eachEntry.date, "%a, %d %b %Y %H:%M:%S %Z")
             print '%s: %s -> %s' % (entry.link,eachEntry.date,entry.date)
 
             entry.summary = eachEntry.summary
             entry.source = "google"
             flux.entries.append(entry)
+
+        # restore locale
         setLocale()
 
         #info('Feed %s',flux.feed.title)

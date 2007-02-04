@@ -1284,6 +1284,12 @@ class Quotes(object):
                     # debug('%s ::: %s' % (eachLine,item))
                     self.addStops(item[0],item[1],item[2])
 
+    def saveStops(self,fp=None):
+        stops = []
+        for eachQuote in self.list():
+            stops.append(eachQuote.getStops())
+        itrade_csv.write(fp,os.path.join(itrade_config.dirUserData,'default.stops.txt'),stops)
+
     # ---[ Quotes ] ---
 
     def addQuote(self,isin,name,ticker,market,currency,place,country=None,list=QLIST_SYSTEM,debug=False):

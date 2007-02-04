@@ -186,7 +186,7 @@ class iTradeRSSPanel(wx.Panel):
         self.m_html.AppendToPage("<a href=':clear'>%s</a>" % message('rss_clear'))
 
     def AppendToPage(self,content):
-        print 'AppendToPage:',self.m_content,content
+        #print 'AppendToPage:',self.m_content,content
         self.m_content = self.m_content + content
         self.m_content = self.m_content + '\n'
         self.m_html.AppendToPage(content)
