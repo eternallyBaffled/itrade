@@ -149,7 +149,8 @@ class Quote(object):
 
         self.m_defaultimportconnector = getImportConnector(self.m_market,self.m_list,QTAG_IMPORT,self.m_place)
         if self.m_defaultimportconnector == None:
-            print 'no default import connector for %s (list:%d)' % (self,self.m_list)
+            if itrade_config.verbose:
+                print 'no default import connector for %s (list:%d)' % (self,self.m_list)
 
         if not currency:
             self.m_currency = market2currency(self.m_market)
@@ -354,7 +355,11 @@ class Quote(object):
         return self.m_market
 
     def delay(self):
-        return self.liveconnector().delay()
+        lc = self.liveconnector()
+        if lc:
+            return lc.delay()
+        else:
+            return 15
 
     def liveconnector(self,bForceLive=False):
         if bForceLive:
@@ -412,7 +417,11 @@ class Quote(object):
     # ---[ notebook of order ] ----------------------------
 
     def hasNotebook(self):
-        return self.liveconnector().hasNotebook()
+        lc = self.liveconnector()
+        if lc:
+            return lc.hasNotebook()
+        else:
+            return False
 
     def currentNotebook(self):
         if self.hasNotebook():
@@ -423,7 +432,11 @@ class Quote(object):
     # ---[ status ] ---------------------------------------
 
     def hasStatus(self):
-        return self.liveconnector().hasStatus()
+        lc = self.liveconnector()
+        if lc:
+            return lc.hasStatus()
+        else:
+            return False
 
     def currentStatus(self):
         # current status (status,reopen,RB,RH,clock) could be :
