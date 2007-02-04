@@ -551,5 +551,7 @@ alert_caption;iTrade - Erreur
 
 stops_remove_caption;Suppression des Stops
 stops_remove_text;Confirmez-vous la suppression des stops de la valeur %s ?
+stops_edit_caption;%s - Modifie les Stops
+stops_add_caption;%s - Crée les Stops
 
 test;message de test

@@ -552,5 +552,7 @@ alert_caption;iTrade - Error
 
 stops_remove_caption;Remove Stops
 stops_remove_text;Do you confirm stops removing for quote %s ?
+stops_edit_caption;%s - Stops modification
+stops_add_caption;%s - Stops creation
 
 test;test message

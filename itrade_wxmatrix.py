@@ -1870,7 +1870,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
 
     def OnAddStops(self,e):
         quote,item = self.getQuoteAndItemOnTheLine(self.m_currentItem)
-        if addOrEditStops_iTradeQuote(self,quote):
+        if addOrEditStops_iTradeQuote(self,quote,bAdd=True):
             self.OnStops(e)
 
     def OnRemoveStops(self,e):
@@ -1880,7 +1880,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
 
     def OnEditStops(self,e):
         quote,item = self.getQuoteAndItemOnTheLine(self.m_currentItem)
-        if addOrEditStops_iTradeQuote(self,quote):
+        if addOrEditStops_iTradeQuote(self,quote,bAdd=False):
             self.OnRefresh(e)
 
 # ============================================================================

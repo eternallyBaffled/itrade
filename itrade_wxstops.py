@@ -63,6 +63,59 @@ from itrade_quotes import *
 from itrade_wxutil import iTradeYesNo
 
 # ============================================================================
+# iTradeStopsDialog
+# ============================================================================
+
+class iTradeStopsDialog(wx.Dialog):
+
+    def __init__(self, parent, quote, bAdd = True):
+        # context help
+        pre = wx.PreDialog()
+        pre.SetExtraStyle(wx.DIALOG_EX_CONTEXTHELP)
+        if bAdd:
+            title = message('stops_add_caption') % quote.name()
+        else:
+            title = message('stops_edit_caption') % quote.name()
+        pre.Create(parent, -1, title, size=(420, 420))
+        self.PostCreate(pre)
+
+        # init
+        self.m_add = bAdd
+        self.m_quote = quote
+        self.m_parent = parent
+
+        # sizers
+        sizer = wx.BoxSizer(wx.VERTICAL)
+
+        box = wx.BoxSizer(wx.HORIZONTAL)
+
+
+        box = wx.BoxSizer(wx.HORIZONTAL)
+
+        # context help
+        if wx.Platform != "__WXMSW__":
+            btn = wx.ContextHelpButton(self)
+            box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+
+        # OK
+        btn = wx.Button(self, wx.ID_OK, msg)
+        btn.SetDefault()
+        btn.SetHelpText(msgdesc)
+        box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        wx.EVT_BUTTON(self, wx.ID_OK, self.OnValid)
+
+        # CANCEL
+        btn = wx.Button(self, wx.ID_CANCEL, message('cancel'))
+        btn.SetHelpText(message('cancel_desc'))
+        box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+
+        sizer.AddSizer(box, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
+
+        self.SetAutoLayout(True)
+        self.SetSizerAndFit(sizer)
+
+    def OnValid(self,event):
+        self.EndModal(wx.ID_OK)
 
 # ============================================================================
 # addOrEditStops_iTradeQuote
@@ -71,12 +124,12 @@ from itrade_wxutil import iTradeYesNo
 #   quote       Quote object or ISIN reference
 # ============================================================================
 
-def addOrEditStops_iTradeQuote(win,quote):
+def addOrEditStops_iTradeQuote(win,quote,bAdd=True):
     if not isinstance(quote,Quote):
         quote = quotes.lookupKey(quote)
     if quote:
         if not quote.hasStops():
-            return editStops(win,quote)
+            return iTradeStopsDialog(win,quote,bAdd)
     return False
 
 # ============================================================================
@@ -110,7 +163,15 @@ if __name__=='__main__':
     setLang('us')
     gMessage.load()
 
+    itrade_config.verbose = False
+    quotes.load()
+
+    q = quotes.lookupTicker('SAF','EURONEXT')
+    if q:
+        addOrEditStops_iTradeQuote(None,q,bAdd= not q.hasStops())
+    else:
+        print 'quote not found'
+
 # ============================================================================
 # That's all folks !
 # ============================================================================
-
