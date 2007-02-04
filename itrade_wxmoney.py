@@ -73,6 +73,7 @@ class iTradeMoneyPanel(wx.Window):
     def __init__(self,parent,id,port):
         wx.Window.__init__(self, parent, id)
         self.m_port = port
+        self.m_currentItem = -1
 
     def refresh(self):
         pass
@@ -88,6 +89,7 @@ class iTradeEvaluationChartPanel(wx.Window):
     def __init__(self,parent,id,port):
         wx.Window.__init__(self, parent, id)
         self.m_port = port
+        self.m_currentItem = -1
 
     def refresh(self):
         pass
@@ -103,6 +105,7 @@ class iTradeComputePanel(wx.Window):
     def __init__(self,parent,id,quote):
         wx.Window.__init__(self, parent, id)
         self.m_quote = quote
+        self.m_currentItem = -1
 
     def refresh(self):
         pass
@@ -119,6 +122,7 @@ class iTradeEvaluationPanel(wx.Window):
         wx.Window.__init__(self, parent, id)
         self.m_parent = parent
         self.m_port = port
+        self.m_currentItem = -1
 
         self.m_html = wxUrlClickHtmlWindow(self, -1)
         EVT_HTML_URL_CLICK(self.m_html, self.OnLinkClick)
