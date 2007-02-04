@@ -138,6 +138,7 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
         self.m_portfolio = portfolio
         self.m_matrix = matrix
         self.m_id = id
+        self.m_currentItem = -1
 
         self.m_mustInit = True
 
