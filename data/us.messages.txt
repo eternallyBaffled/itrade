@@ -554,5 +554,15 @@ stops_remove_caption;Remove Stops
 stops_remove_text;Do you confirm stops removing for quote %s ?
 stops_edit_caption;%s - Stops modification
 stops_add_caption;%s - Stops creation
+stops_last;Last trade :
+stops_portfolio;%s owned shares for a value of %s
+stops_shares_loss;Sales Threshold to cut the losses :
+stops_shares_win;Sales Threshold to take the profits :
+stops_noshares_loss;Purchase range - Low Threshold :
+stops_noshares_win;Purchase range - High Threshold :
+stops_add;Add
+stops_edit;Modify
+stops_add_desc;Add Stops information
+stops_edit_desc;Modify Stops information
 
 test;test message

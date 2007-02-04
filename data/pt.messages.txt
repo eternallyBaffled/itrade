@@ -569,5 +569,11 @@ stops_remove_caption;__xRemove Stops
 stops_remove_text;__xDo you confirm stops removing for quote %s ?
 stops_edit_caption;__x%s - Stops modification
 stops_add_caption;__x%s - Stops creation
+stops_last;__xLast trade :
+stops_portfolio;__x%s owned shares for a value of %s
+stops_shares_loss;__xSales Threshold to cut the losses :
+stops_shares_win;__xSales Threshold to take the profits :
+stops_noshares_loss;__xPurchase range - Low Threshold :
+stops_noshares_win;__xPurchase range - High Threshold :
 
 test;Mensagem de teste
