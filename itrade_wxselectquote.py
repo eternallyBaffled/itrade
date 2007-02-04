@@ -73,7 +73,7 @@ import wx.lib.newevent
 (PostInitEvent,EVT_POSTINIT) = wx.lib.newevent.NewEvent()
 
 class iTradeQuoteSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
-    def __init__(self, parent, quote, filter = False, market = None):
+    def __init__(self, parent, quote, filter = False, market = None, filterEnabled=True):
         # context help
         pre = wx.PreDialog()
         pre.SetExtraStyle(wx.DIALOG_EX_CONTEXTHELP)
@@ -188,6 +188,7 @@ class iTradeQuoteSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         self.wxFilterCtrl = wx.CheckBox(self, tID, message('quote_select_filterfield'))
         self.wxFilterCtrl.SetValue(self.m_filter)
         wx.EVT_CHECKBOX(self, tID, self.OnFilter)
+        self.wxFilterCtrl.Enable(filterEnabled)
 
         box.Add(self.wxFilterCtrl, 1, wx.ALIGN_CENTRE|wx.ALL, 5)
 
@@ -433,14 +434,15 @@ class iTradeQuoteSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
 # ============================================================================
 # select_iTradeQuote
 #
-#   win     parent window
-#   dquote  Quote object or ISIN reference
-#   filter  display only 'is traded' symbols
-#   market  filter to given market
+#   win             parent window
+#   dquote          Quote object or ISIN reference
+#   filter          display only 'is traded' symbols
+#   market          filter to given market
+#   filterEnabled   can use the filter
 # ============================================================================
 
-def select_iTradeQuote(win,dquote=None,filter=False,market=None):
-    dlg = iTradeQuoteSelectorListCtrlDialog(win,dquote,filter,market)
+def select_iTradeQuote(win,dquote=None,filter=False,market=None,filterEnabled=True):
+    dlg = iTradeQuoteSelectorListCtrlDialog(win,dquote,filter,market,filterEnabled)
     if dlg.ShowModal()==wx.ID_OK:
         info('select_iTradeQuote() : %s' % dlg.quote)
         quote = dlg.quote

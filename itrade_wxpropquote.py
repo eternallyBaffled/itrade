@@ -468,7 +468,7 @@ class iTradeQuotePropertyWindow(wx.Frame):
 
     def OnSelectQuote(self,event,nquote=None):
         if not nquote:
-            nquote = select_iTradeQuote(self,self.m_quote,filter=True,market=None)
+            nquote = select_iTradeQuote(self,self.m_quote,filter=True,market=None,filterEnabled=False)
         if nquote and nquote<>self.m_quote:
             info('SelectQuote: %s - %s' % (nquote.ticker(),nquote.key()))
             self.m_quote = nquote
@@ -512,7 +512,7 @@ if __name__=='__main__':
     setLang('us')
     gMessage.load()
 
-    q = select_iTradeQuote(None,None,False)
+    q = select_iTradeQuote(None,None,filter=False)
     if q:
         open_iTradeQuoteProperty(None,None,q)
         app.MainLoop()

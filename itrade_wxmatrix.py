@@ -599,7 +599,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
 
     def getQuoteAndItemOnTheLine(self,x):
         key = self.m_list.GetItemData(x)
-        #print 'line:%d -> key=%d quote=%s' % (x,key,self.itemQuoteMap[key].ticker())
+        print 'line:%d -> key=%d quote=%s' % (x,key,self.itemQuoteMap[key].ticker())
         quote = self.itemQuoteMap[key]
         item = self.m_list.GetItem(x)
         return quote,item
@@ -1722,7 +1722,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
             wx.EVT_MENU(self, self.m_popupID_Live, self.OnPopup_Live)
             wx.EVT_MENU(self, self.m_popupID_Properties, self.OnPopup_Properties)
             wx.EVT_MENU(self, self.m_popupID_Add, self.OnPopup_Add)
-            wx.EVT_MENU(self, self.m_popupID_Edit, self.OnPopup_Add)
+            wx.EVT_MENU(self, self.m_popupID_Edit, self.OnPopup_Edit)
             wx.EVT_MENU(self, self.m_popupID_Remove, self.OnPopup_Remove)
             wx.EVT_MENU(self, self.m_popupID_Buy, self.OnPopup_Buy)
             wx.EVT_MENU(self, self.m_popupID_Sell, self.OnPopup_Sell)
@@ -1869,17 +1869,24 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
 
     def OnAddStops(self,e):
         if addOrEditStops_iTradeQuote(self,None,bAdd=True):
+            self.setDirty()
+            self.m_listmode = LISTMODE_INIT
             self.OnStops(e)
 
     def OnRemoveStops(self,e):
         quote,item = self.getQuoteAndItemOnTheLine(self.m_currentItem)
         if removeStops_iTradeQuote(self,quote):
+            self.setDirty()
+            self.m_listmode = LISTMODE_INIT
             self.OnStops(e)
 
     def OnEditStops(self,e):
         quote,item = self.getQuoteAndItemOnTheLine(self.m_currentItem)
+        print 'OnEditStops:',quote,item,self.m_currentItem
         if addOrEditStops_iTradeQuote(self,quote,bAdd=False):
-            self.OnRefresh(e)
+            self.setDirty()
+            self.m_listmode = LISTMODE_INIT
+            self.OnStops(e)
 
 # ============================================================================
 # That's all folks !
