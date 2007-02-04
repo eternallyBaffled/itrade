@@ -141,7 +141,6 @@ main_popup_refreshall;Actualizar tudo
 main_popup_buy;Comprar
 main_popup_sell;Vender
 main_popup_remove;Remover
-main_popup_delete;Eliminar
 main_popup_add;Adicionar ...
 main_popup_view;Vista
 main_popup_live;Live

@@ -138,12 +138,14 @@ main_popup_refreshall;Tout mettre à jour
 main_popup_buy;Vente
 main_popup_sell;Achat
 main_popup_remove;Supprimer
-main_popup_delete;Supprimer
 main_popup_add;Ajouter ...
 main_popup_view;Visualiser
 main_popup_live;Live
 main_popup_properties;Propriétés
 main_popup_edit;Modifier
+main_popup_add_stops;Ajouter Stops ...
+main_popup_edit_stops;Modifier Stops ...
+main_popup_remove_stops;Supprimer Stops
 
 main_valuation;Evaluation
 

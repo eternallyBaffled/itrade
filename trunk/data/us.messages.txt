@@ -134,12 +134,14 @@ main_popup_refreshall;Refresh All
 main_popup_buy;Buy
 main_popup_sell;Sell
 main_popup_remove;Remove
-main_popup_delete;Delete
 main_popup_add;Add ...
 main_popup_view;View
 main_popup_live;Live
 main_popup_properties;Properties
 main_popup_edit;Edit
+main_popup_add_stops;Add Stops ...
+main_popup_edit_stops;Modify Stops ...
+main_popup_remove_stops;Remove Stops
 
 main_valuation;Portfolio Value
 

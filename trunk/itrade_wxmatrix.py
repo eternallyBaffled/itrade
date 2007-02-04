@@ -599,7 +599,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
 
     def getQuoteAndItemOnTheLine(self,x):
         key = self.m_list.GetItemData(x)
-        print 'line:%d -> key=%d quote=%s' % (x,key,self.itemQuoteMap[key].ticker())
+        #print 'line:%d -> key=%d quote=%s' % (x,key,self.itemQuoteMap[key].ticker())
         quote = self.itemQuoteMap[key]
         item = self.m_list.GetItem(x)
         return quote,item
@@ -1786,11 +1786,11 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
             menu.Enable(self.m_popupID_Sell,False)
         elif self.m_listmode == LISTMODE_STOPS:
             menu.AppendSeparator()
-            menu.Append(self.m_popupID_Add, message('main_popup_add'))
+            menu.Append(self.m_popupID_Add, message('main_popup_add_stops'))
             menu.AppendSeparator()
-            menu.Append(self.m_popupID_Edit, message('main_popup_edit'))
+            menu.Append(self.m_popupID_Edit, message('main_popup_edit_stops'))
             menu.Enable(self.m_popupID_Edit,inList)
-            menu.Append(self.m_popupID_Remove, message('main_popup_remove'))
+            menu.Append(self.m_popupID_Remove, message('main_popup_remove_stops'))
             menu.Enable(self.m_popupID_Remove,inList)
             menu.Enable(self.m_popupID_Add,True)
             if inList:
