@@ -1045,7 +1045,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
 
     def OnAddStops(self,e):
         quote,item = self.getQuoteAndItemOnTheLine(self.m_currentItem)
-        if addOrEditStops_iTradeQuote(self,quote):
+        if addOrEditStops_iTradeQuote(self,quote,bAdd=True):
             self.setDirty()
             self.OnStops(e)
 
@@ -1057,7 +1057,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
 
     def OnEditStops(self,e):
         quote,item = self.getQuoteAndItemOnTheLine(self.m_currentItem)
-        if addOrEditStops_iTradeQuote(self,quote):
+        if addOrEditStops_iTradeQuote(self,quote,bAdd=False):
             self.setDirty()
             self.OnRefresh(e)
 
