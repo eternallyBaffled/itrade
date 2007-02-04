@@ -928,7 +928,7 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
 
             page = page - 1
             self.ID_PAGE_GRAPH = 0
-            if self.m_quote.liveconnector().hasNotebook():
+            if self.m_quote.hasNotebook():
                 self.ID_PAGE_LIVE = 1
                 self.ID_PAGE_INTRADAY = 2
             else:
@@ -1175,6 +1175,9 @@ if __name__=='__main__':
     from itrade_local import *
     setLang('us')
     gMessage.load()
+
+    itrade_config.verbose = False
+    quotes.load()
 
     q = quotes.lookupTicker('SAF','EURONEXT')
     if q:
