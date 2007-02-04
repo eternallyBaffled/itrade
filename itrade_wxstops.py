@@ -183,12 +183,11 @@ def addOrEditStops_iTradeQuote(win,quote,bAdd=True):
     if not isinstance(quote,Quote):
         quote = quotes.lookupKey(quote)
     if quote:
-        if not quote.hasStops():
-            dlg = iTradeStopsDialog(win,quote,bAdd)
-            idRet = dlg.ShowModal()
-            dlg.Destroy()
-            if idRet == wx.ID_OK:
-                return True
+        dlg = iTradeStopsDialog(win,quote,bAdd)
+        idRet = dlg.ShowModal()
+        dlg.Destroy()
+        if idRet == wx.ID_OK:
+            return True
     return False
 
 # ============================================================================
