@@ -37,6 +37,10 @@ main_view_operations;&Transacções
 main_view_desc_operations; Gerir as transacções na conta actual
 main_view_money;&Gestão de dinheiro
 main_view_desc_money; Gestão de dinheiro
+main_view_alerts;&Notícias e alertas
+main_view_desc_alerts; Notícias e alertas
+main_view_currencies;&Moedas correntes
+main_view_desc_currencies; Moedas correntes
 main_view_evaluation; &Desempenho
 main_view_desc_evaluation; Avaliação do desempenho da carteira
 
@@ -93,30 +97,23 @@ main_options_lang_deutch;Deutch
 
 main_options_cache;&"cache"
 main_options_desc_cache; Gestão do "cache"
-
-main_cache_erase_data; Apagar os dados históricos
-
+main_cache_erase_data; Apagar os Dados &Históricos
 main_cache_desc_erase_data; Apagar todos os dados históricos do "cache"
-
 main_cache_erase_news; Apagar as &Informações
 main_cache_desc_erase_news; Apagar todas as informações do "cache"
-
-
-main_cache_erase_all; Apagar &tudo
+main_cache_erase_all; Apagar &Tudo
 main_cache_desc_erase_all; Apagar todos os dados (noticia, historiais...) do "cache"
-
-
 
 main_help;&Ajuda
 main_help_contents;&Índices
 main_help_desc_contents; Índices de ajuda
-main_help_support;&Suporte técnico ...
+main_help_support;&Suporte Técnico ...
 main_help_desc_support; Como obter o suporte técnico?
 main_help_bugs;Criar o relatório do &Bug ...
 main_help_desc_bugs; Criar o relatório de erro tracker do projecto
-main_help_forum;__xGo to &Forum
-main_help_desc_forum;__x Participate to the iTrade communauty forum (english / french)
-main_help_donors;&Doar o dinheiro…
+main_help_forum;&Fórum de Usuário
+main_help_desc_forum;Participar na comunidade iTrade sobre o seu Fórum (Francês-inglês)
+main_help_donors;&Doar o Dinheiro…
 main_help_desc_donors; Como doar o dinheiro para suportar este projecto
 
 main_about;&Sobre ...
@@ -127,7 +124,7 @@ main_save_operation_data;Guardar os dados da transacção?
 
 main_title_portfolio;iTrade - Conta %s: %s
 main_title_quotes;iTrade - Matriz %s: %s
-main_title_stops;iTrade - Batentes %s: %s
+main_title_stops;iTrade - Stops %s: %s
 main_title_indicators;iTrade - Indicadores %s: %s
 main_title_evaluation;iTrade - Desempenho %s: %s
 
@@ -146,6 +143,9 @@ main_popup_view;Vista
 main_popup_live;Live
 main_popup_properties;Propriedades
 main_popup_edit;Editar
+main_popup_add_stops;Adicionar Stops ...
+main_popup_edit_stops;Modificar Stops ...
+main_popup_remove_stops;Suprimir Stops
 
 main_valuation;Avaliação
 
@@ -160,8 +160,8 @@ cancel;Cancelar
 cancel_desc;O botão de cancelamento cancela o diálogo (Duh!)
 close;Fechar
 close_desc;O botão de fecho encerra o diálogo
-yes;__xYes
-no;__xNo
+yes;Sim
+no;Não
 
 isin;ISIN
 ticker;Mnemo
@@ -196,7 +196,7 @@ all_markets;Todos os mercados
 invalid_isin;O código de ISIN %s é inválido
 symbol_not_found;O Código de ISIN %s ou nome %s não encontrado
 
-download_symbols_onelist;Lista de Update
+download_symbols_onelist;Actualização da lista
 download_symbols_onedesc;Actualizar a lista dos símbolos por download dos dados da rede
 download_symbols_alllists;Actualizar todas as listas
 download_symbols_alldesc;Actualizar todas as listas dos símbolos por download dos dados da rede
@@ -257,10 +257,6 @@ money_evaluation;Desempenho
 money_compute;Cálculo
 money_evaluationchart;Gráfico
 money_money;Gerência de risco
-main_view_alerts;&Notícias e alertas
-main_view_desc_alerts; Notícias e alertas
-main_view_currencies;&Moedas correntes
-main_view_desc_currencies; Moedas correntes
 
 portfolio_title;iTrade - transação
 portfolio_select_title;Selecionar uma conta
@@ -419,15 +415,18 @@ tb_config;Configuração do gráfico
 tb_home;Restaurar a posição original
 tb_zoom_out;Aumentar o período
 tb_zoom_in;Diminuir o período
+tb_setup;Configuar página...
+tb_print;Imprimir...
+tb_preview;Visualizar impressão
 
-tb_tool_ind;__xDisplay Popup
-tb_tool_hline;__xDraw Horizontal line
-tb_tool_vline;__xDraw Vertical line
-tb_tool_oline;__xDraw Oblique line
-tb_tool_trash;__xSuppress object
-tb_tool_fibo;__xDraw Fibonacci object
-tb_tool_text;__xDraw Text
-tb_tool_prop;__xObject properties
+tb_tool_ind;Afixação dos Popups
+tb_tool_hline;Desenhar uma linha Horizontal
+tb_tool_vline;Desenhar uma linha Vertical
+tb_tool_oline;Desenhar uma linha Oblíqua
+tb_tool_trash;Suprimir um objecto
+tb_tool_fibo;Desenhar um objecto Fibonacci
+tb_tool_text;Escrever um Texto
+tb_tool_prop;Propriedades do objeto
 
 quote_popup_dispMA150;Média movimentada 150 dias
 quote_popup_dispSto;Estocástico
@@ -516,36 +515,25 @@ currency_rate;Taxa
 currency_refreshing;Actualizar os dados actuais
 
 cache_erase_confirm_title; Apagar dados do "cache"
-
 cache_erase_confirm_data; Apagar todos os dados históricos do "cache" ?(os dados serão regenerados)
-
 cache_erase_confirm_news; Apagar toda a notícia do "cache" ? (os dados serão regenerados)
-
 cache_erase_confirm_all; Apagar todos os dados (historiais, notícia...) do "cache"? (os dados serão regenerados)
-
 
 indicator_autorefresh;Regeneração automática
 indicator_noautorefresh;Regeneração manual
-
 indicator_disconnected;Desconectado
 
 login_title;Acesso Cliente
 login_fortuneo_desc;Entrar o vosso identificador Fortuneo (conta real ou da demonstração)
-
 login_boursorama_desc;Entrar o vosso identificador Boursorama (conta cliente ou pseudónimo)
 login_set;Validar
 login_setdesc;Válidar as informações de acesso apreendidas
 login_username;Identificador :
-
 login_password;Senha :
-
 login_test;Testar
 login_testdesc; Tentar o acesso ao serviço com as informações fornecidas
-
 login_test_ok;O acesso ao serviço funciona com estas informações
-
 login_test_nok;O acesso ao serviço não funciona com estas informações
-
 
 page_portfolio;Conta
 page_quotes;Matriz
@@ -559,20 +547,24 @@ print_errprinting;Erro de impressão.\nVerificar a configuração corrente?
 print_page;Página: %d
 
 about_url;__xPlease point your browser at : %s
-about_title;__xAbout iTrade
+about_title;Sobre o iTrade
 
-info_caption;__xiTrade - Information
-alert_caption;__xiTrade - Error
+info_caption;iTrade - Informação
+alert_caption;iTrade - Erro
 
-stops_remove_caption;__xRemove Stops
-stops_remove_text;__xDo you confirm Stops information removing for quote %s ?
-stops_edit_caption;__x%s - Stops modification
-stops_add_caption;__x%s - Stops creation
-stops_last;__xLast trade :
-stops_portfolio;__x%s owned shares for a value of %s
-stops_shares_loss;__xSales Threshold to cut the losses :
-stops_shares_win;__xSales Threshold to take the profits :
-stops_noshares_loss;__xPurchase range - Low Threshold :
-stops_noshares_win;__xPurchase range - High Threshold :
+stops_remove_caption;Suprimir os stops
+stops_remove_text;Suprimir realmente os stops da acção %s ?
+stops_edit_caption;%s - Alterar os Stops
+stops_add_caption;%s - Criar os Stops
+stops_last;Última cotação :
+stops_portfolio;%s acções em conta para um valor de %s
+stops_shares_loss;Ponto inicial de venda para cortar as perdas :
+stops_shares_win;Ponto inicial de venda para tomar os lucros :
+stops_noshares_loss;Escala de compra - Ponto inicial baixo :
+stops_noshares_win;Escala de compra - Ponto inicial elevado :
+stops_add;Adicionar
+stops_edit;Modificar
+stops_add_desc;Adicionar as informações de Stops
+stops_edit_desc;Modificar as informações de Stops
 
 test;Mensagem de teste
