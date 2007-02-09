@@ -191,6 +191,9 @@ place;Place
 all_markets;All markets
 invalid_isin;ISIN code %s is invalid
 symbol_not_found;ISIN code %s or name %s not found
+risk;Risk
+stop_plus;Stop+
+stop_minus;Stop-
 
 download_symbols_onelist;Update List
 download_symbols_onedesc;Update the list of symbols by downloading data from the network

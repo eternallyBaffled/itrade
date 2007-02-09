@@ -1534,13 +1534,13 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
     def populateStops(self):
         self.populateMatrixBegin()
 
-        self.m_list.InsertColumn(IDC_INVEST, 'Buy', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_RISKM, 'Risk', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_STOPLOSS, 'Stop-', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_CURRENT, 'USP', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_STOPWIN, 'Stop+', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_PV, 'Sell', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_PROFIT, 'Profit', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_INVEST, message('buy'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_RISKM, message('risk'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_STOPLOSS, message('stop_minus'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_CURRENT, message('USP'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_STOPWIN, message('stop_plus'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_PV, message('sell'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_PROFIT, message('profit'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
         self.m_list.InsertColumn(IDC_PERCENT, ' % ', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
         self.m_list.InsertColumn(IDC_NAME, message('name'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
 
