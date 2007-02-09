@@ -71,6 +71,7 @@ from itrade_wxmixin import iTrade_wxFrame
 
 from itrade_wxpanes import iTrade_MatrixPortfolioPanel,iTrade_MatrixQuotesPanel,iTrade_MatrixStopsPanel,iTrade_MatrixIndicatorsPanel
 from itrade_wxmoney import iTradeEvaluationPanel
+from itrade_wxutil import iTradeYesNo
 
 # ============================================================================
 # menu identifier
@@ -986,25 +987,16 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
     # --- [ cache management ] -------------------------------------
 
     def OnCacheEraseData(self,e):
-        #__xdlg = wx.MessageDialog(self, message('cache_erase_confirm_data'), message('cache_erase_confirm_title'), wx.YES_NO | wx.YES_DEFAULT | wx.ICON_QUESTION)
-        #__xidRet = dlg.ShowModal()
-        #__xdlg.Destroy()
         idRet = iTradeYesNo(self, message('cache_erase_confirm_data'), message('cache_erase_confirm_title'))
         if idRet == wx.ID_YES:
             self.m_matrix.flushTrades()
 
     def OnCacheEraseNews(self,e):
-        #__xdlg = wx.MessageDialog(self, message('cache_erase_confirm_news'), message('cache_erase_confirm_title'), wx.YES_NO | wx.YES_DEFAULT | wx.ICON_QUESTION)
-        #__xidRet = dlg.ShowModal()
-        #__xdlg.Destroy()
         idRet = iTradeYesNo(self, message('cache_erase_confirm_news'), message('cache_erase_confirm_title'))
         if idRet == wx.ID_YES:
             self.m_matrix.flushNews()
 
     def OnCacheEraseAll(self,e):
-        #__xdlg = wx.MessageDialog(self, message('cache_erase_confirm_all'), message('cache_erase_confirm_title'), wx.YES_NO | wx.YES_DEFAULT | wx.ICON_QUESTION)
-        #__xidRet = dlg.ShowModal()
-        #__xdlg.Destroy()
         idRet = iTradeYesNo(self, message('cache_erase_confirm_all'), message('cache_erase_confirm_title'))
         if idRet == wx.ID_YES:
             self.m_matrix.flushAll()

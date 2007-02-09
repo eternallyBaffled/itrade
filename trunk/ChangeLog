@@ -5,6 +5,10 @@ On the road for v0.4.6 (Nausicaa2)
 
 ===============================================================================
 
+2007-02-09  Gilles Dumortier <dgil at ieee.org>
+	* r560 (-x) : Caching menu :Can't erase History... (SF bug 1656130)
+	* Popup Matrix-Portfolio view : Inversion operations (SF bug 1655908)
+
 2007-02-04  Gilles Dumortier <dgil at ieee.org>
 	* new tarball
 	* r556 (-x) Money management-Attribute Error (SF bug 1651923)
