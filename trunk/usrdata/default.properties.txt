@@ -1,1 +1,0 @@
-NL0000400653.EURONEXT.PAR;import;euronext
