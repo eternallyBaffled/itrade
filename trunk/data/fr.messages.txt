@@ -135,8 +135,8 @@ mixin_close;Fermer cette fenêtre
 mixin_open;Changement de Contexte
 
 main_popup_refreshall;Tout mettre à jour
-main_popup_buy;Vente
-main_popup_sell;Achat
+main_popup_buy;Achat
+main_popup_sell;Vente
 main_popup_remove;Supprimer
 main_popup_add;Ajouter ...
 main_popup_view;Visualiser
