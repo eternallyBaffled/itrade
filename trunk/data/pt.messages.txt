@@ -195,6 +195,9 @@ place;Lugar
 all_markets;Todos os mercados
 invalid_isin;O código de ISIN %s é inválido
 symbol_not_found;O Código de ISIN %s ou nome %s não encontrado
+risk;__xRisk
+stop_plus;Stop+
+stop_minus;Stop-
 
 download_symbols_onelist;Actualização da lista
 download_symbols_onedesc;Actualizar a lista dos símbolos por download dos dados da rede
