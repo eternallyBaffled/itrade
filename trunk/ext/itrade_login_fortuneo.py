@@ -121,12 +121,12 @@ class Login_fortuneo(object):
 
         headers = {
                     "Connection":"keep-alive",
-                    "Accept":"text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
+                    "Accept":"*/*", #text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
                     "Host":self.m_default_host,
-                    "User-Agent":"Mozilla/4.0 (Windows XP 5.1) Java/1.5.0_06",
-                    "Pragma":"no-cache",
-                    "Cache-Control":"no-cache",
-                    "Content-Type":"application/x-www-form-urlencoded"
+                    "User-Agent":"Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.1) Gecko/20061204 Firefox/2.0.0.1",
+                    #"Pragma":"no-cache",
+                    #"Cache-Control":"no-cache",
+                    #"Content-Type":"application/x-www-form-urlencoded"
                     }
 
         # POST login request
@@ -134,42 +134,58 @@ class Login_fortuneo(object):
             self.m_conn.request("POST", self.m_login_url, params, headers)
             flux = self.m_conn.getresponse()
         except:
-            print 'Login_fortuneo:POST login failure %s' % self.m_login_url
+            print 'Login_fortuneo:POST login %s failure %s' % (u,self.m_login_url)
             return False
 
-        if flux.status != 200:
-            print 'Login_fortuneo: login status==%d!=200 reason:%s' % (flux.status,flux.reason)
+        if flux.status == 200:
+            # OK : we are logged to the service ... we can extract Session and Engine ID
+            buf = flux.read()
+
+            #print buf
+
+            m = re.search("name=\"BV_SessionID\"\s*value=\"\S+\"",buf,re.IGNORECASE|re.MULTILINE)
+            if m==None:
+                print 'Login_fortuneo: BV_SessionID statement not found !'
+                return False
+
+            BV_SessionID = m.group()[27:-1]
+
+            #print 'BV_SessionID = ',BV_SessionID
+
+            m = re.search("name=\"BV_EngineID\"\s*value=\"\S+\"",buf,re.IGNORECASE|re.MULTILINE)
+            if m==None:
+                print 'Login_fortuneo: BV_EngineID statement not found !'
+                return False
+
+            BV_EngineID = m.group()[26:-1]
+
+            #print 'BV_EngineID = ',BV_EngineID
+
+            # POST ACK
+            params = "BV_SessionID=%s&BV_EngineID=%s\r\n" % (BV_SessionID,BV_EngineID)
+            url = self.m_ack_url
+
+        elif flux.status == 302:
+            # since 2007-02-12 : redirection !
+            url = None
+            for n,v in flux.getheaders():
+                if n=='location':
+                    url = v
+                    break
+
+            params = None
+            if url==None:
+                print "Login_fortuneo: redirection with 'location' in headers !"
+                return False
+
+        else:
+            print 'Login_fortuneo: login %s status==%d!=200 reason:%s headers:%s' % (u,flux.status,flux.reason,flux.getheaders())
             return False
-
-        # OK : we are logged to the service ... we can extract Session and Engine ID
-        buf = flux.read()
-        #print buf
-
-        m = re.search("name=\"BV_SessionID\"\s*value=\"\S+\"",buf,re.IGNORECASE|re.MULTILINE)
-        if m==None:
-            print 'Login_fortuneo: BV_SessionID statement not found !'
-            return False
-
-        BV_SessionID = m.group()[27:-1]
-
-        #print 'BV_SessionID = ',BV_SessionID
-
-        m = re.search("name=\"BV_EngineID\"\s*value=\"\S+\"",buf,re.IGNORECASE|re.MULTILINE)
-        if m==None:
-            print 'Login_fortuneo: BV_EngineID statement not found !'
-            return False
-
-        BV_EngineID = m.group()[26:-1]
-
-        #print 'BV_EngineID = ',BV_EngineID
 
         # OK ! GOOD ! use BV_SessionID and BV_EngineID to get secure cookie
 
-        # POST ACK
-        params = "BV_SessionID=%s&BV_EngineID=%s\r\n" % (BV_SessionID,BV_EngineID)
-
         try:
-            self.m_conn.request("POST", self.m_ack_url, params, headers)
+            self.m_conn.request("POST", url, params, headers)
             flux = self.m_conn.getresponse()
         except:
             print 'Login_fortuneo:POST ack failure %s' % self.m_ack_url
@@ -205,7 +221,7 @@ class Login_fortuneo(object):
         cookie = m.group()[17:-11]
         #print len(cookie),':',cookie
         if len(cookie)!=96:
-            print 'Login_fortuneo: cookie len is invalid (%d != 96) !' % len(cookie)
+            print 'Login_fortuneo: cookie len is strange (%d != 96) !' % len(cookie)
 
         self.m_logged = True
 

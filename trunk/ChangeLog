@@ -5,6 +5,15 @@ On the road for v0.4.6 (Nausicaa2)
 
 ===============================================================================
 
+2007-02-12  Gilles Dumortier <dgil at ieee.org>
+	* Fortuneo plugin : handle redirection (302)
+
+2007-02-11  Gilles Dumortier <dgil at ieee.org>
+	* Switch to matplotlib 0.90.x
+
+2007-02-10  Gilles Dumortier <dgil at ieee.org>
+	* Split forum : French vs English
+
 2007-02-09  Gilles Dumortier <dgil at ieee.org>
 	* Stops View : some words are not translated (SF bug 1653527)
 	* r560 (-x) : Caching menu :Can't erase History... (SF bug 1656130)
