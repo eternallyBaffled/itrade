@@ -95,14 +95,18 @@ gbDisconnected = False
 # support
 bugTrackerURL = 'http://sourceforge.net/tracker/?group_id=128261&atid=711187'
 donorsTrackerURL = 'http://sourceforge.net/donate/index.php?group_id=128261'
-forumURL = 'http://sourceforge.net/forum/forum.php?forum_id=436160'
 
 manualURL = {}
-supportURL = {}
 manualURL['fr'] = 'http://itrade.sourceforge.net/fr/manual.htm'
-supportURL['fr'] = 'http://itrade.sourceforge.net/fr/support.htm'
 manualURL['en'] = 'http://itrade.sourceforge.net/manual.htm'
+
+supportURL = {}
 supportURL['en'] = 'http://itrade.sourceforge.net/support.htm'
+supportURL['fr'] = 'http://itrade.sourceforge.net/fr/support.htm'
+
+forumURL = {}
+forumURL['en'] = 'http://sourceforge.net/forum/forum.php?forum_id=436161'
+forumURL['fr'] = 'http://sourceforge.net/forum/forum.php?forum_id=436160'
 
 # use ANSI colors
 useColors = False
