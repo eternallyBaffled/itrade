@@ -8,9 +8,9 @@ Version 0.4.6 - Nausicaa2
 We recommend you to install :
 
  Python      http://www.python.org                  v 2.5 or better
- wxPython    http://www.wxpython.org                v 2.6.x or better (UNICODE)
+ wxPython    http://www.wxpython.org                v 2.8.x or better (UNICODE)
  numpy       http://sourceforge.net/projects/numpy  v 1.0 or better
- matplotlib  http://matplotlib.sourceforge.net      v 0.87.7 or better
+ matplotlib  http://matplotlib.sourceforge.net      v 0.90.x or better
 
 Attention :
 If you have some trouble running iTrade after migrating from a previous version,

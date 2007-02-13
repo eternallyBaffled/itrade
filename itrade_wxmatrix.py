@@ -740,7 +740,12 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
         iTradeLaunchBrowser(itrade_config.bugTrackerURL,new=True)
 
     def OnForum(self,e):
-        iTradeLaunchBrowser(itrade_config.forumURL,new=True)
+        id = getLang()
+        if itrade_config.forumURL.has_key(id):
+            url = itrade_config.forumURL[id]
+        else:
+            url = itrade_config.forumURL['en']
+        iTradeLaunchBrowser(url,new=True)
 
     def OnDonors(self,e):
         iTradeLaunchBrowser(itrade_config.donorsTrackerURL,new=True)
