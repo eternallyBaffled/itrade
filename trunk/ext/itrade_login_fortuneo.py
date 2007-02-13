@@ -162,6 +162,7 @@ class Login_fortuneo(object):
             #print 'BV_EngineID = ',BV_EngineID
 
         elif flux.status == 302:
+            # OK : we are logged to the service ... we can extract Session and Engine ID
             buf = flux.read()
 
             # since 2007-02-12 : redirection !
@@ -176,7 +177,8 @@ class Login_fortuneo(object):
                 print "Login_fortuneo: redirection with 'location' in headers !"
                 return False
 
-            print url
+            #print url
+
             m = re.search("\?BV_SessionID=\S+\&",url,re.IGNORECASE|re.MULTILINE)
             if m==None:
                 print 'Login_fortuneo: BV_SessionID statement not found !'
@@ -193,7 +195,7 @@ class Login_fortuneo(object):
 
             BV_EngineID = m.group()[13:]
 
-            print 'BV_EngineID =',BV_EngineID
+            #print 'BV_EngineID =',BV_EngineID
 
         else:
             print 'Login_fortuneo: login %s status==%d!=200 reason:%s headers:%s' % (u,flux.status,flux.reason,flux.getheaders())
@@ -239,9 +241,10 @@ class Login_fortuneo(object):
             return False
 
         cookie = m.group()[17:-11]
-        print len(cookie),':',cookie
-        if len(cookie)!=96:
-            print 'Login_fortuneo: cookie len is strange (%d != 96) !' % len(cookie)
+
+        print 'Login_fortuneo: cookie:',len(cookie),':',cookie
+        #if len(cookie)!=96:
+        #   print 'Login_fortuneo: cookie len is strange (%d != 96) !' % len(cookie)
 
         self.m_logged = True
 
