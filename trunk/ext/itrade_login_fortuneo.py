@@ -161,11 +161,9 @@ class Login_fortuneo(object):
 
             #print 'BV_EngineID = ',BV_EngineID
 
-            # POST ACK
-            params = "BV_SessionID=%s&BV_EngineID=%s\r\n" % (BV_SessionID,BV_EngineID)
-            url = self.m_ack_url
-
         elif flux.status == 302:
+            buf = flux.read()
+
             # since 2007-02-12 : redirection !
             url = None
             for n,v in flux.getheaders():
@@ -178,21 +176,43 @@ class Login_fortuneo(object):
                 print "Login_fortuneo: redirection with 'location' in headers !"
                 return False
 
+            print url
+            m = re.search("\?BV_SessionID=\S+\&",url,re.IGNORECASE|re.MULTILINE)
+            if m==None:
+                print 'Login_fortuneo: BV_SessionID statement not found !'
+                return False
+
+            BV_SessionID = m.group()[14:-1]
+
+            #print 'BV_SessionID =',BV_SessionID
+
+            m = re.search("\&BV_EngineID=\S+",url,re.IGNORECASE|re.MULTILINE)
+            if m==None:
+                print 'Login_fortuneo: BV_EngineID statement not found !'
+                return False
+
+            BV_EngineID = m.group()[13:]
+
+            print 'BV_EngineID =',BV_EngineID
+
         else:
             print 'Login_fortuneo: login %s status==%d!=200 reason:%s headers:%s' % (u,flux.status,flux.reason,flux.getheaders())
             return False
 
+        # POST ACK
+        params = "BV_SessionID=%s&BV_EngineID=%s\r\n" % (BV_SessionID,BV_EngineID)
+
         # OK ! GOOD ! use BV_SessionID and BV_EngineID to get secure cookie
 
         try:
-            self.m_conn.request("POST", url, params, headers)
+            self.m_conn.request("POST", self.m_ack_url, params, headers)
             flux = self.m_conn.getresponse()
         except:
             print 'Login_fortuneo:POST ack failure %s' % self.m_ack_url
             return False
 
         if flux.status != 200:
-            print 'Login_fortuneo: ack status==%d!=200 reason:%s' % (flux.status,flux.reason)
+            print 'Login_fortuneo: ack status==%d!=200 reason:%s headers:%s' % (flux.status,flux.reason,flux.getheaders())
             return False
 
         buf = flux.read()
@@ -219,7 +239,7 @@ class Login_fortuneo(object):
             return False
 
         cookie = m.group()[17:-11]
-        #print len(cookie),':',cookie
+        print len(cookie),':',cookie
         if len(cookie)!=96:
             print 'Login_fortuneo: cookie len is strange (%d != 96) !' % len(cookie)
 
