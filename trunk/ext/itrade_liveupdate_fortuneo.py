@@ -59,6 +59,8 @@ from itrade_logging import *
 from itrade_quotes import *
 from itrade_ext import *
 
+import blowfish
+
 # ============================================================================
 # Flux to Place
 # ============================================================================
@@ -393,6 +395,76 @@ def convert(n,v,s):
     return n,v,s
 
 # ============================================================================
+# encode_topics
+# ============================================================================
+
+h2n = {
+    '0': 0,
+    '1': 1,
+    '2': 2,
+    '3': 3,
+    '4': 4,
+    '5': 5,
+    '6': 6,
+    '7': 7,
+    '8': 8,
+    '9': 9,
+    'A': 10,
+    'B': 11,
+    'C': 12,
+    'D': 13,
+    'E': 14,
+    'F': 15
+    }
+
+def hex2num(hex):
+    d = h2n[hex[0]]*16 + h2n[hex[1]]
+    if d>127:
+        d = d - 256
+    return d
+
+def encode_topic(topic,key):
+    blowfish.initialize(key)
+
+    instring = topic
+    blocks = len(instring)/8
+    padding = (blocks + 1)*8 - len(instring)
+    instring = instring + padding * chr(padding)
+    print "Padding with %s bytes" % padding
+
+    outstring = ""
+
+    print "Encrypting..."
+    for i in range(blocks+1):
+        inbytes   = blowfish.mkchunk(instring[i*8:i*8+8])   # 8-byte string as hex no.
+        cipher    = blowfish.bfencrypt(inbytes)             # ...encrypted
+        outbytes  = "%016X" % cipher
+        outstring = outstring + outbytes                    # and appended
+
+    topic = ""
+    print "Size: %s / %s" % (len(instring),len(outstring))
+    print '"%s"' % outstring
+    for i in range(0,len(outstring),2):
+        if i>0: topic = topic + "%3B"
+        topic = topic + '%d' % hex2num(outstring[i:i+2])
+
+    return '%5B'+topic+'%5D'
+
+def encode_topics(topics,key):
+    key = blowfish.mkchunk(key)
+    topics = topics.split(',')
+    ret = ""
+
+    j=0
+    for topic in topics:
+        if j>0:
+            ret = ret + '%2C'
+        ret = ret + encode_topic(topic.encode("ISO-8859-1"),key)
+        j = j + 1
+
+    return ret
+
+# ============================================================================
 # LiveUpdate_fortuneo()
 #
 # ============================================================================
@@ -411,6 +483,7 @@ class LiveUpdate_fortuneo(object):
         self.m_lastclock = 0
 
         self.m_cookie = None
+        self.m_blowfish = None
         self.m_places = None
 
     # ---[ read cookie ] ---
@@ -419,8 +492,10 @@ class LiveUpdate_fortuneo(object):
             try:
                 f = open(os.path.join(itrade_config.dirUserData,'fortuneo_live.txt'),'r')
                 infile = f.readlines()
-                self.m_cookie = infile[0].strip()
+                txt = infile[0].strip()
                 f.close()
+                self.m_cookie,self.m_blowfish = txt.split('-')
+                print 'cookie,blowfish:',self.m_cookie,self.m_blowfish
             except IOError:
                 self.m_cookie = ''
 
@@ -523,8 +598,12 @@ class LiveUpdate_fortuneo(object):
                     }
 
         cac = "FR0003500008"
-        params = "subscriptions={%s,%s}&userinfo=%s\r\n" % (isin2subscriptions(isin,self.place(isin)),indice2subscriptions(cac,self.place(cac)),self.m_cookie)
-        #print params
+        #topics = "%s,%s" % (isin2subscriptions(isin,self.place(isin)),indice2subscriptions(cac,self.place(cac)))
+        topics = indice2subscriptions(cac,self.place(cac))
+        topics = encode_topics(topics,self.m_blowfish)
+
+        params = "subscriptions%%3D%%7B%s%%7D%%26userinfo%%3D%s\r\n" % (topics,self.m_cookie)
+        print 'params:',params
 
         # POST quote request
         try:
@@ -535,7 +614,7 @@ class LiveUpdate_fortuneo(object):
             return None
 
         if flux.status != 200:
-            info('LiveUpdate_fortuneo: status==%d!=200 reason:%s' % (flux.status,flux.reason))
+            info('LiveUpdate_fortuneo: status==%d!=200 reason:%s headers:%s' % (flux.status,flux.reason,flux.getheaders()))
             return None
 
         self.m_connected = True
