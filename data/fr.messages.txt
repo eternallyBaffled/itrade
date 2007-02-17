@@ -380,7 +380,7 @@ portfolio_per30days;&30 jours
 portfolio_desc_per30days; Affiche les 30 derniers jours d'opérations
 portfolio_per90days;&90 jours
 portfolio_desc_per90days; Affiche les 90 derniers jours d'opérations
-portfolio_peryear;&Année
+portfolio_peryear;&Année en cours
 portfolio_desc_peryear; Affiche l'année en cours
 portfolio_perall;&Tous
 portfolio_desc_perall; Affiche toutes les opérations depuis l'origine

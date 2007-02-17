@@ -491,7 +491,7 @@ class iTradeOperationToolbar(wx.ToolBar):
 
         self.AddRadioLabelTool(self._NTB2_30DAYS,'',wx.Bitmap('res/filter30.png'),wx.NullBitmap,message('portfolio_per30days'),message('portfolio_desc_per30days'))
         self.AddRadioLabelTool(self._NTB2_90DAYS,'',wx.Bitmap('res/filter90.png'),wx.NullBitmap,message('portfolio_per90days'),message('portfolio_desc_per90days'))
-        self.AddRadioLabelTool(self._NTB2_CURRENTYEAR,'',wx.Bitmap('res/filter365.png'),wx.NullBitmap,message('portfolio_peryear'),message('portfolio_desc_peryear'))
+        self.AddRadioLabelTool(self._NTB2_CURRENTYEAR,'',wx.Bitmap('res/filter.png'),wx.NullBitmap,message('portfolio_peryear'),message('portfolio_desc_peryear'))
         self.AddRadioLabelTool(self._NTB2_ALLYEARS,'',wx.Bitmap('res/nofilter.png'),wx.NullBitmap,message('portfolio_perall'),message('portfolio_desc_perall'))
 
         wx.EVT_TOOL(self, self._NTB2_EXIT, self.onExit)
