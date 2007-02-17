@@ -129,7 +129,7 @@ class iTradeEvaluationPanel(wx.Window):
 
         wx.EVT_SIZE(self, self.OnSize)
 
-        if not itrade_config.experimental:
+        if 0: # __x not itrade_config.experimental:
             self.refresh()
         else:
             self.m_html.Show(False)
