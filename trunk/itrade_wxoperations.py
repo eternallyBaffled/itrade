@@ -45,6 +45,7 @@ import itrade_wxversion
 import wx
 import wx.lib.mixins.listctrl as wxl
 from wx.lib import masked
+import wxaddons.sized_controls as sc
 
 # iTrade system
 from itrade_logging import *
@@ -57,7 +58,7 @@ from itrade_currency import currency2symbol
 from itrade_wxselectquote import select_iTradeQuote
 import itrade_wxres
 from itrade_wxmixin import iTrade_wxFrame,iTradeSelectorListCtrl
-from itrade_wxutil import FontFromSize
+from itrade_wxutil import FontFromSize,iTradeSizedDialog
 
 # ============================================================================
 # menu identifier
@@ -152,12 +153,8 @@ operation_ctrl = {
 # iTradeOperationsDialog
 # ============================================================================
 
-class iTradeOperationDialog(wx.Dialog):
+class iTradeOperationDialog(iTradeSizedDialog):
     def __init__(self, parent, op, opmode):
-        # context help
-        pre = wx.PreDialog()
-        pre.SetExtraStyle(wx.DIALOG_EX_CONTEXTHELP)
-
         # pre-init
         self.opmode = opmode
 
@@ -197,43 +194,31 @@ class iTradeOperationDialog(wx.Dialog):
         else:
             self.tt = tb
 
-        # post-init
-        pre.Create(parent, -1, self.tt, size=(420, 480))
-        self.PostCreate(pre)
+        # init
+        iTradeSizedDialog.__init__(self,parent, -1, self.tt, style=wx.DEFAULT_DIALOG_STYLE, size=(420, 480))
 
-        #
-        self.m_sizer = wx.BoxSizer(wx.VERTICAL)
+        # container
+        container = self.GetContentsPane()
+        container.SetSizerType("vertical")
 
-        # separator
-        box = wx.BoxSizer(wx.HORIZONTAL)
-        self.m_sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
+        # resizable pane
+        pane = sc.SizedPanel(container, -1)
+        pane.SetSizerType("form")
+        pane.SetSizerProps(expand=True)
 
-        # date
-        box = wx.BoxSizer(wx.HORIZONTAL)
-
-        label = wx.StaticText(self, -1, message('portfolio_date'))
-        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        # Row1 : date
+        label = wx.StaticText(pane, -1, message('portfolio_date'))
+        label.SetSizerProps(valign='center')
 
         ssdatetime = wx.DateTimeFromDMY(self.m_date.day,self.m_date.month-1,self.m_date.year)
-        self.wxDateCtrl = wx.DatePickerCtrl(self, -1, ssdatetime , size = (120,-1), style = wx.DP_DROPDOWN | wx.DP_SHOWCENTURY)
+        self.wxDateCtrl = wx.DatePickerCtrl(pane, -1, ssdatetime , size = (120,-1), style = wx.DP_DROPDOWN | wx.DP_SHOWCENTURY)
         wx.EVT_DATE_CHANGED(self, self.wxDateCtrl.GetId(), self.OnDate)
-        box.Add(self.wxDateCtrl, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.m_sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
+        # Row 2 : kind of operation
+        label = wx.StaticText(pane, -1, message('portfolio_operation'))
+        label.SetSizerProps(valign='center')
 
-        # separator
-        box = wx.BoxSizer(wx.HORIZONTAL)
-        self.m_sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
-
-        # kind of operation
-
-        box = wx.BoxSizer(wx.HORIZONTAL)
-
-        label = wx.StaticText(self, -1, message('portfolio_operation'))
-        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
-
-        self.wxTypeCtrl = wx.ComboBox(self,-1, "", size=wx.Size(160,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
-        box.Add(self.wxTypeCtrl, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        self.wxTypeCtrl = wx.ComboBox(pane,-1, "", size=wx.Size(160,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
         wx.EVT_COMBOBOX(self,self.wxTypeCtrl.GetId(),self.OnType)
 
         count = 0
@@ -246,94 +231,78 @@ class iTradeOperationDialog(wx.Dialog):
 
         self.wxTypeCtrl.SetSelection(idx)
 
-        self.m_sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
+        # Row 3 : quote
+        btnpane = sc.SizedPanel(container, -1)
+        btnpane.SetSizerType("horizontal")
+        btnpane.SetSizerProps(expand=True)
 
-        # quote
-        box = wx.BoxSizer(wx.HORIZONTAL)
-
-        self.wxNameLabel = wx.StaticText(self, -1, message('portfolio_description'))
-        box.Add(self.wxNameLabel, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        self.wxNameLabel = wx.StaticText(btnpane, -1, message('portfolio_description'))
+        self.wxNameLabel.SetSizerProps(valign='center')
 
         bmp = wx.Bitmap('res/quotes.png')
-        self.wxNameButton = wx.BitmapButton(self, -1, bmp, size=wx.Size(bmp.GetWidth()+5, bmp.GetHeight()+5))
-        box.Add(self.wxNameButton, 0, wx.ALIGN_CENTRE|wx.SHAPED, 5)
+        self.wxNameButton = wx.BitmapButton(btnpane, -1, bmp, size=wx.Size(bmp.GetWidth()+5, bmp.GetHeight()+5))
         wx.EVT_BUTTON(self, self.wxNameButton.GetId(), self.OnQuote)
 
-        self.wxNameCtrl = wx.TextCtrl(self, -1, self.m_name, size=wx.Size(240,-1), style = wx.TE_LEFT)
+        self.wxNameCtrl = wx.TextCtrl(btnpane, -1, self.m_name, size=wx.Size(240,-1), style = wx.TE_LEFT)
         wx.EVT_TEXT( self, self.wxNameCtrl.GetId(), self.OnDescChange )
-        box.Add(self.wxNameCtrl, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        self.wxNameCtrl.SetSizerProps(expand=True)
 
-        self.m_sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
+        # Row 4 : value
+        btnpane = sc.SizedPanel(container, -1)
+        btnpane.SetSizerType("horizontal")
+        btnpane.SetSizerProps(expand=True)
 
-        # value
-        box = wx.BoxSizer(wx.HORIZONTAL)
+        self.wxValueLabel = wx.StaticText(btnpane, -1, message('portfolio_field_credit'))
+        self.wxValueLabel.SetSizerProps(valign='center')
 
-        self.wxValueLabel = wx.StaticText(self, -1, message('portfolio_field_credit'))
-        box.Add(self.wxValueLabel, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
-
-        self.wxValueCtrl = masked.Ctrl( self, integerWidth=9, fractionWidth=2, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupChar=getGroupChar(), decimalChar=getDecimalChar() )
+        self.wxValueCtrl = masked.Ctrl(btnpane, integerWidth=9, fractionWidth=2, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupChar=getGroupChar(), decimalChar=getDecimalChar() )
         wx.EVT_TEXT( self, self.wxValueCtrl.GetId(), self.OnValueChange )
 
-        box.Add(self.wxValueCtrl, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        self.wxValueTxt = wx.StaticText(btnpane, -1, currency2symbol('EUR')) # __x currency pb
+        self.wxValueTxt.SetSizerProps(valign='center')
 
-        self.wxValueTxt = wx.StaticText(self, -1, currency2symbol('EUR')) # __x currency pb
-        box.Add(self.wxValueTxt, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        self.wxExpPreTxt = wx.StaticText(btnpane, -1, '')
+        self.wxExpPreTxt.SetSizerProps(valign='center')
 
-        self.wxExpPreTxt = wx.StaticText(self, -1, '')
-        box.Add(self.wxExpPreTxt, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
-
-        self.wxExpensesCtrl = masked.Ctrl( self, integerWidth=4, fractionWidth=2, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupChar=getGroupChar(), decimalChar=getDecimalChar() )
-        box.Add(self.wxExpensesCtrl, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        self.wxExpensesCtrl = masked.Ctrl(btnpane, integerWidth=4, fractionWidth=2, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupChar=getGroupChar(), decimalChar=getDecimalChar() )
         wx.EVT_TEXT( self, self.wxExpensesCtrl.GetId(), self.OnExpensesChange )
 
-        self.wxExpPostTxt = wx.StaticText(self, -1, "%s %s" % (currency2symbol('EUR'),message('portfolio_post_expenses')))   # __x currency pb
-        box.Add(self.wxExpPostTxt, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        self.wxExpPostTxt = wx.StaticText(btnpane, -1, "%s %s" % (currency2symbol('EUR'),message('portfolio_post_expenses')))   # __x currency pb
+        self.wxExpPostTxt.SetSizerProps(valign='center')
 
-        self.m_sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
+        # resizable pane
+        pane = sc.SizedPanel(container, -1)
+        pane.SetSizerType("form")
+        pane.SetSizerProps(expand=True)
 
         # number
-        box = wx.BoxSizer(wx.HORIZONTAL)
+        label = wx.StaticText(pane, -1, message('portfolio_quantity'))
+        label.SetSizerProps(valign='center')
 
-        label = wx.StaticText(self, -1, message('portfolio_quantity'))
-        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
-
-        self.wxNumberCtrl = masked.Ctrl( self, integerWidth=9, fractionWidth=0, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupChar=getGroupChar(), decimalChar=getDecimalChar() )
-        box.Add(self.wxNumberCtrl, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        self.wxNumberCtrl = masked.Ctrl(pane, integerWidth=9, fractionWidth=0, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupChar=getGroupChar(), decimalChar=getDecimalChar() )
         wx.EVT_TEXT( self, self.wxNumberCtrl.GetId(), self.OnNumberChange )
 
-        self.m_sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
-
-        # buttons
-        box = wx.BoxSizer(wx.HORIZONTAL)
+        # Last Row : OK and Cancel
+        btnpane = sc.SizedPanel(container, -1)
+        btnpane.SetSizerType("horizontal")
+        btnpane.SetSizerProps(expand=True)
 
         # context help
         if wx.Platform != "__WXMSW__":
             btn = wx.ContextHelpButton(self)
-            box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         # OK
-        btn = wx.Button(self, wx.ID_OK, tb)
+        btn = wx.Button(btnpane, wx.ID_OK, tb)
         btn.SetDefault()
         btn.SetHelpText(message('ok_desc'))
-        box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_BUTTON(self, wx.ID_OK, self.OnValid)
 
         # CANCEL
-        btn = wx.Button(self, wx.ID_CANCEL, message('cancel'))
+        btn = wx.Button(btnpane, wx.ID_CANCEL, message('cancel'))
         btn.SetHelpText(message('cancel_desc'))
-        box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_BUTTON(self, wx.ID_CANCEL, self.OnCancel)
 
-        self.m_sizer.AddSizer(box, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
-
-        wx.EVT_SIZE(self, self.OnSize)
-
-        self.SetAutoLayout(True)
-        self.SetSizerAndFit(self.m_sizer)
         self.refreshPage()
-
-    def OnSize(self, event):
-        w,h = self.GetClientSizeTuple()
 
     def OnCancel(self,event):
         self.aRet = None
@@ -412,8 +381,10 @@ class iTradeOperationDialog(wx.Dialog):
             self.wxDateCtrl.Enable(False)
             self.wxTypeCtrl.Enable(False)
 
-        #self.SetSizerAndFit(self.m_sizer)
-        self.Layout()
+        # a little trick to make sure that you can't resize the dialog to
+        # less screen space than the controls need
+        self.Fit()
+        self.SetMinSize(self.GetSize())
 
     def OnDate(self, evt):
         dRet = self.wxDateCtrl.GetValue()
@@ -1187,9 +1158,21 @@ if __name__=='__main__':
 
     app = wx.PySimpleApp()
 
+    # load configuration
+    import itrade_config
+    itrade_config.loadConfig()
+
     from itrade_local import *
     setLang('us')
     gMessage.load()
+
+    # load extensions
+    import itrade_ext
+    itrade_ext.loadExtensions(itrade_config.fileExtData,itrade_config.dirExtData)
+
+    # init modules
+    initQuotesModule()
+    initPortfolioModule()
 
     import itrade_wxportfolio
 

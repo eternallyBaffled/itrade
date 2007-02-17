@@ -175,8 +175,8 @@ def main():
     itrade_ext.loadExtensions(itrade_config.fileExtData,itrade_config.dirExtData)
 
     # init modules
-    itrade_quotes.initModule()
-    itrade_portfolio.initModule()
+    itrade_quotes.initQuotesModule()
+    itrade_portfolio.initPortfolioModule()
 
     # use the correct pack language
     if itrade_config.lang == 255:

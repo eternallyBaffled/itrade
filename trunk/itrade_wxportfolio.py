@@ -497,7 +497,7 @@ if __name__=='__main__':
 
     app = wx.PySimpleApp()
 
-    initModule()
+    initPortfolioModule()
 
     from itrade_local import *
     setLang('us')

@@ -1405,10 +1405,10 @@ except NameError:
     portfolios = Portfolios()
 
 # ============================================================================
-# initModule()
+# initPortfolioModule()
 # ============================================================================
 
-def initModule():
+def initPortfolioModule():
     portfolios.load()
 
 # ============================================================================
@@ -1418,7 +1418,7 @@ def initModule():
 if __name__=='__main__':
     setLevel(logging.INFO)
 
-    initModule()
+    initPortfolioModule()
 
     cmdline_evaluatePortfolio(2006)
 

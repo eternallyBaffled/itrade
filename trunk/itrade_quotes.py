@@ -1455,10 +1455,10 @@ except NameError:
     quotes = Quotes()
 
 # ============================================================================
-# initModule()
+# initQuotesModule()
 # ============================================================================
 
-def initModule():
+def initQuotesModule():
     quotes.load()
     #for quote in quotes.list():
     #    quote.m_defaultliveconnector = None
@@ -1473,7 +1473,7 @@ def initModule():
 if __name__=='__main__':
     setLevel(logging.INFO)
 
-    initModule()
+    initQuotesModule()
 
     info('test1 %s' % quotes.lookupISIN('FR0000072621'));
     quote = quotes.lookupTicker('OSI','EURONEXT')
