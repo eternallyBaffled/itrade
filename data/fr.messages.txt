@@ -286,13 +286,14 @@ portfolio_properties_btnrenamedesc;Renomme le compte
 portfolio_properties_btnselect;Ouvre
 portfolio_properties_btnselectdesc;Ouvre ce compte
 
-portfolio_filename;Référence
-portfolio_name;Description
-portfolio_accountref;Numéro de Compte
-portfolio_market;Marché Principal
+portfolio_filename;Référence :
+portfolio_name;Description :
+portfolio_accountref;Numéro de Compte :
+portfolio_market;Marché Principal :
 portfolio_select_textfield;Référence :
-portfolio_currency;Devise
-portfolio_indicator;Indicateur Principal
+portfolio_currency;Devise :
+portfolio_indicator;Indicateur Principal :
+portfolio_vat;TVA (en %) :
 
 portfolio_modify;Modifie
 portfolio_new;Nouveau

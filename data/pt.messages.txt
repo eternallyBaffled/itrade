@@ -287,13 +287,14 @@ portfolio_properties_btnrenamedesc;Renomear o nome desta conta
 portfolio_properties_btnselect;Abrir
 portfolio_properties_btnselectdesc;Abrir esta conta
 
-portfolio_filename;Referência
-portfolio_name;Descrição
-portfolio_accountref;Número da conta
-portfolio_market;Mercado principal
+portfolio_filename;Referência :
+portfolio_name;Descrição :
+portfolio_accountref;Número da conta :
+portfolio_market;Mercado principal :
 portfolio_select_textfield;Referência :
-portfolio_currency;Moeda corrente
-portfolio_indicator;Indicador principal
+portfolio_currency;Moeda corrente :
+portfolio_indicator;Indicador principal :
+portfolio_vat;__xVAT (in %) :
 
 portfolio_modify;Modificar
 portfolio_new;Novo

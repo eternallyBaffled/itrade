@@ -287,13 +287,14 @@ portfolio_properties_btnrenamedesc;Rename this Portfolio name
 portfolio_properties_btnselect;Open
 portfolio_properties_btnselectdesc;Open this Portfolio
 
-portfolio_filename;Reference
-portfolio_name;Description
-portfolio_accountref;Account Number
-portfolio_market;Main Market
+portfolio_filename;Reference :
+portfolio_name;Description :
+portfolio_accountref;Account Number :
+portfolio_market;Main Market :
 portfolio_select_textfield;Reference :
-portfolio_currency;Currency
-portfolio_indicator;Main Indicator
+portfolio_currency;Main Currency :
+portfolio_indicator;Main Indicator :
+portfolio_vat;VAT (in %) :
 
 portfolio_modify;Modify
 portfolio_new;New
