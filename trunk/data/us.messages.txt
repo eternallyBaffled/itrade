@@ -381,7 +381,7 @@ portfolio_per30days;&30 days
 portfolio_desc_per30days; Display last 30 days
 portfolio_per90days;&90 days
 portfolio_desc_per90days; Display last 90 days
-portfolio_peryear;&Year
+portfolio_peryear;Current &Year
 portfolio_desc_peryear; Display current year
 portfolio_perall;&All
 portfolio_desc_perall; Display all transactions since the beginning
