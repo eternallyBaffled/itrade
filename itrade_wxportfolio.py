@@ -44,6 +44,7 @@ import logging
 import itrade_wxversion
 import wx
 import wx.lib.mixins.listctrl as wxl
+import wxaddons.sized_controls as sc
 
 # iTrade system
 from itrade_logging import *
@@ -528,6 +529,8 @@ if __name__=='__main__':
     setLevel(logging.INFO)
 
     app = wx.PySimpleApp()
+
+    initModule()
 
     from itrade_local import *
     setLang('us')
