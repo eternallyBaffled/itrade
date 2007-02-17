@@ -368,13 +368,16 @@ class iTradeMainNotebookWindow(wx.Notebook):
         self.win[ID_PAGE_INDICATORS].m_mustInit = True
         self.win[ID_PAGE_EVALUATION].m_mustInit = True
 
-    def InitCurrentPage(self,bReset):
+    def InitCurrentPage(self,bReset,bInit):
+        if bInit:
+            self.ChangeSelection(0)
         if bReset:
             self.ResetPages()
 
         # Init current page
         sel = self.GetSelection()
         self.win[sel].InitCurrentPage()
+        #print 'book::InitCurrentPage: page:',sel
 
     def DoneCurrentPage(self):
         sel = self.GetSelection()
@@ -590,7 +593,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
     def OnPostInit(self,event):
         self.updateTitle()
         self.updateCheckItems()
-        self.InitCurrentPage(bReset=True)
+        self.InitCurrentPage(bReset=True,bInit=True)
 
     def OnRefresh(self,event):
         self.m_book.OnRefresh(event)
@@ -628,8 +631,8 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         if evt.GetId()==self.m_id:
             self.CloseLinks()
 
-    def InitCurrentPage(self,bReset):
-        self.m_book.InitCurrentPage(bReset)
+    def InitCurrentPage(self,bReset,bInit):
+        self.m_book.InitCurrentPage(bReset,bInit)
 
     def DoneCurrentPage(self):
         self.m_book.DoneCurrentPage()
@@ -802,7 +805,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
     def RebuildList(self):
         self.DoneCurrentPage()
         self.m_matrix.build()
-        self.InitCurrentPage(True)
+        self.InitCurrentPage(bReset=True,bInit=False)
 
     def OnPortfolio(self,e):
         # check current page
@@ -1013,7 +1016,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         itrade_config.saveConfig()
         self.updateCheckItems()
         self.m_toolbar.ClearIndicator()
-        self.InitCurrentPage(False)
+        self.InitCurrentPage(bReset=False,bInit=False)
 
     def refreshConnexion(self):
         self.m_toolbar.SetIndicator(self.m_market,self.m_connector.currentClock())
