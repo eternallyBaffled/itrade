@@ -52,6 +52,7 @@ import itrade_wxversion
 import wx
 import wx.html
 import wx.lib.wxpTag
+import wxaddons.sized_controls as sc
 
 # iTrade wxpython
 from itrade_wxhtml import wxUrlClickHtmlWindow,EVT_HTML_URL_CLICK
@@ -513,6 +514,27 @@ def iTradeYesNo(parent,text,caption,bCanCancel=False,bYesDefault=True):
     idRet = dlg.ShowModal()
     dlg.Destroy()
     return idRet
+
+# ============================================================================
+# iTradeSizedDialog
+# ============================================================================
+
+class iTradeSizedDialog(sc.SizedDialog):
+    def __init__(self, *args, **kwargs):
+        # context help
+        pre = wx.PreDialog()
+        pre.SetExtraStyle(wx.DIALOG_EX_CONTEXTHELP)
+        pre.Create(*args, **kwargs)
+        self.PostCreate(pre)
+
+        self.borderLen = 12
+        self.mainPanel = sc.SizedPanel(self, -1)
+
+        mysizer = wx.BoxSizer(wx.VERTICAL)
+        mysizer.Add(self.mainPanel, 1, wx.EXPAND | wx.ALL, self.GetDialogBorder())
+        self.SetSizer(mysizer)
+
+        self.SetAutoLayout(True)
 
 # ============================================================================
 # Test me

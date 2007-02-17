@@ -215,4 +215,95 @@ o Context Help in wxDialog object
   	   btn = wxContextHelpButton(self)
   	   box.Add(btn, 0, wxALIGN_CENTRE|wxALL, 5)
 
+ o iTradeSizedDialog
+
+   All iTrade forms *must* use the sized controls (HIG-compliant sizers under
+   the hood). Note that Context Help is available through iTradeSizedDialog
+
+   For HIG info: links to all the HIGs can be found here:
+   http://en.wikipedia.org/wiki/Human_Interface_Guidelines
+
+   Typical Usage:
+
+    from itrade_wxutil import iTradeSizedDialog
+    ...
+    class myForm(iTradeSizedDialog):
+
+	def __init__()
+		iTradeSizedDialog.__init__(...,style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER,...)
+
+        	# container
+        	container = self.GetContentsPane()
+        	container.SetSizerType("vertical")
+
+        	# resizable pane
+        	pane = sc.SizedPanel(container, -1)
+        	pane.SetSizerType("form")
+        	pane.SetSizerProps(expand=True)
+
+        	# Row 1
+        	label = wx.StaticText(pane, -1, message('ref'))
+        	label.SetSizerProps(valign='center')
+        	self.wxField = wx.TextCtrl(pane, -1, self.m_field, size=(80,-1))
+        	self.wxField.SetSizerProps(expand=True)
+
+		...
+
+        	# Last Row : OK and Cancel
+        	btnpane = sc.SizedPanel(container, -1)
+        	btnpane.SetSizerType("horizontal")
+        	btnpane.SetSizerProps(expand=True)
+
+        	# context help
+        	if wx.Platform != "__WXMSW__":
+        	    btn = wx.ContextHelpButton(self)
+
+        	# OK
+        	btn = wx.Button(btnpane, wx.ID_OK, msg)
+        	btn.SetDefault()
+        	btn.SetHelpText(msgdesc)
+        	wx.EVT_BUTTON(self, wx.ID_OK, self.OnValid)
+
+        	# CANCEL
+        	btn = wx.Button(btnpane, wx.ID_CANCEL, message('cancel'))
+        	btn.SetHelpText(message('cancel_desc'))
+
+        	# a little trick to make sure that you can't resize the dialog to
+        	# less screen space than the controls need
+        	self.Fit()
+        	self.SetMinSize(self.GetSize())
+
+    wx.Window.SetSizerProps(<props>)
+
+ Parameter 	Values 			Summary
+ expand 	True/False      	Whether or not the control should grow
+					to fill free space if free space is
+					available.
+
+ proportion 	Number (typically 0-10) How much of the free space the control
+					should take up. Note that this value is
+					relative to other controls, so a
+					proportion of 2 means take up 'twice as
+					much' space as controls with a
+					proportion of 1.
+
+ halign 	"left", "center",       Determines horizontal alignment of
+		"centre", "right"	control.
+
+ valign 	"top", "center",        Determines vertical alignment of
+		"centre", "bottom"	control.
+
+ border 	Tuple: ([dirs],integer) Specifies amount of border padding to
+					apply to specified directions.
+					Example: (["left", "right"], 6) would
+					add six pixels to left and right borders.
+
+					Note that, unfortunately, it is not
+					currently possible to assign different
+					border sizes to each direction.
+
+ minsize 	"fixed", "adjust" 	Determines whether or not the minsize
+					can be updated when the control's best
+					size changes.
+
 ===============================================================================
