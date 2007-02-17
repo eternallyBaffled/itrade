@@ -129,25 +129,25 @@ OPERATION_ADD = 1
 OPERATION_DELETE = 2
 
 # ============================================================================
-#
+# List of supported operations
 # ============================================================================
 
-operation_ctrl = {
-    OPERATION_BUY       : 'portfolio_ctrl_buy',
-    OPERATION_BUY_SRD   : 'portfolio_ctrl_buy_srd',
-    OPERATION_SELL      : 'portfolio_ctrl_sell',
-    OPERATION_SELL_SRD  : 'portfolio_ctrl_sell_srd',
-    OPERATION_CREDIT    : 'portfolio_ctrl_credit',
-    OPERATION_DEBIT     : 'portfolio_ctrl_debit',
-    OPERATION_FEE       : 'portfolio_ctrl_fee',
-    OPERATION_INTEREST  : 'portfolio_ctrl_interest',
-    OPERATION_DETACHMENT: 'portfolio_ctrl_detachment',
-    OPERATION_DIVIDEND  : 'portfolio_ctrl_dividend',
-    OPERATION_QUOTE     : 'portfolio_ctrl_quote',
-    OPERATION_LIQUIDATION  : 'portfolio_ctrl_liquidation',
-    OPERATION_REGISTER  : 'portfolio_ctrl_register'
+operation_ctrl = (
+    (OPERATION_BUY,'portfolio_ctrl_buy'),
+    (OPERATION_SELL,'portfolio_ctrl_sell'),
+    (OPERATION_CREDIT,'portfolio_ctrl_credit'),
+    (OPERATION_DEBIT,'portfolio_ctrl_debit'),
+    (OPERATION_FEE,'portfolio_ctrl_fee'),
+    (OPERATION_DIVIDEND,'portfolio_ctrl_dividend'),
+    (OPERATION_DETACHMENT,'portfolio_ctrl_detachment'),
+    (OPERATION_INTEREST,'portfolio_ctrl_interest'),
+    (OPERATION_BUY_SRD,'portfolio_ctrl_buy_srd'),
+    (OPERATION_SELL_SRD,'portfolio_ctrl_sell_srd'),
+    (OPERATION_LIQUIDATION,'portfolio_ctrl_liquidation'),
+    (OPERATION_QUOTE,'portfolio_ctrl_quote'),
+    (OPERATION_REGISTER,'portfolio_ctrl_register')
 #    OPERATION_SPLIT     : 'portfolio_ctrl_split'
-}
+    )
 
 # ============================================================================
 # iTradeOperationsDialog
@@ -222,10 +222,10 @@ class iTradeOperationDialog(iTradeSizedDialog):
         wx.EVT_COMBOBOX(self,self.wxTypeCtrl.GetId(),self.OnType)
 
         count = 0
-        for eachCtrl in operation_ctrl.items():
-            #print '***',message(eachCtrl[1]),eachCtrl[0]
-            self.wxTypeCtrl.Append(message(eachCtrl[1]),eachCtrl[0])
-            if eachCtrl[0]==self.m_type:
+        for k,v in operation_ctrl:
+            #print '***',message(v),k
+            self.wxTypeCtrl.Append(message(v),k)
+            if k==self.m_type:
                 idx = count
             count = count + 1
 
@@ -281,6 +281,10 @@ class iTradeOperationDialog(iTradeSizedDialog):
 
         self.wxNumberCtrl = masked.Ctrl(pane, integerWidth=9, fractionWidth=0, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupChar=getGroupChar(), decimalChar=getDecimalChar() )
         wx.EVT_TEXT( self, self.wxNumberCtrl.GetId(), self.OnNumberChange )
+
+        # separator
+        line = wx.StaticLine(container, -1, size=(20,-1), style=wx.LI_HORIZONTAL)
+        line.SetSizerProps(expand=True)
 
         # Last Row : OK and Cancel
         btnpane = sc.SizedPanel(container, -1)

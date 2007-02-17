@@ -363,6 +363,10 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
         self.wxVATCtrl = masked.Ctrl(pane, integerWidth=5, fractionWidth=3, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupChar=getGroupChar(), decimalChar=getDecimalChar() )
         self.wxVATCtrl.SetValue((self.m_vat-1)*100)
 
+        # row 7 : separator
+        line = wx.StaticLine(container, -1, size=(20,-1), style=wx.LI_HORIZONTAL)
+        line.SetSizerProps(expand=True)
+
         # Last Row : OK and Cancel
         btnpane = sc.SizedPanel(container, -1)
         btnpane.SetSizerType("horizontal")
