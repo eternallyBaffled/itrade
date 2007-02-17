@@ -314,16 +314,16 @@ portfolio_field_freeofcharges;Free of Charges
 portfolio_field_valorization;Valorization :
 
 portfolio_ctrl_sell;Sell
-portfolio_ctrl_sell_srd;Sell SRD
+portfolio_ctrl_sell_srd;Sell SDR
 portfolio_ctrl_buy;Buy
-portfolio_ctrl_buy_srd;Buy SRD
+portfolio_ctrl_buy_srd;Buy SDR
 portfolio_ctrl_debit;Withdraw
 portfolio_ctrl_credit;Deposit
 portfolio_ctrl_fee;Fee
 portfolio_ctrl_interest;Interest
 portfolio_ctrl_detachment;Detachment (non taxable)
 portfolio_ctrl_dividend;Dividend (taxable)
-portfolio_ctrl_liquidation;Liquidation SRD
+portfolio_ctrl_liquidation;Liquidation SDR
 portfolio_ctrl_quote;Dividend with shares
 portfolio_ctrl_register;Public Registration
 

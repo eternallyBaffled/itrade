@@ -6,6 +6,7 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-02-18  Gilles Dumortier <dgil at ieee.org>
+	* Operation Edit: sort operation type + better display
 	* Operation View: filter by year not displayed (SF bug 1626233)
 	* Portfolio : edit the default VAT (SF bug 1474568)
 
