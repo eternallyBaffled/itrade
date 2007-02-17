@@ -45,10 +45,11 @@ import itrade_wxversion
 import wx
 import wx.lib.mixins.listctrl as wxl
 import wxaddons.sized_controls as sc
+from wx.lib import masked
 
 # iTrade system
 from itrade_logging import *
-from itrade_local import message
+from itrade_local import message,getGroupChar,getDecimalChar
 from itrade_quotes import *
 from itrade_portfolio import *
 from itrade_market import list_of_markets
@@ -276,7 +277,7 @@ def select_iTradePortfolio(win,dportfolio=None,operation='select'):
 class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
     def __init__(self, parent, portfolio, operation):
         iTradeSizedDialog.__init__(self, None, -1, message('portfolio_properties_%s'% operation),
-                        style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER, size=(420, 420) )
+                        style=wx.DEFAULT_DIALOG_STYLE , size=(420, 420) )
 
         if portfolio:
             self.m_filename = portfolio.filename()
@@ -327,7 +328,6 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
         label.SetSizerProps(valign='center')
 
         self.wxMarketCtrl = wx.ComboBox(pane,-1, "", size=wx.Size(160,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
-        self.wxMarketCtrl.SetSizerProps(expand=True)
         wx.EVT_COMBOBOX(self,self.wxMarketCtrl.GetId(),self.OnMarket)
 
         count = 0
@@ -344,7 +344,6 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
         label.SetSizerProps(valign='center')
 
         self.wxCurrencyCtrl = wx.ComboBox(pane,-1, "", size=wx.Size(80,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
-        self.wxCurrencyCtrl.SetSizerProps(expand=True)
         wx.EVT_COMBOBOX(self,self.wxCurrencyCtrl.GetId(),self.OnCurrency)
 
         count = 0
@@ -356,6 +355,13 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
             count = count + 1
 
         self.wxCurrencyCtrl.SetSelection(idx)
+
+        # row6 : default vat
+        label = wx.StaticText(pane, -1, message('portfolio_vat'))
+        label.SetSizerProps(valign='center')
+
+        self.wxVATCtrl = masked.Ctrl(pane, integerWidth=5, fractionWidth=3, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupChar=getGroupChar(), decimalChar=getDecimalChar() )
+        self.wxVATCtrl.SetValue((self.m_vat-1)*100)
 
         # Last Row : OK and Cancel
         btnpane = sc.SizedPanel(container, -1)
@@ -428,6 +434,7 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
 
     def OnValid(self,event):
         self.m_filename = self.wxFilenameCtrl.GetLabel().lower().strip()
+        self.m_vat = (self.wxVATCtrl.GetValue()/100) + 1
 
         if (self.m_operation=='create' or self.m_operation=='rename') and portfolios.existPortfolio(self.m_filename):
             self.wxFilenameCtrl.SetLabel('')
