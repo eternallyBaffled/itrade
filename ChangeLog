@@ -6,6 +6,7 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-02-17  Gilles Dumortier <dgil at ieee.org>
+	* Rewrote itrade_wxoperations forms using iTradeSizedDialog
 	* Rewrote itrade_wxportfolio forms using iTradeSizedDialog
 	* Switch to wxPython 2.8.x - (2.6.x is not supported anymore because of
 	  specific new features we will use - like SizedControls)
