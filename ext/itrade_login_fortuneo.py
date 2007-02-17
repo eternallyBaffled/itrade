@@ -95,7 +95,7 @@ class Login_fortuneo(object):
         f.close()
         v = s.split(',')
         if len(v)==2:
-            return v[0],v[1]
+            return v[0].strip(),v[1].strip()
         return None,None
 
     # ---[ login ] ---
@@ -104,7 +104,7 @@ class Login_fortuneo(object):
         # load username / password (if required)
         if u==None or p==None:
             u,p = self.loadUserInfo()
-            if u==None or p==None:
+            if u==None or p==None or u=='' or p=='':
                 print 'login: userinfo are invalid - please reenter Access Information'
                 return False
         #print 'log:',u,p
