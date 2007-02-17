@@ -5,8 +5,13 @@ On the road for v0.4.6 (Nausicaa2)
 
 ===============================================================================
 
+2007-02-17  Gilles Dumortier <dgil at ieee.org>
+	* Switch to wxPython 2.8.x - (2.6.x is not supported anymore because of
+	  specific new features we will use - like SizedControls)
+
 2007-02-12  Gilles Dumortier <dgil at ieee.org>
-	* Fortuneo plugin : handle redirection (302)
+	* Fortuneo plugin : handle redirection (302) - but connector still not
+          working because of new scheme under investigation
 
 2007-02-11  Gilles Dumortier <dgil at ieee.org>
 	* Switch to matplotlib 0.90.x
