@@ -97,7 +97,7 @@ class Login_boursorama(object):
         f.close()
         v = s.split(',')
         if len(v)==2:
-            return v[0],v[1]
+            return v[0].strip(),v[1].strip()
         return None,None
 
     # ---[ login ] ---

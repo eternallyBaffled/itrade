@@ -6,6 +6,7 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-02-17  Gilles Dumortier <dgil at ieee.org>
+	* Empty id/passwd : do not try to log to service
 	* Switch to Notebook Experimental Feature (SF bug 1651970)
 	* r571(-x): Change Portfolio : don't stay on last view (SF bug 1657836)
 	* r560(-x): Change language : update twice (SF bug 1653525)
