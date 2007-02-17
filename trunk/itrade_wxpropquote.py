@@ -63,7 +63,7 @@ from itrade_wxutil import iTradeInformation
 class iTradeQuotePropertiesPanel(wx.Panel):
 
     def __init__(self,parent,id,quote):
-        wx.Window.__init__(self, parent, id)
+        wx.Panel.__init__(self, parent, id)
         self.m_id = id
         self.m_quote = quote
         self.m_parent = parent
@@ -258,16 +258,22 @@ class iTradeQuotePropertiesPanel(wx.Panel):
         self._sizer.AddSizer(thebox, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
         # auto layout
-        wx.EVT_SIZE(self, self.OnSize)
-        self.SetSizerAndFit(self._sizer)
+        self.SetSizer(self._sizer)
+
+        # a little trick to make sure that you can't resize the dialog to
+        # less screen space than the controls need
+        self.Fit()
+        self.SetMinSize(self.GetSize())
+
+    # --- [ window management ] -----------------------------------------------
+
+    # --- [ page management ] -------------------------------------------------
 
     def paint(self):
-        self.SetSizerAndFit(self._sizer)
-        self.Layout()
+        pass
 
     def refresh(self):
-        info('QuotePropertiesPanel::refresh %s' % self.m_quote.ticker())
-        self.paint()
+        pass
 
     def InitPage(self):
         self.refresh()
@@ -275,9 +281,7 @@ class iTradeQuotePropertiesPanel(wx.Panel):
     def DonePage(self):
         pass
 
-    def OnSize(self,event):
-        debug('QuotePropertiesPanel::OnSize')
-        self.paint()
+    # --- [ commands management ] ---------------------------------------------
 
     def OnReload(self,event):
         dlg = wx.ProgressDialog(message('main_refreshing'),"",1*itrade_config.numTradeYears,self,wx.PD_APP_MODAL)
@@ -508,14 +512,26 @@ if __name__=='__main__':
 
     app = wx.PySimpleApp()
 
+    # load configuration
+    import itrade_config
+    itrade_config.loadConfig()
+
     from itrade_local import *
     setLang('us')
     gMessage.load()
+
+    # load extensions
+    import itrade_ext
+    itrade_ext.loadExtensions(itrade_config.fileExtData,itrade_config.dirExtData)
+
+    # init modules
+    initQuotesModule()
 
     q = select_iTradeQuote(None,None,filter=False)
     if q:
         open_iTradeQuoteProperty(None,None,q)
         app.MainLoop()
+
 
 # ============================================================================
 # That's all folks !
