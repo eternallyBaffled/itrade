@@ -960,7 +960,6 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
                 self.m_toolbar._init_toolbar()
                 self.m_book.DoneCurrentPage()
                 self.m_book.init(self)
-                self.RebuildList()
 
         if not bDuringInit:
             self.updateCheckItems()
