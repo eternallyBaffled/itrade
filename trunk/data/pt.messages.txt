@@ -295,6 +295,9 @@ portfolio_select_textfield;Referência :
 portfolio_currency;Moeda corrente :
 portfolio_indicator;Indicador principal :
 portfolio_vat;__xVAT (in %) :
+portfolio_list_filename;Referência
+portfolio_list_name;Descrição
+portfolio_list_accountref;Número da conta
 
 portfolio_modify;Modificar
 portfolio_new;Novo

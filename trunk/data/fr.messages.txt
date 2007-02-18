@@ -294,6 +294,9 @@ portfolio_select_textfield;Référence :
 portfolio_currency;Devise :
 portfolio_indicator;Indicateur Principal :
 portfolio_vat;TVA (en %) :
+portfolio_list_filename;Référence
+portfolio_list_name;Description
+portfolio_list_accountref;Numéro de Compte
 
 portfolio_modify;Modifie
 portfolio_new;Nouveau
