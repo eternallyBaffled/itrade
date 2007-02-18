@@ -1202,7 +1202,12 @@ class Portfolios(object):
             eachPortfolio.reinit()
 
     def list(self):
-        return self.m_portfolios.values()
+        items = self.m_portfolios.values()
+        nlist = [(x.filename(), x) for x in items]
+        nlist.sort()
+        nlist = [val for (key, val) in nlist]
+        #print nlist
+        return nlist
 
     def existPortfolio(self,fn):
         return self.m_portfolios.has_key(fn)

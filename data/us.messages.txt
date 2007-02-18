@@ -295,6 +295,9 @@ portfolio_select_textfield;Reference :
 portfolio_currency;Main Currency :
 portfolio_indicator;Main Indicator :
 portfolio_vat;VAT (in %) :
+portfolio_list_filename;Reference
+portfolio_list_name;Description
+portfolio_list_accountref;Account Number
 
 portfolio_modify;Modify
 portfolio_new;New

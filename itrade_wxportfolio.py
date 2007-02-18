@@ -165,15 +165,15 @@ class iTradePortfolioSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterM
         info.m_mask = wx.LIST_MASK_TEXT | wx.LIST_MASK_IMAGE | wx.LIST_MASK_FORMAT
         info.m_image = -1
         info.m_format = wx.LIST_FORMAT_LEFT
-        info.m_text = message('portfolio_filename')
+        info.m_text = message('portfolio_list_filename')
         self.m_list.InsertColumnInfo(0, info)
 
         info.m_format = wx.LIST_FORMAT_LEFT
-        info.m_text = message('portfolio_name')
+        info.m_text = message('portfolio_list_name')
         self.m_list.InsertColumnInfo(1, info)
 
         info.m_format = wx.LIST_FORMAT_LEFT
-        info.m_text = message('portfolio_accountref')
+        info.m_text = message('portfolio_list_accountref')
         self.m_list.InsertColumnInfo(2, info)
 
         x = 0
