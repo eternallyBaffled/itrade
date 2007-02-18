@@ -1239,7 +1239,12 @@ class Quotes(object):
             eachQuote.reinit()
 
     def list(self):
-        return self.m_quotes.values()
+        items = self.m_quotes.values()
+        nlist = [(x.name(), x) for x in items]
+        nlist.sort()
+        nlist = [val for (key, val) in nlist]
+        #print nlist
+        return nlist
 
     # ---[ Properties ] ---
 
