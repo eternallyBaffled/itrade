@@ -460,6 +460,21 @@ if __name__=='__main__':
 
     app = wx.PySimpleApp()
 
+    # load configuration
+    import itrade_config
+    itrade_config.loadConfig()
+
+    from itrade_local import *
+    setLang('us')
+    gMessage.load()
+
+    # load extensions
+    import itrade_ext
+    itrade_ext.loadExtensions(itrade_config.fileExtData,itrade_config.dirExtData)
+
+    # init modules
+    initQuotesModule()
+
     q = select_iTradeQuote(None,None,filter=False,market='EURONEXT')
     if q:
         print q.name()
