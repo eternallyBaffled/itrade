@@ -739,7 +739,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         # can be long ...
         wx.SetCursor(wx.HOURGLASS_CURSOR)
 
-        dlgP = wx.ProgressDialog(message('checksoftware_title'),"",1,self,wx.PD_APP_MODAL)
+        #dlgP = wx.ProgressDialog(message('checksoftware_title'),"",1,self,wx.PD_APP_MODAL)
 
         url = itrade_config.checkNewRelease()
 
@@ -752,7 +752,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         else:
             iTradeInformation(self,message('checksoftware_uptodate'),message('checksoftware_title'))
 
-        dlgP.Destroy()
+        #dlgP.Destroy()
 
 
     def OnManageList(self,e):
