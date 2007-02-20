@@ -267,7 +267,7 @@ def euronext_place2mep(place):
 
 def euronext_InstrumentId(quote):
     #
-    urlid = 'http://www.euronext.com/tools/datacentre/results/0,5773,1732_204211370,00.html?fromsearchbox=true&matchpattern='
+    urlid = 'http://www.euronext.com/quicksearch/resultquicksearch-2986-EN.html?matchpattern=%s&fromsearchbox=true&path=/quicksearch&searchTarget=quote'
 
     # get instrument ID
     IdInstrument = quote.get_pluginID()
@@ -283,30 +283,31 @@ def euronext_InstrumentId(quote):
             pass
 
         if IdInstrument == None:
-            url = urlid+quote.isin()
+            url = urlid % quote.isin()
 
-            debug("euronext_InstrumentId: urlID=%s ",url)
+            if itrade_config.verbose:
+                print "euronext_InstrumentId: urlID=%s " % url
+
             try:
                 f = urllib.urlopen(url)
             except:
                 print 'euronext_InstrumentId: %s exception error' % url
                 return None
             buf = f.read()
-            sid = re.search("isinCode=%s&selectedMep=%d&idInstrument=" % (quote.isin(),euronext_place2mep(quote.place())),buf,re.IGNORECASE|re.MULTILINE)
+            sid = re.search("selectedMep=%d&amp;idInstrument=\d*&amp;isinCode=%s" % (euronext_place2mep(quote.place()),quote.isin()),buf,re.IGNORECASE|re.MULTILINE)
             if sid:
-                sid = sid.end()
-                sexch = re.search("&quotes=stock",buf[sid:sid+20],re.IGNORECASE|re.MULTILINE)
-                if not sexch:
-                    sexch = re.search('\"',buf[sid:sid+20],re.IGNORECASE|re.MULTILINE)
+                sid = buf[sid.start():sid.end()]
+                #print'seq-1 found:',sid
+                sexch = re.search("&amp;isinCode",sid,re.IGNORECASE|re.MULTILINE)
                 if sexch:
-                    sexch = sexch.start()
-                    data = buf[sid:sid+20]
-                    IdInstrument = data[:sexch]
+                    IdInstrument = sid[31:sexch.start()]
+                    #print 'seq-2 found:',IdInstrument
                 else:
-                    print 'euronext_InstrumentId: seq-2 not found'
+                    print 'euronext_InstrumentId: seq-2 not found : &amp;isinCode'
             else:
-                print 'euronext_InstrumentId: seq-1 not found'
-            #print 'isinCode=%s&selectedMep=%d&idInstrument=' % (quote.isin(),euronext_place2mep(quote.place()))
+                print 'euronext_InstrumentId: seq-1 not found : selectedMep=%d&amp;idInstrument=\d*&amp;isinCode=%s' % (euronext_place2mep(quote.place()),quote.isin())
+                #print buf
+                #exit(0)
 
         if IdInstrument == None:
             print "euronext_InstrumentId:can't get IdInstrument for %s " % quote.isin()
