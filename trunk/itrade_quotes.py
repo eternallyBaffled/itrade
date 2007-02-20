@@ -280,9 +280,14 @@ class Quote(object):
         # return PR in the default currency (i.e. portfolio currency)
         return self.nv_pru(box) * self.nv_number(box)
 
-    def sv_pru(self,box=QUOTE_BOTH,fmt="%.3f"):
+    def sv_pru(self,box=QUOTE_BOTH,fmt="%.3f",bDispCurrency=False):
         # return PRU in the default currency (i.e. portfolio currency)
-        return fmt % self.nv_pru(box)
+        if bDispCurrency:
+            sc = ' '+self.m_symbcurr+' '
+        else:
+            sc = ''
+        fmt = fmt + "%s"
+        return fmt % (self.nv_pru(box),sc)
 
     def sv_pr(self,box=QUOTE_BOTH,fmt="%.2f",bDispCurrency=False):
         # return PR in the default currency (i.e. portfolio currency)
