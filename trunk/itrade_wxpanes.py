@@ -749,6 +749,11 @@ class iTrade_MatrixQuotesPanel(iTrade_MatrixPanel):
 
         self.refreshColorLine(x,color)
 
+        # __x not working : change the full line :-(
+        # __x item = self.m_list.GetItem(x,IDC_PREV)
+        # __x item.SetTextColour(wx.BLACK)
+        # __x self.m_list.SetItem(item)
+
         # enough space for data ?
         self.m_list.SetColumnWidth(IDC_VOLUME, wx.LIST_AUTOSIZE)
         self.m_list.SetColumnWidth(IDC_PREV, wx.LIST_AUTOSIZE)

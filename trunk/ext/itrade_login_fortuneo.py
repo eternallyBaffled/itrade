@@ -145,7 +145,7 @@ class Login_fortuneo(object):
 
             m = re.search("name=\"BV_SessionID\"\s*value=\"\S+\"",buf,re.IGNORECASE|re.MULTILINE)
             if m==None:
-                print 'Login_fortuneo: BV_SessionID statement not found !'
+                print 'Login_fortuneo: BV_SessionID statement not found :',buf
                 return False
 
             BV_SessionID = m.group()[27:-1]
@@ -154,7 +154,7 @@ class Login_fortuneo(object):
 
             m = re.search("name=\"BV_EngineID\"\s*value=\"\S+\"",buf,re.IGNORECASE|re.MULTILINE)
             if m==None:
-                print 'Login_fortuneo: BV_EngineID statement not found !'
+                print 'Login_fortuneo: BV_EngineID statement not found :',buf
                 return False
 
             BV_EngineID = m.group()[26:-1]
@@ -174,14 +174,18 @@ class Login_fortuneo(object):
 
             params = None
             if url==None:
-                print "Login_fortuneo: redirection with 'location' in headers !"
+                print "Login_fortuneo: redirection : missing 'location' in headers !"
+                return False
+
+            if "ERROR=" in url:
+                print 'login: userinfo are invalid - please reenter Access Information'
                 return False
 
             #print url
 
             m = re.search("\?BV_SessionID=\S+\&",url,re.IGNORECASE|re.MULTILINE)
             if m==None:
-                print 'Login_fortuneo: BV_SessionID statement not found !'
+                print 'Login_fortuneo: BV_SessionID statement not found :',url
                 return False
 
             BV_SessionID = m.group()[14:-1]
@@ -190,7 +194,7 @@ class Login_fortuneo(object):
 
             m = re.search("\&BV_EngineID=\S+",url,re.IGNORECASE|re.MULTILINE)
             if m==None:
-                print 'Login_fortuneo: BV_EngineID statement not found !'
+                print 'Login_fortuneo: BV_EngineID statement not found :',url
                 return False
 
             BV_EngineID = m.group()[13:]
