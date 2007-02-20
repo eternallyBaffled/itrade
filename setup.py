@@ -50,10 +50,11 @@ matplotlibdata = findall(matplotlibdatadir)
 
 matplotlibdata_files =[("cache",[]),
             ("alerts",[]),
-            ("data",["data/quotes.txt","data/indices.txt","data/places.txt","data/yahoo_tickers.txt","data/trackers.txt","data/srd.txt","data/hours.txt","data/closed.txt","data/fr.messages.txt","data/us.messages.txt","data/pt.messages.txt"]),
+            ("data",["data/places.txt","data/yahoo_tickers.txt","data/srd.txt","data/hours.txt","data/closed.txt","data/fr.messages.txt","data/us.messages.txt","data/pt.messages.txt"]),
             ("images",glob.glob("images\\*.gif")),
             ("res",glob.glob("res\\*.*")),
             ("ext",glob.glob("ext\\*.*")),
+            ("symbols",glob.glob("symbols\\*.lst")),
             ("usrdata",["usrdata/usrquotes.txt","usrdata/portfolio.txt","usrdata/default.matrix.txt","usrdata/default.operations.txt","usrdata/default.stops.txt"]),
            ]
 

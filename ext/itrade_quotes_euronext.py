@@ -60,13 +60,13 @@ def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT'):
     print 'Update %s list of symbols' % market
 
     if market=='EURONEXT':
-        url = "http://www.euronext.com/tradercenter/priceslists/trapridownload/0,4499,1732_338638,00.html?belongsToList=market_14&eligibilityList=&economicGroupList=&sectorList=&branchList="
+        url = "http://www.euronext.com/search/download/trapridownloadpopup.jcsv?pricesearchresults=actif&filter=1&lan=EN&belongsToList=market_14&cha=1800&format=txt&formatDecimal=.&formatDate=dd/MM/yy"
     elif market=='ALTERNEXT':
-        url = "http://www.euronext.com/tradercenter/priceslists/trapridownload/0,4499,1732_338638,00.html?belongsToList=market_15&eligibilityList=&economicGroupList=&sectorList=&branchList="
+        url = "http://www.euronext.com/search/download/trapridownloadpopup.jcsv?pricesearchresults=actif&filter=1&lan=EN&belongsToList=market_15&cha=1800&format=txt&formatDecimal=.&formatDate=dd/MM/yy"
     elif market=='PARIS MARCHE LIBRE':
-        url = "http://www.euronext.com/tradercenter/priceslists/trapridownload/0,4499,1732_338638,00.html?belongsToList=market_10&eligibilityList=&economicGroupList=&sectorList=&branchList="
+        url = "http://www.euronext.com/search/download/trapridownloadpopup.jcsv?pricesearchresults=actif&filter=1&lan=EN&belongsToList=market_10&cha=1800&format=txt&formatDecimal=.&formatDate=dd/MM/yy"
     elif market=='BRUXELLES MARCHE LIBRE':
-        url = "http://www.euronext.com/tradercenter/priceslists/trapridownload/0,4499,1732_338638,00.html?belongsToList=market_17&eligibilityList=&economicGroupList=&sectorList=&branchList="
+        url = "http://www.euronext.com/search/download/trapridownloadpopup.jcsv?pricesearchresults=actif&filter=1&lan=EN&belongsToList=market_17&cha=1800&format=txt&formatDecimal=.&formatDate=dd/MM/yy"
     else:
         return False
 
@@ -87,6 +87,44 @@ def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT'):
         debug('Import_ListOfQuotes_Euronext:unable to connect :-(')
         return False
 
+    indice = {}
+    """
+    "Instrument's name";
+    "ISIN";
+    "Euronext code";
+    "MEP";
+    "Symbol";
+    "ICB Sector (Level 4)";
+    "Trading currency";
+    "Last";
+    "Volume";
+    "D/D-1 (%)";
+    "Date - time (CET)";
+    "Turnover";
+    "Total number of shares";
+    "Capitalisation";
+    "Trading mode";
+    "Day First";
+    "Day High";
+    "Day High / Date - time (CET)";
+    "Day Low";
+    "Day Low / Date - time (CET)";
+    "31-12/Change (%)";
+    "31-12/High";
+    "31-12/High/Date";
+    "31-12/Low";
+    "31-12/Low/Date";
+    "52 weeks/Change (%)";
+    "52 weeks/High";
+    "52 weeks/High/Date";
+    "52 weeks/Low";
+    "52 weeks/Low/Date";
+    "Suspended";
+    "Suspended / Date - time (CET)";
+    "Reserved";
+    "Reserved / Date - time (CET)"
+    """
+
     # returns the data
     data = f.read()
     lines = splitLines(data)
@@ -95,33 +133,35 @@ def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT'):
     for line in lines:
         data = string.split (line, ';')
 
-        if len(data)==35:
-            if data[1]!='ISIN':
-                if checkISIN(data[1]):
-                    if data[3]=='PAR' or data[3]=='BRU' or data[3]=='AMS' or data[3]=='LIS':
-                        name = filterName(data[0])
-                        quotes.addQuote(isin=data[1],name=name,ticker=data[4],market=market,currency=data[7],place=data[3],country=None)
-                        count = count + 1
-                    else:
-                        if itrade_config.verbose:
-                            print 'unknown ALTERNEXT place : ',data
-                else:
-                    if itrade_config.verbose:
-                        print 'invalid ISIN : ',data
+        if len(data)>2:
+            if not indice.has_key("ISIN"):
+                i = 0
+                for ind in data:
+                    indice[ind] = i
+                    i = i + 1
 
-        if len(data)==34:
-            if data[1]!='ISIN':
-                if checkISIN(data[1]):
-                    if data[3]=='PAR' or data[3]=='BRU' or data[3]=='AMS' or data[3]=='LIS':
-                        name = filterName(data[0])
-                        quotes.addQuote(isin=data[1],name=name,ticker=data[4],market=market,currency=data[6],place=data[3],country=None,debug=True)
-                        count = count + 1
+                iName = indice["Instrument's name"]
+                iISIN = indice["ISIN"]
+                iMEP = indice["MEP"]
+                iTicker = indice["Symbol"]
+                iCurr = indice["Trading currency"]
+
+            else:
+                if data[iISIN]!="ISIN":
+                    if checkISIN(data[iISIN]):
+                        if data[iMEP]=='PAR' or data[iMEP]=='BRU' or data[iMEP]=='AMS' or data[iMEP]=='LIS':
+                            name = filterName(data[iName])
+                            quotes.addQuote(isin=data[iISIN],name=name,ticker=data[iTicker],market=market,currency=data[iCurr],place=data[iMEP],country=None)
+                            count = count + 1
+                        else:
+                            if itrade_config.verbose:
+                                print 'unknown place :',data[iMEP],'>>>',data
                     else:
                         if itrade_config.verbose:
-                            print 'unknown EURONEXT place : ',data
-                else:
-                    if itrade_config.verbose:
-                        print 'invalid ISIN : ',data
+                            print 'invalid ISIN :',data[iISIN],'>>>',data
+
+        else:
+            print len(data),'>>>',data
 
     print 'Imported %d/%d lines from %s data.' % (count,len(lines),market)
 

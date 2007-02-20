@@ -1349,15 +1349,15 @@ class Quotes(object):
 
     def load(self,fn=None,fs=None):
         # open and read the file to load these quotes information
-        infile = itrade_csv.read(fn,os.path.join(itrade_config.dirSysData,'quotes.txt'))
+        infile = itrade_csv.read(fn,os.path.join(itrade_config.dirSymbData,'quotes.txt'))
         if infile:
             self._addLines(infile,list=QLIST_SYSTEM,debug=False)
 
-        infile = itrade_csv.read(fn,os.path.join(itrade_config.dirSysData,'indices.txt'))
+        infile = itrade_csv.read(fn,os.path.join(itrade_config.dirSymbData,'indices.txt'))
         if infile:
             self._addLines(infile,list=QLIST_INDICES,debug=False)
 
-        infile = itrade_csv.read(fn,os.path.join(itrade_config.dirSysData,'trackers.txt'))
+        infile = itrade_csv.read(fn,os.path.join(itrade_config.dirSymbData,'trackers.txt'))
         if infile:
             self._addLines(infile,list=QLIST_TRACKERS,debug=False)
 
@@ -1374,7 +1374,7 @@ class Quotes(object):
                 props.append(eachQuote.__repr__())
         #
         # open and write the file with these quotes information
-        itrade_csv.write(fn,os.path.join(itrade_config.dirSysData,'quotes.txt'),props)
+        itrade_csv.write(fn,os.path.join(itrade_config.dirSymbData,'quotes.txt'),props)
         print 'System List of symbols saved.'
 
         # User list
@@ -1499,7 +1499,7 @@ if __name__=='__main__':
     info('test7 %s' % quote.trades().trade('20050104'));
 
 #    quotes.saveTrades()
-#    quotes.saveListOfQuotes(os.path.join(itrade_config.dirSysData,'test.txt'))
+#    quotes.saveListOfQuotes(os.path.join(itrade_config.dirSymbData,'test.txt'))
 
     print fmtVolume(1)
     print fmtVolume(12)
