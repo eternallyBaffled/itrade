@@ -870,7 +870,7 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
         self.m_list.InsertColumn(IDC_INVEST, message('buy'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
         self.m_list.InsertColumn(IDC_RISKM, message('risk'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
         self.m_list.InsertColumn(IDC_STOPLOSS, message('stop_minus'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_CURRENT, message('USP'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_CURRENT, message('last'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
         self.m_list.InsertColumn(IDC_STOPWIN, message('stop_plus'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
         self.m_list.InsertColumn(IDC_PV, message('sell'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
         self.m_list.InsertColumn(IDC_PROFIT, message('profit'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
@@ -883,10 +883,7 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
             if eachQuote.hasStops() and (eachQuote.isTraded() or eachQuote.isMonitored()):
                 self.m_list.InsertImageStringItem(x, eachQuote.isin(), self.idx_tbref)
                 self.m_list.SetStringItem(x,IDC_TICKER,eachQuote.ticker())
-                self.m_list.SetStringItem(x,IDC_INVEST, eachQuote.sv_pr(fmt="%.0f",bDispCurrency=True))
-                self.m_list.SetStringItem(x,IDC_RISKM, eachQuote.sv_riskmoney(self.m_portfolio.currency(),self.m_portfolio.currency_symbol()))
                 self.m_list.SetStringItem(x,IDC_STOPLOSS,"~ %s " % eachQuote.sv_stoploss())
-                self.m_list.SetStringItem(x,IDC_CURRENT,eachQuote.sv_close(bDispCurrency=True))
                 self.m_list.SetStringItem(x,IDC_STOPWIN,"~ %s " % eachQuote.sv_stopwin())
                 self.m_list.SetStringItem(x,IDC_NAME,eachQuote.name())
 
@@ -903,8 +900,6 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
             self.registerLive(eachQuote,itrade_config.refreshView,self.m_id)
 
         # adjust some column's size
-        self.m_list.SetColumnWidth(IDC_INVEST, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_RISKM, wx.LIST_AUTOSIZE)
         self.m_list.SetColumnWidth(IDC_STOPLOSS, wx.LIST_AUTOSIZE)
         self.m_list.SetColumnWidth(IDC_STOPWIN, wx.LIST_AUTOSIZE)
 
@@ -916,12 +911,23 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
         quote,item = self.getQuoteAndItemOnTheLine(x)
 
         if disp:
-            self.m_list.SetStringItem(x,IDC_CURRENT,quote.sv_close(bDispCurrency=True))
-            self.m_list.SetStringItem(x,IDC_PV,"%s %s" % (quote.sv_pv(self.m_portfolio.currency(),fmt="%.0f"),self.m_portfolio.currency_symbol()))
-            self.m_list.SetStringItem(x,IDC_PROFIT,"%s %s" % (quote.sv_profit(self.m_portfolio.currency(),fmt="%.0f"),self.m_portfolio.currency_symbol()))
-            self.m_list.SetStringItem(x,IDC_PERCENT,quote.sv_profitPercent(self.m_portfolio.currency()))
             color = quote.colorStop()
+            self.m_list.SetStringItem(x,IDC_CURRENT,quote.sv_close(bDispCurrency=True))
+            if color==QUOTE_GREEN:
+                self.m_list.SetStringItem(x,IDC_INVEST, "")
+                self.m_list.SetStringItem(x,IDC_RISKM, "")
+                self.m_list.SetStringItem(x,IDC_PV,"")
+                self.m_list.SetStringItem(x,IDC_PROFIT,"")
+                self.m_list.SetStringItem(x,IDC_PERCENT,"")
+            else:
+                self.m_list.SetStringItem(x,IDC_INVEST, quote.sv_pr(fmt="%.0f",bDispCurrency=True))
+                self.m_list.SetStringItem(x,IDC_RISKM, quote.sv_riskmoney(self.m_portfolio.currency(),self.m_portfolio.currency_symbol()))
+                self.m_list.SetStringItem(x,IDC_PV,"%s %s" % (quote.sv_pv(self.m_portfolio.currency(),fmt="%.0f"),self.m_portfolio.currency_symbol()))
+                self.m_list.SetStringItem(x,IDC_PROFIT,"%s %s" % (quote.sv_profit(self.m_portfolio.currency(),fmt="%.0f"),self.m_portfolio.currency_symbol()))
+                self.m_list.SetStringItem(x,IDC_PERCENT,quote.sv_profitPercent(self.m_portfolio.currency()))
         else:
+            self.m_list.SetStringItem(x,IDC_INVEST, " ------ %s" % self.m_portfolio.currency_symbol())
+            self.m_list.SetStringItem(x,IDC_RISKM, " ------ %s" % self.m_portfolio.currency_symbol())
             self.m_list.SetStringItem(x,IDC_CURRENT," ---.-- %s " % quote.currency_symbol())
             self.m_list.SetStringItem(x,IDC_PV," ------ %s" % self.m_portfolio.currency_symbol())
             self.m_list.SetStringItem(x,IDC_PROFIT," ------ %s" % self.m_portfolio.currency_symbol())
@@ -943,6 +949,8 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
             item.SetImage(self.idx_noop)
 
         self.m_list.SetItem(item)
+        self.m_list.SetColumnWidth(IDC_INVEST, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_RISKM, wx.LIST_AUTOSIZE)
         self.m_list.SetColumnWidth(IDC_CURRENT, wx.LIST_AUTOSIZE)
         self.m_list.SetColumnWidth(IDC_PV, wx.LIST_AUTOSIZE)
         self.m_list.SetColumnWidth(IDC_PROFIT, wx.LIST_AUTOSIZE)
