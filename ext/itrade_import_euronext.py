@@ -57,8 +57,7 @@ from itrade_market import euronext_place2mep,euronext_InstrumentId
 class Import_euronext(object):
     def __init__(self):
         debug('Import_euronext:__init__')
-        self.m_urlid = 'http://www.euronext.com/tools/datacentre/results/0,5773,1732_204211370,00.html?fromsearchbox=true&matchpattern='
-        self.m_url = 'http://www.euronext.com/tools/datacentre/dataCentreDownloadExcell/0,5822,1732_2276422,00.html'
+        self.m_url = 'http://www.euronext.com/tools/datacentre/dataCentreDownloadExcell.jcsv'
 
     def name(self):
         return 'euronext'
@@ -128,6 +127,8 @@ class Import_euronext(object):
         debug("Import_euronext:getdata quote:%s begin:%s end:%s" % (quote,d1,d2))
 
         query = (
+            ('cha', '3044'),
+            ('lan', 'EN'),
             ('idInstrument', IdInstrument),
             ('isinCode', quote.isin()),
             ('indexCompo', ''),
@@ -139,7 +140,6 @@ class Import_euronext(object):
             ('dateFrom', '%02d/%02d/%04d' % (d1[2],d1[1],d1[0])),
             ('dateTo', '%02d/%02d/%04d' % (d2[2],d2[1],d2[0])),
             ('typeDownload', '2'),
-            ('format', ''),
         )
         query = map(lambda (var, val): '%s=%s' % (var, str(val)), query)
         query = string.join(query, '&')
