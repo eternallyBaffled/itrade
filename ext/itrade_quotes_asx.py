@@ -57,7 +57,7 @@ from itrade_ext import *
 #
 # ============================================================================
 
-def Import_ListOfQuotes_ASX(quotes,market='ASX'):
+def Import_ListOfQuotes_ASX(quotes,market='ASX',dlg=None,x=0):
     print 'Update %s list of symbols' % market
 
     if market=='ASX':

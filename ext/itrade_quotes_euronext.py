@@ -56,7 +56,7 @@ from itrade_ext import *
 #
 # ============================================================================
 
-def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT'):
+def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT',dlg=None,x=0):
     print 'Update %s list of symbols' % market
 
     if market=='EURONEXT':
