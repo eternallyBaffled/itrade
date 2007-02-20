@@ -1885,7 +1885,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
     # ---[ Stops ] -----------------------------------------
 
     def OnAddStops(self,e):
-        if addOrEditStops_iTradeQuote(self,None,bAdd=True):
+        if addOrEditStops_iTradeQuote(self,None,market=self.m_portfolio.market(),bAdd=True):
             self.setDirty()
             self.m_listmode = LISTMODE_INIT
             self.OnStops(e)
@@ -1900,7 +1900,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
     def OnEditStops(self,e):
         quote,item = self.getQuoteAndItemOnTheLine(self.m_currentItem)
         print 'OnEditStops:',quote,item,self.m_currentItem
-        if addOrEditStops_iTradeQuote(self,quote,bAdd=False):
+        if addOrEditStops_iTradeQuote(self,quote,market=quote.market(),bAdd=False):
             self.setDirty()
             self.m_listmode = LISTMODE_INIT
             self.OnStops(e)

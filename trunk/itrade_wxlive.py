@@ -96,9 +96,9 @@ class UpdateLiveThread:
             # update live information
             itrade_import.liveupdate_from_internet(self.m_quote)
             evt = UpdateLiveEvent(quote=self.m_quote,param=p)
-            wx.PostEvent(self.m_win,evt)
+            if self.m_win: wx.PostEvent(self.m_win,evt)
 
-            time.sleep(self.m_sleeptime)
+            if self.m_keepGoing: time.sleep(self.m_sleeptime)
 
         self.m_running = False
 
