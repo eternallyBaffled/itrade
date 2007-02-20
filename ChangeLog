@@ -6,6 +6,8 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-02-20  Gilles Dumortier <dgil at ieee.org>
+	* Move symbols lists to specific /symbols folder (on going work to have
+	  symbols lists storage per market)
 	* Euronext plugin : update the URL to download symbols lists
 	  Also, modify internal code of the plugin to be more dynamic in front
           of the format for the returned data
