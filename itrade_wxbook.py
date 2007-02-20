@@ -736,12 +736,24 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         iTradeLaunchBrowser(itrade_config.donorsTrackerURL,new=True)
 
     def OnCheckSoftware(self,e):
+        # can be long ...
+        wx.SetCursor(wx.HOURGLASS_CURSOR)
+
+        dlgP = wx.ProgressDialog(message('checksoftware_title'),"",1,self,wx.PD_APP_MODAL)
+
         url = itrade_config.checkNewRelease()
+
+        # restore
+        wx.SetCursor(wx.STANDARD_CURSOR)
+
         if url:
             if iTradeYesNo(self,message('checksoftware_needupdate'),message('checksoftware_title'))==wx.ID_YES:
                 iTradeLaunchBrowser(url,new=True)
         else:
             iTradeInformation(self,message('checksoftware_uptodate'),message('checksoftware_title'))
+
+        dlgP.Destroy()
+
 
     def OnManageList(self,e):
         list_iTradeQuote(self,self.m_portfolio.market())
