@@ -194,13 +194,13 @@ class iTradeStopsDialog(wx.Dialog):
 #   quote       Quote object or ISIN reference
 # ============================================================================
 
-def addOrEditStops_iTradeQuote(win,quote,bAdd=True):
+def addOrEditStops_iTradeQuote(win,quote,market,bAdd=True):
     # no quote : select one
     if not quote:
         print 'addOrEditStops_iTradeQuote() : need to select a quote'
 
         # select one quote from the matrix list
-        quote = select_iTradeQuote(win,quote,filter=True,filterEnabled=False)
+        quote = select_iTradeQuote(win,quote,filter=True,market=market,filterEnabled=True)
 
         # cancel -> exit
         if not quote: return False
@@ -223,8 +223,8 @@ def addOrEditStops_iTradeQuote(win,quote,bAdd=True):
         idRet = dlg.ShowModal()
         dlg.Destroy()
         if idRet == wx.ID_OK:
-            return True
-    return False
+            return quote
+    return None
 
 # ============================================================================
 # removeStops_iTradeQuote
