@@ -117,6 +117,8 @@ main_help_desc_checksoftware; Check if a new software release available for down
 checksoftware_needupdate;The software need to be updated ! Do you want download the new release ?
 checksoftware_uptodate;You have the latest known official release.
 checksoftware_title;Checking for Upgrade
+checksoftware_development;You have a release under development.
+checksoftware_error;Can't get release information for the software (network issue ?)
 
 main_about;&About ...
 main_desc_about; Information about iTrade

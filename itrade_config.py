@@ -266,13 +266,13 @@ experimental = False
 
 def checkNewRelease():
     # just to test : remove '#' from the line just below
-    # __svnversion__ = 'r564'
+    #__svnversion__ = 'r564'
 
     # development release : do not test
     if __svnversion__ == 'r???':
         if verbose:
             print 'checkNewRelease(): development release'
-        return None
+        return 'dev'
 
     import urllib
 
@@ -283,24 +283,24 @@ def checkNewRelease():
         f.close()
     except IOError:
         print 'checkNewRelease(): exeption getting OFFICIAL file'
-        return None
+        return 'err'
 
     if latest[0]!='r':
         if verbose:
             print 'checkNewRelease(): OFFICIAL file malformed'
-        return None
+        return 'err'
 
     current = int(__svnversion__[1:])
     latest = int(latest[1:])
 
-    print current,latest
+    #print current,latest
 
     if current<latest:
         print 'checkNewRelease(): please update (%d vs %d) : %s' % (current,latest,downloadURL)
         return downloadURL
     else:
         print 'checkNewRelease(): up to date'
-        return None
+        return 'ok'
 
 # ============================================================================
 # loadConfig()

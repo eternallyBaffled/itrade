@@ -121,6 +121,8 @@ main_help_desc_checksoftware; Vérifie sur une nouvelle version du logiciel est d
 checksoftware_needupdate;Ce logiciel doit être mis à jour ! Voulez-vous télécharger la nouvelle version ?
 checksoftware_uptodate;Vous avez la dernière version officielle connue.
 checksoftware_title;Mise à jour du logiciel
+checksoftware_development;Vous avez une version en cours de développement.
+checksoftware_error;Impossible d'obtenir l'information de version pour le logiciel (erreur réseau ?)
 
 main_about;&A propos de ...
 main_desc_about; Informations à propos de l'application iTrade
