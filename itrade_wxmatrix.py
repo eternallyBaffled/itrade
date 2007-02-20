@@ -141,6 +141,7 @@ ID_SUPPORT = 801
 ID_BUG = 802
 ID_FORUM = 803
 ID_DONORS = 804
+ID_CHECKSOFTWARE = 805
 ID_ABOUT = 810
 
 # ============================================================================
@@ -521,6 +522,8 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
         self.helpmenu.Append(ID_FORUM, message('main_help_forum'),message('main_help_desc_forum'))
         self.helpmenu.Append(ID_DONORS, message('main_help_donors'),message('main_help_desc_donors'))
         self.helpmenu.AppendSeparator()
+        self.helpmenu.Append(ID_CHECKSOFTWARE, message('main_help_checksoftware'),message('main_help_desc_checksoftware'))
+        self.helpmenu.AppendSeparator()
         self.helpmenu.Append(ID_ABOUT, message('main_about'), message('main_desc_about'))
 
         # Creating the menubar
@@ -550,6 +553,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
         wx.EVT_MENU(self, ID_BUG, self.OnBug)
         wx.EVT_MENU(self, ID_FORUM, self.OnForum)
         wx.EVT_MENU(self, ID_DONORS, self.OnDonors)
+        wx.EVT_MENU(self, ID_CHECKSOFTWARE, self.OnCheckSoftware)
         wx.EVT_MENU(self, ID_PORTFOLIO, self.OnPortfolio)
         wx.EVT_MENU(self, ID_QUOTES, self.OnQuotes)
         wx.EVT_MENU(self, ID_STOPS, self.OnStops)
@@ -749,6 +753,14 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin, wxl.ColumnSor
 
     def OnDonors(self,e):
         iTradeLaunchBrowser(itrade_config.donorsTrackerURL,new=True)
+
+    def OnCheckSoftware(self,e):
+        url = itrade_config.checkNewRelease()
+        if url:
+            if iTradeYesNo(self,message('checksoftware_needupdate'),message('checksoftware_title'))==wx.ID_YES:
+                iTradeLaunchBrowser(url,new=True)
+        else:
+            iTradeInformation(self,message('checksoftware_uptodate'),message('checksoftware_title'))
 
     def OnManageList(self,e):
         list_iTradeQuote(self,self.m_portfolio.market())
