@@ -581,13 +581,24 @@ if __name__=='__main__':
 if __name__=='__main__':
     setLevel(logging.INFO)
 
+    # load configuration
+    import itrade_config
+    itrade_config.loadConfig()
+
     from itrade_local import *
     setLang('us')
     gMessage.load()
 
-    ticker = 'AXL'
+    # load extensions
+    import itrade_ext
+    itrade_ext.loadExtensions(itrade_config.fileExtData,itrade_config.dirExtData)
 
+    # init modules
     from itrade_quotes import *
+    initQuotesModule()
+
+    ticker = 'GTO'
+
     quote = quotes.lookupTicker(ticker)
     info('%s: %s' % (ticker,quote))
 
