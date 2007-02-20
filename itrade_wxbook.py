@@ -1046,14 +1046,17 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
 
     # ---[ Quotes ] -----------------------------------------
 
-    def OnAddQuote(self,e):
-        quote = addInMatrix_iTradeQuote(self,self.m_matrix,self.m_portfolio)
+    def AddAndRefresh(self,quote=None):
+        quote = addInMatrix_iTradeQuote(self,self.m_matrix,self.m_portfolio,quote)
         if quote:
-            print 'OnAddQuote:',quote
+            print 'AddAndRefresh:',quote
             self.m_portfolio.setupCurrencies()
             self.m_portfolio.loginToServices(quote)
             self.setDirty()
             self.RebuildList()
+
+    def OnAddQuote(self,e):
+        self.AddAndRefresh(None)
 
     def OnRemoveCurrentQuote(self,e):
         quote = self.currentQuote()
@@ -1068,13 +1071,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
     def OnAddStops(self,e):
         quote = addOrEditStops_iTradeQuote(self,quote=None,market=self.m_portfolio.market(),bAdd=True)
         if quote:
-            quote = addInMatrix_iTradeQuote(self,self.m_matrix,self.m_portfolio,quote)
-            if quote:
-                print 'OnAddStops:',quote
-                self.m_portfolio.setupCurrencies()
-                self.m_portfolio.loginToServices(quote)
-                self.setDirty()
-                self.RebuildList()
+            self.AddAndRefresh(quote)
 
     def OnRemoveStops(self,e):
         if removeStops_iTradeQuote(self,quote=self.currentQuote()):
