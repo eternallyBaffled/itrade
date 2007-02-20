@@ -80,6 +80,7 @@ softwareAuthors = __author__
 softwareCopyright = __copyright__
 softwareCredits = __credits__
 softwareWebsite = 'http://itrade.sourceforge.net/'
+softwareLatest  = 'http://itrade.svn.sourceforge.net/viewvc/*checkout*/itrade/trunk/OFFICIAL'
 
 # iTrade version (major.minor)
 softwareVersion = __version__
@@ -95,6 +96,7 @@ gbDisconnected = False
 # support
 bugTrackerURL = 'http://sourceforge.net/tracker/?group_id=128261&atid=711187'
 donorsTrackerURL = 'http://sourceforge.net/donate/index.php?group_id=128261'
+downloadURL = 'http://sourceforge.net/project/showfiles.php?group_id=128261'
 
 manualURL = {}
 manualURL['fr'] = 'http://itrade.sourceforge.net/fr/manual.htm'
@@ -255,6 +257,50 @@ else:
 
 # experimental features
 experimental = False
+
+# ============================================================================
+# checkNewRelease()
+#
+# return None or link to download the new release
+# ============================================================================
+
+def checkNewRelease():
+    # just to test : remove '#' from the line just below
+    # __svnversion__ = 'r564'
+
+    # development release : do not test
+    if __svnversion__ == 'r???':
+        if verbose:
+            print 'checkNewRelease(): development release'
+        return None
+
+    import urllib
+
+    # get OFFICIAL file from svn
+    try:
+        f = urllib.urlopen(softwareLatest)
+        latest = f.read()
+        f.close()
+    except IOError:
+        print 'checkNewRelease(): exeption getting OFFICIAL file'
+        return None
+
+    if latest[0]!='r':
+        if verbose:
+            print 'checkNewRelease(): OFFICIAL file malformed'
+        return None
+
+    current = int(__svnversion__[1:])
+    latest = int(latest[1:])
+
+    print current,latest
+
+    if current<latest:
+        print 'checkNewRelease(): please update (%d vs %d) : %s' % (current,latest,downloadURL)
+        return downloadURL
+    else:
+        print 'checkNewRelease(): up to date'
+        return None
 
 # ============================================================================
 # loadConfig()
@@ -421,6 +467,8 @@ if __name__=='__main__':
     print __svnversion__
 
     print os.path.expanduser('~')
+
+    print checkNewRelease()
 
 # ============================================================================
 # That's all folks !

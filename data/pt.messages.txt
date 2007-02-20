@@ -116,6 +116,13 @@ main_help_desc_forum;Participar na comunidade iTrade sobre o seu Fórum (Francês-
 main_help_donors;&Doar o Dinheiro…
 main_help_desc_donors; Como doar o dinheiro para suportar este projecto
 
+main_help_checksoftware;__x&Check new Software
+main_help_desc_checksoftware;__x Check if a new software release available
+
+checksoftware_needupdate;__xThe software need to be updated ! Do you want download it now ?
+checksoftware_uptodate;__xYou have the latest known official release.
+checksoftware_title;__xChecking for Upgrade
+
 main_about;&Sobre ...
 main_desc_about; Informação sobre o iTrade
 
