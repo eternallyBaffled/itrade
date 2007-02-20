@@ -55,7 +55,7 @@ from itrade_ext import *
 #
 # ============================================================================
 
-def Import_ListOfQuotes_NYSE(quotes,market='NYSE'):
+def Import_ListOfQuotes_NYSE(quotes,market='NYSE',dlg=None,x=0):
     print 'Update %s list of symbols' % market
 
     if market=='NYSE':

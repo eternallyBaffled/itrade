@@ -56,14 +56,14 @@ from itrade_ext import *
 # ============================================================================
 
 global barchart_data
-barchart_data = None
+barchart_data = {}
 
-def Import_ListOfQuotes_BARCHART(quotes,market='NASDAQ'):
+def Import_ListOfQuotes_BARCHART(quotes,market='NASDAQ',dlg=None,x=0):
     global barchart_data
     print 'Update %s list of symbols' % market
 
     if market=='NASDAQ' or market=='AMEX' or market=='OTCBB':
-        url = "http://www2.barchart.com/lookup.asp?name=A&opt1=0&start=all&type=&search_usstocks=1"
+        url = "http://www2.barchart.com/lookup.asp?name=%s&opt1=0&start=all&type=&search_usstocks=1&search_usfunds=&search_canstocks=&code=BSTK"
     else:
         return False
 
@@ -78,73 +78,115 @@ def Import_ListOfQuotes_BARCHART(quotes,market='NASDAQ'):
         lines = [removeCarriage(l) for l in lines]
         return lines
 
-    if not barchart_data:
-        # read file (for debugging) or get file from network
-        try:
-            fn = open('barchart.htm','r')
-        except IOError:
-            # can't open the file (existing ?)
-            fn = None
+    def import_letter(letter,dlg,x):
 
-        if not fn:
+        if dlg:
+            dlg.Update(x,"BARCHART %s:'%s'"%(market,letter))
+            #print "BARCHART %s:'%s'"%(market,letter)
+
+        if not barchart_data.has_key(letter):
+            # read file (for debugging) or get file from network
             try:
-                fn = urllib.urlopen(url)
-            except:
-                debug('Import_ListOfQuotes_BARCHART:unable to connect :-(')
-                return False
+                fn = open('barchart%s.htm' % letter,'r')
+            except IOError:
+                # can't open the file (existing ?)
+                fn = None
 
-        # returns the data
-        barchart_data = fn.read()
+            if not fn:
+                try:
+                    fn = urllib.urlopen(url%letter)
+                except:
+                    print 'Import_ListOfQuotes_BARCHART:unable to connect to',url%letter
+                    return False
 
-    #
-    lines = splitLines(barchart_data)
-    count = 0
-    ticker = ''
-    name = ''
-    exchange = ''
+            # returns the data
+            barchart_data[letter] = fn.read()
 
-    for line in lines:
-        # Typical lines :
-        # <TD class=bcText><a href="http://quote.barchart.com/quote.asp?sym=ONJP&code=BSTK" class=bcMLink>1 900 JACKPOT INC</a></TD>
-        # <TD class=bcText align=right><a href="http://quote.barchart.com/quote.asp?sym=ONJP&code=BSTK" class=bcMLink>ONJP</a></TD>
-        # <TD class=bcText align=right> OTCBB </TD>
+        #
+        lines = splitLines(barchart_data[letter])
+        ticker = ''
+        name = ''
+        exchange = ''
+        count = 0
 
-        scode = re.search('align=right',line,re.IGNORECASE|re.MULTILINE)
-        if scode:
-            scode = scode.end()
-            sexch = re.search(' </td>',line[scode+2:],re.IGNORECASE|re.MULTILINE)
-            if sexch:
-                sexch = sexch.start()
-                data = line[scode+2:]
-                data = data[:sexch]
-                exchange = data.upper()
+        for line in lines:
+            # Typical lines :
+            # <TD class=bcText><a href="http://quote.barchart.com/quote.asp?sym=ONJP&code=BSTK" class=bcMLink>1 900 JACKPOT INC</a></TD>
+            # <TD class=bcText align=right><a href="http://quote.barchart.com/quote.asp?sym=ONJP&code=BSTK" class=bcMLink>ONJP</a></TD>
+            # <TD class=bcText align=right> OTCBB </TD>
 
-        sstart = re.search('class=bcMLink>',line,re.IGNORECASE|re.MULTILINE)
-        if sstart:
-            sstart = sstart.end()
-            send = re.search('</a></td>',line[sstart:],re.IGNORECASE|re.MULTILINE)
-            if send:
-                send = send.start()
-                data = line[sstart:]
-                data = data[:send]
+            scode = re.search('align=right',line,re.IGNORECASE|re.MULTILINE)
+            if scode:
+                scode = scode.end()
+                sexch = re.search(' </td>',line[scode+2:],re.IGNORECASE|re.MULTILINE)
+                if sexch:
+                    sexch = sexch.start()
+                    data = line[scode+2:]
+                    data = data[:sexch]
+                    exchange = data.upper()
 
-                if scode:
-                    ticker = data.upper()
-                else:
-                    name = data
+            sstart = re.search('class=bcMLink>',line,re.IGNORECASE|re.MULTILINE)
+            if sstart:
+                sstart = sstart.end()
+                send = re.search('</a></td>',line[sstart:],re.IGNORECASE|re.MULTILINE)
+                if send:
+                    send = send.start()
+                    data = line[sstart:]
+                    data = data[:send]
 
-        if name!='' and ticker!='' and exchange!='':
-            name = filterName(name)
-            if exchange==market:
-                quotes.addQuote(isin='',name=name,ticker=ticker,market=exchange,currency='USD',place='NYC',country='US')
-                count = count + 1
+                    if scode:
+                        ticker = data.upper()
+                    else:
+                        name = data
 
-            # reset everything
-            name = ''
-            ticker = ''
-            exchange = ''
+            if name!='' and ticker!='' and exchange!='':
+                name = filterName(name)
+                if exchange==market:
+                    quotes.addQuote(isin='',name=name,ticker=ticker,market=exchange,currency='USD',place='NYC',country='US')
+                    count = count + 1
 
-    print 'Imported %d lines from BARCHART data.' % count
+                # reset everything
+                name = ''
+                ticker = ''
+                exchange = ''
+
+        print 'Imported %d lines from BARCHART data (letter=%s)' % (count,letter)
+
+    import_letter('1',dlg,x-1)
+    import_letter('2',dlg,x)
+    import_letter('3',dlg,x-1)
+    import_letter('4',dlg,x)
+    import_letter('5',dlg,x-1)
+    import_letter('6',dlg,x)
+    import_letter('7',dlg,x-1)
+    import_letter('8',dlg,x)
+    import_letter('9',dlg,x-1)
+    import_letter('A',dlg,x)
+    import_letter('B',dlg,x-1)
+    import_letter('C',dlg,x)
+    import_letter('D',dlg,x-1)
+    import_letter('E',dlg,x)
+    import_letter('F',dlg,x-1)
+    import_letter('G',dlg,x)
+    import_letter('H',dlg,x-1)
+    import_letter('I',dlg,x)
+    import_letter('J',dlg,x-1)
+    import_letter('K',dlg,x)
+    import_letter('L',dlg,x-1)
+    import_letter('M',dlg,x)
+    import_letter('N',dlg,x-1)
+    import_letter('O',dlg,x)
+    import_letter('P',dlg,x-1)
+    import_letter('Q',dlg,x)
+    import_letter('R',dlg,x-1)
+    import_letter('S',dlg,x)
+    import_letter('T',dlg,x-1)
+    import_letter('U',dlg,x)
+    import_letter('V',dlg,x-1)
+    import_letter('W',dlg,x)
+    import_letter('X',dlg,x-1)
+    import_letter('Y',dlg,x)
+    import_letter('Z',dlg,x-1)
 
     return True
 

@@ -694,17 +694,17 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
                     keepGoing = dlg.Update(x,market)
                     fn = getListSymbolConnector(market,QLIST_ANY,QTAG_LIST)
                     if fn:
-                        fn(quotes,market)
+                        fn(quotes,market,dlg,x)
                     else:
                         print 'ListSymbolConnector for %s not found !' % market
                     x = x + 1
         else:
-            x = 1
+            x = 0
             dlg = wx.ProgressDialog(message('download_symbols_onelist'),"",2,self,wx.PD_CAN_ABORT | wx.PD_APP_MODAL)
             dlg.Update(0,self.m_market)
             fn = getListSymbolConnector(self.m_market,QLIST_ANY,QTAG_LIST)
             if fn:
-                fn(quotes,self.m_market)
+                fn(quotes,self.m_market,dlg,x)
             else:
                 print 'ListSymbolConnector for %s not found !' % self.m_market
 
