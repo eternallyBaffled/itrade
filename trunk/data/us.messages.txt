@@ -39,6 +39,8 @@ main_view_money;&Money Management
 main_view_desc_money; Money Management
 main_view_evaluation;&Performance
 main_view_desc_evaluation; Performance evaluation of the portfolio
+main_view_trading;&Trading
+main_view_desc_trading; Display general Trading information for the portfolio
 
 main_view_compute;&Computer
 main_view_desc_compute; Computer
@@ -131,6 +133,7 @@ main_title_quotes;iTrade - Matrix %s:%s
 main_title_stops;iTrade - Stops %s:%s
 main_title_indicators;iTrade - Indicators %s:%s
 main_title_evaluation;iTrade - Performance %s:%s
+main_title_trading;iTrade - Trading %s:%s
 
 main_refreshing;Refreshing data
 
@@ -484,8 +487,8 @@ prop_liveconnector;Live Connector :
 prop_impconnector;Import Connector :
 prop_set;Set
 prop_desc_set;Set new market and connector information
-prop_term;Investment period (in month) :
-prop_risk;Risk level (in %) :
+prop_term;Average Investment period (in month) :
+prop_risk;Acceptable Risk level per line (in %) :
 
 live_busy;One moment please, waiting live connection to die ...
 live_notebook;Notebook
@@ -555,6 +558,7 @@ page_quotes;Matrix
 page_stops;Stops
 page_indicators;Indicators
 page_evaluation;Performance
+page_trading;Trading
 
 print_preview;Print Preview
 print_printing;Printing

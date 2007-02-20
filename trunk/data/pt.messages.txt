@@ -43,6 +43,8 @@ main_view_currencies;&Moedas correntes
 main_view_desc_currencies; Moedas correntes
 main_view_evaluation; &Desempenho
 main_view_desc_evaluation; Avaliação do desempenho da carteira
+main_view_trading;__x&Trading
+main_view_desc_trading;__x Display general Trading information for the portfolio
 
 main_view_compute;&Computador
 main_view_desc_compute; Computador
@@ -136,6 +138,7 @@ main_title_quotes;iTrade - Matriz %s: %s
 main_title_stops;iTrade - Stops %s: %s
 main_title_indicators;iTrade - Indicadores %s: %s
 main_title_evaluation;iTrade - Desempenho %s: %s
+main_title_trading;__xiTrade - Trading %s:%s
 
 main_refreshing;Actualizando os dados
 
@@ -556,6 +559,7 @@ page_quotes;Matriz
 page_stops;Stops
 page_indicators;Indicadores
 page_evaluation;Desempenho
+page_trading;__xTrading
 
 print_preview;Visualizar impressão
 print_printing;Imprimir...

@@ -1,2 +1,2 @@
-default;<default portfolio>;18331;EURONEXT;EUR;1.196000
-cac40;Cac40;;EURONEXT;EUR;1.196000
+default;<default portfolio>;18331;EURONEXT;EUR;1.196000;6;15
+cac40;Cac40;;EURONEXT;EUR;1.196000;3;5

@@ -69,7 +69,7 @@ from itrade_wxlogin import login_UI
 from itrade_wxstops import addOrEditStops_iTradeQuote,removeStops_iTradeQuote
 from itrade_wxmixin import iTrade_wxFrame
 
-from itrade_wxpanes import iTrade_MatrixPortfolioPanel,iTrade_MatrixQuotesPanel,iTrade_MatrixStopsPanel,iTrade_MatrixIndicatorsPanel
+from itrade_wxpanes import iTrade_MatrixPortfolioPanel,iTrade_MatrixQuotesPanel,iTrade_MatrixStopsPanel,iTrade_MatrixIndicatorsPanel,iTrade_TradingPanel
 from itrade_wxmoney import iTradeEvaluationPanel
 from itrade_wxutil import iTradeYesNo,iTradeInformation,iTradeError
 
@@ -94,9 +94,10 @@ ID_STOPS = 202
 ID_INDICATORS = 203
 
 ID_OPERATIONS = 210
-ID_EVALUATION = 211
-ID_CURRENCIES = 212
-ID_ALERTS = 213
+ID_TRADING = 211
+ID_EVALUATION = 212
+ID_CURRENCIES = 213
+ID_ALERTS = 214
 
 ID_COMPUTE = 221
 
@@ -152,7 +153,8 @@ ID_PAGE_QUOTES = 0
 ID_PAGE_PORTFOLIO = 1
 ID_PAGE_STOPS = 2
 ID_PAGE_INDICATORS = 3
-ID_PAGE_EVALUATION = 4
+ID_PAGE_TRADING = 4
+ID_PAGE_EVALUATION = 5
 
 # ============================================================================
 # iTradeMainToolbar
@@ -332,6 +334,9 @@ class iTradeMainNotebookWindow(wx.Notebook):
         self.win[ID_PAGE_INDICATORS] = iTrade_MatrixIndicatorsPanel(self,parent,wx.NewId(),self.m_portfolio,self.m_matrix)
         self.AddPage(self.win[ID_PAGE_INDICATORS], message('page_indicators'))
 
+        self.win[ID_PAGE_TRADING] = iTrade_TradingPanel(self,parent,wx.NewId(),self.m_portfolio,self.m_matrix)
+        self.AddPage(self.win[ID_PAGE_TRADING], message('page_trading'))
+
         self.win[ID_PAGE_EVALUATION] = iTradeEvaluationPanel(self,wx.NewId(),self.m_portfolio)
         self.AddPage(self.win[ID_PAGE_EVALUATION], message('page_evaluation'))
         #print ']-- book init'
@@ -367,6 +372,7 @@ class iTradeMainNotebookWindow(wx.Notebook):
         self.win[ID_PAGE_PORTFOLIO].m_mustInit = True
         self.win[ID_PAGE_STOPS].m_mustInit = True
         self.win[ID_PAGE_INDICATORS].m_mustInit = True
+        self.win[ID_PAGE_TRADING].m_mustInit = True
         self.win[ID_PAGE_EVALUATION].m_mustInit = True
 
     def InitCurrentPage(self,bReset,bInit):
@@ -479,6 +485,8 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
 
         self.viewmenu = wx.Menu()
         self.viewmenu.Append(ID_OPERATIONS, message('main_view_operations'),message('main_view_desc_operations'))
+        self.viewmenu.AppendSeparator()
+        self.viewmenu.Append(ID_TRADING, message('main_view_trading'),message('main_view_desc_trading'))
         self.viewmenu.Append(ID_EVALUATION, message('main_view_evaluation'),message('main_view_desc_evaluation'))
         self.viewmenu.AppendSeparator()
         self.viewmenu.Append(ID_CURRENCIES, message('main_view_currencies'),message('main_view_desc_currencies'))
@@ -556,6 +564,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         wx.EVT_MENU(self, ID_QUOTES, self.OnQuotes)
         wx.EVT_MENU(self, ID_STOPS, self.OnStops)
         wx.EVT_MENU(self, ID_INDICATORS, self.OnIndicators)
+        wx.EVT_MENU(self, ID_TRADING, self.OnTrading)
         wx.EVT_MENU(self, ID_OPERATIONS, self.OnOperations)
         wx.EVT_MENU(self, ID_EVALUATION, self.OnEvaluation)
         wx.EVT_MENU(self, ID_COMPUTE, self.OnCompute)
@@ -819,6 +828,8 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
             title = message('main_title_stops')
         elif page == ID_PAGE_INDICATORS:
             title = message('main_title_indicators')
+        elif page == ID_PAGE_TRADING:
+            title = message('main_title_trading')
         elif page == ID_PAGE_EVALUATION:
             title = message('main_title_evaluation')
         else:
@@ -852,6 +863,12 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         # check current page
         if self.m_book.GetSelection() != ID_PAGE_INDICATORS:
             self.m_book.SetSelection(ID_PAGE_INDICATORS)
+        self.updateTitle()
+
+    def OnTrading(self,e):
+        # check current page
+        if self.m_book.GetSelection() != ID_PAGE_TRADING:
+            self.m_book.SetSelection(ID_PAGE_TRADING)
         self.updateTitle()
 
     def OnEvaluation(self,e):
