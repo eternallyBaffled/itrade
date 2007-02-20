@@ -6,6 +6,7 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-02-20  Gilles Dumortier <dgil at ieee.org>
+	* Term period and Risk level per line : properties of the portfolio
 	* View Stops : do not display portfolio information for a quote not in
 	  the portfolio !
 	* View Stops : be able to add a quote not in the matrix

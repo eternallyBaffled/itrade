@@ -220,43 +220,6 @@ class iTradeQuotePropertiesPanel(wx.Panel):
         thebox.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
         self._sizer.AddSizer(thebox, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
-        # ---[ Trading style ]---
-        box = wx.StaticBox(self, -1, message('prop_tradingstyle'))
-        thebox = wx.StaticBoxSizer(box,wx.VERTICAL)
-
-        box = wx.BoxSizer(wx.HORIZONTAL)
-
-        label = wx.StaticText(self, -1, message('prop_term'))
-        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
-
-        self.editTerm = wx.TextCtrl(self, -1, '3', size=wx.Size(30,-1), style = wx.TE_LEFT)
-        box.Add(self.editTerm, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
-
-        label = wx.StaticText(self, -1, message('prop_risk'))
-        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
-
-        self.editRisk = wx.TextCtrl(self, -1, '50', size=wx.Size(30,-1), style = wx.TE_LEFT)
-        box.Add(self.editRisk, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
-
-        thebox.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
-
-        box = wx.BoxSizer(wx.HORIZONTAL)
-
-        nid = wx.NewId()
-        btn = wx.Button(self, nid, message('prop_restore'))
-        btn.SetHelpText(message('prop_desc_restore'))
-        box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
-        wx.EVT_BUTTON(self, nid, self.OnRestoreTrading)
-
-        nid = wx.NewId()
-        btn = wx.Button(self, nid, message('prop_set'))
-        btn.SetHelpText(message('prop_desc_set'))
-        box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
-        wx.EVT_BUTTON(self, nid, self.OnSetTrading)
-
-        thebox.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
-        self._sizer.AddSizer(thebox, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
-
         # auto layout
         self.SetSizer(self._sizer)
 
@@ -386,12 +349,6 @@ class iTradeQuotePropertiesPanel(wx.Panel):
         # then refresh the display
         self.saveThenDisplayConnector()
 
-    def OnRestoreTrading(self,event):
-        pass
-
-    def OnSetTrading(self,event):
-        pass
-
 # ============================================================================
 # iTradeQuotePropertyToolbar
 #
@@ -435,7 +392,7 @@ class iTradeQuotePropertyWindow(wx.Frame):
 
     def __init__(self,parent,id,port,quote,dpage=1):
         self.m_id = wx.NewId()
-        wx.Frame.__init__(self,None,self.m_id, size = ( 560,480), style= wx.DEFAULT_FRAME_STYLE & ~(wx.RESIZE_BORDER | wx.RESIZE_BOX | wx.MAXIMIZE_BOX))
+        wx.Frame.__init__(self,None,self.m_id, size = ( 560,370), style= wx.DEFAULT_FRAME_STYLE & ~(wx.RESIZE_BORDER | wx.RESIZE_BOX | wx.MAXIMIZE_BOX))
         self.m_quote = quote
         self.m_parent = parent
         self.m_port = port

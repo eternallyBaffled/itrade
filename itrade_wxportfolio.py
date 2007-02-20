@@ -286,6 +286,8 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
             self.m_market = portfolio.market()
             self.m_currency = portfolio.currency()
             self.m_vat = portfolio.vat()
+            self.m_term = portfolio.term()
+            self.m_risk = portfolio.risk()
         else:
             self.m_filename = 'noname'
             self.m_name = ''
@@ -293,6 +295,8 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
             self.m_market = 'EURONEXT'
             self.m_currency = 'EUR'
             self.m_vat = 1.196
+            self.m_term = 3
+            self.m_risk = 5
         self.m_operation = operation
 
         # container
@@ -363,7 +367,26 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
         self.wxVATCtrl = masked.Ctrl(pane, integerWidth=5, fractionWidth=3, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupChar=getGroupChar(), decimalChar=getDecimalChar() )
         self.wxVATCtrl.SetValue((self.m_vat-1)*100)
 
-        # row 7 : separator
+        # Row7 : trading style
+        label = wx.StaticText(container, -1, message('prop_tradingstyle'))
+
+        btnpane = sc.SizedPanel(container, -1, style = wx.RAISED_BORDER | wx.CAPTION | wx.TAB_TRAVERSAL|wx.CLIP_CHILDREN|wx.NO_FULL_REPAINT_ON_RESIZE)
+        btnpane.SetSizerType("form")
+        btnpane.SetSizerProps(expand=True)
+
+        label = wx.StaticText(btnpane, -1, message('prop_term'))
+        label.SetSizerProps(valign='center')
+
+        self.wxTermCtrl = masked.Ctrl(btnpane, integerWidth=3, fractionWidth=0, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupChar=getGroupChar(), decimalChar=getDecimalChar() )
+        self.wxTermCtrl.SetValue(self.m_term)
+
+        label = wx.StaticText(btnpane, -1, message('prop_risk'))
+        label.SetSizerProps(valign='center')
+
+        self.wxRiskCtrl = masked.Ctrl(btnpane, integerWidth=3, fractionWidth=0, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupChar=getGroupChar(), decimalChar=getDecimalChar() )
+        self.wxRiskCtrl.SetValue(self.m_risk)
+
+        # row 8 : separator
         line = wx.StaticLine(container, -1, size=(20,-1), style=wx.LI_HORIZONTAL)
         line.SetSizerProps(expand=True)
 
@@ -419,6 +442,9 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
             self.wxAccountRefCtrl.Enable(False)
             self.wxMarketCtrl.Enable(False)
             self.wxCurrencyCtrl.Enable(False)
+            self.wxVATCtrl.Enable(False)
+            self.wxTermCtrl.Enable(False)
+            self.wxRiskCtrl.Enable(False)
             #self.btn.SetFocus()
         elif operation=='rename':
             # filename only
@@ -426,6 +452,9 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
             self.wxAccountRefCtrl.Enable(False)
             self.wxMarketCtrl.Enable(False)
             self.wxCurrencyCtrl.Enable(False)
+            self.wxVATCtrl.Enable(False)
+            self.wxTermCtrl.Enable(False)
+            self.wxRiskCtrl.Enable(False)
             #self.btn.SetFocus()
         else:
             # everything is editable
@@ -439,6 +468,8 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
     def OnValid(self,event):
         self.m_filename = self.wxFilenameCtrl.GetLabel().lower().strip()
         self.m_vat = (self.wxVATCtrl.GetValue()/100) + 1
+        self.m_term = self.wxTermCtrl.GetValue()
+        self.m_risk = self.wxRiskCtrl.GetValue()
 
         if (self.m_operation=='create' or self.m_operation=='rename') and portfolios.existPortfolio(self.m_filename):
             self.wxFilenameCtrl.SetLabel('')
@@ -485,11 +516,11 @@ def properties_iTradePortfolio(win,portfolio,operation='create'):
                 portfolios.save()
                 retport = None
         elif operation=='edit':
-            if portfolios.editPortfolio(portfolio.filename(),dlg.m_name,dlg.m_accountref,dlg.m_market,dlg.m_currency,dlg.m_vat):
+            if portfolios.editPortfolio(portfolio.filename(),dlg.m_name,dlg.m_accountref,dlg.m_market,dlg.m_currency,dlg.m_vat,dlg.m_term,dlg.m_risk):
                 portfolios.save()
                 retport = portfolios.portfolio(portfolio.filename())
         elif operation=='create':
-            if portfolios.addPortfolio(dlg.m_filename,dlg.m_name,dlg.m_accountref,dlg.m_market,dlg.m_currency,dlg.m_vat):
+            if portfolios.addPortfolio(dlg.m_filename,dlg.m_name,dlg.m_accountref,dlg.m_market,dlg.m_currency,dlg.m_vat,dlg.m_term,dlg.m_risk):
                 portfolios.save()
                 retport = loadPortfolio(dlg.m_filename)
         elif operation=='rename':

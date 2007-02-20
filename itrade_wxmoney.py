@@ -145,7 +145,7 @@ class iTradeEvaluationPanel(wx.Window):
 
     def OnSize(self, event):
         w,h = self.GetClientSizeTuple()
-        self.m_html.SetDimensions(5, 24, w-5, h-8)
+        self.m_html.SetDimensions(0, 0, w, h)
 
     def InitCurrentPage(self,bReset=True):
         if bReset:

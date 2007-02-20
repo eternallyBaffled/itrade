@@ -1206,5 +1206,36 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
         return menu
 
 # ============================================================================
+# iTrade_TradingPanel
+# ============================================================================
+
+class iTrade_TradingPanel(wx.Panel):
+
+    def __init__(self,parent,wm,id,portfolio,matrix):
+        wx.Panel.__init__(self, parent, id)
+        self.m_parent = parent
+        self.m_portfolio = portfolio
+        self.m_matrix = matrix
+
+    # ---[ Window Management ]-------------------------------------------------
+
+    def InitCurrentPage(self,bReset=True):
+        if bReset:
+            # update portfolio and matrix (just in case)
+            self.m_portfolio = self.m_parent.m_portfolio
+            self.m_matrix = self.m_parent.m_matrix
+
+        # refresh page content
+        self.refresh()
+
+    def DoneCurrentPage(self):
+        pass
+
+    # ---[ Create page content ]-----------------------------------------------
+
+    def refresh(self):
+        pass
+
+# ============================================================================
 # That's all folks !
 # ============================================================================

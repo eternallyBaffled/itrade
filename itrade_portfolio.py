@@ -640,7 +640,7 @@ class Fees(object):
 # ============================================================================
 
 class Portfolio(object):
-    def __init__(self,filename='default',name='<Portfolio>',accountref='000000000',market='EURONEXT',currency='EUR',vat=1.0):
+    def __init__(self,filename='default',name='<Portfolio>',accountref='000000000',market='EURONEXT',currency='EUR',vat=1.0,term=3,risk=5):
         debug('Portfolio::__init__ fn=%s name=%s account=%s' % (filename,name,accountref))
         self.m_filename = filename
         self.m_name = name
@@ -648,6 +648,8 @@ class Portfolio(object):
         self.m_market = market
         self.m_currency = currency
         self.m_vat = vat
+        self.m_term = term
+        self.m_risk = risk
         self._init_()
 
     def name(self):
@@ -662,11 +664,17 @@ class Portfolio(object):
     def vat(self):
         return self.m_vat
 
+    def term(self):
+        return self.m_term
+
+    def risk(self):
+        return self.m_risk
+
     def currency_symbol(self):
         return currency2symbol(self.m_currency)
 
     def __repr__(self):
-        return '%s;%s;%s;%s;%s;%f' % (self.m_filename,self.m_name,self.m_accountref,self.m_market,self.m_currency,self.m_vat)
+        return '%s;%s;%s;%s;%s;%f;%d;%d' % (self.m_filename,self.m_name,self.m_accountref,self.m_market,self.m_currency,self.m_vat,self.m_term,self.m_risk)
 
     def filenamepath(self,portfn,fn):
         return os.path.join(itrade_config.dirUserData,'%s.%s.txt' % (portfn,fn))
@@ -1221,20 +1229,20 @@ class Portfolios(object):
             del self.m_portfolios[filename]
             return True
 
-    def addPortfolio(self,filename,name,accountref,market,currency,vat):
+    def addPortfolio(self,filename,name,accountref,market,currency,vat,term,risk):
         if self.m_portfolios.has_key(filename):
             return None
         else:
-            self.m_portfolios[filename] = Portfolio(filename,name,accountref,market,currency,vat)
+            self.m_portfolios[filename] = Portfolio(filename,name,accountref,market,currency,vat,term,risk)
             debug('Portfolios::addPortfolio(): %s' % self.m_portfolios[filename])
             return self.m_portfolios[filename]
 
-    def editPortfolio(self,filename,name,accountref,market,currency,vat):
+    def editPortfolio(self,filename,name,accountref,market,currency,vat,term,risk):
         if not self.m_portfolios.has_key(filename):
             return None
         else:
             del self.m_portfolios[filename]
-            self.m_portfolios[filename] = Portfolio(filename,name,accountref,market,currency,vat)
+            self.m_portfolios[filename] = Portfolio(filename,name,accountref,market,currency,vat,term,risk)
             debug('Portfolios::editPortfolio(): %s' % self.m_portfolios[filename])
             return self.m_portfolios[filename]
 
@@ -1270,9 +1278,17 @@ class Portfolios(object):
                         currency = item[4]
                         if len(item)>=6:
                             vat = float(item[5])
+                        else:
+                            vat = 1.0
+                        if len(item)>=8:
+                            term = int(item[6])
+                            risk = int(item[7])
+                        else:
+                            term = 3
+                            risk = 5
                     else:
                         currency = 'EUR'
-                    self.addPortfolio(item[0],item[1],item[2],item[3],currency,vat)
+                    self.addPortfolio(item[0],item[1],item[2],item[3],currency,vat,term,risk)
 
     def save(self,fn=None):
         debug('Portfolios:save()')
