@@ -155,4 +155,7 @@ Post release activities (can be done also in //)
 
 - report information (RELNOTES, ...) from branch to trunk
 
+- update ./OFFICIAL file with the released number - any user checking upgrade
+  will be notified to upgrade !
+
 ===============================================================================
