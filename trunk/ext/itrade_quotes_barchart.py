@@ -63,7 +63,7 @@ def Import_ListOfQuotes_BARCHART(quotes,market='NASDAQ',dlg=None,x=0):
     print 'Update %s list of symbols' % market
 
     if market=='NASDAQ' or market=='AMEX' or market=='OTCBB':
-        url = "http://www2.barchart.com/lookup.asp?name=%s&opt1=0&start=all&type=&search_usstocks=1&search_usfunds=&search_canstocks=&code=BSTK"
+        url = "http://www2.barchart.com/lookup.asp?name=%s&opt1=1&start=all&type=&search_usstocks=1&search_usfunds=&search_canstocks="
     else:
         return False
 
