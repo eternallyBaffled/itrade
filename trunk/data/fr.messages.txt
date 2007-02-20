@@ -115,6 +115,12 @@ main_help_forum;&Forum utilisateur
 main_help_desc_forum; Participer à la communauté iTrade sur son Forum (Français / Anglais)
 main_help_donors;&Faire une donation ...
 main_help_desc_donors; Comment faire une donation pour supporter ce projet
+main_help_checksoftware;&Vérification mise à jour
+main_help_desc_checksoftware; Vérifie sur une nouvelle version du logiciel est disponible
+
+checksoftware_needupdate;Ce logiciel doit être mis à jour ! Voulez-vous télécharger la nouvelle version ?
+checksoftware_uptodate;Vous avez la dernière version officielle connue.
+checksoftware_title;Mise à jour du logiciel
 
 main_about;&A propos de ...
 main_desc_about; Informations à propos de l'application iTrade

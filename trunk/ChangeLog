@@ -6,6 +6,7 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-02-20  Gilles Dumortier <dgil at ieee.org>
+	* Check software release for upgrading (SF bug 1647466)
 	* Euronext plugin : URL to import historical data was changed
 	* Euronext plugin : URL to get IdInstrument was changed
 	* Move symbols lists to specific /symbols folder (on going work to have

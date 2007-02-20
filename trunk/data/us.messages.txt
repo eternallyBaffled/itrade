@@ -111,6 +111,12 @@ main_help_forum;Go to &Forum
 main_help_desc_forum; Participate to the iTrade communauty forum (english / french)
 main_help_donors;&Donate Money ...
 main_help_desc_donors; How to Donate Money to support this project
+main_help_checksoftware;&Check for Upgrade ...
+main_help_desc_checksoftware; Check if a new software release available for downloading
+
+checksoftware_needupdate;The software need to be updated ! Do you want download the new release ?
+checksoftware_uptodate;You have the latest known official release.
+checksoftware_title;Checking for Upgrade
 
 main_about;&About ...
 main_desc_about; Information about iTrade
