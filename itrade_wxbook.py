@@ -48,7 +48,7 @@ import wx.lib.mixins.listctrl as wxl
 import itrade_config
 from itrade_logging import *
 from itrade_local import message,gMessage,getLang
-from itrade_portfolio import loadPortfolio
+from itrade_portfolio import loadPortfolio,OPERATION_BUY,OPERATION_SELL
 from itrade_matrix import *
 from itrade_quotes import *
 from itrade_ext import *
@@ -58,7 +58,7 @@ from itrade_login import *
 from itrade_wxquote import open_iTradeQuote,addInMatrix_iTradeQuote,removeFromMatrix_iTradeQuote
 from itrade_wxpropquote import open_iTradeQuoteProperty
 from itrade_wxportfolio import select_iTradePortfolio,properties_iTradePortfolio
-from itrade_wxoperations import open_iTradeOperations
+from itrade_wxoperations import open_iTradeOperations,add_iTradeOperation
 from itrade_wxmoney import open_iTradeMoney
 from itrade_wxalerts import open_iTradeAlerts
 from itrade_wxcurrency import open_iTradeCurrencies
@@ -116,8 +116,8 @@ ID_LIVE_QUOTE = 311
 #ID_NEWS_QUOTE = 313
 #ID_TABLE_QUOTE = 314
 #ID_ANALYSIS_QUOTE = 315
-#ID_BUY_QUOTE = 320
-#ID_SELL_QUOTE = 321
+ID_BUY_QUOTE = 320
+ID_SELL_QUOTE = 321
 ID_PROPERTY_QUOTE = 330
 
 ID_ACCESS = 350
@@ -481,6 +481,9 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         self.quotemenu.Append(ID_GRAPH_QUOTE, message('main_quote_graph'),message('main_quote_desc_graph'))
         self.quotemenu.Append(ID_LIVE_QUOTE, message('main_quote_live'),message('main_quote_desc_live'))
         self.quotemenu.AppendSeparator()
+        self.quotemenu.Append(ID_BUY_QUOTE, message('main_quote_buy'),message('main_quote_desc_buy'))
+        self.quotemenu.Append(ID_SELL_QUOTE, message('main_quote_sell'),message('main_quote_desc_sell'))
+        self.quotemenu.AppendSeparator()
         self.quotemenu.Append(ID_PROPERTY_QUOTE, message('main_quote_property'),message('main_quote_desc_property'))
 
         self.viewmenu = wx.Menu()
@@ -575,6 +578,8 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         wx.EVT_MENU(self, ID_REMOVE_QUOTE, self.OnRemoveCurrentQuote)
         wx.EVT_MENU(self, ID_GRAPH_QUOTE, self.OnGraphQuote)
         wx.EVT_MENU(self, ID_LIVE_QUOTE, self.OnLiveQuote)
+        wx.EVT_MENU(self, ID_BUY_QUOTE, self.OnBuyQuote)
+        wx.EVT_MENU(self, ID_SELL_QUOTE, self.OnSellQuote)
         wx.EVT_MENU(self, ID_PROPERTY_QUOTE, self.OnPropertyQuote)
 
         wx.EVT_MENU(self, ID_SMALL_VIEW, self.OnViewSmall)
@@ -904,6 +909,26 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         if self.currentItem()>=0:
             debug("OnPropertyQuote: %s" % self.currentItemText())
             self.openCurrentQuote(page=7)
+
+    # --- [ buy / sell from the matrix ] ------------------------------------
+
+    def OnBuyQuote(self,e):
+        quote = self.currentQuote()
+        if add_iTradeOperation(self,self.m_portfolio,quote,OPERATION_BUY):
+            if self.m_hOperation:
+                self.m_hOperation.RebuildList()
+                # self will also RebuildList() from Operation View
+            elif not quote:
+                self.RebuildList()
+
+    def OnSellQuote(self,e):
+        quote = self.currentQuote()
+        if add_iTradeOperation(self,self.m_portfolio,quote,OPERATION_SELL):
+            if self.m_hOperation:
+                self.m_hOperation.RebuildList()
+                # self will also RebuildList() from Operation View
+            elif not quote:
+                self.RebuildList()
 
     # --- [ item management ] -----------------------------------------------
 

@@ -151,9 +151,14 @@ operation_ctrl = (
 
 # ============================================================================
 # iTradeOperationsDialog
+#
+#   parent      parent window
+#   op          Operation structure (pre-filling optional)
+#   opmode      EDIT, ADD, DELETE
 # ============================================================================
 
 class iTradeOperationDialog(iTradeSizedDialog):
+
     def __init__(self, parent, op, opmode):
         # pre-init
         self.opmode = opmode
@@ -163,8 +168,11 @@ class iTradeOperationDialog(iTradeSizedDialog):
             self.m_value = op.nv_value()
             self.m_expenses = op.nv_expenses()
             self.m_number = op.nv_number()
-            if op.isQuote():
-                self.m_name = op.quote().key()
+            if op.quote():
+                if op.isQuote():
+                    self.m_name = op.quote().key()
+                else:
+                    self.m_name = ""
             else:
                 self.m_name = op.name()
             self.m_date = op.date()
@@ -1017,7 +1025,7 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
         item = self.m_list.GetItem(index, col)
         return item.GetText()
 
-    # --- [ popup menu ] -------------------------------------
+    # --- [ popup menu ] ------------------------------------------------------
 
     def OnRightDown(self, event):
         self.x = event.GetX()
@@ -1090,10 +1098,7 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
             info('OnModify: date=%s type=%s name=%s value=%12.2f expenses=%12.2f number=%d ref=%d' %(aRet[0],aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6]))
             self.m_port.delOperation(ind)
             self.m_port.addOperation(aRet)
-            self.setDirty()
-            self.populate()
-            if self.m_parent:
-                self.m_parent.RebuildList()
+            self.RebuildList()
 
     def OnDelete(self, event):
         key = self.m_list.GetItemData(self.m_currentItem)
@@ -1104,10 +1109,7 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
         if aRet:
             info('OnDelete: date=%s type=%s name=%s value=%12.2f expenses=%12.2f number=%d ref=%d' %(aRet[0],aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6]))
             self.m_port.delOperation(ind)
-            self.setDirty()
-            self.populate()
-            if self.m_parent:
-                self.m_parent.RebuildList()
+            self.RebuildList()
 
     def OnAdd(self, event):
         info("OnAdd")
@@ -1115,10 +1117,15 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
         if aRet:
             info('OnAdd: date=%s type=%s name=%s value=%12.2f expenses=%12.2f number=%d ref=%d' %(aRet[0],aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6]))
             self.m_port.addOperation(aRet)
-            self.setDirty()
-            self.populate()
-            if self.m_parent:
-                self.m_parent.RebuildList()
+            self.RebuildList()
+
+    # --- [ Rebuild screen and Parent ] ---------------------------------------
+
+    def RebuildList(self):
+        self.setDirty()
+        self.populate()
+        if self.m_parent:
+            self.m_parent.RebuildList()
 
 # ============================================================================
 # open_iTradeOperations
@@ -1152,6 +1159,32 @@ def edit_iTradeOperation(win,op,opmode):
         aRet = None
     dlg.Destroy()
     return aRet
+
+# ============================================================================
+# add_iTradeOperation()
+#
+#   win     parent window
+#   quote   quote involved in the operation
+#   type    type of operation : OPERATION_xxx
+#
+# auto-filled information :
+#   operation date is current date
+#
+# returns True if operation has been added
+# ============================================================================
+
+def add_iTradeOperation(win,portfolio,quote,type):
+    if quote:
+        key = quote.key()
+    else:
+        key = None
+    op = Operation(d=date.today(),t=type,m=key,v='0.0',e='0.0',n='0',vat=portfolio.vat(),ref=-1)
+    aRet = edit_iTradeOperation(win,op,OPERATION_ADD)
+    if aRet:
+        info('add_iTradeOperation: date=%s type=%s name=%s value=%12.2f expenses=%12.2f number=%d ref=%d' %(aRet[0],aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6]))
+        self.m_port.addOperation(aRet)
+        return True
+    return False
 
 # ============================================================================
 # Test me

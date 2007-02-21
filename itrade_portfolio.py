@@ -222,12 +222,17 @@ operation_incl_taxes = {
 
 class Operation(object):
     def __init__(self,d,t,m,v,e,n,vat,ref):
-        if d[4]=='-':
+
+        # decode the date (string) to convert to date
+        if isinstance(d,date):
+            self.m_date = d
+        elif d[4]=='-':
             debug('Operation::__init__():%s: %d %d %d' % (d,long(d[0:4]),long(d[5:7]),long(d[8:10])));
             self.m_date = date(long(d[0:4]),long(d[5:7]),long(d[8:10]))
         else:
             debug('Operation::__init__():%s: %d %d %d' % (d,long(d[0:4]),long(d[4:6]),long(d[6:8])));
             self.m_date = date(long(d[0:4]),long(d[4:6]),long(d[6:8]))
+
         self.m_type = t
         self.m_value = float(v)
         self.m_number = long(n)
