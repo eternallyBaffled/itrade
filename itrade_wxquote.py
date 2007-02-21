@@ -47,7 +47,8 @@ import locale
 # wxPython system
 import itrade_wxversion
 import wx
-import  wx.grid as gridlib
+import wx.grid as gridlib
+import wxaddons.sized_controls as sc
 
 # iTrade system
 from itrade_logging import *
@@ -138,59 +139,95 @@ def exists(filename):
     except:
         return False
 
-class iTradeQuoteInfoWindow(wx.Window):
+class iTradeQuoteInfoWindow(sc.SizedPanel):
 
     def __init__(self,parent,id,size,quote):
-        wx.Window.__init__(self,parent,id,wx.DefaultPosition, size, style=wx.SIMPLE_BORDER)
+        sc.SizedPanel.__init__(self,parent,id, size=size,style=wx.SIMPLE_BORDER | wx.TAB_TRAVERSAL | wx.NO_FULL_REPAINT_ON_RESIZE)
+
         self.m_parent = parent
         self.m_quote = quote
         self.m_logo = None
 
+        self.SetSizerType("vertical")
+
         # Toolbar
         self.m_toolbar = iTradeQuoteToolbar(self, wx.NewId())
 
-        self.m_ticker = wx.StaticText(self, -1, "???", wx.Point(5,37), wx.Size(70, 20))
+        # separator
+        self.wxLine = wx.StaticLine(self, -1, size=(20,-1), style=wx.LI_HORIZONTAL)
+        self.wxLine.SetSizerProps(expand=True)
 
-        self.m_date = wx.StaticText(self, -1, "???", wx.Point(5,65), wx.Size(140, 20))
+        # resizable pane
+        pane = sc.SizedPanel(self, -1)
+        pane.SetSizerType("horizontal")
+        pane.SetSizerProps(expand=True)
 
-        txt = wx.StaticText(self, -1, message('variation'), wx.Point(5,80), wx.Size(70, 20))
-        self.m_percent = wx.StaticText(self, -1, "??? %", wx.Point(50,80), wx.Size(70, 20))
+        self.wxTicker = wx.StaticText(pane, -1, "???")
+        self.wxTicker.SetSizerProps(valign='center')
 
-        txt = wx.StaticText(self, -1, message('last'), wx.Point(5,95), wx.Size(70, 20))
-        self.m_last = wx.StaticText(self, -1, "???", wx.Point(50,95), wx.Size(70, 20))
+        self.wxLogo = wx.StaticBitmap(pane, -1)
+        self.wxLogo.SetSizerProps(valign='center')
 
-        txt = wx.StaticText(self, -1, message('open'), wx.Point(5,110), wx.Size(70, 20))
-        self.m_open = wx.StaticText(self, -1, "???", wx.Point(50,110), wx.Size(70, 20))
+        # separator
+        line = wx.StaticLine(self, -1, size=(20,-1), style=wx.LI_HORIZONTAL)
+        line.SetSizerProps(expand=True)
 
-        txt = wx.StaticText(self, -1, message('high'), wx.Point(5,125), wx.Size(70, 20))
-        self.m_high = wx.StaticText(self, -1, "???", wx.Point(50,125), wx.Size(70, 20))
+        self.wxDate = wx.StaticText(self, -1, "???")
 
-        txt = wx.StaticText(self, -1, message('low'), wx.Point(5,140), wx.Size(70, 20))
-        self.m_low = wx.StaticText(self, -1, "???", wx.Point(50,140), wx.Size(70, 20))
+        # resizable pane
+        pane = sc.SizedPanel(self, -1)
+        pane.SetSizerType("form")
+        pane.SetSizerProps(expand=True)
 
-        txt = wx.StaticText(self, -1, message('volume'), wx.Point(5,155), wx.Size(70, 20))
-        self.m_volume = wx.StaticText(self, -1, "???", wx.Point(50,155), wx.Size(70, 20))
+        txt = wx.StaticText(pane, -1, message('variation'))
+        self.wxPercent = wx.StaticText(pane, -1, "??? %")
 
-        txt = wx.StaticText(self, -1, message('prev'), wx.Point(5,170), wx.Size(70, 20))
-        self.m_prev = wx.StaticText(self, -1, "???", wx.Point(50,170), wx.Size(70, 20))
+        txt = wx.StaticText(pane, -1, message('last'))
+        self.wxLast = wx.StaticText(pane, -1, "???")
 
-        txt = wx.StaticText(self, -1, message('cmp'), wx.Point(5,185), wx.Size(70, 20))
-        self.m_cmp = wx.StaticText(self, -1, "???", wx.Point(50,185), wx.Size(70, 20))
+        txt = wx.StaticText(pane, -1, message('open'))
+        self.wxOpen = wx.StaticText(pane, -1, "???")
 
-        txt = wx.StaticText(self, -1, message('status'), wx.Point(5,225), wx.Size(70, 20))
-        self.m_status = wx.StaticText(self, -1, "", wx.Point(60,225), wx.Size(70, 20))
+        txt = wx.StaticText(pane, -1, message('high'))
+        self.wxHigh = wx.StaticText(pane, -1, "???")
 
-        txt = wx.StaticText(self, -1, message('reopen'), wx.Point(5,240), wx.Size(70, 20))
-        self.m_reopen = wx.StaticText(self, -1, "???", wx.Point(60,240), wx.Size(70, 20))
+        txt = wx.StaticText(pane, -1, message('low'))
+        self.wxLow = wx.StaticText(pane, -1, "???")
 
-        txt = wx.StaticText(self, -1, message('high_threshold'), wx.Point(5,255), wx.Size(70, 20))
-        self.m_high_threshold = wx.StaticText(self, -1, "???", wx.Point(60,255), wx.Size(70, 20))
+        txt = wx.StaticText(pane, -1, message('volume'))
+        self.wxVolume = wx.StaticText(pane, -1, "???")
 
-        txt = wx.StaticText(self, -1, message('low_threshold'), wx.Point(5,270), wx.Size(70, 20))
-        self.m_low_threshold = wx.StaticText(self, -1, "???", wx.Point(60,270), wx.Size(70, 20))
+        txt = wx.StaticText(pane, -1, message('prev'))
+        self.wxPrev = wx.StaticText(pane, -1, "???")
 
-        wx.EVT_PAINT(self, self.OnPaint)
-        wx.EVT_SIZE(self,self.OnSize)
+        txt = wx.StaticText(pane, -1, message('cmp'))
+        self.wxCmp = wx.StaticText(pane, -1, "???")
+
+        # separator
+        line = wx.StaticLine(self, -1, size=(20,-1), style=wx.LI_HORIZONTAL)
+        line.SetSizerProps(expand=True)
+
+        # resizable pane
+        pane = sc.SizedPanel(self, -1)
+        pane.SetSizerType("form")
+        pane.SetSizerProps(expand=True)
+
+        txt = wx.StaticText(pane, -1, message('status'))
+        self.wxStatus = wx.StaticText(pane, -1, "")
+
+        txt = wx.StaticText(pane, -1, message('reopen'))
+        self.wxReopen = wx.StaticText(pane, -1, "???")
+
+        txt = wx.StaticText(pane, -1, message('high_threshold'))
+        self.wxHigh_threshold = wx.StaticText(pane, -1, "???")
+
+        txt = wx.StaticText(pane, -1, message('low_threshold'))
+        self.wxLow_threshold = wx.StaticText(pane, -1, "???")
+
+        # separator
+        line = wx.StaticLine(self, -1, size=(20,-1), style=wx.LI_HORIZONTAL)
+        line.SetSizerProps(expand=True)
+
         self.refresh()
 
     def OnSelectQuote(self,event):
@@ -205,14 +242,8 @@ class iTradeQuoteInfoWindow(wx.Window):
     def suffixLogo(self,ext):
         return '%s-%s.%s' % (self.m_quote.ticker().lower(),self.m_quote.market().lower(),ext)
 
-    def paintLogo(self,dc):
+    def paintLogo(self):
         if self.m_logo == None:
-            bgc = self.GetBackgroundColour()
-            wbrush = wx.Brush(bgc, wx.SOLID)
-            wpen = wx.Pen(bgc, 1, wx.SOLID)
-            dc.SetBrush(wbrush)
-            dc.SetPen(wpen)
-            dc.DrawRectangle(60,33,80,62)
 
             fn = os.path.join(itrade_config.dirImageData,self.suffixLogo('gif'))
             if not exists(fn):
@@ -223,44 +254,56 @@ class iTradeQuoteInfoWindow(wx.Window):
                 fn = os.path.join(itrade_config.dirImageData,self.suffixLogo('jpg'))
             if exists(fn):
                 self.m_logo = wx.Bitmap(fn)
-                if self.m_logo:
-                    dc.DrawBitmap(self.m_logo,60,33,False)
-        else:
-            dc.DrawBitmap(self.m_logo,60,33,False)
-
-    def OnPaint(self,event):
-        dc = wx.PaintDC(self)
-        self.paintLogo(dc)
-        event.Skip()
+                self.wxLogo.SetBitmap(self.m_logo)
+            else:
+                self.wxLogo.SetBitmap(wx.NullBitmap)
 
     def paint(self):
         # paint logo (if any)
-        dc = wx.ClientDC(self)
-        self.paintLogo(dc)
+        self.paintLogo()
 
         # paint fields
-        self.m_ticker.SetLabel(self.m_quote.ticker())
-        self.m_date.SetLabel("%s | %s | %s" % (self.m_quote.sv_date(bDisplayShort=True),self.m_quote.sv_clock(),self.m_quote.sv_type_of_clock()))
-        self.m_percent.SetLabel(self.m_quote.sv_percent())
-        self.m_last.SetLabel("%s %s" % (self.m_quote.sv_close(),self.m_quote.currency()))
-        if self.m_quote.hasTraded():
-            self.m_open.SetLabel(self.m_quote.sv_open())
-            self.m_high.SetLabel(self.m_quote.sv_high())
-            self.m_low.SetLabel(self.m_quote.sv_low())
-            self.m_volume.SetLabel(self.m_quote.sv_volume())
+        self.wxTicker.SetLabel(self.m_quote.ticker())
+        self.wxDate.SetLabel("%s | %s | %s" % (self.m_quote.sv_date(bDisplayShort=True),self.m_quote.sv_clock(),self.m_quote.sv_type_of_clock()))
+
+        percent = self.m_quote.nv_percent()
+        if percent==0:
+            self.wxPercent.SetForegroundColour(wx.BLACK)
+            self.wxLast.SetForegroundColour(wx.BLACK)
+        elif percent<0:
+            self.wxPercent.SetForegroundColour(wx.RED)
+            self.wxLast.SetForegroundColour(wx.RED)
         else:
-            self.m_open.SetLabel(" ---.-- ")
-            self.m_high.SetLabel(" ---.-- ")
-            self.m_low.SetLabel(" ---.-- ")
-            self.m_volume.SetLabel(" ---------- ")
+            self.wxPercent.SetForegroundColour(wx.BLUE)
+            self.wxLast.SetForegroundColour(wx.BLUE)
+        self.wxPercent.SetLabel(self.m_quote.sv_percent())
 
-        self.m_prev.SetLabel(self.m_quote.sv_prevclose())
-        self.m_cmp.SetLabel(self.m_quote.sv_waq())
+        self.wxLast.SetLabel(self.m_quote.sv_close(bDispCurrency=True))
 
-        self.m_status.SetLabel(self.m_quote.sv_status())
-        self.m_reopen.SetLabel(self.m_quote.sv_reopen())
-        self.m_high_threshold.SetLabel("%.2f" % self.m_quote.high_threshold())
-        self.m_low_threshold.SetLabel("%.2f" % self.m_quote.low_threshold())
+        if self.m_quote.hasTraded():
+            self.wxOpen.SetLabel(self.m_quote.sv_open())
+            self.wxHigh.SetLabel(self.m_quote.sv_high())
+            self.wxLow.SetLabel(self.m_quote.sv_low())
+            self.wxVolume.SetLabel(self.m_quote.sv_volume())
+        else:
+            self.wxOpen.SetLabel(" ---.-- ")
+            self.wxHigh.SetLabel(" ---.-- ")
+            self.wxLow.SetLabel(" ---.-- ")
+            self.wxVolume.SetLabel(" ---------- ")
+
+        self.wxPrev.SetLabel(self.m_quote.sv_prevclose())
+        self.wxCmp.SetLabel(self.m_quote.sv_waq())
+
+        status = self.m_quote.sv_status()
+        if status=="OK":
+            self.wxStatus.SetForegroundColour(wx.BLUE)
+        else:
+            self.wxStatus.SetForegroundColour(wx.RED)
+
+        self.wxStatus.SetLabel(status)
+        self.wxReopen.SetLabel(self.m_quote.sv_reopen())
+        self.wxHigh_threshold.SetLabel("%.2f" % self.m_quote.high_threshold())
+        self.wxLow_threshold.SetLabel("%.2f" % self.m_quote.low_threshold())
 
     def refresh(self,nquote=None,live=False):
         debug('QuoteInfoWindow::refresh %s' % self.m_quote.ticker())
@@ -272,10 +315,11 @@ class iTradeQuoteInfoWindow(wx.Window):
         self.m_quote.compute()
         self.paint()
 
-    def OnSize(self,event):
-        debug('QuoteInfoWindow::OnSize')
-        w,h = self.GetClientSizeTuple()
-        self.m_toolbar.SetDimensions(0, 0, w, 32)
+        # fit but stay on the space given by the parent
+        size = self.GetSize()
+        self.Fit()
+        self.SetMinSize(size)
+        self.SetSize(size)
 
 # ============================================================================
 # iTradeQuoteTablePanel
@@ -1072,9 +1116,7 @@ class iTradeQuoteWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin):
     # ---[ Change the current window title ] ----------------------------------
 
     def setTitle(self):
-        # __x display also window size to help debug - to be removed later
-        w,h = self.GetClientSizeTuple()
-        self.SetTitle("%s %s - %s : %s (%d,%d)" % (message('quote_title'),self.m_quote.key(),self.m_quote.ticker(),self.m_quote.name(),w,h))
+        self.SetTitle("%s %s - %s : %s" % (message('quote_title'),self.m_quote.key(),self.m_quote.ticker(),self.m_quote.name()))
 
     # ---[ Select a new quote ] -----------------------------------------------
 
@@ -1113,11 +1155,9 @@ class iTradeQuoteWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin):
     def OnSize(self, event):
         debug('QuoteWindow::OnSize')
         w,h = self.GetClientSizeTuple()
-        self.m_infowindow.SetDimensions(0, 0, 130, h)
+        self.m_infowindow.SetDimensions(0, 0, 129, h)
         self.m_notewindow.SetDimensions(130, 0, w-130, h)
-        self.setTitle()
-        event.Skip(False)
-
+        event.Skip()
 
     # Default OnDestroy handler
     def OnDestroy(self, evt):
@@ -1206,16 +1246,31 @@ if __name__=='__main__':
 
     app = wx.PySimpleApp()
 
+    # load configuration
+    import itrade_config
+    itrade_config.loadConfig()
+
     from itrade_local import *
     setLang('us')
     gMessage.load()
 
+    # load extensions
+    import itrade_ext
+    itrade_ext.loadExtensions(itrade_config.fileExtData,itrade_config.dirExtData)
+
+    # init modules
+    initQuotesModule()
+
     itrade_config.verbose = False
-    quotes.load()
+
+    from itrade_portfolio import *
+    initPortfolioModule()
+
+    port = loadPortfolio('default')
 
     q = quotes.lookupTicker('SAF','EURONEXT')
     if q:
-        open_iTradeQuote(None,None,q)
+        open_iTradeQuote(None,port,q)
         app.MainLoop()
 
 # ============================================================================
