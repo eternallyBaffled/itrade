@@ -125,9 +125,6 @@ checksoftware_error;Can't get release information for the software (network issu
 main_about;&About ...
 main_desc_about; Information about iTrade
 
-main_save_matrix_data;Save matrix data ?
-main_save_operation_data;Save transaction data ?
-
 main_title_portfolio;iTrade - Portfolio %s:%s
 main_title_quotes;iTrade - Matrix %s:%s
 main_title_stops;iTrade - Stops %s:%s
@@ -136,10 +133,6 @@ main_title_evaluation;iTrade - Performance %s:%s
 main_title_trading;iTrade - Trading %s:%s
 
 main_refreshing;Refreshing data
-
-mixin_exit;Exiting iTrade application
-mixin_close;Closing this view
-mixin_open;Context Switching
 
 main_popup_refreshall;Refresh All
 main_popup_buy;Buy

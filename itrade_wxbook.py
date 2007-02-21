@@ -80,9 +80,8 @@ from itrade_wxutil import iTradeYesNo,iTradeInformation,iTradeError
 ID_OPEN = 100
 ID_NEW = 101
 ID_DELETE = 102
-ID_SAVE = 103
-ID_SAVEAS = 104
-ID_EDIT = 105
+ID_SAVEAS = 103
+ID_EDIT = 104
 
 ID_MANAGELIST = 110
 
@@ -178,7 +177,6 @@ class iTradeMainToolbar(wx.ToolBar):
         self._NTB2_NEW = wx.NewId()
         self._NTB2_OPEN = wx.NewId()
         self._NTB2_EDIT = wx.NewId()
-        self._NTB2_SAVE = wx.NewId()
         self._NTB2_SAVE_AS = wx.NewId()
         self._NTB2_MONEY = wx.NewId()
         self._NTB2_OPERATIONS = wx.NewId()
@@ -197,8 +195,6 @@ class iTradeMainToolbar(wx.ToolBar):
                            message('main_open'), message('main_desc_open'))
         self.AddSimpleTool(self._NTB2_EDIT, wx.ArtProvider.GetBitmap(wx.ART_EXECUTABLE_FILE, wx.ART_TOOLBAR),
                            message('main_edit'), message('main_desc_edit'))
-        self.AddSimpleTool(self._NTB2_SAVE, wx.ArtProvider.GetBitmap(wx.ART_FILE_SAVE, wx.ART_TOOLBAR),
-                           message('main_save'), message('main_desc_save'))
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
         self.AddSimpleTool(self._NTB2_OPERATIONS, wx.ArtProvider.GetBitmap(wx.ART_REPORT_VIEW, wx.ART_TOOLBAR),
                            message('main_view_operations'), message('main_view_desc_operations'))
@@ -223,7 +219,6 @@ class iTradeMainToolbar(wx.ToolBar):
         wx.EVT_TOOL(self, self._NTB2_NEW, self.onNew)
         wx.EVT_TOOL(self, self._NTB2_OPEN, self.onOpen)
         wx.EVT_TOOL(self, self._NTB2_EDIT, self.onEdit)
-        wx.EVT_TOOL(self, self._NTB2_SAVE, self.onSave)
         wx.EVT_TOOL(self, self._NTB2_OPERATIONS, self.onOperations)
         wx.EVT_TOOL(self, self._NTB2_MONEY, self.onMoney)
         wx.EVT_TOOL(self, self._NTB2_ALERTS, self.onAlerts)
@@ -243,9 +238,6 @@ class iTradeMainToolbar(wx.ToolBar):
 
     def onEdit(self,event):
         self.m_parent.OnEdit(event)
-
-    def onSave(self,event):
-        self.m_parent.OnSave(event)
 
     def onExit(self,event):
         self.m_parent.OnExit(event)
@@ -451,7 +443,6 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         self.filemenu = wx.Menu()
         self.filemenu.Append(ID_OPEN,message('main_open'),message('main_desc_open'))
         self.filemenu.Append(ID_NEW,message('main_new'),message('main_desc_new'))
-        self.filemenu.Append(ID_SAVE,message('main_save'),message('main_desc_save'))
         self.filemenu.Append(ID_SAVEAS,message('main_saveas'),message('main_desc_saveas'))
         self.filemenu.Append(ID_DELETE,message('main_delete'),message('main_desc_delete'))
         self.filemenu.AppendSeparator()
@@ -552,7 +543,6 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         wx.EVT_MENU(self, ID_OPEN, self.OnOpen)
         wx.EVT_MENU(self, ID_NEW, self.OnNew)
         wx.EVT_MENU(self, ID_DELETE, self.OnDelete)
-        wx.EVT_MENU(self, ID_SAVE, self.OnSave)
         wx.EVT_MENU(self, ID_SAVEAS, self.OnSaveAs)
         wx.EVT_MENU(self, ID_EDIT, self.OnEdit)
         wx.EVT_MENU(self, ID_MANAGELIST, self.OnManageList)
@@ -637,13 +627,11 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
             self.m_hCurrency.Close()
 
     def OnExit(self,e):
-        if self.manageDirty(message('main_save_matrix_data')):
-            self.Close(True)
+        self.Close(True)
 
     def OnCloseWindow(self, evt):
-        if self.manageDirty(message('main_save_matrix_data')):
-            self.DoneCurrentPage()
-            self.Destroy()
+        self.DoneCurrentPage()
+        self.Destroy()
 
     def OnDestroyWindow(self, evt):
         if evt.GetId()==self.m_id:
@@ -658,15 +646,14 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
     # --- [ menu ] -------------------------------------
 
     def OnOpen(self,e):
-        if self.manageDirty(message('main_save_matrix_data'),fnt='open'):
-            dp = select_iTradePortfolio(self,self.m_portfolio,'select')
-            if dp:
-                # can be long ...
-                wx.SetCursor(wx.HOURGLASS_CURSOR)
-                self.DoneCurrentPage()
+        dp = select_iTradePortfolio(self,self.m_portfolio,'select')
+        if dp:
+            # can be long ...
+            wx.SetCursor(wx.HOURGLASS_CURSOR)
+            self.DoneCurrentPage()
 
-                dp = loadPortfolio(dp.filename())
-                self.NewContext(dp)
+            dp = loadPortfolio(dp.filename())
+            self.NewContext(dp)
 
     def NewContext(self,dp):
         # can be long ...
@@ -689,17 +676,16 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         self.OnPostInit(None)
 
     def OnNew(self,e):
-        if self.manageDirty(message('main_save_matrix_data'),fnt='open'):
-            dp = properties_iTradePortfolio(self,None,'create')
-            if dp:
-                self.NewContext(dp)
-                self.setDirty()
+        dp = properties_iTradePortfolio(self,None,'create')
+        if dp:
+            self.NewContext(dp)
+            self.Save()
 
     def OnEdit(self,e):
         dp = properties_iTradePortfolio(self,self.m_portfolio,'edit')
         if dp:
             self.NewContext(dp)
-            self.setDirty()
+            self.Save()
 
     def OnDelete(self,e):
         dp = select_iTradePortfolio(self,self.m_portfolio,'delete')
@@ -707,17 +693,9 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
             properties_iTradePortfolio(self,dp,'delete')
 
     def OnSaveAs(self,e):
-        if self.manageDirty(message('main_save_matrix_data'),fnt='open'):
-            dp = properties_iTradePortfolio(self,self.m_portfolio,'rename')
-            if dp:
-                self.NewContext(dp)
-
-    def OnSave(self,e):
-        self.m_matrix.save(self.m_portfolio.filename())
-        self.m_portfolio.saveStops()
-        itrade_config.saveConfig()
-        self.saveConfig()
-        self.clearDirty()
+        dp = properties_iTradePortfolio(self,self.m_portfolio,'rename')
+        if dp:
+            self.NewContext(dp)
 
     def OnSupport(self,e):
         id = getLang()
@@ -842,6 +820,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         self.SetTitle(title % (self.m_portfolio.name(),self.m_portfolio.accountref()))
 
     def RebuildList(self):
+        self.Save()
         self.DoneCurrentPage()
         self.m_matrix.build()
         self.InitCurrentPage(bReset=True,bInit=False)
@@ -910,14 +889,21 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
             debug("OnPropertyQuote: %s" % self.currentItemText())
             self.openCurrentQuote(page=7)
 
+    # --- [ Save any persistant data ] ----------------------------------------
+
+    def Save(self):
+        self.m_matrix.save(self.m_portfolio.filename())
+        self.m_portfolio.saveStops()
+        itrade_config.saveConfig()
+        self.saveConfig()
+
     # --- [ buy / sell from the matrix ] ------------------------------------
 
     def OnBuyQuote(self,e):
         quote = self.currentQuote()
         if add_iTradeOperation(self,self.m_portfolio,quote,OPERATION_BUY):
             if self.m_hOperation:
-                # RebuildList without Dirty because operations already saved
-                self.m_hOperation.RebuildList(bSetDirty=False)
+                self.m_hOperation.RebuildList()
                 # self will also RebuildList() from Operation View
             else:
                 self.RebuildList()
@@ -926,8 +912,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         quote = self.currentQuote()
         if add_iTradeOperation(self,self.m_portfolio,quote,OPERATION_SELL):
             if self.m_hOperation:
-                # RebuildList without Dirty because operations already saved
-                self.m_hOperation.RebuildList(bSetDirty=False)
+                self.m_hOperation.RebuildList()
                 # self will also RebuildList() from Operation View
             else:
                 self.RebuildList()
@@ -1096,7 +1081,6 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
             print 'AddAndRefresh:',quote
             self.m_portfolio.setupCurrencies()
             self.m_portfolio.loginToServices(quote)
-            self.setDirty()
             self.RebuildList()
 
     def OnAddQuote(self,e):
@@ -1107,7 +1091,6 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         if removeFromMatrix_iTradeQuote(self,self.m_matrix,quote):
             print 'OnRemoveCurrentQuote:',quote
             self.m_portfolio.setupCurrencies()
-            self.setDirty()
             self.RebuildList()
 
     # ---[ Stops ] -----------------------------------------
@@ -1119,13 +1102,11 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
 
     def OnRemoveStops(self,e):
         if removeStops_iTradeQuote(self,quote=self.currentQuote()):
-            self.setDirty()
             self.RebuildList()
 
     def OnEditStops(self,e):
         quote=self.currentQuote()
         if addOrEditStops_iTradeQuote(self,quote,market=quote.market(),bAdd=False):
-            self.setDirty()
             self.RebuildList()
 
 # ============================================================================

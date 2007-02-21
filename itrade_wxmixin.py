@@ -77,9 +77,6 @@ class iTrade_wxFrame(object):
         # size and position
         wx.EVT_ICONIZE(self,self._OnMinimize)
 
-        # need to save
-        self.m_needToSave = False
-
         # a Statusbar in the bottom of the window
         if hasStatusBar:
             self.CreateStatusBar()
@@ -97,39 +94,6 @@ class iTrade_wxFrame(object):
 
     def hasFocus(self):
         return self.m_hasFocus
-
-    def isDirty(self):
-        return self.m_needToSave
-
-    def clearDirty(self):
-        self.m_needToSave = False
-
-    def setDirty(self):
-        self.m_needToSave = True
-
-    def manageDirty(self,msg,fnt='exit'):
-        ret = True
-        if fnt=='close':
-            msg2 = message('mixin_close')
-        elif fnt=='exit':
-            msg2 = message('mixin_exit')
-        elif fnt=='open':
-            msg2 = message('mixin_open')
-        if self.isDirty():
-            # __x wx.CANCEL : user parameter
-            #__xdlg = wx.MessageDialog(self, msg, msg2, wx.CANCEL | wx.YES_NO | wx.YES_DEFAULT | wx.ICON_QUESTION)
-            #__xidRet = dlg.ShowModal()
-            #__xdlg.Destroy()
-            idRet = iTradeYesNo(self, msg, msg2,bCanCancel=True)
-            if idRet == wx.ID_YES:
-                self.OnSave(None)
-            elif idRet == wx.ID_NO:
-                # do not reenter
-                self.clearDirty()
-            elif idRet == wx.ID_CANCEL:
-                # do not touch dirty flag !
-                ret = False
-        return ret
 
     def onEraseBackground(self, evt):
         # this is supposed to prevent redraw flicker on some X servers...
