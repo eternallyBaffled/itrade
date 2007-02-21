@@ -46,7 +46,7 @@ from itrade_quotes import quotes,QUOTE_CASH,QUOTE_CREDIT,QUOTE_BOTH
 from itrade_matrix import *
 from itrade_local import message,getLang
 import itrade_csv
-from itrade_currency import currency2symbol,currencies
+from itrade_currency import currency2symbol,currencies,convert
 from itrade_vat import country2vat
 from itrade_login import getLoginConnector
 
@@ -1048,11 +1048,17 @@ class Portfolio(object):
 
     # --- [ value API ] -------------------------------------------------------
 
-    def nv_cash(self):
-        return self.m_cCash
+    def nv_cash(self,currency=None):
+        retval = self.m_cCash
+        if currency:
+            retval = convert(currency,self.m_currency,retval)
+        return retval
 
-    def nv_credit(self):
-        return self.m_cCredit
+    def nv_credit(self,currency=None):
+        retval = self.m_cCredit
+        if currency:
+            retval = convert(currency,self.m_currency,retval)
+        return retval
 
     def nv_invest(self):
         return self.m_cInvest
@@ -1137,56 +1143,121 @@ class Portfolio(object):
 
     # --- [ string API ] ------------------------------------------------------
 
-    def sv_cash(self,fmt="%.2f"):
-        return fmt % self.nv_cash()
+    def sv_cash(self,currency=None,fmt="%.2f",bDispCurrency=False):
+        if bDispCurrency:
+            sc = ' '+self.currency_symbol()+' '
+        else:
+            sc = ''
+        fmt = fmt + "%s"
+        return fmt % (self.nv_cash(),sc)
 
-    def sv_credit(self,fmt="%.2f"):
-        return fmt % self.nv_credit()
+    def sv_credit(self,currency=None,fmt="%.2f",bDispCurrency=False):
+        if bDispCurrency:
+            sc = ' '+self.currency_symbol()+' '
+        else:
+            sc = ''
+        fmt = fmt + "%s"
+        return fmt % (self.nv_credit(),sc)
 
-    def sv_taxes(self,fmt="%.2f"):
-        return fmt % self.nv_taxes()
+    def sv_taxes(self,fmt="%.2f",bDispCurrency=False):
+        if bDispCurrency:
+            sc = ' '+self.currency_symbol()+' '
+        else:
+            sc = ''
+        fmt = fmt + "%s"
+        return fmt % (self.nv_taxes(),sc)
 
-    def sv_expenses(self,fmt="%.2f"):
-        return fmt % self.nv_expenses()
+    def sv_expenses(self,fmt="%.2f",bDispCurrency=False):
+        if bDispCurrency:
+            sc = ' '+self.currency_symbol()+' '
+        else:
+            sc = ''
+        fmt = fmt + "%s"
+        return fmt % (self.nv_expenses(),sc)
 
-    def sv_transfer(self,fmt="%.2f"):
-        return fmt % self.nv_transfer()
+    def sv_transfer(self,fmt="%.2f",bDispCurrency=False):
+        if bDispCurrency:
+            sc = ' '+self.currency_symbol()+' '
+        else:
+            sc = ''
+        fmt = fmt + "%s"
+        return fmt % (self.nv_transfer(),sc)
 
-    def sv_taxable(self,fmt="%.2f"):
-        return fmt % self.nv_taxable()
+    def sv_taxable(self,fmt="%.2f",bDispCurrency=False):
+        if bDispCurrency:
+            sc = ' '+self.currency_symbol()+' '
+        else:
+            sc = ''
+        fmt = fmt + "%s"
+        return fmt % (self.nv_taxable(),sc)
 
-    def sv_appreciation(self,fmt="%.2f"):
-        return fmt % self.nv_appreciation()
+    def sv_appreciation(self,fmt="%.2f",bDispCurrency=False):
+        if bDispCurrency:
+            sc = ' '+self.currency_symbol()+' '
+        else:
+            sc = ''
+        fmt = fmt + "%s"
+        return fmt % (self.nv_appreciation(),sc)
 
-    def sv_invest(self,fmt="%.2f"):
-        return fmt % self.nv_invest()
+    def sv_invest(self,fmt="%.2f",bDispCurrency=False):
+        if bDispCurrency:
+            sc = ' '+self.currency_symbol()+' '
+        else:
+            sc = ''
+        fmt = fmt + "%s"
+        return fmt % (self.nv_invest(),sc)
 
-    def sv_value(self,box=QUOTE_BOTH,fmt="%.2f"):
-        return fmt % self.nv_value(box)
+    def sv_value(self,box=QUOTE_BOTH,fmt="%.2f",bDispCurrency=False):
+        if bDispCurrency:
+            sc = ' '+self.currency_symbol()+' '
+        else:
+            sc = ''
+        fmt = fmt + "%s"
+        return fmt % (self.nv_value(box),sc)
 
-    def sv_buy(self,box=QUOTE_BOTH,fmt="%.2f"):
-        return fmt % self.nv_buy(box)
+    def sv_buy(self,box=QUOTE_BOTH,fmt="%.2f",bDispCurrency=False):
+        if bDispCurrency:
+            sc = ' '+self.currency_symbol()+' '
+        else:
+            sc = ''
+        fmt = fmt + "%s"
+        return fmt % (self.nv_buy(box),sc)
 
-    def sv_perf(self,box=QUOTE_BOTH,fmt="%.2f"):
-        return fmt % self.nv_perf(box)
+    def sv_perf(self,box=QUOTE_BOTH,fmt="%.2f",bDispCurrency=False):
+        if bDispCurrency:
+            sc = ' '+self.currency_symbol()+' '
+        else:
+            sc = ''
+        fmt = fmt + "%s"
+        return fmt % (self.nv_perf(box),sc)
 
-    def sv_perfPercent(self,box=QUOTE_BOTH):
-        return "%3.2f %%" % self.nv_perfPercent(box)
+    def sv_perfPercent(self,box=QUOTE_BOTH,fmt="%3.2f %%"):
+        return fmt % self.nv_perfPercent(box)
 
-    def sv_percentCash(self,box=QUOTE_BOTH):
-        return "%3.2f %%" % self.nv_percentCash(box)
+    def sv_percentCash(self,box=QUOTE_BOTH,fmt="%3.2f %%"):
+        return fmt % self.nv_percentCash(box)
 
-    def sv_percentQuotes(self,box=QUOTE_BOTH):
-        return "%3.2f %%" % self.nv_percentQuotes(box)
+    def sv_percentQuotes(self,box=QUOTE_BOTH,fmt="%3.2f %%"):
+        return fmt % self.nv_percentQuotes(box)
 
-    def sv_totalValue(self):
-        return self.nv_totalValue()
+    def sv_totalValue(self,fmt="%.2f",bDispCurrency=False):
+        if bDispCurrency:
+            sc = ' '+self.currency_symbol()+' '
+        else:
+            sc = ''
+        fmt = fmt + "%s"
+        return fmt % (self.nv_totalValue(),sc)
 
-    def sv_perfTotal(self):
-        return self.nv_perfTotal()
+    def sv_perfTotal(self,fmt="%.2f",bDispCurrency=False):
+        if bDispCurrency:
+            sc = ' '+self.currency_symbol()+' '
+        else:
+            sc = ''
+        fmt = fmt + "%s"
+        return fmt % (self.nv_perfTotal(),sc)
 
-    def sv_perfTotalPercent(self):
-        return self.nv_perfTotalPercent()
+    def sv_perfTotalPercent(self,fmt="%3.2f %%"):
+        return fmt % self.nv_perfTotalPercent()
 
 # ============================================================================
 # Portfolios
