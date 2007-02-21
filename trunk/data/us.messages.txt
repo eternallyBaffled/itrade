@@ -587,12 +587,15 @@ stops_add_desc;Add Stops information
 stops_edit_desc;Modify Stops information
 
 decision_positiononquote_cash;Cash Position on %s
-decision_positiononquote_credit;SDR Position on %s
+decision_positiononquote_credit;Marging Position on %s
 decision_purchasingpower;Purchasing Power
 decision_numofshares;Number of shares :
 decision_upp;Price Paid per Share :
 decision_pp;Total Price Paid :
 decision_profit;Latent Profit in %s :
 decision_profitpercent;Latent Profit in % :
+decision_availablecash;Available Cash in %s :
+decision_committedcredit;Committed Margin in %s :
+decision_availablecredit;Available for Margin in %s :
 
 test;test message

@@ -61,6 +61,7 @@ from itrade_wxgraph import iTrade_wxPanelGraph,fmtVolumeFunc,fmtVolumeFunc0
 from itrade_wxlive import iTrade_wxLive,iTrade_wxLiveMixin,EVT_UPDATE_LIVE
 from itrade_wxselectquote import select_iTradeQuote
 from itrade_wxpropquote import iTradeQuotePropertiesPanel
+from itrade_wxdecision import iTrade_wxDecision
 
 # matplotlib system
 import matplotlib
@@ -450,6 +451,39 @@ class iTradeQuoteAnalysisPanel(wx.Window):
 
     def DonePage(self):
         pass
+
+# ============================================================================
+# iTradeQuoteLivePanel
+#
+# ============================================================================
+
+class iTradeQuoteLivePanel(wx.Panel):
+
+    def __init__(self,parent,gparent,id,quote):
+        wx.Panel.__init__(self, parent, id)
+        self.m_id = id
+        self.m_quote = quote
+        self.m_parent = gparent
+        self.m_port = parent.portfolio()
+
+        self.m_live = iTrade_wxLive(self,gparent,self.m_quote)
+        self.m_decision = iTrade_wxDecision(self,self.m_quote,self.m_port)
+        wx.EVT_SIZE(self,self.OnSize)
+
+    def InitPage(self):
+        self.m_live.InitPage()
+
+    def DonePage(self):
+        self.m_live.DonePage()
+
+    def refresh(self):
+        self.m_live.refresh()
+        self.m_decision.refresh()
+
+    def OnSize(self, event):
+        w,h = self.GetClientSizeTuple()
+        self.m_live.SetDimensions(0, 0, w, 180)
+        self.m_decision.SetDimensions(0, 180, w, h-180)
 
 # ============================================================================
 # iTradeQuoteGraphPanel
@@ -945,7 +979,7 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
             self.AddPage(self.win[self.ID_PAGE_GRAPH], message('quote_graphdaily'))
 
             if self.ID_PAGE_LIVE<>99:
-                self.win[self.ID_PAGE_LIVE] = iTrade_wxLive(self,self.m_parent,self.m_quote)
+                self.win[self.ID_PAGE_LIVE] = iTradeQuoteLivePanel(self,self.m_parent,wx.NewId(),self.m_quote)
                 self.AddPage(self.win[self.ID_PAGE_LIVE], message('quote_live'))
 
             url = itrade_config.intradayGraphUrl[self.m_quote.market()]

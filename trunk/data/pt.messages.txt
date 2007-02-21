@@ -587,4 +587,16 @@ stops_edit;Modificar
 stops_add_desc;Adicionar as informações de Stops
 stops_edit_desc;Modificar as informações de Stops
 
+decision_positiononquote_cash;__xCash Position on %s
+decision_positiononquote_credit;__xMarging Position on %s
+decision_purchasingpower;__xPurchasing Power
+decision_numofshares;__xNumber of shares :
+decision_upp;__xPrice Paid per Share :
+decision_pp;__xTotal Price Paid :
+decision_profit;__xLatent Profit in %s :
+decision_profitpercent;__xLatent Profit in % :
+decision_availablecash;__xAvailable Cash in %s :
+decision_committedcredit;__xCommitted Margin in %s :
+decision_availablecredit;__xAvailable for Margin in %s :
+
 test;Mensagem de teste
