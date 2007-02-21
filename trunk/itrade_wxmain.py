@@ -74,10 +74,7 @@ class iTrade_SplashScreen(wx.SplashScreen):
         print '--- build a matrix -----------'
         self.m_matrix = createMatrix(self.m_portfolio.filename(),self.m_portfolio)
 
-        if 1: # __x itrade_config.experimental:
-            from itrade_wxbook import iTradeMainWindow
-        else:
-            from itrade_wxmatrix import iTradeMainWindow
+        from itrade_wxbook import iTradeMainWindow
         self.m_frame = iTradeMainWindow(None,self.m_portfolio,self.m_matrix)
         app.SetTopWindow(self.m_frame)
 

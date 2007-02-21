@@ -6,6 +6,7 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-02-21  Gilles Dumortier <dgil at ieee.org>
+	* remove itrade_wxmatrix module (replaced by wxpanes/wxbook)
 	* Quote View : Icon placement + Info auto-placement (SF bug 1616047)
 	* Live View : Decision Information (SF bug 1625267)
 
