@@ -77,7 +77,7 @@ class iTrade_wxDecision(sc.SizedPanel):
         pane1.SetSizerProps(expand=True)
 
         # Pane#1 Row #1
-        label = wx.StaticText(pane1, -1, message('decision_positiononquote_cash') % quote.name())
+        label = wx.StaticText(pane1, -1, message('decision_positiononquote_cash'))
         label.SetSizerProps(valign='center')
 
         # Pane#1 Box #1
@@ -132,7 +132,7 @@ class iTrade_wxDecision(sc.SizedPanel):
         pane2.SetSizerProps(expand=True)
 
         # Pane#2 Row #2
-        label = wx.StaticText(pane2, -1, message('decision_positiononquote_credit') % self.m_quote.name())
+        label = wx.StaticText(pane2, -1, message('decision_positiononquote_credit'))
         label.SetSizerProps(valign='center')
 
         # Pane#2 Box #2

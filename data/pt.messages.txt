@@ -587,8 +587,8 @@ stops_edit;Modificar
 stops_add_desc;Adicionar as informações de Stops
 stops_edit_desc;Modificar as informações de Stops
 
-decision_positiononquote_cash;__xCash Position on %s
-decision_positiononquote_credit;__xMarging Position on %s
+decision_positiononquote_cash;__xCash Position
+decision_positiononquote_credit;__xMarging Position
 decision_purchasingpower;__xPurchasing Power
 decision_numofshares;__xNumber of shares :
 decision_upp;__xPrice Paid per Share :

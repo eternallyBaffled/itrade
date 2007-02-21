@@ -585,8 +585,8 @@ stops_edit;Modifier
 stops_add_desc;Ajouter les informations de Stops
 stops_edit_desc;Modifie les informations de Stops
 
-decision_positiononquote_cash;Au Comptant sur %s
-decision_positiononquote_credit;SRD sur %s
+decision_positiononquote_cash;Position au Comptant
+decision_positiononquote_credit;Position au SRD
 decision_purchasingpower;Pouvoir d'Achat
 decision_numofshares;Nombre de Titres :
 decision_upp;Prix de revient unitaire :
