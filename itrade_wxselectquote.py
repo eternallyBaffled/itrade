@@ -47,6 +47,7 @@ import locale
 import itrade_wxversion
 import wx
 import wx.lib.mixins.listctrl as wxl
+import wxaddons.sized_controls as sc
 
 # iTrade system
 from itrade_logging import *
@@ -58,6 +59,7 @@ from itrade_isin import checkISIN
 from itrade_ext import *
 
 from itrade_wxmixin import iTradeSelectorListCtrl
+from itrade_wxutil import iTradeSizedDialog
 
 # ============================================================================
 # iTradeQuoteSelector
@@ -72,14 +74,10 @@ IDC_MARKET = 4
 import wx.lib.newevent
 (PostInitEvent,EVT_POSTINIT) = wx.lib.newevent.NewEvent()
 
-class iTradeQuoteSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
+class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin):
     def __init__(self, parent, quote, filter = False, market = None, filterEnabled=True):
-        # context help
-        pre = wx.PreDialog()
-        pre.SetExtraStyle(wx.DIALOG_EX_CONTEXTHELP)
-        title = message('quote_select_title')
-        pre.Create(parent, -1, title, size=(460, 460))
-        self.PostCreate(pre)
+
+        iTradeSizedDialog.__init__(self,parent,-1,message('quote_select_title'), size=(460, 460),style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
 
         self.m_parent = parent
 
@@ -107,52 +105,43 @@ class iTradeQuoteSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         self.sm_up = self.m_imagelist.Add(wx.Bitmap('res/sm_up.png'))
         self.sm_dn = self.m_imagelist.Add(wx.Bitmap('res/sm_down.png'))
 
-        self.m_list = iTradeSelectorListCtrl(self, tID,
-                                 style = wx.LC_REPORT | wx.SUNKEN_BORDER,
-                                 size=(440, 380)
-                                 )
-        self.m_list.SetImageList(self.m_imagelist, wx.IMAGE_LIST_SMALL)
+        # container
+        container = self.GetContentsPane()
+        container.SetSizerType("vertical")
 
-        # Now that the list exists we can init the other base class,
-        # see wxPython/lib/mixins/listctrl.py
-        wxl.ColumnSorterMixin.__init__(self, 5)
+        # resizable pane
+        pane = sc.SizedPanel(container, -1)
+        pane.SetSizerType("horizontal")
+        pane.SetSizerProps(expand=True)
 
-        wx.EVT_LIST_COL_CLICK(self, tID, self.OnColClick)
-        wx.EVT_SIZE(self, self.OnSize)
-        wx.EVT_LIST_ITEM_ACTIVATED(self, tID, self.OnItemActivated)
-        wx.EVT_LIST_ITEM_SELECTED(self, tID, self.OnItemSelected)
-
-        sizer = wx.BoxSizer(wx.VERTICAL)
-
-        # ISIN or name selection
-        box = wx.BoxSizer(wx.HORIZONTAL)
-
-        label = wx.StaticText(self, -1, message('quote_select_isin'))
-        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        # pane : ISIN or Name selection
+        label = wx.StaticText(pane, -1, message('quote_select_isin'))
+        label.SetSizerProps(valign='center')
 
         tID = wx.NewId()
-        self.wxIsinCtrl = wx.TextCtrl(self, tID, self.m_isin, size=(40,-1))
+        self.wxIsinCtrl = wx.TextCtrl(pane, tID, self.m_isin)
+        self.wxIsinCtrl.SetSizerProps(expand=True)
         wx.EVT_TEXT(self, tID, self.OnISINEdited)
-        box.Add(self.wxIsinCtrl, 1, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        label = wx.StaticText(self, -1, message('quote_select_ticker'))
-        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        label = wx.StaticText(pane, -1, message('quote_select_ticker'))
+        label.SetSizerProps(valign='center')
 
         tID = wx.NewId()
-        self.wxTickerCtrl = wx.TextCtrl(self, tID, self.m_ticker, size=(80,-1))
+        self.wxTickerCtrl = wx.TextCtrl(pane, tID, self.m_ticker)
+        self.wxTickerCtrl.SetSizerProps(expand=True)
         wx.EVT_TEXT(self, tID, self.OnTickerEdited)
-        box.Add(self.wxTickerCtrl, 1, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
+        # resizable pane
+        pane = sc.SizedPanel(container, -1)
+        pane.SetSizerType("horizontal")
+        pane.SetSizerProps(expand=True)
 
-        # market filter
-        box = wx.BoxSizer(wx.HORIZONTAL)
+        # pane : market & list filters
+        self.wxLabelMarketCtrl = wx.StaticText(pane, -1, message('quote_select_market'))
+        self.wxLabelMarketCtrl.SetSizerProps(valign='center')
 
-        label = wx.StaticText(self, -1, message('quote_select_market'))
-        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
-
-        self.wxMarketCtrl = wx.ComboBox(self,-1, "", size=wx.Size(140,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
-        box.Add(self.wxMarketCtrl, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        self.wxMarketCtrl = wx.ComboBox(pane,-1, "", style=wx.CB_DROPDOWN|wx.CB_READONLY)
+        self.wxMarketCtrl.SetSizerProps(expand=True)
         wx.EVT_COMBOBOX(self,self.wxMarketCtrl.GetId(),self.OnMarket)
 
         count = 0
@@ -165,11 +154,11 @@ class iTradeQuoteSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
 
         self.wxMarketCtrl.SetSelection(idx)
 
-        label = wx.StaticText(self, -1, message('quote_select_list'))
-        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        self.wxLabelQListCtrl = wx.StaticText(pane, -1, message('quote_select_list'))
+        self.wxLabelQListCtrl.SetSizerProps(valign='center')
 
-        self.wxQListCtrl = wx.ComboBox(self,-1, "", size=wx.Size(140,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
-        box.Add(self.wxQListCtrl, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        self.wxQListCtrl = wx.ComboBox(pane,-1, "", style=wx.CB_DROPDOWN|wx.CB_READONLY)
+        self.wxQListCtrl.SetSizerProps(expand=True)
         wx.EVT_COMBOBOX(self,self.wxQListCtrl.GetId(),self.OnQuoteList)
 
         self.wxQListCtrl.Append(message('quote_select_alllist'),QLIST_ALL)
@@ -179,46 +168,47 @@ class iTradeQuoteSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         self.wxQListCtrl.Append(message('quote_select_trackerslist'),QLIST_TRACKERS)
         self.wxQListCtrl.SetSelection(self.m_qlist)
 
-        sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
-
-        box = wx.BoxSizer(wx.HORIZONTAL)
-
         # select traded or not
         tID = wx.NewId()
-        self.wxFilterCtrl = wx.CheckBox(self, tID, message('quote_select_filterfield'))
+        self.wxFilterCtrl = wx.CheckBox(container, tID, message('quote_select_filterfield'))
         self.wxFilterCtrl.SetValue(self.m_filter)
         wx.EVT_CHECKBOX(self, tID, self.OnFilter)
         self.wxFilterCtrl.Enable(filterEnabled)
 
-        box.Add(self.wxFilterCtrl, 1, wx.ALIGN_CENTRE|wx.ALL, 5)
+        # List
+        self.m_list = iTradeSelectorListCtrl(container, tID, style = wx.LC_REPORT | wx.SUNKEN_BORDER,size=(440, 380))
+        self.m_list.SetSizerProps(expand=True)
+        self.m_list.SetImageList(self.m_imagelist, wx.IMAGE_LIST_SMALL)
 
-        sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
+        # Now that the list exists we can init the other base class,
+        # see wxPython/lib/mixins/listctrl.py
+        wxl.ColumnSorterMixin.__init__(self, 5)
 
-        box = wx.BoxSizer(wx.HORIZONTAL)
+        wx.EVT_LIST_COL_CLICK(self, tID, self.OnColClick)
+        wx.EVT_LIST_ITEM_ACTIVATED(self, tID, self.OnItemActivated)
+        wx.EVT_LIST_ITEM_SELECTED(self, tID, self.OnItemSelected)
 
-        sizer.Add(self.m_list, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        # Last Row : OK and Cancel
+        btnpane = sc.SizedPanel(container, -1)
+        btnpane.SetSizerType("horizontal")
+        btnpane.SetSizerProps(expand=True)
 
         # context help
         if wx.Platform != "__WXMSW__":
             btn = wx.ContextHelpButton(self)
-            box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         # OK
-        self.wxOK = wx.Button(self, wx.ID_OK, message('valid'))
+        self.wxOK = wx.Button(btnpane, wx.ID_OK, message('valid'))
         self.wxOK.SetDefault()
         self.wxOK.SetHelpText(message('valid_desc'))
-        box.Add(self.wxOK, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_BUTTON(self, wx.ID_OK, self.OnValid)
 
         # CANCEL
-        btn = wx.Button(self, wx.ID_CANCEL, message('cancel'))
+        btn = wx.Button(btnpane, wx.ID_CANCEL, message('cancel'))
         btn.SetHelpText(message('cancel_desc'))
-        box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        sizer.AddSizer(box, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
-
-        self.SetAutoLayout(True)
-        self.SetSizerAndFit(sizer)
+        # set the right filter and fit everything
+        self.OnFilter()
 
         EVT_POSTINIT(self, self.OnPostInit)
         wx.PostEvent(self,PostInitEvent())
@@ -237,9 +227,25 @@ class iTradeQuoteSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         self.wxTickerCtrl.SetLabel('')
         self.m_list.SetFocus()
 
-    def OnFilter(self,event):
-        self.m_filter = event.Checked()
-        self.resetFields()
+    def OnFilter(self,event=None):
+        if event:
+            self.m_filter = event.Checked()
+            self.resetFields()
+
+        if self.m_filter:
+            self.wxMarketCtrl.Show(False)
+            self.wxLabelMarketCtrl.Show(False)
+            self.wxQListCtrl.Show(False)
+            self.wxLabelQListCtrl.Show(False)
+        else:
+            self.wxMarketCtrl.Show(True)
+            self.wxLabelMarketCtrl.Show(True)
+            self.wxQListCtrl.Show(True)
+            self.wxLabelQListCtrl.Show(True)
+
+        self.Fit()
+        self.SetMinSize(self.GetSize())
+
         print 'OnFilter : market=',self.m_market
 
     def OnMarket(self,evt):
@@ -253,9 +259,9 @@ class iTradeQuoteSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         self.resetFields()
 
     def isFiltered(self,quote,bDuringInit):
-        if (self.m_qlist == QLIST_ALL) or (self.m_qlist == quote.list()):
+        if (self.m_qlist == QLIST_ALL) or (self.m_qlist == quote.list() or self.m_filter):
             # good list
-            if (self.m_market==None) or (self.m_market == quote.market()):
+            if (self.m_market==None) or (self.m_market == quote.market() or self.m_filter):
                 # good market
                 if bDuringInit or ( quote.ticker().find(self.m_ticker,0)==0 and quote.isin().find(self.m_isin,0)==0 ):
                     # begin the same
@@ -316,10 +322,6 @@ class iTradeQuoteSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         self.SetCurrentItem(curline)
 
         wx.SetCursor(wx.STANDARD_CURSOR)
-
-    def OnSize(self, event):
-        w,h = self.GetClientSizeTuple()
-        self.m_list.SetDimensions(0, 0, w, h)
 
     def SetCurrentItem(self,line):
         #print 'SetCurrentItem: line=%d' % line
