@@ -7,7 +7,7 @@
 #
 # The Original Code is iTrade code (http://itrade.sourceforge.net).
 #
-# The Initial Developer of the Original Code is	Gilles Dumortier.
+# The Initial Developer of the Original Code is Gilles Dumortier.
 #
 # Portions created by the Initial Developer are Copyright (C) 2004-2007 the
 # Initial Developer. All Rights Reserved.
@@ -535,101 +535,6 @@ class Operations(object):
         return self.m_operations[ref]
 
 # ============================================================================
-# FeeRule
-#
-# ============================================================================
-
-class FeeRule(object):
-    def __init__(self,vfee,vmin,vmax,ref,bPercent=False):
-        debug('FeeRule::__init__(): vfee=%.2f vmin=%.2f vmax=%.2f bPercent=%s' %(vfee,vmin,vmax,bPercent))
-        self.m_fee = vfee
-        self.m_min = vmin
-        self.m_max = vmax
-        self.m_bPercent = bPercent
-        self.m_ref = ref
-
-    def __repr__(self):
-        if self.m_bPercent:
-            return '%.2f%%;%.2f;%.2f' % (self.m_fee, self.m_min, self.m_max)
-        else:
-            return '%.2f;%.2f;%.2f' % (self.m_fee, self.m_min, self.m_max)
-
-    def ref(self):
-        return self.m_ref
-
-    def nv_fee(self,v):
-        if (v>=self.m_min) and (v<=self.m_max):
-            if self.m_bPercent:
-                return (v*self.m_fee)/100.0
-            else:
-                return self.m_fee
-        else:
-            return None
-
-    def sv_fee(self,v):
-        n = self.nv_fee(v)
-        if n:
-            if self.m_bPercent:
-                return "%3.2f %%" % (n*100.0)
-            else:
-                return "%.2f" % n
-        else:
-            return None
-
-# ============================================================================
-# Fees : list of FeeRule
-# ============================================================================
-
-class Fees(object):
-    def __init__(self,portfolio):
-        debug('Fees:__init__(%s)' % portfolio)
-        self.m_fees = []
-        self.m_portfolio = portfolio
-        self.m_ref = 0
-
-    def portfolio(self):
-        return self.m_portfolio
-
-    def list(self):
-        return self.m_fees.values()
-
-    def load(self,infile=None):
-        infile = itrade_csv.read(infile,os.path.join(itrade_config.dirUserData,'default.fees.txt'))
-        if infile:
-            # scan each line to read each trade
-            for eachLine in infile:
-                item = itrade_csv.parse(eachLine,3)
-                if item:
-                    self.addRule(item[0],item[1],item[2])
-
-    def save(self,outfile=None):
-        itrade_csv.write(outfile,os.path.join(itrade_config.dirUserData,'default.fees.txt'),self.m_operations.values())
-
-    def addRule(self,sfee,smin,smax):
-        debug('Fees::add() before: 0:%s , 1:%s , 2:%s' % (sfee,smin,smax))
-        #info('Fees::add() before: %s' % item)
-        if sfee[-1:]=='%':
-            bPercent = True
-            vfee = float(sfee[:-1])
-        else:
-            bPercent = False
-            vfee = float(sfee)
-        vmin = float(smin)
-        vmax = float(smax)
-        fee = FeeRule(vfee,vmin,vmax,self.m_ref,bPercent)
-        self.m_fees.append(fee)
-        self.m_ref = self.m_ref + 1
-        debug('Fees::add() ref=%d after: %s' % (self.m_ref,self.m_fees))
-        return self.m_ref
-
-    def removeRule(self,ref):
-        del self.m_fees[ref]
-        self.m_ref = self.m_ref - 1
-
-    def getRule(self,ref):
-        return self.m_fees[ref]
-
-# ============================================================================
 # Portfolio
 # ============================================================================
 #
@@ -707,7 +612,7 @@ class Portfolio(object):
 
     def _init_(self):
         self.m_operations = Operations(self)
-        self.m_fees = Fees(self)
+        # __fee self.m_fees = Fees(self)
 
         # indexed by gCal index
         self.m_inDate = {}          # date
@@ -824,7 +729,7 @@ class Portfolio(object):
         self.m_filename = nname
 
     # ---[ load, save and apply Rules ] ---------------------------------------
-
+    """# __fee
     def loadFeesRules(self):
         fn = self.filepath('fees')
         self.m_fees.load(fn)
@@ -842,7 +747,7 @@ class Portfolio(object):
                 return fee
         # no rule apply -> no fee
         return fee
-
+     """
     # ---[ load, save stops ] -------------------------------------------------
 
     def loadStops(self):
@@ -1432,7 +1337,7 @@ def loadPortfolio(fn=None):
     p.applyOperations()
 
     # load fees rules
-    p.loadFeesRules()
+    # __fee p.loadFeesRules()
 
     # save current file
     scf = {}
