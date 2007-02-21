@@ -159,9 +159,11 @@ operation_ctrl = (
 
 class iTradeOperationDialog(iTradeSizedDialog):
 
-    def __init__(self, parent, op, opmode):
+    def __init__(self, parent, op, opmode, market=None):
         # pre-init
         self.opmode = opmode
+
+        self.m_market = market
 
         if op:
             self.m_type = op.type()
@@ -171,6 +173,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
             if op.quote():
                 if op.isQuote():
                     self.m_name = op.quote().key()
+                    self.m_market = op.quote().market()
                 else:
                     self.m_name = ""
             else:
@@ -251,6 +254,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
         self.wxNameButton = wx.BitmapButton(btnpane, -1, bmp, size=wx.Size(bmp.GetWidth()+5, bmp.GetHeight()+5))
         wx.EVT_BUTTON(self, self.wxNameButton.GetId(), self.OnQuote)
 
+        print 'creating ctrl:',self.m_name
         self.wxNameCtrl = wx.TextCtrl(btnpane, -1, self.m_name, size=wx.Size(240,-1), style = wx.TE_LEFT)
         wx.EVT_TEXT( self, self.wxNameCtrl.GetId(), self.OnDescChange )
         self.wxNameCtrl.SetSizerProps(expand=True)
@@ -413,10 +417,11 @@ class iTradeOperationDialog(iTradeSizedDialog):
 
     def OnQuote(self,evt):
         quote = quotes.lookupKey(self.m_name)
-        quote = select_iTradeQuote(self,quote,filter=True,market=None,filterEnabled=False)
+        quote = select_iTradeQuote(self,quote,filter=True,market=self.m_market,filterEnabled=True)
         if quote:
             debug('onQuote: %s - %s' % (quote.ticker(),quote.key()))
             self.m_name = quote.key()
+            self.m_market = quote.market()
             self.refreshPage()
 
     def OnValueChange(self,event):
@@ -1113,7 +1118,7 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
 
     def OnAdd(self, event):
         info("OnAdd")
-        aRet = edit_iTradeOperation(self,None,OPERATION_ADD)
+        aRet = edit_iTradeOperation(self,None,OPERATION_ADD,market=self.m_port.market())
         if aRet:
             info('OnAdd: date=%s type=%s name=%s value=%12.2f expenses=%12.2f number=%d ref=%d' %(aRet[0],aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6]))
             self.m_port.addOperation(aRet)
@@ -1121,8 +1126,9 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
 
     # --- [ Rebuild screen and Parent ] ---------------------------------------
 
-    def RebuildList(self):
-        self.setDirty()
+    def RebuildList(self,bSetDirty=True):
+        print 'iTradeOperationsWindow::RebuildList (bSetDirty=%s)' % bSetDirty
+        if bSetDirty: self.setDirty()
         self.populate()
         if self.m_parent:
             self.m_parent.RebuildList()
@@ -1149,10 +1155,11 @@ def open_iTradeOperations(win,port=None):
 #
 #   op      operation to edit
 #   opmode  operation mode (modify,add,delete)
+#   market  default market (add only)
 # ============================================================================
 
-def edit_iTradeOperation(win,op,opmode):
-    dlg = iTradeOperationDialog(win,op,opmode)
+def edit_iTradeOperation(win,op,opmode,market=None):
+    dlg = iTradeOperationDialog(win,op,opmode,market)
     if dlg.ShowModal()==wx.ID_OK:
         aRet = dlg.aRet
     else:
@@ -1179,10 +1186,11 @@ def add_iTradeOperation(win,portfolio,quote,type):
     else:
         key = None
     op = Operation(d=date.today(),t=type,m=key,v='0.0',e='0.0',n='0',vat=portfolio.vat(),ref=-1)
-    aRet = edit_iTradeOperation(win,op,OPERATION_ADD)
+    aRet = edit_iTradeOperation(win,op,OPERATION_ADD,market=portfolio.market())
     if aRet:
         info('add_iTradeOperation: date=%s type=%s name=%s value=%12.2f expenses=%12.2f number=%d ref=%d' %(aRet[0],aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6]))
-        self.m_port.addOperation(aRet)
+        portfolio.addOperation(aRet)
+        portfolio.saveOperations()
         return True
     return False
 

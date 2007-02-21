@@ -228,6 +228,7 @@ class iTradeQuoteSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
     def OnPostInit(self,event):
         self.PopulateList(bDuringInit=True)
         self.wxTickerCtrl.SetFocus()
+        print 'OnPostInit : market=',self.m_market
 
     def resetFields(self):
         self.m_isin = ''
@@ -239,6 +240,7 @@ class iTradeQuoteSelectorListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
     def OnFilter(self,event):
         self.m_filter = event.Checked()
         self.resetFields()
+        print 'OnFilter : market=',self.m_market
 
     def OnMarket(self,evt):
         idx = self.wxMarketCtrl.GetSelection()

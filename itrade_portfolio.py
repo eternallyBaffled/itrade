@@ -315,7 +315,8 @@ class Operation(object):
         return self.m_type
 
     def name(self):
-        return self.m_name
+        if self.m_name: return self.m_name
+        return ""
 
     def date(self):
         return self.m_date
