@@ -640,8 +640,10 @@ class Fees(object):
 # ============================================================================
 
 class Portfolio(object):
+
     def __init__(self,filename='default',name='<Portfolio>',accountref='000000000',market='EURONEXT',currency='EUR',vat=1.0,term=3,risk=5):
         debug('Portfolio::__init__ fn=%s name=%s account=%s' % (filename,name,accountref))
+
         self.m_filename = filename
         self.m_name = name
         self.m_accountref = accountref
@@ -652,24 +654,31 @@ class Portfolio(object):
         self.m_risk = risk
         self._init_()
 
+    # portfolio name
     def name(self):
         return self.m_name
 
+    # market name ('EURONEXT')
     def market(self):
         return self.m_market
 
+    # currency code (i.e. EUR)
     def currency(self):
         return self.m_currency
 
+    # vat (i.e. 1.196 for France)
     def vat(self):
         return self.m_vat
 
+    # investment term period (in month)
     def term(self):
         return self.m_term
 
+    # risk level (integer xx%) per line of investment
     def risk(self):
         return self.m_risk
 
+    # symbol for the currency in use
     def currency_symbol(self):
         return currency2symbol(self.m_currency)
 
@@ -693,6 +702,8 @@ class Portfolio(object):
 
     def date(self):
         return self.m_date
+
+    # ---[ initialise internal structure ]-------------------------------------
 
     def _init_(self):
         self.m_operations = Operations(self)
@@ -721,13 +732,36 @@ class Portfolio(object):
         # cumulated value
         self.reset()
 
+    # ---[ reset some fields before calculation ]------------------------------
+
+    def reset(self):
+        self.m_cCash = 0.0
+        self.m_cCredit = 0.0
+        self.m_cDIRBuy = 0.0
+        self.m_cSRDBuy = 0.0
+        self.m_cDIRValue = 0.0
+        self.m_cSRDValue = 0.0
+        self.m_cInvest = 0.0
+
+        # year dependent
+        self.m_cExpenses = 0.0
+        self.m_cTransfer = 0.0
+        self.m_cTaxable = 0.0
+        self.m_cAppreciation = 0.0
+
+    # ---[ reinit the porfolio, associated services and quotes ]---------------
+
     def reinit(self):
         debug('Portfolio::%s::reinit' %(self.name()))
         self.logoutFromServices()
         quotes.reinit()
         self._init_()
 
+    # ---[ File management for the porfolio ]----------------------------------
+
     def remove(self):
+        # remove all files used by the portfolio
+
         fn = self.filepath('properties')
         try:
             os.remove(fn)
@@ -755,6 +789,8 @@ class Portfolio(object):
             pass
 
     def rename(self,nname):
+        # rename all files used by the portfolio
+
         fn = self.filepath('properties')
         nfn = self.filenamepath(nname,'properties')
         try:
@@ -786,21 +822,6 @@ class Portfolio(object):
         except OSError:
             pass
         self.m_filename = nname
-
-    def reset(self):
-        self.m_cCash = 0.0
-        self.m_cCredit = 0.0
-        self.m_cDIRBuy = 0.0
-        self.m_cSRDBuy = 0.0
-        self.m_cDIRValue = 0.0
-        self.m_cSRDValue = 0.0
-        self.m_cInvest = 0.0
-
-        # year dependent
-        self.m_cExpenses = 0.0
-        self.m_cTransfer = 0.0
-        self.m_cTaxable = 0.0
-        self.m_cAppreciation = 0.0
 
     # ---[ load, save and apply Rules ] ---------------------------------------
 
