@@ -916,18 +916,20 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         quote = self.currentQuote()
         if add_iTradeOperation(self,self.m_portfolio,quote,OPERATION_BUY):
             if self.m_hOperation:
-                self.m_hOperation.RebuildList()
+                # RebuildList without Dirty because operations already saved
+                self.m_hOperation.RebuildList(bSetDirty=False)
                 # self will also RebuildList() from Operation View
-            elif not quote:
+            else:
                 self.RebuildList()
 
     def OnSellQuote(self,e):
         quote = self.currentQuote()
         if add_iTradeOperation(self,self.m_portfolio,quote,OPERATION_SELL):
             if self.m_hOperation:
-                self.m_hOperation.RebuildList()
+                # RebuildList without Dirty because operations already saved
+                self.m_hOperation.RebuildList(bSetDirty=False)
                 # self will also RebuildList() from Operation View
-            elif not quote:
+            else:
                 self.RebuildList()
 
     # --- [ item management ] -----------------------------------------------
