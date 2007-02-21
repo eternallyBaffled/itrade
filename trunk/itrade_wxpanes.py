@@ -306,9 +306,11 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
 
     def OnPopup_Buy(self, event):
         debug("OnPopup_Buy")
+        self.m_parent.OnBuyQuote(event)
 
     def OnPopup_Sell(self, event):
         debug("OnPopup_Sell")
+        self.m_parent.OnSellQuote(event)
 
     # ---[ Populate view ] -----------------------------------------
 
@@ -662,13 +664,7 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
         menu.Enable(self.m_popupID_Properties,inList)
         menu.AppendSeparator()
         menu.Append(self.m_popupID_Buy, message('main_popup_buy'))
-        menu.Enable(self.m_popupID_Buy,inList)
         menu.Append(self.m_popupID_Sell, message('main_popup_sell'))
-        menu.Enable(self.m_popupID_Sell,inList)
-
-        # __x temp (not yet available)
-        menu.Enable(self.m_popupID_Buy,False)
-        menu.Enable(self.m_popupID_Sell,False)
 
         # return the menu
         return menu
@@ -840,16 +836,10 @@ class iTrade_MatrixQuotesPanel(iTrade_MatrixPanel):
         menu.Enable(self.m_popupID_Properties,inList)
         menu.AppendSeparator()
         menu.Append(self.m_popupID_Buy, message('main_popup_buy'))
-        menu.Enable(self.m_popupID_Buy,inList)
         menu.Append(self.m_popupID_Sell, message('main_popup_sell'))
-        menu.Enable(self.m_popupID_Sell,inList)
         menu.AppendSeparator()
         menu.Append(self.m_popupID_Remove, message('main_popup_remove'))
         menu.Enable(self.m_popupID_Remove,inList and not quote.isTraded())
-
-        # __x temp (not yet available)
-        menu.Enable(self.m_popupID_Buy,False)
-        menu.Enable(self.m_popupID_Sell,False)
 
         # return the menu
         return menu
@@ -1204,13 +1194,7 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
         menu.Enable(self.m_popupID_Properties,inList)
         menu.AppendSeparator()
         menu.Append(self.m_popupID_Buy, message('main_popup_buy'))
-        menu.Enable(self.m_popupID_Buy,inList)
         menu.Append(self.m_popupID_Sell, message('main_popup_sell'))
-        menu.Enable(self.m_popupID_Sell,inList)
-
-        # __x temp (not yet available)
-        menu.Enable(self.m_popupID_Buy,False)
-        menu.Enable(self.m_popupID_Sell,False)
 
         # return the menu
         return menu
