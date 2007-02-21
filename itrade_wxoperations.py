@@ -1128,7 +1128,12 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
 
     def RebuildList(self,bSetDirty=True):
         print 'iTradeOperationsWindow::RebuildList (bSetDirty=%s)' % bSetDirty
-        if bSetDirty: self.setDirty()
+        if bSetDirty:
+            self.setDirty()
+        else:
+            # operations has been already saved
+            self.clearDirty()
+
         self.populate()
         if self.m_parent:
             self.m_parent.RebuildList()
