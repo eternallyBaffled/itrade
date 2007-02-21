@@ -118,6 +118,11 @@ dirSysData = 'data'
 if not os.path.exists(dirSysData):
     raise('invalid installation ! %s folder does not exist !' % dirSysData)
 
+# directory for brokers data
+dirBrokersData = 'brokers'
+if not os.path.exists(dirBrokersData):
+    raise('invalid installation ! %s folder does not exist !' % dirBrokersData)
+
 # directory for symbol lists
 dirSymbData = 'symbols'
 if not os.path.exists(dirSymbData):

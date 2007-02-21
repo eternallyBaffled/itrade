@@ -55,6 +55,7 @@ matplotlibdata_files =[("cache",[]),
             ("res",glob.glob("res\\*.*")),
             ("ext",glob.glob("ext\\*.*")),
             ("symbols",glob.glob("symbols\\*.lst")),
+            ("brokers",glob.glob("brokers\\*.txt")),
             ("usrdata",["usrdata/usrquotes.txt","usrdata/portfolio.txt","usrdata/default.matrix.txt","usrdata/default.operations.txt","usrdata/default.stops.txt"]),
            ]
 
