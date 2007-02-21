@@ -129,9 +129,6 @@ checksoftware_error;Impossible d'obtenir l'information de version pour le logici
 main_about;&A propos de ...
 main_desc_about; Informations à propos de l'application iTrade
 
-main_save_matrix_data;Sauvegarde des données de la matrice ?
-main_save_operation_data;Sauvegarde des opérations du portfolio ?
-
 main_title_portfolio;iTrade - Portefeuille %s:%s
 main_title_quotes;iTrade - Matrice %s:%s
 main_title_stops;iTrade - Stops %s:%s
@@ -140,10 +137,6 @@ main_title_evaluation;iTrade - Performance %s:%s
 main_title_trading;iTrade - Trading %s:%s
 
 main_refreshing;Mise à jour des données
-
-mixin_exit;Quitter l'application iTrade
-mixin_close;Fermer cette fenêtre
-mixin_open;Changement de Contexte
 
 main_popup_refreshall;Tout mettre à jour
 main_popup_buy;Achat

@@ -130,9 +130,6 @@ checksoftware_error;__xCan't get release information for the software (network i
 main_about;&Sobre ...
 main_desc_about; Informação sobre o iTrade
 
-main_save_matrix_data;Guardar os dados da matriz?
-main_save_operation_data;Guardar os dados da transacção?
-
 main_title_portfolio;iTrade - Conta %s: %s
 main_title_quotes;iTrade - Matriz %s: %s
 main_title_stops;iTrade - Stops %s: %s
@@ -141,10 +138,6 @@ main_title_evaluation;iTrade - Desempenho %s: %s
 main_title_trading;__xiTrade - Trading %s:%s
 
 main_refreshing;Actualizando os dados
-
-mixin_exit;Saindo da aplicação do iTrade
-mixin_close;Fechando esta vista
-mixin_open;Alteração de contexto
 
 main_popup_refreshall;Actualizar tudo
 main_popup_buy;Comprar

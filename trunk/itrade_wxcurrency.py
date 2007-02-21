@@ -226,7 +226,7 @@ class iTradeCurrenciesWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveCurrencyMixin)
 
     def OnAutoRefresh(self,e):
         itrade_config.bAutoRefreshCurrencyView = not itrade_config.bAutoRefreshCurrencyView
-        self.setDirty()
+        itrade_config.saveConfig()
         self.updateCheckItems()
         if itrade_config.bAutoRefreshCurrencyView:
             self.startLiveCurrency()

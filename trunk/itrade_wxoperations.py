@@ -64,7 +64,6 @@ from itrade_wxutil import FontFromSize,iTradeSizedDialog
 # menu identifier
 # ============================================================================
 
-ID_SAVE = 110
 ID_CLOSE = 111
 
 ID_DISPALL = 120
@@ -590,8 +589,6 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
 
         # the menu
         self.filemenu = wx.Menu()
-        self.filemenu.Append(ID_SAVE,message('main_save'),message('main_desc_save'))
-        self.filemenu.AppendSeparator()
         self.filemenu.Append(ID_CLOSE,message('main_close'),message('main_desc_close'))
 
         self.dispmenu = wx.Menu()
@@ -667,7 +664,6 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
         wx.EVT_RIGHT_UP(self.m_list, self.OnRightClick)
         wx.EVT_RIGHT_DOWN(self.m_list, self.OnRightDown)
 
-        wx.EVT_MENU(self, ID_SAVE, self.OnSave)
         wx.EVT_MENU(self, ID_CLOSE, self.OnClose)
 
         wx.EVT_MENU(self, ID_DISPALL, self.OnDispAll)
@@ -707,7 +703,7 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
     # --- [ Text font size management ] -------------------------------------
 
     def OnChangeViewText(self):
-        self.setDirty()
+        itrade_config.saveConfig()
         self.updateMenuItems()
         self.m_list.SetFont(FontFromSize(itrade_config.operationFontSize))
         for i in range(0,IDC_RESERVED):
@@ -732,8 +728,7 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
             self.m_parent.m_hOperation = None
 
     def OnCloseWindow(self, evt):
-        if self.manageDirty(message('main_save_operation_data'),fnt='close'):
-            self.Destroy()
+        self.Destroy()
 
     # --- [ filter management ] -------------------------------------
 
@@ -956,15 +951,9 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
         m = self.dispmenu.FindItemById(ID_BIG_VIEW)
         m.Check(itrade_config.operationFontSize==3)
 
-
-    def OnSave(self,e):
-        self.m_port.saveOperations()
-        self.saveConfig()
-        self.clearDirty()
-
     def OnClose(self,e):
-        if self.manageDirty(message('main_save_operation_data'),fnt='close'):
-            self.Close(True)
+        self.saveConfig()
+        self.Close(True)
 
     def OnDispAll(self,e):
         self.m_mode = DISP_ALL
@@ -1126,14 +1115,8 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
 
     # --- [ Rebuild screen and Parent ] ---------------------------------------
 
-    def RebuildList(self,bSetDirty=True):
-        print 'iTradeOperationsWindow::RebuildList (bSetDirty=%s)' % bSetDirty
-        if bSetDirty:
-            self.setDirty()
-        else:
-            # operations has been already saved
-            self.clearDirty()
-
+    def RebuildList(self):
+        self.m_port.saveOperations()
         self.populate()
         if self.m_parent:
             self.m_parent.RebuildList()
