@@ -5,6 +5,11 @@ On the road for v0.4.6 (Nausicaa2)
 
 ===============================================================================
 
+2007-02-23  Gilles Dumortier <dgil at ieee.org>
+	* Fix a regression introduced by "Dirty flag : suppress it (SF bug
+	  1665541)" -> main window size/position was not saved correcly at
+	  closing time
+
 2007-02-21  Gilles Dumortier <dgil at ieee.org>
 	* Dirty flag : suppress it (SF bug 1665541)
 	* Stops view : Add a quote in other main market (SF bug 1664690)
