@@ -195,8 +195,6 @@ class iTradeCurrenciesWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveCurrencyMixin)
             self.m_parent.m_hCurrency = None
 
     def OnClose(self,e):
-        self.saveConfig()
-        currencies.save()
         self.Close(True)
 
     def OnSize(self, event):
@@ -208,6 +206,8 @@ class iTradeCurrenciesWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveCurrencyMixin)
 
     def OnCloseWindow(self, evt):
         self.stopLiveCurrency(bBusy=False)
+        self.saveConfig()
+        currencies.save()
         self.Destroy()
 
     # Used by the wxl.ColumnSorterMixin, see wxPython/lib/mixins/listctrl.py
