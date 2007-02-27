@@ -44,8 +44,16 @@ import itrade_config
 from itrade_ext import loadExtensions
 
 # ============================================================================
-#
+# BasicIndicator
 # ============================================================================
+
+class BasicIndicator:
+
+    def __init__(self,name):
+        self.m_name = name
+
+    def name(self):
+        return self.m_name
 
 # ============================================================================
 # Test Indicators
