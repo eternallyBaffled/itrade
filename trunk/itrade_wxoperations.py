@@ -728,6 +728,7 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
             self.m_parent.m_hOperation = None
 
     def OnCloseWindow(self, evt):
+        self.saveConfig()
         self.Destroy()
 
     # --- [ filter management ] -------------------------------------
@@ -952,7 +953,6 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
         m.Check(itrade_config.operationFontSize==3)
 
     def OnClose(self,e):
-        self.saveConfig()
         self.Close(True)
 
     def OnDispAll(self,e):

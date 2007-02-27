@@ -630,8 +630,8 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         self.Close(True)
 
     def OnCloseWindow(self, evt):
-        self.Save()
         self.DoneCurrentPage()
+        self.Save()
         self.Destroy()
 
     def OnDestroyWindow(self, evt):
