@@ -55,9 +55,11 @@ from itrade_local import message
 currencies_CUR = {
     'EUR' : u'\u20AC', #" '€',
     'USD' : u'\u0024', # '$'
+    'CAD' : u'\u0024', # '$'
     'JPY' : u'\u00A5', # '¥',
     'GBP' : u'\u00A3', # '£',
     'AUD' : u'\u0024', # '$'
+    'CHF' : u'\u0046', # 'F'
     }
 
 def currency2symbol(cur):
@@ -67,7 +69,7 @@ def currency2symbol(cur):
         return cur
 
 def list_of_currencies():
-    return ('EUR','USD','JPY','GBP','AUD')
+    return ('EUR','USD','JPY','GBP','AUD','CAD','CHF')
 
 # ============================================================================
 # Build list of supported currencies
