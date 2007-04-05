@@ -6,6 +6,7 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-04-05  Gilles Dumortier <dgil at ieee.org>
+	* Script for : Images : have a specific package (SF bug 1695259)
 	* Add Currencies : Canadian Dollar and Switzerland Francs
 	* Add Toronto and Switzerland exchanges (TSE, TSX, SWISS EXCHANGE)
 

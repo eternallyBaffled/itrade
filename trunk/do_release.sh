@@ -4,9 +4,10 @@
 # 051403 dgil Cleanup the file
 # 051128 dgil Use it for iTrade project
 # 060504 dgil Migrate from CVS to SVN
+# 070405 dgil Move /images content to specific package
 
 # put real file names or directory to be removed here
-to_be_removed='do_release.sh ethereal/* data/quotes.txt.org cache/* usrdata.dev/*'
+to_be_removed='do_release.sh ethereal/* data/quotes.txt.org cache/* usrdata.dev/* images/*.png images/*.gif images/*.jpg'
 
 target="$HOME/itrade_snapshot_`date +'%F'`.tar.gz"
 #target="$HOME/itrade_0_4_6_nausicaa2_`date +'%F'`.tar.gz"
