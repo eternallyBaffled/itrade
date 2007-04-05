@@ -59,7 +59,9 @@ isin_market = {
     'qs': 'EURONEXT',
     'uk': 'LSE',
     'us': 'NASDAQ',
-    'au': 'ASX'
+    'au': 'ASX',
+    'ca': 'TSE',
+    'ch': 'SWISS EXCHANGE',
     }
 
 def isin2market(isin):
@@ -89,6 +91,9 @@ market_currency = {
     'OTCBB': 'USD',
     'LSE': 'GBP',
     'ASX': 'AUD',
+    'TSE': 'CAD',
+    'TSX': 'CAD',
+    'SWISS EXCHANGE': 'CHF',
     }
 
 def market2currency(market):
@@ -112,6 +117,9 @@ def list_of_markets(bFilterMode=False):
     lom.append('AMEX')
     lom.append('OTCBB')
     lom.append('ASX')
+    lom.append('TSE')
+    lom.append('TSX')
+    lom.append('SWISS EXCHANGE')
     return lom
 
 # ============================================================================
@@ -148,6 +156,10 @@ def compute_country(isin,market,place):
             return 'US'
         if market=='ASX':
             return 'AU'
+        if market=='TSE' or market=='TSX':
+            return 'CA'
+        if market=='SWISS EXCHANGE':
+            return 'CH'
     return '??'
 
 # ============================================================================
@@ -181,6 +193,10 @@ def list_of_places(market):
         lop.append('LON')
     if market=='ASX':
         lop.append('SYD')
+    if market=='TSE' or market=='TSX':
+        lop.append('TOR')
+    if market=='SWISS EXCHANGE':
+        lop.append('GEN')
     return lop
 
 # ============================================================================
@@ -197,7 +213,10 @@ market_place = {
     'AMEX': 'NYC',
     'OTCBB': 'NYC',
     'LSE': 'LON',
-    'ASX': 'SYD'
+    'ASX': 'SYD',
+    'TSE': 'TOR',
+    'TSX': 'TOR',
+    'SWISS EXCHANGE': 'GEN',
     }
 
 def market2place(market):
@@ -218,7 +237,10 @@ yahoo_suffix = {
     'PARIS MARCHE LIBRE.PAR': '.PA',
     'OTCBB.NYC': '.OB',
     'LSE.LON': '.L',
-    'ASX.SYD': '.AX'
+    'ASX.SYD': '.AX',
+    'TSE.TOR': '.TO',
+    'TSX.TOR': '.V',
+    'SWISS EXCHANGE.GEN': '.SW',
     }
 
 yahoo_map_tickers = {}
