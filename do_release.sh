@@ -7,7 +7,7 @@
 # 070405 dgil Move /images content to specific package
 
 # put real file names or directory to be removed here
-to_be_removed='do_release.sh ethereal/* data/quotes.txt.org cache/* usrdata.dev/* images/*.png images/*.gif images/*.jpg'
+to_be_removed='do_release.sh do_images.sh ethereal/* data/quotes.txt.org cache/* usrdata.dev/* images/*.png images/*.gif images/*.jpg'
 
 target="$HOME/itrade_snapshot_`date +'%F'`.tar.gz"
 #target="$HOME/itrade_0_4_6_nausicaa2_`date +'%F'`.tar.gz"
