@@ -9,6 +9,9 @@ On the road for v0.4.6 (Nausicaa2)
 	* Add Currencies : Canadian Dollar and Switzerland Francs
 	* Add Toronto and Switzerland exchanges (TSE, TSX, SWISS EXCHANGE)
 
+2007-02-23  Michel Legrand <m_leg at users.sourceforge.net>
+	* More logo for EURONEXT PARIS quotes - COOL !
+
 2007-02-2x  Gilles Dumortier <dgil at ieee.org>
 	* Fix a regression introduced by "Dirty flag : suppress it (SF bug
 	  1665541)" -> main window size/position was not saved correcly at
