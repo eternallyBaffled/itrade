@@ -1,8 +1,24 @@
 /iTrade/images/README
 ===============================================================================
 
+This folder is managed by Michel Legrand <m_leg at users.sourceforge.net>.
+
+Help him to enhance this content !
+
+===============================================================================
+
 Download the latest images package from http://itrade.sourceforge.net
 
-File name : itrade_images_<date>.tar.gz
+Package File name : itrade_images_<date>.tar.gz
+
+===============================================================================
+
+Image name convention : <ticker>-<market>.<format>
+
+<ticker> ::= ticker of the quote
+<format> ::= gif | jpg | png
+<market> ::= EURONEXT | LSE | NASDAQ | ASX | TSE | TSX | SWISS EXCHANGE |
+	     ALTERNEXT | PARIS MARCHE LIBRE | BRUXELLES MARCHE LIBRE | AMEX |
+	     OTCBB | NYSE
 
 ===============================================================================
