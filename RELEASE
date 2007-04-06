@@ -83,6 +83,7 @@ Configuration Management
 
 @1:
 - package source pack (tarball gz file format) by executing ./do_release.sh script
+- package images pack (tarball gz file format) by executing ./do_images.sh script
 - non regression testing of the source package
 - fix any critical issue then loop @1
 
@@ -102,6 +103,7 @@ File Releases
 -------------------------------------------------------------------------------
 
 - put source pack on sourceforge
+- put images pack on sourceforge
 - put binary pack on sourceforge (Windows only at the moment)
 
 Notes:
