@@ -249,7 +249,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
         self.wxNameLabel = wx.StaticText(btnpane, -1, message('portfolio_description'))
         self.wxNameLabel.SetSizerProps(valign='center')
 
-        bmp = wx.Bitmap('res/quotes.png')
+        bmp = wx.Bitmap(os.path.join(itrade_config.dirRes, 'quotes.png'))
         self.wxNameButton = wx.BitmapButton(btnpane, -1, bmp, size=wx.Size(bmp.GetWidth()+5, bmp.GetHeight()+5))
         wx.EVT_BUTTON(self, self.wxNameButton.GetId(), self.OnQuote)
 
@@ -491,24 +491,24 @@ class iTradeOperationToolbar(wx.ToolBar):
                            message('main_close'), message('main_desc_close'))
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
 
-        self.AddRadioLabelTool(self._NTB2_DISPALL,'',wx.Bitmap('res/dispall.png'),wx.NullBitmap,message('portfolio_dispall'),message('portfolio_desc_dispall'))
-        self.AddRadioLabelTool(self._NTB2_DISPQUOTES,'',wx.Bitmap('res/dispquote.png'),wx.NullBitmap,message('portfolio_dispquotes'),message('portfolio_desc_dispquotes'))
-        self.AddRadioLabelTool(self._NTB2_DISPCASH,'',wx.Bitmap('res/dispcash.png'),wx.NullBitmap,message('portfolio_dispcash'),message('portfolio_desc_dispcash'))
-        self.AddRadioLabelTool(self._NTB2_DISPPVAL,'',wx.Bitmap('res/dispvalue.png'),wx.NullBitmap,message('portfolio_dispvalues'),message('portfolio_desc_dispvalues'))
-        self.AddRadioLabelTool(self._NTB2_DISPSRD,'',wx.Bitmap('res/dispsrd.png'),wx.NullBitmap,message('portfolio_dispsrd'),message('portfolio_desc_dispsrd'))
+        self.AddRadioLabelTool(self._NTB2_DISPALL,'',wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispall.png')),wx.NullBitmap,message('portfolio_dispall'),message('portfolio_desc_dispall'))
+        self.AddRadioLabelTool(self._NTB2_DISPQUOTES,'',wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispquote.png')),wx.NullBitmap,message('portfolio_dispquotes'),message('portfolio_desc_dispquotes'))
+        self.AddRadioLabelTool(self._NTB2_DISPCASH,'',wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispcash.png')),wx.NullBitmap,message('portfolio_dispcash'),message('portfolio_desc_dispcash'))
+        self.AddRadioLabelTool(self._NTB2_DISPPVAL,'',wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispvalue.png')),wx.NullBitmap,message('portfolio_dispvalues'),message('portfolio_desc_dispvalues'))
+        self.AddRadioLabelTool(self._NTB2_DISPSRD,'',wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispsrd.png')),wx.NullBitmap,message('portfolio_dispsrd'),message('portfolio_desc_dispsrd'))
 
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
 
-        self.AddSimpleTool(self._NTB2_ADD,wx.Bitmap('res/add.png'),message('portfolio_opadd'),message('portfolio_desc_opadd'))
-        self.AddSimpleTool(self._NTB2_MODIFY,wx.Bitmap('res/modify.png'),message('portfolio_opmodify'),message('portfolio_desc_opmodify'))
-        self.AddSimpleTool(self._NTB2_DELETE,wx.Bitmap('res/delete.png'),message('portfolio_opdelete'),message('portfolio_desc_opdelete'))
+        self.AddSimpleTool(self._NTB2_ADD,wx.Bitmap(os.path.join(itrade_config.dirRes, 'add.png')),message('portfolio_opadd'),message('portfolio_desc_opadd'))
+        self.AddSimpleTool(self._NTB2_MODIFY,wx.Bitmap(os.path.join(itrade_config.dirRes, 'modify.png')),message('portfolio_opmodify'),message('portfolio_desc_opmodify'))
+        self.AddSimpleTool(self._NTB2_DELETE,wx.Bitmap(os.path.join(itrade_config.dirRes, 'delete.png')),message('portfolio_opdelete'),message('portfolio_desc_opdelete'))
 
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
 
-        self.AddRadioLabelTool(self._NTB2_30DAYS,'',wx.Bitmap('res/filter30.png'),wx.NullBitmap,message('portfolio_per30days'),message('portfolio_desc_per30days'))
-        self.AddRadioLabelTool(self._NTB2_90DAYS,'',wx.Bitmap('res/filter90.png'),wx.NullBitmap,message('portfolio_per90days'),message('portfolio_desc_per90days'))
-        self.AddRadioLabelTool(self._NTB2_CURRENTYEAR,'',wx.Bitmap('res/filter.png'),wx.NullBitmap,message('portfolio_peryear'),message('portfolio_desc_peryear'))
-        self.AddRadioLabelTool(self._NTB2_ALLYEARS,'',wx.Bitmap('res/nofilter.png'),wx.NullBitmap,message('portfolio_perall'),message('portfolio_desc_perall'))
+        self.AddRadioLabelTool(self._NTB2_30DAYS,'',wx.Bitmap(os.path.join(itrade_config.dirRes, 'filter30.png')),wx.NullBitmap,message('portfolio_per30days'),message('portfolio_desc_per30days'))
+        self.AddRadioLabelTool(self._NTB2_90DAYS,'',wx.Bitmap(os.path.join(itrade_config.dirRes, 'filter90.png')),wx.NullBitmap,message('portfolio_per90days'),message('portfolio_desc_per90days'))
+        self.AddRadioLabelTool(self._NTB2_CURRENTYEAR,'',wx.Bitmap(os.path.join(itrade_config.dirRes, 'filter.png')),wx.NullBitmap,message('portfolio_peryear'),message('portfolio_desc_peryear'))
+        self.AddRadioLabelTool(self._NTB2_ALLYEARS,'',wx.Bitmap(os.path.join(itrade_config.dirRes, 'nofilter.png')),wx.NullBitmap,message('portfolio_perall'),message('portfolio_desc_perall'))
 
         wx.EVT_TOOL(self, self._NTB2_EXIT, self.onExit)
 
@@ -631,13 +631,13 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
 
         # create an image list
         self.m_imagelist = wx.ImageList(16,16)
-        self.idx_plus = self.m_imagelist.Add(wx.Bitmap('res/plus.png'))
-        self.idx_minus = self.m_imagelist.Add(wx.Bitmap('res/minus.png'))
-        self.idx_neutral = self.m_imagelist.Add(wx.Bitmap('res/neutral.png'))
-        self.idx_unknown = self.m_imagelist.Add(wx.Bitmap('res/unknown.png'))
+        self.idx_plus = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'plus.png')))
+        self.idx_minus = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'minus.png')))
+        self.idx_neutral = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'neutral.png')))
+        self.idx_unknown = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'unknown.png')))
 
-        self.sm_up = self.m_imagelist.Add(wx.Bitmap('res/sm_up.png'))
-        self.sm_dn = self.m_imagelist.Add(wx.Bitmap('res/sm_down.png'))
+        self.sm_up = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'sm_up.png')))
+        self.sm_dn = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'sm_down.png')))
 
         #
         tID = wx.NewId()

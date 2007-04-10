@@ -6,6 +6,7 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-04-10  Gilles Dumortier <dgil at ieee.org>
+	* Apply Patch from Sébastien Renard (Slackware linux 11)
 	* Images : have a specific package (SF bug 1695259)
 
 2007-04-06  Gilles Dumortier <dgil at ieee.org>

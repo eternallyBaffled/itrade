@@ -198,17 +198,17 @@ class iTradeMainToolbar(wx.ToolBar):
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
         self.AddSimpleTool(self._NTB2_OPERATIONS, wx.ArtProvider.GetBitmap(wx.ART_REPORT_VIEW, wx.ART_TOOLBAR),
                            message('main_view_operations'), message('main_view_desc_operations'))
-        self.AddSimpleTool(self._NTB2_MONEY, wx.Bitmap('res/money.png'),
+        self.AddSimpleTool(self._NTB2_MONEY, wx.Bitmap(os.path.join(itrade_config.dirRes, 'money.png')),
                            message('main_view_money'), message('main_view_desc_money'))
-        self.AddSimpleTool(self._NTB2_ALERTS, wx.Bitmap('res/bell.png'),
+        self.AddSimpleTool(self._NTB2_ALERTS, wx.Bitmap(os.path.join(itrade_config.dirRes, 'bell.png')),
                            message('main_view_alerts'), message('main_view_desc_alerts'))
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
-        self.AddSimpleTool(self._NTB2_QUOTE, wx.Bitmap('res/graph.png'),
+        self.AddSimpleTool(self._NTB2_QUOTE, wx.Bitmap(os.path.join(itrade_config.dirRes, 'graph.png')),
                            message('main_quote_graph'), message('main_quote_desc_graph'))
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
-        self.AddSimpleTool(self._NTB2_REFRESH, wx.Bitmap('res/refresh.png'),
+        self.AddSimpleTool(self._NTB2_REFRESH, wx.Bitmap(os.path.join(itrade_config.dirRes, 'refresh.png')),
                            message('main_view_refresh'), message('main_view_desc_refresh'))
-        self.AddSimpleTool(self._NTB2_ABOUT, wx.Bitmap('res/about.png'),
+        self.AddSimpleTool(self._NTB2_ABOUT, wx.Bitmap(os.path.join(itrade_config.dirRes, 'about.png')),
                            message('main_about'), message('main_desc_about'))
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
         self.m_indicator = wx.StaticText(self, -1, "", size=(180,15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)

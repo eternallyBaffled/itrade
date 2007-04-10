@@ -94,9 +94,9 @@ class iTradeQuoteToolbar(wx.ToolBar):
         self.AddSimpleTool(self._NTB2_EXIT, wx.ArtProvider.GetBitmap(wx.ART_CROSS_MARK, wx.ART_TOOLBAR),
                            message('main_close'), message('main_desc_close'))
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
-        self.AddSimpleTool(self._NTB2_SELECT, wx.Bitmap('res/quotes.png'),
+        self.AddSimpleTool(self._NTB2_SELECT, wx.Bitmap(os.path.join(itrade_config.dirRes, 'quotes.png')),
                            message('quote_select_title'), message('quote_select_title'))
-        self.AddSimpleTool(self._NTB2_REFRESH, wx.Bitmap('res/refresh.png'),
+        self.AddSimpleTool(self._NTB2_REFRESH, wx.Bitmap(os.path.join(itrade_config.dirRes, 'refresh.png')),
                            message('main_view_refresh'), message('main_view_desc_refresh'))
 
         wx.EVT_TOOL(self, self._NTB2_EXIT, self.exit)

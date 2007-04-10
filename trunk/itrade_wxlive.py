@@ -319,7 +319,7 @@ class iTrade_wxLive(wx.Panel):
         self.m_quote = quote
         self.m_live = quote.liveconnector()
 
-        self.m_font = wx.Font(10, wx.MODERN, wx.NORMAL, wx.NORMAL)
+        self.m_font = wx.Font(8, wx.MODERN, wx.NORMAL, wx.NORMAL)
         self.SetFont(self.m_font)
 
         # column mapping

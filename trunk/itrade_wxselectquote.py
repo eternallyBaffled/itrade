@@ -100,10 +100,10 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
 
         tID = wx.NewId()
         self.m_imagelist = wx.ImageList(16,16)
-        self.sm_q = self.m_imagelist.Add(wx.Bitmap('res/quote.png'))
-        self.sm_i = self.m_imagelist.Add(wx.Bitmap('res/invalid.png'))
-        self.sm_up = self.m_imagelist.Add(wx.Bitmap('res/sm_up.png'))
-        self.sm_dn = self.m_imagelist.Add(wx.Bitmap('res/sm_down.png'))
+        self.sm_q = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'quote.png')))
+        self.sm_i = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'invalid.png')))
+        self.sm_up = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'sm_up.png')))
+        self.sm_dn = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'sm_down.png')))
 
         # container
         container = self.GetContentsPane()

@@ -68,7 +68,7 @@ class iTrade_wxFrame(object):
         self._config = {}
 
         # icon
-        self.SetIcon(wx.Icon("res/itrade.ico",wx.BITMAP_TYPE_ICO))
+        self.SetIcon(wx.Icon(os.path.join(itrade_config.dirRes, "itrade.ico"),wx.BITMAP_TYPE_ICO))
 
         # focus
         self.m_hasFocus = True
