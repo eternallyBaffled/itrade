@@ -70,7 +70,8 @@ class LiveUpdate_Euronext(object):
         self.m_lastclock = "::"
         self.m_livelock = thread.allocate_lock()
         self.m_market = market
-        self.m_url = 'http://www.euronext.com/tools/datacentre/dataCentreDownloadExcell/0,5822,1732_2276422,00.html'
+        #self.m_url = 'http://www.euronext.com/tools/datacentre/dataCentreDownloadExcell/0,5822,1732_2276422,00.html'
+        self.m_url = 'http://www.euronext.com/tools/datacentre/dataCentreDownloadExcell.jcsv'
 
     # ---[ reentrant ] ---
     def acquire(self):
@@ -161,6 +162,8 @@ class LiveUpdate_Euronext(object):
         if IdInstrument == None: return None
 
         query = (
+            ('cha', '2593'),
+            ('lan', 'EN'),
             ('idInstrument', IdInstrument),
             ('isinCode', quote.isin()),
             ('indexCompo', ''),
