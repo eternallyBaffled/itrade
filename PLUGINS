@@ -24,6 +24,9 @@ AMEX		NYC	YAHOO FINANCE
 OTCBB		NYC	YAHOO FINANCE
 LSE		LON	YAHOO FINANCE
 ASX		SYD	YAHOO FINANCE
+TSE		TOR	YAHOO FINANCE
+TSX             TOR	YAHOO FINANCE
+SWISS EXCHANGE	GEN	YAHOO FINANCE
 
 ===============================================================================
 History data
@@ -44,6 +47,9 @@ AMEX		NYC	YAHOO FINANCE
 OTCBB		NYC	YAHOO FINANCE
 LSE		LON	YAHOO FINANCE
 ASX		SYD	YAHOO FINANCE
+TSE		TOR	YAHOO FINANCE
+TSX             TOR	YAHOO FINANCE
+SWISS EXCHANGE	GEN	YAHOO FINANCE
 
 ===============================================================================
 List of quotes
@@ -64,6 +70,9 @@ AMEX		NYC	BARCHART
 OTCBB		NYC	BARCHART
 LSE		LON	not available yet
 ASX		SYD	ASX
+TSE		TOR	not available yet
+TSX             TOR	not available yet
+SWISS EXCHANGE	GEN	not available yet
 
 ===============================================================================
 Intraday data
@@ -84,5 +93,8 @@ AMEX		NYC	not available yet
 OTCBB		NYC	not available yet
 LSE		LON	not available yet
 ASX		SYD	not available yet
+TSE		TOR	not available yet
+TSX             TOR	not available yet
+SWISS EXCHANGE	GEN	not available yet
 
 ===============================================================================
