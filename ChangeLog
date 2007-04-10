@@ -6,6 +6,8 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-04-10  Gilles Dumortier <dgil at ieee.org>
+	* Euronext live connector broken for all markets other than PARIS (SF
+          bug 1695109) - datacenter URL has moved
 	* Apply Patch from Sébastien Renard (Slackware linux 11)
 	* Images : have a specific package (SF bug 1695259)
 
