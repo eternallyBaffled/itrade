@@ -99,10 +99,10 @@ class iTradePortfolioSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterM
         # Row 2 :
         tID = wx.NewId()
         self.m_imagelist = wx.ImageList(16,16)
-        self.sm_q = self.m_imagelist.Add(wx.Bitmap('res/quote.png'))
-        self.sm_i = self.m_imagelist.Add(wx.Bitmap('res/invalid.png'))
-        self.sm_up = self.m_imagelist.Add(wx.Bitmap('res/sm_up.png'))
-        self.sm_dn = self.m_imagelist.Add(wx.Bitmap('res/sm_down.png'))
+        self.sm_q = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'quote.png')))
+        self.sm_i = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'invalid.png')))
+        self.sm_up = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'sm_up.png')))
+        self.sm_dn = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'sm_down.png')))
 
         self.m_list = iTradeSelectorListCtrl(container, tID,
                                  style = wx.LC_REPORT | wx.SUNKEN_BORDER,

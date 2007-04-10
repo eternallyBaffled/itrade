@@ -242,7 +242,7 @@ class iTradeAboutBox(wx.Dialog):
 
     def setPage(self):
         self.m_html.SetPage(about_html % (
-              'res//itrade.png', itrade_config.softwareVersionName, itrade_config.softwareStatus, itrade_config.softwareVersion,
+              os.path.join(itrade_config.resDir, 'itrade.png'), itrade_config.softwareVersionName, itrade_config.softwareStatus, itrade_config.softwareVersion,
               '', about_text % (itrade_config.softwareWebsite, itrade_config.softwareCopyright,itrade_config.softwareLicense)
               ))
 

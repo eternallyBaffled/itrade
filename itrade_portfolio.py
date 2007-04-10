@@ -1329,7 +1329,7 @@ def loadPortfolio(fn=None):
     if p==None:
         # portfolio does not exist !
         print "Portfolio '%s' does not exist ... create it" % fn
-        p = portfolios.addPortfolio(fn,fn,'noref','EURONEXT','EUR',country2vat('fr'))
+        p = portfolios.addPortfolio(fn,fn,'noref','EURONEXT','EUR',country2vat('fr'), 3, 5)
         portfolios.save()
 
     # load properties

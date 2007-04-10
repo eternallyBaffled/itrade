@@ -146,16 +146,16 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
         # create an image list
         self.m_imagelist = wx.ImageList(16,16)
 
-        self.idx_nochange = self.m_imagelist.Add(wx.Bitmap('res/nochange.png'))
-        self.idx_up = self.m_imagelist.Add(wx.Bitmap('res/up.png'))
-        self.idx_down = self.m_imagelist.Add(wx.Bitmap('res/down.png'))
-        self.idx_tbref = self.m_imagelist.Add(wx.Bitmap('res/invalid.png'))
-        self.idx_buy = self.m_imagelist.Add(wx.Bitmap('res/buy.png'))
-        self.idx_sell = self.m_imagelist.Add(wx.Bitmap('res/sell.png'))
-        self.idx_noop = self.m_imagelist.Add(wx.Bitmap('res/noop.png'))
+        self.idx_nochange = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'nochange.png')))
+        self.idx_up = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'up.png')))
+        self.idx_down = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'down.png')))
+        self.idx_tbref = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'invalid.png')))
+        self.idx_buy = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'buy.png')))
+        self.idx_sell = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'sell.png')))
+        self.idx_noop = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'noop.png')))
 
-        self.sm_up = self.m_imagelist.Add(wx.Bitmap('res/sm_up.png'))
-        self.sm_dn = self.m_imagelist.Add(wx.Bitmap('res/sm_down.png'))
+        self.sm_up = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'sm_up.png')))
+        self.sm_dn = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'sm_down.png')))
 
         # List
         tID = wx.NewId()

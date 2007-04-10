@@ -61,7 +61,7 @@ from itrade_matrix import createMatrix
 
 class iTrade_SplashScreen(wx.SplashScreen):
     def __init__(self,app):
-        bmp = wx.Image("res/itrade.jpg").ConvertToBitmap()
+        bmp = wx.Image(os.path.join(itrade_config.dirRes, "itrade.jpg")).ConvertToBitmap()
         wx.SplashScreen.__init__(self,bmp,wx.SPLASH_CENTRE_ON_SCREEN,0,None,-1)
         wx.EVT_CLOSE(self,self.OnClose)
 

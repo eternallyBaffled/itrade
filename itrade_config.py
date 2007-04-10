@@ -113,50 +113,53 @@ forumURL['fr'] = 'http://sourceforge.net/forum/forum.php?forum_id=436160'
 # use ANSI colors
 useColors = False
 
+# itrade root directory
+dirRoot=os.path.dirname(sys.argv[0])
+
 # directory for system data
-dirSysData = 'data'
+dirSysData = os.path.join(dirRoot, 'data')
 if not os.path.exists(dirSysData):
     raise('invalid installation ! %s folder does not exist !' % dirSysData)
 
 # directory for brokers data
-dirBrokersData = 'brokers'
+dirBrokersData = os.path.join(dirRoot, 'brokers')
 if not os.path.exists(dirBrokersData):
     raise('invalid installation ! %s folder does not exist !' % dirBrokersData)
 
 # directory for symbol lists
-dirSymbData = 'symbols'
+dirSymbData = os.path.join(dirRoot, 'symbols')
 if not os.path.exists(dirSymbData):
     raise('invalid installation ! %s folder does not exist !' % dirSymbData)
 
 # directory for extensions
-dirExtData = 'ext'
+dirExtData = os.path.join(dirRoot, 'ext')
 if not os.path.exists(dirExtData):
     raise('invalid installation ! %s folder does not exist !' % dirExtData)
 fileExtData = 'extensions.txt'
 
 # directory for indicators
-dirIndData = 'indicators'
+dirIndData = os.path.join(dirRoot, 'indicators')
 if not os.path.exists(dirIndData):
     raise('invalid installation ! %s folder does not exist !' % dirIndData)
 fileIndData = 'indicators.txt'
 
 # directory for user data
-dirUserData = 'usrdata'
+dirUserData = os.path.join(dirRoot, 'usrdata')
 if not os.path.exists(dirUserData):
     os.mkdir(dirUserData)
 
 # directory for alerts
-dirAlerts = 'alerts'
+dirAlerts = os.path.join(dirRoot, 'alerts')
 if not os.path.exists(dirAlerts):
     os.mkdir(dirAlerts)
 
 # directory for quotes images
-dirImageData = 'images'
+dirImageData = os.path.join(dirRoot, 'images')
 if not os.path.exists(dirImageData):
     os.mkdir(dirImageData)
 
 # directory for cache data (quote, window prop, ...)
-dirCacheData = 'cache'
+dirCacheData = os.path.join(dirRoot, 'cache')
 if not os.path.exists(dirCacheData):
     os.mkdir(dirCacheData)
 
@@ -164,24 +167,29 @@ if not os.path.exists(dirCacheData):
 fileCurrentPortfolio = 'portfolio.txt'
 
 # directory for importation
-dirImport = 'import'
+dirImport = os.path.join(dirRoot, 'import')
 if not os.path.exists(dirImport):
     os.mkdir(dirImport)
 
 # directory for exportation
-dirExport = 'export'
+dirExport = os.path.join(dirRoot, 'export')
 if not os.path.exists(dirExport):
     os.mkdir(dirExport)
 
 # directory for snapshots
-dirSnapshots = 'snapshots'
+dirSnapshots = os.path.join(dirRoot, 'snapshots')
 if not os.path.exists(dirSnapshots):
     os.mkdir(dirSnapshots)
 
 # directory for trading reports
-dirReports = 'reports'
+dirReports = os.path.join(dirRoot, 'reports')
 if not os.path.exists(dirReports):
     os.mkdir(dirReports)
+
+# directory for image ressources
+dirRes = os.path.join(dirRoot, 'res')
+if not os.path.exists(dirRes):
+    raise('invalid installation ! %s folder does not exist !' % dirRes)
 
 # number of trading years
 numTradeYears = 12
