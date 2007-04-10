@@ -23,7 +23,7 @@ itrade_import_yahoo.py
 
 # import live data
 itrade_liveupdate_euronext.py
-itrade_liveupdate_fortuneo.py
+#__ itrade_liveupdate_fortuneo.py
 itrade_liveupdate_yahoo.py
 
 # import list of quotes
@@ -33,14 +33,14 @@ itrade_quotes_euronext.py
 itrade_quotes_nyse.py
 
 # login
-itrade_login_fortuneo.py
+#__ itrade_login_fortuneo.py
 
 # -----------------------------------------------------------------------------
 # experimental - use with caution
 # -----------------------------------------------------------------------------
 
 # login
-itrade_login_boursorama.py
+#__ itrade_login_boursorama.py
 
 # -----------------------------------------------------------------------------
 # deprecated extensions still enabled in the official builds
