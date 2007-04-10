@@ -5,6 +5,9 @@ On the road for v0.4.6 (Nausicaa2)
 
 ===============================================================================
 
+2007-04-10  Gilles Dumortier <dgil at ieee.org>
+	* Images : have a specific package (SF bug 1695259)
+
 2007-04-06  Gilles Dumortier <dgil at ieee.org>
 	* Update some information on /images package
 	* Start looking into TA-LIB integration
