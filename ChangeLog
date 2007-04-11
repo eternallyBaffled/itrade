@@ -5,6 +5,9 @@ On the road for v0.4.6 (Nausicaa2)
 
 ===============================================================================
 
+2007-04-11  Sébastien Renard <Sebsatien dot Renard at digitalfox dot org>
+	* Performance patch for quote list sorting
+
 2007-04-10  Gilles Dumortier <dgil at ieee.org>
 	* Euronext live connector broken for all markets other than PARIS (SF
           bug 1695109) - datacenter URL has moved
