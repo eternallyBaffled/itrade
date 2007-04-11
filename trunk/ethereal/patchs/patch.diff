@@ -1,0 +1,450 @@
+Index: /home/fox/prog/workspace/itrade/itrade_wxmixin.py
+===================================================================
+--- /home/fox/prog/workspace/itrade/itrade_wxmixin.py	(revision 640)
++++ /home/fox/prog/workspace/itrade/itrade_wxmixin.py	(working copy)
+@@ -68,7 +68,7 @@
+         self._config = {}
+ 
+         # icon
+-        self.SetIcon(wx.Icon("res/itrade.ico",wx.BITMAP_TYPE_ICO))
++        self.SetIcon(wx.Icon(os.path.join(itrade_config.dirRes, "itrade.ico"),wx.BITMAP_TYPE_ICO))
+ 
+         # focus
+         self.m_hasFocus = True
+Index: /home/fox/prog/workspace/itrade/itrade_wxalerts.py
+===================================================================
+--- /home/fox/prog/workspace/itrade/itrade_wxalerts.py	(revision 640)
++++ /home/fox/prog/workspace/itrade/itrade_wxalerts.py	(working copy)
+@@ -92,7 +92,7 @@
+ 
+         # create an image list
+         self.m_imagelist = wx.ImageList(16,16)
+-        self.idx_tbref = self.m_imagelist.Add(wx.Bitmap('res/invalid.png'))
++        self.idx_tbref = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'invalid.png')))
+ 
+         # List
+         tID = wx.NewId()
+Index: /home/fox/prog/workspace/itrade/itrade_wxcurrency.py
+===================================================================
+--- /home/fox/prog/workspace/itrade/itrade_wxcurrency.py	(revision 640)
++++ /home/fox/prog/workspace/itrade/itrade_wxcurrency.py	(working copy)
+@@ -95,7 +95,7 @@
+                            message('main_close'), message('main_desc_close'))
+ 
+         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+-        self.AddSimpleTool(self._NTB2_REFRESH, wx.Bitmap('res/refresh.png'),
++        self.AddSimpleTool(self._NTB2_REFRESH, wx.Bitmap(os.path.join(itrade_config.dirRes, 'refresh.png')),
+                            message('main_view_refresh'), message('main_view_desc_refresh'))
+ 
+         wx.EVT_TOOL(self, self._NTB2_EXIT, self.onExit)
+Index: /home/fox/prog/workspace/itrade/itrade_wxquote.py
+===================================================================
+--- /home/fox/prog/workspace/itrade/itrade_wxquote.py	(revision 640)
++++ /home/fox/prog/workspace/itrade/itrade_wxquote.py	(working copy)
+@@ -94,9 +94,9 @@
+         self.AddSimpleTool(self._NTB2_EXIT, wx.ArtProvider.GetBitmap(wx.ART_CROSS_MARK, wx.ART_TOOLBAR),
+                            message('main_close'), message('main_desc_close'))
+         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+-        self.AddSimpleTool(self._NTB2_SELECT, wx.Bitmap('res/quotes.png'),
++        self.AddSimpleTool(self._NTB2_SELECT, wx.Bitmap(os.path.join(itrade_config.dirRes, 'quotes.png')),
+                            message('quote_select_title'), message('quote_select_title'))
+-        self.AddSimpleTool(self._NTB2_REFRESH, wx.Bitmap('res/refresh.png'),
++        self.AddSimpleTool(self._NTB2_REFRESH, wx.Bitmap(os.path.join(itrade_config.dirRes, 'refresh.png')),
+                            message('main_view_refresh'), message('main_view_desc_refresh'))
+ 
+         wx.EVT_TOOL(self, self._NTB2_EXIT, self.exit)
+Index: /home/fox/prog/workspace/itrade/itrade_config.py
+===================================================================
+--- /home/fox/prog/workspace/itrade/itrade_config.py	(revision 640)
++++ /home/fox/prog/workspace/itrade/itrade_config.py	(working copy)
+@@ -113,50 +113,53 @@
+ # use ANSI colors
+ useColors = False
+ 
++# itrade root directory
++dirRoot=os.path.dirname(sys.argv[0])
++
+ # directory for system data
+-dirSysData = 'data'
++dirSysData = os.path.join(dirRoot, 'data')
+ if not os.path.exists(dirSysData):
+     raise('invalid installation ! %s folder does not exist !' % dirSysData)
+ 
+ # directory for brokers data
+-dirBrokersData = 'brokers'
++dirBrokersData = os.path.join(dirRoot, 'brokers')
+ if not os.path.exists(dirBrokersData):
+     raise('invalid installation ! %s folder does not exist !' % dirBrokersData)
+ 
+ # directory for symbol lists
+-dirSymbData = 'symbols'
++dirSymbData = os.path.join(dirRoot, 'symbols')
+ if not os.path.exists(dirSymbData):
+     raise('invalid installation ! %s folder does not exist !' % dirSymbData)
+ 
+ # directory for extensions
+-dirExtData = 'ext'
++dirExtData = os.path.join(dirRoot, 'ext')
+ if not os.path.exists(dirExtData):
+     raise('invalid installation ! %s folder does not exist !' % dirExtData)
+ fileExtData = 'extensions.txt'
+ 
+ # directory for indicators
+-dirIndData = 'indicators'
++dirIndData = os.path.join(dirRoot, 'indicators')
+ if not os.path.exists(dirIndData):
+     raise('invalid installation ! %s folder does not exist !' % dirIndData)
+ fileIndData = 'indicators.txt'
+ 
+ # directory for user data
+-dirUserData = 'usrdata'
++dirUserData = os.path.join(dirRoot, 'usrdata')
+ if not os.path.exists(dirUserData):
+     os.mkdir(dirUserData)
+ 
+ # directory for alerts
+-dirAlerts = 'alerts'
++dirAlerts = os.path.join(dirRoot, 'alerts')
+ if not os.path.exists(dirAlerts):
+     os.mkdir(dirAlerts)
+ 
+ # directory for quotes images
+-dirImageData = 'images'
++dirImageData = os.path.join(dirRoot, 'images')
+ if not os.path.exists(dirImageData):
+     os.mkdir(dirImageData)
+ 
+ # directory for cache data (quote, window prop, ...)
+-dirCacheData = 'cache'
++dirCacheData = os.path.join(dirRoot, 'cache')
+ if not os.path.exists(dirCacheData):
+     os.mkdir(dirCacheData)
+ 
+@@ -164,25 +167,30 @@
+ fileCurrentPortfolio = 'portfolio.txt'
+ 
+ # directory for importation
+-dirImport = 'import'
++dirImport = os.path.join(dirRoot, 'import')
+ if not os.path.exists(dirImport):
+     os.mkdir(dirImport)
+ 
+ # directory for exportation
+-dirExport = 'export'
++dirExport = os.path.join(dirRoot, 'export')
+ if not os.path.exists(dirExport):
+     os.mkdir(dirExport)
+ 
+ # directory for snapshots
+-dirSnapshots = 'snapshots'
++dirSnapshots = os.path.join(dirRoot, 'snapshots')
+ if not os.path.exists(dirSnapshots):
+     os.mkdir(dirSnapshots)
+ 
+ # directory for trading reports
+-dirReports = 'reports'
++dirReports = os.path.join(dirRoot, 'reports')
+ if not os.path.exists(dirReports):
+     os.mkdir(dirReports)
+ 
++# directory for image ressources
++dirRes = os.path.join(dirRoot, 'res')
++if not os.path.exists(dirRes):
++    raise('invalid installation ! %s folder does not exist !' % dirRes)
++
+ # number of trading years
+ numTradeYears = 12
+ 
+Index: /home/fox/prog/workspace/itrade/itrade_portfolio.py
+===================================================================
+--- /home/fox/prog/workspace/itrade/itrade_portfolio.py	(revision 640)
++++ /home/fox/prog/workspace/itrade/itrade_portfolio.py	(working copy)
+@@ -1329,7 +1329,7 @@
+     if p==None:
+         # portfolio does not exist !
+         print "Portfolio '%s' does not exist ... create it" % fn
+-        p = portfolios.addPortfolio(fn,fn,'noref','EURONEXT','EUR',country2vat('fr'))
++        p = portfolios.addPortfolio(fn,fn,'noref','EURONEXT','EUR',country2vat('fr'), 3, 5)
+         portfolios.save()
+ 
+     # load properties
+Index: /home/fox/prog/workspace/itrade/itrade_wxpropquote.py
+===================================================================
+--- /home/fox/prog/workspace/itrade/itrade_wxpropquote.py	(revision 640)
++++ /home/fox/prog/workspace/itrade/itrade_wxpropquote.py	(working copy)
+@@ -370,7 +370,7 @@
+         self.AddSimpleTool(self._NTB2_EXIT, wx.ArtProvider.GetBitmap(wx.ART_CROSS_MARK, wx.ART_TOOLBAR),
+                            message('main_close'), message('main_desc_close'))
+         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+-        self.AddSimpleTool(self._NTB2_SELECT, wx.Bitmap('res/quotes.png'),
++        self.AddSimpleTool(self._NTB2_SELECT, wx.Bitmap(os.path.join(itrade_config.dirRes, 'quotes.png')),
+                            message('quote_select_title'), message('quote_select_title'))
+ 
+         wx.EVT_TOOL(self, self._NTB2_EXIT, self.exit)
+Index: /home/fox/prog/workspace/itrade/itrade_wxpanes.py
+===================================================================
+--- /home/fox/prog/workspace/itrade/itrade_wxpanes.py	(revision 640)
++++ /home/fox/prog/workspace/itrade/itrade_wxpanes.py	(working copy)
+@@ -146,16 +146,16 @@
+         # create an image list
+         self.m_imagelist = wx.ImageList(16,16)
+ 
+-        self.idx_nochange = self.m_imagelist.Add(wx.Bitmap('res/nochange.png'))
+-        self.idx_up = self.m_imagelist.Add(wx.Bitmap('res/up.png'))
+-        self.idx_down = self.m_imagelist.Add(wx.Bitmap('res/down.png'))
+-        self.idx_tbref = self.m_imagelist.Add(wx.Bitmap('res/invalid.png'))
+-        self.idx_buy = self.m_imagelist.Add(wx.Bitmap('res/buy.png'))
+-        self.idx_sell = self.m_imagelist.Add(wx.Bitmap('res/sell.png'))
+-        self.idx_noop = self.m_imagelist.Add(wx.Bitmap('res/noop.png'))
++        self.idx_nochange = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'nochange.png')))
++        self.idx_up = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'up.png')))
++        self.idx_down = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'down.png')))
++        self.idx_tbref = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'invalid.png')))
++        self.idx_buy = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'buy.png')))
++        self.idx_sell = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'sell.png')))
++        self.idx_noop = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'noop.png')))
+ 
+-        self.sm_up = self.m_imagelist.Add(wx.Bitmap('res/sm_up.png'))
+-        self.sm_dn = self.m_imagelist.Add(wx.Bitmap('res/sm_down.png'))
++        self.sm_up = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'sm_up.png')))
++        self.sm_dn = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'sm_down.png')))
+ 
+         # List
+         tID = wx.NewId()
+Index: /home/fox/prog/workspace/itrade/itrade_wxbook.py
+===================================================================
+--- /home/fox/prog/workspace/itrade/itrade_wxbook.py	(revision 640)
++++ /home/fox/prog/workspace/itrade/itrade_wxbook.py	(working copy)
+@@ -198,17 +198,17 @@
+         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+         self.AddSimpleTool(self._NTB2_OPERATIONS, wx.ArtProvider.GetBitmap(wx.ART_REPORT_VIEW, wx.ART_TOOLBAR),
+                            message('main_view_operations'), message('main_view_desc_operations'))
+-        self.AddSimpleTool(self._NTB2_MONEY, wx.Bitmap('res/money.png'),
++        self.AddSimpleTool(self._NTB2_MONEY, wx.Bitmap(os.path.join(itrade_config.dirRes, 'money.png')),
+                            message('main_view_money'), message('main_view_desc_money'))
+-        self.AddSimpleTool(self._NTB2_ALERTS, wx.Bitmap('res/bell.png'),
++        self.AddSimpleTool(self._NTB2_ALERTS, wx.Bitmap(os.path.join(itrade_config.dirRes, 'bell.png')),
+                            message('main_view_alerts'), message('main_view_desc_alerts'))
+         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+-        self.AddSimpleTool(self._NTB2_QUOTE, wx.Bitmap('res/graph.png'),
++        self.AddSimpleTool(self._NTB2_QUOTE, wx.Bitmap(os.path.join(itrade_config.dirRes, 'graph.png')),
+                            message('main_quote_graph'), message('main_quote_desc_graph'))
+         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+-        self.AddSimpleTool(self._NTB2_REFRESH, wx.Bitmap('res/refresh.png'),
++        self.AddSimpleTool(self._NTB2_REFRESH, wx.Bitmap(os.path.join(itrade_config.dirRes, 'refresh.png')),
+                            message('main_view_refresh'), message('main_view_desc_refresh'))
+-        self.AddSimpleTool(self._NTB2_ABOUT, wx.Bitmap('res/about.png'),
++        self.AddSimpleTool(self._NTB2_ABOUT, wx.Bitmap(os.path.join(itrade_config.dirRes, 'about.png')),
+                            message('main_about'), message('main_desc_about'))
+         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+         self.m_indicator = wx.StaticText(self, -1, "", size=(180,15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
+Index: /home/fox/prog/workspace/itrade/itrade_wxselectquote.py
+===================================================================
+--- /home/fox/prog/workspace/itrade/itrade_wxselectquote.py	(revision 640)
++++ /home/fox/prog/workspace/itrade/itrade_wxselectquote.py	(working copy)
+@@ -100,10 +100,10 @@
+ 
+         tID = wx.NewId()
+         self.m_imagelist = wx.ImageList(16,16)
+-        self.sm_q = self.m_imagelist.Add(wx.Bitmap('res/quote.png'))
+-        self.sm_i = self.m_imagelist.Add(wx.Bitmap('res/invalid.png'))
+-        self.sm_up = self.m_imagelist.Add(wx.Bitmap('res/sm_up.png'))
+-        self.sm_dn = self.m_imagelist.Add(wx.Bitmap('res/sm_down.png'))
++        self.sm_q = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'quote.png')))
++        self.sm_i = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'invalid.png')))
++        self.sm_up = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'sm_up.png')))
++        self.sm_dn = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'sm_down.png')))
+ 
+         # container
+         container = self.GetContentsPane()
+Index: /home/fox/prog/workspace/itrade/itrade_wxlive.py
+===================================================================
+--- /home/fox/prog/workspace/itrade/itrade_wxlive.py	(revision 640)
++++ /home/fox/prog/workspace/itrade/itrade_wxlive.py	(working copy)
+@@ -319,7 +319,7 @@
+         self.m_quote = quote
+         self.m_live = quote.liveconnector()
+ 
+-        self.m_font = wx.Font(10, wx.MODERN, wx.NORMAL, wx.NORMAL)
++        self.m_font = wx.Font(8, wx.MODERN, wx.NORMAL, wx.NORMAL)
+         self.SetFont(self.m_font)
+ 
+         # column mapping
+Index: /home/fox/prog/workspace/itrade/itrade_wxgraph.py
+===================================================================
+--- /home/fox/prog/workspace/itrade/itrade_wxgraph.py	(revision 640)
++++ /home/fox/prog/workspace/itrade/itrade_wxgraph.py	(working copy)
+@@ -359,17 +359,17 @@
+                            message('tb_config'), message('tb_config'))
+         self.AddSimpleTool(self._NTB2_SAVE, wx.ArtProvider.GetBitmap(wx.ART_FILE_SAVE, wx.ART_TOOLBAR),
+                            message('tb_save_file'), message('tb_save_file'))
+-        self.AddSimpleTool(self._NTB2_SETUP, wx.Bitmap('res/printsetup.png'), message('tb_setup'), message('tb_setup'))
+-        self.AddSimpleTool(self._NTB2_PRINT, wx.Bitmap('res/print.png'), message('tb_print'), message('tb_print'))
+-        self.AddSimpleTool(self._NTB2_PREVIEW, wx.Bitmap('res/printpreview.png'), message('tb_preview'), message('tb_preview'))
++        self.AddSimpleTool(self._NTB2_SETUP, wx.Bitmap(os.path.join(itrade_config.dirRes, 'printsetup.png')), message('tb_setup'), message('tb_setup'))
++        self.AddSimpleTool(self._NTB2_PRINT, wx.Bitmap(os.path.join(itrade_config.dirRes, 'print.png')), message('tb_print'), message('tb_print'))
++        self.AddSimpleTool(self._NTB2_PREVIEW, wx.Bitmap(os.path.join(itrade_config.dirRes, 'printpreview.png')), message('tb_preview'), message('tb_preview'))
+         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+ 
+-        self.AddRadioLabelTool(self._NTB2_TOOL_IND, '', wx.Bitmap('res/toolind.png'), wx.NullBitmap, message('tb_tool_ind'), message('tb_tool_ind'))
+-        self.AddRadioLabelTool(self._NTB2_TOOL_HLINE, '', wx.Bitmap('res/toolhline.png'), wx.NullBitmap, message('tb_tool_hline'), message('tb_tool_hline'))
+-        self.AddRadioLabelTool(self._NTB2_TOOL_VLINE, '', wx.Bitmap('res/toolvline.png'), wx.NullBitmap, message('tb_tool_vline'), message('tb_tool_vline'))
+-        self.AddRadioLabelTool(self._NTB2_TOOL_OLINE, '', wx.Bitmap('res/toololine.png'), wx.NullBitmap, message('tb_tool_oline'), message('tb_tool_oline'))
+-        self.AddRadioLabelTool(self._NTB2_TOOL_FIBO, '', wx.Bitmap('res/toolfibo.png'), wx.NullBitmap, message('tb_tool_fibo'), message('tb_tool_fibo'))
+-        self.AddRadioLabelTool(self._NTB2_TOOL_TRASH, '', wx.Bitmap('res/tooltrash.png'), wx.NullBitmap, message('tb_tool_trash'), message('tb_tool_trash'))
++        self.AddRadioLabelTool(self._NTB2_TOOL_IND, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'toolind.png')), wx.NullBitmap, message('tb_tool_ind'), message('tb_tool_ind'))
++        self.AddRadioLabelTool(self._NTB2_TOOL_HLINE, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'toolhline.png')), wx.NullBitmap, message('tb_tool_hline'), message('tb_tool_hline'))
++        self.AddRadioLabelTool(self._NTB2_TOOL_VLINE, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'toolvline.png')), wx.NullBitmap, message('tb_tool_vline'), message('tb_tool_vline'))
++        self.AddRadioLabelTool(self._NTB2_TOOL_OLINE, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'toololine.png')), wx.NullBitmap, message('tb_tool_oline'), message('tb_tool_oline'))
++        self.AddRadioLabelTool(self._NTB2_TOOL_FIBO, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'toolfibo.png')), wx.NullBitmap, message('tb_tool_fibo'), message('tb_tool_fibo'))
++        self.AddRadioLabelTool(self._NTB2_TOOL_TRASH, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'tooltrash.png')), wx.NullBitmap, message('tb_tool_trash'), message('tb_tool_trash'))
+ 
+         wx.EVT_TOOL(self, self._NTB2_HOME, self.home)
+         wx.EVT_TOOL(self, self._NTB2_PANLEFT, self.panLeft)
+Index: /home/fox/prog/workspace/itrade/itrade_wxabout.py
+===================================================================
+--- /home/fox/prog/workspace/itrade/itrade_wxabout.py	(revision 640)
++++ /home/fox/prog/workspace/itrade/itrade_wxabout.py	(working copy)
+@@ -242,7 +242,7 @@
+ 
+     def setPage(self):
+         self.m_html.SetPage(about_html % (
+-              'res//itrade.png', itrade_config.softwareVersionName, itrade_config.softwareStatus, itrade_config.softwareVersion,
++              os.path.join(itrade_config.resDir, 'itrade.png'), itrade_config.softwareVersionName, itrade_config.softwareStatus, itrade_config.softwareVersion,
+               '', about_text % (itrade_config.softwareWebsite, itrade_config.softwareCopyright,itrade_config.softwareLicense)
+               ))
+ 
+Index: /home/fox/prog/workspace/itrade/itrade_wxoperations.py
+===================================================================
+--- /home/fox/prog/workspace/itrade/itrade_wxoperations.py	(revision 640)
++++ /home/fox/prog/workspace/itrade/itrade_wxoperations.py	(working copy)
+@@ -249,7 +249,7 @@
+         self.wxNameLabel = wx.StaticText(btnpane, -1, message('portfolio_description'))
+         self.wxNameLabel.SetSizerProps(valign='center')
+ 
+-        bmp = wx.Bitmap('res/quotes.png')
++        bmp = wx.Bitmap(os.path.join(itrade_config.dirRes, 'quotes.png'))
+         self.wxNameButton = wx.BitmapButton(btnpane, -1, bmp, size=wx.Size(bmp.GetWidth()+5, bmp.GetHeight()+5))
+         wx.EVT_BUTTON(self, self.wxNameButton.GetId(), self.OnQuote)
+ 
+@@ -491,24 +491,24 @@
+                            message('main_close'), message('main_desc_close'))
+         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+ 
+-        self.AddRadioLabelTool(self._NTB2_DISPALL,'',wx.Bitmap('res/dispall.png'),wx.NullBitmap,message('portfolio_dispall'),message('portfolio_desc_dispall'))
+-        self.AddRadioLabelTool(self._NTB2_DISPQUOTES,'',wx.Bitmap('res/dispquote.png'),wx.NullBitmap,message('portfolio_dispquotes'),message('portfolio_desc_dispquotes'))
+-        self.AddRadioLabelTool(self._NTB2_DISPCASH,'',wx.Bitmap('res/dispcash.png'),wx.NullBitmap,message('portfolio_dispcash'),message('portfolio_desc_dispcash'))
+-        self.AddRadioLabelTool(self._NTB2_DISPPVAL,'',wx.Bitmap('res/dispvalue.png'),wx.NullBitmap,message('portfolio_dispvalues'),message('portfolio_desc_dispvalues'))
+-        self.AddRadioLabelTool(self._NTB2_DISPSRD,'',wx.Bitmap('res/dispsrd.png'),wx.NullBitmap,message('portfolio_dispsrd'),message('portfolio_desc_dispsrd'))
++        self.AddRadioLabelTool(self._NTB2_DISPALL,'',wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispall.png')),wx.NullBitmap,message('portfolio_dispall'),message('portfolio_desc_dispall'))
++        self.AddRadioLabelTool(self._NTB2_DISPQUOTES,'',wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispquote.png')),wx.NullBitmap,message('portfolio_dispquotes'),message('portfolio_desc_dispquotes'))
++        self.AddRadioLabelTool(self._NTB2_DISPCASH,'',wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispcash.png')),wx.NullBitmap,message('portfolio_dispcash'),message('portfolio_desc_dispcash'))
++        self.AddRadioLabelTool(self._NTB2_DISPPVAL,'',wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispvalue.png')),wx.NullBitmap,message('portfolio_dispvalues'),message('portfolio_desc_dispvalues'))
++        self.AddRadioLabelTool(self._NTB2_DISPSRD,'',wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispsrd.png')),wx.NullBitmap,message('portfolio_dispsrd'),message('portfolio_desc_dispsrd'))
+ 
+         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+ 
+-        self.AddSimpleTool(self._NTB2_ADD,wx.Bitmap('res/add.png'),message('portfolio_opadd'),message('portfolio_desc_opadd'))
+-        self.AddSimpleTool(self._NTB2_MODIFY,wx.Bitmap('res/modify.png'),message('portfolio_opmodify'),message('portfolio_desc_opmodify'))
+-        self.AddSimpleTool(self._NTB2_DELETE,wx.Bitmap('res/delete.png'),message('portfolio_opdelete'),message('portfolio_desc_opdelete'))
++        self.AddSimpleTool(self._NTB2_ADD,wx.Bitmap(os.path.join(itrade_config.dirRes, 'add.png')),message('portfolio_opadd'),message('portfolio_desc_opadd'))
++        self.AddSimpleTool(self._NTB2_MODIFY,wx.Bitmap(os.path.join(itrade_config.dirRes, 'modify.png')),message('portfolio_opmodify'),message('portfolio_desc_opmodify'))
++        self.AddSimpleTool(self._NTB2_DELETE,wx.Bitmap(os.path.join(itrade_config.dirRes, 'delete.png')),message('portfolio_opdelete'),message('portfolio_desc_opdelete'))
+ 
+         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+ 
+-        self.AddRadioLabelTool(self._NTB2_30DAYS,'',wx.Bitmap('res/filter30.png'),wx.NullBitmap,message('portfolio_per30days'),message('portfolio_desc_per30days'))
+-        self.AddRadioLabelTool(self._NTB2_90DAYS,'',wx.Bitmap('res/filter90.png'),wx.NullBitmap,message('portfolio_per90days'),message('portfolio_desc_per90days'))
+-        self.AddRadioLabelTool(self._NTB2_CURRENTYEAR,'',wx.Bitmap('res/filter.png'),wx.NullBitmap,message('portfolio_peryear'),message('portfolio_desc_peryear'))
+-        self.AddRadioLabelTool(self._NTB2_ALLYEARS,'',wx.Bitmap('res/nofilter.png'),wx.NullBitmap,message('portfolio_perall'),message('portfolio_desc_perall'))
++        self.AddRadioLabelTool(self._NTB2_30DAYS,'',wx.Bitmap(os.path.join(itrade_config.dirRes, 'filter30.png')),wx.NullBitmap,message('portfolio_per30days'),message('portfolio_desc_per30days'))
++        self.AddRadioLabelTool(self._NTB2_90DAYS,'',wx.Bitmap(os.path.join(itrade_config.dirRes, 'filter90.png')),wx.NullBitmap,message('portfolio_per90days'),message('portfolio_desc_per90days'))
++        self.AddRadioLabelTool(self._NTB2_CURRENTYEAR,'',wx.Bitmap(os.path.join(itrade_config.dirRes, 'filter.png')),wx.NullBitmap,message('portfolio_peryear'),message('portfolio_desc_peryear'))
++        self.AddRadioLabelTool(self._NTB2_ALLYEARS,'',wx.Bitmap(os.path.join(itrade_config.dirRes, 'nofilter.png')),wx.NullBitmap,message('portfolio_perall'),message('portfolio_desc_perall'))
+ 
+         wx.EVT_TOOL(self, self._NTB2_EXIT, self.onExit)
+ 
+@@ -631,13 +631,13 @@
+ 
+         # create an image list
+         self.m_imagelist = wx.ImageList(16,16)
+-        self.idx_plus = self.m_imagelist.Add(wx.Bitmap('res/plus.png'))
+-        self.idx_minus = self.m_imagelist.Add(wx.Bitmap('res/minus.png'))
+-        self.idx_neutral = self.m_imagelist.Add(wx.Bitmap('res/neutral.png'))
+-        self.idx_unknown = self.m_imagelist.Add(wx.Bitmap('res/unknown.png'))
++        self.idx_plus = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'plus.png')))
++        self.idx_minus = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'minus.png')))
++        self.idx_neutral = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'neutral.png')))
++        self.idx_unknown = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'unknown.png')))
+ 
+-        self.sm_up = self.m_imagelist.Add(wx.Bitmap('res/sm_up.png'))
+-        self.sm_dn = self.m_imagelist.Add(wx.Bitmap('res/sm_down.png'))
++        self.sm_up = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'sm_up.png')))
++        self.sm_dn = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'sm_down.png')))
+ 
+         #
+         tID = wx.NewId()
+Index: /home/fox/prog/workspace/itrade/itrade_wxmain.py
+===================================================================
+--- /home/fox/prog/workspace/itrade/itrade_wxmain.py	(revision 640)
++++ /home/fox/prog/workspace/itrade/itrade_wxmain.py	(working copy)
+@@ -61,7 +61,7 @@
+ 
+ class iTrade_SplashScreen(wx.SplashScreen):
+     def __init__(self,app):
+-        bmp = wx.Image("res/itrade.jpg").ConvertToBitmap()
++        bmp = wx.Image(os.path.join(itrade_config.dirRes, "itrade.jpg")).ConvertToBitmap()
+         wx.SplashScreen.__init__(self,bmp,wx.SPLASH_CENTRE_ON_SCREEN,0,None,-1)
+         wx.EVT_CLOSE(self,self.OnClose)
+ 
+Index: /home/fox/prog/workspace/itrade/itrade_wxpivots.py
+===================================================================
+--- /home/fox/prog/workspace/itrade/itrade_wxpivots.py	(revision 640)
++++ /home/fox/prog/workspace/itrade/itrade_wxpivots.py	(working copy)
+@@ -73,7 +73,7 @@
+         # r2
+         box = wx.BoxSizer(wx.HORIZONTAL)
+ 
+-        bmp = wx.Bitmap('res/resist2.png')
++        bmp = wx.Bitmap(os.path.join(itrade_config.dirRes, 'resist2.png'))
+         bbmp = wx.StaticBitmap(self, -1, bmp, size=wx.Size(bmp.GetWidth()+5, bmp.GetHeight()+5))
+         box.Add(bbmp, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+ 
+Index: /home/fox/prog/workspace/itrade/itrade_wxlistquote.py
+===================================================================
+--- /home/fox/prog/workspace/itrade/itrade_wxlistquote.py	(revision 640)
++++ /home/fox/prog/workspace/itrade/itrade_wxlistquote.py	(working copy)
+@@ -366,10 +366,10 @@
+ 
+         tID = wx.NewId()
+         self.m_imagelist = wx.ImageList(16,16)
+-        self.sm_q = self.m_imagelist.Add(wx.Bitmap('res/quote.png'))
+-        self.sm_i = self.m_imagelist.Add(wx.Bitmap('res/invalid.png'))
+-        self.sm_up = self.m_imagelist.Add(wx.Bitmap('res/sm_up.png'))
+-        self.sm_dn = self.m_imagelist.Add(wx.Bitmap('res/sm_down.png'))
++        self.sm_q = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'quote.png')))
++        self.sm_i = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'invalid.png')))
++        self.sm_up = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'sm_up.png')))
++        self.sm_dn = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'sm_down.png')))
+ 
+         self.m_list = iTradeSelectorListCtrl(self, tID,
+                                  style = wx.LC_REPORT | wx.SUNKEN_BORDER,
+Index: /home/fox/prog/workspace/itrade/itrade_wxportfolio.py
+===================================================================
+--- /home/fox/prog/workspace/itrade/itrade_wxportfolio.py	(revision 640)
++++ /home/fox/prog/workspace/itrade/itrade_wxportfolio.py	(working copy)
+@@ -99,10 +99,10 @@
+         # Row 2 :
+         tID = wx.NewId()
+         self.m_imagelist = wx.ImageList(16,16)
+-        self.sm_q = self.m_imagelist.Add(wx.Bitmap('res/quote.png'))
+-        self.sm_i = self.m_imagelist.Add(wx.Bitmap('res/invalid.png'))
+-        self.sm_up = self.m_imagelist.Add(wx.Bitmap('res/sm_up.png'))
+-        self.sm_dn = self.m_imagelist.Add(wx.Bitmap('res/sm_down.png'))
++        self.sm_q = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'quote.png')))
++        self.sm_i = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'invalid.png')))
++        self.sm_up = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'sm_up.png')))
++        self.sm_dn = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'sm_down.png')))
+ 
+         self.m_list = iTradeSelectorListCtrl(container, tID,
+                                  style = wx.LC_REPORT | wx.SUNKEN_BORDER,
