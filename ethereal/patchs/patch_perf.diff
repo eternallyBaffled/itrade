@@ -1,0 +1,18 @@
+Index: /home/fox/prog/workspace/itrade/itrade_quotes.py
+===================================================================
+--- /home/fox/prog/workspace/itrade/itrade_quotes.py	(revision 660)
++++ /home/fox/prog/workspace/itrade/itrade_quotes.py	(working copy)
+@@ -1251,11 +1251,8 @@
+ 
+     def list(self):
+         items = self.m_quotes.values()
+-        nlist = [(x.name(), x) for x in items]
+-        nlist.sort()
+-        nlist = [val for (key, val) in nlist]
+-        #print nlist
+-        return nlist
++        items.sort(key=Quote.name)
++        return items
+ 
+     # ---[ Properties ] ---
+ 
