@@ -49,7 +49,7 @@ from itrade_import import *
 from itrade_defs import *
 from itrade_ext import *
 from itrade_datation import *
-from itrade_market import market2currency,compute_country,isin2market,market2place
+from itrade_market import market2currency,compute_country,isin2market,market2place,list_of_markets
 import itrade_currency
 
 # ============================================================================
@@ -1371,9 +1371,10 @@ class Quotes(object):
 
     def load(self,fn=None,fs=None):
         # open and read the file to load these quotes information
-        infile = itrade_csv.read(fn,os.path.join(itrade_config.dirSymbData,'quotes.txt'))
-        if infile:
-            self._addLines(infile,list=QLIST_SYSTEM,debug=False)
+        for eachMarket in list_of_markets():
+            infile = itrade_csv.read(fn,os.path.join(itrade_config.dirSymbData,'quotes.%s.txt' % eachMarket))
+            if infile:
+                self._addLines(infile,list=QLIST_SYSTEM,debug=False)
 
         infile = itrade_csv.read(fn,os.path.join(itrade_config.dirSymbData,'indices.txt'))
         if infile:
@@ -1390,14 +1391,16 @@ class Quotes(object):
 
     def saveListOfQuotes(self,fn=None):
         # System list
-        props = []
-        for eachQuote in self.list():
-            if eachQuote.list()==QLIST_SYSTEM:
-                props.append(eachQuote.__repr__())
-        #
-        # open and write the file with these quotes information
-        itrade_csv.write(fn,os.path.join(itrade_config.dirSymbData,'quotes.txt'),props)
-        print 'System List of symbols saved.'
+
+        for eachMarket in list_of_markets():
+            props = []
+            for eachQuote in self.list():
+                if eachQuote.list()==QLIST_SYSTEM and eachQuote.market()==eachMarket:
+                    props.append(eachQuote.__repr__())
+            #
+            # open and write the file with these quotes information
+            itrade_csv.write(fn,os.path.join(itrade_config.dirSymbData,'quotes.%s.txt' % eachMarket),props)
+            print 'System List of symbols %s saved.' % eachMarket
 
         # User list
         props = []
