@@ -27,10 +27,12 @@ Version 0.4.6 (Nausicaa2)
  + Australian Market
  + Extensions & Plugins basic Mechanism
  + Matrix use the Notebook display
- + Fortuneo Live broker
  + Basic Stops Management
+ + Canadian Markets (yahoo connector)
+ + Italian Market (yahoo connector)
  ~ Printing module
  ~ Boursorama Live broker ?
+ ~ Fortuneo Live broker
  ~ Extensible Indicators back-end
  ~ Nordic Market ?
  ~ better Linux support
