@@ -46,6 +46,7 @@ from datetime import *
 from itrade_logging import *
 from itrade_quotes import *
 from itrade_datation import Datation,dd_mmm_yy2yyyymmdd,re_p3_1
+from itrade_defs import *
 from itrade_ext import *
 from itrade_market import yahooTicker
 

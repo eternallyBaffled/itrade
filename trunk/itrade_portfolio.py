@@ -49,6 +49,7 @@ import itrade_csv
 from itrade_currency import currency2symbol,currencies,convert
 from itrade_vat import country2vat
 from itrade_login import getLoginConnector
+from itrade_market import getDefaultIndice
 
 # ============================================================================
 # Operation
@@ -552,7 +553,7 @@ class Operations(object):
 
 class Portfolio(object):
 
-    def __init__(self,filename='default',name='<Portfolio>',accountref='000000000',market='EURONEXT',currency='EUR',vat=1.0,term=3,risk=5):
+    def __init__(self,filename='default',name='<Portfolio>',accountref='000000000',market='EURONEXT',currency='EUR',vat=1.0,term=3,risk=5,indice='FR0003500008'):
         debug('Portfolio::__init__ fn=%s name=%s account=%s' % (filename,name,accountref))
 
         self.m_filename = filename
@@ -563,6 +564,7 @@ class Portfolio(object):
         self.m_vat = vat
         self.m_term = term
         self.m_risk = risk
+        self.m_indice = indice
         self._init_()
 
     # portfolio name
@@ -576,6 +578,10 @@ class Portfolio(object):
     # currency code (i.e. EUR)
     def currency(self):
         return self.m_currency
+
+    # main indice (CAC40 : FR0003500008)
+    def indice(self):
+        return self.m_indice
 
     # vat (i.e. 1.196 for France)
     def vat(self):
@@ -594,7 +600,7 @@ class Portfolio(object):
         return currency2symbol(self.m_currency)
 
     def __repr__(self):
-        return '%s;%s;%s;%s;%s;%f;%d;%d' % (self.m_filename,self.m_name,self.m_accountref,self.m_market,self.m_currency,self.m_vat,self.m_term,self.m_risk)
+        return '%s;%s;%s;%s;%s;%f;%d;%d;%s' % (self.m_filename,self.m_name,self.m_accountref,self.m_market,self.m_currency,self.m_vat,self.m_term,self.m_risk,self.m_indice)
 
     def filenamepath(self,portfn,fn):
         return os.path.join(itrade_config.dirUserData,'%s.%s.txt' % (portfn,fn))
@@ -1213,12 +1219,15 @@ class Portfolios(object):
             eachPortfolio.reinit()
 
     def list(self):
+        #items = self.m_portfolios.values()
+        #nlist = [(x.filename(), x) for x in items]
+        #nlist.sort()
+        #nlist = [val for (key, val) in nlist]
+        ##print nlist
+        #return nlist
         items = self.m_portfolios.values()
-        nlist = [(x.filename(), x) for x in items]
-        nlist.sort()
-        nlist = [val for (key, val) in nlist]
-        #print nlist
-        return nlist
+        items.sort(key=Portfolio.filename)
+        return items
 
     def existPortfolio(self,fn):
         return self.m_portfolios.has_key(fn)
@@ -1232,11 +1241,11 @@ class Portfolios(object):
             del self.m_portfolios[filename]
             return True
 
-    def addPortfolio(self,filename,name,accountref,market,currency,vat,term,risk):
+    def addPortfolio(self,filename,name,accountref,market,currency,vat,term,risk,indice):
         if self.m_portfolios.has_key(filename):
             return None
         else:
-            self.m_portfolios[filename] = Portfolio(filename,name,accountref,market,currency,vat,term,risk)
+            self.m_portfolios[filename] = Portfolio(filename,name,accountref,market,currency,vat,term,risk,indice)
             debug('Portfolios::addPortfolio(): %s' % self.m_portfolios[filename])
             return self.m_portfolios[filename]
 
@@ -1289,9 +1298,13 @@ class Portfolios(object):
                         else:
                             term = 3
                             risk = 5
+                        if len(item)>=9:
+                            indice = item[8]
+                        else:
+                            indice = getDefaultIndice(item[3])
                     else:
                         currency = 'EUR'
-                    self.addPortfolio(item[0],item[1],item[2],item[3],currency,vat,term,risk)
+                    self.addPortfolio(item[0],item[1],item[2],item[3],currency,vat,term,risk,indice)
 
     def save(self,fn=None):
         debug('Portfolios:save()')
@@ -1329,7 +1342,7 @@ def loadPortfolio(fn=None):
     if p==None:
         # portfolio does not exist !
         print "Portfolio '%s' does not exist ... create it" % fn
-        p = portfolios.addPortfolio(fn,fn,'noref','EURONEXT','EUR',country2vat('fr'), 3, 5)
+        p = portfolios.addPortfolio(fn,fn,'noref','EURONEXT','EUR',country2vat('fr'), 3, 5,getDefaultIndice('EURONEXT'))
         portfolios.save()
 
     # load properties

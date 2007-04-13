@@ -57,6 +57,7 @@ import datetime
 import itrade_config
 from itrade_logging import *
 from itrade_quotes import *
+from itrade_defs import *
 from itrade_ext import *
 
 import blowfish
