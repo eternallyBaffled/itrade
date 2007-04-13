@@ -48,6 +48,7 @@ import string
 import itrade_config
 from itrade_logging import *
 from itrade_isin import buildISIN,extractCUSIP,filterName
+from itrade_defs import *
 from itrade_ext import *
 
 # ============================================================================

@@ -46,6 +46,7 @@ from itrade_local import message,getGroupChar
 import itrade_csv
 import itrade_trades
 from itrade_import import *
+from itrade_defs import *
 from itrade_ext import *
 from itrade_datation import *
 from itrade_market import market2currency,compute_country,isin2market,market2place

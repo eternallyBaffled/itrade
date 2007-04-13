@@ -312,6 +312,13 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
         debug("OnPopup_Sell")
         self.m_parent.OnSellQuote(event)
 
+    # ---[ Indicator ] ---------------------------------------------
+
+    def createIndicator(self):
+        self.m_indicator = quotes.lookupISIN(self.m_portfolio.indice())[0]
+        if self.m_indicator:
+            self.registerLive(self.m_indicator,itrade_config.refreshView,self.m_id)
+
     # ---[ Populate view ] -----------------------------------------
 
     def populate(self,bDuringInit):
@@ -324,6 +331,9 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
 
         # start a new population
         self.populateList()
+
+        # start indicator management
+        self.createIndicator()
 
         # start live
         if not bDuringInit and itrade_config.bAutoRefreshMatrixView:
@@ -442,9 +452,9 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
                         self.OnLiveQuote(evt.quote,xline)
                         self.m_parent.refreshConnexion()
                     else:
-                        debug('%s: %s - bad : other view' % (evt.quote.key(),evt.param))
+                        info('%s: %s - bad : other view' % (evt.quote.key(),evt.param))
         else:
-            debug('%s: %s - bad : not running' % (evt.quote.key(),evt.param))
+            info('%s: %s - bad : not running' % (evt.quote.key(),evt.param))
 
     # refresh list
     def OnRefresh(self,e):

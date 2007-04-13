@@ -48,6 +48,7 @@ from datetime import *
 from itrade_logging import *
 from itrade_quotes import *
 from itrade_datation import Datation,jjmmaa2yyyymmdd
+from itrade_defs import *
 from itrade_ext import *
 from itrade_market import euronext_place2mep,euronext_InstrumentId
 
@@ -179,11 +180,11 @@ class LiveUpdate_Euronext(object):
         query = string.join(query, '&')
         url = self.m_url + '?' + query
 
-        debug("LiveUpdate_Euronext:getdata: url=%s ",url)
+        info("LiveUpdate_Euronext:getdata: url=%s ",url)
         try:
             f = urllib.urlopen(url)
         except:
-            debug('LiveUpdate_Euronext:unable to connect :-(')
+            info('LiveUpdate_Euronext:unable to connect :-(')
             return None
 
         # pull data
@@ -191,52 +192,115 @@ class LiveUpdate_Euronext(object):
         lines = self.splitLines(buf)
         data = ''
 
+        indice = {}
+        """
+        "Instrument's name";
+        "ISIN";
+        "Euronext code";
+        "MEP";
+        "Symbol";
+        "ICB Sector (Level 4)";
+        "Trading currency";
+        "Last";
+        "Volume";
+        "D/D-1 (%)";
+        "Date - time (CET)";
+        "Turnover";
+        "Total number of shares";
+        "Capitalisation";
+        "Trading mode";
+        "Day First";
+        "Day High";
+        "Day High / Date - time (CET)";
+        "Day Low";
+        "Day Low / Date - time (CET)";
+        "31-12/Change (%)";
+        "31-12/High";
+        "31-12/High/Date";
+        "31-12/Low";
+        "31-12/Low/Date";
+        "52 weeks/Change (%)";
+        "52 weeks/High";
+        "52 weeks/High/Date";
+        "52 weeks/Low";
+        "52 weeks/Low/Date";
+        "Suspended";
+        "Suspended / Date - time (CET)";
+        "Reserved";
+        "Reserved / Date - time (CET)"
+        """
+
         for eachLine in lines:
             sdata = string.split (eachLine, '\t')
-            #print sdata,len(sdata)
-            if len(sdata)==34:
-                if (sdata[1]<>"ISIN") and (sdata[10]!='-'):
-                    c_datetime = datetime.today()
-                    c_date = "%04d%02d%02d" % (c_datetime.year,c_datetime.month,c_datetime.day)
-                    #print 'Today is :', c_date
+            print sdata,len(sdata)
 
-                    sdate,sclock = self.euronextDate(sdata[10])
+            if len(sdata)>2:
+                if not indice.has_key("ISIN"):
+                    i = 0
+                    for ind in sdata:
+                        indice[ind] = i
+                        i = i + 1
 
-                    # be sure not an oldest day !
-                    if (quote.list() == QLIST_INDICES or sdata[8]<>'-'):
+                    iName = indice["Instrument's name"]
+                    iISIN = indice["ISIN"]
+                    iDate = indice["Date - time (CET)"]
+                    iOpen = indice["Day First"]
+                    iLast = indice["Last"]
+                    iHigh = indice["Day High"]
+                    iLow = indice["Day Low"]
 
-                        if (c_date==sdate):
-                            key = quote.key()
-                            self.m_dcmpd[key] = sdate
-                            self.m_clock[key] = self.convertClock(sclock)
+                    if indice.has_key("Volume"):
+                        iVolume = indice["Volume"]
+                    else:
+                        iVolume = -1
 
-                            # __x
-                            self.m_lastclock = sclock
-
-                        #
-                        open = self.parseFValue(sdata[15])
-                        high = self.parseFValue(sdata[16])
-                        low = self.parseFValue(sdata[18])
-                        value = self.parseFValue(sdata[7])
-                        volume = self.parseLValue(sdata[8])
-
-                        # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME
-                        data = (
-                          quote.key(),
-                          sdate,
-                          open,
-                          high,
-                          low,
-                          value,
-                          volume
-                        )
-                        data = map(lambda (val): '%s' % str(val), data)
-                        data = string.join(data, ';')
-
-                        return data
                 else:
-                    #print sdata
-                    pass
+                    if (sdata[iISIN]<>"ISIN") and (sdata[iDate]!='-'):
+                        c_datetime = datetime.today()
+                        c_date = "%04d%02d%02d" % (c_datetime.year,c_datetime.month,c_datetime.day)
+                        #print 'Today is :', c_date
+
+                        sdate,sclock = self.euronextDate(sdata[iDate])
+
+                        # be sure not an oldest day !
+                        if (quote.list() == QLIST_INDICES or sdata[iVolume]<>'-'):
+
+                            if (c_date==sdate):
+                                key = quote.key()
+                                self.m_dcmpd[key] = sdate
+                                self.m_clock[key] = self.convertClock(sclock)
+
+                                # __x
+                                self.m_lastclock = sclock
+
+                            #
+                            open = self.parseFValue(sdata[iOpen])
+                            high = self.parseFValue(sdata[iHigh])
+                            low = self.parseFValue(sdata[iLow])
+                            value = self.parseFValue(sdata[iLast])
+
+                            if iVolume!=-1:
+                                volume = self.parseLValue(sdata[iVolume])
+                            else:
+                                volume = 0
+
+                            # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME
+                            data = (
+                              quote.key(),
+                              sdate,
+                              open,
+                              high,
+                              low,
+                              value,
+                              volume
+                            )
+                            data = map(lambda (val): '%s' % str(val), data)
+                            data = string.join(data, ';')
+
+                            return data
+                    else:
+                        #print sdata
+                        pass
 
         return None
 
@@ -304,6 +368,8 @@ except NameError:
     gLiveAlternext = LiveUpdate_Euronext('alternext')
 
 registerLiveConnector('EURONEXT','PAR',QLIST_ANY,QTAG_DIFFERED,gLiveEuronext,bDefault=False)
+registerLiveConnector('EURONEXT','PAR',QLIST_INDICES,QTAG_DIFFERED,gLiveEuronext,bDefault=True)
+
 registerLiveConnector('EURONEXT','BRU',QLIST_ANY,QTAG_DIFFERED,gLiveEuronext,bDefault=True)
 registerLiveConnector('EURONEXT','AMS',QLIST_ANY,QTAG_DIFFERED,gLiveEuronext,bDefault=True)
 registerLiveConnector('EURONEXT','LIS',QLIST_ANY,QTAG_DIFFERED,gLiveEuronext,bDefault=True)

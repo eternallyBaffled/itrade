@@ -46,6 +46,7 @@ import urllib
 from itrade_logging import *
 from itrade_local import message
 import itrade_csv
+from itrade_defs import *
 
 # ============================================================================
 # ISIN -> MARKET
@@ -63,6 +64,7 @@ isin_market = {
     'au': 'ASX',
     'ca': 'TSE',
     'ch': 'SWISS EXCHANGE',
+    'it': 'MILAN EXCHANGE',
     }
 
 def isin2market(isin):
@@ -76,6 +78,34 @@ def isin2market(isin):
     else:
         # default to EURONEXT !
         return 'EURONEXT'
+
+# ============================================================================
+# MARKET -> Default INDICE
+# ============================================================================
+
+market_indice = {
+    'EURONEXT': 'FR0003502079',
+    'ALTERNEXT': 'QS0011040902',
+    'PARIS MARCHE LIBRE': 'FR0003500008',
+    'BRUXELLES MARCHE LIBRE': 'BE0389555039',
+    'NASDAQ': 'US6289081050',
+    'NYSE': 'US2605661048',
+    'AMEX': 'US6488151084',
+    'OTCBB': 'US6488151084',
+    'LSE': 'US2605661048',
+    'ASX': 'US2605661048',
+    'TSE': 'US2605661048',
+    'TSX': 'US2605661048',
+    'MILAN EXCHANGE': 'IT0003137749',
+    'SWISS EXCHANGE': 'CH0009980894',
+}
+
+def getDefaultIndice(market):
+    if market_indice.has_key(market):
+        return market_indice[market]
+    else:
+        # default to CAC
+        return 'FR0003500008'
 
 # ============================================================================
 # MARKET -> CURRENCY
@@ -298,7 +328,10 @@ def euronext_place2mep(place):
 
 def euronext_InstrumentId(quote):
     #
-    urlid = 'http://www.euronext.com/quicksearch/resultquicksearch-2986-EN.html?matchpattern=%s&fromsearchbox=true&path=/quicksearch&searchTarget=quote'
+    if quote.list()==QLIST_INDICES:
+        urlid = 'http://www.euronext.com/quicksearch/resultquicksearchindices-7000-EN.html?matchpattern=%s&fromsearchbox=true&path=/quicksearch&searchTarget=quote'
+    else:
+        urlid = 'http://www.euronext.com/quicksearch/resultquicksearch-2986-EN.html?matchpattern=%s&fromsearchbox=true&path=/quicksearch&searchTarget=quote'
 
     # get instrument ID
     IdInstrument = quote.get_pluginID()

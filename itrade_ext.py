@@ -47,33 +47,13 @@ from itrade_logging import *
 import itrade_config
 from itrade_market import market2place
 from itrade_login import loggedLoginConnector
+from itrade_defs import *
 
 # ============================================================================
 # globals
 # ============================================================================
 
 loadedModules = {}  # keys are module names, values are modules ref
-
-# ============================================================================
-# LIST
-# ============================================================================
-
-QLIST_ALL      = 0
-QLIST_ANY      = 0
-QLIST_SYSTEM   = 1
-QLIST_USER     = 2
-QLIST_INDICES  = 3
-QLIST_TRACKERS = 4
-
-# ============================================================================
-# TAG : Kind Of Service
-# ============================================================================
-
-QTAG_ANY = 0
-QTAG_LIVE = 1
-QTAG_DIFFERED = 2
-QTAG_IMPORT = 3
-QTAG_LIST = 4
 
 # ============================================================================
 # ConnectorRegistry

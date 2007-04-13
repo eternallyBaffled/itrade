@@ -51,6 +51,7 @@ from itrade_local import message,gMessage,getLang
 from itrade_portfolio import loadPortfolio,OPERATION_BUY,OPERATION_SELL
 from itrade_matrix import *
 from itrade_quotes import *
+from itrade_defs import *
 from itrade_ext import *
 from itrade_login import *
 
@@ -271,12 +272,15 @@ class iTradeMainToolbar(wx.ToolBar):
         self.m_indicator.ClearBackground()
         self.m_indicator.SetLabel(label)
 
-    def SetIndicator(self,market,clock):
+    def SetIndicator(self,market,connector,portfolio):
+        indice = portfolio.indice()
+        clock = connector.currentClock()
         if clock=="::":
             label = market + ": " + message('indicator_disconnected')
             self.m_indicator.SetBackgroundColour(cDISCONNECTED)
         else:
-            label = market + ": " + clock
+            label = market + "- " + clock
+            label = label + " - " + indice
             if label==self.m_indicator.GetLabel():
                 self.m_indicator.SetBackgroundColour(wx.NullColour)
             else:
@@ -1074,7 +1078,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
     def refreshConnexion(self):
         #if itrade_config.verbose:
         #    print 'refreshConnexion (%s-%s):' % (self.m_market,self.m_connector.name()),self.m_connector.currentClock()
-        self.m_toolbar.SetIndicator(self.m_market,self.m_connector.currentClock())
+        self.m_toolbar.SetIndicator(self.m_market,self.m_connector,self.m_portfolio)
 
     # ---[ Quotes ] -----------------------------------------
 
