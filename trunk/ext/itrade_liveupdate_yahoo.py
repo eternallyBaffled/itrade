@@ -182,9 +182,14 @@ class LiveUpdate_yahoo(object):
             return None
 
         # date
-        date = self.yahooDate(sdata[2])
-        self.m_dcmpd[key] = sdata
-        self.m_clock[key] = self.convertClock(sclock,date)
+        try:
+            date = self.yahooDate(sdata[2])
+            self.m_dcmpd[key] = sdata
+            self.m_clock[key] = self.convertClock(sclock,date)
+        except ValueError:
+            if itrade_config.verbose:
+                info('invalid datation for %s : %s %s' % (quote.ticker(),sclock,sdata[2]))
+            return None
 
         # decode data
         value = string.atof (sdata[1])
