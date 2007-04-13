@@ -219,7 +219,10 @@ class LiveUpdate_yahoo(object):
             debug('volume : invalid negative or zero value %d' % volume)
             return None
 
-        # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME
+        percent = (1.0 - ((value - change) / value))*100.0
+        #print 'key:',key,'percent = ', percent
+
+        # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME;PERCENT
         data = (
           key,
           date,
@@ -227,7 +230,8 @@ class LiveUpdate_yahoo(object):
           high,
           low,
           value,
-          volume
+          volume,
+          percent
         )
         data = map(lambda (val): '%s' % str(val), data)
         data = string.join(data, ';')

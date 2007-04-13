@@ -377,7 +377,8 @@ def euronext_InstrumentId(quote):
             print "euronext_InstrumentId:can't get IdInstrument for %s " % quote.isin()
             return None
         else:
-            print "euronext_InstrumentId: IdInstrument for %s is %s" % (quote.isin(),IdInstrument)
+            if itrade_config.verbose:
+                print "euronext_InstrumentId: IdInstrument for %s is %s" % (quote.isin(),IdInstrument)
             quote.set_pluginID(IdInstrument)
             try:
                 f = open(os.path.join(itrade_config.dirCacheData,'%s.id' % quote.key()),'w')

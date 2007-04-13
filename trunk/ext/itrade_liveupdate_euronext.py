@@ -180,11 +180,11 @@ class LiveUpdate_Euronext(object):
         query = string.join(query, '&')
         url = self.m_url + '?' + query
 
-        info("LiveUpdate_Euronext:getdata: url=%s ",url)
+        debug("LiveUpdate_Euronext:getdata: url=%s ",url)
         try:
             f = urllib.urlopen(url)
         except:
-            info('LiveUpdate_Euronext:unable to connect :-(')
+            debug('LiveUpdate_Euronext:unable to connect :-(')
             return None
 
         # pull data
@@ -232,7 +232,7 @@ class LiveUpdate_Euronext(object):
 
         for eachLine in lines:
             sdata = string.split (eachLine, '\t')
-            print sdata,len(sdata)
+            #print sdata,len(sdata)
 
             if len(sdata)>2:
                 if not indice.has_key("ISIN"):
@@ -248,6 +248,7 @@ class LiveUpdate_Euronext(object):
                     iLast = indice["Last"]
                     iHigh = indice["Day High"]
                     iLow = indice["Day Low"]
+                    iPercent = indice["D/D-1 (%)"]
 
                     if indice.has_key("Volume"):
                         iVolume = indice["Volume"]
@@ -278,13 +279,14 @@ class LiveUpdate_Euronext(object):
                             high = self.parseFValue(sdata[iHigh])
                             low = self.parseFValue(sdata[iLow])
                             value = self.parseFValue(sdata[iLast])
+                            percent = self.parseFValue(sdata[iPercent])
 
                             if iVolume!=-1:
                                 volume = self.parseLValue(sdata[iVolume])
                             else:
                                 volume = 0
 
-                            # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME
+                            # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME;PERCENT
                             data = (
                               quote.key(),
                               sdate,
@@ -292,14 +294,15 @@ class LiveUpdate_Euronext(object):
                               high,
                               low,
                               value,
-                              volume
+                              volume,
+                              percent
                             )
                             data = map(lambda (val): '%s' % str(val), data)
                             data = string.join(data, ';')
 
                             return data
                     else:
-                        #print sdata
+                        print sdata
                         pass
 
         return None

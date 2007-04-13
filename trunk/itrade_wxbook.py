@@ -212,7 +212,7 @@ class iTradeMainToolbar(wx.ToolBar):
         self.AddSimpleTool(self._NTB2_ABOUT, wx.Bitmap(os.path.join(itrade_config.dirRes, 'about.png')),
                            message('main_about'), message('main_desc_about'))
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
-        self.m_indicator = wx.StaticText(self, -1, "", size=(180,15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
+        self.m_indicator = wx.StaticText(self, -1, "", size=(300,15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
         self.AddControl(self.m_indicator)
         self.ClearIndicator()
 
@@ -272,15 +272,15 @@ class iTradeMainToolbar(wx.ToolBar):
         self.m_indicator.ClearBackground()
         self.m_indicator.SetLabel(label)
 
-    def SetIndicator(self,market,connector,portfolio):
-        indice = portfolio.indice()
+    def SetIndicator(self,market,connector,indice):
         clock = connector.currentClock()
         if clock=="::":
             label = market + ": " + message('indicator_disconnected')
             self.m_indicator.SetBackgroundColour(cDISCONNECTED)
         else:
             label = market + "- " + clock
-            label = label + " - " + indice
+            if indice:
+                label = label + " - " + indice.name() + ": "+ indice.sv_close()+ " (" + indice.sv_percent()+ " )"
             if label==self.m_indicator.GetLabel():
                 self.m_indicator.SetBackgroundColour(wx.NullColour)
             else:
@@ -405,7 +405,8 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         self.m_matrix = matrix
 
         self.m_market = self.m_portfolio.market()
-        self.m_connector = getDefaultLiveConnector(self.m_market,QLIST_INDICES)
+
+        self.initIndice()
 
         # Set Lang
         self.SetLang(bDuringInit=True)
@@ -672,7 +673,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
 
         self.m_matrix = createMatrix(dp.filename(),dp)
         self.m_market = self.m_portfolio.market()
-        self.m_connector = getDefaultLiveConnector(self.m_market,QLIST_INDICES)
+        self.initIndice()
 
         # should be enough !
         wx.SetCursor(wx.STANDARD_CURSOR)
@@ -1076,9 +1077,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         self.InitCurrentPage(bReset=False,bInit=False)
 
     def refreshConnexion(self):
-        #if itrade_config.verbose:
-        #    print 'refreshConnexion (%s-%s):' % (self.m_market,self.m_connector.name()),self.m_connector.currentClock()
-        self.m_toolbar.SetIndicator(self.m_market,self.m_connector,self.m_portfolio)
+        self.m_toolbar.SetIndicator(self.m_market,self.m_connector,self.m_indice)
 
     # ---[ Quotes ] -----------------------------------------
 
@@ -1115,6 +1114,19 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         quote=self.currentQuote()
         if addOrEditStops_iTradeQuote(self,quote,market=quote.market(),bAdd=False):
             self.RebuildList()
+
+    # ---[ Indice ] -----------------------------------------
+
+    def indice(self):
+        return self.m_indice
+
+    def initIndice(self):
+        self.m_connector = getDefaultLiveConnector(self.m_market,QLIST_INDICES)
+        lind = quotes.lookupISIN(self.m_portfolio.indice())
+        if len(lind)>=1:
+            self.m_indice = lind[0]
+            if self.m_indice:
+                self.m_connector = self.m_indice.liveconnector()
 
 # ============================================================================
 # That's all folks !
