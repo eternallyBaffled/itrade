@@ -109,6 +109,11 @@ class Import_yahoo(object):
 
         sname = yahooTicker(quote.ticker(),quote.market(),quote.place())
 
+        if sname[0]=='^':
+            ss = "%5E" + sname[1:]
+        else:
+            ss = sname
+
         query = (
             ('a', '%02d' % (int(d1[1])-1)),
             ('b', d1[2]),
@@ -116,7 +121,7 @@ class Import_yahoo(object):
             ('d', '%02d' % (int(d2[1])-1)),
             ('e', d2[2]),
             ('f', d2[0]),
-            ('s', sname),
+            ('s', ss),
             ('y', '0'),
             ('g', 'd'),
             ('ignore', '.csv'),

@@ -60,6 +60,7 @@ class LiveUpdate_yahoo(object):
     def __init__(self):
         debug('LiveUpdate_yahoo:__init__')
         self.m_url = "http://quote.yahoo.com/download/quotes.csv"
+        #self.m_url = "http://download.finance.yahoo.com/d/quotes.csv"
         self.m_connected = False
         self.m_livelock = thread.allocate_lock()
         self.m_clock = {}
@@ -130,9 +131,14 @@ class LiveUpdate_yahoo(object):
 
         sname = yahooTicker(quote.ticker(),quote.market(),quote.place())
 
+        if sname[0]=='^':
+            ss = "%5E" + sname[1:]
+        else:
+            ss = sname
+
         query = (
           ('f', 'sl1d1t1c1ohgvbap'),
-          ('s', sname),
+          ('s', ss),
           ('e', '.csv'),
         )
         query = map(lambda (var, val): '%s=%s' % (var, str(val)), query)
@@ -220,8 +226,11 @@ class LiveUpdate_yahoo(object):
             low = string.atof (sdata[7])
 
         volume = string.atoi (sdata[8])
-        if volume<=0:
-            debug('volume : invalid negative or zero value %d' % volume)
+        if volume<0:
+            debug('volume : invalid negative %d' % volume)
+            return None
+        if volume==0 and quote.list()!=QLIST_INDICES:
+            debug('volume : invalid zero value %d' % volume)
             return None
 
         percent = (1.0 - ((value - change) / value))*100.0
