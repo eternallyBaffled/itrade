@@ -212,7 +212,7 @@ class iTradeMainToolbar(wx.ToolBar):
         self.AddSimpleTool(self._NTB2_ABOUT, wx.Bitmap(os.path.join(itrade_config.dirRes, 'about.png')),
                            message('main_about'), message('main_desc_about'))
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
-        self.m_indicator = wx.StaticText(self, -1, "", size=(300,15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
+        self.m_indicator = wx.StaticText(self, -1, "", size=(640,15), style=wx.ALIGN_LEFT|wx.ST_NO_AUTORESIZE)
         self.AddControl(self.m_indicator)
         self.ClearIndicator()
 
@@ -265,9 +265,9 @@ class iTradeMainToolbar(wx.ToolBar):
 
     def ClearIndicator(self):
         if itrade_config.bAutoRefreshMatrixView:
-            label = message('indicator_autorefresh')
+            label = " " + message('indicator_autorefresh')
         else:
-            label = message('indicator_noautorefresh')
+            label = " " + message('indicator_noautorefresh')
         self.m_indicator.SetBackgroundColour(wx.NullColour)
         self.m_indicator.ClearBackground()
         self.m_indicator.SetLabel(label)
@@ -275,10 +275,10 @@ class iTradeMainToolbar(wx.ToolBar):
     def SetIndicator(self,market,connector,indice):
         clock = connector.currentClock()
         if clock=="::":
-            label = market + ": " + message('indicator_disconnected')
+            label = " " + market + ": " + message('indicator_disconnected')
             self.m_indicator.SetBackgroundColour(cDISCONNECTED)
         else:
-            label = market + "- " + clock
+            label = " " + market + "- " + clock
             if indice:
                 label = label + " - " + indice.name() + ": "+ indice.sv_close()+ " (" + indice.sv_percent()+ " )"
             if label==self.m_indicator.GetLabel():
