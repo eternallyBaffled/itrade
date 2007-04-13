@@ -1072,6 +1072,8 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         self.InitCurrentPage(bReset=False,bInit=False)
 
     def refreshConnexion(self):
+        #if itrade_config.verbose:
+        #    print 'refreshConnexion (%s-%s):' % (self.m_market,self.m_connector.name()),self.m_connector.currentClock()
         self.m_toolbar.SetIndicator(self.m_market,self.m_connector.currentClock())
 
     # ---[ Quotes ] -----------------------------------------
