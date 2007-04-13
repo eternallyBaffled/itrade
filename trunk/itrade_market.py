@@ -57,6 +57,7 @@ isin_market = {
     'be': 'EURONEXT',
     'es': 'EURONEXT',
     'qs': 'EURONEXT',
+    'it': 'EURONEXT',
     'uk': 'LSE',
     'us': 'NASDAQ',
     'au': 'ASX',
@@ -93,6 +94,7 @@ market_currency = {
     'ASX': 'AUD',
     'TSE': 'CAD',
     'TSX': 'CAD',
+    'MILAN EXCHANGE': 'EUR',
     'SWISS EXCHANGE': 'CHF',
     }
 
@@ -119,6 +121,7 @@ def list_of_markets(bFilterMode=False):
     lom.append('ASX')
     lom.append('TSE')
     lom.append('TSX')
+    lom.append('MILAN EXCHANGE')
     lom.append('SWISS EXCHANGE')
     return lom
 
@@ -160,6 +163,8 @@ def compute_country(isin,market,place):
             return 'CA'
         if market=='SWISS EXCHANGE':
             return 'CH'
+        if market=='MILAN EXCHANGE':
+            return 'IT'
     return '??'
 
 # ============================================================================
@@ -197,6 +202,8 @@ def list_of_places(market):
         lop.append('TOR')
     if market=='SWISS EXCHANGE':
         lop.append('GEN')
+    if market=='MILAN EXCHANGE':
+        lop.append('MIL')
     return lop
 
 # ============================================================================
@@ -216,6 +223,7 @@ market_place = {
     'ASX': 'SYD',
     'TSE': 'TOR',
     'TSX': 'TOR',
+    'MILAN EXCHANGE': 'MIL',
     'SWISS EXCHANGE': 'GEN',
     }
 
@@ -240,6 +248,7 @@ yahoo_suffix = {
     'ASX.SYD': '.AX',
     'TSE.TOR': '.TO',
     'TSX.TOR': '.V',
+    'MILAN EXCHANGE.MIL': '.MI',
     'SWISS EXCHANGE.GEN': '.SW',
     }
 
