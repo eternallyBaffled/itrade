@@ -231,8 +231,8 @@ def list_of_places(market):
     if market=='TSE' or market=='TSX':
         lop.append('TOR')
     if market=='SWISS EXCHANGE':
-        lop.append('EBS')
-        lop.append('VTX')
+        lop.append('XSWX')
+        lop.append('XVTX')
     if market=='MILAN EXCHANGE':
         lop.append('MIL')
     return lop
@@ -255,7 +255,7 @@ market_place = {
     'TSE': 'TOR',
     'TSX': 'TOR',
     'MILAN EXCHANGE': 'MIL',
-    'SWISS EXCHANGE': 'VTX',
+    'SWISS EXCHANGE': 'XVTX',
     }
 
 def market2place(market):
@@ -280,8 +280,8 @@ yahoo_suffix = {
     'TSE.TOR': '.TO',
     'TSX.TOR': '.V',
     'MILAN EXCHANGE.MIL': '.MI',
-    'SWISS EXCHANGE.EBS': '.SW',
-    'SWISS EXCHANGE.VTX': '.VX',
+    'SWISS EXCHANGE.XSWX': '.SW',
+    'SWISS EXCHANGE.XVTX': '.VX',
     }
 
 yahoo_map_tickers = {}
