@@ -314,10 +314,10 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
 
     # ---[ Indicator ] ---------------------------------------------
 
-    def createIndicator(self):
-        self.m_indicator = quotes.lookupISIN(self.m_portfolio.indice())[0]
-        if self.m_indicator:
-            self.registerLive(self.m_indicator,itrade_config.refreshView,self.m_id)
+    def registerIndice(self):
+        ind = self.m_parent.indice()
+        if ind:
+            self.registerLive(ind,itrade_config.refreshView,self.m_id)
 
     # ---[ Populate view ] -----------------------------------------
 
@@ -332,8 +332,8 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
         # start a new population
         self.populateList()
 
-        # start indicator management
-        self.createIndicator()
+        # start Index management
+        self.registerIndice()
 
         # start live
         if not bDuringInit and itrade_config.bAutoRefreshMatrixView:
@@ -450,11 +450,13 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
                     if idview == self.m_id:
                         #debug('%s: %s' % (evt.quote.key(),evt.param))
                         self.OnLiveQuote(evt.quote,xline)
-                        self.m_parent.refreshConnexion()
                     else:
-                        info('%s: %s - bad : other view' % (evt.quote.key(),evt.param))
+                        if itrade_config.verbose:
+                            print 'pane::OnLive %s: %s - bad : other view' % (evt.quote.key(),evt.param)
+            self.m_parent.refreshConnexion()
         else:
-            info('%s: %s - bad : not running' % (evt.quote.key(),evt.param))
+            if itrade_config.verbose:
+                print 'pane::OnLive %s: %s - bad : not running' % (evt.quote.key(),evt.param)
 
     # refresh list
     def OnRefresh(self,e):

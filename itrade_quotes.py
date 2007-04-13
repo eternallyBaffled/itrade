@@ -192,6 +192,8 @@ class Quote(object):
         self.m_weektrades = None
         self.m_monthtrades = None
 
+        self.m_percent = None
+
     def reinit(self):
         #info('%s::reinit' %(self.name()))
         self._init_()
@@ -620,7 +622,16 @@ class Quote(object):
         #debug('Quote:importTrades %s %s bLive=%s' % (self.ticker,data,bLive))
         if self.m_daytrades==None:
             self.m_daytrades = itrade_trades.Trades(self)
+
+        data = data.split('\r\n')
         self.m_daytrades.imp(data,bLive)
+
+        # only one line
+        if bLive and len(data)>=1 and self.list()==QLIST_INDICES:
+            item = itrade_csv.parse(data[0],7)
+            if len(item)>=7:
+                # percent is included !
+                self.m_percent = string.atof (item[7])
 
     # ---[ save or export trades / date is unique key ] ---
 
@@ -832,6 +843,8 @@ class Quote(object):
         return None
 
     def nv_percent(self,d=None):
+        if self.m_percent:
+            return self.m_percent
         if self.m_daytrades:
             tc = self.nv_close(d)
             tp = self.nv_prevclose(d)

@@ -1249,12 +1249,12 @@ class Portfolios(object):
             debug('Portfolios::addPortfolio(): %s' % self.m_portfolios[filename])
             return self.m_portfolios[filename]
 
-    def editPortfolio(self,filename,name,accountref,market,currency,vat,term,risk):
+    def editPortfolio(self,filename,name,accountref,market,currency,vat,term,risk,indice):
         if not self.m_portfolios.has_key(filename):
             return None
         else:
             del self.m_portfolios[filename]
-            self.m_portfolios[filename] = Portfolio(filename,name,accountref,market,currency,vat,term,risk)
+            self.m_portfolios[filename] = Portfolio(filename,name,accountref,market,currency,vat,term,risk,indice)
             debug('Portfolios::editPortfolio(): %s' % self.m_portfolios[filename])
             return self.m_portfolios[filename]
 

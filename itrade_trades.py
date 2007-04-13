@@ -191,7 +191,6 @@ class Trades(object):
 
     def imp(self,data,bLive):
         #debug('Trades::imp %s : %s : bLive=%s' % (self.m_quote.ticker(),data,bLive))
-        data = data.split('\r\n')
         #print data
         if data:
             # scan each line to read each trade

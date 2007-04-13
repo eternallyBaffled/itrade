@@ -6,6 +6,7 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-04-13  Gilles Dumortier <dgil at ieee.org>
+	* Main Market :: Indicator (SF bug 1473385)
 	* Euronext live connector : handle indices correctly
 	* Yahoo live connector : time refresh correctly
 	* Add Italian market (yahoo connector)

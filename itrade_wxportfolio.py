@@ -52,7 +52,7 @@ from itrade_logging import *
 from itrade_local import message,getGroupChar,getDecimalChar
 from itrade_quotes import *
 from itrade_portfolio import *
-from itrade_market import list_of_markets
+from itrade_market import list_of_markets,getDefaultIndice
 from itrade_currency import list_of_currencies
 
 import itrade_wxres
@@ -288,6 +288,7 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
             self.m_vat = portfolio.vat()
             self.m_term = portfolio.term()
             self.m_risk = portfolio.risk()
+            self.m_indice = portfolio.indice()
         else:
             self.m_filename = 'noname'
             self.m_name = ''
@@ -297,6 +298,7 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
             self.m_vat = 1.196
             self.m_term = 3
             self.m_risk = 5
+            self.m_indice = getDefaultIndice(self.m_market)
         self.m_operation = operation
 
         # container
@@ -343,7 +345,24 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
 
         self.wxMarketCtrl.SetSelection(idx)
 
-        # row5 : currency
+        # row5 : main indice
+        label = wx.StaticText(pane, -1, message('portfolio_indicator'))
+        label.SetSizerProps(valign='center')
+
+        self.wxIndicatorCtrl = wx.ComboBox(pane,-1, "", size=wx.Size(160,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
+        wx.EVT_COMBOBOX(self,self.wxIndicatorCtrl.GetId(),self.OnIndicator)
+
+        count = 0
+        for eachCtrl in quotes.list():
+            if eachCtrl.list()==QLIST_INDICES:
+                self.wxIndicatorCtrl.Append(eachCtrl.name(),eachCtrl.isin())
+                if eachCtrl.isin()==self.m_indice:
+                    idx = count
+                count = count + 1
+
+        self.wxIndicatorCtrl.SetSelection(idx)
+
+        # row6 : currency
         label = wx.StaticText(pane, -1, message('portfolio_currency'))
         label.SetSizerProps(valign='center')
 
@@ -360,14 +379,14 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
 
         self.wxCurrencyCtrl.SetSelection(idx)
 
-        # row6 : default vat
+        # row7 : default vat
         label = wx.StaticText(pane, -1, message('portfolio_vat'))
         label.SetSizerProps(valign='center')
 
         self.wxVATCtrl = masked.Ctrl(pane, integerWidth=5, fractionWidth=3, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupChar=getGroupChar(), decimalChar=getDecimalChar() )
         self.wxVATCtrl.SetValue((self.m_vat-1)*100)
 
-        # Row7 : trading style
+        # Row8 : trading style
         label = wx.StaticText(container, -1, message('prop_tradingstyle'))
 
         btnpane = sc.SizedPanel(container, -1, style = wx.RAISED_BORDER | wx.CAPTION | wx.TAB_TRAVERSAL|wx.CLIP_CHILDREN|wx.NO_FULL_REPAINT_ON_RESIZE)
@@ -386,7 +405,7 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
         self.wxRiskCtrl = masked.Ctrl(btnpane, integerWidth=3, fractionWidth=0, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupChar=getGroupChar(), decimalChar=getDecimalChar() )
         self.wxRiskCtrl.SetValue(self.m_risk)
 
-        # row 8 : separator
+        # row 9 : separator
         line = wx.StaticLine(container, -1, size=(20,-1), style=wx.LI_HORIZONTAL)
         line.SetSizerProps(expand=True)
 
@@ -494,6 +513,11 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
         debug("OnMarket %s" % t)
         self.m_market = t
 
+    def OnIndicator(self,evt):
+        t = self.wxIndicatorCtrl.GetClientData(self.wxIndicatorCtrl.GetSelection())
+        info("OnIndicator %s" % t)
+        self.m_indice = t
+
     def OnCurrency(self,evt):
         t = self.wxCurrencyCtrl.GetClientData(self.wxCurrencyCtrl.GetSelection())
         debug("OnCurrency %s" % t)
@@ -516,11 +540,11 @@ def properties_iTradePortfolio(win,portfolio,operation='create'):
                 portfolios.save()
                 retport = None
         elif operation=='edit':
-            if portfolios.editPortfolio(portfolio.filename(),dlg.m_name,dlg.m_accountref,dlg.m_market,dlg.m_currency,dlg.m_vat,dlg.m_term,dlg.m_risk):
+            if portfolios.editPortfolio(portfolio.filename(),dlg.m_name,dlg.m_accountref,dlg.m_market,dlg.m_currency,dlg.m_vat,dlg.m_term,dlg.m_risk,dlg.m_indice):
                 portfolios.save()
                 retport = portfolios.portfolio(portfolio.filename())
         elif operation=='create':
-            if portfolios.addPortfolio(dlg.m_filename,dlg.m_name,dlg.m_accountref,dlg.m_market,dlg.m_currency,dlg.m_vat,dlg.m_term,dlg.m_risk):
+            if portfolios.addPortfolio(dlg.m_filename,dlg.m_name,dlg.m_accountref,dlg.m_market,dlg.m_currency,dlg.m_vat,dlg.m_term,dlg.m_risk,dlg.m_indice):
                 portfolios.save()
                 retport = loadPortfolio(dlg.m_filename)
         elif operation=='rename':
