@@ -6,6 +6,7 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-04-13  Gilles Dumortier <dgil at ieee.org>
+	* Indice Display : Issue with Yahoo (SF bug 1700243) - escape ^ code
 	* split list storage in sub-list per market (part of SF bug 1662171)
 	* Update the short term roadmap for v0.4.6
 	* Add/Modify a symbol in the symbol list : manage correctly the place
