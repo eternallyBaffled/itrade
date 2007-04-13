@@ -6,6 +6,7 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-04-13  Gilles Dumortier <dgil at ieee.org>
+	* Yahoo connector : time refresh correctly
 	* Add Italian market (yahoo connector)
 
 2007-04-11  Sébastien Renard <Sebsatien dot Renard at digitalfox dot org>

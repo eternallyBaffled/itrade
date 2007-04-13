@@ -64,6 +64,7 @@ class LiveUpdate_yahoo(object):
         self.m_clock = {}
         self.m_dcmpd = {}
         self.m_lastclock = 0
+        self.m_lastdate = "20070101"
 
     # ---[ reentrant ] ---
     def acquire(self):
@@ -108,16 +109,17 @@ class LiveUpdate_yahoo(object):
 
         return "%4d%02d%02d" % (year,month,day)
 
-    def convertClock(self,clock):
+    def convertClock(self,clock,date):
         clo = clock[:-2]
         min = clo[-2:]
         hour = clo[:-3]
         val = (int(hour)*60) + int(min)
         per = clock[-2:]
-        #if per=='pm':
-        #    val = val + 12*60
+        if per=='pm':
+            val = val + 12*60
         #print clock,clo,hour,min,val,per
-        if val>self.m_lastclock:
+        if val>self.m_lastclock and date>=self.m_lastdate:
+            self.m_lastdate = date
             self.m_lastclock = val
         return "%d:%02d" % (val/60,val%60)
 
@@ -171,17 +173,21 @@ class LiveUpdate_yahoo(object):
                 info('invalid datation for %s : %s %s' % (quote.ticker(),sclock,sdata[2]))
             return None
 
-        self.m_dcmpd[key] = sdata
-        self.m_clock[key] = self.convertClock(sclock)
-
         # start decoding
         symbol = sdata[0][1:-1]
         if symbol<>sname:
             if itrade_config.verbose:
                 info('invalid ticker : ask for %s and receive %s' % (sname,symbol))
             return None
+
+        # date
+        date = self.yahooDate(sdata[2])
+        self.m_dcmpd[key] = sdata
+        self.m_clock[key] = self.convertClock(sclock,date)
+
+        # decode data
         value = string.atof (sdata[1])
-        date = self.yahooDate (sdata[2])
+
         if (sdata[4]=='N/A'):
             debug('invalid change : N/A')
             change = 0.0
