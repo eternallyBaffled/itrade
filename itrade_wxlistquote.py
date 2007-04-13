@@ -188,8 +188,11 @@ class iTradeQuoteListDialog(wx.Dialog):
         label = wx.StaticText(self, -1, message('prop_place'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.editPlace = wx.TextCtrl(self, -1, self.m_place, size=wx.Size(60,-1), style = wx.TE_LEFT)
-        box.Add(self.editPlace, 0, wx.ALIGN_CENTRE_VERTICAL|wx.ALL, 5)
+        tID = wx.NewId()
+        self.editPlace = wx.ComboBox(self,tID, "", size=wx.Size(60,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
+        box.Add(self.editPlace, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        wx.EVT_COMBOBOX(self,tID,self.OnPlace)
+        self.fillPlaces()
 
         label = wx.StaticText(self, -1, message('prop_currency'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
@@ -313,12 +316,18 @@ class iTradeQuoteListDialog(wx.Dialog):
             self.m_market = t
             self.m_place = market2place(t)
             self.m_country = compute_country(self.m_isin,self.m_market,self.m_place)
-            self.refreshPage()
+            self.fillPlaces()
+            self.refreshPage(evt)
 
     def OnCurrency(self,evt):
         t = self.editCurrency.GetClientData(self.editCurrency.GetSelection())
         debug("OnCurrency %s" % t)
         self.m_currency = t
+
+    def OnPlace(self,evt):
+        t = self.editPlace.GetClientData(self.editPlace.GetSelection())
+        debug("OnPlace %s" % t)
+        self.m_place = t
 
     def refreshPage(self,evt):
         self.editPlace.SetLabel(self.m_place)
@@ -336,6 +345,18 @@ class iTradeQuoteListDialog(wx.Dialog):
                 self.m_place = market2place(market)
                 self.m_currency = market2currency(market)
                 self.refreshPage(event)
+
+    def fillPlaces(self):
+        self.editPlace.Clear()
+        count = 0
+        for eachCtrl in list_of_places(self.m_market):
+            #print eachCtrl
+            self.editPlace.Append(eachCtrl,eachCtrl)
+            if eachCtrl==self.m_place:
+                idx = count
+            count = count + 1
+
+        self.editPlace.SetSelection(idx)
 
 # ============================================================================
 # iTradeQuoteList
