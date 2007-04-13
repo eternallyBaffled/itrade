@@ -31,18 +31,18 @@ Version 0.4.6 (Nausicaa2)
  + Toronto Market (yahoo connector)
  + Switzerland Market (yahoo connector)
  + Italian Market (yahoo connector)
+ + main market indicator
  ~ Printing module
  ~ Extensible Indicators back-end
 
 Version 0.4.8 (Nausicaa3)
- ~ Boursorama Live broker ?
  ~ Fortuneo Live broker
  ~ "Points Pivots" feature
  ~ VAT information
  ~ more Charting enhancements
- ~ main market indicator
- ~ Nordic Market ?
  ~ better Linux support
+ ~ Nordic Market ?
+ ~ Boursorama Live broker ?
  - BourseDirect Live broker ?
  - full linux support ?
  - integrate TA-LIB ? -- under investigation
