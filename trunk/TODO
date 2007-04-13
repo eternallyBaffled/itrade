@@ -28,7 +28,8 @@ Version 0.4.6 (Nausicaa2)
  + Extensions & Plugins basic Mechanism
  + Matrix use the Notebook display
  + Basic Stops Management
- + Canadian Markets (yahoo connector)
+ + Toronto Market (yahoo connector)
+ + Switzerland Market (yahoo connector)
  + Italian Market (yahoo connector)
  ~ Printing module
  ~ Boursorama Live broker ?
