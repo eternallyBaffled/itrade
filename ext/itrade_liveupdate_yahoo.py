@@ -325,7 +325,16 @@ registerLiveConnector('LSE','LON',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=Tr
 
 registerLiveConnector('ASX','SYD',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 
+registerLiveConnector('TSX','TOR',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('TSE','TOR',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+
+registerLiveConnector('MILAN EXCHANGE','MIL',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+
+registerLiveConnector('SWISS EXCHANGE','GEN',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+
 registerLiveConnector('EURONEXT','PAR',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('EURONEXT','PAR',QLIST_INDICES,QTAG_DIFFERED,gLiveYahoo,bDefault=False)
+
 registerLiveConnector('ALTERNEXT','PAR',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 registerLiveConnector('PARIS MARCHE LIBRE','PAR',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 
