@@ -60,6 +60,7 @@ currencies_CUR = {
     'GBP' : u'\u00A3', # '£',
     'AUD' : u'\u0024', # '$'
     'CHF' : u'\u0046', # 'F'
+    'N/A' : u'\u0020', # ' '
     }
 
 def currency2symbol(cur):
