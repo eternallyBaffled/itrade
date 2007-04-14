@@ -907,6 +907,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
 
     def OnBuyQuote(self,e):
         quote = self.currentQuote()
+        if quote and quote.list()==QLIST_INDICES: quote=None
         if add_iTradeOperation(self,self.m_portfolio,quote,OPERATION_BUY):
             if self.m_hOperation:
                 self.m_hOperation.RebuildList()
@@ -916,6 +917,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
 
     def OnSellQuote(self,e):
         quote = self.currentQuote()
+        if quote and quote.list()==QLIST_INDICES: quote=None
         if add_iTradeOperation(self,self.m_portfolio,quote,OPERATION_SELL):
             if self.m_hOperation:
                 self.m_hOperation.RebuildList()
