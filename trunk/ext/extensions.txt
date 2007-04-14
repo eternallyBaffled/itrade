@@ -31,6 +31,7 @@ itrade_quotes_asx.py
 itrade_quotes_barchart.py
 itrade_quotes_euronext.py
 itrade_quotes_nyse.py
+itrade_quotes_swx.py
 
 # login
 #__ itrade_login_fortuneo.py
