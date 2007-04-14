@@ -253,7 +253,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
         self.wxNameButton = wx.BitmapButton(btnpane, -1, bmp, size=wx.Size(bmp.GetWidth()+5, bmp.GetHeight()+5))
         wx.EVT_BUTTON(self, self.wxNameButton.GetId(), self.OnQuote)
 
-        print 'creating ctrl:',self.m_name
+        #print 'creating ctrl:',self.m_name
         self.wxNameCtrl = wx.TextCtrl(btnpane, -1, self.m_name, size=wx.Size(240,-1), style = wx.TE_LEFT)
         wx.EVT_TEXT( self, self.wxNameCtrl.GetId(), self.OnDescChange )
         self.wxNameCtrl.SetSizerProps(expand=True)
@@ -416,7 +416,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
 
     def OnQuote(self,evt):
         quote = quotes.lookupKey(self.m_name)
-        quote = select_iTradeQuote(self,quote,filter=True,market=self.m_market,filterEnabled=True)
+        quote = select_iTradeQuote(self,quote,filter=True,market=self.m_market,filterEnabled=True,tradableOnly=True)
         if quote:
             debug('onQuote: %s - %s' % (quote.ticker(),quote.key()))
             self.m_name = quote.key()

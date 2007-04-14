@@ -6,6 +6,7 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-04-14  Gilles Dumortier <dgil at ieee.org>
+	* Indice Display : no currency / no trading (SF bug 1700652)
 	* List of quotes : Plugin : Swiss Market (SF bug 1700345)
 
 2007-04-14  Michel Legrand <m_leg at users.sourceforge.net>
