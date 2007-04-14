@@ -198,13 +198,13 @@ registerImportConnector('LSE','LON',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=
 
 registerImportConnector('ASX','SYD',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
 
-registerLiveConnector('TSX','TOR',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerLiveConnector('TSE','TOR',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('TSX','TOR',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('TSE','TOR',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
 
-registerLiveConnector('MILAN EXCHANGE','MIL',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('MILAN EXCHANGE','MIL',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
 
-registerLiveConnector('SWISS EXCHANGE','EBS',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerLiveConnector('SWISS EXCHANGE','VTX',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('SWISS EXCHANGE','XSWX',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('SWISS EXCHANGE','XVTX',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
 
 registerImportConnector('EURONEXT','PAR',QLIST_SYSTEM,QTAG_IMPORT,gImportYahoo,bDefault=True)
 registerImportConnector('EURONEXT','PAR',QLIST_USER,QTAG_IMPORT,gImportYahoo,bDefault=True)
