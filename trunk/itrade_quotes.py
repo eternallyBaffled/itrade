@@ -153,10 +153,13 @@ class Quote(object):
             if itrade_config.verbose:
                 print 'no default import connector for %s (list:%d)' % (self,self.m_list)
 
-        if not currency:
-            self.m_currency = market2currency(self.m_market)
+        if self.m_list != QLIST_INDICES:
+            if not currency:
+                self.m_currency = market2currency(self.m_market)
+            else:
+                self.m_currency = currency
         else:
-            self.m_currency = currency
+            self.m_currency = "N/A"
 
         # data for the connector plugin
         self.m_pluginId = None
