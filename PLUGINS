@@ -27,7 +27,8 @@ ASX		SYD	YAHOO FINANCE
 TSE		TOR	YAHOO FINANCE
 TSX             TOR	YAHOO FINANCE
 MILAN EXCHANGE	MIL	YAHOO FINANCE
-SWISS EXCHANGE	GEN	YAHOO FINANCE
+SWISS EXCHANGE	XSWX	YAHOO FINANCE
+SWISS EXCHANGE	XVTX	YAHOO FINANCE
 
 ===============================================================================
 History data
@@ -51,7 +52,8 @@ ASX		SYD	YAHOO FINANCE
 TSE		TOR	YAHOO FINANCE
 TSX             TOR	YAHOO FINANCE
 MILAN EXCHANGE	MIL	YAHOO FINANCE
-SWISS EXCHANGE	GEN	YAHOO FINANCE
+SWISS EXCHANGE	XSWX	YAHOO FINANCE
+SWISS EXCHANGE	XVTX	YAHOO FINANCE
 
 ===============================================================================
 List of quotes
@@ -75,7 +77,8 @@ ASX		SYD	ASX
 TSE		TOR	not available yet
 TSX             TOR	not available yet
 MILAN EXCHANGE	MIL	not available yet
-SWISS EXCHANGE	GEN	not available yet
+SWISS EXCHANGE	XSWX	SWX
+SWISS EXCHANGE	XVTX	SWX
 
 ===============================================================================
 Intraday data
@@ -99,6 +102,7 @@ ASX		SYD	not available yet
 TSE		TOR	not available yet
 TSX             TOR	not available yet
 MILAN EXCHANGE	MIL	not available yet
-SWISS EXCHANGE	GEN	not available yet
+SWISS EXCHANGE	XSWX	not available yet
+SWISS EXCHANGE	XVTX	not available yet
 
 ===============================================================================
