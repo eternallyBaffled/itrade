@@ -349,8 +349,8 @@ registerLiveConnector('TSE','TOR',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=Tr
 
 registerLiveConnector('MILAN EXCHANGE','MIL',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 
-registerLiveConnector('SWISS EXCHANGE','EBS',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
-registerLiveConnector('SWISS EXCHANGE','VTX',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('SWISS EXCHANGE','XSWX',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('SWISS EXCHANGE','XVTX',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 
 registerLiveConnector('EURONEXT','PAR',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 registerLiveConnector('EURONEXT','PAR',QLIST_INDICES,QTAG_DIFFERED,gLiveYahoo,bDefault=False)
