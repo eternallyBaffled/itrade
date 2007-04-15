@@ -4,7 +4,7 @@
 # Project Name : iTrade
 # Module Name  : itrade_wxlogin.py
 #
-# Description: wxPython portfolio screens (properties, selector)
+# Description: wxPython Login UI
 #
 # The Original Code is iTrade code (http://itrade.sourceforge.net).
 #
