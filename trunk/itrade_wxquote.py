@@ -1029,13 +1029,23 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
                 self.win[self.ID_PAGE_LIVE] = iTradeQuoteLivePanel(self,self.m_parent,wx.NewId(),self.m_quote)
                 self.AddPage(self.win[self.ID_PAGE_LIVE], message('quote_live'))
 
-            url = itrade_config.intradayGraphUrl[self.m_quote.market()]
-            isin = itrade_config.intradayGraphUrlUseISIN[self.m_quote.market()]
+            # found the right URL for intraday charting
+            m = self.m_quote.market()
+            if not itrade_config.intradayGraphUrl.has_key(m):
+                m = m+"."+self.m_quote.place()
+                if not itrade_config.intradayGraphUrl.has_key(m):
+                    m = None
+            if m:
+                url = itrade_config.intradayGraphUrl[m]
+                isin = itrade_config.intradayGraphUrlUseISIN[m]
 
-            if isin:
-                url = url % self.m_quote.isin()
+                if isin:
+                    url = url % self.m_quote.isin()
+                else:
+                    url = url % self.m_quote.ticker()
             else:
-                url = url % self.m_quote.ticker()
+                # chart not available because no url
+                url = ''
 
             self.win[self.ID_PAGE_INTRADAY] = iTradeHtmlPanel(self,wx.NewId(), url)
             self.AddPage(self.win[self.ID_PAGE_INTRADAY], message('quote_intraday'))
