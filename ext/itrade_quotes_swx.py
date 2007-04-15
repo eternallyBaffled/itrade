@@ -40,7 +40,6 @@ import logging
 import re
 import thread
 import time
-import urllib
 import string
 
 # iTrade system
@@ -49,6 +48,7 @@ import itrade_csv
 from itrade_logging import *
 from itrade_defs import *
 from itrade_ext import *
+from itrade_connection import ITradeConnection
 
 # ============================================================================
 # Import_ListOfQuotes_SWX()
@@ -57,6 +57,9 @@ from itrade_ext import *
 
 def Import_ListOfQuotes_SWX(quotes,market='SWISS EXCHANGE',dlg=None,x=0):
     print 'Update %s list of symbols' % market
+    connection=ITradeConnection(cookies=None, 
+                                proxy=itrade_config.proxyHostname, 
+                                proxyAuth=itrade_config.proxyAuthentication)
 
     if market=='SWISS EXCHANGE':
         url = "http://www.swx.com/data/market/statistics/swx_swiss_shares_reference_data.csv" # is actually tab delimited
@@ -77,13 +80,13 @@ def Import_ListOfQuotes_SWX(quotes,market='SWISS EXCHANGE',dlg=None,x=0):
     info('Import_ListOfQuotes_SWX:connect to %s' % url)
 
     try:
-        f = urllib.urlopen(url)
+        connection.put(url)
     except:
         info('Import_ListOfQuotes_SWX:unable to connect :-(')
         return False
 
     # returns the data
-    data = f.read()
+    data = connection.getData()
     lines = splitLines(data)
     n = 0
 

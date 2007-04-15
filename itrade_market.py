@@ -40,13 +40,14 @@
 import logging
 import re
 import string
-import urllib
 
 # iTrade system
 from itrade_logging import *
 from itrade_local import message
 import itrade_csv
 from itrade_defs import *
+from itrade_connection import ITradeConnection
+import itrade_config
 
 # ============================================================================
 # ISIN -> MARKET
@@ -335,6 +336,10 @@ def euronext_InstrumentId(quote):
     else:
         urlid = 'http://www.euronext.com/quicksearch/resultquicksearch-2986-EN.html?matchpattern=%s&fromsearchbox=true&path=/quicksearch&searchTarget=quote'
 
+    connection=ITradeConnection(cookies=None, 
+                                proxy=itrade_config.proxyHostname, 
+                                proxyAuth=itrade_config.proxyAuthentication)
+
     # get instrument ID
     IdInstrument = quote.get_pluginID()
     if IdInstrument == None:
@@ -355,11 +360,11 @@ def euronext_InstrumentId(quote):
                 print "euronext_InstrumentId: urlID=%s " % url
 
             try:
-                f = urllib.urlopen(url)
+                connection.put(url)
             except:
                 print 'euronext_InstrumentId: %s exception error' % url
                 return None
-            buf = f.read()
+            buf = connection.getData()
             sid = re.search("selectedMep=%d&amp;idInstrument=\d*&amp;isinCode=%s" % (euronext_place2mep(quote.place()),quote.isin()),buf,re.IGNORECASE|re.MULTILINE)
             if sid:
                 sid = buf[sid.start():sid.end()]

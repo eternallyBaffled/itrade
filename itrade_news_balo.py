@@ -39,7 +39,6 @@
 import logging
 import re
 import string
-import urllib
 import datetime
 import webbrowser
 
@@ -47,6 +46,7 @@ import webbrowser
 import itrade_config
 from itrade_logging import *
 from itrade_local import message
+from itrade_connection import ITradeConnection
 
 # ============================================================================
 #
@@ -70,6 +70,9 @@ class News_Balo(object):
         self.m_url = None
         self.m_quote = None
         self.m_baseurl = "balo.journal-officiel.gouv.fr"
+        self.m_connection=ITradeConnection(cookies=None, 
+                                           proxy=itrade_config.proxyHostname, 
+                                           proxyAuth=itrade_config.proxyAuthentication)
 
     # ---[ protected interface ] ---
 
@@ -95,12 +98,12 @@ class News_Balo(object):
 
         info('Balo News refresh %s',self.m_url)
         try:
-            f = urllib.urlopen(self.m_url)
+            self.m_connection.put(self.m_url)
         except:
             debug('News_Balo:unable to connect :-(')
             return None
 
-        buf = f.read()
+        buf = self.m_connection.getData()
         iter = self.splitLines(buf)
 
         for eachLine in iter:
@@ -131,7 +134,7 @@ class News_Balo(object):
             html.paint0()
         info('goto %s',url)
         try:
-            f = urllib.urlopen(url)
+            self.m_connection(url)
         except:
             debug('News_Balo:unable to connect :-(')
             if html:
@@ -140,7 +143,7 @@ class News_Balo(object):
                 print 'unable to connect'
             return
 
-        buf = f.read()
+        buf = self.m_connection.getData()
         #print buf
 
         title = re.search('<tr>[ \t\n\r]+<td.*</td>[ \t\n\r]+</tr>',buf,re.IGNORECASE|re.MULTILINE|re.DOTALL)

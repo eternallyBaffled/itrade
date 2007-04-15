@@ -43,7 +43,6 @@ import logging
 import re
 import thread
 import time
-import urllib
 import string
 
 # iTrade system
@@ -52,6 +51,7 @@ from itrade_logging import *
 from itrade_isin import buildISIN,extractCUSIP
 from itrade_defs import *
 from itrade_ext import *
+from itrade_connection import ITradeConnection
 
 # ============================================================================
 # Import_ListOfQuotes_ASX()
@@ -60,6 +60,9 @@ from itrade_ext import *
 
 def Import_ListOfQuotes_ASX(quotes,market='ASX',dlg=None,x=0):
     print 'Update %s list of symbols' % market
+    connection=ITradeConnection(cookies=None, 
+                                proxy=itrade_config.proxyHostname, 
+                                proxyAuth=itrade_config.proxyAuthentication)
 
     if market=='ASX':
         url = "http://www.asx.com.au/programs/ISIN.xls" # is actually tab delimited
@@ -78,13 +81,13 @@ def Import_ListOfQuotes_ASX(quotes,market='ASX',dlg=None,x=0):
         return lines
 
     try:
-        f = urllib.urlopen(url)
+        connection.put(url)
     except:
         debug('Import_ListOfQuotes_ASX:unable to connect :-(')
         return False
 
     # returns the data
-    data = f.read()
+    data = connection.getData()
     lines = splitLines(data)
     n = 0
 

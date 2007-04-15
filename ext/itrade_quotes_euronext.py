@@ -42,7 +42,6 @@ import logging
 import re
 import thread
 import time
-import urllib
 import string
 
 # iTrade system
@@ -51,6 +50,7 @@ from itrade_logging import *
 from itrade_isin import checkISIN,filterName
 from itrade_defs import *
 from itrade_ext import *
+from itrade_connection import ITradeConnection
 
 # ============================================================================
 # Import_ListOfQuotes_Euronext()
@@ -59,7 +59,9 @@ from itrade_ext import *
 
 def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT',dlg=None,x=0):
     print 'Update %s list of symbols' % market
-
+    connection=ITradeConnection(cookies=None, 
+                                proxy=itrade_config.proxyHostname, 
+                                proxyAuth=itrade_config.proxyAuthentication)
     if market=='EURONEXT':
         url = "http://www.euronext.com/search/download/trapridownloadpopup.jcsv?pricesearchresults=actif&filter=1&lan=EN&belongsToList=market_14&cha=1800&format=txt&formatDecimal=.&formatDate=dd/MM/yy"
     elif market=='ALTERNEXT':
@@ -83,7 +85,7 @@ def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT',dlg=None,x=0):
         return lines
 
     try:
-        f = urllib.urlopen(url)
+        connection.put(url)
     except:
         debug('Import_ListOfQuotes_Euronext:unable to connect :-(')
         return False
@@ -127,7 +129,7 @@ def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT',dlg=None,x=0):
     """
 
     # returns the data
-    data = f.read()
+    data = connection.getData()
     lines = splitLines(data)
     count = 0
 

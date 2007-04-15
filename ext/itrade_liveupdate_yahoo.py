@@ -40,7 +40,6 @@ import logging
 import re
 import thread
 import string
-import urllib
 import time
 
 # iTrade system
@@ -50,6 +49,8 @@ from itrade_quotes import *
 from itrade_defs import *
 from itrade_ext import *
 from itrade_market import yahooTicker
+from itrade_connection import ITradeConnection
+import itrade_config
 
 # ============================================================================
 # LiveUpdate_yahoo()
@@ -67,6 +68,9 @@ class LiveUpdate_yahoo(object):
         self.m_dcmpd = {}
         self.m_lastclock = 0
         self.m_lastdate = "20070101"
+        self.m_connection=ITradeConnection(cookies=None, 
+                                           proxy=itrade_config.proxyHostname, 
+                                           proxyAuth=itrade_config.proxyAuthentication)
 
     # ---[ reentrant ] ---
     def acquire(self):
@@ -147,13 +151,13 @@ class LiveUpdate_yahoo(object):
 
         debug("LiveUpdate_yahoo:getdata: url=%s",url)
         try:
-            f = urllib.urlopen(url)
+            self.m_connection.put(url)
         except:
             debug('LiveUpdate_yahoo:unable to connect :-(')
             return None
 
         # pull data
-        data = f.read()[:-2] # Get rid of CRLF
+        data = self.m_connection.getData()[:-2] # Get rid of CRLF
         s400 = re.search("400 Bad Request",data,re.IGNORECASE|re.MULTILINE)
         if s400:
             if itrade_config.verbose:

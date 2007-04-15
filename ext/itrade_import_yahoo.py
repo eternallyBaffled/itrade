@@ -39,7 +39,6 @@
 import logging
 import re
 import string
-import urllib
 from datetime import *
 
 # iTrade system
@@ -49,6 +48,8 @@ from itrade_datation import Datation,dd_mmm_yy2yyyymmdd,re_p3_1
 from itrade_defs import *
 from itrade_ext import *
 from itrade_market import yahooTicker
+from itrade_connection import ITradeConnection
+import itrade_config
 
 # ============================================================================
 # Import_yahoo()
@@ -59,6 +60,10 @@ class Import_yahoo(object):
     def __init__(self):
         debug('Import_yahoo:__init__')
         self.m_url = 'http://ichart.finance.yahoo.com/table.csv'
+        #self.m_connection=ITradeConnection(proxy="172.30.0.3:8080")
+        self.m_connection=ITradeConnection(cookies=None, 
+                                           proxy=itrade_config.proxyHostname, 
+                                           proxyAuth=itrade_config.proxyAuthentication)
 
     def name(self):
         return 'yahoo'
@@ -132,13 +137,13 @@ class Import_yahoo(object):
 
         debug("Import_yahoo:getdata: url=%s ",url)
         try:
-            f = urllib.urlopen(url)
+            self.m_connection.put(url)
         except:
             debug('Import_yahoo:unable to connect :-(')
             return None
 
         # pull data
-        buf = f.read()
+        buf=self.m_connection.getData()
         lines = self.splitLines(buf)
         header = string.split(lines[0],',')
         data = ""

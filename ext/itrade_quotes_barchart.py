@@ -41,7 +41,6 @@ import logging
 import re
 import thread
 import time
-import urllib
 import string
 
 # iTrade system
@@ -50,6 +49,7 @@ from itrade_logging import *
 from itrade_isin import filterName
 from itrade_defs import *
 from itrade_ext import *
+from itrade_connection import ITradeConnection
 
 # ============================================================================
 # Import_ListOfQuotes_BARCHART()
@@ -62,6 +62,9 @@ barchart_data = {}
 def Import_ListOfQuotes_BARCHART(quotes,market='NASDAQ',dlg=None,x=0):
     global barchart_data
     print 'Update %s list of symbols' % market
+    connection=ITradeConnection(cookies=None, 
+                                           proxy=itrade_config.proxyHostname, 
+                                           proxyAuth=itrade_config.proxyAuthentication)
 
     if market=='NASDAQ' or market=='AMEX' or market=='OTCBB':
         url = "http://www2.barchart.com/lookup.asp?name=%s&opt1=1&start=all&type=&search_usstocks=1&search_usfunds=&search_canstocks="
@@ -95,13 +98,16 @@ def Import_ListOfQuotes_BARCHART(quotes,market='NASDAQ',dlg=None,x=0):
 
             if not fn:
                 try:
-                    fn = urllib.urlopen(url%letter)
+                    connection.put(url%letter)
+                    data=connection.getData()
                 except:
                     print 'Import_ListOfQuotes_BARCHART:unable to connect to',url%letter
                     return False
+            else:
+                data=fn.read()
 
             # returns the data
-            barchart_data[letter] = fn.read()
+            barchart_data[letter] = data
 
         #
         lines = splitLines(barchart_data[letter])

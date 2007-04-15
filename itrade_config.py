@@ -287,13 +287,15 @@ def checkNewRelease():
             print 'checkNewRelease(): development release'
         return 'dev'
 
-    import urllib
+    from itrade_connection import ITradeConnection
+    connection=ITradeConnection(cookies=None, 
+                                proxy=proxyHostname, 
+                                proxyAuth=proxyAuthentication)
 
     # get OFFICIAL file from svn
     try:
-        f = urllib.urlopen(softwareLatest)
-        latest = f.read()
-        f.close()
+        connection.put(softwareLatest)
+        latest = connection.getData()
     except IOError:
         print 'checkNewRelease(): exeption getting OFFICIAL file'
         return 'err'
@@ -327,6 +329,8 @@ def loadConfig():
     global matrixFontSize
     global operationFontSize
     global lang
+    global proxyHostname
+    global proxyAuthentication
 
     # create a configuration object
     config = ConfigParser.ConfigParser()
@@ -387,6 +391,15 @@ def loadConfig():
         except:
             lang = 0
 
+    try:
+        proxyHostname = config.get("net","proxyHostname")
+    except:
+        proxyHostname = None
+    
+    try:
+        proxyAuthentication = config.get("net","proxyAuthentication")
+    except:
+        proxyAuthentication = None
 # ============================================================================
 # saveConfig()
 # ============================================================================
