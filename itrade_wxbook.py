@@ -67,6 +67,7 @@ from itrade_wxabout import iTradeAboutBox
 from itrade_wxhtml import iTradeLaunchBrowser
 from itrade_wxlistquote import list_iTradeQuote
 from itrade_wxlogin import login_UI
+from itrade_wxconnection import connection_UI
 from itrade_wxstops import addOrEditStops_iTradeQuote,removeStops_iTradeQuote
 from itrade_wxmixin import iTrade_wxFrame
 
@@ -136,6 +137,8 @@ ID_CACHE = 499
 ID_CACHE_ERASE_DATA = 500
 ID_CACHE_ERASE_NEWS = 501
 ID_CACHE_ERASE_ALL = 510
+
+ID_CONNEXION = 599
 
 ID_CONTENT = 800
 ID_SUPPORT = 801
@@ -519,6 +522,8 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         self.cachemenu.Append(ID_CACHE_ERASE_ALL, message('main_cache_erase_all'),message('main_cache_desc_erase_all'))
         self.optionsmenu.AppendMenu(ID_CACHE,message('main_options_cache'),self.cachemenu,message('main_options_desc_cache'))
 
+        self.optionsmenu.Append(ID_CONNEXION,message('main_options_connexion'),message('main_options_desc_connexion'))
+
         self.helpmenu = wx.Menu()
         self.helpmenu.Append(ID_CONTENT, message('main_help_contents'),message('main_help_desc_contents'))
         self.helpmenu.AppendSeparator()
@@ -593,6 +598,8 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         wx.EVT_MENU(self, ID_CACHE_ERASE_DATA, self.OnCacheEraseData)
         wx.EVT_MENU(self, ID_CACHE_ERASE_NEWS, self.OnCacheEraseNews)
         wx.EVT_MENU(self, ID_CACHE_ERASE_ALL, self.OnCacheEraseAll)
+
+        wx.EVT_MENU(self, ID_CONNEXION, self.OnConnexion)
 
         wx.EVT_MENU(self, ID_REFRESH, self.OnRefresh)
         wx.EVT_MENU(self, ID_AUTOREFRESH, self.OnAutoRefresh)
@@ -1067,6 +1074,12 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         idRet = iTradeYesNo(self, message('cache_erase_confirm_all'), message('cache_erase_confirm_title'))
         if idRet == wx.ID_YES:
             self.m_matrix.flushAll()
+
+    # --- [ connexion management ] ---------------------------------------
+
+    def OnConnexion(self,e):
+        itrade_config.proxyHostname,itrade_config.proxyAuthentication = connection_UI(self,itrade_config.proxyHostname,itrade_config.proxyAuthentication)
+        itrade_config.saveConfig()
 
     # --- [ autorefresh management ] -------------------------------------
 

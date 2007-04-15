@@ -5,7 +5,10 @@ On the road for v0.4.6 (Nausicaa2)
 
 ===============================================================================
 
-2007 04-15 Sébastien Renard <Sebsatien dot Renard at digitalfox dot org>
+2007-04-15  Gilles Dumortier <dgil at ieee.org>
+	* UI module to enter proxy and proxy auth parameters (SF bug 1604305)
+
+2007 04-15 Sébastien Renard <Sebastien dot Renard at digitalfox dot org>
     	* New module dedicated to http connection with proxy, proxy
 	  authentication and keepalive support (SF bug 1604305)
 
@@ -29,7 +32,7 @@ On the road for v0.4.6 (Nausicaa2)
 	* Yahoo live connector : time refresh correctly
 	* Add Italian market (yahoo connector)
 
-2007-04-11  Sébastien Renard <Sebsatien dot Renard at digitalfox dot org>
+2007-04-11  Sébastien Renard <Sebastien dot Renard at digitalfox dot org>
 	* Performance patch for quote list sorting
 
 2007-04-10  Gilles Dumortier <dgil at ieee.org>

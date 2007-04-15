@@ -106,6 +106,9 @@ main_cache_desc_erase_news; Efface toutes les informations du cache
 main_cache_erase_all;Efface &Tout
 main_cache_desc_erase_all; Efface toutes les données (infos,historiques,...) du cache
 
+main_options_connexion;&Connexion
+main_options_desc_connexion; Paramètres de Connexion (Proxy)
+
 main_help;&Aide
 main_help_contents;&Contenu
 main_help_desc_contents; Contenu de l'aide
@@ -589,5 +592,9 @@ decision_profitpercent;+- value latente en % :
 decision_availablecash;Liquidités disponbiles en %s :
 decision_committedcredit;Engagement SRD en %s :
 decision_availablecredit;Disponible en %s au SRD :
+
+connection_title;Paramètres de Connexion
+proxy_server;Serveur Proxy (vide si aucun) :
+proxy_auth;Information d'authentification (vide si aucune) :
 
 test;message de test

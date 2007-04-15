@@ -271,6 +271,13 @@ else:
 # experimental features
 experimental = False
 
+# proxy data
+global proxyHostname
+proxyHostname = None
+
+global proxyAuthentication
+proxyAuthentication = None
+
 # ============================================================================
 # checkNewRelease()
 #
@@ -288,8 +295,8 @@ def checkNewRelease():
         return 'dev'
 
     from itrade_connection import ITradeConnection
-    connection=ITradeConnection(cookies=None, 
-                                proxy=proxyHostname, 
+    connection=ITradeConnection(cookies=None,
+                                proxy=proxyHostname,
                                 proxyAuth=proxyAuthentication)
 
     # get OFFICIAL file from svn
@@ -394,11 +401,12 @@ def loadConfig():
         proxyHostname = config.get("net","proxyHostname")
     except:
         proxyHostname = None
-    
+
     try:
         proxyAuthentication = config.get("net","proxyAuthentication")
     except:
         proxyAuthentication = None
+
 # ============================================================================
 # saveConfig()
 # ============================================================================
@@ -419,6 +427,13 @@ def saveConfig():
         config.set("view","OperationFontSize","%d" % operationFontSize)
     if (lang != 0) and (lang != 255):
         config.set("view","lang","%d" % lang)
+
+    # create "Net" section
+    config.add_section("net")
+    if proxyHostname:
+        config.set("net","proxyHostname",proxyHostname)
+    if proxyAuthentication:
+        config.set("net","proxyAuthentication",proxyAuthentication)
 
     # write the new configuration file
     fn = os.path.join(dirUserData,'usrconfig.txt')
