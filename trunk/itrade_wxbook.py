@@ -503,7 +503,9 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         for aname,acon in listLoginConnector():
             self.accessmenu.Append(ID_ACCESS+ncon+1, acon.name(), acon.desc())
             ncon = ncon + 1
-        self.optionsmenu.AppendMenu(ID_ACCESS,message('main_options_access'),self.accessmenu,message('main_options_desc_access'))
+        if ncon>0:
+            # menu->options->login only if there at least one login plugin loaded
+            self.optionsmenu.AppendMenu(ID_ACCESS,message('main_options_access'),self.accessmenu,message('main_options_desc_access'))
 
         self.langmenu = wx.Menu()
         self.langmenu.AppendRadioItem(ID_LANG_SYSTEM, message('main_options_lang_default'),message('main_options_lang_default'))
