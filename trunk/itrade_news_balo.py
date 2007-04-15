@@ -98,12 +98,11 @@ class News_Balo(object):
 
         info('Balo News refresh %s',self.m_url)
         try:
-            self.m_connection.put(self.m_url)
+            buf=self.m_connection.getDataFromUrl(self.m_url)
         except:
             debug('News_Balo:unable to connect :-(')
             return None
 
-        buf = self.m_connection.getData()
         iter = self.splitLines(buf)
 
         for eachLine in iter:
@@ -134,7 +133,7 @@ class News_Balo(object):
             html.paint0()
         info('goto %s',url)
         try:
-            self.m_connection(url)
+            buf=self.m_connection.getDataFromUrl(url)
         except:
             debug('News_Balo:unable to connect :-(')
             if html:
@@ -143,7 +142,6 @@ class News_Balo(object):
                 print 'unable to connect'
             return
 
-        buf = self.m_connection.getData()
         #print buf
 
         title = re.search('<tr>[ \t\n\r]+<td.*</td>[ \t\n\r]+</tr>',buf,re.IGNORECASE|re.MULTILINE|re.DOTALL)

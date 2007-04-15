@@ -151,13 +151,12 @@ class LiveUpdate_yahoo(object):
 
         debug("LiveUpdate_yahoo:getdata: url=%s",url)
         try:
-            self.m_connection.put(url)
+            data=self.m_connection.getDataFromUrl(url)[:-2] # Get rid of CRLF
         except:
             debug('LiveUpdate_yahoo:unable to connect :-(')
             return None
 
         # pull data
-        data = self.m_connection.getData()[:-2] # Get rid of CRLF
         s400 = re.search("400 Bad Request",data,re.IGNORECASE|re.MULTILINE)
         if s400:
             if itrade_config.verbose:

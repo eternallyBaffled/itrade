@@ -81,13 +81,12 @@ def Import_ListOfQuotes_ASX(quotes,market='ASX',dlg=None,x=0):
         return lines
 
     try:
-        connection.put(url)
+        data=connection.getDataFromUrl(url)
     except:
         debug('Import_ListOfQuotes_ASX:unable to connect :-(')
         return False
 
     # returns the data
-    data = connection.getData()
     lines = splitLines(data)
     n = 0
 

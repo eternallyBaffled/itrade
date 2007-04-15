@@ -85,7 +85,7 @@ def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT',dlg=None,x=0):
         return lines
 
     try:
-        connection.put(url)
+        data=connection.getDataFromUrl(url)
     except:
         debug('Import_ListOfQuotes_Euronext:unable to connect :-(')
         return False
@@ -129,7 +129,6 @@ def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT',dlg=None,x=0):
     """
 
     # returns the data
-    data = connection.getData()
     lines = splitLines(data)
     count = 0
 

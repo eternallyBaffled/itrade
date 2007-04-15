@@ -294,8 +294,7 @@ def checkNewRelease():
 
     # get OFFICIAL file from svn
     try:
-        connection.put(softwareLatest)
-        latest = connection.getData()
+        latest=connection.getDataFromUrl(softwareLatest)
     except IOError:
         print 'checkNewRelease(): exeption getting OFFICIAL file'
         return 'err'

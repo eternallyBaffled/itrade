@@ -79,6 +79,16 @@ class ITradeConnection(object):
                               "accept":"*/*",
                               "userAgent":"Mozilla/5.0 (compatible; iTrade)",
                               "Connection":"Keep-Alive"} # Default HTTP header
+    
+    def getDataFromUrl(self, url, header=None, data=None):
+        """Thread safe method to get data from an URL. See put() and getData() method for details"""
+        self.m_locker.acquire()
+        try:
+            self.put(url, header, data)
+            result=self.getData()
+        finally:
+            self.m_locker.release()
+        return result
         
     def put(self, url, header=None, data=None):
         """Put a request to url with data parameters (for POST request only).
@@ -87,7 +97,7 @@ class ITradeConnection(object):
         @param header: addon headers for connection (optional, default is None)
         @param data: dictionary of parameters for POST (optional, default is None)"""
         
-        self.m_locker.acquire()
+        
         # Parse URL
         (protocole, host, page, params, query, fragments)=urlparse.urlparse(url)
 
@@ -171,11 +181,9 @@ class ITradeConnection(object):
                     else:
                         debug("Strange cookie header (%s). Ignoring." % cookieHeader)
             except (socket.gaierror,httplib.CannotSendRequest) , e:
-                raise "An error occurend while requesting the remote server : %s" % e
+                exception("An error occurend while requesting the remote server : %s" % e)
         except Exception, e:
-            self.m_locker.release()
-            raise "Unhandled exception on ITrade_Connexion (%s)" % e
-        self.m_locker.release()
+            exception("Unhandled exception on ITrade_Connexion (%s)" % e)
 
     def getData(self):
         """@return:  page source code (gunzip if needed) or binary data as a str"""

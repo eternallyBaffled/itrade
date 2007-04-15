@@ -187,13 +187,12 @@ class LiveUpdate_Euronext(object):
 
         debug("LiveUpdate_Euronext:getdata: url=%s ",url)
         try:
-            self.m_connection.put(url)
+            buf=self.m_connection.getDataFromUrl(url)
         except:
             debug('LiveUpdate_Euronext:unable to connect :-(')
             return None
 
         # pull data
-        buf = self.m_connection.getData()
         lines = self.splitLines(buf)
         data = ''
 
