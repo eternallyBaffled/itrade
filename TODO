@@ -32,6 +32,7 @@ Version 0.4.6 (Nausicaa2)
  + Switzerland Market (yahoo connector)
  + Italian Market (yahoo connector)
  + main market indicator
+ + Proxy Connection
  ~ Printing module
  ~ Extensible Indicators back-end
 
