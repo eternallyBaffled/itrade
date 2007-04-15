@@ -10,7 +10,7 @@ On the road for v0.4.6 (Nausicaa2)
 	* menu->options->login only if there at least one login plugin loaded
 	* UI module to enter proxy and proxy auth parameters (SF bug 1604305)
 
-2007 04-15 Sébastien Renard <Sebastien dot Renard at digitalfox dot org>
+2007-04-15 Sébastien Renard <Sebastien dot Renard at digitalfox dot org>
     	* New module dedicated to http connection with proxy, proxy
 	  authentication and keepalive support (SF bug 1604305)
 
