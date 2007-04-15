@@ -8,12 +8,13 @@
 #
 # The Original Code is iTrade code (http://itrade.sourceforge.net).
 #
-# The Initial Developer of the Original Code is    Gilles Dumortier.
+# The Initial Developer of the Original Code is Gilles Dumortier.
 #
 # Portions created by the Initial Developer are Copyright (C) 2004-2007 the
 # Initial Developer. All Rights Reserved.
 #
 # Contributor(s):
+#   Sébastien Renard
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -49,7 +50,6 @@ from threading import Lock, currentThread
 # iTrade system
 from itrade_logging import *
 
-
 # ============================================================================
 # ITradeConnection()
 # ============================================================================
@@ -61,7 +61,7 @@ class ITradeConnection(object):
         @param proxy: proxy host name or IP
         @param proxyAuth: authentication string for proxy in the form 'user:password'"""
 
-        self.m_cookies=cookies     
+        self.m_cookies=cookies
         self.m_proxy=proxy
 
         if proxyAuth:
@@ -79,7 +79,7 @@ class ITradeConnection(object):
                               "accept":"*/*",
                               "userAgent":"Mozilla/5.0 (compatible; iTrade)",
                               "Connection":"Keep-Alive"} # Default HTTP header
-    
+
     def getDataFromUrl(self, url, header=None, data=None):
         """Thread safe method to get data from an URL. See put() and getData() method for details"""
         self.m_locker.acquire()
@@ -89,15 +89,15 @@ class ITradeConnection(object):
         finally:
             self.m_locker.release()
         return result
-        
+
     def put(self, url, header=None, data=None):
         """Put a request to url with data parameters (for POST request only).
         No data imply GET request
         @param url: a complete url like http://www.somehost.com/somepath/somepage
         @param header: addon headers for connection (optional, default is None)
         @param data: dictionary of parameters for POST (optional, default is None)"""
-        
-        
+
+
         # Parse URL
         (protocole, host, page, params, query, fragments)=urlparse.urlparse(url)
 
@@ -110,7 +110,7 @@ class ITradeConnection(object):
                 nextHeader=dict(header)
             else:
                 nextHeader=dict(self.m_defaultHeader)
-            
+
             # Go through proxy if defined
             if self.m_proxy:
                 host=self.m_proxy
@@ -137,22 +137,22 @@ class ITradeConnection(object):
                     # Open a new one and save it
                     connection=httplib.HTTPSConnection(host)
                     self.m_httpsConnection[host]=connection
-    
+
             # Add cookie
             if self.m_cookies:
                 nextHeader["Cookie"]=self.m_cookies.get()
-    
+
             start=time.time()
-    
+
             try:
                 if data:
                     # Not tested
-                    nextHeader.update({'Content-Length' : len(data), 
+                    nextHeader.update({'Content-Length' : len(data),
                                        'Content-type' : 'application/x-www-form-urlencoded'})
                     connection.request("POST", page, data, nextHeader)
                 else:
                     connection.request("GET", request, None, nextHeader)
-    
+
                 self.response=connection.getresponse()
                 if self.response:
                     if self.response.getheader('Content-Encoding') == 'gzip':
@@ -162,16 +162,16 @@ class ITradeConnection(object):
                         self.m_responseData=self.response.read()
                 else:
                     self.m_responseData=""
-                debug("========> reponse code : %s" % self.getStatus())
+                debug("========> response code : %s" % self.getStatus())
                 #print "======= >response : %s" % self.m_responseData
-    
+
                 # Follow redirect if any with recursion
                 if self.getStatus() in (301, 302):
                     url=urlparse.urljoin(url, self.response.getheader("location", ""))
                     self.put(url, nextHeader)
-    
+
                 self.duration=time.time()-start
-    
+
                 #Save cookie string
                 cookieHeader=self.response.getheader('Set-Cookie')
                 if  cookieHeader and self.m_cookies:
@@ -181,14 +181,14 @@ class ITradeConnection(object):
                     else:
                         debug("Strange cookie header (%s). Ignoring." % cookieHeader)
             except (socket.gaierror,httplib.CannotSendRequest) , e:
-                exception("An error occurend while requesting the remote server : %s" % e)
+                exception("An error occured while requesting the remote server : %s" % e)
         except Exception, e:
             exception("Unhandled exception on ITrade_Connexion (%s)" % e)
 
     def getData(self):
         """@return:  page source code (gunzip if needed) or binary data as a str"""
         return self.m_responseData
-    
+
     def getStatus(self):
         """@return:  http status code of last request"""
         if self.response:
@@ -206,11 +206,11 @@ class ITradeConnection(object):
 
 class ITradeCookies:
     """Simple cookie repository"""
-    
+
     def __init__(self):
         self.m_locker=Lock()
         self.m_cookie=""
-        
+
     def set(self, cookieString):
         """Set a new Cookie"""
         self.m_locker.acquire()
@@ -222,7 +222,7 @@ class ITradeCookies:
         finally:
             print "now cookie is %s" % self.cookie
             self.m_locker.release()
-    
+
     def get(self):
         """get cookie string. If not, empty string is return"""
         return self.cookie
