@@ -39,7 +39,6 @@
 import logging
 import re
 import string
-import urllib
 from datetime import *
 
 # iTrade system
@@ -49,6 +48,8 @@ from itrade_datation import Datation,jjmmaa2yyyymmdd
 from itrade_defs import *
 from itrade_ext import *
 from itrade_market import euronext_place2mep,euronext_InstrumentId
+from itrade_connection import ITradeConnection
+import itrade_config
 
 # ============================================================================
 # Import_euronext()
@@ -59,6 +60,9 @@ class Import_euronext(object):
     def __init__(self):
         debug('Import_euronext:__init__')
         self.m_url = 'http://www.euronext.com/tools/datacentre/dataCentreDownloadExcell.jcsv'
+        self.m_connection=ITradeConnection(cookies=None, 
+                                           proxy=itrade_config.proxyHostname, 
+                                           proxyAuth=itrade_config.proxyAuthentication)
 
     def name(self):
         return 'euronext'
@@ -148,13 +152,13 @@ class Import_euronext(object):
 
         debug("Import_euronext:getdata: url=%s ",url)
         try:
-            f = urllib.urlopen(url)
+            self.m_connection.put(url)
         except:
             debug('Import_euronext:unable to connect :-(')
             return None
 
         # pull data
-        buf = f.read()
+        buf=self.m_connection.getData()
         lines = self.splitLines(buf)
         data = ''
         #print lines

@@ -39,12 +39,13 @@
 # python system
 import logging
 import string
-import urllib
 
 # iTrade system
 from itrade_logging import *
 import itrade_csv
 from itrade_local import message
+from itrade_connection import ITradeConnection
+import itrade_config
 
 # ============================================================================
 # currency <-> symbol conversion
@@ -95,6 +96,12 @@ class Currencies(object):
     def __init__(self):
         # url
         self.m_url = 'http://finance.yahoo.com/d/quotes.csv?s=%s%s=X&f=s4l1t1c1ghov&e=.csv'
+        # loadCofnig is needed because one instance of Currencies is created
+        # when module is loaded - and this is done on itrade.py very prior first config loading
+        itrade_config.loadConfig()
+        self.m_connection=ITradeConnection(cookies=None, 
+                                           proxy=itrade_config.proxyHostname, 
+                                           proxyAuth=itrade_config.proxyAuthentication)
 
         # to-from
         self.m_currencies = {}
@@ -192,12 +199,12 @@ class Currencies(object):
     def get(self,curTo,curFrom):
         url = self.m_url % (curFrom,curTo)
         try:
-            f = urllib.urlopen(url)
+            self.m_connection.put(url)
         except:
             return None
 
         # pull data
-        buf = f.read()
+        buf = self.m_connection.getData()
         sdata = string.split(buf, ',')
 
         #print 'get: %s %s rate = %.4f' %(curTo,curFrom,float(sdata[1]))
