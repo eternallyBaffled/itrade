@@ -5,6 +5,10 @@ On the road for v0.4.6 (Nausicaa2)
 
 ===============================================================================
 
+2007 04-15 Sébastien Renard <Sebsatien dot Renard at digitalfox dot org>
+    * New module dedicated to http connection with proxy, proxy authentication
+      and keepalive support (SF bug 1604305)
+
 2007-04-14  Gilles Dumortier <dgil at ieee.org>
 	* Indice Display : no currency / no trading (SF bug 1700652)
 	* List of quotes : Plugin : Swiss Market (SF bug 1700345)
