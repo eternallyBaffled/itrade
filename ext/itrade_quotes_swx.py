@@ -80,13 +80,12 @@ def Import_ListOfQuotes_SWX(quotes,market='SWISS EXCHANGE',dlg=None,x=0):
     info('Import_ListOfQuotes_SWX:connect to %s' % url)
 
     try:
-        connection.put(url)
+        data=connection.getDataFromUrl(url)
     except:
         info('Import_ListOfQuotes_SWX:unable to connect :-(')
         return False
 
     # returns the data
-    data = connection.getData()
     lines = splitLines(data)
     n = 0
 

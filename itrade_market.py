@@ -360,11 +360,10 @@ def euronext_InstrumentId(quote):
                 print "euronext_InstrumentId: urlID=%s " % url
 
             try:
-                connection.put(url)
+                buf=connection.getDataFromUrl(url)
             except:
                 print 'euronext_InstrumentId: %s exception error' % url
                 return None
-            buf = connection.getData()
             sid = re.search("selectedMep=%d&amp;idInstrument=\d*&amp;isinCode=%s" % (euronext_place2mep(quote.place()),quote.isin()),buf,re.IGNORECASE|re.MULTILINE)
             if sid:
                 sid = buf[sid.start():sid.end()]

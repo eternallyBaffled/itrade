@@ -78,13 +78,12 @@ def Import_ListOfQuotes_NYSE(quotes,market='NYSE',dlg=None,x=0):
         return lines
 
     try:
-        connection.put(url)
+        data=connection.getDataFromUrl(url)
     except:
         debug('Import_ListOfQuotes_NYSE:unable to connect :-(')
         return False
 
     # returns the data
-    data = connection.getData()
     lines = splitLines(data)
 
     for line in lines:

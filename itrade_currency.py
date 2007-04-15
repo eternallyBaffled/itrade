@@ -199,12 +199,11 @@ class Currencies(object):
     def get(self,curTo,curFrom):
         url = self.m_url % (curFrom,curTo)
         try:
-            self.m_connection.put(url)
+            buf=self.m_connection.getDataFromUrl(url)
         except:
             return None
 
         # pull data
-        buf = self.m_connection.getData()
         sdata = string.split(buf, ',')
 
         #print 'get: %s %s rate = %.4f' %(curTo,curFrom,float(sdata[1]))

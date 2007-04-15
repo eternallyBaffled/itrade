@@ -98,8 +98,7 @@ def Import_ListOfQuotes_BARCHART(quotes,market='NASDAQ',dlg=None,x=0):
 
             if not fn:
                 try:
-                    connection.put(url%letter)
-                    data=connection.getData()
+                    data=connection.getDataFromUrl(url%letter)
                 except:
                     print 'Import_ListOfQuotes_BARCHART:unable to connect to',url%letter
                     return False

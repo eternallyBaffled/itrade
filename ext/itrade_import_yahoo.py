@@ -137,13 +137,12 @@ class Import_yahoo(object):
 
         debug("Import_yahoo:getdata: url=%s ",url)
         try:
-            self.m_connection.put(url)
+            buf=self.m_connection.getDataFromUrl(url)
         except:
             debug('Import_yahoo:unable to connect :-(')
             return None
 
         # pull data
-        buf=self.m_connection.getData()
         lines = self.splitLines(buf)
         header = string.split(lines[0],',')
         data = ""

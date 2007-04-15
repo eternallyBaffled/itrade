@@ -152,13 +152,12 @@ class Import_euronext(object):
 
         debug("Import_euronext:getdata: url=%s ",url)
         try:
-            self.m_connection.put(url)
+            buf=self.m_connection.getDataFromUrl(url)
         except:
             debug('Import_euronext:unable to connect :-(')
             return None
 
         # pull data
-        buf=self.m_connection.getData()
         lines = self.splitLines(buf)
         data = ''
         #print lines
