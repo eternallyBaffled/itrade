@@ -83,6 +83,7 @@ class ITradeConnection(object):
     def getDataFromUrl(self, url, header=None, data=None):
         """Thread safe method to get data from an URL. See put() and getData() method for details"""
         self.m_locker.acquire()
+        result=""
         try:
             self.put(url, header, data)
             result=self.getData()
@@ -114,6 +115,7 @@ class ITradeConnection(object):
             # Go through proxy if defined
             if self.m_proxy:
                 host=self.m_proxy
+                debug("========> proxy is %s" % host)
                 request=url
                 if self.m_proxyAuth:
                     nextHeader["Proxy-Authorization"]=self.m_proxyAuth
@@ -154,6 +156,7 @@ class ITradeConnection(object):
                     connection.request("GET", request, None, nextHeader)
 
                 self.response=connection.getresponse()
+                
                 if self.response:
                     if self.response.getheader('Content-Encoding') == 'gzip':
                         self.m_responseData=GzipFile(fileobj=StringIO(self.response.read())).read()
@@ -162,8 +165,13 @@ class ITradeConnection(object):
                         self.m_responseData=self.response.read()
                 else:
                     self.m_responseData=""
-                debug("========> response code : %s" % self.getStatus())
-                #print "======= >response : %s" % self.m_responseData
+                
+                if self.getStatus()!=200:
+                    msg="Receive bad answer from server (code %s) while requesting : %s" % \
+                                                                      (self.getStatus(), url)
+                    info(msg)
+                    self.m_responseData="" 
+                    raise msg
 
                 # Follow redirect if any with recursion
                 if self.getStatus() in (301, 302):
@@ -179,11 +187,13 @@ class ITradeConnection(object):
                         cookieString=self.response.getheader('Set-Cookie').split(";")[0]
                         self.m_cookies.set(cookieString)
                     else:
-                        debug("Strange cookie header (%s). Ignoring." % cookieHeader)
-            except (socket.gaierror,httplib.CannotSendRequest) , e:
-                exception("An error occured while requesting the remote server : %s" % e)
+                        info("Strange cookie header (%s). Ignoring." % cookieHeader)
+            except (socket.gaierror, httplib.CannotSendRequest, httplib.BadStatusLine) , e:
+                self.clearConnections()
+                error("An error occured while requesting the remote server : %s" % e)
         except Exception, e:
-            exception("Unhandled exception on ITrade_Connexion (%s)" % e)
+            self.clearConnections()
+            error("Unhandled exception on ITrade_Connexion (%s)" % e)
 
     def getData(self):
         """@return:  page source code (gunzip if needed) or binary data as a str"""
@@ -199,6 +209,12 @@ class ITradeConnection(object):
     def getDuration(self):
         """@return:  last request duration in seconds"""
         return self.duration
+
+    def clearConnections(self):
+        """Clear all http and https connexion to start up on clean base"""
+        debug("Cleaning up http(s) connections")
+        self.m_httpConnection={}
+        self.m_httpsConnection={}
 
 # ============================================================================
 # ITradeCookies
