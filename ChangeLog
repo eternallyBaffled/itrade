@@ -5,6 +5,9 @@ On the road for v0.4.6 (Nausicaa2)
 
 ===============================================================================
 
+2007-04-16 Sébastien Renard <Sebastien dot Renard at digitalfox dot org>
+	* Better error handling for ITradeConnection (SF bug 1701097)
+
 2007-04-15  Gilles Dumortier <dgil at ieee.org>
 	* New tarball
 	* Graph View : no access with Swiss and Milan Exchange (SF bug 1701074)
