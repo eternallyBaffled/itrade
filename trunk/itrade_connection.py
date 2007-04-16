@@ -74,6 +74,7 @@ class ITradeConnection(object):
         self.m_response=None       # HTTPResponse of last request
         self.m_responseData=""     # Content of the http response
         self.m_duration=0          # Duration of last request
+        self.m_retrying=False      # Flag to indicate if we are retrying after connection failure
         self.m_locker=Lock()       # Lock to protect httplib strict cycle (get/response) in multithreading
         self.m_defaultHeader={"acceptEncoding":"gzip, deflate",
                               "accept":"*/*",
@@ -189,10 +190,19 @@ class ITradeConnection(object):
                     else:
                         info("Strange cookie header (%s). Ignoring." % cookieHeader)
             except (socket.gaierror, httplib.CannotSendRequest, httplib.BadStatusLine) , e:
-                self.clearConnections()
-                error("An error occured while requesting the remote server : %s" % e)
+                del self.m_httpConnection[host] # Remove connexion from pool
+                if not self.m_retrying:
+                    # Retry one time because this kind of error can be "normal"
+                    # Eg. after a connection keep-alive timeout
+                    info("An error occured while requesting the remote server : %s. Retrying" % e)
+                    self.m_retrying=False
+                    self.put(url, header, data) # Retrying one time
+                    self.m_retrying=False
+                else:
+                    error("An error occured while requesting the remote server : %s (retry fail)" % e)
+                    self.m_retrying=False
         except Exception, e:
-            self.clearConnections()
+            self.clearConnections() # Clean all connection
             error("Unhandled exception on ITrade_Connexion (%s)" % e)
 
     def getData(self):
