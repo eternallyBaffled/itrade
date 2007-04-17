@@ -43,9 +43,8 @@ main_view_currencies;&Moedas correntes
 main_view_desc_currencies; Moedas correntes
 main_view_evaluation; &Desempenho
 main_view_desc_evaluation; Avaliação do desempenho da carteira
-main_view_trading;__x&Trading
-main_view_desc_trading;__x Display general Trading information for the portfolio
-
+main_view_trading;&Trading
+main_view_desc_trading;Informações gerais de Trading da conta
 main_view_compute;&Computador
 main_view_desc_compute; Computador
 
@@ -121,14 +120,22 @@ main_help_desc_forum;Participar na comunidade iTrade sobre o seu Fórum (Francês-
 main_help_donors;&Doar o Dinheiro…
 main_help_desc_donors; Como doar o dinheiro para suportar este projecto
 
-main_help_checksoftware;__x&Check new Software
-main_help_desc_checksoftware;__x Check if a new software release available
+main_help_checksoftware;&Verificação das actualizações
+main_help_desc_checksoftware;Verificação se uma nova versão de software està disponível
 
-checksoftware_needupdate;__xThe software need to be updated ! Do you want download it now ?
-checksoftware_uptodate;__xYou have the latest known official release.
-checksoftware_title;__xChecking for Upgrade
-checksoftware_development;__xYou have a release under development.
-checksoftware_error;__xCan't get release information for the software (network issue ?)
+
+checksoftware_needupdate;O programa deve ser actualizado! Querem descarregar da nova versão?
+
+
+checksoftware_uptodate;Tem a última versão oficial conhecida
+
+checksoftware_title;Actualização do Programa
+
+
+checksoftware_development;Tem uma versão em cursos de desenvolvimento.
+
+
+checksoftware_error;Impossível obter a informação de versão do programa(network issue ?)
 
 main_about;&Sobre ...
 main_desc_about; Informação sobre o iTrade
@@ -138,7 +145,7 @@ main_title_quotes;iTrade - Matriz %s: %s
 main_title_stops;iTrade - Stops %s: %s
 main_title_indicators;iTrade - Indicadores %s: %s
 main_title_evaluation;iTrade - Desempenho %s: %s
-main_title_trading;__xiTrade - Trading %s:%s
+main_title_trading;iTrade - Trading %s:%s
 
 main_refreshing;Actualizando os dados
 
@@ -203,7 +210,7 @@ place;Lugar
 all_markets;Todos os mercados
 invalid_isin;O código de ISIN %s é inválido
 symbol_not_found;O Código de ISIN %s ou nome %s não encontrado
-risk;__xRisk
+risk;Risco
 stop_plus;Stop+
 stop_minus;Stop-
 
@@ -302,7 +309,7 @@ portfolio_market;Mercado principal :
 portfolio_select_textfield;Referência :
 portfolio_currency;Moeda corrente :
 portfolio_indicator;Indicador principal :
-portfolio_vat;__xVAT (in %) :
+portfolio_vat;IVA (in %) :
 portfolio_list_filename;Referência
 portfolio_list_name;Descrição
 portfolio_list_accountref;Número da conta
@@ -555,14 +562,16 @@ page_quotes;Matriz
 page_stops;Stops
 page_indicators;Indicadores
 page_evaluation;Desempenho
-page_trading;__xTrading
+page_trading;Trading
 
 print_preview;Visualizar impressão
 print_printing;Imprimir...
 print_errprinting;Erro de impressão.\nVerificar a configuração corrente?
 print_page;Página: %d
 
-about_url;__xPlease point your browser at : %s
+about_url;Lançar o navegador para a ligação: %s
+
+
 about_title;Sobre o iTrade
 
 info_caption;iTrade - Informação
@@ -583,17 +592,19 @@ stops_edit;Modificar
 stops_add_desc;Adicionar as informações de Stops
 stops_edit_desc;Modificar as informações de Stops
 
-decision_positiononquote_cash;__xCash Position
-decision_positiononquote_credit;__xMarging Position
-decision_purchasingpower;__xPurchasing Power
-decision_numofshares;__xNumber of shares :
-decision_upp;__xPrice Paid per Share :
-decision_pp;__xTotal Price Paid :
-decision_profit;__xLatent Profit in %s :
-decision_profitpercent;__xLatent Profit in % :
-decision_availablecash;__xAvailable Cash in %s :
-decision_committedcredit;__xCommitted Margin in %s :
-decision_availablecredit;__xAvailable for Margin in %s :
+decision_positiononquote_cash;Cash Position
+decision_positiononquote_credit;Marging Position
+decision_purchasingpower;Poder de Compra
+
+decision_numofshares;Quantidade de Acções :
+decision_upp;Preço de custo unitário :
+
+decision_pp;Preço de custo total :
+decision_profit;Latent Profit in %s :
+decision_profitpercent;Latent Profit in % :
+decision_availablecash;Available Cash in %s :
+decision_committedcredit;Committed Margin in %s :
+decision_availablecredit;Available for Margin in %s :
 
 connection_title;__xConnection Settings
 proxy_server;__xProxy Hostname (empty if none) :
