@@ -5,6 +5,9 @@ On the road for v0.4.6 (Nausicaa2)
 
 ===============================================================================
 
+2007-04-18 Sébastien Renard <Sebastien dot Renard at digitalfox dot org>
+	* Handle HTTP connexion timeout correctly and better error logging
+
 2007-04-16 Sébastien Renard <Sebastien dot Renard at digitalfox dot org>
 	* Better error handling for ITradeConnection (SF bug 1701097)
 

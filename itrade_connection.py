@@ -64,6 +64,9 @@ class ITradeConnection(object):
         self.m_cookies=cookies
         self.m_proxy=proxy
 
+        # Set a default socket timeout to 20 second for all futher connexions
+        socket.setdefaulttimeout(20)
+
         if proxyAuth:
             self.m_proxyAuth="Basic "+base64.encodestring("username:password")
         else:
@@ -189,8 +192,20 @@ class ITradeConnection(object):
                         self.m_cookies.set(cookieString)
                     else:
                         info("Strange cookie header (%s). Ignoring." % cookieHeader)
+            except socket.timeout, e:
+                msg="Connexion timeout while requesting the remote server : %s" % url
+                error(msg)
+                self.m_responseData="" 
+                if protocole.lower()=="http":
+                    del self.m_httpConnection[host] # Remove connexion from pool
+                else:
+                    del self.m_httpsConnection[host] # Remove connexion from pool
+                raise msg
             except (socket.gaierror, httplib.CannotSendRequest, httplib.BadStatusLine) , e:
-                del self.m_httpConnection[host] # Remove connexion from pool
+                if protocole.lower()=="http":
+                    del self.m_httpConnection[host] # Remove connexion from pool
+                else:
+                    del self.m_httpsConnection[host] # Remove connexion from pool
                 if not self.m_retrying:
                     # Retry one time because this kind of error can be "normal"
                     # Eg. after a connection keep-alive timeout
@@ -199,8 +214,10 @@ class ITradeConnection(object):
                     self.put(url, header, data) # Retrying one time
                     self.m_retrying=False
                 else:
-                    error("An error occured while requesting the remote server : %s (retry fail)" % e)
+                    msg="An error occured while requesting the remote server : %s (retry fail)" % e
+                    error(msg)
                     self.m_retrying=False
+                    raise msg
         except Exception, e:
             self.clearConnections() # Clean all connection
             error("Unhandled exception on ITrade_Connexion (%s)" % e)
