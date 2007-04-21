@@ -68,7 +68,7 @@ class ITradeConnection(object):
         socket.setdefaulttimeout(20)
 
         if proxyAuth:
-            self.m_proxyAuth="Basic "+base64.encodestring("username:password")
+            self.m_proxyAuth="Basic "+base64.encodestring(proxyAuth)
         else:
             self.m_proxyAuth=None
 
@@ -175,6 +175,7 @@ class ITradeConnection(object):
                                                                       (self.getStatus(), url)
                     info(msg)
                     self.m_responseData="" 
+                    self.clearConnection(protocole, host)
                     raise msg
 
                 # Follow redirect if any with recursion
@@ -196,21 +197,15 @@ class ITradeConnection(object):
                 msg="Connexion timeout while requesting the remote server : %s" % url
                 error(msg)
                 self.m_responseData="" 
-                if protocole.lower()=="http":
-                    del self.m_httpConnection[host] # Remove connexion from pool
-                else:
-                    del self.m_httpsConnection[host] # Remove connexion from pool
+                self.clearConnection(protocole, host)
                 raise msg
             except (socket.gaierror, httplib.CannotSendRequest, httplib.BadStatusLine) , e:
-                if protocole.lower()=="http":
-                    del self.m_httpConnection[host] # Remove connexion from pool
-                else:
-                    del self.m_httpsConnection[host] # Remove connexion from pool
+                self.clearConnection(protocole, host)
                 if not self.m_retrying:
                     # Retry one time because this kind of error can be "normal"
                     # Eg. after a connection keep-alive timeout
                     info("An error occured while requesting the remote server : %s. Retrying" % e)
-                    self.m_retrying=False
+                    self.m_retrying=True
                     self.put(url, header, data) # Retrying one time
                     self.m_retrying=False
                 else:
@@ -236,6 +231,15 @@ class ITradeConnection(object):
     def getDuration(self):
         """@return:  last request duration in seconds"""
         return self.duration
+
+    def clearConnection(self, protocole, host):
+        """Clear connexion for given host and protocole
+        @param protocole: protocole of connection to be cleared (http or https, not case sensitive)
+        @param host: host of connection to be cleared"""
+        if protocole.lower()=="http":
+            del self.m_httpConnection[host]
+        else:
+            del self.m_httpsConnection[host]
 
     def clearConnections(self):
         """Clear all http and https connexion to start up on clean base"""
