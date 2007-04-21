@@ -246,6 +246,20 @@ class ITradeConnection(object):
         debug("Cleaning up http(s) connections")
         self.m_httpConnection={}
         self.m_httpsConnection={}
+        
+    def setProxy(self, proxy=None, proxyAuth=None):
+        """Use the given proxy for connexions. All connexions will be cleared to use proxy at next connextion.
+        This method is thread safe with getDataFromUrl()
+        @param proxy: proxy hostname (IP:port). None means no proxy. Default is None
+        @param proxyAuth: proxy authentication (user:password). None means no authentication. Default is None
+        """
+        self.m_locker.acquire()
+        try:
+            self.m_proxy=proxy
+            self.m_proxyAuth=proxyAuth
+            self.clearConnections()
+        finally:
+            self.m_locker.release()
 
 # ============================================================================
 # ITradeCookies
