@@ -46,6 +46,7 @@ import time
 from gzip import GzipFile
 from StringIO import StringIO
 from threading import Lock, currentThread
+from urllib import urlencode
 
 # iTrade system
 from itrade_logging import *
@@ -57,11 +58,17 @@ from itrade_logging import *
 class ITradeConnection(object):
     """Class designed to handle request in HTTP 1.1"""
     def __init__(self, cookies=None, proxy=None, proxyAuth=None):
-        """@param cookies: cookie handler (instance of ITradeCookies class)
+        """@param cookies: cookie handler (instance of ITradeCookies class). If None, a private cookie
+        handler is created.
         @param proxy: proxy host name or IP
         @param proxyAuth: authentication string for proxy in the form 'user:password'"""
 
-        self.m_cookies=cookies
+        if cookies:
+            self.m_cookies=cookies
+        else:
+            # No cookie handler given ? Create a new one private for this connection instance
+            self.m_cookies=ITradeCookies()
+
         self.m_proxy=proxy
 
         # Set a default socket timeout to 20 second for all futher connexions
@@ -146,13 +153,16 @@ class ITradeConnection(object):
 
             # Add cookie
             if self.m_cookies:
-                nextHeader["Cookie"]=self.m_cookies.get()
+                if self.m_cookies.get():
+                    print "use cookie"
+                    nextHeader["Cookie"]=self.m_cookies.get()
 
             start=time.time()
 
             try:
                 if data:
-                    # Not tested
+                    # Encode data and update header
+                    data=urlencode(data)
                     nextHeader.update({'Content-Length' : len(data),
                                        'Content-type' : 'application/x-www-form-urlencoded'})
                     connection.request("POST", page, data, nextHeader)
@@ -169,14 +179,6 @@ class ITradeConnection(object):
                         self.m_responseData=self.response.read()
                 else:
                     self.m_responseData=""
-                
-                if self.getStatus()!=200:
-                    msg="Receive bad answer from server (code %s) while requesting : %s" % \
-                                                                      (self.getStatus(), url)
-                    info(msg)
-                    self.m_responseData="" 
-                    self.clearConnection(protocole, host)
-                    raise msg
 
                 # Follow redirect if any with recursion
                 if self.getStatus() in (301, 302):
@@ -185,14 +187,23 @@ class ITradeConnection(object):
 
                 self.duration=time.time()-start
 
+                if self.getStatus()!=200:
+                    msg="Receive bad answer from server (code %s) while requesting : %s" % \
+                                                                      (self.getStatus(), url)
+                    info(msg)
+                    self.m_responseData="" 
+                    self.clearConnection(protocole, host)
+                    raise msg
+
                 #Save cookie string
-                cookieHeader=self.response.getheader('Set-Cookie')
-                if  cookieHeader and self.m_cookies:
-                    if cookieHeader.count(";")>=1:
-                        cookieString=self.response.getheader('Set-Cookie').split(";")[0]
-                        self.m_cookies.set(cookieString)
-                    else:
-                        info("Strange cookie header (%s). Ignoring." % cookieHeader)
+                for cookieHeader in self.response.msg.getallmatchingheaders("set-cookie"):
+                    if  cookieHeader and self.m_cookies:
+                        if cookieHeader.count(";")>=1 and cookieHeader.count(":")>=1:
+                            cookieString=cookieHeader.split(":")[1]
+                            cookieString=cookieString.split(";")[0]
+                            self.m_cookies.set(cookieString)
+                        else:
+                            info("Strange cookie header (%s). Ignoring." % cookieHeader)
             except socket.timeout, e:
                 msg="Connexion timeout while requesting the remote server : %s" % url
                 error(msg)
@@ -276,17 +287,17 @@ class ITradeCookies:
         """Set a new Cookie"""
         self.m_locker.acquire()
         try:
-            if self.cookie:
-                self.cookie='%s;%s' % (self.cookie, cookieString)
+            if self.m_cookie:
+                self.m_cookie='%s;%s' % (self.m_cookie, cookieString)
             else:
-                self.cookie=cookieString
+                self.m_cookie=cookieString
         finally:
-            print "now cookie is %s" % self.cookie
+            print "now cookie is %s" % self.m_cookie
             self.m_locker.release()
 
     def get(self):
         """get cookie string. If not, empty string is return"""
-        return self.cookie
+        return self.m_cookie
 
 # ============================================================================
 # That's all folks !
