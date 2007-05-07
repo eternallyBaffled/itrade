@@ -292,7 +292,7 @@ class ITradeCookies:
             else:
                 self.m_cookie=cookieString
         finally:
-            print "now cookie is %s" % self.m_cookie
+            debug("now cookie is %s" % self.m_cookie)
             self.m_locker.release()
 
     def get(self):

@@ -14,6 +14,7 @@
 # Initial Developer. All Rights Reserved.
 #
 # Contributor(s):
+#    Sébastien Renard
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -30,6 +31,7 @@
 #
 # History       Rev   Description
 # 2007-01-05    dgil  Wrote it from scratch
+# 2007-05-07    sren  Make it works !
 # ============================================================================
 
 # ============================================================================
@@ -41,16 +43,13 @@ import logging
 import re
 import os
 import mimetypes
-#import httplib
-import cookielib
-import urllib
-import urllib2
 
 # iTrade system
 import itrade_config
 from itrade_logging import *
 from itrade_login import *
 from itrade_local import message
+from itrade_connection import ITradeConnection, ITradeCookies
 
 # ============================================================================
 # Login_boursorama()
@@ -67,10 +66,14 @@ class Login_boursorama(object):
     def __init__(self):
         debug('LiveUpdate_boursorama:__init__')
         self.m_default_host = "www.boursorama.fr"
-        self.m_cookie_url =  "https://www.boursorama.fr/connexion.phtml"
         self.m_login_url   = "https://www.boursorama.fr/logunique.phtml"
         self.m_logged = False
-
+        self.m_cookies=ITradeCookies()
+        # Manualy set the cookie that tell boursorama we are a cookie aware browser
+        self.m_cookies.set("SUP_COOKIE=OUI")
+        self.m_connection=ITradeConnection(cookies=self.m_cookies, 
+                                           proxy=itrade_config.proxyHostname, 
+                                           proxyAuth=itrade_config.proxyAuthentication)
         debug('Boursorama login (%s) - ready to run' % self.m_default_host)
 
     # ---[ properties ] ---
@@ -109,171 +112,21 @@ class Login_boursorama(object):
             if u==None or p==None:
                 print 'login: userinfo are invalid - please reenter Access Information'
                 return False
-        #print 'log:',u,p
-
-        # create the HTTPS connexion
-        #self.m_conn = httplib.HTTPSConnection(self.m_default_host,443)
-        #if self.m_conn == None:
-        #    print 'login: not connected on %s' % self.m_default_host
-        #    return False
-        #
-        #self.m_logged = False
-        #
-        #headers = {
-        #            "Connection":"keep-alive",
-        #            "Accept":"text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
-        #            "Host":self.m_default_host,
-        #            "User-Agent":"Mozilla/4.0 (Windows XP 5.1) Java/1.5.0_06",
-        #            "Pragma":"no-cache",
-        #            "Cache-Control":"no-cache",
-        #            "Content-Type":"application/x-www-form-urlencoded",
-        #            "Cookie": "NAVVER=OK"
-        #            }
-        #
-        ## GET COOKIE
-        #try:
-        #    self.m_conn.request("GET", self.m_cookie_url, None, headers)
-        #    flux = self.m_conn.getresponse()
-        #except:
-        #    print 'Login_boursorama:POST login failure %s' % self.m_login_url
-        #    return False
-        #
-        #if flux.status != 200:
-        #    print 'Login_boursorama: login status==%d!=200 reason:%s' % (flux.status,flux.reason)
-        #    return False
-        #
-        ## OK : we are logged to the service ... we can extract Session and Engine ID
-        #buf = flux.read()
-        ##print buf
-        #cookie = flux.getheader('Set-Cookie')
-        #if not cookie:
-        #    print 'Login_boursorama: Set-Cookie is missing in %s' % (flux.getheaders())
-        #    return False
-        #
-        #cookie = cookie.split(";")
-        ##print "Set-Cookie: ",cookie
-        #cookie = cookie[0].split("=")
-        #print "Set-Cookie: "+cookie[0]+'='+cookie[1]
-        #
-        #headers = {
-        #            "Connection":"keep-alive",
-        #            "Accept":"text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
-        #            "Host":self.m_default_host,
-        #            "User-Agent":"Mozilla/4.0 (Windows XP 5.1) Java/1.5.0_06",
-        #            "Pragma":"no-cache",
-        #            "Cache-Control":"no-cache",
-        #            "Content-Type":"application/x-www-form-urlencoded",
-        #            "Cookie": 'NAVVER=OK; %s=%s ' % (cookie[0],cookie[1])
-        #            }
-        #
-        ## LOGIN
-        #params = "redirect=&org=&login=%s&password=%s&memo=oui\r\n" % (u,p)
-        #
-        #try:
-        #    self.m_conn.request("POST", self.m_login_url, params, headers)
-        #    flux = self.m_conn.getresponse()
-        #except:
-        #    print 'Login_boursorama:POST login failure %s' % self.m_login_url
-        #    return False
-        #
-        #if flux.status != 200:
-        #    print 'Login_boursorama: login status==%d!=200 reason:%s' % (flux.status,flux.reason)
-        #    return False
-        #
-        #buf = flux.read()
-        #print buf
-        #
-        #self.m_logged = True
-        #
-        #return True
-
-        print 'GET COOKIE -->'
-
-        # Load Cookie file
-        cj = cookielib.LWPCookieJar()
-        COOKIEFILE = os.path.join(itrade_config.dirUserData,'boursorama_live.lwp')
-
-        hsh = urllib2.HTTPSHandler()
-        hsh.set_http_debuglevel(1)
-        hh = urllib2.HTTPHandler()
-        hh.set_http_debuglevel(1)
-
-        # Opener with cookie management
-        opener = urllib2.build_opener(hh, hsh, urllib2.HTTPCookieProcessor(cj))
-        #opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
-
-        #logger = logging.getLogger("cookielib")
-        #logger.addHandler(logging.StreamHandler(sys.stdout ))
-        #logger.setLevel(logging.DEBUG)
-
-        urllib2.install_opener(opener)
-
-        headers = {
-                    "Connection":"keep-alive",
-                    "Accept":"text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
-                    "Host":self.m_default_host,
-                    "User-Agent":"Mozilla/4.0 (Windows XP 5.1) Java/1.5.0_06",
-                    "Pragma":"no-cache",
-                    "Cache-Control":"no-cache",
-                    "Content-Type":"application/x-www-form-urlencoded"
-                    }
-
-        # GET COOKIE
-        try:
-            req = urllib2.Request(self.m_cookie_url,None,headers)
-            handle = urllib2.urlopen(req)
-        except IOError,e:
-            if hasattr(e,'code'):
-                print 'Login_boursorama:POST cookie failure %s - error code %s' % (self.m_cookie_url,e.code)
-            elif hasattr(e, 'reason'):
-                print 'Login_boursorama:POST cookie failure %s - reason %s' % (self.m_cookie_url,e.reason)
-            else:
-                print 'Login_boursorama:POST cookie failure %s - unknown reason' % (self.m_cookie_url)
-            return False
-
-        buf = handle.read()
-        #print
-        #print 'headers: ',handle.info().headers
-        #print
-
-        print 'These are the cookies we have received so far :'
-        for index, cookie in enumerate(cj):
-            print index, '  :  ', cookie
-        print
-
-        # LOGIN
-        print 'POST LOGIN -->'
-        params = "redirect=&org=&login=%s&password=%s&memo=oui\r\n" % (u,p)
-
-        headers = {
-                    "Connection":"keep-alive",
-                    "Accept":"text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
-                    "Host":self.m_default_host,
-                    "User-Agent":"Mozilla/4.0 (Windows XP 5.1) Java/1.5.0_06",
-                    "Pragma":"no-cache",
-                    "Cache-Control":"no-cache",
-                    "Content-Type":"application/x-www-form-urlencoded",
-                    "Cookie":'%s=%s; NAVVER=OK' %(cookie.name,cookie.value)
-                    }
 
         try:
-            req = urllib2.Request(self.m_login_url,params,headers)
-            handle = urllib2.urlopen(req)
+            param={"org" : "/index.phtml?",
+                   "redirect" : "",
+                   "login" : u,
+                   "password" : p,
+                   "memo" : "oui",
+                   "submit2" : "Valider"}
+            buf=self.m_connection.getDataFromUrl(self.m_login_url, data=param)
         except IOError,e:
-            if hasattr(e,'code'):
-                print 'Login_boursorama:POST login failure %s - error code %s' % (self.m_login_url,e.code)
-            elif hasattr(e, 'reason'):
-                print 'Login_boursorama:POST login failure %s - reason %s' % (self.m_login_url,e.reason)
-            else:
-                print 'Login_boursorama:POST login failure %s - unknown reason' % (self.m_login_url)
+            print "Exception occured while requesting Boursorama login page : %s" % e
             return False
 
-        buf = handle.read()
-        print buf
-
-        # save cookie for future usage
-        cj.save(COOKIEFILE)
-        self.m_logged = True
+        print "bourso login response :saved to bourso.html"
+        file("bourso.html", "w").write(buf)
 
         return True
 
