@@ -6,6 +6,7 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-05-14  Gilles Dumortier <dgil at ieee.org>
+	* -x : experimental code to reduce the refresh time (SF bug 1611122)
 	* Symbol List : Huge Database : Load market on Demand (SF bug 1662171)
 	* Indices not displayed without Isin code (SF bug 1703434)
 
@@ -25,7 +26,7 @@ On the road for v0.4.6 (Nausicaa2)
 	* UI module to enter proxy and proxy auth parameters (SF bug 1604305)
 
 2007-04-15 Sébastien Renard <Sebastien dot Renard at digitalfox dot org>
-    	* New module dedicated to http connection with proxy, proxy
+	* New module dedicated to http connection with proxy, proxy
 	  authentication and keepalive support (SF bug 1604305)
 
 2007-04-14  Gilles Dumortier <dgil at ieee.org>
