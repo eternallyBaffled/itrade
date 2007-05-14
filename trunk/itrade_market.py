@@ -136,24 +136,50 @@ def market2currency(market):
         # default to EURO
         return 'EUR'
 
-def list_of_markets(bFilterMode=False):
+# ============================================================================
+# list_of_markets
+# ============================================================================
+
+_lom = {
+    'EURONEXT' : False,
+    'ALTERNEXT': False,
+    'PARIS MARCHE LIBRE': False,
+    'BRUXELLES MARCHE LIBRE': False,
+    'LSE': False,
+    'NASDAQ': False,
+    'NYSE': False,
+    'AMEX': False,
+    'OTCBB': False,
+    'ASX': False,
+    'TSE': False,
+    'TSX': False,
+    'MILAN EXCHANGE': False,
+    'SWISS EXCHANGE': False,
+    }
+
+def set_market_loaded(market,set=True):
+    if _lom.has_key(market):
+        _lom[market] = set
+    if itrade_config.verbose:
+        print 'Load market %s' % market
+
+def unload_markets():
+    for market in _lom.keys():
+        _lom[market] = False
+
+def is_market_loaded(market):
+    if _lom.has_key(market):
+        return _lom[market]
+    else:
+        return False
+
+def list_of_markets(ifLoaded=False,bFilterMode=False):
     lom = []
     if bFilterMode:
         lom.append(message('all_markets'))
-    lom.append('EURONEXT')
-    lom.append('ALTERNEXT')
-    lom.append('PARIS MARCHE LIBRE')
-    lom.append('BRUXELLES MARCHE LIBRE')
-    lom.append('LSE')
-    lom.append('NASDAQ')
-    lom.append('NYSE')
-    lom.append('AMEX')
-    lom.append('OTCBB')
-    lom.append('ASX')
-    lom.append('TSE')
-    lom.append('TSX')
-    lom.append('MILAN EXCHANGE')
-    lom.append('SWISS EXCHANGE')
+    for market in _lom.keys():
+        if not ifLoaded or _lom[market]:
+            lom.append(market)
     return lom
 
 # ============================================================================
@@ -336,8 +362,8 @@ def euronext_InstrumentId(quote):
     else:
         urlid = 'http://www.euronext.com/quicksearch/resultquicksearch-2986-EN.html?matchpattern=%s&fromsearchbox=true&path=/quicksearch&searchTarget=quote'
 
-    connection=ITradeConnection(cookies=None, 
-                                proxy=itrade_config.proxyHostname, 
+    connection=ITradeConnection(cookies=None,
+                                proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
 
     # get instrument ID

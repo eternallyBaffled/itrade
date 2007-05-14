@@ -254,6 +254,7 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
     def OnMarket(self,evt):
         idx = self.wxMarketCtrl.GetSelection()
         self.m_market = self.wxMarketCtrl.GetClientData(idx)
+        quotes.loadMarket(self.m_market)
         self.resetFields()
 
     def OnQuoteList(self,evt):

@@ -49,7 +49,7 @@ from itrade_import import *
 from itrade_defs import *
 from itrade_ext import *
 from itrade_datation import *
-from itrade_market import market2currency,compute_country,isin2market,market2place,list_of_markets
+from itrade_market import market2currency,compute_country,isin2market,market2place,list_of_markets,set_market_loaded,is_market_loaded
 import itrade_currency
 
 # ============================================================================
@@ -1372,30 +1372,34 @@ class Quotes(object):
             if item and len(item)>=7:
                 self.addQuote(item[0],item[1],item[2],item[3],item[4],item[5],item[6],list,debug)
 
-    def load(self,fn=None,fs=None):
+    # ---[ load list of quotes / indices / trackers / ... ] ---------------------------------------------------
+
+    def loadMarket(self,market):
         # open and read the file to load these quotes information
-        for eachMarket in list_of_markets():
-            infile = itrade_csv.read(fn,os.path.join(itrade_config.dirSymbData,'quotes.%s.txt' % eachMarket))
+        if not is_market_loaded(market):
+            infile = itrade_csv.read(None,os.path.join(itrade_config.dirSymbData,'quotes.%s.txt' % market))
             if infile:
                 self._addLines(infile,list=QLIST_SYSTEM,debug=False)
+            set_market_loaded(market)
 
-        infile = itrade_csv.read(fn,os.path.join(itrade_config.dirSymbData,'indices.txt'))
+    def loadListOfQuotes(self):
+        infile = itrade_csv.read(None,os.path.join(itrade_config.dirSymbData,'indices.txt'))
         if infile:
             self._addLines(infile,list=QLIST_INDICES,debug=False)
 
-        infile = itrade_csv.read(fn,os.path.join(itrade_config.dirSymbData,'trackers.txt'))
+        infile = itrade_csv.read(None,os.path.join(itrade_config.dirSymbData,'trackers.txt'))
         if infile:
             self._addLines(infile,list=QLIST_TRACKERS,debug=False)
 
         # them open and read user file
-        infile = itrade_csv.read(fn,os.path.join(itrade_config.dirUserData,'usrquotes.txt'))
+        infile = itrade_csv.read(None,os.path.join(itrade_config.dirUserData,'usrquotes.txt'))
         if infile:
             self._addLines(infile,list=QLIST_USER,debug=False)
 
-    def saveListOfQuotes(self,fn=None):
-        # System list
+    # ---[ save list of quotes / indices / trackers / ... ] ---------------------------------------------------
 
-        for eachMarket in list_of_markets():
+    def saveMarkets(self):
+        for eachMarket in list_of_markets(ifLoaded=True):
             props = []
             for eachQuote in self.list():
                 if eachQuote.list()==QLIST_SYSTEM and eachQuote.market()==eachMarket:
@@ -1405,6 +1409,10 @@ class Quotes(object):
             itrade_csv.write(fn,os.path.join(itrade_config.dirSymbData,'quotes.%s.txt' % eachMarket),props)
             print 'System List of symbols %s saved.' % eachMarket
 
+    def saveListOfQuotes(self):
+        # System list
+        self.saveMarkets()
+
         # User list
         props = []
         for eachQuote in self.list():
@@ -1412,7 +1420,7 @@ class Quotes(object):
                 props.append(eachQuote.__repr__())
         #
         # open and write the file with these quotes information
-        itrade_csv.write(fn,os.path.join(itrade_config.dirUserData,'usrquotes.txt'),props)
+        itrade_csv.write(None,os.path.join(itrade_config.dirUserData,'usrquotes.txt'),props)
         print 'User List of symbols saved.'
 
     # ---[ removeQuotes from the list ] ---
@@ -1492,12 +1500,7 @@ except NameError:
 # ============================================================================
 
 def initQuotesModule():
-    quotes.load()
-    #for quote in quotes.list():
-    #    quote.m_defaultliveconnector = None
-    #    quote.m_defaultimportconnector = getImportConnector(quote.m_market,quote.m_list,QTAG_IMPORT,quote.m_place)
-    #    if quote.m_defaultimportconnector == None:
-    #        print 'no default import connector for %s (list:%d)' % (quote,quote.m_list)
+    quotes.loadListOfQuotes()
 
 # ============================================================================
 # Test
