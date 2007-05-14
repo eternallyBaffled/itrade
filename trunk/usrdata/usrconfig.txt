@@ -1,4 +1,5 @@
 [net]
 
 [view]
+autorefreshview = False
 

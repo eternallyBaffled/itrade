@@ -307,14 +307,21 @@ class iTradeQuoteInfoWindow(sc.SizedPanel):
 
     def refresh(self,nquote=None,live=False):
         debug('QuoteInfoWindow::refresh %s' % self.m_quote.ticker())
+
+        # update the logo if needed
         fit = False
         if nquote and nquote<>self.m_quote:
             self.m_quote = nquote
             self.m_logo = None
             fit = True
-        if not live:
-            self.m_quote.update()
-        self.m_quote.compute()
+
+        # __x to be removed - no need to update or compute at this stage
+        if not itrade_config.experimental:
+            if not live:
+                self.m_quote.update()
+            self.m_quote.compute()
+
+        # paint the content
         self.paint()
 
         # fit but stay on the space given by the parent
