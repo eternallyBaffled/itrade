@@ -4,9 +4,13 @@
 On the road for v0.4.6 (Nausicaa2)
 
 ===============================================================================
+
+2007-05-14  Gilles Dumortier <dgil at ieee.org>
+	* Indices not displayed without Isin code (SF bug 1703434)
+
 2007-04-21 Sébastien Renard <Sebastien dot Renard at digitalfox dot org>
 	* Fix bug on proxy authentication and connexion retrying
-	
+
 2007-04-18 Sébastien Renard <Sebastien dot Renard at digitalfox dot org>
 	* Handle HTTP connexion timeout correctly and better error logging
 
