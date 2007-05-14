@@ -1273,9 +1273,10 @@ class Quotes(object):
 
     # ---[ Properties ] ---
 
-    def addProperty(self,isin,prop,val):
-        if self.m_quotes.has_key(isin):
-            self.m_quotes[isin].setProperty(prop,val)
+    def addProperty(self,key,prop,val):
+        quote = self.lookupKey(key)
+        if quote:
+            quote.setProperty(prop,val)
 
     def loadProperties(self,fp=None):
         # open and read the file to load properties information
@@ -1299,12 +1300,14 @@ class Quotes(object):
     # ---[ Stops ] ---
 
     def addStops(self,key,loss,win):
-        if self.m_quotes.has_key(key):
-            self.m_quotes[key].setStops(loss,win)
+        quote = self.lookupKey(key)
+        if quote:
+            quote.setStops(loss,win)
 
     def removeStops(self,key):
-        if self.m_quotes.has_key(key):
-            self.m_quotes[key].clrStops()
+        quote = self.lookupKey(key)
+        if quote:
+            quote.clrStops()
 
     def loadStops(self,fs=None):
         # open and read the file to load stops information
@@ -1442,6 +1445,18 @@ class Quotes(object):
     def lookupKey(self,key):
         if self.m_quotes.has_key(key):
             return self.m_quotes[key]
+
+        # key not found
+        skey = key.split('.')
+        if len(skey)==3:
+            # check the list of quotes for this market has been loaded
+            market = skey[1]
+            if not is_market_loaded(market):
+                self.loadMarket(market)
+                if self.m_quotes.has_key(key):
+                    return self.m_quotes[key]
+
+        # key really not found
         return None
 
     def lookupISIN(self,isin,market=None,place=None):
