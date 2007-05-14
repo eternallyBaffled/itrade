@@ -6,6 +6,7 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-05-14  Gilles Dumortier <dgil at ieee.org>
+	* Symbol List : Huge Database : Load market on Demand (SF bug 1662171)
 	* Indices not displayed without Isin code (SF bug 1703434)
 
 2007-04-21 Sébastien Renard <Sebastien dot Renard at digitalfox dot org>

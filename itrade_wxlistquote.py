@@ -162,7 +162,7 @@ class iTradeQuoteListDialog(wx.Dialog):
         wx.EVT_COMBOBOX(self,self.editMarket.GetId(),self.OnMarket)
 
         count = 0
-        for eachCtrl in list_of_markets():
+        for eachCtrl in list_of_markets(ifLoaded=True):
             self.editMarket.Append(eachCtrl,eachCtrl)
             if eachCtrl==self.m_market:
                 idx = count
@@ -516,14 +516,22 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
 
     def OnPostInit(self,event):
         self.checkEnablity()
+        # fill the list
         self.PopulateList()
 
     def OnMarket(self,evt):
         idx = self.wxMarketCtrl.GetSelection()
         if idx==0:
             self.m_market = None
+
+            # be sure every supported market is loaded !
+            for market in list_of_markets():
+                    quotes.loadMarket(market)
+
         else:
             self.m_market = self.wxMarketCtrl.GetClientData(idx)
+            quotes.loadMarket(self.m_market)
+
         self.PopulateList()
         self.checkEnablity()
         self.m_list.SetFocus()
