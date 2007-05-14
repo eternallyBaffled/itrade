@@ -1139,11 +1139,24 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
 
     def initIndice(self):
         self.m_connector = getDefaultLiveConnector(self.m_market,QLIST_INDICES)
-        lind = quotes.lookupISIN(self.m_portfolio.indice())
-        if len(lind)>=1:
-            self.m_indice = lind[0]
-            if self.m_indice:
-                self.m_connector = self.m_indice.liveconnector()
+        indice = self.m_portfolio.indice()
+        if indice:
+            lind = quotes.lookupISIN(indice)
+            if len(lind)>=1:
+                self.m_indice = lind[0]
+                if self.m_indice:
+                    self.m_connector = self.m_indice.liveconnector()
+                else:
+                    if itrade_config.verbose:
+                        print 'initIndice: indice %s not found' % indice
+            else:
+                if itrade_config.verbose:
+                    print 'initIndice: indice %s not found' % indice
+                self.m_indice = None
+        else:
+            if itrade_config.verbose:
+                print 'initIndice: no indice sets up for this portfolio'
+            self.m_indice = None
 
 # ============================================================================
 # That's all folks !
