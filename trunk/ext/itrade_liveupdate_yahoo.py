@@ -68,8 +68,8 @@ class LiveUpdate_yahoo(object):
         self.m_dcmpd = {}
         self.m_lastclock = 0
         self.m_lastdate = "20070101"
-        self.m_connection=ITradeConnection(cookies=None, 
-                                           proxy=itrade_config.proxyHostname, 
+        self.m_connection=ITradeConnection(cookies=None,
+                                           proxy=itrade_config.proxyHostname,
                                            proxyAuth=itrade_config.proxyAuthentication)
 
     # ---[ reentrant ] ---
@@ -349,6 +349,10 @@ registerLiveConnector('ASX','SYD',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=Tr
 
 registerLiveConnector('TSX','TOR',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 registerLiveConnector('TSE','TOR',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+
+registerLiveConnector('LSE SETS','LON',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('LSE SETSmm','LON',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('LSE SEAQ','LON',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 
 registerLiveConnector('MILAN EXCHANGE','MIL',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 

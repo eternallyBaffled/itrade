@@ -1361,7 +1361,7 @@ class Quotes(object):
                 del self.m_quotes[key2]
 
         # new quote
-        self.m_quotes[key] = Quote(key,isin,name.upper(),ticker.upper(),market.upper(),currency.upper(),place,country,list)
+        self.m_quotes[key] = Quote(key,isin,name.upper(),ticker.upper(),market,currency.upper(),place,country,list)
 
         if debug:
             print 'Add %s in quotes list' % self.m_quotes[key]
@@ -1409,7 +1409,7 @@ class Quotes(object):
                     props.append(eachQuote.__repr__())
             #
             # open and write the file with these quotes information
-            itrade_csv.write(fn,os.path.join(itrade_config.dirSymbData,'quotes.%s.txt' % eachMarket),props)
+            itrade_csv.write(None,os.path.join(itrade_config.dirSymbData,'quotes.%s.txt' % eachMarket),props)
             print 'System List of symbols %s saved.' % eachMarket
 
     def saveListOfQuotes(self):

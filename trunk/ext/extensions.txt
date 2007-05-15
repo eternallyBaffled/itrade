@@ -23,7 +23,6 @@ itrade_import_yahoo.py
 
 # import live data
 itrade_liveupdate_euronext.py
-#__ itrade_liveupdate_fortuneo.py
 itrade_liveupdate_yahoo.py
 
 # import list of quotes
@@ -32,15 +31,19 @@ itrade_quotes_barchart.py
 itrade_quotes_euronext.py
 itrade_quotes_nyse.py
 itrade_quotes_swx.py
+itrade_quotes_lse.py
 
 # login
-#__ itrade_login_fortuneo.py
 
 # -----------------------------------------------------------------------------
 # experimental - use with caution
 # -----------------------------------------------------------------------------
 
+# import live data
+#__ itrade_liveupdate_fortuneo.py
+
 # login
+#__ itrade_login_fortuneo.py
 #__ itrade_login_boursorama.py
 
 # -----------------------------------------------------------------------------

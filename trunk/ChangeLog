@@ -5,6 +5,11 @@ On the road for v0.4.6 (Nausicaa2)
 
 ===============================================================================
 
+2007-05-15  Gilles Dumortier <dgil at ieee.org>
+	* LSE market : List of Quotes (SETS, SETSmm and SEAQ) (SF bug 1719078)
+	* LSE market : manage Suffix Yahoo ".L" (SF bug 1716177)
+	* yahoo import connector : fix a crash when socket 'reset by peer'
+
 2007-05-14  Gilles Dumortier <dgil at ieee.org>
 	* -x : experimental code to reduce the refresh time (SF bug 1611122)
 	* Symbol List : Huge Database : Load market on Demand (SF bug 1662171)
