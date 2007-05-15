@@ -59,6 +59,7 @@ currencies_CUR = {
     'CAD' : u'\u0024', # '$'
     'JPY' : u'\u00A5', # '¥',
     'GBP' : u'\u00A3', # '£',
+    'GBX' : u'\u0070', # 'p',
     'AUD' : u'\u0024', # '$'
     'CHF' : u'\u0046', # 'F'
     'N/A' : u'\u0020', # ' '
@@ -71,7 +72,7 @@ def currency2symbol(cur):
         return cur
 
 def list_of_currencies():
-    return ('EUR','USD','JPY','GBP','AUD','CAD','CHF')
+    return ('EUR','USD','JPY','GBP','GBX','AUD','CAD','CHF')
 
 # ============================================================================
 # Build list of supported currencies
@@ -96,11 +97,11 @@ class Currencies(object):
     def __init__(self):
         # url
         self.m_url = 'http://finance.yahoo.com/d/quotes.csv?s=%s%s=X&f=s4l1t1c1ghov&e=.csv'
-        # loadCofnig is needed because one instance of Currencies is created
+        # loadConfig is needed because one instance of Currencies is created
         # when module is loaded - and this is done on itrade.py very prior first config loading
         itrade_config.loadConfig()
-        self.m_connection=ITradeConnection(cookies=None, 
-                                           proxy=itrade_config.proxyHostname, 
+        self.m_connection=ITradeConnection(cookies=None,
+                                           proxy=itrade_config.proxyHostname,
                                            proxyAuth=itrade_config.proxyAuthentication)
 
         # to-from
@@ -196,18 +197,40 @@ class Currencies(object):
 
     # ---[ Get Last Trade from network ] ---
 
+    _s1 = { "GBX": "GBP", }
+    _s2 = { "GBX": 100.0, }
+
     def get(self,curTo,curFrom):
-        url = self.m_url % (curFrom,curTo)
+        # pence
+        if curFrom in self._s1.keys():
+            a = self._s1[curFrom]
+        else:
+            a = curFrom
+        if curTo in self._s1.keys():
+            b = self._s1[curTo]
+        else:
+            b = curTo
+
+        # get data
+        url = self.m_url % (a,b)
         try:
             buf=self.m_connection.getDataFromUrl(url)
         except:
             return None
 
-        # pull data
+        # extract data
+        # print url,buf
         sdata = string.split(buf, ',')
+        f = float(sdata[1])
+
+        # pence
+        if curFrom in self._s2.keys():
+            f = f / self._s2[curFrom]
+        if curTo in self._s2.keys():
+            f = f * self._s2[curTo]
 
         #print 'get: %s %s rate = %.4f' %(curTo,curFrom,float(sdata[1]))
-        return self.update(curTo,curFrom,float(sdata[1]))
+        return self.update(curTo,curFrom,f)
 
     def getlasttrade(self,bAllEvenNotInUse=False):
         for eachCurrency in self.m_currencies:
@@ -244,18 +267,20 @@ if __name__=='__main__':
 
     print 'Currencies get last trade ...'
     currencies.inuse('USD','EUR',True)
-    currencies.inuse('USD','GBP',True)
-    currencies.inuse('USD','GBP',False)
+    currencies.inuse('GBX','EUR',True)
+    currencies.inuse('GBP','EUR',True)
     currencies.inuse('USD','AUD',True)
     currencies.getlasttrade()
 
     print 'From updated cache file : '
     print '1 EUR = %.2f EUR' % convert('EUR','EUR',1)
     print '1 EUR = %.2f USD' % convert('USD','EUR',1)
+    print '1 EUR = %.2f GBP' % convert('GBP','EUR',1)
+    print '1 EUR = %.2f GBX' % convert('GBX','EUR',1)
     print '1 USD = %.2f EUR' % convert('EUR','USD',1)
     print '1 USD = %.2f AUD' % convert('AUD','USD',1)
 
-    print 'EUR = %s',currency2symbol('EUR')
+    #print 'EUR = %s',currency2symbol('EUR')
 
 # ============================================================================
 # That's all folks !
