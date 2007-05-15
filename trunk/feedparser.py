@@ -11,7 +11,7 @@ Recommended: Python 2.3 or later
 Recommended: CJKCodecs and iconv_codec <http://cjkpython.i18n.org/>
 """
 
-__version__ = "4.1"# + "$Revision: 1.2 $"[11:15] + "-cvs"
+__version__ = "4.1"# + "$Revision: 1.92 $"[11:15] + "-cvs"
 __license__ = """Copyright (c) 2002-2006, Mark Pilgrim, All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -58,7 +58,7 @@ ACCEPT_HEADER = "application/atom+xml,application/rdf+xml,application/rss+xml,ap
 PREFERRED_XML_PARSERS = ["drv_libxml2"]
 
 # If you want feedparser to automatically run HTML markup through HTML Tidy, set
-# Requires mxTidy <http://www.egenix.com/files/python/mxTidy.html>
+# this to 1.  Requires mxTidy <http://www.egenix.com/files/python/mxTidy.html>
 # or utidylib <http://utidylib.berlios.de/>.
 TIDY_MARKUP = 0
 
@@ -394,7 +394,7 @@ class _FeedParserMixin:
         # normalize attrs
         attrs = [(k.lower(), v) for k, v in attrs]
         attrs = [(k, k in ('rel', 'type') and v.lower() or v) for k, v in attrs]
-
+        
         # track xml:base and xml:lang
         attrsD = dict(attrs)
         baseuri = attrsD.get('xml:base', attrsD.get('base')) or self.baseuri
@@ -412,7 +412,7 @@ class _FeedParserMixin:
         self.lang = lang
         self.basestack.append(self.baseuri)
         self.langstack.append(lang)
-
+        
         # track namespaces
         for prefix, uri in attrs:
             if prefix.startswith('xmlns:'):
@@ -450,7 +450,7 @@ class _FeedParserMixin:
             self.intextinput = 0
         if (not prefix) and tag not in ('title', 'link', 'description', 'url', 'href', 'width', 'height'):
             self.inimage = 0
-
+        
         # call special handler (if defined) or default handler
         methodname = '_start_' + prefix + suffix
         try:
@@ -497,7 +497,7 @@ class _FeedParserMixin:
                 self.lang = self.langstack[-1]
 
     def handle_charref(self, ref):
-        # called for each character reference, e.g. for "&#160;", ref will be "160"
+        # called for each character reference, e.g. for '&#160;', ref will be '160'
         if not self.elementstack: return
         ref = ref.lower()
         if ref in ('34', '38', '39', '60', '62', 'x22', 'x26', 'x27', 'x3c', 'x3e'):
@@ -511,7 +511,7 @@ class _FeedParserMixin:
         self.elementstack[-1][2].append(text)
 
     def handle_entityref(self, ref):
-        # called for each entity reference, e.g. for "&copy;", ref will be "copy"
+        # called for each entity reference, e.g. for '&copy;', ref will be 'copy'
         if not self.elementstack: return
         if _debug: sys.stderr.write('entering handle_entityref with %s\n' % ref)
         if ref in ('lt', 'gt', 'quot', 'amp', 'apos'):
@@ -592,7 +592,7 @@ class _FeedParserMixin:
 
     def resolveURI(self, uri):
         return _urljoin(self.baseuri or '', uri)
-
+    
     def decodeEntities(self, element, data):
         return data
 
@@ -711,7 +711,7 @@ class _FeedParserMixin:
             prefix = self.namespacemap.get(prefix, prefix)
             name = prefix + ':' + suffix
         return name
-
+        
     def _getAttribute(self, attrsD, name):
         return attrsD.get(self._mapToStandardPrefix(name))
 
@@ -758,7 +758,7 @@ class _FeedParserMixin:
                 self.version = 'rss20'
             else:
                 self.version = 'rss'
-
+    
     def _start_dlhottitles(self, attrsD):
         self.version = 'hotrss'
 
@@ -776,7 +776,7 @@ class _FeedParserMixin:
             self._start_link({})
             self.elementstack[-1][-1] = attrsD['href']
             self._end_link()
-
+    
     def _start_feed(self, attrsD):
         self.infeed = 1
         versionmap = {'0.1': 'atom01',
@@ -793,13 +793,13 @@ class _FeedParserMixin:
     def _end_channel(self):
         self.infeed = 0
     _end_feed = _end_channel
-
+    
     def _start_image(self, attrsD):
         self.inimage = 1
         self.push('image', 0)
         context = self._getContext()
         context.setdefault('image', FeedParserDict())
-
+            
     def _end_image(self):
         self.pop('image')
         self.inimage = 0
@@ -810,7 +810,7 @@ class _FeedParserMixin:
         context = self._getContext()
         context.setdefault('textinput', FeedParserDict())
     _start_textInput = _start_textinput
-
+    
     def _end_textinput(self):
         self.pop('textinput')
         self.intextinput = 0
@@ -1095,7 +1095,7 @@ class _FeedParserMixin:
         if value:
             self.elementstack[-1][2].append(value)
         self.pop('license')
-
+        
     def _start_creativecommons_license(self, attrsD):
         self.push('license', 1)
 
@@ -1386,7 +1386,6 @@ if _XML_AVAILABLE:
             for qname in attrs.getQNames():
                 attrsD[str(qname).lower()] = attrs.getValueByQName(qname)
             self.unknown_starttag(localname, attrsD.items())
-#            return _StringIO()
 
         def characters(self, text):
             self.handle_data(text)
@@ -1407,7 +1406,7 @@ if _XML_AVAILABLE:
         def error(self, exc):
             self.bozo = 1
             self.exc = exc
-
+            
         def fatalError(self, exc):
             self.error(exc)
             raise exc
@@ -1415,7 +1414,7 @@ if _XML_AVAILABLE:
 class _BaseHTMLProcessor(sgmllib.SGMLParser):
     elements_no_end_tag = ['area', 'base', 'basefont', 'br', 'col', 'frame', 'hr',
       'img', 'input', 'isindex', 'link', 'meta', 'param']
-
+    
     def __init__(self, encoding):
         self.encoding = encoding
         if _debug: sys.stderr.write('entering BaseHTMLProcessor, encoding=%s\n' % self.encoding)
@@ -1445,16 +1444,13 @@ class _BaseHTMLProcessor(sgmllib.SGMLParser):
     def normalize_attrs(self, attrs):
         # utility method to be called by descendants
         attrs = [(k.lower(), v) for k, v in attrs]
-#        if self.encoding:
-#            if _debug: sys.stderr.write('normalize_attrs, encoding=%s\n' % self.encoding)
-#            attrs = [(k, v.encode(self.encoding)) for k, v in attrs]
         attrs = [(k, k in ('rel', 'type') and v.lower() or v) for k, v in attrs]
         return attrs
 
     def unknown_starttag(self, tag, attrs):
         # called for each start tag
         # attrs is a list of (attr, value) tuples
-        # e.g. for <pre class="screen">, tag="pre", attrs=[("class", "screen")]
+        # e.g. for <pre class='screen'>, tag='pre', attrs=[('class', 'screen')]
         if _debug: sys.stderr.write('_BaseHTMLProcessor, unknown_starttag, tag=%s\n' % tag)
         uattrs = []
         # thanks to Kevin Marks for this breathtaking hack to deal with (valid) high-bit attribute values in UTF-8 feeds
@@ -1469,7 +1465,7 @@ class _BaseHTMLProcessor(sgmllib.SGMLParser):
             self.pieces.append('<%(tag)s%(strattrs)s>' % locals())
 
     def unknown_endtag(self, tag):
-        # called for each end tag, e.g. for </pre>, tag will be "pre"
+        # called for each end tag, e.g. for </pre>, tag will be 'pre'
         # Reconstruct the original end tag.
         if tag not in self.elements_no_end_tag:
             self.pieces.append("</%(tag)s>" % locals())
@@ -2859,3 +2855,5 @@ if __name__ == '__main__':
 #  categories/keywords/etc. as array of dict
 #  {'term': term, 'scheme': scheme, 'label': label} to match Atom 1.0
 #  terminology; parse RFC 822-style dates with no time; lots of other
+#  bug fixes
+#4.1 - MAP - removed socket timeout; added support for chardet library
