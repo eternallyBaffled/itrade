@@ -60,7 +60,7 @@ isin_market = {
     'es': 'EURONEXT',
     'qs': 'EURONEXT',
     'it': 'EURONEXT',
-    'uk': 'LSE',
+    'uk': 'LSE SETS',
     'us': 'NASDAQ',
     'au': 'ASX',
     'ca': 'TSE',
@@ -93,7 +93,9 @@ market_indice = {
     'NYSE': 'US2605661048',
     'AMEX': 'US6488151084',
     'OTCBB': 'US6488151084',
-    'LSE': 'US2605661048',
+    'LSE SETS': 'US2605661048',
+    'LSE SETSmm': 'US2605661048',
+    'LSE SEAQ': 'US2605661048',
     'ASX': 'US2605661048',
     'TSE': 'US2605661048',
     'TSX': 'US2605661048',
@@ -121,7 +123,9 @@ market_currency = {
     'NYSE': 'USD',
     'AMEX': 'USD',
     'OTCBB': 'USD',
-    'LSE': 'GBP',
+    'LSE SETS': 'GBP',
+    'LSE SETSmm': 'GBP',
+    'LSE SEAQ': 'GBP',
     'ASX': 'AUD',
     'TSE': 'CAD',
     'TSX': 'CAD',
@@ -145,7 +149,9 @@ _lom = {
     'ALTERNEXT': False,
     'PARIS MARCHE LIBRE': False,
     'BRUXELLES MARCHE LIBRE': False,
-    'LSE': False,
+    'LSE SETS': False,
+    'LSE SETSmm': False,
+    'LSE SEAQ': False,
     'NASDAQ': False,
     'NYSE': False,
     'AMEX': False,
@@ -204,7 +210,7 @@ def compute_country(isin,market,place):
             return 'FR'
         if market=='BRUXELLES MARCHE LIBRE':
             return 'BE'
-        if market=='LSE':
+        if market=='LSE SETS' or market=='LSE SETSmm' or market=='LSE SEAQ':
             return 'GB'
         if market=='NASDAQ':
             return 'US'
@@ -251,7 +257,11 @@ def list_of_places(market):
         lop.append('NYC')
     if market=='OTCBB':
         lop.append('NYC')
-    if market=='LSE':
+    if market=='LSE SETS':
+        lop.append('LON')
+    if market=='LSE SETSmm':
+        lop.append('LON')
+    if market=='LSE SEAQ':
         lop.append('LON')
     if market=='ASX':
         lop.append('SYD')
@@ -277,7 +287,9 @@ market_place = {
     'NYSE': 'NYC',
     'AMEX': 'NYC',
     'OTCBB': 'NYC',
-    'LSE': 'LON',
+    'LSE SETS': 'LON',
+    'LSE SETSmm': 'LON',
+    'LSE SEAQ': 'LON',
     'ASX': 'SYD',
     'TSE': 'TOR',
     'TSX': 'TOR',
@@ -302,7 +314,9 @@ yahoo_suffix = {
     'ALTERNEXT.PAR': '.PA',
     'PARIS MARCHE LIBRE.PAR': '.PA',
     'OTCBB.NYC': '.OB',
-    'LSE.LON': '.L',
+    'LSE SETS.LON': '.L',
+    'LSE SETSmm.LON': '.L',
+    'LSE SEAQ.LON': '.L',
     'ASX.SYD': '.AX',
     'TSE.TOR': '.TO',
     'TSX.TOR': '.V',
