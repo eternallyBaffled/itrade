@@ -1585,6 +1585,8 @@ AL.;AL-
 AN.;AN-
 AP.;AP-
 AR.;AR-
+AU.;AU-
+AV.;AV-
 BA.;BA-
 BB.;BB-
 BG.;BG-
@@ -1604,6 +1606,7 @@ ET.;ET-
 FP.;FP-
 JD.;JD-
 JR.;JR-
+MT.S;MT-S
 NG.;NG-
 NG.B;NG-B
 NU.;NU-
@@ -1613,6 +1616,7 @@ RE.;RE-
 RM.;RM-
 RR.;RR-
 RR.B;RR-B
+SC.;SC-
 SL.;SL-
 SN.;SN-
 SR.;SR-
