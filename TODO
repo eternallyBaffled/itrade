@@ -28,11 +28,12 @@ Version 0.4.6 (Nausicaa2)
  + Extensions & Plugins basic Mechanism
  + Matrix use the Notebook display
  + Basic Stops Management
- + Toronto Market (yahoo connector)
+ + Toronto Markets (yahoo connector)
  + Switzerland Market (yahoo connector)
  + Italian Market (yahoo connector)
  + main market indicator
  + Proxy Connection
+ ~ LSE Markets (yahoo connector)
  ~ Printing module
  ~ Extensible Indicators back-end
 

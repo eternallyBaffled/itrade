@@ -72,6 +72,7 @@ GTOOL_HLINE = 1
 GTOOL_VLINE = 2
 GTOOL_OLINE = 3
 GTOOL_FIBO = 4
+GTOOL_UPL = 254
 GTOOL_TRASH = 255
 
 class GTool(object):
@@ -131,6 +132,39 @@ class GToolHLine(GTool):
         if y<=rect[3] and y>=rect[1]:
             lc = wx.NamedColor("BLACK")
             bg = wx.NamedColor("BLUE")
+            font = wx.Font(8, wx.ROMAN, wx.NORMAL, wx.NORMAL)
+
+            dc.SetPen(wx.Pen(lc, 1, wx.SOLID))
+            dc.DrawLine(rect[0], y, rect[2], y)
+
+            label = parent.GetYLabel(axe,obj[3])
+            textExtent = self.m_parent.GetFullTextExtent(label,font)
+
+            DrawRectLabel(dc,label,rect[0],y,textExtent[0], textExtent[1],lc,bg,font,vert='top',horz='right')
+
+class GToolUPL(GTool):
+    def __init__(self,parent,canvas):
+        GTool.__init__(self,GTOOL_UPL,parent,canvas)
+
+    def is_cursor_state(self,chart):
+        return True
+
+    def on_click(self,x,y,time,val,chart):
+        # do nothing
+        pass
+
+    def draw(self,parent,dc,obj,rect):
+        # obj: (self,chart,time,val)
+        # rect: (left,top,right,bottom,width,height)
+        axe = parent.chart2axe(obj[1])
+
+        a,b = axe.get_ylim()
+        y = rect[3] - int( (obj[3] - a) * (rect[5] / (b-a)) )
+
+        #print 'rect:',rect,'y range:',a,b,b-a,' val=',obj[3],(obj[3] - a),' y=',y
+        if y<=rect[3] and y>=rect[1]:
+            lc = wx.NamedColor("BLACK")
+            bg = wx.NamedColor("RED")
             font = wx.Font(8, wx.ROMAN, wx.NORMAL, wx.NORMAL)
 
             dc.SetPen(wx.Pen(lc, 1, wx.SOLID))
@@ -765,6 +799,18 @@ class iTrade_wxPanelGraph(GObject,PanelPrint):
             return self.chart3
         else:
             return None
+
+    def chartUPL(self,strval):
+        print 'chartUPL',strval
+
+        # create the object
+        obj = (GToolUPL(self,self.m_canvas),1,0,strval)
+
+        # stack it
+        self.stackObject(obj)
+
+        # draw it
+        self.drawObject(obj)
 
     def BeginCharting(self,nchart=2):
         #print 'BeginCharting --['

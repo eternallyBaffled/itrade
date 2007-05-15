@@ -883,6 +883,9 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
             left, top = 0.950, 1.005
             t = self.chart1.text(left, top, self.GetPeriod(-1), fontsize = 7, transform = self.chart1.transAxes)
 
+        if self.m_quote.isTraded():
+            self.chartUPL(self.m_quote.nv_pru())
+
         self.EndCharting()
 
     def GetPeriod(self,idxtime):

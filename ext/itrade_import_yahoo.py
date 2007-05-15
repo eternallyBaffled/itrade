@@ -61,8 +61,8 @@ class Import_yahoo(object):
         debug('Import_yahoo:__init__')
         self.m_url = 'http://ichart.finance.yahoo.com/table.csv'
         #self.m_connection=ITradeConnection(proxy="172.30.0.3:8080")
-        self.m_connection=ITradeConnection(cookies=None, 
-                                           proxy=itrade_config.proxyHostname, 
+        self.m_connection=ITradeConnection(cookies=None,
+                                           proxy=itrade_config.proxyHostname,
                                            proxyAuth=itrade_config.proxyAuthentication)
 
     def name(self):
@@ -144,6 +144,9 @@ class Import_yahoo(object):
 
         # pull data
         lines = self.splitLines(buf)
+        if len(lines)<=0:
+            # empty content
+            return None
         header = string.split(lines[0],',')
         data = ""
 
@@ -204,6 +207,10 @@ registerImportConnector('ASX','SYD',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=
 
 registerImportConnector('TSX','TOR',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
 registerImportConnector('TSE','TOR',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
+
+registerImportConnector('LSE SETS','LON',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('LSE SETSmm','LON',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('LSE SEAQ','LON',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
 
 registerImportConnector('MILAN EXCHANGE','MIL',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
 
