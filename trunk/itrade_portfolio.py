@@ -611,6 +611,9 @@ class Portfolio(object):
     def filename(self):
         return self.m_filename
 
+    def key(self):
+        return self.m_filename.lower()
+
     def accountref(self):
         return self.m_accountref
 
@@ -1226,7 +1229,7 @@ class Portfolios(object):
         ##print nlist
         #return nlist
         items = self.m_portfolios.values()
-        items.sort(key=Portfolio.filename)
+        items.sort(key=Portfolio.key)
         return items
 
     def existPortfolio(self,fn):
