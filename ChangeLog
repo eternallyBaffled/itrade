@@ -6,6 +6,7 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-05-15  Gilles Dumortier <dgil at ieee.org>
+	* GBX and GBP currencies (SF bug 1712966)
 	* LSE market : List of Quotes (SETS, SETSmm and SEAQ) (SF bug 1719078)
 	* LSE market : manage Suffix Yahoo ".L" (SF bug 1716177)
 	* yahoo import connector : fix a crash when socket 'reset by peer'
