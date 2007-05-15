@@ -183,7 +183,9 @@ def list_of_markets(ifLoaded=False,bFilterMode=False):
     lom = []
     if bFilterMode:
         lom.append(message('all_markets'))
-    for market in _lom.keys():
+    keys = _lom.keys()
+    keys.sort()
+    for market in keys:
         if not ifLoaded or _lom[market]:
             lom.append(market)
     return lom
