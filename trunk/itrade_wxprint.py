@@ -204,9 +204,11 @@ class MyPrintout(wx.Printout):
         dc.SetDeviceOrigin(int(posX), int(posY))
 
         #-------------------------------------------
+        pandc = self.m_canvas.GetDC()
+        sz = pandc.GetSizeTuple()
+        dc.Blit(0,0, sz[0], sz[1], 0, 0, pandc)
 
-        # __x self.m_canvas.DoDrawing(dc, True)
-        dc.DrawText(message('print_page') % page, marginX/2, maxY-marginY)
+        #dc.DrawText(message('print_page') % page, marginX/2, maxY-marginY)
 
         return True
 
@@ -297,7 +299,8 @@ class MyTestPanel(wx.Panel,iTrade_wxPanelPrint):
         self.box = wx.BoxSizer(wx.VERTICAL)
 
         from itrade_wxhtml import iTradeHtmlPanel
-        self.m_canvas = iTradeHtmlPanel(self,wx.NewId(),"")
+        self.m_canvas = iTradeHtmlPanel(self,wx.NewId(),"http://www.google.fr")
+        self.m_canvas.paint0()
         self.box.Add(self.m_canvas, 1, wx.GROW)
 
         subbox = wx.BoxSizer(wx.HORIZONTAL)
