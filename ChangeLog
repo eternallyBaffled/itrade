@@ -6,6 +6,8 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-05-18  Gilles Dumortier <dgil at ieee.org>
+	* bad display of erase cache dialog box (SF bug 1701785) - implement
+	  iTradeDialog() which use sized_controls package
 	* Some information on wxaddons missing on some Linux distro
 
 2007-05-15  Gilles Dumortier <dgil at ieee.org>

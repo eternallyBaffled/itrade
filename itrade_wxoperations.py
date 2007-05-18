@@ -304,7 +304,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
 
         # context help
         if wx.Platform != "__WXMSW__":
-            btn = wx.ContextHelpButton(self)
+            btn = wx.ContextHelpButton(btnpane)
 
         # OK
         btn = wx.Button(btnpane, wx.ID_OK, tb)

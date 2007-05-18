@@ -138,7 +138,7 @@ class iTradePortfolioSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterM
 
         # context help
         if wx.Platform != "__WXMSW__":
-            btn = wx.ContextHelpButton(self)
+            btn = wx.ContextHelpButton(btnpane)
 
         # OK
         btn = wx.Button(btnpane, wx.ID_OK, msg)
@@ -437,7 +437,7 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
 
         # context help
         if wx.Platform != "__WXMSW__":
-            btn = wx.ContextHelpButton(self)
+            btn = wx.ContextHelpButton(btnpane)
 
         # OK
         btn = wx.Button(btnpane, wx.ID_OK, msg)
