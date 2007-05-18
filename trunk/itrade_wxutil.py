@@ -465,57 +465,6 @@ class HTMLDialog(wx.Dialog):
                 self.Show(False)
 
 # ============================================================================
-# iTradeInformation()
-#
-#   parent          Parent window
-#   text            Message to show on the dialog
-#   caption         The dialog caption
-# use : wxOK + wxICON_INFORMATION
-# ============================================================================
-
-def iTradeInformation(parent,text,caption=message('info_caption')):
-    dlg = HTMLDialog(parent=parent,caption=caption,text=text,buttons=OKButton(makedefault=1),image="box_info.png")
-    idRet = dlg.ShowModal()
-    dlg.Destroy()
-    return idRet
-
-# ============================================================================
-# iTradeError()
-#
-#   parent          Parent window
-#   text            Message to show on the dialog
-#   caption         The dialog caption
-# use : wxOK + wxICON_ERROR
-# ============================================================================
-
-def iTradeError(parent,text,caption=message('alert_caption')):
-    dlg = HTMLDialog(parent=parent,caption=caption,text=text,buttons=OKButton(makedefault=1),image="box_alert.png")
-    idRet = dlg.ShowModal()
-    dlg.Destroy()
-    return idRet
-
-# ============================================================================
-# iTradeYesNo()
-#
-#   parent          Parent window
-#   text            Message to show on the dialog
-#   caption         The dialog caption
-#   bCanCancel      yes/no
-#   bYesDefault     yes/no
-# use : wxYES_NO + { wxCANCEL) + wxICON_QUESTION
-# ============================================================================
-
-def iTradeYesNo(parent,text,caption,bCanCancel=False,bYesDefault=True):
-    buttons = YesButton(makedefault=bYesDefault)+NoButton(makedefault=not bYesDefault)
-    if bCanCancel:
-        buttons = buttons+CancelButton(makedefault=0)
-    dlg = HTMLDialog(parent=parent,caption=caption,text=text,buttons=buttons,image="box_yesno.png")
-
-    idRet = dlg.ShowModal()
-    dlg.Destroy()
-    return idRet
-
-# ============================================================================
 # iTradeSizedDialog
 # ============================================================================
 
@@ -537,6 +486,175 @@ class iTradeSizedDialog(sc.SizedDialog):
         self.SetAutoLayout(True)
 
 # ============================================================================
+# iTradeDialog()
+#
+#   style
+#       wx.OK
+#       or wx.YES_NO
+#
+#       wx.YES_DEFAULT
+#       wx.NO_DEFAULT
+#
+#       wx.HELP
+#
+#       wx.CANCEL
+#
+#       wx.ICON_INFORMATION
+#       or wx.ICON_ERROR
+#       or wx.ICON_QUESTION
+# ============================================================================
+
+class iTradeDialog(iTradeSizedDialog):
+    def __init__(self,parent,caption,text,size=(420, 380),style=wx.OK | wx.YES_DEFAULT):
+        iTradeSizedDialog.__init__(self,parent,-1,caption,size,style=wx.DEFAULT_DIALOG_STYLE)
+
+        image = None
+        if style & wx.ICON_INFORMATION == wx.ICON_INFORMATION:
+            image = os.path.join(itrade_config.dirRes, "box_info.png")
+        if style & wx.ICON_ERROR == wx.ICON_ERROR:
+            image = os.path.join(itrade_config.dirRes, "box_alert.png")
+        if style & wx.ICON_QUESTION == wx.ICON_QUESTION:
+            image = os.path.join(itrade_config.dirRes, "box_yesno.png")
+
+        # container
+        container = self.GetContentsPane()
+        container.SetSizerType("vertical")
+
+        # First Row : image + text
+        pane = sc.SizedPanel(container, -1)
+        pane.SetSizerType("horizontal")
+        pane.SetSizerProps(expand=True)
+
+        if image:
+            image = wx.Bitmap(image)
+            if image:
+                bmp = wx.StaticBitmap(pane, -1, image)
+                bmp.SetSizerProps(valign='center')
+
+        if len(text)>96:
+            h = 48
+        else:
+            h = 32
+        txt = wx.StaticText(pane, -1, text, size=(260,h))
+        txt.SetSizerProps(expand=True,valign='center',halign='center')
+
+        # Last Row : OK, ..., Cancel
+        btnpane = sc.SizedPanel(container, -1)
+        btnpane.SetSizerType("horizontal")
+        btnpane.SetSizerProps(halign='center')
+
+        # context help
+        if style & wx.HELP == wx.HELP:
+            if wx.Platform != "__WXMSW__":
+                btn = wx.ContextHelpButton(btnpane)
+
+        # OK
+        if style & wx.OK == wx.OK:
+            btn = wx.Button(btnpane, wx.ID_OK, message('ok'))
+            btn.SetDefault()
+            btn.SetHelpText(message('ok_desc'))
+            wx.EVT_BUTTON(self, wx.ID_OK, self.OnOK)
+
+        # YES
+        if style & wx.YES == wx.YES:
+            btn = wx.Button(btnpane, wx.ID_YES, message('yes'))
+            if style & wx.YES_DEFAULT == wx.YES_DEFAULT: btn.SetDefault()
+            #btn.SetHelpText(message('yes_desc'))
+            wx.EVT_BUTTON(self, wx.ID_YES, self.OnYES)
+
+        # NO
+        if style & wx.NO == wx.NO:
+            btn = wx.Button(btnpane, wx.ID_NO, message('no'))
+            if style & wx.NO_DEFAULT == wx.NO_DEFAULT: btn.SetDefault()
+            #btn.SetHelpText(message('no_desc'))
+            wx.EVT_BUTTON(self, wx.ID_NO, self.OnNO)
+
+        # CANCEL
+        if style & wx.CANCEL == wx.CANCEL:
+            btn = wx.Button(btnpane, wx.ID_CANCEL, message('cancel'))
+            btn.SetHelpText(message('cancel_desc'))
+            wx.EVT_BUTTON(self, wx.ID_CANCEL, self.OnCancel)
+
+        # a little trick to make sure that you can't resize the dialog to
+        # less screen space than the controls need
+        self.Fit()
+        self.SetMinSize(self.GetSize())
+
+    def OnOK(self,evt):
+        self.EndModal(wx.ID_OK)
+
+    def OnYES(self,evt):
+        self.EndModal(wx.ID_YES)
+
+    def OnNO(self,evt):
+        self.EndModal(wx.ID_NO)
+
+    def OnCancel(self,evt):
+        self.EndModal(wx.ID_CANCEL)
+
+# ============================================================================
+# iTradeInformation()
+#
+#   parent          Parent window
+#   text            Message to show on the dialog
+#   caption         The dialog caption
+# use : wxOK + wxICON_INFORMATION
+# ============================================================================
+
+def iTradeInformation(parent,text,caption=message('info_caption')):
+    #dlg = HTMLDialog(parent=parent,caption=caption,text=text,buttons=OKButton(makedefault=1),image="box_info.png")
+    dlg = iTradeDialog(parent=parent,caption=caption,text=text,style=wx.OK|wx.ICON_INFORMATION)
+    idRet = dlg.ShowModal()
+    dlg.Destroy()
+    return idRet
+
+# ============================================================================
+# iTradeError()
+#
+#   parent          Parent window
+#   text            Message to show on the dialog
+#   caption         The dialog caption
+# use : wxOK + wxICON_ERROR
+# ============================================================================
+
+def iTradeError(parent,text,caption=message('alert_caption')):
+    #dlg = HTMLDialog(parent=parent,caption=caption,text=text,buttons=OKButton(makedefault=1),image="box_alert.png")
+    dlg = iTradeDialog(parent=parent,caption=caption,text=text,style=wx.OK|wx.ICON_ERROR)
+    idRet = dlg.ShowModal()
+    dlg.Destroy()
+    return idRet
+
+# ============================================================================
+# iTradeYesNo()
+#
+#   parent          Parent window
+#   text            Message to show on the dialog
+#   caption         The dialog caption
+#   bCanCancel      yes/no
+#   bYesDefault     yes/no
+# use : wxYES_NO + { wxCANCEL) + wxICON_QUESTION
+# ============================================================================
+
+def iTradeYesNo(parent,text,caption,bCanCancel=False,bYesDefault=True):
+    #buttons = YesButton(makedefault=bYesDefault)+NoButton(makedefault=not bYesDefault)
+    #if bCanCancel:
+    #    buttons = buttons+CancelButton(makedefault=0)
+    #dlg = HTMLDialog(parent=parent,caption=caption,text=text,buttons=buttons,image="box_yesno.png")
+
+    style = wx.YES_NO | wx.ICON_QUESTION
+    if bCanCancel:
+        style = style | wx.CANCEL
+    if bYesDefault:
+        style = style | wx.YES_DEFAULT
+    else:
+        style = style | wx.NO_DEFAULT
+
+    dlg = iTradeDialog(parent=parent,caption=caption,text=text,style=style)
+    idRet = dlg.ShowModal()
+    dlg.Destroy()
+    return idRet
+
+# ============================================================================
 # Test me
 # ============================================================================
 
@@ -553,7 +671,7 @@ if __name__=='__main__':
         elif iRet == wx.ID_NO:
             iTradeInformation(None,"unconfirmation message")
         else:
-            iTradeInformation(None,"cancellation message")
+            iTradeInformation(None,"cancellation message .............................. very long ........................... message ........... at least three (3) lines !!!!!!!!!!!")
     else:
         iTradeError(None,"test aborted message")
 

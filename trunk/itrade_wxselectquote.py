@@ -198,7 +198,7 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
 
         # context help
         if wx.Platform != "__WXMSW__":
-            btn = wx.ContextHelpButton(self)
+            btn = wx.ContextHelpButton(btnpane)
 
         # OK
         self.wxOK = wx.Button(btnpane, wx.ID_OK, message('valid'))
