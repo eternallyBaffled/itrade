@@ -339,28 +339,29 @@ class iTradeQuoteInfoWindow(sc.SizedPanel):
 
 class CustomDataTable(gridlib.PyGridTableBase):
 
-    def __init__(self):
+    def __init__(self,quote):
         gridlib.PyGridTableBase.__init__(self)
 
-        self.colLabels = ['ID', 'Description', 'Severity', 'Priority', 'Platform',
-                          'Opened?', 'Fixed?', 'Tested?', 'TestFloat']
+        self.colLabels = [ message('date'),
+                           message('volume'),
+                           message('open'),
+                           message('low'),
+                           message('high'),
+                           message('last'),
+                         ]
 
-        self.dataTypes = [gridlib.GRID_VALUE_NUMBER,
-                          gridlib.GRID_VALUE_STRING,
-                          gridlib.GRID_VALUE_CHOICE + ':only in a million years!,wish list,minor,normal,major,critical',
+        self.dataTypes = [gridlib.GRID_VALUE_STRING,
                           gridlib.GRID_VALUE_NUMBER + ':1,5',
-                          gridlib.GRID_VALUE_CHOICE + ':all,MSW,GTK,other',
-                          gridlib.GRID_VALUE_BOOL,
-                          gridlib.GRID_VALUE_BOOL,
-                          gridlib.GRID_VALUE_BOOL,
+                          gridlib.GRID_VALUE_FLOAT + ':6,2',
+                          gridlib.GRID_VALUE_FLOAT + ':6,2',
+                          gridlib.GRID_VALUE_FLOAT + ':6,2',
                           gridlib.GRID_VALUE_FLOAT + ':6,2',
                           ]
 
-        self.data = [
-            [1010, "The foo doesn't bar", "major", 1, 'MSW', 1, 1, 1, 1.12],
-            [1011, "I've got a wicket in my wocket", "wish list", 2, 'other', 0, 0, 0, 1.50],
-            [1012, "Rectangle() returns a triangle", "critical", 5, 'all', 0, 0, 0, 1.56]
-            ]
+        self.data = []
+
+        for trade in quote.trades().trades():
+            self.data.append([trade.date(),trade.nv_volume(),trade.nv_open(),trade.nv_low(),trade.nv_high(),trade.nv_close()])
 
     # ---[ required methods for the wxPyGridTableBase interface ] -------------------
 
@@ -427,9 +428,9 @@ class CustomDataTable(gridlib.PyGridTableBase):
 
 class CustTableGrid(gridlib.Grid):
 
-    def __init__(self, parent):
+    def __init__(self, parent,quote):
         gridlib.Grid.__init__(self, parent, -1)
-        table = CustomDataTable()
+        table = CustomDataTable(quote)
         # The second parameter means that the grid is to take ownership of the
         # table and will destroy it when done.  Otherwise you would need to keep
         # a reference to it and call it's Destroy method later.
@@ -455,7 +456,7 @@ class iTradeQuoteTablePanel(wx.Panel):
         self.m_port = parent.portfolio()
 
         # create the grid
-        self.m_grid = CustTableGrid(self)
+        self.m_grid = CustTableGrid(self,quote)
 
         # --- vertical sizer
         bs = wx.BoxSizer(wx.VERTICAL)
