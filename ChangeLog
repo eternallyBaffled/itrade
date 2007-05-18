@@ -6,6 +6,7 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-05-18  Gilles Dumortier <dgil at ieee.org>
+	* Fill Grid pane with quote historical data
 	* get currencies from the network : can't when "-d" option is used !
 	* bad display of erase cache dialog box (SF bug 1701785) - implement
 	  iTradeDialog() which use sized_controls package

@@ -157,7 +157,10 @@ class Trades(object):
         return self.m_quote
 
     def trades(self):
-        return self.m_trades
+        items = self.m_trades.values()
+        items.sort(key=Trade.date)
+        return items
+        #return self.m_trades
 
     def candles(self):
         return self.m_candles
