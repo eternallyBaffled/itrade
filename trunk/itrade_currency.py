@@ -201,6 +201,9 @@ class Currencies(object):
     _s2 = { "GBX": 100.0, }
 
     def get(self,curTo,curFrom):
+        if not itrade_config.isConnected():
+            return None
+
         # pence
         if curFrom in self._s1.keys():
             a = self._s1[curFrom]
@@ -233,6 +236,8 @@ class Currencies(object):
         return self.update(curTo,curFrom,f)
 
     def getlasttrade(self,bAllEvenNotInUse=False):
+        if not itrade_config.isConnected():
+            return
         for eachCurrency in self.m_currencies:
             curTo = eachCurrency[:3]
             curFrom = eachCurrency[3:]
