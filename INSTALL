@@ -6,3 +6,30 @@ Installation information can be found in the user guide :
 	http://itrade.sourceforge.net/manual.htm
 
 ===============================================================================
+
+From iTrade source package, we recommend you to install :
+
+ Python      http://www.python.org                    v 2.5 or better
+ wxPython    http://www.wxpython.org                  v 2.8.x or better (UNICODE)
+ numpy       http://sourceforge.net/projects/numpy    v 1.0 or better
+ matplotlib  http://matplotlib.sourceforge.net        v 0.90.x or better
+ xlrd        http://www.lexicon.net/sjmachin/xlrd.htm v 0.6.1a4 or better
+
+Attention :
+If you have some trouble running iTrade after migrating from a previous version,
+be sure you have uninstalled Matplotlib and NumArray/Numpy before installing
+the new versions of these libraries.
+
+-------------------------------------------------------------------------------
+Specific to Linux / Ubuntu Feisty
+-------------------------------------------------------------------------------
+
+- On some Linux distro (ubuntu feisty for example) wxaddons could be missing
+  "ImportError: No module named wxaddons.sized_controls"
+
+	deb http://wxpython.wxcommunity.com/apt/ubuntu/feisty /
+	deb-src http://wxpython.wxcommunity.com/apt/ubuntu/feisty /
+
+	install python-wxaddons package from /etc/apt/sources.list
+
+===============================================================================

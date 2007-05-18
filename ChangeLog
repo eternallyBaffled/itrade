@@ -5,6 +5,9 @@ On the road for v0.4.6 (Nausicaa2)
 
 ===============================================================================
 
+2007-05-18  Gilles Dumortier <dgil at ieee.org>
+	* Some information on wxaddons missing on some Linux distro
+
 2007-05-15  Gilles Dumortier <dgil at ieee.org>
 	* r721 : list of portfolio not sorted (SF bug 1718941)
 	* GBX and GBP currencies (SF bug 1712966)
