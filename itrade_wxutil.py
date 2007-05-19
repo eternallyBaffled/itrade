@@ -536,6 +536,8 @@ class iTradeDialog(iTradeSizedDialog):
         else:
             h = 32
         txt = wx.StaticText(pane, -1, text, size=(260,h))
+        txt.SetFont(wx.Font(10, wx.SWISS , wx.NORMAL, wx.NORMAL))
+
         txt.SetSizerProps(expand=True,valign='center',halign='center')
 
         # Last Row : OK, ..., Cancel
