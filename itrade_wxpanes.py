@@ -175,6 +175,7 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
         # Now that the list exists we can init the other base class,
         # see wxPython/lib/mixins/listctrl.py
         wxl.ColumnSorterMixin.__init__(self, IDC_LAST+1)
+        self.LoadSortColumn()
 
         # events
         wx.EVT_CLOSE(self, self.OnCloseWindow)
@@ -194,6 +195,7 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
 
     def OnCloseWindow(self, evt):
         self.stopLive(bBusy=False)
+        self.SaveSortColumn()
 
     # --- [ wxl.ColumnSorterMixin management ] -------------------------------------
 
@@ -204,6 +206,20 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
     # Used by the wxl.ColumnSorterMixin, see wxPython/lib/mixins/listctrl.py
     def GetSortImages(self):
         return (self.sm_dn, self.sm_up)
+
+    def LoadSortColumn(self):
+        # __x
+        self.m_sort_colnum = -1
+        self.m_sort_colasc = 1
+
+    def SaveSortColumn(self):
+        # __x
+        self.m_sort_colnum = self._col
+        if _col!=-1:
+            self.m_sort_colasc = self._colSortFlag[_col]
+        else:
+            self.m_sort_colasc = 1
+        # __x
 
     def getQuoteAndItemOnTheLine(self,x):
         key = self.m_list.GetItemData(x)
@@ -362,6 +378,10 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
         self.m_list.SetColumnWidth(IDC_TICKER, wx.LIST_AUTOSIZE_USEHEADER)
         self.m_list.SetColumnWidth(IDC_TRADED, wx.LIST_AUTOSIZE)
 
+        # sort the default column
+        if self.m_sort_colnum!=-1:
+            self.SortListItems(self.m_sort_colnum,ascending=self.m_sort_colasc)
+
         # default selection
         if len(items)>0:
             self.m_currentItem = 0
@@ -509,7 +529,7 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
                     self.m_list.SetStringItem(x,IDC_PR, eachQuote.sv_pr(QUOTE_CASH,fmt="%.0f",bDispCurrency=True))
                     self.m_list.SetStringItem(x,IDC_NAME,eachQuote.name())
 
-                    self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.sv_istraded(),x,x,x,x,x,x,x,x,eachQuote.name())
+                    self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.sv_istraded(),eachQuote.nv_volume(),x,x,x,x,x,x,x,eachQuote.name())
                     self.itemQuoteMap[x] = eachQuote
                     self.itemTypeMap[x] = QUOTE_CASH
 
@@ -526,7 +546,7 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
                     self.m_list.SetStringItem(x,IDC_PR, eachQuote.sv_pr(QUOTE_CREDIT,bDispCurrency=True))
                     self.m_list.SetStringItem(x,IDC_NAME,eachQuote.name())
 
-                    self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.sv_istraded(),x,x,x,x,x,x,x,x,eachQuote.name())
+                    self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.sv_istraded(),eachQuote.nv_volume(),x,x,x,x,x,x,x,eachQuote.name())
                     self.itemQuoteMap[x] = eachQuote
                     self.itemTypeMap[x] = QUOTE_CREDIT
 
@@ -539,11 +559,11 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
             self.registerLive(eachQuote,itrade_config.refreshView,self.m_id)
 
         self.m_list.InsertImageStringItem(x, '', -1)
-        self.itemDataMap[x] = ('ZZZZ1','ZZZZ1','ZZZZ1','ZZZZ1','ZZZZ1','ZZZZ1','ZZZZ1','ZZZZ1','ZZZZ1','ZZZZ1','ZZZZ1','ZZZZ1')
+        self.itemDataMap[x] = ('ZZZZ1I','ZZZZ1','ZZZZ1',9999999998,9999999998,9999999998,9999999998,9999999998,9999999998,9999999998,9999999998,'ZZZZ1')
         self.itemQuoteMap[x] = None
         self.itemTypeMap[x] = QUOTE_BOTH
         self.m_list.InsertImageStringItem(x+1, message('main_valuation'), -1)
-        self.itemDataMap[x+1] = ('ZZZZ2','ZZZZ2','ZZZZ2','ZZZZ2','ZZZZ2','ZZZZ2','ZZZZ2','ZZZZ2','ZZZZ2','ZZZZ2','ZZZZ2','ZZZZ2')
+        self.itemDataMap[x+1] = ('ZZZZ2','ZZZZ2','ZZZZ2',9999999999,9999999999,9999999999,9999999999,9999999999,9999999999,9999999999,9999999999,'ZZZZ2')
         self.itemQuoteMap[x+1] = None
         self.itemTypeMap[x+1] = QUOTE_BOTH
 
@@ -712,8 +732,8 @@ class iTrade_MatrixQuotesPanel(iTrade_MatrixPanel):
                 self.m_list.SetStringItem(x,IDC_TRADED,eachQuote.sv_istraded())
                 self.m_list.SetStringItem(x,IDC_NAME,eachQuote.name())
 
-                self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.sv_istraded(),x,x,x,x,x,x,x,x,eachQuote.name())
-                #self.itemDataMap[x] = (eachQuote.isin(),eachQuote.sv_istraded(),eachQuote.ticker(),eachQuote.nv_volume(),eachQuote.nv_prevclose(),eachQuote.nv_open(),eachQuote.nv_high(),eachQuote.nv_low(),eachQuote.nv_close(),eachQuote.sv_pivots(),eachQuote.nv_percent(),eachQuote.name())
+                #self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.sv_istraded(),x,x,x,x,x,x,x,x,eachQuote.name())
+                self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.sv_istraded(),eachQuote.nv_volume(),eachQuote.nv_prevclose(),eachQuote.nv_open(),eachQuote.nv_high(),eachQuote.nv_low(),eachQuote.nv_close(),eachQuote.sv_pivots(),eachQuote.sv_percent(),eachQuote.name())
 
                 self.itemQuoteMap[x] = eachQuote
                 self.itemTypeMap[x] = QUOTE_BOTH
