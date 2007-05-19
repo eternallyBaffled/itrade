@@ -5,6 +5,9 @@ On the road for v0.4.6 (Nausicaa2)
 
 ===============================================================================
 
+2007-05-19  Gilles Dumortier <dgil at ieee.org>
+	* able to sort on any column of the matrix
+
 2007-05-18  Gilles Dumortier <dgil at ieee.org>
 	* Fill Grid pane with quote historical data
 	* get currencies from the network : can't when "-d" option is used !
