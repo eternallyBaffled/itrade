@@ -6,6 +6,8 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-05-19  Gilles Dumortier <dgil at ieee.org>
+	* column sorting persistence (SF bug 1481717) - still a problem with
+	  static sorting on dynamic column (like volume or percent)
 	* able to sort on any column of the matrix
 
 2007-05-18  Gilles Dumortier <dgil at ieee.org>
