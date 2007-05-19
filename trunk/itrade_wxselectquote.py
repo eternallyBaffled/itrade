@@ -219,6 +219,7 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
     # --- [ window management ] -------------------------------------
 
     def OnPostInit(self,event):
+        quotes.loadMarket(self.m_market)
         self.PopulateList(bDuringInit=True)
         self.wxTickerCtrl.SetFocus()
         print 'OnPostInit : market=',self.m_market
