@@ -239,6 +239,20 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
         # format for saving
         itrade_config.column[self.name()] = '%s;%s' % (self.m_sort_colnum,self.m_sort_colasc)
 
+    def SortColumn(self):
+        # sort the default column
+        if self.m_sort_colnum!=-1:
+            if itrade_config.verbose:
+                print 'Sorting',self.name(),'- column:',self.m_sort_colnum,'ascending:',self.m_sort_colasc
+            self.SortListItems(self.m_sort_colnum,ascending=self.m_sort_colasc)
+
+    def needDynamicSortColumn(self):
+        if self.m_sort_colnum<=IDC_TRADED:
+            return False
+        if self.m_sort_colnum>=IDC_NAME:
+            return False
+        return True
+
     def getQuoteAndItemOnTheLine(self,x):
         key = self.m_list.GetItemData(x)
         #print 'line:%d -> key=%d quote=%s' % (x,key,self.itemQuoteMap[key].ticker())
@@ -397,10 +411,7 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
         self.m_list.SetColumnWidth(IDC_TRADED, wx.LIST_AUTOSIZE)
 
         # sort the default column
-        if self.m_sort_colnum!=-1:
-            if itrade_config.verbose:
-                print 'Sorting',self.name(),'- column:',self.m_sort_colnum,'ascending:',self.m_sort_colasc
-            self.SortListItems(self.m_sort_colnum,ascending=self.m_sort_colasc)
+        self.SortColumn()
 
         # default selection
         if len(items)>0:
@@ -490,6 +501,7 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
                     if idview == self.m_id:
                         #debug('%s: %s' % (evt.quote.key(),evt.param))
                         self.OnLiveQuote(evt.quote,xline)
+                        if self.needDynamicSortColumn(): self.SortColumn()
                     else:
                         if itrade_config.verbose:
                             print 'pane::OnLive %s: %s - bad : other view' % (evt.quote.key(),evt.param)
@@ -1127,6 +1139,11 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
 
     def name(self):
         return "indicators"
+
+    def needDynamicSortColumn(self):
+        if self.m_sort_colnum<=IDC_TRADED:
+            return False
+        return True
 
     # populate indicators
     def populateList(self):
