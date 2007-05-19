@@ -529,7 +529,7 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
                     self.m_list.SetStringItem(x,IDC_PR, eachQuote.sv_pr(QUOTE_CASH,fmt="%.0f",bDispCurrency=True))
                     self.m_list.SetStringItem(x,IDC_NAME,eachQuote.name())
 
-                    self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.sv_istraded(),eachQuote.nv_volume(),x,x,x,x,x,x,x,eachQuote.name())
+                    self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.sv_istraded(),x,x,x,x,x,x,x,x,eachQuote.name())
                     self.itemQuoteMap[x] = eachQuote
                     self.itemTypeMap[x] = QUOTE_CASH
 
@@ -546,7 +546,7 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
                     self.m_list.SetStringItem(x,IDC_PR, eachQuote.sv_pr(QUOTE_CREDIT,bDispCurrency=True))
                     self.m_list.SetStringItem(x,IDC_NAME,eachQuote.name())
 
-                    self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.sv_istraded(),eachQuote.nv_volume(),x,x,x,x,x,x,x,eachQuote.name())
+                    self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.sv_istraded(),x,x,x,x,x,x,x,x,eachQuote.name())
                     self.itemQuoteMap[x] = eachQuote
                     self.itemTypeMap[x] = QUOTE_CREDIT
 
@@ -617,6 +617,17 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
             else:
                 item.SetImage(self.idx_up)
                 item.SetTextColour(wx.BLUE)
+
+            key = self.m_list.GetItemData(x)
+            self.itemDataMap[key] = ( quote.isin(),quote.ticker(),quote.sv_istraded(),\
+                                      quote.nv_number(xtype),quote.nv_pru(xtype),quote.nv_pr(xtype),\
+                                      quote.nv_close(),quote.nv_percent(),\
+                                      quote.nv_pv(self.m_portfolio.currency(),xtype),\
+                                      quote.nv_profit(self.m_portfolio.currency(),xtype),\
+                                      quote.nv_profitPercent(self.m_portfolio.currency(),xtype),\
+                                      quote.name()\
+                                    )
+
         else:
             item.SetTextColour(wx.BLACK)
             item.SetImage(self.idx_tbref)
@@ -732,8 +743,7 @@ class iTrade_MatrixQuotesPanel(iTrade_MatrixPanel):
                 self.m_list.SetStringItem(x,IDC_TRADED,eachQuote.sv_istraded())
                 self.m_list.SetStringItem(x,IDC_NAME,eachQuote.name())
 
-                #self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.sv_istraded(),x,x,x,x,x,x,x,x,eachQuote.name())
-                self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.sv_istraded(),eachQuote.nv_volume(),eachQuote.nv_prevclose(),eachQuote.nv_open(),eachQuote.nv_high(),eachQuote.nv_low(),eachQuote.nv_close(),eachQuote.sv_pivots(),eachQuote.sv_percent(),eachQuote.name())
+                self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.sv_istraded(),x,x,x,x,x,x,x,x,eachQuote.name())
 
                 self.itemQuoteMap[x] = eachQuote
                 self.itemTypeMap[x] = QUOTE_BOTH
@@ -764,6 +774,10 @@ class iTrade_MatrixQuotesPanel(iTrade_MatrixPanel):
                 self.m_list.SetStringItem(x,IDC_PIVOTS,quote.sv_pivots())
                 self.m_list.SetStringItem(x,IDC_VOLUME,quote.sv_volume())
                 color = quote.colorTrend()
+
+                key = self.m_list.GetItemData(x)
+                self.itemDataMap[key] = (quote.isin(),quote.ticker(),quote.sv_istraded(),quote.nv_volume(),quote.nv_prevclose(),quote.nv_open(),quote.nv_high(),quote.nv_low(),quote.nv_close(),quote.sv_pivots(),quote.nv_percent(),quote.name())
+
             else:
                 # not already opened today ...
                 self.m_list.SetStringItem(x,IDC_OPEN," ---.-- ")
@@ -956,6 +970,16 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
                 self.m_list.SetStringItem(x,IDC_PV,"%s %s" % (quote.sv_pv(self.m_portfolio.currency(),fmt="%.0f"),self.m_portfolio.currency_symbol()))
                 self.m_list.SetStringItem(x,IDC_PROFIT,"%s %s" % (quote.sv_profit(self.m_portfolio.currency(),fmt="%.0f"),self.m_portfolio.currency_symbol()))
                 self.m_list.SetStringItem(x,IDC_PERCENT,quote.sv_profitPercent(self.m_portfolio.currency()))
+
+                key = self.m_list.GetItemData(x)
+                self.itemDataMap[key] = ( quote.isin(),quote.ticker(),quote.sv_istraded(),\
+                                          quote.nv_pr(),quote.nv_riskmoney(self.m_portfolio.currency()),\
+                                          quote.nv_stoploss(),quote.nv_close(),quote.nv_stopwin(),\
+                                          quote.nv_pv(self.m_portfolio.currency()),\
+                                          quote.nv_profit(self.m_portfolio.currency()),\
+                                          quote.nv_profitPercent(self.m_portfolio.currency()),\
+                                          quote.name()\
+                                        )
         else:
             self.m_list.SetStringItem(x,IDC_INVEST, " ------ %s" % self.m_portfolio.currency_symbol())
             self.m_list.SetStringItem(x,IDC_RISKM, " ------ %s" % self.m_portfolio.currency_symbol())
@@ -1095,7 +1119,7 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
                 self.m_list.SetStringItem(x,IDC_TICKER,eachQuote.ticker())
                 self.m_list.SetStringItem(x,IDC_TRADED,eachQuote.sv_istraded())
 
-                self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.sv_istraded(),x,x,x,x,x,x,x,x,eachQuote.name())
+                self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.sv_istraded(),x,x,x,x,x,x,x,x,x)
                 self.itemQuoteMap[x] = eachQuote
                 self.itemTypeMap[x] = QUOTE_BOTH
 
@@ -1124,6 +1148,16 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
             self.m_list.SetStringItem(x,IDC_MA100,quote.sv_ma(100))
             self.m_list.SetStringItem(x,IDC_RSI,quote.sv_rsi(14))
             self.m_list.SetStringItem(x,IDC_STOCH,'%s (%s)' % (quote.sv_stoK(),quote.sv_stoD()))
+
+            key = self.m_list.GetItemData(x)
+
+            self.itemDataMap[key] = ( quote.isin(),quote.ticker(),quote.sv_istraded(),\
+                                      quote.nv_ma(20),quote.nv_ma(50),quote.nv_ma(100),\
+                                      quote.nv_rsi(14),x,quote.nv_stoK(),\
+                                      x,x,x,\
+                                      quote.nv_close()\
+                                    )
+
         else:
             # no information
             self.m_list.SetStringItem(x,IDC_MA20," ---.--- ")

@@ -1,1 +1,2 @@
+FR0010270033.EURONEXT.PAR;import;abcbourse
 FR0000044380.EURONEXT.PAR;import;abcbourse
