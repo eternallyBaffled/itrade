@@ -1,5 +1,5 @@
 [column]
-indicators = -1;1
+indicators = 12;0
 portfolio = -1;1
 stops = -1;1
 quotes = 2;0

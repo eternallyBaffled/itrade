@@ -398,6 +398,8 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
 
         # sort the default column
         if self.m_sort_colnum!=-1:
+            if itrade_config.verbose:
+                print 'Sorting',self.name(),'- column:',self.m_sort_colnum,'ascending:',self.m_sort_colasc
             self.SortListItems(self.m_sort_colnum,ascending=self.m_sort_colasc)
 
         # default selection
@@ -1149,7 +1151,7 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
                 self.m_list.SetStringItem(x,IDC_TICKER,eachQuote.ticker())
                 self.m_list.SetStringItem(x,IDC_TRADED,eachQuote.sv_istraded())
 
-                self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.sv_istraded(),x,x,x,x,x,x,x,x,x)
+                self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.sv_istraded(),x,x,x,x,x,x,x,x,x,x)
                 self.itemQuoteMap[x] = eachQuote
                 self.itemTypeMap[x] = QUOTE_BOTH
 
