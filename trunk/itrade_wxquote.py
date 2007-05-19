@@ -252,11 +252,10 @@ class iTradeQuoteInfoWindow(sc.SizedPanel):
                 fn = os.path.join(itrade_config.dirImageData,self.suffixLogo('bmp'))
             if not exists(fn):
                 fn = os.path.join(itrade_config.dirImageData,self.suffixLogo('jpg'))
+            self.wxLogo.SetBitmap(wx.NullBitmap)
             if exists(fn):
                 self.m_logo = wx.Bitmap(fn)
                 self.wxLogo.SetBitmap(self.m_logo)
-            else:
-                self.wxLogo.SetBitmap(wx.NullBitmap)
 
     def paint(self):
         # paint logo (if any)

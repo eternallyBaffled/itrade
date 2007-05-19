@@ -6,6 +6,7 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-05-19  Gilles Dumortier <dgil at ieee.org>
+	* Fix a refresh problem when changing the quote in the quote view
 	* Fix an issue with market not loaded (SF bug 1721820)
 	* column sorting persistence (SF bug 1481717) incl. dynamic sorting
 	* able to sort on any column of the matrix
