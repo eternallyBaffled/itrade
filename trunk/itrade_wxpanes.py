@@ -181,9 +181,14 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
         wx.EVT_CLOSE(self, self.OnCloseWindow)
         wx.EVT_SIZE(self, self.OnSize)
         wx.EVT_ERASE_BACKGROUND(self,self.OnEraseBackground)
+        wx.EVT_LIST_COL_CLICK(self,tID,self.OnColClick)
+
         EVT_UPDATE_LIVE(self, self.OnLive)
 
     # --- [ window management ] -------------------------------------
+
+    def OnColClick(self,evt):
+        self.SaveSortColumn()
 
     def OnEraseBackground(self, evt):
         pass
@@ -208,18 +213,31 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
         return (self.sm_dn, self.sm_up)
 
     def LoadSortColumn(self):
-        # __x
-        self.m_sort_colnum = -1
-        self.m_sort_colasc = 1
+        # extract
+        a,b = itrade_config.column[self.name()].split(';')
+
+        # load
+        self.m_sort_colnum = long(a)
+        self.m_sort_colasc = long(b)
+
+        #
+        if itrade_config.verbose:
+            print 'Load sorting',self.name(),'- column:',self.m_sort_colnum,'ascending:',self.m_sort_colasc
 
     def SaveSortColumn(self):
-        # __x
+        # update from current column
         self.m_sort_colnum = self._col
-        if _col!=-1:
-            self.m_sort_colasc = self._colSortFlag[_col]
+        if self._col!=-1:
+            self.m_sort_colasc = self._colSortFlag[self._col]
         else:
             self.m_sort_colasc = 1
-        # __x
+
+        #
+        if itrade_config.verbose:
+            print 'Save sorting',self.name(),'- column:',self.m_sort_colnum,'ascending:',self.m_sort_colasc
+
+        # format for saving
+        itrade_config.column[self.name()] = '%s;%s' % (self.m_sort_colnum,self.m_sort_colasc)
 
     def getQuoteAndItemOnTheLine(self,x):
         key = self.m_list.GetItemData(x)
@@ -502,6 +520,9 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
     def __init__(self,parent,wm,id,portfolio,matrix):
         iTrade_MatrixPanel.__init__(self, parent,wm, id, portfolio, matrix)
 
+    def name(self):
+        return "portfolio"
+
     # populate the portfolio
     def populateList(self):
         self.populateMatrixBegin()
@@ -721,6 +742,9 @@ class iTrade_MatrixQuotesPanel(iTrade_MatrixPanel):
     def __init__(self,parent,wm,id,portfolio,matrix):
         iTrade_MatrixPanel.__init__(self, parent,wm, id, portfolio, matrix)
 
+    def name(self):
+        return "quotes"
+
     # populate quotes
     def populateList(self):
         self.populateMatrixBegin()
@@ -906,6 +930,9 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
 
     def __init__(self,parent,wm,id,portfolio,matrix):
         iTrade_MatrixPanel.__init__(self, parent,wm, id, portfolio, matrix)
+
+    def name(self):
+        return "stops"
 
     # populate stops
     def populateList(self):
@@ -1095,6 +1122,9 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
 
     def __init__(self,parent,wm,id,portfolio,matrix):
         iTrade_MatrixPanel.__init__(self, parent,wm, id, portfolio, matrix)
+
+    def name(self):
+        return "indicators"
 
     # populate indicators
     def populateList(self):

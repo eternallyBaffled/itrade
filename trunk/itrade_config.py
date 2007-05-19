@@ -290,6 +290,15 @@ proxyHostname = None
 global proxyAuthentication
 proxyAuthentication = None
 
+# column
+global column
+column = {}
+
+column['portfolio'] = "-1;1"
+column['quotes'] = "-1;1"
+column['indicators'] = "-1;1"
+column['stops'] = "-1;1"
+
 # ============================================================================
 # checkNewRelease()
 #
@@ -349,6 +358,7 @@ def loadConfig():
     global lang
     global proxyHostname
     global proxyAuthentication
+    global column
 
     # create a configuration object
     config = ConfigParser.ConfigParser()
@@ -419,6 +429,13 @@ def loadConfig():
     except:
         proxyAuthentication = None
 
+    # read columns
+    for i in column.keys():
+        try:
+            column[i] = config.get("column",i)
+        except:
+            column[i] = "-1;1"
+
 # ============================================================================
 # saveConfig()
 # ============================================================================
@@ -446,6 +463,11 @@ def saveConfig():
         config.set("net","proxyHostname",proxyHostname)
     if proxyAuthentication:
         config.set("net","proxyAuthentication",proxyAuthentication)
+
+    # create "Column" section
+    config.add_section("column")
+    for i in column.keys():
+        config.set("column",i,column[i])
 
     # write the new configuration file
     fn = os.path.join(dirUserData,'usrconfig.txt')
