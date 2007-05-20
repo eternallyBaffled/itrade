@@ -372,7 +372,7 @@ import wx.lib.newevent
 (PostInitEvent,EVT_POSTINIT) = wx.lib.newevent.NewEvent()
 
 class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
-    def __init__(self, parent, market = None):
+    def __init__(self, parent, market):
         # context help
         pre = wx.PreDialog()
         pre.SetExtraStyle(wx.DIALOG_EX_CONTEXTHELP)
@@ -515,6 +515,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
     # --- [ window management ] -------------------------------------
 
     def OnPostInit(self,event):
+        quotes.loadMarket(self.m_market)
         self.checkEnablity()
         # fill the list
         self.PopulateList()
