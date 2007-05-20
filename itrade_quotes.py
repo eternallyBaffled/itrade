@@ -631,8 +631,8 @@ class Quote(object):
 
         # only one line
         if bLive and len(data)>=1 and self.list()==QLIST_INDICES:
-            item = itrade_csv.parse(data[0],7)
-            if len(item)>=7:
+            item = itrade_csv.parse(data[0],8)
+            if len(item)>7:
                 # percent is included !
                 self.m_percent = string.atof (item[7])
 
