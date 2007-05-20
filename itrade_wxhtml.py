@@ -180,14 +180,14 @@ class iTradeRSSPanel(wx.Panel):
     # ---[ HeaderPage / AppendToPage / TrailerPage must use buffered content ]---
 
     def HeaderPage(self):
-        self.m_content = ""
+        self.m_content = "".encode("iso-8859-1")
         self.m_html.SetPage('<html><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><body>')
         self.m_html.AppendToPage("<a href=':scan'>%s</a> " % message('rss_scan'))
         self.m_html.AppendToPage("<a href=':clear'>%s</a>" % message('rss_clear'))
 
     def AppendToPage(self,content):
         #print 'AppendToPage:',self.m_content,content
-        self.m_content = self.m_content + content
+        self.m_content = self.m_content + content.encode("iso-8859-1")
         self.m_content = self.m_content + '\n'
         self.m_html.AppendToPage(content)
 
@@ -281,8 +281,9 @@ class iTradeRSSPanel(wx.Panel):
         if self.m_feed and self.m_feed.entries:
             info('Feed %s',self.m_feed.feed.title)
             self.HeaderPage()
+            self.AppendToPage(" (%s %s)<p>" % (message('rss_freshness'),time.strftime('%x | %X',time.localtime())))
 
-            self.AppendToPage("<head>%s</head><p>" % self.m_feed.feed.title)
+            #self.AppendToPage("<head>%s</head><p>" % self.m_feed.feed.title)
 
             for eachEntry in self.m_feed.entries:
                 self.AppendToPage("%s : <a href='%s'>%s</a><p>" % (time.strftime('%x',eachEntry.date),eachEntry.link,eachEntry.title))

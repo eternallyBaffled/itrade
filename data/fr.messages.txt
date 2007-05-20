@@ -597,4 +597,8 @@ connection_title;Paramètres de Connexion
 proxy_server;Serveur Proxy (vide si aucun) :
 proxy_auth;Information d'authentification (vide si aucune) :
 
+rss_clear;Efface
+rss_scan;Scan
+rss_freshness;Dernière mise à jour :
+
 test;message de test
