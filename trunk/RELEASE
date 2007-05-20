@@ -32,7 +32,8 @@ From principal author feeling :
 0.1.z : PANDORA (just to open the box)
 0.2.z : ANTIPLONA (the obvious hack)
 0.3.z : POPOTKA (the toy software)
-0.4.z : COCA (smoke it)
+0.4.z : COCA (smoke it), z < 5
+0.4.z : NAUSICAA (everything basic is inside), z >= 5
 0.5.z : PLUME (author's cat name)
 0.6.z : STELLA MARIS (author's future house name)
 0.7.z : AARICIA (alpha quality, user preview)
