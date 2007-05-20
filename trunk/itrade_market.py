@@ -330,12 +330,18 @@ yahoo_suffix = {
 yahoo_map_tickers = {}
 
 def yahooTicker(ticker,market,place):
+    # special case for US markets
+    if ticker[0:1] == '^':
+        return ticker
+
+    # build the ticker using the suffix
     key = market + '.' + place
     if yahoo_suffix.has_key(key):
         sticker = ticker + yahoo_suffix[key]
     else:
         sticker = ticker
 
+    # check if we need to translate to something different !
     if yahoo_map_tickers.has_key(sticker):
         return yahoo_map_tickers[sticker]
 
