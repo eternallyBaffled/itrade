@@ -682,11 +682,6 @@ class Portfolio(object):
     def remove(self):
         # remove all files used by the portfolio
 
-        fn = self.filepath('properties')
-        try:
-            os.remove(fn)
-        except OSError:
-            pass
         fn = self.filepath('operations')
         try:
             os.remove(fn)
@@ -711,12 +706,6 @@ class Portfolio(object):
     def rename(self,nname):
         # rename all files used by the portfolio
 
-        fn = self.filepath('properties')
-        nfn = self.filenamepath(nname,'properties')
-        try:
-            os.rename(fn,nfn)
-        except OSError:
-            pass
         fn = self.filepath('operations')
         nfn = self.filenamepath(nname,'operations')
         try:
@@ -773,15 +762,13 @@ class Portfolio(object):
         fn = self.filepath('stops')
         quotes.saveStops(fn)
 
-    # ---[ load, save local properties ] --------------------------------------
+    # ---[ load, save global properties ] -------------------------------------
 
     def loadProperties(self):
-        fn = self.filepath('properties')
-        quotes.loadProperties(fn)
+        quotes.loadProperties()
 
     def saveProperties(self):
-        fn = self.filepath('properties')
-        quotes.saveProperties(fn)
+        quotes.saveProperties()
 
     # ---[ load, save and apply Operations ] ----------------------------------
 
