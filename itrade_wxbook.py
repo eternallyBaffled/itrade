@@ -892,17 +892,17 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
     def OnGraphQuote(self,e):
         if self.currentItem()>=0:
             debug("OnGraphQuote: %s" % self.currentItemText())
-            self.openCurrentQuote(page=1)
+            self.openCurrentQuote(page=0)
 
     def OnLiveQuote(self,e):
         if self.currentItem()>=0:
             debug("OnLiveQuote: %s" % self.currentItemText())
-            self.openCurrentQuote(page=2)
+            self.openCurrentQuote(page=1)
 
     def OnPropertyQuote(self,e):
         if self.currentItem()>=0:
             debug("OnPropertyQuote: %s" % self.currentItemText())
-            self.openCurrentQuote(page=7)
+            self.openCurrentQuote(page=6)
 
     # --- [ Save any persistant data ] ----------------------------------------
 
@@ -955,9 +955,9 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
             quote = None
         return quote
 
-    def openCurrentQuote(self,page=1):
+    def openCurrentQuote(self,page=0):
         quote = self.currentQuote()
-        if page==7:
+        if page==6:
             open_iTradeQuoteProperty(self,self.m_portfolio,quote)
         else:
             open_iTradeQuote(self,self.m_portfolio,quote,page)

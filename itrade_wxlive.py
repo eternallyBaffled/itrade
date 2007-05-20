@@ -382,8 +382,9 @@ class iTrade_wxLive(wx.Panel):
         self.refresh()
 
     def refresh(self):
-        nb = self.m_live.currentNotebook(self.m_quote)
-        self.displayNotebook(nb)
+        if self.m_live.hasNotebook():
+            nb = self.m_live.currentNotebook(self.m_quote)
+            self.displayNotebook(nb)
         lt = self.m_live.currentTrades(self.m_quote)
         self.displayLastTrades(lt)
         m = self.m_live.currentMeans(self.m_quote)
