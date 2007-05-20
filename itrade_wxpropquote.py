@@ -310,23 +310,35 @@ class iTradeQuotePropertiesPanel(wx.Panel):
         self.saveThenDisplayReference()
 
     def fillConnectors(self,bInit=False):
+        # --- live
         count = 0
         idx = 0
+        lst = []
         for aname,amarket,aplace,adefaut,aconnector,aqlist,aqtag in listLiveConnector(self.m_quote.market(),self.m_quote.list(),self.m_quote.place()):
-            if bInit: self.editLiveConnector.Append(aname,aname)
-            if aname==self.m_quote.liveconnector().name():
-                idx = count
-            count = count + 1
+            if not aname in lst: # be sure its unique in the list
+                if bInit:
+                    self.editLiveConnector.Append(aname,aname)
+                    lst.append(aname)
+                if aname==self.m_quote.liveconnector().name():
+                    # found the "to be selected"
+                    idx = count
+                count = count + 1
 
         self.editLiveConnector.SetSelection(idx)
 
+        # --- import
         count = 0
         idx = 0
+        lst = []
         for aname,aplace,amarket,adefaut,aconnector,aqlist,aqtag in listImportConnector(self.m_quote.market(),self.m_quote.list(),self.m_quote.place()):
-            if bInit: self.editImportConnector.Append(aname,aname)
-            if aname==self.m_quote.importconnector().name():
-                idx = count
-            count = count + 1
+            if not aname in lst: # be sure its unique in the list
+                if bInit:
+                    self.editImportConnector.Append(aname,aname)
+                    lst.append(aname)
+                if aname==self.m_quote.importconnector().name():
+                    # found the "to be selected"
+                    idx = count
+                count = count + 1
 
         self.editImportConnector.SetSelection(idx)
 

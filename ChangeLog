@@ -6,6 +6,8 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-05-20  Gilles Dumortier <dgil at ieee.org>
+	* Be sure a connector is only once in the property list of connectors
+	* Fix an issue with % on live for some connectors
 	* Connectors should be global properties of the quote (SF bug 1642791)
 
 2007-05-19  Gilles Dumortier <dgil at ieee.org>
