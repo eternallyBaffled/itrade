@@ -260,9 +260,9 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
         item = self.m_list.GetItem(x)
         return quote,item
 
-    def openCurrentQuote(self,page=1):
+    def openCurrentQuote(self,page=0):
         quote,item = self.getQuoteAndItemOnTheLine(self.m_currentItem)
-        if page==7:
+        if page==6:
             open_iTradeQuoteProperty(self.m_parent,self.m_portfolio,quote)
         else:
             open_iTradeQuote(self.m_parent,self.m_portfolio,quote,page)
@@ -342,15 +342,15 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
 
     def OnPopup_View(self, event):
         debug("OnPopup_View")
-        self.openCurrentQuote(page=1)
+        self.openCurrentQuote(page=0)
 
     def OnPopup_Live(self, event):
         debug("OnPopup_Live")
-        self.openCurrentQuote(page=2)
+        self.openCurrentQuote(page=1)
 
     def OnPopup_Properties(self, event):
         debug("OnPopup_Properties")
-        self.openCurrentQuote(page=7)
+        self.openCurrentQuote(page=6)
 
     def OnPopup_Buy(self, event):
         debug("OnPopup_Buy")

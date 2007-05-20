@@ -972,13 +972,20 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
 
 class iTradeQuoteNotebookWindow(wx.Notebook):
 
-    def __init__(self,parent,id,size,quote,page):
+    ID_PAGE_GRAPH = 0
+    ID_PAGE_LIVE = 1
+    ID_PAGE_INTRADAY = 2
+    ID_PAGE_NEWS = 3
+    ID_PAGE_ANALYSIS = 4
+    ID_PAGE_TABLE = 5
+    ID_PAGE_PROP = 6
+
+    def __init__(self,parent,id,size,quote,page=0):
         wx.Notebook.__init__(self,parent,id,wx.DefaultPosition, size, style=wx.SIMPLE_BORDER|wx.NB_TOP)
         self.m_quote = None
         self.m_parent = parent
         self.m_port = parent.portfolio()
-        self.m_curpage = 0
-        self.ID_PAGE_LIVE = 99
+        self.m_curpage = -1
         page = self.init(quote,page)
         wx.EVT_NOTEBOOK_PAGE_CHANGED(self, self.GetId(), self.OnPageChanged)
         wx.EVT_NOTEBOOK_PAGE_CHANGING(self, self.GetId(), self.OnPageChanging)
@@ -1008,7 +1015,7 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
         debug('OnPageChanging, old:%d, new:%d, sel:%d\n' % (old, new, sel))
         event.Skip()
 
-    def init(self,nquote=None,page=1):
+    def init(self,nquote=None,page=0):
         # check new quote
         if nquote<>self.m_quote:
             self.m_quote = nquote
@@ -1017,27 +1024,11 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
             self.win = {}
             self.DeleteAllPages()
 
-            page = page - 1
-            self.ID_PAGE_GRAPH = 0
-            if self.m_quote.hasNotebook():
-                self.ID_PAGE_LIVE = 1
-                self.ID_PAGE_INTRADAY = 2
-            else:
-                # connector for this quote can't manage notebook/lasttrades :-(
-                self.ID_PAGE_LIVE = 99
-                self.ID_PAGE_INTRADAY = 1
-                if page>0: page = page - 1
-            self.ID_PAGE_NEWS = self.ID_PAGE_INTRADAY+1
-            self.ID_PAGE_ANALYSIS = self.ID_PAGE_NEWS+1
-            self.ID_PAGE_TABLE = self.ID_PAGE_ANALYSIS+1
-            self.ID_PAGE_PROP = self.ID_PAGE_TABLE+1
-
             self.win[self.ID_PAGE_GRAPH] = iTradeQuoteGraphPanel(self,wx.NewId(),self.m_quote)
             self.AddPage(self.win[self.ID_PAGE_GRAPH], message('quote_graphdaily'))
 
-            if self.ID_PAGE_LIVE<>99:
-                self.win[self.ID_PAGE_LIVE] = iTradeQuoteLivePanel(self,self.m_parent,wx.NewId(),self.m_quote)
-                self.AddPage(self.win[self.ID_PAGE_LIVE], message('quote_live'))
+            self.win[self.ID_PAGE_LIVE] = iTradeQuoteLivePanel(self,self.m_parent,wx.NewId(),self.m_quote)
+            self.AddPage(self.win[self.ID_PAGE_LIVE], message('quote_live'))
 
             # found the right URL for intraday charting
             m = self.m_quote.market()
@@ -1080,8 +1071,10 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
     def refresh(self,nquote=None,live=False):
         if nquote:
             # refresh the new quote
-            info('QuoteNotebookWindow::refresh %s new quote' % self.m_quote.ticker())
-            self.init(nquote)
+            info('QuoteNotebookWindow::refresh %s new quote - page %d' % (nquote.ticker(),self.m_curpage))
+            page = self.init(nquote,self.m_curpage)
+            print 'refresh: internal page=',page
+            self.SetSelection(page)
         else:
             # refresh current page
             info('QuoteNotebookWindow::refresh %s live=%d page=%d' % (self.m_quote.ticker(),live,self.m_curpage))
@@ -1097,7 +1090,7 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
 
 class iTradeQuoteWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin):
 
-    def __init__(self,parent,id,port,quote,dpage=1):
+    def __init__(self,parent,id,port,quote,dpage=0):
         self.m_id = wx.NewId()
 
         # init mixins
@@ -1208,7 +1201,7 @@ class iTradeQuoteWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin):
 #   page    page to select
 # ============================================================================
 
-def open_iTradeQuote(win,port,quote,page=1):
+def open_iTradeQuote(win,port,quote,page=0):
     if not isinstance(quote,Quote):
         quote = quotes.lookupKey(quote)
     if win and win.m_hView:
