@@ -181,6 +181,7 @@ class LiveUpdate_yahoo(object):
         if sclock=="N/A" or sdata[2]=='"N/A"' or len(sclock)<5:
             if itrade_config.verbose:
                 info('invalid datation for %s : %s %s' % (quote.ticker(),sclock,sdata[2]))
+                #print sdata
             return None
 
         # start decoding

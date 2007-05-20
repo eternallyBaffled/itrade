@@ -6,6 +6,7 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-05-20  Gilles Dumortier <dgil at ieee.org>
+	* Indices from US market should not have local market yahoo suffix !
 	* Quote view : display Yahoo intraday graph for LSE markets
 	* Be sure LSE ticker is valid (remove '.' at the end) (SF bug 1719653)
 	* Quotes View - changing quote keep the current page (SF bug 1632171)
