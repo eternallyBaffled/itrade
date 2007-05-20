@@ -505,10 +505,12 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
                     else:
                         if itrade_config.verbose:
                             print 'pane::OnLive %s: %s - bad : other view' % (evt.quote.key(),evt.param)
+                        pass
             self.m_parent.refreshConnexion()
         else:
             if itrade_config.verbose:
                 print 'pane::OnLive %s: %s - bad : not running' % (evt.quote.key(),evt.param)
+            pass
 
     # refresh list
     def OnRefresh(self,e):

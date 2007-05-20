@@ -122,7 +122,7 @@ class News_Boursorama(object):
         buf = self.getdata(url)
 
         iter = self.splitLines(buf)
-        print iter
+        #print iter
 
         for eachLine in iter:
             sdate = time.strptime(eachLine[0:10], "%d/%m/%Y")
