@@ -74,24 +74,24 @@ class UpdateLiveThread:
         self.m_running = False
         self.m_sleeptime = sleeptime
         self.m_param = param
-        debug('UpdateLiveThread::__init__(): %s %f %s' % (quote,sleeptime,param))
+        #debug('UpdateLiveThread::__init__(): %s %f %s' % (quote,sleeptime,param))
 
     def Start(self):
         self.m_keepGoing = True
         self.m_running = True
         thread.start_new_thread(self.Run,(self.m_param,))
-        debug('UpdateLiveThread::Start(): %s %f %s' % (self.m_quote,self.m_sleeptime,self.m_param))
+        #debug('UpdateLiveThread::Start(): %s %f %s' % (self.m_quote,self.m_sleeptime,self.m_param))
 
     def Stop(self):
         self.m_keepGoing = False
-        debug('UpdateLiveThread::Stop(): %s %f %s' % (self.m_quote,self.m_sleeptime,self.m_param))
+        #debug('UpdateLiveThread::Stop(): %s %f %s' % (self.m_quote,self.m_sleeptime,self.m_param))
 
     def IsRunning(self):
         return self.m_running
 
     def Run(self,p):
         while (self.m_keepGoing):
-            debug('UpdateLiveThread::Run(): %s %f %s' % (self.m_quote,self.m_sleeptime,self.m_param))
+            #debug('UpdateLiveThread::Run(): %s %f %s' % (self.m_quote,self.m_sleeptime,self.m_param))
 
             # update live information
             itrade_import.liveupdate_from_internet(self.m_quote)

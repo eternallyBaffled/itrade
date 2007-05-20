@@ -414,11 +414,11 @@ class Quote(object):
         self.m_pluginId = None
 
     def set_liveconnector(self,name):
-        if itrade_config.verbose:
-            print 'set_liveconnector for ',self.m_market,self.m_list,QTAG_ANY,self.m_place,name
+        #if itrade_config.verbose:
+        #    print 'set_liveconnector for ',self.m_market,self.m_list,QTAG_ANY,self.m_place,name
         conn = getLiveConnector(self.m_market,self.m_list,QTAG_ANY,self.m_place,name)
-        if itrade_config.verbose:
-            print ' returns',conn
+        #if itrade_config.verbose:
+        #    print ' returns',conn
         if conn:
             self.m_userliveconnector = conn
             self.m_pluginId = None
@@ -1278,9 +1278,9 @@ class Quotes(object):
         if quote:
             quote.setProperty(prop,val)
 
-    def loadProperties(self,fp=None):
+    def loadProperties(self):
         # open and read the file to load properties information
-        infile = itrade_csv.read(fp,os.path.join(itrade_config.dirUserData,'default.properties.txt'))
+        infile = itrade_csv.read(None,os.path.join(itrade_config.dirUserData,'properties.txt'))
         if infile:
             # scan each line to read each quote
             for eachLine in infile:
@@ -1289,13 +1289,13 @@ class Quotes(object):
                     # debug('%s ::: %s' % (eachLine,item))
                     self.addProperty(item[0],item[1],item[2])
 
-    def saveProperties(self,fp=None):
+    def saveProperties(self):
         props = []
         for eachQuote in self.list():
             for eachProp in eachQuote.listProperties():
                 #print eachProp
                 props.append(eachProp)
-        itrade_csv.write(fp,os.path.join(itrade_config.dirUserData,'default.properties.txt'),props)
+        itrade_csv.write(None,os.path.join(itrade_config.dirUserData,'properties.txt'),props)
 
     # ---[ Stops ] ---
 

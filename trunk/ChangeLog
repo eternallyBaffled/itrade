@@ -5,6 +5,9 @@ On the road for v0.4.6 (Nausicaa2)
 
 ===============================================================================
 
+2007-05-20  Gilles Dumortier <dgil at ieee.org>
+	* Connectors should be global properties of the quote (SF bug 1642791)
+
 2007-05-19  Gilles Dumortier <dgil at ieee.org>
 	* Fix a refresh problem when changing the quote in the quote view
 	* Fix an issue with market not loaded (SF bug 1721820)
