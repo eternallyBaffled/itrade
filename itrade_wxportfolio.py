@@ -451,8 +451,10 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
 
         # enable some fields based on the operation
         if operation=='edit':
-            # filename can't be changed
+            # edit: filename, market and currency can't be changed
             self.wxFilenameCtrl.Enable(False)
+            self.wxMarketCtrl.Enable(False)
+            self.wxCurrencyCtrl.Enable(False)
             #self.wxNameCtrl.SetFocus()
         elif operation=='delete':
             # display only
