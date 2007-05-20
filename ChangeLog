@@ -6,6 +6,8 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-05-20  Gilles Dumortier <dgil at ieee.org>
+	* modify barchart plugin to import TORONTO markets
+	* change "TSX" and "TSE" to "TORONTO EXCHANGE" and "TORONTO VENTURE"
 	* Order by %-Autorefresh on: view unstable (SF bug 1722052)
 	* News : UnicodeDecodeError when click on boursorama (SF bug 1651029)
 	* News : Freshness of information (SF 1649267)

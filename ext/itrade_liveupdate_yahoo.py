@@ -60,8 +60,10 @@ import itrade_config
 class LiveUpdate_yahoo(object):
     def __init__(self):
         debug('LiveUpdate_yahoo:__init__')
-        self.m_url = "http://quote.yahoo.com/download/quotes.csv"
-        #self.m_url = "http://download.finance.yahoo.com/d/quotes.csv"
+
+        #self.m_url = "http://quote.yahoo.com/download/quotes.csv"
+        self.m_url = "http://download.finance.yahoo.com/d/quotes.csv"
+
         self.m_connected = False
         self.m_livelock = thread.allocate_lock()
         self.m_clock = {}
@@ -348,8 +350,8 @@ registerLiveConnector('LSE','LON',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=Tr
 
 registerLiveConnector('ASX','SYD',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 
-registerLiveConnector('TSX','TOR',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
-registerLiveConnector('TSE','TOR',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('TORONTO VENTURE','TOR',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('TORONTO EXCHANGE','TOR',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 
 registerLiveConnector('LSE SETS','LON',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 registerLiveConnector('LSE SETSmm','LON',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)

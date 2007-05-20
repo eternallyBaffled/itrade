@@ -253,10 +253,10 @@ intradayGraphUrl['OTCBB'] = "http://ichart.finance.yahoo.com/b?s=%s.OB"
 intradayGraphUrlUseISIN['OTCBB'] = False
 intradayGraphUrl['ASX'] = "http://ichart.finance.yahoo.com/b?s=%s.AX"
 intradayGraphUrlUseISIN['ASX'] = False
-intradayGraphUrl['TSX'] = "http://ichart.finance.yahoo.com/b?s=%s.V"
-intradayGraphUrlUseISIN['TSX'] = False
-intradayGraphUrl['TSE'] = "http://ichart.finance.yahoo.com/b?s=%s.TO"
-intradayGraphUrlUseISIN['TSE'] = False
+intradayGraphUrl['TORONTO VENTURE'] = "http://ichart.finance.yahoo.com/b?s=%s.V"
+intradayGraphUrlUseISIN['TORONTO VENTURE'] = False
+intradayGraphUrl['TORONTO EXCHANGE'] = "http://ichart.finance.yahoo.com/b?s=%s.TO"
+intradayGraphUrlUseISIN['TORONTO EXCHANGE'] = False
 intradayGraphUrl['MILAN EXCHANGE'] = "http://ichart.finance.yahoo.com/b?s=%s.MI"
 intradayGraphUrlUseISIN['MILAN EXCHANGE'] = False
 intradayGraphUrl['SWISS EXCHANGE.XSWX'] = "http://ichart.finance.yahoo.com/b?s=%s.SW"

@@ -63,7 +63,7 @@ isin_market = {
     'uk': 'LSE SETS',
     'us': 'NASDAQ',
     'au': 'ASX',
-    'ca': 'TSE',
+    'ca': 'TORONTO EXCHANGE',
     'ch': 'SWISS EXCHANGE',
     'it': 'MILAN EXCHANGE',
     }
@@ -97,8 +97,8 @@ market_indice = {
     'LSE SETSmm': 'US2605661048',
     'LSE SEAQ': 'US2605661048',
     'ASX': 'US2605661048',
-    'TSE': 'US2605661048',
-    'TSX': 'US2605661048',
+    'TORONTO EXCHANGE': 'US2605661048',
+    'TORONTO VENTURE': 'US2605661048',
     'MILAN EXCHANGE': 'IT0003137749',
     'SWISS EXCHANGE': 'CH0009980894',
 }
@@ -127,8 +127,8 @@ market_currency = {
     'LSE SETSmm': 'GBP',
     'LSE SEAQ': 'GBP',
     'ASX': 'AUD',
-    'TSE': 'CAD',
-    'TSX': 'CAD',
+    'TORONTO EXCHANGE': 'CAD',
+    'TORONTO VENTURE': 'CAD',
     'MILAN EXCHANGE': 'EUR',
     'SWISS EXCHANGE': 'CHF',
     }
@@ -157,8 +157,8 @@ _lom = {
     'AMEX': False,
     'OTCBB': False,
     'ASX': False,
-    'TSE': False,
-    'TSX': False,
+    'TORONTO EXCHANGE': False,
+    'TORONTO VENTURE': False,
     'MILAN EXCHANGE': False,
     'SWISS EXCHANGE': False,
     }
@@ -224,7 +224,7 @@ def compute_country(isin,market,place):
             return 'US'
         if market=='ASX':
             return 'AU'
-        if market=='TSE' or market=='TSX':
+        if market=='TORONTO EXCHANGE' or market=='TORONTO VENTURE':
             return 'CA'
         if market=='SWISS EXCHANGE':
             return 'CH'
@@ -267,7 +267,7 @@ def list_of_places(market):
         lop.append('LON')
     if market=='ASX':
         lop.append('SYD')
-    if market=='TSE' or market=='TSX':
+    if market=='TORONTO EXCHANGE' or market=='TORONTO VENTURE':
         lop.append('TOR')
     if market=='SWISS EXCHANGE':
         lop.append('XSWX')
@@ -293,8 +293,8 @@ market_place = {
     'LSE SETSmm': 'LON',
     'LSE SEAQ': 'LON',
     'ASX': 'SYD',
-    'TSE': 'TOR',
-    'TSX': 'TOR',
+    'TORONTO EXCHANGE': 'TOR',
+    'TORONTO VENTURE': 'TOR',
     'MILAN EXCHANGE': 'MIL',
     'SWISS EXCHANGE': 'XVTX',
     }
@@ -320,8 +320,8 @@ yahoo_suffix = {
     'LSE SETSmm.LON': '.L',
     'LSE SEAQ.LON': '.L',
     'ASX.SYD': '.AX',
-    'TSE.TOR': '.TO',
-    'TSX.TOR': '.V',
+    'TORONTO EXCHANGE.TOR': '.TO',
+    'TORONTO VENTURE.TOR': '.V',
     'MILAN EXCHANGE.MIL': '.MI',
     'SWISS EXCHANGE.XSWX': '.SW',
     'SWISS EXCHANGE.XVTX': '.VX',

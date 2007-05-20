@@ -59,7 +59,10 @@ import itrade_config
 class Import_yahoo(object):
     def __init__(self):
         debug('Import_yahoo:__init__')
-        self.m_url = 'http://ichart.finance.yahoo.com/table.csv'
+
+        #self.m_url = 'http://ichart.finance.yahoo.com/table.csv'
+        self.m_url = 'http://download.finance.yahoo.com/d/quotes.csv'
+
         #self.m_connection=ITradeConnection(proxy="172.30.0.3:8080")
         self.m_connection=ITradeConnection(cookies=None,
                                            proxy=itrade_config.proxyHostname,
@@ -205,8 +208,8 @@ registerImportConnector('LSE','LON',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=
 
 registerImportConnector('ASX','SYD',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
 
-registerImportConnector('TSX','TOR',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('TSE','TOR',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('TORONTO VENTURE','TOR',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('TORONTO EXCHANGE','TOR',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
 
 registerImportConnector('LSE SETS','LON',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
 registerImportConnector('LSE SETSmm','LON',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)

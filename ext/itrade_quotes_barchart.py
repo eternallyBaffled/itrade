@@ -4,7 +4,8 @@
 # Project Name : iTrade
 # Module Name  : itrade_quotes_barchart.py
 #
-# Description: List of quotes from barchart.com : NASDAQ, AMEX, OTCBB
+# Description: List of quotes from barchart.com : NASDAQ, AMEX, OTCBB,
+# TORONTO (TSE and TSX)
 #
 # The Original Code is iTrade code (http://itrade.sourceforge.net).
 #
@@ -62,12 +63,20 @@ barchart_data = {}
 def Import_ListOfQuotes_BARCHART(quotes,market='NASDAQ',dlg=None,x=0):
     global barchart_data
     print 'Update %s list of symbols' % market
-    connection=ITradeConnection(cookies=None, 
-                                           proxy=itrade_config.proxyHostname, 
+    connection=ITradeConnection(cookies=None,
+                                           proxy=itrade_config.proxyHostname,
                                            proxyAuth=itrade_config.proxyAuthentication)
 
     if market=='NASDAQ' or market=='AMEX' or market=='OTCBB':
         url = "http://www2.barchart.com/lookup.asp?name=%s&opt1=1&start=all&type=&search_usstocks=1&search_usfunds=&search_canstocks="
+        m_currency = 'USD'
+        m_place = 'NYC'
+        m_country = 'US'
+    elif market=='TORONTO EXCHANGE' or market=='TORONTO VENTURE':
+        url = "http://www2.barchart.com/lookup.asp?name=%s&opt1=1&start=all&type=&search_usstocks=&search_usfunds=&search_canstocks=1"
+        m_currency = 'CAD'
+        m_place = 'TOR'
+        m_country = 'CA'
     else:
         return False
 
@@ -88,7 +97,7 @@ def Import_ListOfQuotes_BARCHART(quotes,market='NASDAQ',dlg=None,x=0):
             dlg.Update(x,"BARCHART %s:'%s'"%(market,letter))
             #print "BARCHART %s:'%s'"%(market,letter)
 
-        if not barchart_data.has_key(letter):
+        if not barchart_data.has_key("%s.%s" % (letter,m_country)):
             # read file (for debugging) or get file from network
             try:
                 fn = open('barchart%s.htm' % letter,'r')
@@ -106,10 +115,10 @@ def Import_ListOfQuotes_BARCHART(quotes,market='NASDAQ',dlg=None,x=0):
                 data=fn.read()
 
             # returns the data
-            barchart_data[letter] = data
+            barchart_data["%s.%s" % (letter,m_country)] = data
 
         #
-        lines = splitLines(barchart_data[letter])
+        lines = splitLines(barchart_data["%s.%s" % (letter,m_country)])
         ticker = ''
         name = ''
         exchange = ''
@@ -146,9 +155,19 @@ def Import_ListOfQuotes_BARCHART(quotes,market='NASDAQ',dlg=None,x=0):
                         name = data
 
             if name!='' and ticker!='' and exchange!='':
+                #print '"',name, '" - "',ticker, '" - "',exchange,'"'
                 name = filterName(name)
+
+                if exchange=='TSX': exchange='TORONTO EXCHANGE'
+                if exchange=='TSX.V' : exchange='TORONTO VENTURE'
+
+                #print '"',name, '" - "',ticker, '" - "',exchange,'" market:',market
+
                 if exchange==market:
-                    quotes.addQuote(isin='',name=name,ticker=ticker,market=exchange,currency='USD',place='NYC',country='US')
+                    if ticker[-3:]=='.TO' or ticker[-3:]=='.VN':
+                        ticker = ticker[:-3]
+
+                    quotes.addQuote(isin='',name=name,ticker=ticker,market=exchange,currency=m_currency,place=m_place,country=m_country)
                     count = count + 1
 
                 # reset everything
@@ -204,6 +223,9 @@ registerListSymbolConnector('NASDAQ','NYC',QLIST_ANY,QTAG_LIST,Import_ListOfQuot
 registerListSymbolConnector('AMEX','NYC',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_BARCHART)
 registerListSymbolConnector('OTCBB','NYC',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_BARCHART)
 
+registerListSymbolConnector('TORONTO EXCHANGE','TOR',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_BARCHART)
+registerListSymbolConnector('TORONTO VENTURE','TOR',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_BARCHART)
+
 # ============================================================================
 # Test ME
 # ============================================================================
@@ -216,6 +238,8 @@ if __name__=='__main__':
     Import_ListOfQuotes_BARCHART(quotes,'NASDAQ')
     Import_ListOfQuotes_BARCHART(quotes,'AMEX')
     Import_ListOfQuotes_BARCHART(quotes,'OTCBB')
+    Import_ListOfQuotes_BARCHART(quotes,'TORONTO EXCHANGE')
+    Import_ListOfQuotes_BARCHART(quotes,'TORONTO VENTURE')
     quotes.saveListOfQuotes()
 
 # ============================================================================
