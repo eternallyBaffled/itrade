@@ -33,7 +33,7 @@ Version 0.4.6 (Nausicaa2)
  + Italian Market (yahoo connector)
  + main market indicator
  + Proxy Connection
- ~ LSE Markets (yahoo connector)
+ + LSE Markets (yahoo connector)
  ~ Printing module
  ~ Extensible Indicators back-end
 
