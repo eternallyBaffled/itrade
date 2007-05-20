@@ -180,14 +180,14 @@ class iTradeRSSPanel(wx.Panel):
     # ---[ HeaderPage / AppendToPage / TrailerPage must use buffered content ]---
 
     def HeaderPage(self):
-        self.m_content = "".encode("iso-8859-1")
-        self.m_html.SetPage('<html><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><body>')
+        self.m_content = ""
+        self.m_html.SetPage('<html><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><body>')
         self.m_html.AppendToPage("<a href=':scan'>%s</a> " % message('rss_scan'))
         self.m_html.AppendToPage("<a href=':clear'>%s</a>" % message('rss_clear'))
 
     def AppendToPage(self,content):
         #print 'AppendToPage:',self.m_content,content
-        self.m_content = self.m_content + content.encode("iso-8859-1")
+        self.m_content = self.m_content + content
         self.m_content = self.m_content + '\n'
         self.m_html.AppendToPage(content)
 
@@ -226,7 +226,7 @@ class iTradeRSSPanel(wx.Panel):
                 info('loadCache(%s) : IOError -> empty page' % fn)
                 return
             self.HeaderPage()
-            self.AppendToPage(txt)
+            self.AppendToPage(txt.decode('utf-8'))
             self.TrailerPage()
             info('loadCache(%s) : OK' % fn)
         else:
@@ -244,7 +244,8 @@ class iTradeRSSPanel(wx.Panel):
             info('saveCache(%s) : IOError :-(' % fn)
             return False
 
-        f.write(self.m_content)
+        #print 'saveCache:encoding',f.encoding
+        f.write(self.m_content.encode('utf-8'))
 
         # close the file
         f.close()
@@ -257,12 +258,15 @@ class iTradeRSSPanel(wx.Panel):
         self.m_html.SetSize(self.GetSizeTuple())
 
     def refresh(self):
+        info('iTradeRSSPanel:refresh')
         self.buildPage()
 
     def InitPage(self):
+        info('iTradeRSSPanel:InitPage')
         self.refresh()
 
     def DonePage(self):
+        info('iTradeRSSPanel:DonePage')
         pass
 
     # ---[ display content ]---

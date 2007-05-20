@@ -72,10 +72,12 @@ class LiveUpdate_Euronext(object):
         self.m_lastclock = "::"
         self.m_livelock = thread.allocate_lock()
         self.m_market = market
+
         #self.m_url = 'http://www.euronext.com/tools/datacentre/dataCentreDownloadExcell/0,5822,1732_2276422,00.html'
         self.m_url = 'http://www.euronext.com/tools/datacentre/dataCentreDownloadExcell.jcsv'
-        self.m_connection=ITradeConnection(cookies=None, 
-                                           proxy=itrade_config.proxyHostname, 
+
+        self.m_connection = ITradeConnection(cookies=None,
+                                           proxy=itrade_config.proxyHostname,
                                            proxyAuth=itrade_config.proxyAuthentication)
 
 
