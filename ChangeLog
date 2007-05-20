@@ -6,6 +6,7 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-05-20  Gilles Dumortier <dgil at ieee.org>
+	* News : UnicodeDecodeError when click on boursorama (SF bug 1651029)
 	* News : Freshness of information (SF 1649267)
 	* Portfolio : Main Market and Currency can't be edited
 	* Indices from US market should not have local market yahoo suffix !

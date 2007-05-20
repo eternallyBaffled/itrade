@@ -49,6 +49,7 @@ from httplib import *
 # iTrade system
 from itrade_logging import *
 from itrade_local import message
+from itrade_connection import ITradeConnection
 
 # ============================================================================
 # Used to build a Feed entry
@@ -74,11 +75,16 @@ class News_Boursorama(object):
         self.m_baseurl = {}
         self.m_host = "www.boursorama.com"
         self.m_conn = None
+
         self.m_baseurl[0] = "http://www.boursorama.com/infos/actualites/actu_societes_code.phtml?symbole=1rP%s"
         self.m_baseurl[1] = "http://www.boursorama.com/communique/communique_code.phtml?symbole=1rP%s"
         self.m_baseurl[2] = "http://www.boursorama.com/infos/calendrier_code.phtml?symbole=1rP%s"
         self.m_baseurl[3] = "http://www.boursorama.com/conseils/conseils_index_code.phtml?symbole=1rP%s"
         self.m_baselink = "http://www.boursorama.com/infos/imprimer_news.phtml?news=%s"
+
+        self.m_connection=ITradeConnection(cookies=None,
+                                           proxy=itrade_config.proxyHostname,
+                                           proxyAuth=itrade_config.proxyAuthentication)
 
     # ---[ protected interface ] ---
     def getURL(self):
@@ -95,33 +101,15 @@ class News_Boursorama(object):
         return p.findall(buf)
 
     def getdata(self,url):
-        #try:
-        #    f = urllib.urlopen(self.m_url)
-        #except:
-        #    debug('News_Boursorama:unable to connect :-(')
-        #    return None
-
-        #return f.read()
-        if True:
-            try:
-                self.m_conn = HTTPConnection(self.m_host,80)
-            except:
-                debug('News_Boursorama:unable to connect :-(')
-                return None
-        headers = { "Keep-Alive":300, "Accept-Charset:":"ISO-8859-1", "Accept-Language": "en-us,en", "Accept": "text/html,text/plain", "Connection": "keep-alive", "Host": self.m_host }
-
+        debug("News_Boursorama:getdata: url=%s ",url)
         try:
-            self.m_conn.request("GET", url, None, headers)
-            response = self.m_conn.getresponse()
+            buf = self.m_connection.getDataFromUrl(url)
         except:
-            debug('News_Boursorama:GET failure')
+            debug('News_Boursorama:unable to connect :-(')
             return None
 
-        debug("status:%s reason:%s" %(response.status, response.reason))
-        if response.status != 200:
-            debug('News_Boursorama:status!=200')
-            return None
-        return response.read()
+        buf = unicode(buf,'iso-8859-1','strict')
+        return buf
 
     def feed(self,url):
         self.m_url = url
@@ -165,7 +153,6 @@ class News_Boursorama(object):
         info('goto %s',url)
 
         buf = self.getdata(url)
-        buf = unicode(buf,'iso-8859-1')
         #print buf
 
         if not buf:
