@@ -500,8 +500,8 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
                     #print 'live %d %d %d VS %d' % (xline,idview,xtype,self.m_id)
                     if idview == self.m_id:
                         #debug('%s: %s' % (evt.quote.key(),evt.param))
-                        self.OnLiveQuote(evt.quote,xline)
-                        if self.needDynamicSortColumn(): self.SortColumn()
+                        ref = self.OnLiveQuote(evt.quote,xline)
+                        if ref and self.needDynamicSortColumn(): self.SortColumn()
                     else:
                         if itrade_config.verbose:
                             print 'pane::OnLive %s: %s - bad : other view' % (evt.quote.key(),evt.param)
@@ -520,6 +520,11 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
         op1 = (self.m_currentItem>=0) and (self.m_currentItem<self.m_maxlines)
         if op1:
             quote,item = self.getQuoteAndItemOnTheLine(self.m_currentItem)
+            if not quote:
+                if itrade_config.verbose: print 'updateQuoteItems:',self.m_currentItem
+                op1 = False
+            else:
+                if itrade_config.verbose: print 'updateQuoteItems:',self.m_currentItem,quote.name()
         else:
             quote = None
 
@@ -536,6 +541,21 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
 
     def name(self):
         return "portfolio"
+
+    def map(self,quote,key,xtype):
+        if self.itemDataMap.has_key(key):
+            old = self.itemDataMap[key]
+        else:
+            old = None
+        self.itemDataMap[key] = ( quote.isin(),quote.ticker(),quote.sv_istraded(),\
+                                  quote.nv_number(xtype),quote.nv_pru(xtype),quote.nv_pr(xtype),\
+                                  quote.nv_close(),quote.nv_percent(),\
+                                  quote.nv_pv(self.m_portfolio.currency(),xtype),\
+                                  quote.nv_profit(self.m_portfolio.currency(),xtype),\
+                                  quote.nv_profitPercent(self.m_portfolio.currency(),xtype),\
+                                  quote.name()\
+                                )
+        return old
 
     # populate the portfolio
     def populateList(self):
@@ -564,10 +584,9 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
                     self.m_list.SetStringItem(x,IDC_PR, eachQuote.sv_pr(QUOTE_CASH,fmt="%.0f",bDispCurrency=True))
                     self.m_list.SetStringItem(x,IDC_NAME,eachQuote.name())
 
-                    self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.sv_istraded(),x,x,x,x,x,x,x,x,eachQuote.name())
+                    self.map(eachQuote,x,QUOTE_CASH)
                     self.itemQuoteMap[x] = eachQuote
                     self.itemTypeMap[x] = QUOTE_CASH
-
                     self.refreshPortfolioLine(x,False)
 
                     x = x + 1
@@ -581,7 +600,7 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
                     self.m_list.SetStringItem(x,IDC_PR, eachQuote.sv_pr(QUOTE_CREDIT,bDispCurrency=True))
                     self.m_list.SetStringItem(x,IDC_NAME,eachQuote.name())
 
-                    self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.sv_istraded(),x,x,x,x,x,x,x,x,eachQuote.name())
+                    self.map(eachQuote,x,QUOTE_CREDIT)
                     self.itemQuoteMap[x] = eachQuote
                     self.itemTypeMap[x] = QUOTE_CREDIT
 
@@ -589,18 +608,21 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
 
                     x = x + 1
 
-        self.m_maxlines = x
         for eachQuote in self.itemQuoteMap.values():
             self.registerLive(eachQuote,itrade_config.refreshView,self.m_id)
 
         self.m_list.InsertImageStringItem(x, '', -1)
-        self.itemDataMap[x] = ('ZZZZ1I','ZZZZ1','ZZZZ1',9999999998,9999999998,9999999998,9999999998,9999999998,9999999998,9999999998,9999999998,'ZZZZ1')
+        self.m_list.SetStringItem(x,IDC_NAME,'')
+        self.itemDataMap[x] = ('ZZZZ1','ZZZZ1','ZZZZ1',9999999998,9999999998,9999999998,9999999998,9999999998,9999999998,9999999998,9999999998,'ZZZZ1')
         self.itemQuoteMap[x] = None
         self.itemTypeMap[x] = QUOTE_BOTH
         self.m_list.InsertImageStringItem(x+1, message('main_valuation'), -1)
+        self.m_list.SetStringItem(x+1,IDC_NAME,'')
         self.itemDataMap[x+1] = ('ZZZZ2','ZZZZ2','ZZZZ2',9999999999,9999999999,9999999999,9999999999,9999999999,9999999999,9999999999,9999999999,'ZZZZ2')
         self.itemQuoteMap[x+1] = None
         self.itemTypeMap[x+1] = QUOTE_BOTH
+
+        self.m_maxlines = x + 2
 
         # adjust some column's size
         self.m_list.SetColumnWidth(IDC_QTY, wx.LIST_AUTOSIZE)
@@ -628,12 +650,16 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
         self.m_list.SetColumnWidth(IDC_PROFIT, wx.LIST_AUTOSIZE)
         self.m_list.SetColumnWidth(IDC_PERCENT, wx.LIST_AUTOSIZE)
 
-
     # refresh one portfolio line
     def refreshPortfolioLine(self,x,disp):
-        quote,item = self.getQuoteAndItemOnTheLine(x)
-        if quote==None: return
-        xtype = self.itemTypeMap[self.m_list.GetItemData(x)]
+        key = self.m_list.GetItemData(x)
+        quote = self.itemQuoteMap[key]
+        if quote==None: return False
+
+        xtype = self.itemTypeMap[key]
+        item  = self.m_list.GetItem(x)
+
+        bRef = False
 
         # refresh line text
         if disp:
@@ -653,15 +679,8 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
                 item.SetImage(self.idx_up)
                 item.SetTextColour(wx.BLUE)
 
-            key = self.m_list.GetItemData(x)
-            self.itemDataMap[key] = ( quote.isin(),quote.ticker(),quote.sv_istraded(),\
-                                      quote.nv_number(xtype),quote.nv_pru(xtype),quote.nv_pr(xtype),\
-                                      quote.nv_close(),quote.nv_percent(),\
-                                      quote.nv_pv(self.m_portfolio.currency(),xtype),\
-                                      quote.nv_profit(self.m_portfolio.currency(),xtype),\
-                                      quote.nv_profitPercent(self.m_portfolio.currency(),xtype),\
-                                      quote.name()\
-                                    )
+            pp = self.map(quote,key,xtype)
+            bRef = (pp != self.itemDataMap[key])
 
         else:
             item.SetTextColour(wx.BLACK)
@@ -679,36 +698,38 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
         self.m_list.SetColumnWidth(IDC_PV, wx.LIST_AUTOSIZE)
         self.m_list.SetColumnWidth(IDC_PROFIT, wx.LIST_AUTOSIZE)
         self.m_list.SetColumnWidth(IDC_PERCENT, wx.LIST_AUTOSIZE)
+        return bRef
 
     # refresh all the portfolio
     def refreshList(self):
-        x = 0
-        lst = self.m_matrix.list()
-        max = len(lst)
         keepGoing = True
         if self.m_parent.hasFocus():
-            dlg = wx.ProgressDialog(message('main_refreshing'),"",max,self,wx.PD_CAN_ABORT | wx.PD_APP_MODAL)
+            dlg = wx.ProgressDialog(message('main_refreshing'),"",self.m_maxlines,self,wx.PD_CAN_ABORT | wx.PD_APP_MODAL)
         else:
             dlg = None
-        for eachQuote in lst:
-            # in portfolio view, display only traded values !
-            if keepGoing and eachQuote.isTraded():
-                if dlg:
-                    keepGoing = dlg.Update(x,eachQuote.name())
-                eachQuote.update()
-                for xline in range(0,self.m_maxlines):
-                    if self.itemQuoteMap[xline] == eachQuote:
-                       self.refreshPortfolioLine(xline,True)
-                x = x + 1
+
+        for xline in range(0,self.m_maxlines):
+            if keepGoing:
+                key = self.m_list.GetItemData(xline)
+                quote = self.itemQuoteMap[key]
+                if quote:
+                    if dlg:
+                        keepGoing = dlg.Update(xline,quote.name())
+                    quote.update()
+                    self.refreshPortfolioLine(xline,True)
 
         self.m_portfolio.computeOperations()
-        self.refreshEvalLine(self.m_maxlines+1)
+        if self.m_sort_colasc:
+            key = self.m_maxlines-1
+        else:
+            key = 0
+        self.refreshEvalLine(key)
 
         if dlg:
             dlg.Destroy()
 
     def OnLiveQuote(self,quote,xline):
-        self.refreshPortfolioLine(xline,True)
+        return self.refreshPortfolioLine(xline,True)
 
     # ---[ popup menu management ] --------------------------------------------
 
@@ -737,7 +758,7 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
         menu.Append(self.m_popupID_View, message('main_popup_view'))
         menu.Enable(self.m_popupID_View,inList)
         menu.Append(self.m_popupID_Live, message('main_popup_live'))
-        menu.Enable(self.m_popupID_Live,inList and quote.liveconnector().hasNotebook())
+        menu.Enable(self.m_popupID_Live,inList and quote!=None and quote.liveconnector().hasNotebook())
         menu.Append(self.m_popupID_Properties, message('main_popup_properties'))
         menu.Enable(self.m_popupID_Properties,inList)
         menu.AppendSeparator()
@@ -758,6 +779,16 @@ class iTrade_MatrixQuotesPanel(iTrade_MatrixPanel):
 
     def name(self):
         return "quotes"
+
+    def map(self,quote,key,xtype):
+        if self.itemDataMap.has_key(key):
+            old = self.itemDataMap[key]
+        else:
+            old = None
+        self.itemDataMap[key] = (quote.isin(),quote.ticker(),quote.sv_istraded(),quote.nv_volume(),\
+                                 quote.nv_prevclose(),quote.nv_open(),quote.nv_high(),quote.nv_low(),\
+                                 quote.nv_close(),quote.sv_pivots(),quote.nv_percent(),quote.name())
+        return old
 
     # populate quotes
     def populateList(self):
@@ -781,8 +812,7 @@ class iTrade_MatrixQuotesPanel(iTrade_MatrixPanel):
                 self.m_list.SetStringItem(x,IDC_TRADED,eachQuote.sv_istraded())
                 self.m_list.SetStringItem(x,IDC_NAME,eachQuote.name())
 
-                self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.sv_istraded(),x,x,x,x,x,x,x,x,eachQuote.name())
-
+                self.map(eachQuote,x,QUOTE_BOTH)
                 self.itemQuoteMap[x] = eachQuote
                 self.itemTypeMap[x] = QUOTE_BOTH
 
@@ -799,6 +829,7 @@ class iTrade_MatrixQuotesPanel(iTrade_MatrixPanel):
     # refresh one quote
     def refreshQuoteLine(self,x,disp):
         quote,item = self.getQuoteAndItemOnTheLine(x)
+        bRef = False
 
         # refresh line text
         if disp:
@@ -814,7 +845,8 @@ class iTrade_MatrixQuotesPanel(iTrade_MatrixPanel):
                 color = quote.colorTrend()
 
                 key = self.m_list.GetItemData(x)
-                self.itemDataMap[key] = (quote.isin(),quote.ticker(),quote.sv_istraded(),quote.nv_volume(),quote.nv_prevclose(),quote.nv_open(),quote.nv_high(),quote.nv_low(),quote.nv_close(),quote.sv_pivots(),quote.nv_percent(),quote.name())
+                pp = self.map(quote,key,QUOTE_BOTH)
+                bRef = (pp != self.itemDataMap[key])
 
             else:
                 # not already opened today ...
@@ -851,36 +883,30 @@ class iTrade_MatrixQuotesPanel(iTrade_MatrixPanel):
         self.m_list.SetColumnWidth(IDC_PIVOTS, wx.LIST_AUTOSIZE)
         self.m_list.SetColumnWidth(IDC_CLOSE, wx.LIST_AUTOSIZE)
         self.m_list.SetColumnWidth(IDC_PERCENT, wx.LIST_AUTOSIZE)
-
+        return bRef
 
     # refresh all quotes
     def refreshList(self):
-        x = 0
-        lst = self.m_matrix.list()
-        max = len(lst)
         keepGoing = True
         if self.m_parent.hasFocus():
-            dlg = wx.ProgressDialog(message('main_refreshing'),"",max,self,wx.PD_CAN_ABORT | wx.PD_APP_MODAL)
+            dlg = wx.ProgressDialog(message('main_refreshing'),"",self.m_maxlines,self,wx.PD_CAN_ABORT | wx.PD_APP_MODAL)
         else:
             dlg = None
-        for eachQuote in lst:
-            if keepGoing and (eachQuote.isTraded() or eachQuote.isMonitored()):
-                debug('refreshQuotes: OK : %s' % eachQuote.ticker())
+
+        for xline in range(0,self.m_maxlines):
+            if keepGoing:
+                key = self.m_list.GetItemData(xline)
+                quote = self.itemQuoteMap[key]
                 if dlg:
-                    keepGoing = dlg.Update(x,eachQuote.name())
-                eachQuote.update()
-                for xline in range(0,self.m_maxlines):
-                    if self.itemQuoteMap[xline] == eachQuote:
-                        self.refreshQuoteLine(xline,True)
-                x = x + 1
-            else:
-                debug('refreshQuotes: ignore : %s' % eachQuote.ticker())
+                    keepGoing = dlg.Update(xline,quote.name())
+                quote.update()
+                self.refreshQuoteLine(xline,True)
 
         if dlg:
             dlg.Destroy()
 
     def OnLiveQuote(self, quote, xline):
-        self.refreshQuoteLine(xline,True)
+        return self.refreshQuoteLine(xline,True)
 
     # ---[ popup menu management ] --------------------------------------------
 
@@ -948,6 +974,21 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
     def name(self):
         return "stops"
 
+    def map(self,quote,key,xtype):
+        if self.itemDataMap.has_key(key):
+            old = self.itemDataMap[key]
+        else:
+            old = None
+        self.itemDataMap[key] = ( quote.isin(),quote.ticker(),quote.sv_istraded(),\
+                                  quote.nv_pr(),quote.nv_riskmoney(self.m_portfolio.currency()),\
+                                  quote.nv_stoploss(),quote.nv_close(),quote.nv_stopwin(),\
+                                  quote.nv_pv(self.m_portfolio.currency()),\
+                                  quote.nv_profit(self.m_portfolio.currency()),\
+                                  quote.nv_profitPercent(self.m_portfolio.currency()),\
+                                  quote.name()\
+                                )
+        return old
+
     # populate stops
     def populateList(self):
         self.populateMatrixBegin()
@@ -973,7 +1014,7 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
                 self.m_list.SetStringItem(x,IDC_STOPWIN,"~ %s " % eachQuote.sv_stopwin())
                 self.m_list.SetStringItem(x,IDC_NAME,eachQuote.name())
 
-                self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.sv_istraded(),x,x,x,x,x,x,x,x,eachQuote.name())
+                self.map(eachQuote,x,QUOTE_BOTH)
                 self.itemQuoteMap[x] = eachQuote
                 self.itemTypeMap[x] = QUOTE_BOTH
 
@@ -995,6 +1036,7 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
     # refresh one stop
     def refreshStopLine(self,x,disp):
         quote,item = self.getQuoteAndItemOnTheLine(x)
+        bRef = False
 
         if disp:
             color = quote.colorStop()
@@ -1013,14 +1055,8 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
                 self.m_list.SetStringItem(x,IDC_PERCENT,quote.sv_profitPercent(self.m_portfolio.currency()))
 
                 key = self.m_list.GetItemData(x)
-                self.itemDataMap[key] = ( quote.isin(),quote.ticker(),quote.sv_istraded(),\
-                                          quote.nv_pr(),quote.nv_riskmoney(self.m_portfolio.currency()),\
-                                          quote.nv_stoploss(),quote.nv_close(),quote.nv_stopwin(),\
-                                          quote.nv_pv(self.m_portfolio.currency()),\
-                                          quote.nv_profit(self.m_portfolio.currency()),\
-                                          quote.nv_profitPercent(self.m_portfolio.currency()),\
-                                          quote.name()\
-                                        )
+                pp = self.map(quote,key,QUOTE_BOTH)
+                bRef = (pp != self.itemDataMap[key])
         else:
             self.m_list.SetStringItem(x,IDC_INVEST, " ------ %s" % self.m_portfolio.currency_symbol())
             self.m_list.SetStringItem(x,IDC_RISKM, " ------ %s" % self.m_portfolio.currency_symbol())
@@ -1051,32 +1087,30 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
         self.m_list.SetColumnWidth(IDC_PV, wx.LIST_AUTOSIZE)
         self.m_list.SetColumnWidth(IDC_PROFIT, wx.LIST_AUTOSIZE)
         self.m_list.SetColumnWidth(IDC_PERCENT, wx.LIST_AUTOSIZE)
+        return bRef
 
     # refresh all the stop
     def refreshList(self):
-        x = 0
-        lst = self.m_matrix.list()
-        max = len(lst)
         keepGoing = True
         if self.m_parent.hasFocus():
-            dlg = wx.ProgressDialog(message('main_refreshing'),"",max,self,wx.PD_CAN_ABORT | wx.PD_APP_MODAL)
+            dlg = wx.ProgressDialog(message('main_refreshing'),"",self.m_maxlines,self,wx.PD_CAN_ABORT | wx.PD_APP_MODAL)
         else:
             dlg = None
-        for eachQuote in lst:
-            if keepGoing and eachQuote.hasStops() and (eachQuote.isTraded() or eachQuote.isMonitored()):
+
+        for xline in range(0,self.m_maxlines):
+            if keepGoing:
+                key = self.m_list.GetItemData(xline)
+                quote = self.itemQuoteMap[key]
                 if dlg:
-                    keepGoing = dlg.Update(x,eachQuote.name())
-                eachQuote.update()
-                for xline in range(0,self.m_maxlines):
-                    if self.itemQuoteMap[xline] == eachQuote:
-                        self.refreshStopLine(xline,True)
-                x = x + 1
+                    keepGoing = dlg.Update(xline,quote.name())
+                quote.update()
+                self.refreshStopLine(xline,True)
 
         if dlg:
             dlg.Destroy()
 
     def OnLiveQuote(self,quote,xline):
-        self.refreshStopLine(xline,True)
+        return self.refreshStopLine(xline,True)
 
     # ---[ popup menu management ] --------------------------------------------
 
@@ -1145,6 +1179,19 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
             return False
         return True
 
+    def map(self,quote,key,xtype):
+        if self.itemDataMap.has_key(key):
+            old = self.itemDataMap[key]
+        else:
+            old = None
+        self.itemDataMap[key] = ( quote.isin(),quote.ticker(),quote.sv_istraded(),\
+                                  quote.nv_ma(20),quote.nv_ma(50),quote.nv_ma(100),\
+                                  quote.nv_rsi(14),key,quote.nv_stoK(),\
+                                  key,key,key,\
+                                  quote.nv_close()\
+                                )
+        return old
+
     # populate indicators
     def populateList(self):
         self.populateMatrixBegin()
@@ -1168,7 +1215,7 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
                 self.m_list.SetStringItem(x,IDC_TICKER,eachQuote.ticker())
                 self.m_list.SetStringItem(x,IDC_TRADED,eachQuote.sv_istraded())
 
-                self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.sv_istraded(),x,x,x,x,x,x,x,x,x,x)
+                self.map(eachQuote,x,QUOTE_BOTH)
                 self.itemQuoteMap[x] = eachQuote
                 self.itemTypeMap[x] = QUOTE_BOTH
 
@@ -1185,6 +1232,7 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
     # refresh one indicator
     def refreshIndicatorLine(self,x,disp):
         quote,item = self.getQuoteAndItemOnTheLine(x)
+        bRef = False
 
         if disp:
             self.m_list.SetStringItem(x,IDC_LAST,quote.sv_close(bDispCurrency=True))
@@ -1200,12 +1248,8 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
 
             key = self.m_list.GetItemData(x)
 
-            self.itemDataMap[key] = ( quote.isin(),quote.ticker(),quote.sv_istraded(),\
-                                      quote.nv_ma(20),quote.nv_ma(50),quote.nv_ma(100),\
-                                      quote.nv_rsi(14),x,quote.nv_stoK(),\
-                                      x,x,x,\
-                                      quote.nv_close()\
-                                    )
+            pp = self.map(quote,key,QUOTE_BOTH)
+            bRef = (pp != self.itemDataMap[key])
 
         else:
             # no information
@@ -1248,34 +1292,31 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
         self.m_list.SetColumnWidth(IDC_EMV, wx.LIST_AUTOSIZE)
         self.m_list.SetColumnWidth(IDC_OVB, wx.LIST_AUTOSIZE)
         self.m_list.SetColumnWidth(IDC_LAST, wx.LIST_AUTOSIZE)
+        return bRef
 
     # refresh all indicators
     def refreshList(self):
-        x = 0
-        lst = self.m_matrix.list()
-        max = len(lst)
         keepGoing = True
         if self.m_parent.hasFocus():
-            dlg = wx.ProgressDialog(message('main_refreshing'),"",max,self,wx.PD_CAN_ABORT | wx.PD_APP_MODAL)
+            dlg = wx.ProgressDialog(message('main_refreshing'),"",self.m_maxlines,self,wx.PD_CAN_ABORT | wx.PD_APP_MODAL)
         else:
             dlg = None
-        for eachQuote in lst:
-            if keepGoing and (eachQuote.isTraded() or eachQuote.isMonitored()):
+
+        for xline in range(0,self.m_maxlines):
+            if keepGoing:
+                key = self.m_list.GetItemData(xline)
+                quote = self.itemQuoteMap[key]
                 if dlg:
-                    keepGoing = dlg.Update(x,eachQuote.name())
-                eachQuote.update()
-                eachQuote.compute()
-                for xline in range(0,self.m_maxlines):
-                    if self.itemQuoteMap[xline] == eachQuote:
-                        self.refreshIndicatorLine(xline,True)
-                x = x + 1
+                    keepGoing = dlg.Update(xline,quote.name())
+                quote.update()
+                self.refreshIndicatorLine(xline,True)
 
         if dlg:
             dlg.Destroy()
 
     def OnLiveQuote(self, quote, xline):
         quote.compute()
-        self.refreshIndicatorLine(xline,True)
+        return self.refreshIndicatorLine(xline,True)
 
     # ---[ popup menu management ] --------------------------------------------
 

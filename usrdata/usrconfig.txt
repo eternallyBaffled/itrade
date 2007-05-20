@@ -1,8 +1,8 @@
 [column]
-indicators = 12;0
-portfolio = -1;1
-stops = -1;1
-quotes = 0;1
+indicators = 8;0
+portfolio = 10;1
+stops = 10;0
+quotes = 10;1
 
 [net]
 

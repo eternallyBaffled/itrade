@@ -806,7 +806,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         m = self.quotemenu.FindItemById(ID_GRAPH_QUOTE)
         m.Enable(op1)
         m = self.quotemenu.FindItemById(ID_LIVE_QUOTE)
-        m.Enable(op1 and quote.liveconnector().hasNotebook())
+        m.Enable(op1)
         m = self.quotemenu.FindItemById(ID_PROPERTY_QUOTE)
         m.Enable(op1)
 
