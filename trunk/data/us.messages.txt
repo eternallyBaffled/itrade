@@ -598,4 +598,8 @@ connection_title;Connection Settings
 proxy_server;Proxy Hostname (empty if none) :
 proxy_auth;Proxy Authentication (empty if none) :
 
+rss_clear;Clear
+rss_scan;Scan
+rss_freshness;Last scan :
+
 test;test message

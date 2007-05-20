@@ -610,4 +610,9 @@ connection_title;__xConnection Settings
 proxy_server;__xProxy Hostname (empty if none) :
 proxy_auth;__xProxy Authentication (empty if none) :
 
+rss_clear;__xClear
+rss_scan;__xScan
+rss_freshness;__xLast scan :
+
+
 test;Mensagem de teste
