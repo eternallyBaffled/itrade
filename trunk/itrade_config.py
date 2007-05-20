@@ -263,8 +263,12 @@ intradayGraphUrl['SWISS EXCHANGE.XSWX'] = "http://ichart.finance.yahoo.com/b?s=%
 intradayGraphUrlUseISIN['SWISS EXCHANGE.XSWX'] = False
 intradayGraphUrl['SWISS EXCHANGE.XVTX'] = "http://ichart.finance.yahoo.com/b?s=%s.VX"
 intradayGraphUrlUseISIN['SWISS EXCHANGE.XVTX'] = False
-intradayGraphUrl['LSE'] = "http://ichart.finance.yahoo.com/b?s=%s.L"
-intradayGraphUrlUseISIN['LSE'] = False
+intradayGraphUrl['LSE SEAQ'] = "http://ichart.finance.yahoo.com/b?s=%s.L"
+intradayGraphUrlUseISIN['LSE SEAQ'] = False
+intradayGraphUrl['LSE SETS'] = "http://ichart.finance.yahoo.com/b?s=%s.L"
+intradayGraphUrlUseISIN['LSE SETS'] = False
+intradayGraphUrl['LSE SETSmm'] = "http://ichart.finance.yahoo.com/b?s=%s.L"
+intradayGraphUrlUseISIN['LSE SETSmm'] = False
 
 # in ms, time before activating XYPopup
 timerForXYPopup = 500

@@ -112,10 +112,13 @@ def Import_ListOfQuotes_LSE(quotes,market='LSE SETS',dlg=None,x=0):
                 iTicker = indice['Mnemonic']
 
             else:
-
-                #print sh.cell_value(line,iISIN),' : ',sh.cell_value(line,iName).replace(',',' ')
-                quotes.addQuote(isin=sh.cell_value(line,iISIN),name=sh.cell_value(line,iName).replace(',',' '), \
-                    ticker=sh.cell_value(line,iTicker),market=market,\
+                ticker = sh.cell_value(line,iTicker)
+                if ticker[-1:]=='.':
+                    ticker = ticker[:-1]
+                name = sh.cell_value(line,iName).replace(',',' ')
+                #print sh.cell_value(line,iISIN),' : ',name,ticker
+                quotes.addQuote(isin=sh.cell_value(line,iISIN),name=name, \
+                    ticker=ticker,market=market,\
                     currency=sh.cell_value(line,iCurrency),place='LON',\
                     country=sh.cell_value(line,iCountry))
 

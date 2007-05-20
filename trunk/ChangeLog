@@ -6,6 +6,8 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-05-20  Gilles Dumortier <dgil at ieee.org>
+	* Quote view : display Yahoo intraday graph for LSE markets
+	* Be sure LSE ticker is valid (remove '.' at the end) (SF bug 1719653)
 	* Quotes View - changing quote keep the current page (SF bug 1632171)
 	* Be sure a connector is only once in the property list of connectors
 	* Fix an issue with % on live for some connectors
