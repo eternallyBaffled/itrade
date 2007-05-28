@@ -5,6 +5,9 @@ On the road for v0.4.6 (Nausicaa2)
 
 ===============================================================================
 
+2007-05-28
+	* Fix a KeyError in itrade_wxquote.py, line 1083
+
 2007-05-20  Gilles Dumortier <dgil at ieee.org>
 	* modify barchart plugin to import TORONTO markets
 	* change "TSX" and "TSE" to "TORONTO EXCHANGE" and "TORONTO VENTURE"
