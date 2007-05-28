@@ -985,7 +985,7 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
         self.m_quote = None
         self.m_parent = parent
         self.m_port = parent.portfolio()
-        self.m_curpage = -1
+        self.m_curpage = page
         page = self.init(quote,page)
         wx.EVT_NOTEBOOK_PAGE_CHANGED(self, self.GetId(), self.OnPageChanged)
         wx.EVT_NOTEBOOK_PAGE_CHANGING(self, self.GetId(), self.OnPageChanging)
