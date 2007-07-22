@@ -5,6 +5,7 @@
 # 051128 dgil Use it for iTrade project
 # 060504 dgil Migrate from CVS to SVN
 # 070405 dgil Move /images content to specific package
+# 070722 dgil fix itrade. prefix for svn
 
 # put real file names or directory to be removed here
 to_be_removed='do_release.sh do_images.sh ethereal/* data/quotes.txt.org cache/* usrdata.dev/* images/*.png images/*.gif images/*.jpg'
@@ -18,8 +19,8 @@ rm -rf itrade
 
 echo "-------- Getting files from SVN"
 # anonymous login must have been done at least once
-svn export https://svn.sourceforge.net/svnroot/itrade/trunk -r HEAD itrade
-svn log https://svn.sourceforge.net/svnroot/itrade/trunk > itrade/REVISION
+svn export https://itrade.svn.sourceforge.net/svnroot/itrade/trunk -r HEAD itrade
+svn log https://itrade.svn.sourceforge.net/svnroot/itrade/trunk > itrade/REVISION
 
 echo "------- Removing file"
 for f in $to_be_removed;

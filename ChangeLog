@@ -6,6 +6,7 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-07-22  Gilles Dumortier <dgil at ieee.org>
+	* fix "itrade." prefix for svn
 	* fix a missing refresh() method in the graph panel
 	* yahoo url issue
 	* Merge fix for ASX market : skip header lines (PeterMills> 2007-06-22)
