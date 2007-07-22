@@ -3,6 +3,7 @@
 # build the /images folder package
 #
 # 070405 dgil Wrote it from scratch
+# 070722 dgil fix itrade. prefix for svn
 
 # put real file names or directory to be removed here
 to_be_removed=''
@@ -14,7 +15,7 @@ rm -rf itrade
 
 echo "-------- Getting files from SVN"
 # anonymous login must have been done at least once
-svn export https://svn.sourceforge.net/svnroot/itrade/trunk/images -r HEAD itrade
+svn export https://itrade.svn.sourceforge.net/svnroot/itrade/trunk/images -r HEAD itrade
 
 echo "------- Removing file"
 for f in $to_be_removed;
