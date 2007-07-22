@@ -5,6 +5,7 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-07-22  Gilles Dumortier <dgil at ieee.org>
+	* Switch to GPL version 3
 	* fix a lookupKey() issue + add confirmation to remove a quote
 	* Main view reduced - freeze when close with mouse (SF bug 1746651)
 	* fix "itrade." prefix for svn
