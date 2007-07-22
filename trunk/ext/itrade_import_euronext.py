@@ -60,8 +60,8 @@ class Import_euronext(object):
     def __init__(self):
         debug('Import_euronext:__init__')
         self.m_url = 'http://www.euronext.com/tools/datacentre/dataCentreDownloadExcell.jcsv'
-        self.m_connection=ITradeConnection(cookies=None, 
-                                           proxy=itrade_config.proxyHostname, 
+        self.m_connection=ITradeConnection(cookies=None,
+                                           proxy=itrade_config.proxyHostname,
                                            proxyAuth=itrade_config.proxyAuthentication)
 
     def name(self):
@@ -91,7 +91,11 @@ class Import_euronext(object):
 
     def parseLValue(self,d):
         if d=='-': return 0
-        val = string.split(d,',')
+        if ',' in d:
+            s = ','
+        else:
+            s = '\xA0'
+        val = string.split(d,s)
         ret = ''
         for val in val:
             ret = ret+val
