@@ -18,7 +18,7 @@
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
+# the Free Software Foundation; either version 3 of the License, or
 # (at your option) any later version.
 #
 # This program is distributed in the hope that it will be useful,
@@ -71,8 +71,8 @@ class Login_boursorama(object):
         self.m_cookies=ITradeCookies()
         # Manualy set the cookie that tell boursorama we are a cookie aware browser
         self.m_cookies.set("SUP_COOKIE=OUI")
-        self.m_connection=ITradeConnection(cookies=self.m_cookies, 
-                                           proxy=itrade_config.proxyHostname, 
+        self.m_connection=ITradeConnection(cookies=self.m_cookies,
+                                           proxy=itrade_config.proxyHostname,
                                            proxyAuth=itrade_config.proxyAuthentication)
         debug('Boursorama login (%s) - ready to run' % self.m_default_host)
 

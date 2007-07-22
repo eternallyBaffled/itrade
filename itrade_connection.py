@@ -18,7 +18,7 @@
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
+# the Free Software Foundation; either version 3 of the License, or
 # (at your option) any later version.
 #
 # This program is distributed in the hope that it will be useful,
@@ -170,7 +170,7 @@ class ITradeConnection(object):
                     connection.request("GET", request, None, nextHeader)
 
                 self.response=connection.getresponse()
-                
+
                 if self.response:
                     if self.response.getheader('Content-Encoding') == 'gzip':
                         self.m_responseData=GzipFile(fileobj=StringIO(self.response.read())).read()
@@ -191,7 +191,7 @@ class ITradeConnection(object):
                     msg="Receive bad answer from server (code %s) while requesting : %s" % \
                                                                       (self.getStatus(), url)
                     info(msg)
-                    self.m_responseData="" 
+                    self.m_responseData=""
                     self.clearConnection(protocole, host)
                     raise msg
 
