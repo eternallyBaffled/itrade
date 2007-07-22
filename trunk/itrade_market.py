@@ -374,6 +374,26 @@ def euronext_place2mep(place):
         return 1
 
 # ============================================================================
+# yahooUrl
+#
+# some marketplaces seems to use various URL from Yahoo website :-(
+# ============================================================================
+
+def yahooUrl(market,live):
+    if live:
+        if market in ['TORONTO VENTURE','TORONTO EXCHANGE']:
+            url = "http://download.finance.yahoo.com/d/quotes.csv"
+        else:
+            url = "http://quote.yahoo.com/download/quotes.csv"
+    else:
+        if market in ['TORONTO VENTURE','TORONTO EXCHANGE']:
+            url = 'http://download.finance.yahoo.com/d/quotes.csv'
+        else:
+            url = 'http://ichart.finance.yahoo.com/table.csv'
+
+    return url
+
+# ============================================================================
 # euronext_IntrusmentId()
 # ============================================================================
 

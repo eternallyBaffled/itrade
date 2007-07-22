@@ -47,7 +47,7 @@ from itrade_quotes import *
 from itrade_datation import Datation,dd_mmm_yy2yyyymmdd,re_p3_1
 from itrade_defs import *
 from itrade_ext import *
-from itrade_market import yahooTicker
+from itrade_market import yahooTicker,yahooUrl
 from itrade_connection import ITradeConnection
 import itrade_config
 
@@ -59,9 +59,6 @@ import itrade_config
 class Import_yahoo(object):
     def __init__(self):
         debug('Import_yahoo:__init__')
-
-        #self.m_url = 'http://ichart.finance.yahoo.com/table.csv'
-        self.m_url = 'http://download.finance.yahoo.com/d/quotes.csv'
 
         #self.m_connection=ITradeConnection(proxy="172.30.0.3:8080")
         self.m_connection=ITradeConnection(cookies=None,
@@ -123,20 +120,20 @@ class Import_yahoo(object):
             ss = sname
 
         query = (
+            ('s', ss),
             ('a', '%02d' % (int(d1[1])-1)),
             ('b', d1[2]),
             ('c', d1[0]),
             ('d', '%02d' % (int(d2[1])-1)),
             ('e', d2[2]),
             ('f', d2[0]),
-            ('s', ss),
             ('y', '0'),
             ('g', 'd'),
             ('ignore', '.csv'),
         )
         query = map(lambda (var, val): '%s=%s' % (var, str(val)), query)
         query = string.join(query, '&')
-        url = self.m_url + '?' + query
+        url = yahooUrl(quote.market(),live=False) + '?' + query
 
         debug("Import_yahoo:getdata: url=%s ",url)
         try:

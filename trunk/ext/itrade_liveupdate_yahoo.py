@@ -48,7 +48,7 @@ from itrade_logging import *
 from itrade_quotes import *
 from itrade_defs import *
 from itrade_ext import *
-from itrade_market import yahooTicker
+from itrade_market import yahooTicker,yahooUrl
 from itrade_connection import ITradeConnection
 import itrade_config
 
@@ -60,9 +60,6 @@ import itrade_config
 class LiveUpdate_yahoo(object):
     def __init__(self):
         debug('LiveUpdate_yahoo:__init__')
-
-        #self.m_url = "http://quote.yahoo.com/download/quotes.csv"
-        self.m_url = "http://download.finance.yahoo.com/d/quotes.csv"
 
         self.m_connected = False
         self.m_livelock = thread.allocate_lock()
@@ -143,13 +140,13 @@ class LiveUpdate_yahoo(object):
             ss = sname
 
         query = (
-          ('f', 'sl1d1t1c1ohgvbap'),
           ('s', ss),
+          ('f', 'sl1d1t1c1ohgvbap'),
           ('e', '.csv'),
         )
         query = map(lambda (var, val): '%s=%s' % (var, str(val)), query)
         query = string.join(query, '&')
-        url = self.m_url + '?' + query
+        url = yahooUrl(quote.market(),live=True) + '?' + query
 
         debug("LiveUpdate_yahoo:getdata: url=%s",url)
         try:

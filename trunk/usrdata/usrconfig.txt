@@ -2,7 +2,7 @@
 indicators = 8;0
 portfolio = 10;1
 stops = 10;0
-quotes = 10;1
+quotes = 0;1
 
 [net]
 
