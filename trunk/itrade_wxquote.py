@@ -591,6 +591,10 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         self.ChartRealize()
         self.draw()
 
+    def refresh(self):
+        #
+        self.RedrawAll()
+
     def OnPaint(self,event):
         self.erase_cursor()
         self.drawAllObjects()
