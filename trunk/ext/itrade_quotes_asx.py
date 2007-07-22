@@ -60,8 +60,8 @@ from itrade_connection import ITradeConnection
 
 def Import_ListOfQuotes_ASX(quotes,market='ASX',dlg=None,x=0):
     print 'Update %s list of symbols' % market
-    connection=ITradeConnection(cookies=None, 
-                                proxy=itrade_config.proxyHostname, 
+    connection=ITradeConnection(cookies=None,
+                                proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
 
     if market=='ASX':
@@ -90,7 +90,7 @@ def Import_ListOfQuotes_ASX(quotes,market='ASX',dlg=None,x=0):
     lines = splitLines(data)
     n = 0
 
-    for line in lines:
+    for line in lines[5:]:      # skip header lines (PeterMills> 2007-06-22)
         data = string.split (line, '\t')    # tab delimited
         if data[2]=='ORDINARY FULLY PAID':   # only want ordinary shares
              quotes.addQuote(isin=data[3],name=data[1].replace(',',' '), \
