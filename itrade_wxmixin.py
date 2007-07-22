@@ -88,8 +88,11 @@ class iTrade_wxFrame(object):
         return self.m_parent
 
     def _OnActivate(self,event):
-        debug('_OnActivate %d',event.GetActive())
+        #debug('_OnActivate %d',event.GetActive())
         self.m_hasFocus = event.GetActive()
+        if self.m_hasFocus and not self.IsIconized():
+            self._restoredPosition = self.GetPositionTuple()
+            self._restoredSize = self.GetSizeTuple()
         event.Skip(False)
 
     def hasFocus(self):
@@ -137,12 +140,13 @@ class iTrade_wxFrame(object):
             self._config['size'] = self.GetRestoredSize()
             try:
                 path = os.path.join(itrade_config.dirCacheData,'%s.win' % self.m_name)
-                debug('saveConfig: %s' % path)
+                if itrade_config.verbose: print('saveConfig: %s %s' % (path,self._config))
                 f = open(path, "w")
                 pprint.pprint(self._config, f)
                 f.close()
             except:
                 # argh
+                print 'saveConfig: argh'
                 pass
 
 # ============================================================================
