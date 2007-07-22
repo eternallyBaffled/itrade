@@ -614,5 +614,7 @@ rss_clear;__xClear
 rss_scan;__xScan
 rss_freshness;__xLast scan :
 
+remove_quote_title;__xRemove the Quote
+remove_quote_info;__xDo you confirm the remove of the quote %s from the matrix ?
 
 test;Mensagem de teste

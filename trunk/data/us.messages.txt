@@ -602,4 +602,7 @@ rss_clear;Clear
 rss_scan;Scan
 rss_freshness;Last scan :
 
+remove_quote_title;Remove the Quote
+remove_quote_info;Do you confirm the remove of the quote %s from the matrix ?
+
 test;test message
