@@ -156,7 +156,11 @@ class LiveUpdate_Euronext(object):
 
     def parseLValue(self,d):
         if d=='-': return 0
-        val = string.split(d,',')
+        if ',' in d:
+            s = ','
+        else:
+            s = '\xA0'
+        val = string.split(d,s)
         ret = ''
         for val in val:
             ret = ret+val
