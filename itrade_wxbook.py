@@ -1111,10 +1111,13 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
 
     def OnRemoveCurrentQuote(self,e):
         quote = self.currentQuote()
-        if removeFromMatrix_iTradeQuote(self,self.m_matrix,quote):
-            print 'OnRemoveCurrentQuote:',quote
-            self.m_portfolio.setupCurrencies()
-            self.RebuildList()
+        # ask a confirmation
+        idRet = iTradeYesNo(self, message('remove_quote_info') % quote.name(), message('remove_quote_title'))
+        if idRet == wx.ID_YES:
+            if removeFromMatrix_iTradeQuote(self,self.m_matrix,quote):
+                print 'OnRemoveCurrentQuote:',quote
+                self.m_portfolio.setupCurrencies()
+                self.RebuildList()
 
     # ---[ Stops ] -----------------------------------------
 

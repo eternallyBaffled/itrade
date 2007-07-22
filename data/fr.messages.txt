@@ -601,4 +601,7 @@ rss_clear;Efface
 rss_scan;Scan
 rss_freshness;Dernière mise à jour :
 
+remove_quote_title;Supprimer une valeur
+remove_quote_info;Confirmez-vous la suppression de la matrice de la valeur %s ?
+
 test;message de test

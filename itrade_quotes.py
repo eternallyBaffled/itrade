@@ -1443,6 +1443,9 @@ class Quotes(object):
     # ---[ Lookup (optionaly, filter by market) ] ---
 
     def lookupKey(self,key):
+        if key==None:
+            return None
+
         if self.m_quotes.has_key(key):
             return self.m_quotes[key]
 
