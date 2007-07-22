@@ -39,7 +39,7 @@ __author__ = "Gilles Dumortier (dgil@ieee.org)"
 __version__ = "0.4.6"
 __status__ = "alpha"
 __copyright__ = "Copyright (c) 2004-2007 Gilles Dumortier"
-__license__ = "GPL"
+__license__ = "GPLv3 or later"
 __credits__ = """Jeremiah Fincher (ansi colors in command line), Mark Pilgrim (Universal Feed Parser http://feedparser.org/)"""
 
 # ============================================================================
