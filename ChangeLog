@@ -14,6 +14,9 @@ On the road for v0.4.6 (Nausicaa2)
 	* Merge fix for ASX market : skip header lines (PeterMills> 2007-06-22)
 	* Euronext import : new format for volume separator ('\xA0' vs ',')
 
+2007-05-31  Gilles Dumortier <dgil at ieee.org>
+	* EBP format for manual importation (file ./PLUGINS)
+
 2007-05-28  Gilles Dumortier <dgil at ieee.org>
 	* Fix a KeyError in itrade_wxquote.py, line 1083
 

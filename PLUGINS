@@ -59,6 +59,9 @@ MILAN EXCHANGE		MIL	YAHOO FINANCE
 SWISS EXCHANGE		XSWX	YAHOO FINANCE
 SWISS EXCHANGE		XVTX	YAHOO FINANCE
 
+Manual importation is possible.
+File format is EBP (ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME)
+
 ===============================================================================
 List of quotes
 ===============================================================================
