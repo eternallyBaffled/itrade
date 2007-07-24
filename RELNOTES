@@ -52,6 +52,10 @@ Known Issues : v0.4.6 (under dev)
 
 	install python-wxaddons package from /etc/apt/sources.list
 
+- Donwload LSE list of quotes is crashing python DLL :
+  check that your are using XLRD version 0.6.1 *final* or better.
+  the 0.6.1a4 release is known to crash iTrade during the second download of LSE
+
 ===============================================================================
 Previous release notes
 ===============================================================================
