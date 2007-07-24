@@ -96,20 +96,25 @@ def Import_ListOfQuotes_LSE(quotes,market='LSE SETS',dlg=None,x=0):
     sh = book.sheet_by_index(0)
     n = 0
 
-    indice = {}
-
     for line in range(sh.nrows):
-        if sh.cell_type(line,0) != xlrd.XL_CELL_EMPTY:
+        if sh.cell_type(line,1) != xlrd.XL_CELL_EMPTY:
             if n==0:
+                indice = {}
                 for i in range(sh.ncols):
-                    indice[sh.cell_value(line,i)] = i
-                print 'indice:',indice
+                    val = sh.cell_value(line,i)
+                    indice[val] = i
 
-                iISIN = indice['ISIN']
-                iName = indice['Short Name']
-                iCurrency = indice['Currency']
-                iCountry = indice['Country of Register']
-                iTicker = indice['Mnemonic']
+                    # be sure we have detected the title
+                    if val=='ISIN': n = n + 1
+
+                if n==1:
+                    if itrade_config.verbose: print 'Indice:',indice
+
+                    iISIN = indice['ISIN']
+                    iName = indice['Short Name']
+                    iCurrency = indice['Currency']
+                    iCountry = indice['Country of Register']
+                    iTicker = indice['Mnemonic']
 
             else:
                 ticker = sh.cell_value(line,iTicker)
@@ -122,7 +127,7 @@ def Import_ListOfQuotes_LSE(quotes,market='LSE SETS',dlg=None,x=0):
                     currency=sh.cell_value(line,iCurrency),place='LON',\
                     country=sh.cell_value(line,iCountry))
 
-            n = n + 1
+                n = n + 1
 
     print 'Imported %d/%d lines from %s data.' % (n,sh.nrows,market)
 

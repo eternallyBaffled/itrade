@@ -5,6 +5,7 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-07-24  Gilles Dumortier <dgil at ieee.org>
+	* LSE quote list : handle new file format correctly
 	* Fix strange properties.txt file content: badly overloading indices to
 	  ABCBourse deprecated connector :-( ... explain why CAC 40 percent was
   	  not displaying (SF bug 1722499)
