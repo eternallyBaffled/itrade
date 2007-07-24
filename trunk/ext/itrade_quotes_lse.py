@@ -91,15 +91,19 @@ def Import_ListOfQuotes_LSE(quotes,market='LSE SETS',dlg=None,x=0):
         info('Import_ListOfQuotes_LSE_%s:unable to connect :-(' % market)
         return False
 
+    print data[:250]
+
     # returns the data
     book = itrade_excel.open_excel(file=None,content=data)
     sh = book.sheet_by_index(0)
     n = 0
+    indice = {}
+
+    print 'Import_ListOfQuotes_LSE_%s:' % market,'book',book,'sheet',sh,'nrows=',sh.nrows
 
     for line in range(sh.nrows):
         if sh.cell_type(line,1) != xlrd.XL_CELL_EMPTY:
             if n==0:
-                indice = {}
                 for i in range(sh.ncols):
                     val = sh.cell_value(line,i)
                     indice[val] = i
@@ -121,7 +125,7 @@ def Import_ListOfQuotes_LSE(quotes,market='LSE SETS',dlg=None,x=0):
                 if ticker[-1:]=='.':
                     ticker = ticker[:-1]
                 name = sh.cell_value(line,iName).replace(',',' ')
-                #print sh.cell_value(line,iISIN),' : ',name,ticker
+                print line,'>',sh.cell_value(line,iISIN),' : ',name,ticker
                 quotes.addQuote(isin=sh.cell_value(line,iISIN),name=name, \
                     ticker=ticker,market=market,\
                     currency=sh.cell_value(line,iCurrency),place='LON',\
