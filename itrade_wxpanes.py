@@ -263,7 +263,7 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
     def openCurrentQuote(self,page=0):
         quote,item = self.getQuoteAndItemOnTheLine(self.m_currentItem)
         if page==6:
-            open_iTradeQuoteProperty(self.m_parent,self.m_portfolio,quote)
+            open_iTradeQuoteProperty(self.m_parent,quote)
         else:
             open_iTradeQuote(self.m_parent,self.m_portfolio,quote,page)
 

@@ -67,7 +67,7 @@ class iTradeQuotePropertiesPanel(wx.Panel):
         self.m_id = id
         self.m_quote = quote
         self.m_parent = parent
-        self.m_port = parent.portfolio()
+        self.m_parent.aRet = False
 
         # vertical general layout
         self._sizer = wx.BoxSizer(wx.VERTICAL)
@@ -291,8 +291,8 @@ class iTradeQuotePropertiesPanel(wx.Panel):
     def saveThenDisplayReference(self):
         self.editTicker.SetLabel(self.m_quote.ticker())
         self.editName.SetLabel(self.m_quote.name())
-        if self.m_port:
-            self.m_port.saveProperties()
+        quotes.saveProperties()
+        self.m_parent.aRet = True
 
     def OnRestoreReference(self,event):
         # set default information for this value
@@ -344,8 +344,8 @@ class iTradeQuotePropertiesPanel(wx.Panel):
 
     def saveThenDisplayConnector(self):
         self.fillConnectors()
-        if self.m_port:
-            self.m_port.saveProperties()
+        quotes.saveProperties()
+        self.m_parent.aRet = True
 
     def OnRestoreConnector(self,event):
         # set default market for this value
@@ -396,18 +396,17 @@ class iTradeQuotePropertyToolbar(wx.ToolBar):
         self.m_parent.OnExit(event)
 
 # ============================================================================
-# iTradeQuotePropertyWindow
+# iTradeQuoteProperty <Window,Dialog>
 #
 # ============================================================================
 
 class iTradeQuotePropertyWindow(wx.Frame):
 
-    def __init__(self,parent,id,port,quote,dpage=1):
+    def __init__(self,parent,quote,dpage=1):
         self.m_id = wx.NewId()
         wx.Frame.__init__(self,None,self.m_id, size = ( 560,370), style= wx.DEFAULT_FRAME_STYLE & ~(wx.RESIZE_BORDER | wx.RESIZE_BOX | wx.MAXIMIZE_BOX))
         self.m_quote = quote
         self.m_parent = parent
-        self.m_port = port
 
         # fix title
         self.setTitle()
@@ -421,8 +420,9 @@ class iTradeQuotePropertyWindow(wx.Frame):
         wx.EVT_WINDOW_DESTROY(self, self.OnDestroy)
         wx.EVT_SIZE(self, self.OnSize)
 
-    def portfolio(self):
-        return self.m_port
+    def setTitle(self):
+        w,h = self.GetClientSizeTuple()
+        self.SetTitle("%s %s - %s" % (message('quote_title'),self.m_quote.ticker(),self.m_quote.market()))
 
     def OnSize(self, event):
         debug('QuotePropertyWindow::OnSize')
@@ -430,10 +430,6 @@ class iTradeQuotePropertyWindow(wx.Frame):
         self.m_propwindow.SetDimensions(0, 32, w,h-32)
         self.m_toolbar.SetDimensions(0, 0, w, 32)
         self.setTitle()
-
-    def setTitle(self):
-        w,h = self.GetClientSizeTuple()
-        self.SetTitle("%s %s - %s" % (message('quote_title'),self.m_quote.ticker(),self.m_quote.market()))
 
     def OnDestroy(self, evt):
         if self.m_parent and (self.m_id == evt.GetId()):
@@ -452,6 +448,49 @@ class iTradeQuotePropertyWindow(wx.Frame):
     def OnExit(self,event):
         self.Close()
 
+class iTradeQuotePropertyDialog(wx.Dialog):
+    def __init__(self, parent, quote):
+        # context help
+        pre = wx.PreDialog()
+        pre.SetExtraStyle(wx.DIALOG_EX_CONTEXTHELP)
+
+        # pre-init
+        self.m_id = wx.NewId()
+        self.m_quote = quote
+        self.m_parent = parent
+
+        # post-init
+        pre.Create(parent, -1, "%s %s - %s" % (message('quote_title'),self.m_quote.ticker(),self.m_quote.market()), size=(560,370))
+        self.PostCreate(pre)
+
+        sizer = wx.BoxSizer(wx.VERTICAL)
+
+        # property panel
+        self.m_propwindow = iTradeQuotePropertiesPanel(self,wx.NewId(),self.m_quote)
+        sizer.Add(self.m_propwindow, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+
+        box = wx.BoxSizer(wx.HORIZONTAL)
+
+        # context help
+        if wx.Platform != "__WXMSW__":
+            btn = wx.ContextHelpButton(self)
+            box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+
+        # CLOSE
+        btn = wx.Button(self, wx.ID_CANCEL, message('close'))
+        btn.SetHelpText(message('close_desc'))
+        wx.EVT_BUTTON(self, wx.ID_CANCEL, self.OnClose)
+        box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+
+        sizer.AddSizer(box, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
+
+        self.SetAutoLayout(True)
+        self.SetSizerAndFit(sizer)
+
+    def OnClose(self,event):
+        # aRet = True or False (see iTradeQuotePropertiesPanel __init__)
+        self.EndModal(wx.ID_CANCEL)
+
 # ============================================================================
 # open_iTradeQuoteProperty
 #
@@ -459,18 +498,26 @@ class iTradeQuotePropertyWindow(wx.Frame):
 #   quote   Quote object or ISIN reference to view
 # ============================================================================
 
-def open_iTradeQuoteProperty(win,port,quote):
+def open_iTradeQuoteProperty(win,quote,bDialog=False):
     if not isinstance(quote,Quote):
         quote = quotes.lookupKey(quote)
-    if win and win.m_hProperty:
-        # set focus
-        win.m_hProperty.OnSelectQuote(None,quote)
-        win.m_hProperty.SetFocus()
+    if bDialog:
+        dlg = iTradeQuotePropertyDialog(win,quote)
+        dlg.ShowModal()
+        aRet = dlg.aRet
+        dlg.Destroy()
+        return aRet
+
     else:
-        frame = iTradeQuotePropertyWindow(win, -1,port,quote)
-        if win:
-            win.m_hProperty = frame
-        frame.Show()
+        if win and win.m_hProperty:
+            # set focus
+            win.m_hProperty.OnSelectQuote(None,quote)
+            win.m_hProperty.SetFocus()
+        else:
+            frame = iTradeQuotePropertyWindow(win, quote)
+            if win:
+                win.m_hProperty = frame
+            frame.Show()
 
 # ============================================================================
 # Test me
@@ -498,7 +545,7 @@ if __name__=='__main__':
 
     q = select_iTradeQuote(None,None,filter=False)
     if q:
-        open_iTradeQuoteProperty(None,None,q)
+        open_iTradeQuoteProperty(None,q)
         app.MainLoop()
 
 
