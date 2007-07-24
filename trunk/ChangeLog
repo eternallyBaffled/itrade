@@ -5,6 +5,7 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-07-24  Gilles Dumortier <dgil at ieee.org>
+	* new tarball
 	* List of Quotes : display live/import columns + add a way to edit
 	  properties of a quote (manage the properties.txt global file)
           (SF bug 1724531)
