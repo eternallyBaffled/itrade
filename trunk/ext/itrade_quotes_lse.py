@@ -91,7 +91,7 @@ def Import_ListOfQuotes_LSE(quotes,market='LSE SETS',dlg=None,x=0):
         info('Import_ListOfQuotes_LSE_%s:unable to connect :-(' % market)
         return False
 
-    print data[:250]
+    #print data[:250]
 
     # returns the data
     book = itrade_excel.open_excel(file=None,content=data)
@@ -125,7 +125,7 @@ def Import_ListOfQuotes_LSE(quotes,market='LSE SETS',dlg=None,x=0):
                 if ticker[-1:]=='.':
                     ticker = ticker[:-1]
                 name = sh.cell_value(line,iName).replace(',',' ')
-                print line,'>',sh.cell_value(line,iISIN),' : ',name,ticker
+                #print line,'>',sh.cell_value(line,iISIN),' : ',name,ticker
                 quotes.addQuote(isin=sh.cell_value(line,iISIN),name=name, \
                     ticker=ticker,market=market,\
                     currency=sh.cell_value(line,iCurrency),place='LON',\
