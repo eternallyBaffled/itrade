@@ -213,6 +213,8 @@ symbol_not_found;O Código de ISIN %s ou nome %s não encontrado
 risk;Risco
 stop_plus;Stop+
 stop_minus;Stop-
+clive;Live
+cimport;Import
 
 download_symbols_onelist;Actualização da lista
 download_symbols_onedesc;Actualizar a lista dos símbolos por download dos dados da rede

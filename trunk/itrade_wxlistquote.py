@@ -367,6 +367,8 @@ IDC_TICKER = 1
 IDC_NAME = 2
 IDC_PLACE = 3
 IDC_MARKET = 4
+IDC_LIVE = 5
+IDC_IMPORT = 6
 
 import wx.lib.newevent
 (PostInitEvent,EVT_POSTINIT) = wx.lib.newevent.NewEvent()
@@ -377,7 +379,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         pre = wx.PreDialog()
         pre.SetExtraStyle(wx.DIALOG_EX_CONTEXTHELP)
         title = message('quote_list_title')
-        pre.Create(parent, -1, title, size=(460, 460))
+        pre.Create(parent, -1, title, size=(590, 460))
         self.PostCreate(pre)
 
         self.m_parent = parent
@@ -395,13 +397,13 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
 
         self.m_list = iTradeSelectorListCtrl(self, tID,
                                  style = wx.LC_REPORT | wx.SUNKEN_BORDER,
-                                 size=(440, 380)
+                                 size=(570, 380)
                                  )
         self.m_list.SetImageList(self.m_imagelist, wx.IMAGE_LIST_SMALL)
 
         # Now that the list exists we can init the other base class,
         # see wxPython/lib/mixins/listctrl.py
-        wxl.ColumnSorterMixin.__init__(self, 5)
+        wxl.ColumnSorterMixin.__init__(self, 7)
 
         wx.EVT_LIST_COL_CLICK(self, tID, self.OnColClick)
         wx.EVT_SIZE(self, self.OnSize)
@@ -596,6 +598,8 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         self.m_list.InsertColumn(IDC_NAME, message('name'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
         self.m_list.InsertColumn(IDC_PLACE, message('place'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
         self.m_list.InsertColumn(IDC_MARKET, message('market'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_LIVE, message('clive'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_IMPORT, message('cimport'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
 
         x = 0
         self.currentItem = -1
@@ -606,7 +610,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
 
         for eachQuote in quotes.list():
             if  self.m_qlist==QLIST_ALL or self.m_qlist==eachQuote.list():
-                self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.name(),eachQuote.place(),eachQuote.market())
+                self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.name(),eachQuote.place(),eachQuote.market(),eachQuote.liveconnector().name(),eachQuote.importconnector().name())
                 self.itemQuoteMap[x] = eachQuote
                 x = x + 1
 
@@ -623,6 +627,8 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
                 self.m_list.SetStringItem(line, IDC_NAME, data[2])
                 self.m_list.SetStringItem(line, IDC_PLACE, data[3])
                 self.m_list.SetStringItem(line, IDC_MARKET, data[4])
+                self.m_list.SetStringItem(line, IDC_LIVE, data[5])
+                self.m_list.SetStringItem(line, IDC_IMPORT, data[6])
                 self.m_list.SetItemData(line, key)
                 self.itemLineMap[data[1]] = line
                 line += 1
@@ -632,6 +638,8 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         self.m_list.SetColumnWidth(IDC_NAME, 16*10)
         self.m_list.SetColumnWidth(IDC_PLACE, wx.LIST_AUTOSIZE)
         self.m_list.SetColumnWidth(IDC_MARKET, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_LIVE, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_IMPORT, wx.LIST_AUTOSIZE)
 
         wx.SetCursor(wx.STANDARD_CURSOR)
 
