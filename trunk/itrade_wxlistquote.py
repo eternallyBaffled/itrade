@@ -61,6 +61,7 @@ from itrade_defs import *
 import itrade_ext
 
 from itrade_wxmixin import iTradeSelectorListCtrl
+from itrade_wxpropquote import open_iTradeQuoteProperty
 
 from itrade_wxutil import iTradeInformation,iTradeError,iTradeYesNo
 
@@ -71,7 +72,6 @@ from itrade_wxutil import iTradeInformation,iTradeError,iTradeYesNo
 QLIST_MODIFY = 0
 QLIST_ADD = 1
 QLIST_DELETE = 2
-
 
 class iTradeQuoteListDialog(wx.Dialog):
     def __init__(self, parent, quote, qmode):
@@ -462,9 +462,9 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         box2.Add(self.wxNEW, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_BUTTON(self, wx.ID_NEW, self.OnNewQuote)
 
-        self.wxEDIT = wx.Button(self, wx.ID_PROPERTIES, message('listquote_edit'))
-        self.wxEDIT.SetHelpText(message('listquote_edit_desc'))
-        box2.Add(self.wxEDIT, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        self.wxPROP = wx.Button(self, wx.ID_PROPERTIES, message('listquote_edit'))
+        self.wxPROP.SetHelpText(message('listquote_edit_desc'))
+        box2.Add(self.wxPROP, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_BUTTON(self, wx.ID_PROPERTIES, self.OnEditQuote)
 
         self.wxDELETE = wx.Button(self, wx.ID_DELETE, message('listquote_delete'))
@@ -550,7 +550,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         if self.m_qlist == QLIST_INDICES or self.m_qlist == QLIST_TRACKERS:
             self.wxOK.Enable(False)
             self.wxNEW.Enable(False)
-            self.wxEDIT.Enable(False)
+            #self.wxPROP.Enable(False)
             self.wxDELETE.Enable(False)
             self.wxCLEAR.Enable(False)
             self.wxSAVE.Enable(False)
@@ -559,12 +559,12 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
             if self.m_qlist == QLIST_USER:
                 self.wxOK.Enable(False)
                 self.wxNEW.Enable(True)
-                self.wxEDIT.Enable(True)
+                #self.wxPROP.Enable(True)
                 self.wxDELETE.Enable(True)
             else:
                 self.wxOK.Enable(True)
                 self.wxNEW.Enable(False)
-                self.wxEDIT.Enable(False)
+                #self.wxPROP.Enable(False)
                 self.wxDELETE.Enable(False)
 
             if self.m_qlist == QLIST_ALL:
@@ -587,7 +587,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
 
         self.Layout()
 
-    def PopulateList(self):
+    def PopulateList(self,curquote=None):
         wx.SetCursor(wx.HOURGLASS_CURSOR)
 
         self.m_list.ClearAll()
@@ -616,6 +616,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
 
         items = self.itemDataMap.items()
         line = 0
+        curline = -1
         for x in range(len(items)):
             key, data = items[x]
             if self.m_market==None or (self.m_market==data[4]):
@@ -631,6 +632,8 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
                 self.m_list.SetStringItem(line, IDC_IMPORT, data[6])
                 self.m_list.SetItemData(line, key)
                 self.itemLineMap[data[1]] = line
+                if self.itemQuoteMap[key]==curquote:
+                    curline = line
                 line += 1
 
         self.m_list.SetColumnWidth(IDC_ISIN, wx.LIST_AUTOSIZE)
@@ -640,6 +643,9 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         self.m_list.SetColumnWidth(IDC_MARKET, wx.LIST_AUTOSIZE)
         self.m_list.SetColumnWidth(IDC_LIVE, wx.LIST_AUTOSIZE)
         self.m_list.SetColumnWidth(IDC_IMPORT, wx.LIST_AUTOSIZE)
+
+        if curline!=-1:
+            self.SetCurrentItem(curline)
 
         wx.SetCursor(wx.STANDARD_CURSOR)
 
@@ -700,13 +706,15 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         quote = self.getQuoteOnTheLine(self.currentItem)
         debug("OnEditQuote currentItem=%d quote=%s",self.currentItem,quote)
         if quote:
-            aRet = edit_iTradeQuoteList(self,quote,QLIST_MODIFY)
+            aRet = open_iTradeQuoteProperty(self,quote,bDialog=True)
+
+            #aRet = edit_iTradeQuoteList(self,quote,QLIST_MODIFY)
             if aRet:
-                debug('OnEditQuote: %s' % aRet[0])
-                quotes.removeQuote(quote.key())
-                quotes.addQuote(aRet[0],aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6],list=QLIST_USER,debug=True)
-                self.m_dirty = True
-                self.PopulateList()
+            #    debug('OnEditQuote: %s' % aRet[0])
+            #    quotes.removeQuote(quote.key())
+            #    quotes.addQuote(aRet[0],aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6],list=QLIST_USER,debug=True)
+            #    self.m_dirty = True
+                self.PopulateList(quote)
 
     # --- [ On handlers management ] -------------------------------------
 

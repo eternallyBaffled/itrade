@@ -958,7 +958,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
     def openCurrentQuote(self,page=0):
         quote = self.currentQuote()
         if page==6:
-            open_iTradeQuoteProperty(self,self.m_portfolio,quote)
+            open_iTradeQuoteProperty(self,quote)
         else:
             open_iTradeQuote(self,self.m_portfolio,quote,page)
 

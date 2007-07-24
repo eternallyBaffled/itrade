@@ -5,6 +5,9 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-07-24  Gilles Dumortier <dgil at ieee.org>
+	* List of Quotes : display live/import columns + add a way to edit
+	  properties of a quote (manage the properties.txt global file)
+          (SF bug 1724531)
 	* LSE update list : Python error :crash software : fixed by installing
 	  the latest version of XLRD (v0.6.1 final) (SF bug 1722504)
 	* LSE quote list : handle new file format correctly
