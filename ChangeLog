@@ -4,6 +4,12 @@
 On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
+2007-07-24  Gilles Dumortier <dgil at ieee.org>
+	* Fix strange properties.txt file content: badly overloading indices to
+	  ABCBourse deprecated connector :-( ... explain why CAC 40 percent was
+  	  not displaying (SF bug 1722499)
+	* Add trace at startup to inspect connector overloading for a quote
+
 2007-07-22  Gilles Dumortier <dgil at ieee.org>
 	* Switch to GPL version 3
 	* fix a lookupKey() issue + add confirmation to remove a quote

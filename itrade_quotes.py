@@ -383,17 +383,21 @@ class Quote(object):
         else:
             return 15
 
-    def liveconnector(self,bForceLive=False):
+    def liveconnector(self,bForceLive=False,bDebug=False):
         if bForceLive:
             ret = getLiveConnector(self.m_market,self.m_list,QTAG_LIVE,self.m_place)
+            if bDebug: print 'liveconnector: for live connector %s' % ret
             if ret: return ret
 
         if self.m_userliveconnector:
             # priority to connector selected by the user
+            if bDebug: print 'liveconnector: retuns userliveconnector %s' % self.m_userliveconnector
             return self.m_userliveconnector
 
         if not self.m_liveconnector:
             self.m_liveconnector = getDefaultLiveConnector(self.m_market,self.m_list,self.m_place)
+            if bDebug: print 'liveconnector: get liveconnector %s' % self.m_liveconnector
+        if bDebug: print 'liveconnector: retuns liveconnector %s' % self.m_liveconnector
         return self.m_liveconnector
 
     def importconnector(self):
@@ -414,11 +418,11 @@ class Quote(object):
         self.m_pluginId = None
 
     def set_liveconnector(self,name):
-        #if itrade_config.verbose:
-        #    print 'set_liveconnector for ',self.m_market,self.m_list,QTAG_ANY,self.m_place,name
+        if itrade_config.verbose:
+            print 'set_liveconnector %s/%s for ' % (self.key(),self.name()),self.m_market,self.m_list,QTAG_ANY,self.m_place,name
         conn = getLiveConnector(self.m_market,self.m_list,QTAG_ANY,self.m_place,name)
-        #if itrade_config.verbose:
-        #    print ' returns',conn
+        if itrade_config.verbose:
+            print ' returns',conn
         if conn:
             self.m_userliveconnector = conn
             self.m_pluginId = None

@@ -7,5 +7,4 @@ quotes = 0;1
 [net]
 
 [view]
-autorefreshview = False
 
