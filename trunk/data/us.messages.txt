@@ -487,6 +487,7 @@ prop_set;Set
 prop_desc_set;Set new market and connector information
 prop_term;Average Investment period (in month) :
 prop_risk;Acceptable Risk level per line (in %) :
+prop_connhelp;Think to force the refresh of the quote so the connector change will occur.
 
 live_busy;One moment please, waiting live connection to die ...
 live_notebook;Notebook
