@@ -4,6 +4,9 @@
 On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
+2007-07-25  Gilles Dumortier <dgil at ieee.org>
+	* Add some help about changing a connector for a quote
+
 2007-07-24  Gilles Dumortier <dgil at ieee.org>
 	* new tarball
 	* List of Quotes : display live/import columns + add a way to edit

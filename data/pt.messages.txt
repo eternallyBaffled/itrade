@@ -495,6 +495,7 @@ prop_set;Validar
 prop_desc_set;Validar a informação do mercado novo e do conector
 prop_term;Período de investimento (no mês) :
 prop_risk;Nível de risco (em %):
+prop_connhelp;__xThink to force the refresh of the quote so the connector change will occur.
 
 live_busy;Aguarde um momento por favor, a conecção live está a encerrar…
 live_notebook;Bloco de notas

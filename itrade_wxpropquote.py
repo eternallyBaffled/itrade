@@ -103,7 +103,7 @@ class iTradeQuotePropertiesPanel(wx.Panel):
         label = wx.StaticText(self, -1, message('prop_name'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.editName = wx.TextCtrl(self, -1, self.m_quote.name(), size=wx.Size(210,-1), style = wx.TE_LEFT)
+        self.editName = wx.TextCtrl(self, -1, self.m_quote.name(), size=wx.Size(300,-1), style = wx.TE_LEFT)
         box.Add(self.editName, 0, wx.ALIGN_CENTRE_VERTICAL|wx.ALL, 5)
 
         thebox.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
@@ -202,6 +202,13 @@ class iTradeQuotePropertiesPanel(wx.Panel):
         self.fillConnectors(bInit=True)
 
         # ---[ Restore/Set Market / Connectors Properties ]---
+
+        box = wx.BoxSizer(wx.HORIZONTAL)
+
+        label = wx.StaticText(self, -1, message('prop_connhelp'))
+        box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+
+        thebox.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
         box = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -404,7 +411,7 @@ class iTradeQuotePropertyWindow(wx.Frame):
 
     def __init__(self,parent,quote,dpage=1):
         self.m_id = wx.NewId()
-        wx.Frame.__init__(self,None,self.m_id, size = ( 560,370), style= wx.DEFAULT_FRAME_STYLE & ~(wx.RESIZE_BORDER | wx.RESIZE_BOX | wx.MAXIMIZE_BOX))
+        wx.Frame.__init__(self,None,self.m_id, size = ( 580,400), style= wx.DEFAULT_FRAME_STYLE & ~(wx.RESIZE_BORDER | wx.RESIZE_BOX | wx.MAXIMIZE_BOX))
         self.m_quote = quote
         self.m_parent = parent
 
