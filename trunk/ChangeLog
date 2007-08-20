@@ -4,6 +4,9 @@
 On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
+2007-08-20  Gilles Dumortier <dgil at ieee.org>
+	* [Fedora] Can't add new quote in matrix (SF bug 1774326)
+
 2007-07-25  Gilles Dumortier <dgil at ieee.org>
 	* Add some help about changing a connector for a quote
 
