@@ -105,8 +105,8 @@ main_cache_desc_erase_news; Apagar todas as informações do "cache"
 main_cache_erase_all; Apagar &Tudo
 main_cache_desc_erase_all; Apagar todos os dados (noticia, historiais...) do "cache"
 
-main_options_connexion;__x&Connection
-main_options_desc_connexion;__x Connection Settings (Proxy)
+main_options_connexion;&Conexão
+main_options_desc_connexion; Parâmetros de Conexão(Proxy)
 
 main_help;&Ajuda
 main_help_contents;&Índices
@@ -495,7 +495,7 @@ prop_set;Validar
 prop_desc_set;Validar a informação do mercado novo e do conector
 prop_term;Período de investimento (no mês) :
 prop_risk;Nível de risco (em %):
-prop_connhelp;__xThink to force the refresh of the quote so the connector change will occur.
+prop_connhelp;Pensar a efectuar uma regeneração de modo que a modificação seja efectiva.
 
 live_busy;Aguarde um momento por favor, a conecção live está a encerrar…
 live_notebook;Bloco de notas
@@ -609,15 +609,15 @@ decision_availablecash;Available Cash in %s :
 decision_committedcredit;Committed Margin in %s :
 decision_availablecredit;Available for Margin in %s :
 
-connection_title;__xConnection Settings
-proxy_server;__xProxy Hostname (empty if none) :
-proxy_auth;__xProxy Authentication (empty if none) :
+connection_title;Parâmetros de Conexão
+proxy_server;Nome do Proxy (ignorar se nada):
+proxy_auth;Autenticação do Proxy (ignorar se nada) :
 
-rss_clear;__xClear
-rss_scan;__xScan
-rss_freshness;__xLast scan :
+rss_clear;Apagar
+rss_scan;Scan
+rss_freshness;Último scan:
 
-remove_quote_title;__xRemove the Quote
-remove_quote_info;__xDo you confirm the remove of the quote %s from the matrix ?
+remove_quote_title;Apagar a Cotação
+remove_quote_info;Suprimir realmente a acção %s ?
 
 test;Mensagem de teste
