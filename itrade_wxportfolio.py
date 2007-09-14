@@ -466,6 +466,7 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
             self.wxVATCtrl.Enable(False)
             self.wxTermCtrl.Enable(False)
             self.wxRiskCtrl.Enable(False)
+            self.wxIndicatorCtrl.Enable(False)
             #self.btn.SetFocus()
         elif operation=='rename':
             # filename only
@@ -476,6 +477,7 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
             self.wxVATCtrl.Enable(False)
             self.wxTermCtrl.Enable(False)
             self.wxRiskCtrl.Enable(False)
+            self.wxIndicatorCtrl.Enable(False)
             #self.btn.SetFocus()
         else:
             # everything is editable
@@ -487,19 +489,19 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
         self.SetMinSize(self.GetSize())
 
     def OnValid(self,event):
-        self.m_filename = self.wxFilenameCtrl.GetLabel().lower().strip()
+        self.m_filename = self.wxFilenameCtrl.GetValue().lower().strip()
         self.m_vat = (self.wxVATCtrl.GetValue()/100) + 1
         self.m_term = self.wxTermCtrl.GetValue()
         self.m_risk = self.wxRiskCtrl.GetValue()
 
         if (self.m_operation=='create' or self.m_operation=='rename') and portfolios.existPortfolio(self.m_filename):
-            self.wxFilenameCtrl.SetLabel('')
+            self.wxFilenameCtrl.SetValue('')
             self.wxFilenameCtrl.SetFocus()
             iTradeError(self, message('portfolio_exist_info') % self.m_filename, message('portfolio_exist_info_title'))
             return
 
-        self.m_name = self.wxNameCtrl.GetLabel().strip()
-        self.m_accountref = self.wxAccountRefCtrl.GetLabel().strip()
+        self.m_name = self.wxNameCtrl.GetValue().strip()
+        self.m_accountref = self.wxAccountRefCtrl.GetValue().strip()
         if self.m_operation=='delete':
             idRet = iTradeYesNo(self, message('portfolio_delete_confirm')%self.m_name, message('portfolio_delete_confirm_title'))
             if idRet == wx.ID_NO:

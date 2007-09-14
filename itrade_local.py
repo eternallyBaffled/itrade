@@ -271,7 +271,7 @@ class LocalMessages(object):
         # set the default locale
         locale.setlocale(locale.LC_ALL,'')
         # get the current locale encoding and codepage
-        enc,cp = locale.getlocale(locale.LC_ALL)
+        enc,cp = locale.getlocale()
 
         # check if encoding known
         if nl_autodetect.has_key(enc):

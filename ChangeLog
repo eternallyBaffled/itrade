@@ -4,6 +4,13 @@
 On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
+2007-09-14  Gilles Dumortier <dgil at ieee.org>
+	* new tarball
+	* Commit many Linux patches from Jean-Marie Pacquet :
+	- fix "TypeError: category LC_ALL is not supported" (SF bug 1759799)
+	- fix "File/New does not work" (SF bug 1793957)
+	- fix "Small display bugs" (SF bug 1793964)
+
 2007-08-20  Gilles Dumortier <dgil at ieee.org>
 	* [Fedora] Can't add new quote in matrix (SF bug 1774326)
 
