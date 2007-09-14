@@ -11,6 +11,10 @@ On the road for v0.4.6 (Nausicaa2)
 	- fix "File/New does not work" (SF bug 1793957)
 	- fix "Small display bugs" (SF bug 1793964)
 
+2007-08-25  Michel Legrand <m_leg at users.sourceforge.net>
+	* More logo
+	* More Portuguese translations
+
 2007-08-20  Gilles Dumortier <dgil at ieee.org>
 	* [Fedora] Can't add new quote in matrix (SF bug 1774326)
 
