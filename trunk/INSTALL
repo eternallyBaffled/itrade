@@ -32,4 +32,63 @@ Specific to Linux / Ubuntu Feisty
 
 	install python-wxaddons package from /etc/apt/sources.list
 
+-------------------------------------------------------------------------------
+Specific to Linux / Install from sources
+-------------------------------------------------------------------------------
+
+- If you want the latest version for each component, you can install allmost
+everything from sources. The installation order is very important because
+each package needs the previous ones. I would think that you can skip one step
+if you already have this component installed on your system, but that might
+cause problems if the version you have is too old.
+This is how I did it on my Slackware 10.2:
+
+1. Install pkg-config (0.20)
+	Download the source from "http://pkgconfig.freedesktop.org/releases/"
+	Remove the slackware package named "pkgconfig"
+	./configure --prefix=/usr; make; su -c "make install"
+2. Install glib2 (2.12.13)
+	Download the source from "http://www.gtk.org/download/"
+	While you are there, download also gtk (1.10.14) and pango (1.12.4) but
+	don't try to install them now
+	Remove the slackware package named "glib2"
+	./configure --prefix=/usr; make; su -c "make install"
+3. Install atk (1.9.1)
+	Download the source from "http://ftp.gnome.org/pub/gnome/sources/atk/"
+	This package might already be installed on your system with the correct
+	version number since it is dated from 2005. Otherwise do:
+	./configure --prefix=/usr; make; su -c "make install"
+4. Install cairo (1.2.6)
+	Download the source from "http://cairographics.org/releases/"
+	./configure --prefix=/usr; make; su -c "make install"
+5. Install pango (1.12.4)
+	Download the source from "http://www.gtk.org/download/" if necessary
+	./configure --prefix=/usr; make; su -c "make install"
+6. Install gtk2 (2.10.14)
+	Download the source from "http://www.gtk.org/download/" if necessary
+	Check that you already have on your system libtiff,libpng and libjpeg
+	Remove your existing gtk2 package
+	./configure --prefix=/usr; make; su -c "make install"
+7. Install python (2.5.1)
+	Download the source from "http://www.python.org/download/"
+	Remove your existing python package
+	./configure --prefix=/usr; make; su -c "make install"
+8. Install wxPython (2.8.4.2)
+	Download the source from "http://www.wxpython.org"
+	mkdir build_gtk; cd build_gtk; ../configure --enable-unicode; make;
+	su -c "make install"
+	then do:
+	cd ../wxPython
+	python setup.py BUILD_GLCANVAS=0 BUILD_STC=0 BUILD_GIZMOS=0 build
+	su -c "python setup.py BUILD_GLCANVAS=0 BUILD_STC=0 BUILD_GIZMOS=0 install"
+9. Install numpy (1.0.3.1)
+	Download the source from "http://sourceforge.net/project/showfiles.php?group_id=1369&package_id=175103"
+	python setup.py build
+	su -c "python setup.py install"
+10. Install matplotlib (0.90.1)
+	Download the source from 'http://sourceforge.net/projects/matplotlib"
+	python setup.py build
+	su -c "python setup.py install"
+
+	That's it!
 ===============================================================================
