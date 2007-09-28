@@ -535,8 +535,8 @@ cache_erase_confirm_data; Confirmez-vous l'effacement de toutes les données hist
 cache_erase_confirm_news; Confirmez-vous l'effacement de toutes les informations du cache ? (ces données seront regénérées)
 cache_erase_confirm_all; Confirmez-vous l'effacement de toutes les données (historiques,infos,...) du cache ? (ces données seront regénérées)
 
-indicator_autorefresh;Raffraichissement Automatique
-indicator_noautorefresh;Raffraichissement Manuel
+indicator_autorefresh;Rafraîchissement Automatique
+indicator_noautorefresh;Rafraîchissement Manuel
 indicator_disconnected;Déconnecté
 
 login_title;Accès Client

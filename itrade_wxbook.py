@@ -215,7 +215,7 @@ class iTradeMainToolbar(wx.ToolBar):
         self.AddSimpleTool(self._NTB2_ABOUT, wx.Bitmap(os.path.join(itrade_config.dirRes, 'about.png')),
                            message('main_about'), message('main_desc_about'))
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
-        self.m_indicator = wx.StaticText(self, -1, "", size=(640,15), style=wx.ALIGN_LEFT|wx.ST_NO_AUTORESIZE)
+        self.m_indicator = wx.StaticText(self, -1, "", style=wx.ALIGN_LEFT)
         self.AddControl(self.m_indicator)
         self.ClearIndicator()
 
