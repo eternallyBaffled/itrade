@@ -4,6 +4,17 @@
 On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
+2007-11-03  Michel Legrand <m_leg at users dot sourceforge dot net>
+	* More logo
+
+2007-10-01  Michel Legrand <m_leg at users dot sourceforge dot net>
+	* update manually Milan Stock Exchange
+	  (http://www.borsaitaliana.it/bitApp/quotes.bit?target=SearchQuotes&grp=iniziale&param=A)
+
+2007-09-30  Jean-Marie Pacquet <jmpacquet at users dot sourceforge dot net>
+	* Patch for changed StaticText into TextCtrl to allow background color
+	  update (SF bug 1804076)
+
 2007-09-24  Jean-Marie Pacquet <jmpacquet at users dot sourceforge dot net>
 	* Patch for Market indicator missing (SF Bug 1795105)
 
