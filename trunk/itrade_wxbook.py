@@ -164,6 +164,7 @@ ID_PAGE_EVALUATION = 5
 #
 # ============================================================================
 
+cCONNECTED_I = wx.Colour(51,210,51)
 cCONNECTED = wx.Colour(51,255,51)
 cDISCONNECTED = wx.Colour(255,51,51)
 
@@ -272,6 +273,7 @@ class iTradeMainToolbar(wx.ToolBar):
         else:
             label = " " + message('indicator_noautorefresh')
         self.m_indicator.SetBackgroundColour(wx.NullColour)
+        #self.m_indicator.ClearBackground()
         self.m_indicator.ChangeValue(label)
 
     def SetIndicator(self,market,connector,indice):
@@ -284,9 +286,10 @@ class iTradeMainToolbar(wx.ToolBar):
             if indice:
                 label = label + " - " + indice.name() + ": "+ indice.sv_close()+ " (" + indice.sv_percent()+ " )"
             if label==self.m_indicator.GetValue():
-                self.m_indicator.SetBackgroundColour(wx.NullColour)
-            else:
                 self.m_indicator.SetBackgroundColour(cCONNECTED)
+            else:
+                self.m_indicator.SetBackgroundColour(cCONNECTED_I)
+        #self.m_indicator.ClearBackground()
         self.m_indicator.ChangeValue(label)
 	# get indicator and toolbar positions and sizes
 	indicatorposition = self.m_indicator.GetScreenPosition()
@@ -298,7 +301,7 @@ class iTradeMainToolbar(wx.ToolBar):
 	if indicatorsize.width != computedwidth:
 	    indicatorsize.SetWidth(computedwidth)
 	    self.m_indicator.SetSize(indicatorsize)
-	
+
 
 # ============================================================================
 # iTradeMainNotebookWindow
