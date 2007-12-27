@@ -5,6 +5,7 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-12-27  Gilles Dumortier <dgil at ieee dot org>
+	* Import error with LSE SETS , LSE SETSmm (SF bug 1847378)
 	* NYSE list of quotes not working anymore (SF bug 1851229)
 
 2007-12-18  Michel Legrand <m_leg at users dot sourceforge dot net>
