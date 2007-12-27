@@ -182,7 +182,7 @@ def cmdline_importQuoteFromInternet(quote,dlg=None):
         if spl:
             if not import_from_internet(quote,date(year-step+1,1,1),date(year,6,30)):
                 bStop = True
-            if not bStop and not import_from_internet(quote,date(year-step+1,7,1),date(year,12,31)):
+            if not import_from_internet(quote,date(year-step+1,7,1),date(year,12,31)):
                 bStop = True
         else:
             if not import_from_internet(quote,date(year-step+1,1,1),date(year,12,31)):
