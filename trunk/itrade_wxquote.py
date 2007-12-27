@@ -44,18 +44,25 @@ import webbrowser
 import datetime
 import locale
 
-# wxPython system
-import itrade_wxversion
-import wx
-import wx.grid as gridlib
-import wxaddons.sized_controls as sc
-
 # iTrade system
 from itrade_logging import *
 from itrade_quotes import *
 from itrade_local import message,setLocale
 from itrade_config import *
 
+# wxPython system
+import itrade_wxversion
+import wx
+import wx.grid as gridlib
+import wxaddons.sized_controls as sc
+
+# matplotlib system
+import matplotlib
+
+from matplotlib.dates import date2num, num2date
+from myfinance import candlestick, plot_day_summary2, candlestick2, index_bar, volume_overlay2, plot_day_summary3
+
+# iTrade wxPython system
 from itrade_wxhtml import *
 from itrade_wxmixin import iTrade_wxFrame
 from itrade_wxgraph import iTrade_wxPanelGraph,fmtVolumeFunc,fmtVolumeFunc0
@@ -63,14 +70,6 @@ from itrade_wxlive import iTrade_wxLive,iTrade_wxLiveMixin,EVT_UPDATE_LIVE
 from itrade_wxselectquote import select_iTradeQuote
 from itrade_wxpropquote import iTradeQuotePropertiesPanel
 from itrade_wxdecision import iTrade_wxDecision
-
-# matplotlib system
-import matplotlib
-matplotlib.use('WXAgg')
-matplotlib.rcParams['numerix'] = 'numpy'
-
-from matplotlib.dates import date2num, num2date
-from myfinance import candlestick, plot_day_summary2, candlestick2, index_bar, volume_overlay2, plot_day_summary3
 
 # ============================================================================
 # iTradeQuoteToolbar

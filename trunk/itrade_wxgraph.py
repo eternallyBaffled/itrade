@@ -38,30 +38,32 @@
 # python system
 import logging
 
-# wxPython system
-import itrade_wxversion
-import wx
-
 # iTrade system
 from itrade_logging import *
 from itrade_local import message
-from itrade_wxlabel import iTrade_wxLabelPopup,DrawRectLabel
-from itrade_wxprint import iTrade_wxPanelPrint as PanelPrint,CanvasPrintout
 
 # matplotlib system
 import matplotlib
-matplotlib.use('WXAgg')
 matplotlib.rcParams['numerix'] = 'numpy'
-
-from pylab import *
+import matplotlib.backends.backend_wxagg
 
 #from matplotlib.backends.backend_wx import FigureCanvasWx as FigureCanvas
 from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as FigureCanvas
-from matplotlib.backends.backend_wx import NavigationToolbar2Wx,_load_bitmap
+from matplotlib.backends.backend_wx import _load_bitmap
 
 from matplotlib.figure import Figure
 from matplotlib.axes import Subplot
 from matplotlib.ticker import  IndexLocator, FuncFormatter, NullFormatter, MultipleLocator
+
+from pylab import *
+
+# wxPython system
+import itrade_wxversion
+import wx
+
+# iTrade wxPython system
+from itrade_wxlabel import iTrade_wxLabelPopup,DrawRectLabel
+from itrade_wxprint import iTrade_wxPanelPrint as PanelPrint,CanvasPrintout
 
 # ============================================================================
 # GTool

@@ -51,6 +51,7 @@ from itrade_local import message
 from itrade_quotes import QUOTE_BOTH,QUOTE_CASH,QUOTE_CREDIT
 from itrade_portfolio import *
 
+# iTrade wxPython system
 from itrade_wxhtml import wxUrlClickHtmlWindow,EVT_HTML_URL_CLICK
 import itrade_wxres
 from itrade_wxmixin import iTrade_wxFrame

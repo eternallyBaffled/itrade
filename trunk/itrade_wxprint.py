@@ -42,7 +42,8 @@ import logging
 import itrade_wxversion
 import wx
 
-# matplotlib
+# matplotlib system
+import matplotlib.backends.backend_wxagg
 from matplotlib.backends.backend_wx import RendererWx
 
 # iTrade system
