@@ -60,7 +60,8 @@ def Import_ListOfQuotes_NYSE(quotes,market='NYSE',dlg=None,x=0):
     print 'Update %s list of symbols' % market
     connection=ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
-                                proxyAuth=itrade_config.proxyAuthentication)
+                                proxyAuth=itrade_config.proxyAuthentication
+                                )
     if market=='NYSE':
         url = "http://www.nysedata.com/nysedata/asp/download.asp?s=txt&prod=symbols"
     else:
