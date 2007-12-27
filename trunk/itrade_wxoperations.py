@@ -266,7 +266,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
         self.wxValueLabel = wx.StaticText(btnpane, -1, message('portfolio_field_credit'))
         self.wxValueLabel.SetSizerProps(valign='center')
 
-        self.wxValueCtrl = masked.Ctrl(btnpane, integerWidth=9, fractionWidth=2, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupChar=getGroupChar(), decimalChar=getDecimalChar() )
+        self.wxValueCtrl = masked.Ctrl(btnpane, integerWidth=9, fractionWidth=2, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupDigits = True, groupChar=getGroupChar(), decimalChar=getDecimalChar(), selectOnEntry=True )
         wx.EVT_TEXT( self, self.wxValueCtrl.GetId(), self.OnValueChange )
 
         self.wxValueTxt = wx.StaticText(btnpane, -1, currency2symbol('EUR')) # __x currency pb
@@ -275,7 +275,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
         self.wxExpPreTxt = wx.StaticText(btnpane, -1, '')
         self.wxExpPreTxt.SetSizerProps(valign='center')
 
-        self.wxExpensesCtrl = masked.Ctrl(btnpane, integerWidth=4, fractionWidth=2, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupChar=getGroupChar(), decimalChar=getDecimalChar() )
+        self.wxExpensesCtrl = masked.Ctrl(btnpane, integerWidth=4, fractionWidth=2, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupDigits = True, groupChar=getGroupChar(), decimalChar=getDecimalChar(), selectOnEntry=True )
         wx.EVT_TEXT( self, self.wxExpensesCtrl.GetId(), self.OnExpensesChange )
 
         self.wxExpPostTxt = wx.StaticText(btnpane, -1, "%s %s" % (currency2symbol('EUR'),message('portfolio_post_expenses')))   # __x currency pb
