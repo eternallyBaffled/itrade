@@ -73,7 +73,7 @@ from itrade_wxmixin import iTrade_wxFrame
 
 from itrade_wxpanes import iTrade_MatrixPortfolioPanel,iTrade_MatrixQuotesPanel,iTrade_MatrixStopsPanel,iTrade_MatrixIndicatorsPanel,iTrade_TradingPanel
 from itrade_wxmoney import iTradeEvaluationPanel
-from itrade_wxutil import iTradeYesNo,iTradeInformation,iTradeError
+from itrade_wxutil import iTradeYesNo,iTradeInformation,iTradeError,FontFromSize
 
 # ============================================================================
 # menu identifier
@@ -979,9 +979,11 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
     def OnChangeViewText(self):
         itrade_config.saveConfig()
         self.updateCheckItems()
-        self.m_list.SetFont(FontFromSize(itrade_config.matrixFontSize))
-        for i in range(0,IDC_LAST+1):
-            self.m_list.SetColumnWidth(i, wx.LIST_AUTOSIZE)
+        sel = self.m_book.GetSelection()
+        win = self.m_book.win[sel]
+        win.m_list.SetFont(FontFromSize(itrade_config.matrixFontSize))
+        for i in range(0,13):
+            win.m_list.SetColumnWidth(i, wx.LIST_AUTOSIZE)
 
     def OnViewSmall(self,e):
         itrade_config.matrixFontSize = 1
