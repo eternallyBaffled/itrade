@@ -4,6 +4,10 @@
 On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
+2007-12-18  Michel Legrand <m_leg at users dot sourceforge dot net>
+	* last IPOs december 2007
+	* fix an issue for volume==0 in yahoo import connector
+
 2007-11-03  Michel Legrand <m_leg at users dot sourceforge dot net>
 	* More logo
 
