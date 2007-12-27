@@ -122,6 +122,8 @@ def Import_ListOfQuotes_LSE(quotes,market='LSE SETS',dlg=None,x=0):
 
             else:
                 ticker = sh.cell_value(line,iTicker)
+                if type(ticker)==float: ticker='%s' % ticker
+                #print line,iTicker,ticker,type(ticker)
                 if ticker[-1:]=='.':
                     ticker = ticker[:-1]
                 name = sh.cell_value(line,iName).replace(',',' ')
