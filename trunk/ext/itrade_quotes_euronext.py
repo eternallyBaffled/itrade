@@ -61,15 +61,19 @@ def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT',dlg=None,x=0):
     print 'Update %s list of symbols' % market
     connection=ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
-                                proxyAuth=itrade_config.proxyAuthentication)
+                                proxyAuth=itrade_config.proxyAuthentication,
+                                defTimeout=45)
+
+    cha = "7213"
+
     if market=='EURONEXT':
-        url = "http://www.euronext.com/search/download/trapridownloadpopup.jcsv?pricesearchresults=actif&filter=1&lan=EN&belongsToList=market_14&cha=1800&format=txt&formatDecimal=.&formatDate=dd/MM/yy"
+        url = "http://www.euronext.com/search/download/trapridownloadpopup.jcsv?pricesearchresults=actif&filter=1&lan=EN&belongsToList=market_EURLS&cha=%s&format=txt&formatDecimal=.&formatDate=dd/MM/yy" % cha
     elif market=='ALTERNEXT':
-        url = "http://www.euronext.com/search/download/trapridownloadpopup.jcsv?pricesearchresults=actif&filter=1&lan=EN&belongsToList=market_15&cha=1800&format=txt&formatDecimal=.&formatDate=dd/MM/yy"
+        url = "http://www.euronext.com/search/download/trapridownloadpopup.jcsv?pricesearchresults=actif&filter=1&lan=EN&belongsToList=market_ALTX&cha=%s&format=txt&formatDecimal=.&formatDate=dd/MM/yy" % cha
     elif market=='PARIS MARCHE LIBRE':
-        url = "http://www.euronext.com/search/download/trapridownloadpopup.jcsv?pricesearchresults=actif&filter=1&lan=EN&belongsToList=market_10&cha=1800&format=txt&formatDecimal=.&formatDate=dd/MM/yy"
+        url = "http://www.euronext.com/search/download/trapridownloadpopup.jcsv?pricesearchresults=actif&filter=1&lan=EN&belongsToList=market_MC&cha=%s&format=txt&formatDecimal=.&formatDate=dd/MM/yy" % cha
     elif market=='BRUXELLES MARCHE LIBRE':
-        url = "http://www.euronext.com/search/download/trapridownloadpopup.jcsv?pricesearchresults=actif&filter=1&lan=EN&belongsToList=market_17&cha=1800&format=txt&formatDecimal=.&formatDate=dd/MM/yy"
+        url = "http://www.euronext.com/search/download/trapridownloadpopup.jcsv?pricesearchresults=actif&filter=1&lan=EN&belongsToList=market_BRUMC&cha=%s&format=txt&formatDecimal=.&formatDate=dd/MM/yy" % cha
     else:
         return False
 
