@@ -64,13 +64,13 @@ from itrade_wxlive import iTrade_wxLiveMixin,EVT_UPDATE_LIVE
 # (common) view
 IDC_ISIN = 0
 IDC_TICKER = 1
-IDC_TRADED = 2
+IDC_PRU = 2
 IDC_PERCENT = 10
 IDC_NAME = 11
 
 # Portfolio view
 IDC_QTY = 3
-IDC_PRU = 4
+IDC_NOTUSED = 4
 IDC_PR  = 5
 IDC_PVU = 6
 IDC_PERFDAY = 7
@@ -247,7 +247,7 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
             self.SortListItems(self.m_sort_colnum,ascending=self.m_sort_colasc)
 
     def needDynamicSortColumn(self):
-        if self.m_sort_colnum<=IDC_TRADED:
+        if self.m_sort_colnum<IDC_PRU:
             return False
         if self.m_sort_colnum>=IDC_NAME:
             return False
@@ -396,7 +396,7 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
         # at least isin and ticker columns !
         self.m_list.InsertColumn(IDC_ISIN, message('isin'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
         self.m_list.InsertColumn(IDC_TICKER, message('ticker'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE_USEHEADER)
-        self.m_list.InsertColumn(IDC_TRADED, '', wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_PRU, message('UPP'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
 
     def populateMatrixEnd(self):
         # fix the item data
@@ -413,7 +413,7 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
         # adjust column
         self.m_list.SetColumnWidth(IDC_ISIN, wx.LIST_AUTOSIZE)
         self.m_list.SetColumnWidth(IDC_TICKER, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_TRADED, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_PRU, wx.LIST_AUTOSIZE)
 
         # sort the default column
         self.SortColumn()
@@ -554,7 +554,7 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
             old = self.itemDataMap[key]
         else:
             old = None
-        self.itemDataMap[key] = ( quote.isin(),quote.ticker(),quote.sv_istraded(),\
+        self.itemDataMap[key] = ( quote.isin(),quote.ticker(),quote.nv_pru(xtype),\
                                   quote.nv_number(xtype),quote.nv_pru(xtype),quote.nv_pr(xtype),\
                                   quote.nv_close(),quote.nv_percent(),\
                                   quote.nv_pv(self.m_portfolio.currency(),xtype),\
@@ -569,7 +569,7 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
         self.populateMatrixBegin()
 
         self.m_list.InsertColumn(IDC_QTY, message('qty'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_PRU, message('UPP'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_NOTUSED, '', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
         self.m_list.InsertColumn(IDC_PR, message('buy'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
         self.m_list.InsertColumn(IDC_PVU, message('USP'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
         self.m_list.InsertColumn(IDC_PERFDAY, message('perfday'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
@@ -585,9 +585,11 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
                 if eachQuote.nv_number(QUOTE_CASH)>0:
                     self.m_list.InsertImageStringItem(x, eachQuote.isin(), self.idx_tbref)
                     self.m_list.SetStringItem(x,IDC_TICKER,eachQuote.ticker())
-                    self.m_list.SetStringItem(x,IDC_TRADED,eachQuote.sv_istraded())
                     self.m_list.SetStringItem(x,IDC_QTY,eachQuote.sv_number(QUOTE_CASH))
-                    self.m_list.SetStringItem(x,IDC_PRU,"%s %s" % (eachQuote.sv_pru(QUOTE_CASH),self.m_portfolio.currency_symbol()))
+                    if eachQuote.isTraded():
+                        self.m_list.SetStringItem(x,IDC_PRU,"%s %s" % (eachQuote.sv_pru(QUOTE_CASH),self.m_portfolio.currency_symbol()))
+                    else:
+                        self.m_list.SetStringItem(x,IDC_PRU,"-")
                     self.m_list.SetStringItem(x,IDC_PR, eachQuote.sv_pr(QUOTE_CASH,fmt="%.0f",bDispCurrency=True))
                     self.m_list.SetStringItem(x,IDC_NAME,eachQuote.name())
 
@@ -601,9 +603,11 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
                 if eachQuote.nv_number(QUOTE_CREDIT)>0:
                     self.m_list.InsertImageStringItem(x, eachQuote.isin(), self.idx_tbref)
                     self.m_list.SetStringItem(x,IDC_TICKER,"%s (%s)" % (eachQuote.ticker(),message("money_srd")))
-                    self.m_list.SetStringItem(x,IDC_TRADED,eachQuote.sv_istraded())
                     self.m_list.SetStringItem(x,IDC_QTY,eachQuote.sv_number(QUOTE_CREDIT))
-                    self.m_list.SetStringItem(x,IDC_PRU,"%s %s" % (eachQuote.sv_pru(QUOTE_CREDIT),self.m_portfolio.currency_symbol()))
+                    if eachQuote.isTraded():
+                        self.m_list.SetStringItem(x,IDC_PRU,"%s %s" % (eachQuote.sv_pru(QUOTE_CREDIT),self.m_portfolio.currency_symbol()))
+                    else:
+                        self.m_list.SetStringItem(x,IDC_PRU,"-")
                     self.m_list.SetStringItem(x,IDC_PR, eachQuote.sv_pr(QUOTE_CREDIT,bDispCurrency=True))
                     self.m_list.SetStringItem(x,IDC_NAME,eachQuote.name())
 
@@ -633,7 +637,7 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
 
         # adjust some column's size
         self.m_list.SetColumnWidth(IDC_QTY, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_PRU, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_NOTUSED, wx.LIST_AUTOSIZE)
         self.m_list.SetColumnWidth(IDC_PR, wx.LIST_AUTOSIZE)
 
         # finish populating
@@ -792,7 +796,7 @@ class iTrade_MatrixQuotesPanel(iTrade_MatrixPanel):
             old = self.itemDataMap[key]
         else:
             old = None
-        self.itemDataMap[key] = (quote.isin(),quote.ticker(),quote.sv_istraded(),quote.nv_volume(),\
+        self.itemDataMap[key] = (quote.isin(),quote.ticker(),quote.nv_pru(xtype),quote.nv_volume(),\
                                  quote.nv_prevclose(),quote.nv_open(),quote.nv_high(),quote.nv_low(),\
                                  quote.nv_close(),quote.sv_pivots(),quote.nv_percent(),quote.name())
         return old
@@ -816,7 +820,10 @@ class iTrade_MatrixQuotesPanel(iTrade_MatrixPanel):
             if (eachQuote.isTraded() or eachQuote.isMonitored()):
                 self.m_list.InsertImageStringItem(x, eachQuote.isin(), self.idx_tbref)
                 self.m_list.SetStringItem(x,IDC_TICKER,eachQuote.ticker())
-                self.m_list.SetStringItem(x,IDC_TRADED,eachQuote.sv_istraded())
+                if eachQuote.isTraded():
+                    self.m_list.SetStringItem(x,IDC_PRU,"%s %s" % (eachQuote.sv_pru(QUOTE_BOTH),self.m_portfolio.currency_symbol()))
+                else:
+                    self.m_list.SetStringItem(x,IDC_PRU,"-")
                 self.m_list.SetStringItem(x,IDC_NAME,eachQuote.name())
 
                 self.map(eachQuote,x,QUOTE_BOTH)
@@ -986,7 +993,7 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
             old = self.itemDataMap[key]
         else:
             old = None
-        self.itemDataMap[key] = ( quote.isin(),quote.ticker(),quote.sv_istraded(),\
+        self.itemDataMap[key] = ( quote.isin(),quote.ticker(),quote.nv_pru(xtype),\
                                   quote.nv_pr(),quote.nv_riskmoney(self.m_portfolio.currency()),\
                                   quote.nv_stoploss(),quote.nv_close(),quote.nv_stopwin(),\
                                   quote.nv_pv(self.m_portfolio.currency()),\
@@ -1016,7 +1023,10 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
             if eachQuote.hasStops() and (eachQuote.isTraded() or eachQuote.isMonitored()):
                 self.m_list.InsertImageStringItem(x, eachQuote.isin(), self.idx_tbref)
                 self.m_list.SetStringItem(x,IDC_TICKER,eachQuote.ticker())
-                self.m_list.SetStringItem(x,IDC_TRADED,eachQuote.sv_istraded())
+                if eachQuote.isTraded():
+                    self.m_list.SetStringItem(x,IDC_PRU,"%s %s" % (eachQuote.sv_pru(QUOTE_BOTH),self.m_portfolio.currency_symbol()))
+                else:
+                    self.m_list.SetStringItem(x,IDC_PRU,"-")
                 self.m_list.SetStringItem(x,IDC_STOPLOSS,"~ %s " % eachQuote.sv_stoploss())
                 self.m_list.SetStringItem(x,IDC_STOPWIN,"~ %s " % eachQuote.sv_stopwin())
                 self.m_list.SetStringItem(x,IDC_NAME,eachQuote.name())
@@ -1182,7 +1192,7 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
         return "indicators"
 
     def needDynamicSortColumn(self):
-        if self.m_sort_colnum<=IDC_TRADED:
+        if self.m_sort_colnum<IDC_PRU:
             return False
         return True
 
@@ -1191,7 +1201,7 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
             old = self.itemDataMap[key]
         else:
             old = None
-        self.itemDataMap[key] = ( quote.isin(),quote.ticker(),quote.sv_istraded(),\
+        self.itemDataMap[key] = ( quote.isin(),quote.ticker(),quote.nv_pru(xtype),\
                                   quote.nv_ma(20),quote.nv_ma(50),quote.nv_ma(100),\
                                   quote.nv_rsi(14),key,quote.nv_stoK(),\
                                   key,key,key,\
@@ -1220,7 +1230,10 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
             if (eachQuote.isTraded() or eachQuote.isMonitored()):
                 self.m_list.InsertImageStringItem(x, eachQuote.isin(), self.idx_tbref)
                 self.m_list.SetStringItem(x,IDC_TICKER,eachQuote.ticker())
-                self.m_list.SetStringItem(x,IDC_TRADED,eachQuote.sv_istraded())
+                if eachQuote.isTraded():
+                    self.m_list.SetStringItem(x,IDC_PRU,"%s %s" % (eachQuote.sv_pru(QUOTE_BOTH),self.m_portfolio.currency_symbol()))
+                else:
+                    self.m_list.SetStringItem(x,IDC_PRU,"-")
 
                 self.map(eachQuote,x,QUOTE_BOTH)
                 self.itemQuoteMap[x] = eachQuote

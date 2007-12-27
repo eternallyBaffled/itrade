@@ -349,12 +349,6 @@ class Quote(object):
     def isTraded(self):
         return self.m_isTraded
 
-    def sv_istraded(self):
-        if self.m_isTraded:
-            return u'\xA4'
-        else:
-            return u''
-
     def wasTraded(self):
         return self.m_wasTraded
 

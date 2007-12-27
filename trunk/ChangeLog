@@ -5,6 +5,7 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-12-27  Gilles Dumortier <dgil at ieee dot org>
+	* (Forum) Column UPP in main matrix (SF bug 1795386)
 	* error with last version Matplotlib matplotlib-0.91.1 (SF bug 1847410)
 	* Yahoo / Recent values : no historical prices (SF bug 1842520)
 	* EURONEXT list of quotes not working anymore (SF bug 1829243)
