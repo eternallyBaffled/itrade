@@ -43,6 +43,7 @@ import httplib
 import urlparse
 import socket
 import time
+import string
 from gzip import GzipFile
 from StringIO import StringIO
 from threading import Lock, currentThread
@@ -57,7 +58,7 @@ from itrade_logging import *
 
 class ITradeConnection(object):
     """Class designed to handle request in HTTP 1.1"""
-    def __init__(self, cookies=None, proxy=None, proxyAuth=None):
+    def __init__(self, cookies=None, proxy=None, proxyAuth=None,defTimeout=20):
         """@param cookies: cookie handler (instance of ITradeCookies class). If None, a private cookie
         handler is created.
         @param proxy: proxy host name or IP
@@ -72,7 +73,7 @@ class ITradeConnection(object):
         self.m_proxy=proxy
 
         # Set a default socket timeout to 20 second for all futher connexions
-        socket.setdefaulttimeout(20)
+        socket.setdefaulttimeout(defTimeout)
 
         if proxyAuth:
             self.m_proxyAuth="Basic "+base64.encodestring(proxyAuth)
@@ -109,11 +110,10 @@ class ITradeConnection(object):
         @param header: addon headers for connection (optional, default is None)
         @param data: dictionary of parameters for POST (optional, default is None)"""
 
-
         # Parse URL
-        (protocole, host, page, params, query, fragments)=urlparse.urlparse(url)
+        (protocole, host, page, params, query, fragments) = urlparse.urlparse(url)
 
-        debug("=====> getting %s from thread %s" % (url, currentThread().getName()))
+        # print "==>", currentThread().getName(), protocole, host, page, params, query, fragments
 
         try:
             # Prepare new header
@@ -125,69 +125,82 @@ class ITradeConnection(object):
 
             # Go through proxy if defined
             if self.m_proxy:
-                host=self.m_proxy
-                debug("========> proxy is %s" % host)
-                request=url
+                host = self.m_proxy
+                request = url
                 if self.m_proxyAuth:
-                    nextHeader["Proxy-Authorization"]=self.m_proxyAuth
+                    nextHeader["Proxy-Authorization"] = self.m_proxyAuth
             else:
                 # Http request does not have host value for direct connection
-                request="%s?%s" % (page, query)
+                request = "%s?%s" % (page, query)
 
             if protocole.lower()=="http":
                 if self.m_httpConnection.has_key(host):
                     # Reuse already opened connection
-                    connection=self.m_httpConnection[host]
+                    connection = self.m_httpConnection[host]
                 else:
                     # Open a new one and save it
-                    connection=httplib.HTTPConnection(host)
-                    self.m_httpConnection[host]=connection
+                    connection = httplib.HTTPConnection(host)
+                    self.m_httpConnection[host] = connection
             else:
                 if self.m_httpsConnection.has_key(host):
                     # Reuse already opened connection
-                    connection=self.m_httpsConnection[host]
+                    connection = self.m_httpsConnection[host]
                 else:
                     # Open a new one and save it
-                    connection=httplib.HTTPSConnection(host)
-                    self.m_httpsConnection[host]=connection
+                    connection = httplib.HTTPSConnection(host)
+                    self.m_httpsConnection[host] = connection
 
             # Add cookie
             if self.m_cookies:
                 if self.m_cookies.get():
-                    print "use cookie"
-                    nextHeader["Cookie"]=self.m_cookies.get()
+                    #print "use cookie"
+                    nextHeader["Cookie"] = self.m_cookies.get()
 
             start=time.time()
 
             try:
                 if data:
                     # Encode data and update header
-                    data=urlencode(data)
+                    data = urlencode(data)
                     nextHeader.update({'Content-Length' : len(data),
                                        'Content-type' : 'application/x-www-form-urlencoded'})
                     connection.request("POST", page, data, nextHeader)
                 else:
+                    #print "GET", request, nextHeader
                     connection.request("GET", request, None, nextHeader)
 
-                self.response=connection.getresponse()
+                self.response = connection.getresponse()
 
                 if self.response:
                     if self.response.getheader('Content-Encoding') == 'gzip':
-                        self.m_responseData=GzipFile(fileobj=StringIO(self.response.read())).read()
+                        #print "==>", currentThread().getName(), "gzip response"
+                        self.m_responseData = GzipFile(fileobj=StringIO(self.response.read())).read()
                     else:
-                        debug("=========> non gzip response")
-                        self.m_responseData=self.response.read()
+                        ldata = self.response.getheader('content-length')
+                        if ldata:
+                            # some servers can return min,max or max,max
+                            #  i.e. "http://www.nysedata.com/nysedata/asp/download.asp?s=txt&prod=symbols" is doing that !
+                            ldata = string.split(ldata, ',')
+                            if ldata and len(ldata)>1:
+                                ldata = int(ldata[0])
+                                self.m_responseData = self.response.read(ldata)
+                            else:
+                                self.m_responseData = self.response.read()
+                        else:
+                            self.m_responseData = self.response.read()
+
                 else:
-                    self.m_responseData=""
+                    #print "==>", currentThread().getName(), "empty response"
+                    self.m_responseData = ""
 
                 # Follow redirect if any with recursion
                 if self.getStatus() in (301, 302):
-                    url=urlparse.urljoin(url, self.response.getheader("location", ""))
+                    url = urlparse.urljoin(url, self.response.getheader("location", ""))
                     self.put(url, nextHeader)
 
-                self.duration=time.time()-start
+                self.m_duration = time.time()-start
 
-                if self.getStatus()!=200:
+                if self.getStatus() != 200:
                     msg="Receive bad answer from server (code %s) while requesting : %s" % \
                                                                       (self.getStatus(), url)
                     info(msg)
@@ -204,18 +217,20 @@ class ITradeConnection(object):
                             self.m_cookies.set(cookieString)
                         else:
                             info("Strange cookie header (%s). Ignoring." % cookieHeader)
+
             except socket.timeout, e:
                 msg="Connexion timeout while requesting the remote server : %s" % url
                 error(msg)
-                self.m_responseData="" 
+                self.m_responseData=""
                 self.clearConnection(protocole, host)
                 raise msg
+
             except (socket.gaierror, httplib.CannotSendRequest, httplib.BadStatusLine) , e:
                 self.clearConnection(protocole, host)
                 if not self.m_retrying:
                     # Retry one time because this kind of error can be "normal"
                     # Eg. after a connection keep-alive timeout
-                    info("An error occured while requesting the remote server : %s. Retrying" % e)
+                    #debug("An error occured while requesting the remote server : %s. Retrying" % e)
                     self.m_retrying=True
                     self.put(url, header, data) # Retrying one time
                     self.m_retrying=False
@@ -224,6 +239,7 @@ class ITradeConnection(object):
                     error(msg)
                     self.m_retrying=False
                     raise msg
+
         except Exception, e:
             self.clearConnections() # Clean all connection
             error("Unhandled exception on ITrade_Connexion (%s)" % e)
@@ -241,7 +257,7 @@ class ITradeConnection(object):
 
     def getDuration(self):
         """@return:  last request duration in seconds"""
-        return self.duration
+        return self.m_duration
 
     def clearConnection(self, protocole, host):
         """Clear connexion for given host and protocole
@@ -257,7 +273,7 @@ class ITradeConnection(object):
         debug("Cleaning up http(s) connections")
         self.m_httpConnection={}
         self.m_httpsConnection={}
-        
+
     def setProxy(self, proxy=None, proxyAuth=None):
         """Use the given proxy for connexions. All connexions will be cleared to use proxy at next connextion.
         This method is thread safe with getDataFromUrl()
