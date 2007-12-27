@@ -50,6 +50,7 @@ import itrade_config
 from itrade_logging import *
 from itrade_local import message
 
+# iTrade wxPython  system
 from itrade_wxutil import iTradeYesNo
 
 # ============================================================================

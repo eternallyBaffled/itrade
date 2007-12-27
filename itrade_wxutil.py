@@ -54,16 +54,11 @@ import wx.html
 import wx.lib.wxpTag
 import wxaddons.sized_controls as sc
 
-# iTrade wxpython
-from itrade_wxhtml import wxUrlClickHtmlWindow,EVT_HTML_URL_CLICK
-
-# matplotlib system
-import matplotlib
-matplotlib.use('WXAgg')
-matplotlib.rcParams['numerix'] = 'numpy'
-
 # matplotlib helpers
 from matplotlib.colors import colorConverter
+
+# iTrade wxpython
+from itrade_wxhtml import wxUrlClickHtmlWindow,EVT_HTML_URL_CLICK
 
 # ============================================================================
 # MatplotColorToRGB()

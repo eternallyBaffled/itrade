@@ -39,17 +39,14 @@
 import logging
 import string
 
+# itrade system
+from itrade_logging import *
+
 # wxPython system
 import itrade_wxversion
 import wx
 
-# matplotlib system
-import matplotlib
-matplotlib.use('WXAgg')
-matplotlib.rcParams['numerix'] = 'numpy'
-
-# itrade system
-from itrade_logging import *
+# itrade wxPython system
 from itrade_wxutil import MatplotColorToRGB
 
 # ============================================================================

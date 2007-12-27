@@ -52,6 +52,7 @@ from itrade_logging import *
 from itrade_local import message
 from itrade_currency import currencies
 
+# iTrade wxPython system
 from itrade_wxmixin import iTrade_wxFrame
 from itrade_wxlive import iTrade_wxLiveCurrencyMixin,EVT_UPDATE_LIVECURRENCY
 

@@ -53,7 +53,8 @@ from itrade_logging import *
 from itrade_portfolio import loadPortfolio
 from itrade_matrix import createMatrix
 
-# iTrade wx system
+# iTrade wxPython system
+from itrade_wxbook import iTradeMainWindow
 
 # ============================================================================
 # iTrade_SplashScreen
@@ -74,7 +75,6 @@ class iTrade_SplashScreen(wx.SplashScreen):
         print '--- build a matrix -----------'
         self.m_matrix = createMatrix(self.m_portfolio.filename(),self.m_portfolio)
 
-        from itrade_wxbook import iTradeMainWindow
         self.m_frame = iTradeMainWindow(None,self.m_portfolio,self.m_matrix)
         app.SetTopWindow(self.m_frame)
 
