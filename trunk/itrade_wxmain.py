@@ -84,6 +84,10 @@ class iTrade_SplashScreen(wx.SplashScreen):
 
     def Run(self):
         time.sleep(3)
+        if itrade_config.isConnected():
+            itrade_config.checkNewRelease(ping=True)
+        else:
+            time.sleep(1)
         self.Close(True)
 
 # ============================================================================
