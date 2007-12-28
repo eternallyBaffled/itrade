@@ -4,8 +4,11 @@
 On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
-2007-12-27  Gilles Dumortier <dgil at ieee dot org>
+2007-12-28  Gilles Dumortier <dgil at ieee dot org>
+	* r783 new problems with indices (%, hour) (SF bug 1778487)
 	* merge Patch from Michel for IRISH et MADRID EXCHANGE
+
+2007-12-27  Gilles Dumortier <dgil at ieee dot org>
 	* Small,normal and big text don't work correctly (SF bug 1765421)
 	* Restore color management on indice display
 	* (Forum) Column UPP in main matrix (SF bug 1795386)
