@@ -273,10 +273,11 @@ class LiveUpdate_Euronext(object):
 
                         sdate,sclock = self.euronextDate(sdata[iDate])
 
-                        # be sure not an oldest day !
+                        # be sure we have volume (or indices)
                         if (quote.list() == QLIST_INDICES or sdata[iVolume]<>'-'):
 
-                            if (c_date==sdate):
+                            # be sure not an oldest day !
+                            if (c_date==sdate) or (quote.list() == QLIST_INDICES):
                                 key = quote.key()
                                 self.m_dcmpd[key] = sdate
                                 self.m_clock[key] = self.convertClock(sclock)
