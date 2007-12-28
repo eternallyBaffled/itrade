@@ -9,7 +9,7 @@
 #
 # The Initial Developer of the Original Code is	Gilles Dumortier.
 #
-# Portions created by the Initial Developer are Copyright (C) 2004-2007 the
+# Portions created by the Initial Developer are Copyright (C) 2004-2008 the
 # Initial Developer. All Rights Reserved.
 #
 # Contributor(s):
@@ -38,7 +38,7 @@
 __author__ = "Gilles Dumortier (dgil@ieee.org)"
 __version__ = "0.4.6"
 __status__ = "alpha"
-__copyright__ = "Copyright (c) 2004-2007 Gilles Dumortier"
+__copyright__ = "Copyright (c) 2004-2008 Gilles Dumortier"
 __license__ = "GPLv3 or later"
 __credits__ = """Jeremiah Fincher (ansi colors in command line), Mark Pilgrim (Universal Feed Parser http://feedparser.org/)"""
 

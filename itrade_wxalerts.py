@@ -10,7 +10,7 @@
 #
 # The Initial Developer of the Original Code is	Gilles Dumortier.
 #
-# Portions created by the Initial Developer are Copyright (C) 2004-2007 the
+# Portions created by the Initial Developer are Copyright (C) 2004-2008 the
 # Initial Developer. All Rights Reserved.
 #
 # Contributor(s):
