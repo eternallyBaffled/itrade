@@ -49,7 +49,7 @@ from itrade_quotes import *
 from itrade_datation import Datation,jjmmaa2yyyymmdd
 from itrade_defs import *
 from itrade_ext import *
-from itrade_market import euronext_InstrumentId
+from itrade_market import euronext_place2mep
 from itrade_connection import ITradeConnection
 import itrade_config
 
@@ -73,7 +73,6 @@ class LiveUpdate_Euronext(object):
         self.m_livelock = thread.allocate_lock()
         self.m_market = market
 
-        #self.m_url = 'http://www.euronext.com/tools/datacentre/dataCentreDownloadExcell/0,5822,1732_2276422,00.html'
         self.m_url = 'http://www.euronext.com/tools/datacentre/dataCentreDownloadExcell.jcsv'
 
         self.m_connection = ITradeConnection(cookies=None,
@@ -170,14 +169,15 @@ class LiveUpdate_Euronext(object):
         self.m_connected = False
         debug("LiveUpdate_Euronext:getdata quote:%s market:%s" % (quote,self.m_market))
 
-        IdInstrument = euronext_InstrumentId(quote)
-        if IdInstrument == None: return None
+        #IdInstrument = euronext_InstrumentId(quote)
+        #if IdInstrument == None: return None
 
         query = (
             ('cha', '2593'),
             ('lan', 'EN'),
-            ('idInstrument', IdInstrument),
+            #('idInstrument', IdInstrument),
             ('isinCode', quote.isin()),
+            ('selectedMep', euronext_place2mep(quote.place())),
             ('indexCompo', ''),
             ('opening', 'on'),
             ('high', 'on'),

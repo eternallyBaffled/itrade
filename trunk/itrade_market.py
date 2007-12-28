@@ -375,6 +375,7 @@ if infile:
         if item:
             yahoo_map_tickers[item[0]] = item[1].strip().upper()
 
+
 # ============================================================================
 # euronext_place2mep
 # ============================================================================
@@ -418,6 +419,9 @@ def yahooUrl(market,live):
 # ============================================================================
 
 def euronext_InstrumentId(quote):
+
+    deprecated
+
     #
     if quote.list()==QLIST_INDICES:
         urlid = 'http://www.euronext.com/quicksearch/resultquicksearchindices-7000-EN.html?matchpattern=%s&fromsearchbox=true&path=/quicksearch&searchTarget=quote'
