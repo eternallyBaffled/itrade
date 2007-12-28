@@ -365,6 +365,9 @@ registerLiveConnector('EURONEXT','PAR',QLIST_INDICES,QTAG_DIFFERED,gLiveYahoo,bD
 registerLiveConnector('ALTERNEXT','PAR',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 registerLiveConnector('PARIS MARCHE LIBRE','PAR',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 
+registerLiveConnector('IRISH EXCHANGE','DUB',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('MADRID EXCHANGE','MAD',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+
 # ============================================================================
 # Test ME
 #

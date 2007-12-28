@@ -57,7 +57,7 @@ isin_market = {
     'fr': 'EURONEXT',
     'nl': 'EURONEXT',
     'be': 'EURONEXT',
-    'es': 'EURONEXT',
+    'pt': 'EURONEXT',
     'qs': 'EURONEXT',
     'it': 'EURONEXT',
     'uk': 'LSE SETS',
@@ -66,6 +66,8 @@ isin_market = {
     'ca': 'TORONTO EXCHANGE',
     'ch': 'SWISS EXCHANGE',
     'it': 'MILAN EXCHANGE',
+    'ie': 'IRISH EXCHANGE',
+    'es': 'MADRID EXCHANGE',
     }
 
 def isin2market(isin):
@@ -101,6 +103,8 @@ market_indice = {
     'TORONTO VENTURE': 'US2605661048',
     'MILAN EXCHANGE': 'IT0003137749',
     'SWISS EXCHANGE': 'CH0009980894',
+    'IRISH EXCHANGE': 'IE0001477250',
+    'MADRID EXCHANGE': 'ES0SI0000005',
 }
 
 def getDefaultIndice(market):
@@ -131,6 +135,8 @@ market_currency = {
     'TORONTO VENTURE': 'CAD',
     'MILAN EXCHANGE': 'EUR',
     'SWISS EXCHANGE': 'CHF',
+    'IRISH EXCHANGE': 'EUR',
+    'MADRID EXCHANGE': 'EUR',
     }
 
 def market2currency(market):
@@ -161,6 +167,8 @@ _lom = {
     'TORONTO VENTURE': False,
     'MILAN EXCHANGE': False,
     'SWISS EXCHANGE': False,
+    'IRISH EXCHANGE': False,
+    'MADRID EXCHANGE': False,
     }
 
 def set_market_loaded(market,set=True):
@@ -206,7 +214,7 @@ def compute_country(isin,market,place):
             if place=='PAR': return 'FR'
             if place=='BRU': return 'BE'
             if place=='AMS': return 'NL'
-            if place=='LIS': return 'ES'
+            if place=='LIS': return 'PT'
             return 'FR'
         if market=='PARIS MARCHE LIBRE':
             return 'FR'
@@ -230,6 +238,10 @@ def compute_country(isin,market,place):
             return 'CH'
         if market=='MILAN EXCHANGE':
             return 'IT'
+        if market=='IRISH EXCHANGE':
+            return 'IE'
+        if market=='MADRID EXCHANGE':
+            return 'ES'
     return '??'
 
 # ============================================================================
@@ -274,6 +286,10 @@ def list_of_places(market):
         lop.append('XVTX')
     if market=='MILAN EXCHANGE':
         lop.append('MIL')
+    if market=='IRISH EXCHANGE':
+        lop.append('DUB')
+    if market=='MADRID EXCHANGE':
+        lop.append('MAD')
     return lop
 
 # ============================================================================
@@ -297,6 +313,8 @@ market_place = {
     'TORONTO VENTURE': 'TOR',
     'MILAN EXCHANGE': 'MIL',
     'SWISS EXCHANGE': 'XVTX',
+    'IRISH EXCHANGE': 'DUB',
+    'MADRID EXCHANGE': 'MAD',
     }
 
 def market2place(market):
@@ -325,6 +343,8 @@ yahoo_suffix = {
     'MILAN EXCHANGE.MIL': '.MI',
     'SWISS EXCHANGE.XSWX': '.SW',
     'SWISS EXCHANGE.XVTX': '.VX',
+    'IRISH EXCHANGE.DUB': '.IR',
+    'MADRID EXCHANGE.MAD': '.MC',
     }
 
 yahoo_map_tickers = {}

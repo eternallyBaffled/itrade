@@ -5,6 +5,7 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-12-27  Gilles Dumortier <dgil at ieee dot org>
+	* merge Patch from Michel for IRISH et MADRID EXCHANGE
 	* Small,normal and big text don't work correctly (SF bug 1765421)
 	* Restore color management on indice display
 	* (Forum) Column UPP in main matrix (SF bug 1795386)
@@ -15,6 +16,7 @@ On the road for v0.4.6 (Nausicaa2)
 	* NYSE list of quotes not working anymore (SF bug 1851229)
 
 2007-12-18  Michel Legrand <m_leg at users dot sourceforge dot net>
+	* Patch for IRISH et MADRID EXCHANGE (not included)
 	* last IPOs december 2007
 	* fix an issue for volume==0 in yahoo import connector
 

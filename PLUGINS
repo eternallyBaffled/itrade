@@ -31,6 +31,8 @@ TORONTO VENTURE		TOR	YAHOO FINANCE
 MILAN EXCHANGE		MIL	YAHOO FINANCE
 SWISS EXCHANGE		XSWX	YAHOO FINANCE
 SWISS EXCHANGE		XVTX	YAHOO FINANCE
+IRISH EXCHANGE          DUB	YAHOO FINANCE
+MADRID EXCHANGE		MAD	YAHOO FINANCE
 
 ===============================================================================
 History data
@@ -58,6 +60,8 @@ TORONTO VENTURE		TOR	YAHOO FINANCE
 MILAN EXCHANGE		MIL	YAHOO FINANCE
 SWISS EXCHANGE		XSWX	YAHOO FINANCE
 SWISS EXCHANGE		XVTX	YAHOO FINANCE
+IRISH EXCHANGE          DUB	YAHOO FINANCE
+MADRID EXCHANGE		MAD	YAHOO FINANCE
 
 Manual importation is possible.
 File format is EBP (ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME)
@@ -88,6 +92,8 @@ TORONTO VENTURE		TOR	BARCHART
 MILAN EXCHANGE		MIL	not available yet
 SWISS EXCHANGE		XSWX	SWX
 SWISS EXCHANGE		XVTX	SWX
+IRISH EXCHANGE          DUB	not available yet
+MADRID EXCHANGE		MAD	not available yet
 
 ===============================================================================
 Intraday data
@@ -115,5 +121,7 @@ TORONTO VENTURE		TOR	not available yet
 MILAN EXCHANGE		MIL	not available yet
 SWISS EXCHANGE		XSWX	not available yet
 SWISS EXCHANGE		XVTX	not available yet
+IRISH EXCHANGE          DUB	not available yet
+MADRID EXCHANGE		MAD	not available yet
 
 ===============================================================================
