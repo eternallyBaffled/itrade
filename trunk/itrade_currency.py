@@ -181,6 +181,8 @@ class Currencies(object):
             return False
 
     def inuse(self,curTo,curFrom,bInUse):
+        if curFrom == 'N/A' or curTo == 'N/A':
+            return
         if curTo == curFrom:
             return
         key = self.key(curTo,curFrom)
