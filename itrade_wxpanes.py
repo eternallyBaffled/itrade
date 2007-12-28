@@ -277,9 +277,9 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
         self.x = event.GetX()
         self.y = event.GetY()
         item, flags = self.m_list.HitTest((self.x, self.y))
-        #debug("OnRightDown: x, y = %s item=%d max=%d" % (str((self.x, self.y)), item,self.m_maxlines))
+        #info("OnRightDown: x, y = %s item=%d max=%d" % (str((self.x, self.y)), item,self.m_maxlines))
         if flags & wx.LIST_HITTEST_ONITEM:
-            pass
+            self.m_currentItem = item
         else:
             self.m_currentItem = -1
         self.updateQuoteItems()
@@ -288,10 +288,10 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
     def OnLeftDown(self, event):
         self.x = event.GetX()
         self.y = event.GetY()
-        debug("OnLeftDown: x, y = %s" % str((self.x, self.y)))
         item, flags = self.m_list.HitTest((self.x, self.y))
+        #info("OnLeftDown: x, y = %s item=%d max=%d" % (str((self.x, self.y)), item,self.m_maxlines))
         if flags & wx.LIST_HITTEST_ONITEM:
-            pass
+            self.m_currentItem = item
         else:
             self.m_currentItem = -1
         self.updateQuoteItems()
@@ -300,7 +300,7 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
     def OnItemActivated(self, event):
         self.m_currentItem = event.m_itemIndex
         if (self.m_currentItem>=0) and (self.m_currentItem<self.m_maxlines):
-            #debug("OnItemActivated: %s" % self.m_list.GetItemText(self.m_currentItem))
+            #info("OnItemActivated: %s" % self.m_list.GetItemText(self.m_currentItem))
             self.openCurrentQuote()
             # __x if self.m_currentItem == self.m_maxlines, launch eval !
 
@@ -308,7 +308,7 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
         self.m_currentItem = event.m_itemIndex
         self.updateQuoteItems()
         if (self.m_currentItem>=0) and (self.m_currentItem<self.m_maxlines):
-            #debug("OnItemSelected: %s, %s, %s, %s\n" %
+            #info("OnItemSelected: %s, %s, %s, %s\n" %
             #                   (self.m_currentItem,
             #                    self.m_list.GetItemText(self.m_currentItem),
             #                    self.getColumnText(self.m_currentItem, 1),
@@ -370,7 +370,7 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
     # ---[ Populate view ] -----------------------------------------
 
     def populate(self,bDuringInit):
-        debug('populate duringinit=%d' % bDuringInit)
+        #debug('populate duringinit=%d' % bDuringInit)
 
         # clear current population
         self.stopLive(bBusy=False)

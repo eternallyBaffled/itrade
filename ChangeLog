@@ -4,6 +4,9 @@
 On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
+2007-12-29  Gilles Dumortier <dgil at ieee dot org>
+	* wrong selection after choosing a new sorting column (SF bug 1827058)
+
 2007-12-28  Gilles Dumortier <dgil at ieee dot org>
 	* Less digit for PRU except in the indicators pane
 	* Operation Editor : display portfolio currency symbol (SF bug 1651954)
