@@ -158,7 +158,7 @@ operation_ctrl = (
 
 class iTradeOperationDialog(iTradeSizedDialog):
 
-    def __init__(self, parent, op, opmode, market=None):
+    def __init__(self, parent, op, opmode, market=None, currency='EUR'):
         # pre-init
         self.opmode = opmode
 
@@ -269,7 +269,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
         self.wxValueCtrl = masked.Ctrl(btnpane, integerWidth=9, fractionWidth=2, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupDigits = True, groupChar=getGroupChar(), decimalChar=getDecimalChar(), selectOnEntry=True )
         wx.EVT_TEXT( self, self.wxValueCtrl.GetId(), self.OnValueChange )
 
-        self.wxValueTxt = wx.StaticText(btnpane, -1, currency2symbol('EUR')) # __x currency pb
+        self.wxValueTxt = wx.StaticText(btnpane, -1, currency2symbol(currency))
         self.wxValueTxt.SetSizerProps(valign='center')
 
         self.wxExpPreTxt = wx.StaticText(btnpane, -1, '')
@@ -278,7 +278,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
         self.wxExpensesCtrl = masked.Ctrl(btnpane, integerWidth=4, fractionWidth=2, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupDigits = True, groupChar=getGroupChar(), decimalChar=getDecimalChar(), selectOnEntry=True )
         wx.EVT_TEXT( self, self.wxExpensesCtrl.GetId(), self.OnExpensesChange )
 
-        self.wxExpPostTxt = wx.StaticText(btnpane, -1, "%s %s" % (currency2symbol('EUR'),message('portfolio_post_expenses')))   # __x currency pb
+        self.wxExpPostTxt = wx.StaticText(btnpane, -1, "%s %s" % (currency2symbol(currency),message('portfolio_post_expenses')))
         self.wxExpPostTxt.SetSizerProps(valign='center')
 
         # resizable pane
@@ -1087,7 +1087,7 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
         ind = self.itemOpMap[key]
         info("OnModify currentItem=%d key=%d ind=%d",self.m_currentItem,key,ind)
 
-        aRet = edit_iTradeOperation(self,self.m_port.getOperation(ind),OPERATION_MODIFY)
+        aRet = edit_iTradeOperation(self,self.m_port.getOperation(ind),OPERATION_MODIFY,currency=self.m_port.currency())
         if aRet:
             info('OnModify: date=%s type=%s name=%s value=%12.2f expenses=%12.2f number=%d ref=%d' %(aRet[0],aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6]))
             self.m_port.delOperation(ind)
@@ -1099,7 +1099,7 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
         ind = self.itemOpMap[key]
         info("OnDelete currentItem=%d key=%d ind=%d",self.m_currentItem,key,ind)
 
-        aRet = edit_iTradeOperation(self,self.m_port.getOperation(ind),OPERATION_DELETE)
+        aRet = edit_iTradeOperation(self,self.m_port.getOperation(ind),OPERATION_DELETE,currency=self.m_port.currency())
         if aRet:
             info('OnDelete: date=%s type=%s name=%s value=%12.2f expenses=%12.2f number=%d ref=%d' %(aRet[0],aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6]))
             self.m_port.delOperation(ind)
@@ -1107,7 +1107,7 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
 
     def OnAdd(self, event):
         info("OnAdd")
-        aRet = edit_iTradeOperation(self,None,OPERATION_ADD,market=self.m_port.market())
+        aRet = edit_iTradeOperation(self,None,OPERATION_ADD,market=self.m_port.market(),currency=self.m_port.currency())
         if aRet:
             info('OnAdd: date=%s type=%s name=%s value=%12.2f expenses=%12.2f number=%d ref=%d' %(aRet[0],aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6]))
             self.m_port.addOperation(aRet)
@@ -1146,8 +1146,8 @@ def open_iTradeOperations(win,port=None):
 #   market  default market (add only)
 # ============================================================================
 
-def edit_iTradeOperation(win,op,opmode,market=None):
-    dlg = iTradeOperationDialog(win,op,opmode,market)
+def edit_iTradeOperation(win,op,opmode,market=None,currency='EUR'):
+    dlg = iTradeOperationDialog(win,op,opmode,market,currency)
     if dlg.ShowModal()==wx.ID_OK:
         aRet = dlg.aRet
     else:
@@ -1174,7 +1174,7 @@ def add_iTradeOperation(win,portfolio,quote,type):
     else:
         key = None
     op = Operation(d=date.today(),t=type,m=key,v='0.0',e='0.0',n='0',vat=portfolio.vat(),ref=-1)
-    aRet = edit_iTradeOperation(win,op,OPERATION_ADD,market=portfolio.market())
+    aRet = edit_iTradeOperation(win,op,OPERATION_ADD,market=portfolio.market(),currency=portfolio.currency())
     if aRet:
         info('add_iTradeOperation: date=%s type=%s name=%s value=%12.2f expenses=%12.2f number=%d ref=%d' %(aRet[0],aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6]))
         portfolio.addOperation(aRet)
