@@ -349,7 +349,7 @@ class CustomDataTable(gridlib.PyGridTableBase):
                          ]
 
         self.dataTypes = [gridlib.GRID_VALUE_STRING,
-                          gridlib.GRID_VALUE_NUMBER + ':1,5',
+                          gridlib.GRID_VALUE_FLOAT + ':12,0',
                           gridlib.GRID_VALUE_FLOAT + ':6,2',
                           gridlib.GRID_VALUE_FLOAT + ':6,2',
                           gridlib.GRID_VALUE_FLOAT + ':6,2',

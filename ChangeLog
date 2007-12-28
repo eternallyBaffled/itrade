@@ -5,6 +5,7 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-12-28  Gilles Dumortier <dgil at ieee dot org>
+	* Crash clicking an indice (SF bug 1859459)
 	* do not convert money from N/A ! (SF bug 1859824)
 	* Irish stock exchange - list of quotes (SF bug 1859781)
 	* Euronext Plugins : do not use idInstrument anymore (SF bug 1859791)
