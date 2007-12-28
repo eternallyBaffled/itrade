@@ -313,12 +313,12 @@ column['stops'] = "-1;1"
 # return None or link to download the new release
 # ============================================================================
 
-def checkNewRelease():
+def checkNewRelease(ping=False):
     # just to test : remove '#' from the line just below
-    #__svnversion__ = 'r564'
+    #__svnversion__ = 'r565'
 
     # development release : do not test
-    if __svnversion__ == 'r???':
+    if not ping and __svnversion__ == 'r???':
         if verbose:
             print 'checkNewRelease(): development release'
         return 'dev'
@@ -326,7 +326,8 @@ def checkNewRelease():
     from itrade_connection import ITradeConnection
     connection=ITradeConnection(cookies=None,
                                 proxy=proxyHostname,
-                                proxyAuth=proxyAuthentication)
+                                proxyAuth=proxyAuthentication,
+                                defTimeout=3)
 
     # get OFFICIAL file from svn
     try:
@@ -339,6 +340,12 @@ def checkNewRelease():
         if verbose:
             print 'checkNewRelease(): OFFICIAL file malformed'
         return 'err'
+
+    # development release : do not test
+    if __svnversion__ == 'r???':
+        if verbose:
+            print 'checkNewRelease(): development release (ping)'
+        return 'dev'
 
     current = int(__svnversion__[1:])
     latest = int(latest[1:])
@@ -535,8 +542,6 @@ def isConnected():
 # ============================================================================
 # During import
 # ============================================================================
-
-# __x loadConfig()
 
 # ============================================================================
 # Test
