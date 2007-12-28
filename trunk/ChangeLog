@@ -5,6 +5,7 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-12-28  Gilles Dumortier <dgil at ieee dot org>
+	* Less digit for PRU except in the indicators pane
 	* Operation Editor : display portfolio currency symbol (SF bug 1651954)
 	* Crash clicking an indice (SF bug 1859459)
 	* do not convert money from N/A ! (SF bug 1859824)

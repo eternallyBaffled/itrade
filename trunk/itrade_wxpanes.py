@@ -587,7 +587,7 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
                     self.m_list.SetStringItem(x,IDC_TICKER,eachQuote.ticker())
                     self.m_list.SetStringItem(x,IDC_QTY,eachQuote.sv_number(QUOTE_CASH))
                     if eachQuote.isTraded():
-                        self.m_list.SetStringItem(x,IDC_PRU,"%s %s" % (eachQuote.sv_pru(QUOTE_CASH),self.m_portfolio.currency_symbol()))
+                        self.m_list.SetStringItem(x,IDC_PRU,"%s %s" % (eachQuote.sv_pru(QUOTE_CASH,"%.2f"),self.m_portfolio.currency_symbol()))
                     else:
                         self.m_list.SetStringItem(x,IDC_PRU,"-")
                     self.m_list.SetStringItem(x,IDC_PR, eachQuote.sv_pr(QUOTE_CASH,fmt="%.0f",bDispCurrency=True))
@@ -605,7 +605,7 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
                     self.m_list.SetStringItem(x,IDC_TICKER,"%s (%s)" % (eachQuote.ticker(),message("money_srd")))
                     self.m_list.SetStringItem(x,IDC_QTY,eachQuote.sv_number(QUOTE_CREDIT))
                     if eachQuote.isTraded():
-                        self.m_list.SetStringItem(x,IDC_PRU,"%s %s" % (eachQuote.sv_pru(QUOTE_CREDIT),self.m_portfolio.currency_symbol()))
+                        self.m_list.SetStringItem(x,IDC_PRU,"%s %s" % (eachQuote.sv_pru(QUOTE_CREDIT,"%.2f"),self.m_portfolio.currency_symbol()))
                     else:
                         self.m_list.SetStringItem(x,IDC_PRU,"-")
                     self.m_list.SetStringItem(x,IDC_PR, eachQuote.sv_pr(QUOTE_CREDIT,bDispCurrency=True))
@@ -821,7 +821,7 @@ class iTrade_MatrixQuotesPanel(iTrade_MatrixPanel):
                 self.m_list.InsertImageStringItem(x, eachQuote.isin(), self.idx_tbref)
                 self.m_list.SetStringItem(x,IDC_TICKER,eachQuote.ticker())
                 if eachQuote.isTraded():
-                    self.m_list.SetStringItem(x,IDC_PRU,"%s %s" % (eachQuote.sv_pru(QUOTE_BOTH),self.m_portfolio.currency_symbol()))
+                    self.m_list.SetStringItem(x,IDC_PRU,"%s %s" % (eachQuote.sv_pru(QUOTE_BOTH,"%.2f"),self.m_portfolio.currency_symbol()))
                 else:
                     self.m_list.SetStringItem(x,IDC_PRU,"-")
                 self.m_list.SetStringItem(x,IDC_NAME,eachQuote.name())
@@ -1024,7 +1024,7 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
                 self.m_list.InsertImageStringItem(x, eachQuote.isin(), self.idx_tbref)
                 self.m_list.SetStringItem(x,IDC_TICKER,eachQuote.ticker())
                 if eachQuote.isTraded():
-                    self.m_list.SetStringItem(x,IDC_PRU,"%s %s" % (eachQuote.sv_pru(QUOTE_BOTH),self.m_portfolio.currency_symbol()))
+                    self.m_list.SetStringItem(x,IDC_PRU,"%s %s" % (eachQuote.sv_pru(QUOTE_BOTH,"%.2f"),self.m_portfolio.currency_symbol()))
                 else:
                     self.m_list.SetStringItem(x,IDC_PRU,"-")
                 self.m_list.SetStringItem(x,IDC_STOPLOSS,"~ %s " % eachQuote.sv_stoploss())
@@ -1231,7 +1231,7 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
                 self.m_list.InsertImageStringItem(x, eachQuote.isin(), self.idx_tbref)
                 self.m_list.SetStringItem(x,IDC_TICKER,eachQuote.ticker())
                 if eachQuote.isTraded():
-                    self.m_list.SetStringItem(x,IDC_PRU,"%s %s" % (eachQuote.sv_pru(QUOTE_BOTH),self.m_portfolio.currency_symbol()))
+                    self.m_list.SetStringItem(x,IDC_PRU,eachQuote.sv_pru(QUOTE_BOTH,"%.3f",False))
                 else:
                     self.m_list.SetStringItem(x,IDC_PRU,"-")
 
