@@ -34,6 +34,8 @@ Version 0.4.6 (Nausicaa2)
  + main market indicator
  + Proxy Connection
  + LSE Markets (yahoo connector)
+ + IRISH exchange (yahoo connector)
+ + MADRID exchange (yahoo connector)
  ~ Printing module
  ~ Extensible Indicators back-end
 
