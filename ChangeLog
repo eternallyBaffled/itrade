@@ -5,6 +5,7 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2007-12-28  Gilles Dumortier <dgil at ieee dot org>
+	* Euronext Plugins : do not use idInstrument anymore (SF bug 1859791)
 	* Massive update the copyright date
 	* r783 new problems with indices (%, hour) (SF bug 1778487)
 	* merge Patch from Michel for IRISH et MADRID EXCHANGE

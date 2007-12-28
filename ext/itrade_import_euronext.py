@@ -47,7 +47,7 @@ from itrade_quotes import *
 from itrade_datation import Datation,jjmmaa2yyyymmdd
 from itrade_defs import *
 from itrade_ext import *
-from itrade_market import euronext_InstrumentId
+from itrade_market import euronext_place2mep
 from itrade_connection import ITradeConnection
 import itrade_config
 
@@ -114,8 +114,8 @@ class Import_euronext(object):
 
     def getdata(self,quote,datedebut=None,datefin=None):
 
-        IdInstrument = euronext_InstrumentId(quote)
-        if IdInstrument == None: return None
+        #IdInstrument = euronext_InstrumentId(quote)
+        #if IdInstrument == None: return None
 
         # get historic data itself !
         if not datefin:
@@ -136,10 +136,11 @@ class Import_euronext(object):
         debug("Import_euronext:getdata quote:%s begin:%s end:%s" % (quote,d1,d2))
 
         query = (
-            ('cha', '3044'),
+            ('cha', '2593'),
             ('lan', 'EN'),
-            ('idInstrument', IdInstrument),
+            #('idInstrument', IdInstrument),
             ('isinCode', quote.isin()),
+            ('selectedMep', euronext_place2mep(quote.place())),
             ('indexCompo', ''),
             ('opening', 'on'),
             ('high', 'on'),
