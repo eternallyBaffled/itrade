@@ -36,22 +36,28 @@ Version 0.4.6 (Nausicaa2)
  + LSE Markets (yahoo connector)
  + IRISH exchange (yahoo connector)
  + MADRID exchange (yahoo connector)
- ~ Printing module
- ~ Extensible Indicators back-end
+ ~ better Linux support
 
-Version 0.4.8 (Nausicaa3)
- ~ Fortuneo Live broker
+Version 0.4.8 (Druuna)
+
+TO BE DEFINED
+
  ~ "Points Pivots" feature
  ~ VAT information
  ~ more Charting enhancements
  ~ better Linux support
  ~ Nordic Market ?
  ~ Boursorama Live broker ?
+ ~ Printing module
+ ~ Extensible Indicators back-end
  - BourseDirect Live broker ?
- - full linux support ?
  - integrate TA-LIB ? -- under investigation
 
 Version 0.5 (Plume)
+
+TO BE DEFINED
+
+ ~ Fortuneo Live broker
  ~ News aggregator (Google, Bourso, Balo)
  ~ Money Computer (preview of Risk Management)
  ~ www.lebalo.com (official french announces)
@@ -65,6 +71,9 @@ Version 0.5 (Plume)
  - daily Japanese candlestick
 
 Version 0.6 (Stella Maris)
+
+TO BE DEFINED
+
  - more indicators (schocastics)
  - weekly Japanese candlestick
  - more Japanese candlestick
@@ -73,6 +82,9 @@ Version 0.6 (Stella Maris)
  - automated analysis (short and long term)
 
 Version 0.7 (Aaricia - The User Preview)
+
+TO BE DEFINED
+
  - Full Risk & Money Management
  - support and resistance
  - multi-accounts ?
@@ -81,6 +93,9 @@ Version 0.7 (Aaricia - The User Preview)
  - split management ?
 
 Version 0.8 (AlefThau - Alpha Release)
+
+TO BE DEFINED
+
  - file attachement to operations (i.e. official doc from broker)
  - official alpha release
 
