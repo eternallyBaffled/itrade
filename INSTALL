@@ -91,4 +91,32 @@ This is how I did it on my Slackware 10.2:
 	su -c "python setup.py install"
 
 	That's it!
+
+-------------------------------------------------------------------------------
+Specific to Linux / itrade.sh on SuSE x86_64
+ courtesy of gassauer at kde dot org
+-------------------------------------------------------------------------------
+
+it should read  -- (lib64)
+                # link to main programm
+                ln -s /usr/lib64/python/site-packages/itrade/itrade.py .
+instead of
+                # link to main programm
+                ln -s /usr/lib/python/site-packages/itrade/itrade.py .
+
+-------------------------------------------------------------------------------
+Specific to OSX 10.4
+ courtesy of Yoshiyuki Nishio
+-------------------------------------------------------------------------------
+
+You can found already compiled packages here (except XLRD but it's optional) :
+http://pythonmac.org/packages/py25-fat/index.html
+
+Install in this order : python2.5, wxpython2.8, numpy, pytz, matplotlib
+NB: X11 should be installed from the Tiger CD-ROM
+
+Open a terminal, go to the itrade folder and just type : pythonw itrade.py
+
+That's all.
+
 ===============================================================================
