@@ -33,6 +33,7 @@ itrade_quotes_nyse.py
 itrade_quotes_swx.py
 itrade_quotes_lse.py
 itrade_quotes_ie.py
+itrade_quotes_xetra.py
 
 # login
 

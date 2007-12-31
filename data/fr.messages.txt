@@ -231,6 +231,10 @@ listquote_saved;La liste des symboles a été sauvegardée
 listquote_dirty_save;Voulez-vous sauvegarder les modifications apportées à la liste des symboles ?
 listquote_nodirty_save;Vos modifications ne sont pas sauvés et ne persisteront pas après la session en cours
 
+listquote_items_zero;Aucune valeur trouvée
+listquote_items_one;Une seule valeur trouvée
+listquote_items_n;%s valeurs trouvées
+
 listquote_modify_title;Modification Symbole %s
 listquote_new_title;Nouveau Symbole
 listquote_delete_title;Suppression Symbole %s

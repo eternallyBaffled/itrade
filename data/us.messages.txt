@@ -227,6 +227,10 @@ listquote_saved;The list of symbols has been saved
 listquote_dirty_save;Do you want to save the modification you have done to the list of symbols ?
 listquote_nodirty_save;Your modifications have not been saved and will not persist the current session
 
+listquote_items_zero;None quote found
+listquote_items_one;One quote found
+listquote_items_n;%s quotes found
+
 listquote_modify_title;Edit %s Symbol
 listquote_new_title;New Symbol
 listquote_delete_title;Delete %s Symbol

@@ -273,6 +273,8 @@ intradayGraphUrl['IRISH EXCHANGE'] = "http://ichart.finance.yahoo.com/b?s=%s.IR"
 intradayGraphUrlUseISIN['IRISH EXCHANGE'] = False
 intradayGraphUrl['MADRID EXCHANGE'] = "http://ichart.finance.yahoo.com/b?s=%s.MC"
 intradayGraphUrlUseISIN['MADRID EXCHANGE'] = False
+intradayGraphUrl['FRANKFURT EXCHANGE'] = "http://ichart.finance.yahoo.com/b?s=%s.DE"
+intradayGraphUrlUseISIN['FRANKFURT EXCHANGE'] = False
 
 # in ms, time before activating XYPopup
 timerForXYPopup = 500
