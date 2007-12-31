@@ -12,7 +12,7 @@
 # Original template for "plug-in" to iTrade is	from Gilles Dumortier.
 # New code for ASX is from Peter Mills.
 #
-# Portions created by the Initial Developer are Copyright (C) 2006 the
+# Portions created by the Initial Developer are Copyright (C) 2006-2008 the
 # Initial Developer. All Rights Reserved.
 #
 # Contributor(s):

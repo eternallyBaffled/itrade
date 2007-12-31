@@ -4,6 +4,16 @@
 On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
+2007-12-31  Gilles Dumortier <dgil at ieee dot org>
+	* List of quotes view : display the number of quotes filtered in list
+
+2007-12-30  Gilles Dumortier <dgil at ieee dot org>
+	* closed.txt updated for main markets (euronext, nyse, ...)
+
+2007-12-30  Michel Legrand <m_leg at users dot sourceforge dot net>
+	* Patch and new module (itrade_quotes_xetra.py) for FRANKFURT EXCHANGE
+	* Fix PT / ES in symbols files (like indices.txt)
+
 2007-12-29  Gilles Dumortier <dgil at ieee dot org>
 	* update ./INSTALL file with some forum feedbacks on Linux & OSX
 	* wrong selection after choosing a new sorting column (SF bug 1827058)

@@ -368,6 +368,8 @@ registerLiveConnector('PARIS MARCHE LIBRE','PAR',QLIST_ANY,QTAG_DIFFERED,gLiveYa
 registerLiveConnector('IRISH EXCHANGE','DUB',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 registerLiveConnector('MADRID EXCHANGE','MAD',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 
+registerLiveConnector('FRANKFURT EXCHANGE','FRA',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+
 # ============================================================================
 # Test ME
 #

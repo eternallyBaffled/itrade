@@ -68,6 +68,7 @@ isin_market = {
     'it': 'MILAN EXCHANGE',
     'ie': 'IRISH EXCHANGE',
     'es': 'MADRID EXCHANGE',
+    'de': 'FRANKFURT EXCHANGE',
     }
 
 def isin2market(isin):
@@ -105,7 +106,8 @@ market_indice = {
     'SWISS EXCHANGE': 'CH0009980894',
     'IRISH EXCHANGE': 'IE0001477250',
     'MADRID EXCHANGE': 'ES0SI0000005',
-}
+    'FRANKFURT EXCHANGE': 'DE0008469008',
+    }
 
 def getDefaultIndice(market):
     if market_indice.has_key(market):
@@ -137,6 +139,7 @@ market_currency = {
     'SWISS EXCHANGE': 'CHF',
     'IRISH EXCHANGE': 'EUR',
     'MADRID EXCHANGE': 'EUR',
+    'FRANKFURT EXCHANGE': 'EUR',
     }
 
 def market2currency(market):
@@ -169,6 +172,7 @@ _lom = {
     'SWISS EXCHANGE': False,
     'IRISH EXCHANGE': False,
     'MADRID EXCHANGE': False,
+    'FRANKFURT EXCHANGE': False,
     }
 
 def set_market_loaded(market,set=True):
@@ -242,6 +246,8 @@ def compute_country(isin,market,place):
             return 'IE'
         if market=='MADRID EXCHANGE':
             return 'ES'
+        if market=='FRANKFURT EXCHANGE':
+            return 'DE'
     return '??'
 
 # ============================================================================
@@ -290,6 +296,8 @@ def list_of_places(market):
         lop.append('DUB')
     if market=='MADRID EXCHANGE':
         lop.append('MAD')
+    if market=='FRANKFURT EXCHANGE':
+        lop.append('FRA')
     return lop
 
 # ============================================================================
@@ -315,6 +323,7 @@ market_place = {
     'SWISS EXCHANGE': 'XVTX',
     'IRISH EXCHANGE': 'DUB',
     'MADRID EXCHANGE': 'MAD',
+    'FRANKFURT EXCHANGE': 'FRA',
     }
 
 def market2place(market):
@@ -345,6 +354,7 @@ yahoo_suffix = {
     'SWISS EXCHANGE.XVTX': '.VX',
     'IRISH EXCHANGE.DUB': '.IR',
     'MADRID EXCHANGE.MAD': '.MC',
+    'FRANKFURT EXCHANGE.FRA': '.F',
     }
 
 yahoo_map_tickers = {}

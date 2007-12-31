@@ -36,6 +36,7 @@ Version 0.4.6 (Nausicaa2)
  + LSE Markets (yahoo connector)
  + IRISH exchange (yahoo connector)
  + MADRID exchange (yahoo connector)
+ + FRANKFURT exchange (yahoo connector)
  ~ better Linux support
 
 Version 0.4.8 (Druuna)

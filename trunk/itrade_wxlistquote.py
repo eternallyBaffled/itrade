@@ -448,6 +448,9 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         self.wxQListCtrl.Append(message('quote_select_trackerslist'),QLIST_TRACKERS)
         self.wxQListCtrl.SetSelection(self.m_qlist)
 
+        self.wxCount = wx.StaticText(self, -1, '--')
+        box.Add(self.wxCount, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+
         sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
         box = wx.BoxSizer(wx.HORIZONTAL)
@@ -601,7 +604,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         self.m_list.InsertColumn(IDC_LIVE, message('clive'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
         self.m_list.InsertColumn(IDC_IMPORT, message('cimport'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
 
-        x = 0
+        count = 0
         self.currentItem = -1
 
         self.itemDataMap = {}
@@ -610,9 +613,9 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
 
         for eachQuote in quotes.list():
             if  self.m_qlist==QLIST_ALL or self.m_qlist==eachQuote.list():
-                self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.name(),eachQuote.place(),eachQuote.market(),eachQuote.liveconnector().name(),eachQuote.importconnector().name())
-                self.itemQuoteMap[x] = eachQuote
-                x = x + 1
+                self.itemDataMap[count] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.name(),eachQuote.place(),eachQuote.market(),eachQuote.liveconnector().name(),eachQuote.importconnector().name())
+                self.itemQuoteMap[count] = eachQuote
+                count = count + 1
 
         items = self.itemDataMap.items()
         line = 0
@@ -646,6 +649,13 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
 
         if curline!=-1:
             self.SetCurrentItem(curline)
+
+        if line==0:
+            self.wxCount.SetLabel(message('listquote_items_zero'))
+        elif line==1:
+            self.wxCount.SetLabel(message('listquote_items_one'))
+        else:
+            self.wxCount.SetLabel(message('listquote_items_n') % line)
 
         wx.SetCursor(wx.STANDARD_CURSOR)
 

@@ -229,6 +229,8 @@ registerImportConnector('PARIS MARCHE LIBRE','PAR',QLIST_USER,QTAG_IMPORT,gImpor
 registerImportConnector('IRISH EXCHANGE','DUB',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
 registerImportConnector('MADRID EXCHANGE','MAD',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
 
+registerImportConnector('FRANKFURT EXCHANGE','FRA',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
+
 # ============================================================================
 # Test ME
 #
