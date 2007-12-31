@@ -203,7 +203,7 @@ class ITradeConnection(object):
                 if self.getStatus() != 200:
                     msg="Receive bad answer from server (code %s) while requesting : %s" % \
                                                                       (self.getStatus(), url)
-                    info(msg)
+                    #info(msg)
                     self.m_responseData=""
                     self.clearConnection(protocole, host)
                     raise msg
