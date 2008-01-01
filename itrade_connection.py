@@ -58,7 +58,7 @@ from itrade_logging import *
 
 class ITradeConnection(object):
     """Class designed to handle request in HTTP 1.1"""
-    def __init__(self, cookies=None, proxy=None, proxyAuth=None,defTimeout=20):
+    def __init__(self, cookies = None, proxy = None, proxyAuth = None, connectionTimeout = 20):
         """@param cookies: cookie handler (instance of ITradeCookies class). If None, a private cookie
         handler is created.
         @param proxy: proxy host name or IP
@@ -73,7 +73,7 @@ class ITradeConnection(object):
         self.m_proxy=proxy
 
         # Set a default socket timeout to 20 second for all futher connexions
-        socket.setdefaulttimeout(defTimeout)
+        socket.setdefaulttimeout(connectionTimeout)
 
         if proxyAuth:
             self.m_proxyAuth="Basic "+base64.encodestring(proxyAuth)
@@ -242,7 +242,9 @@ class ITradeConnection(object):
 
         except Exception, e:
             self.clearConnections() # Clean all connection
-            error("Unhandled exception on ITrade_Connexion (%s)" % e)
+            msg = "Unhandled exception on ITrade_Connexion (%s)" % e
+            error(msg)
+            raise msg
 
     def getData(self):
         """@return:  page source code (gunzip if needed) or binary data as a str"""
@@ -283,10 +285,17 @@ class ITradeConnection(object):
         self.m_locker.acquire()
         try:
             self.m_proxy=proxy
-            self.m_proxyAuth=proxyAuth
+            if proxyAuth:
+                self.m_proxyAuth="Basic "+base64.encodestring(proxyAuth)
+            else:
+                self.m_proxyAuth=None
             self.clearConnections()
         finally:
             self.m_locker.release()
+
+    def setConnectionTimeout(self,connectionTimeout):
+        # Set a default socket timeout to 20 second for all futher connexions
+        socket.setdefaulttimeout(connectionTimeout)
 
 # ============================================================================
 # ITradeCookies

@@ -58,9 +58,11 @@ from itrade_connection import ITradeConnection
 
 def Import_ListOfQuotes_Xetra(quotes,market='FRANKFURT EXCHANGE',dlg=None,x=0):
     print 'Update %s list of symbols' % market
-    connection=ITradeConnection(cookies=None,
-                                proxy=itrade_config.proxyHostname,
-                                proxyAuth=itrade_config.proxyAuthentication)
+    connection = ITradeConnection(cookies = None,
+                               proxy = itrade_config.proxyHostname,
+                               proxyAuth = itrade_config.proxyAuthentication,
+                               connectionTimeout = itrade_config.connectionTimeout
+                               )
 
     if market=='FRANKFURT EXCHANGE':
         url = "http://info.xetra.de/download_xetrawerte.txt"

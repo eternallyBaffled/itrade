@@ -438,9 +438,11 @@ def euronext_InstrumentId(quote):
     else:
         urlid = 'http://www.euronext.com/quicksearch/resultquicksearch-2986-EN.html?matchpattern=%s&fromsearchbox=true&path=/quicksearch&searchTarget=quote'
 
-    connection=ITradeConnection(cookies=None,
-                                proxy=itrade_config.proxyHostname,
-                                proxyAuth=itrade_config.proxyAuthentication)
+    connection = ITradeConnection(cookies = None,
+                               proxy = itrade_config.proxyHostname,
+                               proxyAuth = itrade_config.proxyAuthentication,
+                               connectionTimeout = itrade_config.connectionTimeout
+                               )
 
     # get instrument ID
     IdInstrument = quote.get_pluginID()

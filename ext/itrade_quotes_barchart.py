@@ -63,9 +63,11 @@ barchart_data = {}
 def Import_ListOfQuotes_BARCHART(quotes,market='NASDAQ',dlg=None,x=0):
     global barchart_data
     print 'Update %s list of symbols' % market
-    connection=ITradeConnection(cookies=None,
-                                           proxy=itrade_config.proxyHostname,
-                                           proxyAuth=itrade_config.proxyAuthentication)
+    connection = ITradeConnection(cookies = None,
+                               proxy = itrade_config.proxyHostname,
+                               proxyAuth = itrade_config.proxyAuthentication,
+                               connectionTimeout = itrade_config.connectionTimeout
+                               )
 
     if market=='NASDAQ' or market=='AMEX' or market=='OTCBB':
         url = "http://www2.barchart.com/lookup.asp?name=%s&opt1=1&start=all&type=&search_usstocks=1&search_usfunds=&search_canstocks="

@@ -57,9 +57,11 @@ from itrade_connection import ITradeConnection
 
 def Import_ListOfQuotes_LSE(quotes,market='LSE SETS',dlg=None,x=0):
     print 'Update %s list of symbols' % market
-    connection=ITradeConnection(cookies=None,
-                                proxy=itrade_config.proxyHostname,
-                                proxyAuth=itrade_config.proxyAuthentication)
+    connection = ITradeConnection(cookies = None,
+                               proxy = itrade_config.proxyHostname,
+                               proxyAuth = itrade_config.proxyAuthentication,
+                               connectionTimeout = itrade_config.connectionTimeout
+                               )
 
     import xlrd
 

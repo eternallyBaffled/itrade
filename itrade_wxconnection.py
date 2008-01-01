@@ -42,6 +42,7 @@ import logging
 # wxPython system
 import itrade_wxversion
 import wx
+from wx.lib import masked
 import wxaddons.sized_controls as sc
 
 # iTrade system
@@ -56,11 +57,23 @@ from itrade_wxutil import iTradeSizedDialog
 # ============================================================================
 
 class iTradeConnectionDialog(iTradeSizedDialog):
-    def __init__(self, parent, server, auth):
+    def __init__(self, parent, server, auth, timeout):
         iTradeSizedDialog.__init__(self,parent,-1,message('connection_title'),size=(420, 420),style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
 
-        self.m_server = server
-        self.m_auth = auth
+        if server!="":
+            ip,self.m_port = server.split(':')
+            a,b,c,d = ip.split('.')
+            self.m_ip = '%3i.%3i.%3i.%3i' % (int(a),int(b),int(c),int(d))
+            self.m_port = int(self.m_port)
+        else:
+            self.m_ip = "   .   .   .   "
+            self.m_port = 0
+        if auth!="":
+            self.m_user,self.m_pwd = auth.split(':')
+        else:
+            self.m_user = ""
+            self.m_pwd = ""
+        self.m_timeout = timeout
 
         # container
         container = self.GetContentsPane()
@@ -71,17 +84,32 @@ class iTradeConnectionDialog(iTradeSizedDialog):
         pane.SetSizerType("form")
         pane.SetSizerProps(expand=True)
 
-        # Row 1 : server
-        label = wx.StaticText(pane, -1, message('proxy_server'))
+        # Row 1 : server / proxy="172.30.0.3:8080"
+        label = wx.StaticText(pane, -1, message('proxy_server_ip'))
         label.SetSizerProps(valign='center')
-        self.wxServerCtrl = wx.TextCtrl(pane, -1, self.m_server, size=(120,-1))
-        self.wxServerCtrl.SetSizerProps(expand=True)
+        self.wxIPCtrl = masked.Ctrl(pane, -1, controlType = masked.controlTypes.IPADDR, size=(120,-1))
+        self.wxIPCtrl.SetLabel(self.m_ip)
+        label = wx.StaticText(pane, -1, message('proxy_server_port'))
+        label.SetSizerProps(valign='center')
+        self.wxPortCtrl = masked.Ctrl(pane, integerWidth=4, fractionWidth=0, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupDigits = False,size=(80,-1), selectOnEntry=True)
+        self.wxPortCtrl.SetValue(self.m_port)
 
-        # Row2 : auth
-        label = wx.StaticText(pane, -1, message('proxy_auth'))
+        # Row2 : auth = "user:password"
+        label = wx.StaticText(pane, -1, message('proxy_auth_user'))
         label.SetSizerProps(valign='center')
-        self.wxAuthCtrl = wx.TextCtrl(pane, -1, self.m_auth, size=(80,-1))
-        self.wxAuthCtrl.SetSizerProps(expand=True)
+        self.wxUserCtrl = wx.TextCtrl(pane, -1, self.m_user, size=(80,-1))
+        self.wxUserCtrl.SetSizerProps(expand=True)
+        label = wx.StaticText(pane, -1, message('proxy_auth_pwd'))
+        label.SetSizerProps(valign='center')
+        self.wxPwdCtrl = wx.TextCtrl(pane, -1, self.m_pwd, size=(80,-1))
+        self.wxPwdCtrl.SetSizerProps(expand=True)
+
+        # Row3 : timeout
+        label = wx.StaticText(pane, -1, message('connection_timeout'))
+        label.SetSizerProps(valign='center')
+        self.wxTimeoutCtrl = masked.Ctrl(pane, integerWidth=3, fractionWidth=0, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupDigits = False,size=(80,-1), selectOnEntry=True)
+        self.wxTimeoutCtrl.SetValue(self.m_timeout)
+        self.wxTimeoutCtrl.SetSizerProps(expand=False)
 
         # Last Row : OK and Cancel
         btnpane = sc.SizedPanel(container, -1)
@@ -108,8 +136,28 @@ class iTradeConnectionDialog(iTradeSizedDialog):
         self.SetMinSize(self.GetSize())
 
     def OnValid(self,event):
-        self.m_server = self.wxServerCtrl.GetLabel().strip()
-        self.m_auth = self.wxAuthCtrl.GetLabel().strip()
+        self.m_ip = self.wxIPCtrl.GetLabel().strip()
+        self.m_port = self.wxPortCtrl.GetValue()
+        self.m_user = self.wxUserCtrl.GetLabel().strip()
+        self.m_pwd = self.wxPwdCtrl.GetLabel().strip()
+
+        if self.m_user!='':
+            self.m_auth = self.m_user + ":" + self.m_pwd
+        else:
+            self.m_auth = ""
+
+        #print "*** ip:",self.m_ip,"port:",self.m_port
+
+        if self.m_ip != ".   .   ." and self.m_ip != "" and self.m_port>0:
+            a,b,c,d = self.m_ip.split('.')
+            self.m_server = ('%i.%i.%i.%i' % (int(a),int(b),int(c),int(d))) + (":%s" % self.m_port)
+        else:
+            self.m_server = ""
+
+        self.m_timeout = self.wxTimeoutCtrl.GetValue()
+
+        if itrade_config.verbose:
+            print "*** Proxy server:",self.m_server, "- Proxy auth:",self.m_auth,"- Connection timeout:",self.m_timeout
         self.EndModal(wx.ID_OK)
 
 # ============================================================================
@@ -117,18 +165,19 @@ class iTradeConnectionDialog(iTradeSizedDialog):
 #
 # ============================================================================
 
-def connection_UI(win,server,auth):
+def connection_UI(win,server,auth,timeout=25):
     if server == None:
         server = ''
     if auth == None:
         auth = ''
 
-    dlg = iTradeConnectionDialog(win,server,auth)
+    dlg = iTradeConnectionDialog(win,server,auth,timeout)
     if dlg.ShowModal()==wx.ID_OK:
         server = dlg.m_server
         auth = dlg.m_auth
+        timeout = dlg.m_timeout
     dlg.Destroy()
-    return server,auth
+    return server,auth,timeout
 
 # ============================================================================
 # Test me
@@ -150,8 +199,8 @@ if __name__=='__main__':
     s = 'proxy'
     a = 'auth'
 
-    s,a = connection_UI(None,s,a)
-    print s,a
+    s,a,t = connection_UI(None,s,a)
+    print s,a,t
 
 # ============================================================================
 # That's all folks !

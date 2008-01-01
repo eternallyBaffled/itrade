@@ -5,6 +5,7 @@ stops = 10;0
 quotes = 11;1
 
 [net]
+connectiontimeout = 25
 
 [view]
 

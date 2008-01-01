@@ -59,10 +59,11 @@ from itrade_connection import ITradeConnection
 
 def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT',dlg=None,x=0):
     print 'Update %s list of symbols' % market
-    connection=ITradeConnection(cookies=None,
-                                proxy=itrade_config.proxyHostname,
-                                proxyAuth=itrade_config.proxyAuthentication,
-                                defTimeout=45)
+    connection = ITradeConnection(cookies = None,
+                               proxy = itrade_config.proxyHostname,
+                               proxyAuth = itrade_config.proxyAuthentication,
+                               connectionTimeout = max(45,itrade_config.connectionTimeout)
+                               )
 
     cha = "7213"
 

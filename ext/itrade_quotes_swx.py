@@ -57,9 +57,11 @@ from itrade_connection import ITradeConnection
 
 def Import_ListOfQuotes_SWX(quotes,market='SWISS EXCHANGE',dlg=None,x=0):
     print 'Update %s list of symbols' % market
-    connection=ITradeConnection(cookies=None,
-                                proxy=itrade_config.proxyHostname,
-                                proxyAuth=itrade_config.proxyAuthentication)
+    connection = ITradeConnection(cookies = None,
+                               proxy = itrade_config.proxyHostname,
+                               proxyAuth = itrade_config.proxyAuthentication,
+                               connectionTimeout = itrade_config.connectionTimeout
+                               )
 
     if market=='SWISS EXCHANGE':
         url = "http://www.swx.com/data/market/statistics/swx_swiss_shares_reference_data.csv" # is actually tab delimited

@@ -601,8 +601,11 @@ decision_committedcredit;Engagement SRD en %s :
 decision_availablecredit;Disponible en %s au SRD :
 
 connection_title;Paramètres de Connexion
-proxy_server;Serveur Proxy (vide si aucun) :
-proxy_auth;Information d'authentification (vide si aucune) :
+proxy_server_ip;Adresse IP du Proxy (vide si aucun) :
+proxy_server_port;Port du Proxy (vide si aucun) :
+proxy_auth_user;Nom d'Authentification (vide si aucune) :
+proxy_auth_pwd;Mot de passe d'Authentication (vide si aucune) :
+connection_timeout;Délai d'attente avant erreur (en secondes, typ. 25) :
 
 rss_clear;Efface
 rss_scan;Scan
