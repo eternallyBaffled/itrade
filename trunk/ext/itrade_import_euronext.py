@@ -60,9 +60,12 @@ class Import_euronext(object):
     def __init__(self):
         debug('Import_euronext:__init__')
         self.m_url = 'http://www.euronext.com/tools/datacentre/dataCentreDownloadExcell.jcsv'
-        self.m_connection=ITradeConnection(cookies=None,
-                                           proxy=itrade_config.proxyHostname,
-                                           proxyAuth=itrade_config.proxyAuthentication)
+
+        self.m_connection = ITradeConnection(cookies = None,
+                                           proxy = itrade_config.proxyHostname,
+                                           proxyAuth = itrade_config.proxyAuthentication,
+                                           connectionTimeout = itrade_config.connectionTimeout
+                                           )
 
     def name(self):
         return 'euronext'

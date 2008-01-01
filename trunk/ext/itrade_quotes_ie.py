@@ -58,9 +58,11 @@ from itrade_connection import ITradeConnection
 
 def Import_ListOfQuotes_IE(quotes,market='IRISH EXCHANGE',dlg=None,x=0):
     print 'Update %s list of symbols' % market
-    connection=ITradeConnection(cookies=None,
-                                proxy=itrade_config.proxyHostname,
-                                proxyAuth=itrade_config.proxyAuthentication)
+    connection = ITradeConnection(cookies = None,
+                               proxy = itrade_config.proxyHostname,
+                               proxyAuth = itrade_config.proxyAuthentication,
+                               connectionTimeout = itrade_config.connectionTimeout
+                               )
 
     if market=='IRISH EXCHANGE':
         url = "http://www.ise.ie/app/equityList.asp?list=full&type=SEDOL&exportTo=text" # is actually XML file

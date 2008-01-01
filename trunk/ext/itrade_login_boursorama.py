@@ -71,9 +71,11 @@ class Login_boursorama(object):
         self.m_cookies=ITradeCookies()
         # Manualy set the cookie that tell boursorama we are a cookie aware browser
         self.m_cookies.set("SUP_COOKIE=OUI")
-        self.m_connection=ITradeConnection(cookies=self.m_cookies,
-                                           proxy=itrade_config.proxyHostname,
-                                           proxyAuth=itrade_config.proxyAuthentication)
+        self.m_connection = ITradeConnection(cookies = None,
+                                           proxy = itrade_config.proxyHostname,
+                                           proxyAuth = itrade_config.proxyAuthentication,
+                                           connectionTimeout = itrade_config.connectionTimeout
+                                           )
         debug('Boursorama login (%s) - ready to run' % self.m_default_host)
 
     # ---[ properties ] ---

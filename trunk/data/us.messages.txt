@@ -602,8 +602,11 @@ decision_committedcredit;Committed Margin in %s :
 decision_availablecredit;Available for Margin in %s :
 
 connection_title;Connection Settings
-proxy_server;Proxy Hostname (empty if none) :
-proxy_auth;Proxy Authentication (empty if none) :
+proxy_server_ip;Proxy IP address (empty if none) :
+proxy_server_port;Proxy Port (empty if none) :
+proxy_auth_user;Proxy User Authentication (empty if none) :
+proxy_auth_pwd;Proxy Password Authentication (empty if none) :
+connection_timeout;Timeout delay before error (in seconds, typ. 25) :
 
 rss_clear;Clear
 rss_scan;Scan

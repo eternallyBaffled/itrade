@@ -71,9 +71,11 @@ class News_Balo(object):
         self.m_quote = None
         self.m_baseurl = "balo.journal-officiel.gouv.fr"
 
-        self.m_connection = ITradeConnection(cookies=None,
-                                           proxy=itrade_config.proxyHostname,
-                                           proxyAuth=itrade_config.proxyAuthentication)
+        self.m_connection = ITradeConnection(cookies = None,
+                               proxy = itrade_config.proxyHostname,
+                               proxyAuth = itrade_config.proxyAuthentication,
+                               connectionTimeout = itrade_config.connectionTimeout
+                               )
 
     # ---[ protected interface ] ---
 

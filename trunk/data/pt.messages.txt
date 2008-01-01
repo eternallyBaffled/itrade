@@ -614,8 +614,11 @@ decision_committedcredit;Committed Margin in %s :
 decision_availablecredit;Available for Margin in %s :
 
 connection_title;Parâmetros de Conexão
-proxy_server;Nome do Proxy (ignorar se nada):
-proxy_auth;Autenticação do Proxy (ignorar se nada) :
+proxy_server_ip;__xProxy IP address (empty if none) :
+proxy_server_port;__xProxy Port (empty if none) :
+proxy_auth_user;__xProxy User Authentication (empty if none) :
+proxy_auth_pwd;__xProxy Password Authentication (empty if none) :
+connection_timeout;__xTimeout delay before error (in seconds, typ. 25) :
 
 rss_clear;Apagar
 rss_scan;Scan

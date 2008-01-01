@@ -1094,7 +1094,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
     # --- [ connexion management ] ---------------------------------------
 
     def OnConnexion(self,e):
-        itrade_config.proxyHostname,itrade_config.proxyAuthentication = connection_UI(self,itrade_config.proxyHostname,itrade_config.proxyAuthentication)
+        itrade_config.proxyHostname,itrade_config.proxyAuthentication,itrade_config.connectionTimeout = connection_UI(self,itrade_config.proxyHostname,itrade_config.proxyAuthentication,itrade_config.connectionTimeout)
         itrade_config.saveConfig()
 
     # --- [ autorefresh management ] -------------------------------------

@@ -97,12 +97,8 @@ class Currencies(object):
     def __init__(self):
         # url
         self.m_url = 'http://finance.yahoo.com/d/quotes.csv?s=%s%s=X&f=s4l1t1c1ghov&e=.csv'
-        # loadConfig is needed because one instance of Currencies is created
-        # when module is loaded - and this is done on itrade.py very prior first config loading
-        itrade_config.loadConfig()
-        self.m_connection=ITradeConnection(cookies=None,
-                                           proxy=itrade_config.proxyHostname,
-                                           proxyAuth=itrade_config.proxyAuthentication)
+
+        self.m_connection = None
 
         # to-from
         self.m_currencies = {}
@@ -206,6 +202,14 @@ class Currencies(object):
         if not itrade_config.isConnected():
             return None
 
+        if self.m_connection==None:
+            self.m_connection = ITradeConnection(cookies = None,
+                               proxy = itrade_config.proxyHostname,
+                               proxyAuth = itrade_config.proxyAuthentication,
+                               connectionTimeout = itrade_config.connectionTimeout
+                               )
+            #print "**** Create Currency Connection"
+
         # pence
         if curFrom in self._s1.keys():
             a = self._s1[curFrom]
@@ -219,12 +223,12 @@ class Currencies(object):
         # get data
         url = self.m_url % (a,b)
         try:
-            buf=self.m_connection.getDataFromUrl(url)
+            buf = self.m_connection.getDataFromUrl(url)
         except:
             return None
 
         # extract data
-        # print url,buf
+        #print url,buf
         sdata = string.split(buf, ',')
         f = float(sdata[1])
 

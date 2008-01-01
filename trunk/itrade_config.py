@@ -300,6 +300,11 @@ proxyHostname = None
 global proxyAuthentication
 proxyAuthentication = None
 
+# connection timeout
+default_connectionTimeout = 20
+global connectionTimeout
+connectionTimeout = default_connectionTimeout
+
 # column
 global column
 column = {}
@@ -326,10 +331,11 @@ def checkNewRelease(ping=False):
         return 'dev'
 
     from itrade_connection import ITradeConnection
-    connection=ITradeConnection(cookies=None,
-                                proxy=proxyHostname,
-                                proxyAuth=proxyAuthentication,
-                                defTimeout=3)
+    connection = ITradeConnection(cookies = None,
+                               proxy = proxyHostname,
+                               proxyAuth = proxyAuthentication,
+                               connectionTimeout = 3
+                               )
 
     # get OFFICIAL file from svn
     try:
@@ -365,7 +371,10 @@ def checkNewRelease(ping=False):
 # loadConfig()
 # ============================================================================
 
-def loadConfig():
+def loadConfig(frm=""):
+
+    if verbose:
+        print "loadConfig called from",frm
 
     # access global var
     global bAutoRefreshMatrixView
@@ -375,6 +384,7 @@ def loadConfig():
     global lang
     global proxyHostname
     global proxyAuthentication
+    global connectionTimeout
     global column
 
     # create a configuration object
@@ -446,6 +456,11 @@ def loadConfig():
     except:
         proxyAuthentication = None
 
+    try:
+        connectionTimeout = int(config.get("net","connectionTimeout"))
+    except:
+        connectionTimeout = default_connectionTimeout
+
     # read columns
     for i in column.keys():
         try:
@@ -480,6 +495,8 @@ def saveConfig():
         config.set("net","proxyHostname",proxyHostname)
     if proxyAuthentication:
         config.set("net","proxyAuthentication",proxyAuthentication)
+    if connectionTimeout <> default_connectionTimeout:
+        config.set("net","connectionTimeout",connectionTimeout)
 
     # create "Column" section
     config.add_section("column")
