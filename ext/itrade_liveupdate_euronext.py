@@ -257,7 +257,7 @@ class LiveUpdate_Euronext(object):
 
         for eachLine in lines:
             sdata = string.split (eachLine, '\t')
-            print sdata,len(sdata)
+            #print sdata,len(sdata)
 
             if len(sdata)>2:
                 if not indice.has_key("ISIN"):

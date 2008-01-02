@@ -5,6 +5,8 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2008-01-02  Gilles Dumortier <dgil at ieee dot org>
+	* Properties view - Reinit / Valid buttons on connectors have effect
+	  but item in combo is not correctly selected (SF bug 1724346)
 	* Indicator : display the indice market and clock (previous was the
 	  portfolio default market and the connector latest clock)
 	* Convert from connector timezone (for example, finance.yahoo.com is
