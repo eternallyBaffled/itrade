@@ -89,6 +89,7 @@ class iTradeConnectionDialog(iTradeSizedDialog):
         label.SetSizerProps(valign='center')
         self.wxIPCtrl = masked.Ctrl(pane, -1, controlType = masked.controlTypes.IPADDR, size=(120,-1))
         self.wxIPCtrl.SetLabel(self.m_ip)
+
         label = wx.StaticText(pane, -1, message('proxy_server_port'))
         label.SetSizerProps(valign='center')
         self.wxPortCtrl = masked.Ctrl(pane, integerWidth=4, fractionWidth=0, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupDigits = False,size=(80,-1), selectOnEntry=True)
@@ -97,19 +98,20 @@ class iTradeConnectionDialog(iTradeSizedDialog):
         # Row2 : auth = "user:password"
         label = wx.StaticText(pane, -1, message('proxy_auth_user'))
         label.SetSizerProps(valign='center')
-        self.wxUserCtrl = wx.TextCtrl(pane, -1, self.m_user, size=(80,-1))
-        self.wxUserCtrl.SetSizerProps(expand=True)
+        self.wxUserCtrl = wx.TextCtrl(pane, -1, self.m_user, size=(120,-1))
+        #self.wxUserCtrl.SetSizerProps(expand=True)
+
         label = wx.StaticText(pane, -1, message('proxy_auth_pwd'))
         label.SetSizerProps(valign='center')
-        self.wxPwdCtrl = wx.TextCtrl(pane, -1, self.m_pwd, size=(80,-1))
-        self.wxPwdCtrl.SetSizerProps(expand=True)
+        self.wxPwdCtrl = wx.TextCtrl(pane, -1, self.m_pwd, size=(120,-1))
+        #self.wxPwdCtrl.SetSizerProps(expand=True)
 
         # Row3 : timeout
         label = wx.StaticText(pane, -1, message('connection_timeout'))
         label.SetSizerProps(valign='center')
         self.wxTimeoutCtrl = masked.Ctrl(pane, integerWidth=3, fractionWidth=0, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupDigits = False,size=(80,-1), selectOnEntry=True)
         self.wxTimeoutCtrl.SetValue(self.m_timeout)
-        self.wxTimeoutCtrl.SetSizerProps(expand=False)
+        #self.wxTimeoutCtrl.SetSizerProps(expand=False)
 
         # Last Row : OK and Cancel
         btnpane = sc.SizedPanel(container, -1)

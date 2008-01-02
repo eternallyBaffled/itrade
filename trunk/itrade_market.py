@@ -361,15 +361,15 @@ place_timezone = {
     }
 
 def convertConnectorTimeToPlaceTime(mdatetime,zone,place):
-    fmt = '%Y-%m-%d %H:%M:%S %Z%z'
+    #fmt = '%Y-%m-%d %H:%M:%S %Z%z'
 
     market_tz = timezone(zone)
     place_tz  = timezone(place_timezone[place])
 
     market_dt = market_tz.localize(mdatetime)
-    print '*** market time:',market_dt.strftime(fmt)
+    #print '*** market time:',market_dt.strftime(fmt)
     place_dt  = place_tz.normalize(market_dt.astimezone(place_tz))
-    print '*** place time:',place_dt.strftime(fmt)
+    #print '*** place time:',place_dt.strftime(fmt)
 
     return place_dt
 
