@@ -49,7 +49,7 @@ from itrade_quotes import *
 from itrade_datation import Datation,jjmmaa2yyyymmdd
 from itrade_defs import *
 from itrade_ext import *
-from itrade_market import euronext_place2mep
+from itrade_market import euronext_place2mep,convertConnectorTimeToPlaceTime
 from itrade_connection import ITradeConnection
 import itrade_config
 
@@ -66,11 +66,14 @@ class LiveUpdate_Euronext(object):
     def __init__(self,market='EURONEXT'):
         debug('LiveUpdate_Euronext:__init__')
         self.m_connected = False
+        self.m_livelock = thread.allocate_lock()
         self.m_data = None
+
         self.m_clock = {}
         self.m_dcmpd = {}
-        self.m_lastclock = "::"
-        self.m_livelock = thread.allocate_lock()
+        self.m_lastclock = 0
+        self.m_lastdate = "20070101"
+
         self.m_market = market
 
         self.m_url = 'http://www.euronext.com/tools/datacentre/dataCentreDownloadExcell.jcsv'
@@ -97,6 +100,10 @@ class LiveUpdate_Euronext(object):
 
     def delay(self):
         return 15
+
+    def timezone(self):
+        # timezone of the livedata (see pytz all_timezones)
+        return "CET"
 
     # ---[ connexion ] ---
 
@@ -139,14 +146,20 @@ class LiveUpdate_Euronext(object):
             return sdate,"00:00"
         return sdate,sp[1]
 
-    def convertClock(self,clock):
+    def convertClock(self,place,clock,date):
         min = clock[-2:]
         hour = clock[:-3]
         val = (int(hour)*60) + int(min)
         #print 'clock:',clock,hour,min,val
-        if val>self.m_lastclock:
+        if val>self.m_lastclock and date>=self.m_lastdate:
+            self.m_lastdate = date
             self.m_lastclock = val
-        return "%d:%02d" % (val/60,val%60)
+
+        # convert from connector timezone to market place timezone
+        mdatetime = datetime(int(date[0:4]),int(date[4:6]),int(date[6:8]),val/60,val%60)
+        mdatetime = convertConnectorTimeToPlaceTime(mdatetime,self.timezone(),place)
+
+        return "%d:%02d" % (mdatetime.hour,mdatetime.minute)
 
     def parseFValue(self,d):
         val = string.split(d,',')
@@ -244,7 +257,7 @@ class LiveUpdate_Euronext(object):
 
         for eachLine in lines:
             sdata = string.split (eachLine, '\t')
-            #print sdata,len(sdata)
+            print sdata,len(sdata)
 
             if len(sdata)>2:
                 if not indice.has_key("ISIN"):
@@ -282,10 +295,7 @@ class LiveUpdate_Euronext(object):
                             if (c_date==sdate) or (quote.list() == QLIST_INDICES):
                                 key = quote.key()
                                 self.m_dcmpd[key] = sdate
-                                self.m_clock[key] = self.convertClock(sclock)
-
-                                # __x
-                                self.m_lastclock = sclock
+                                self.m_clock[key] = self.convertClock(quote.place(),sclock,sdate)
 
                             #
                             open = self.parseFValue(sdata[iOpen])
@@ -363,8 +373,11 @@ class LiveUpdate_Euronext(object):
 
     def currentClock(self,quote=None):
         if quote==None:
-            return self.m_lastclock
-
+            if self.m_lastclock==0:
+                return "::"
+            # hh:mm
+            return "%d:%02d" % (self.m_lastclock/60,self.m_lastclock%60)
+        #
         key = quote.key()
         if not self.m_clock.has_key(key):
             # no data for this quote !

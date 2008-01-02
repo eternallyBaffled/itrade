@@ -41,6 +41,8 @@ import logging
 import re
 import string
 
+from pytz import timezone
+
 # iTrade system
 from itrade_logging import *
 from itrade_local import message
@@ -332,6 +334,44 @@ def market2place(market):
     else:
         # default to PARIS
         return 'PAR'
+
+# ============================================================================
+# convertMarketTimeToPlaceTime
+#
+#   mtime = HH:MM:ss
+#   zone = timezone for the data of the connector (see pytz for all_timezones)
+#   place = place of the market
+# ============================================================================
+
+place_timezone = {
+    "PAR":  "Europe/Paris",
+    "BRU":  "Europe/Brussels",
+    "MAD":  "Europe/Madrid",
+    "AMS":  "Europe/Amsterdam",
+    "LON":  "Europe/London",
+    "NYC":  "America/New_York",
+    "SYD":  "Australia/Sydney",
+    "DUB":  "Europe/Dublin",
+    "FRA":  "Europe/Berlin",
+    "TOR":  "America/Toronto",
+    "LIS":  "Europe/Lisbon",
+    "MIL":  "Europe/Rome",
+    "XSWX": "Europe/Zurich",
+    "XVTX": "Europe/Zurich",
+    }
+
+def convertConnectorTimeToPlaceTime(mdatetime,zone,place):
+    fmt = '%Y-%m-%d %H:%M:%S %Z%z'
+
+    market_tz = timezone(zone)
+    place_tz  = timezone(place_timezone[place])
+
+    market_dt = market_tz.localize(mdatetime)
+    print '*** market time:',market_dt.strftime(fmt)
+    place_dt  = place_tz.normalize(market_dt.astimezone(place_tz))
+    print '*** place time:',place_dt.strftime(fmt)
+
+    return place_dt
 
 # ============================================================================
 # yahooTicker
