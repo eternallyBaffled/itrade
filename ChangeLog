@@ -4,6 +4,12 @@
 On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
+2008-01-02  Gilles Dumortier <dgil at ieee dot org>
+	* Indicator : display the indice market and clock (previous was the
+	  portfolio default market and the connector latest clock)
+	* Convert from connector timezone (for example, finance.yahoo.com is
+	  EST) to quote place timezone (for example, GTO is CET)
+
 2008-01-01  Gilles Dumortier <dgil at ieee dot org>
 	* filter the proxy server and auth (SF bug 1861624)
 	* connection Timeout is configurable (SF bug 1861328)
