@@ -5,6 +5,8 @@ On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
 2008-01-02  Gilles Dumortier <dgil at ieee dot org>
+	* Graph View : objects are correctly drawn first time then after
+	* Graph View : Unit Price line (SF bug 1647463)
 	* Properties view - Reinit / Valid buttons on connectors have effect
 	  but item in combo is not correctly selected (SF bug 1724346)
 	* Indicator : display the indice market and clock (previous was the

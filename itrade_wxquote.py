@@ -576,28 +576,23 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         self.m_hasLegend = self.m_dispLegend
 
     def InitPage(self):
-        self.RedrawAll()
+        self.RedrawAll(redraw=False)
 
     def DonePage(self):
         pass
 
-    def draw(self,dc=None):
-        self.erase_cursor()
-        self.m_canvas.draw()
-        self.drawAllObjects(dc)
-
-    def RedrawAll(self):
+    def RedrawAll(self,redraw=True):
         self.ChartRealize()
-        self.draw()
-
-    def refresh(self):
-        #
-        self.RedrawAll()
+        if redraw:
+            self.m_canvas.draw()
+            self.drawAllObjects()
 
     def OnPaint(self,event):
         self.erase_cursor()
-        self.drawAllObjects()
-        event.Skip(True)
+        event.Skip()
+
+    def refresh(self):
+        self.RedrawAll()
 
     def OnHome(self,event):
         self.m_nIndex = self.m_quote.lastindex()

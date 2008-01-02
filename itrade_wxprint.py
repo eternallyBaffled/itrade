@@ -127,7 +127,7 @@ class CanvasPrintout(wx.Printout):
         # restore original figure  resolution
         self.canvas.figure.set_facecolor(bgcolor)
         self.canvas.figure.dpi.set(fig_dpi)
-        self.canvas.m_parent.draw()
+        # __x self.canvas.m_parent.draw()
         return True
 
 # ============================================================================
