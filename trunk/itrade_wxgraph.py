@@ -505,6 +505,18 @@ CURSOR_MODE_TRASH = 255
 # ============================================================================
 
 # ============================================================================
+# FigureCanvasEx
+#
+# be sure the parent is able to draw all its objects
+# ============================================================================
+
+class FigureCanvasEx(FigureCanvas):
+
+    def _onPaint(self,event):
+        #print '$$$ _onPaint ex : call default _onPaint'
+        FigureCanvas._onPaint(self,event)
+        #print '$$$ _onPaint ex : call drawAllObjects in parent'
+        self.m_parent.drawAllObjects()
 
 # ============================================================================
 # iTrade_wxPanelGraph
@@ -518,7 +530,7 @@ class iTrade_wxPanelGraph(GObject,PanelPrint):
 
         # figure me
         self.figure = Figure(size, dpi = 96)
-        self.m_canvas = FigureCanvas(self, -1, self.figure)
+        self.m_canvas = FigureCanvasEx(self, -1, self.figure)
         self.m_canvas.m_parent = self
 
         GObject.__init__(self,self.m_canvas)
@@ -803,16 +815,14 @@ class iTrade_wxPanelGraph(GObject,PanelPrint):
             return None
 
     def chartUPL(self,strval):
-        print 'chartUPL',strval
+        if itrade_config.verbose:
+            print 'chartUPL with xval=',strval
 
         # create the object
         obj = (GToolUPL(self,self.m_canvas),1,0,strval)
 
         # stack it
         self.stackObject(obj)
-
-        # draw it
-        self.drawObject(obj)
 
     def BeginCharting(self,nchart=2):
         #print 'BeginCharting --['
