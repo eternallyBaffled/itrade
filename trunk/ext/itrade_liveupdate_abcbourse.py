@@ -87,6 +87,10 @@ class LiveUpdate_ABCBourse(object):
     def delay(self):
         return 15
 
+    def timezone(self):
+        # timezone of the livedata (see pytz all_timezones)
+        return "Europe/Paris"
+
     # ---[ connexion ] ---
 
     def connect(self):

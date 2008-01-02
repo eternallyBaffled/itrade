@@ -48,7 +48,7 @@ from itrade_logging import *
 from itrade_quotes import *
 from itrade_defs import *
 from itrade_ext import *
-from itrade_market import yahooTicker,yahooUrl
+from itrade_market import yahooTicker,yahooUrl,convertConnectorTimeToPlaceTime
 from itrade_connection import ITradeConnection
 import itrade_config
 
@@ -63,10 +63,12 @@ class LiveUpdate_yahoo(object):
 
         self.m_connected = False
         self.m_livelock = thread.allocate_lock()
+
         self.m_clock = {}
         self.m_dcmpd = {}
         self.m_lastclock = 0
         self.m_lastdate = "20070101"
+
         self.m_connection = ITradeConnection(cookies = None,
                                            proxy = itrade_config.proxyHostname,
                                            proxyAuth = itrade_config.proxyAuthentication,
@@ -83,10 +85,17 @@ class LiveUpdate_yahoo(object):
     # ---[ properties ] ---
 
     def name(self):
+        # name of the connector
         return 'yahoo'
 
     def delay(self):
+        # delay in minuts to get a live data
+        # put 0 if no delay (realtime)
         return 15
+
+    def timezone(self):
+        # timezone of the livedata (see pytz all_timezones)
+        return "EST"
 
     # ---[ connexion ] ---
 
@@ -116,7 +125,7 @@ class LiveUpdate_yahoo(object):
 
         return "%4d%02d%02d" % (year,month,day)
 
-    def convertClock(self,clock,date):
+    def convertClock(self,place,clock,date):
         clo = clock[:-2]
         min = clo[-2:]
         hour = clo[:-3]
@@ -128,7 +137,12 @@ class LiveUpdate_yahoo(object):
         if val>self.m_lastclock and date>=self.m_lastdate:
             self.m_lastdate = date
             self.m_lastclock = val
-        return "%d:%02d" % (val/60,val%60)
+
+        # convert from connector timezone to market place timezone
+        mdatetime = datetime(int(date[0:4]),int(date[4:6]),int(date[6:8]),val/60,val%60)
+        mdatetime = convertConnectorTimeToPlaceTime(mdatetime,self.timezone(),place)
+
+        return "%d:%02d" % (mdatetime.hour,mdatetime.minute)
 
     def getdata(self,quote):
         debug("LiveUpdate_yahoo:getdata quote:%s " % quote)
@@ -196,7 +210,7 @@ class LiveUpdate_yahoo(object):
         try:
             date = self.yahooDate(sdata[2])
             self.m_dcmpd[key] = sdata
-            self.m_clock[key] = self.convertClock(sclock,date)
+            self.m_clock[key] = self.convertClock(quote.place(),sclock,date)
         except ValueError:
             if itrade_config.verbose:
                 info('invalid datation for %s : %s %s' % (quote.ticker(),sclock,sdata[2]))

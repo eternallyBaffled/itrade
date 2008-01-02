@@ -80,7 +80,7 @@ softwareAuthors = __author__
 softwareCopyright = __copyright__
 softwareCredits = __credits__
 softwareWebsite = 'http://itrade.sourceforge.net/'
-softwareLatest  = 'http://itrade.svn.sourceforge.net/viewvc/*checkout*/itrade/trunk/OFFICIAL'
+softwareLatest  = 'http://itrade.svn.sourceforge.net/svnroot/itrade/trunk/OFFICIAL'
 
 # iTrade version (major.minor)
 softwareVersion = __version__
