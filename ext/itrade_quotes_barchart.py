@@ -165,7 +165,19 @@ def Import_ListOfQuotes_BARCHART(quotes,market='NASDAQ',dlg=None,x=0):
 
                 #print '"',name, '" - "',ticker, '" - "',exchange,'" market:',market
 
-                if exchange==market:
+                ignore = False
+                if exchange=='TORONTO EXCHANGE':
+                    if ticker[0:4] == "ITT-" or ticker[0:4] == "IRT-": # ignore indices : managed by hand in symbols/indices.txt
+                        ignore = True
+                        #print 'ignore Index : "',name, '" - "',ticker, '" - "',exchange,'" market:',market
+
+                    s = ticker.split('-')
+                    if len(s)==3:
+                        if s[1]=="DB" : # ignore DEBit
+                            ignore = True
+                            #print 'ignore Index : "',name, '" - "',ticker, '" - "',exchange,'" market:',market
+
+                if not ignore and exchange==market:
                     if ticker[-3:]=='.TO' or ticker[-3:]=='.VN':
                         ticker = ticker[:-3]
 

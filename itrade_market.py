@@ -404,6 +404,13 @@ def yahooTicker(ticker,market,place):
     if ticker[0:1] == '^':
         return ticker
 
+    # special case for TORONTO
+    if market=='TORONTO EXCHANGE' or market=='TORONTO VENTURE':
+        s = ticker.split('-')
+        if len(s)==3:
+            #print 'convert to Yahoo ticker %s -> %s' % (ticker,s[0]+'-'+s[1]+s[2])
+            ticker = s[0]+'-'+s[1]+s[2]
+
     # build the ticker using the suffix
     key = market + '.' + place
     if yahoo_suffix.has_key(key):
