@@ -404,12 +404,28 @@ def yahooTicker(ticker,market,place):
     if ticker[0:1] == '^':
         return ticker
 
+    pticker = ticker
+
     # special case for TORONTO
     if market=='TORONTO EXCHANGE' or market=='TORONTO VENTURE':
         s = ticker.split('-')
         if len(s)==3:
-            #print 'convert to Yahoo ticker %s -> %s' % (ticker,s[0]+'-'+s[1]+s[2])
             ticker = s[0]+'-'+s[1]+s[2]
+
+    # special case for AMEX
+    if market=="AMEX":
+        s = ticker.split('.')
+        if len(s)==2:
+            ticker = s[0]+'-'+s[1]
+            if s[1]=="W":
+                ticker = ticker + "T"
+        else:
+            s = ticker.split('-')
+            if len(s)==2:
+                ticker= s[0]+'-P'+s[1]
+
+    if pticker!=ticker and itrade_config.verbose:
+        print 'convert to Yahoo ticker %s -> %s' % (pticker,ticker)
 
     # build the ticker using the suffix
     key = market + '.' + place
