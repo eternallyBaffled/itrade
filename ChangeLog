@@ -4,6 +4,14 @@
 On the road for v0.4.6 (Nausicaa2)
 ===============================================================================
 
+2008-01-03  Gilles Dumortier <dgil at ieee dot org>
+	* View Quote : Graph : Refresh Broken (SF bug 1665668) : Fix a lot of
+	  issues on the refresh mechanism when launching the window, changing
+	  the page or changing the quote.
+
+2007-01-02  Michel Legrand <m_leg at users dot sourceforge dot net>
+	* Trading calendar updated for MILAN EXCHANGE (data/closed.txt)
+
 2008-01-02  Gilles Dumortier <dgil at ieee dot org>
 	* Graph View : objects are correctly drawn first time then after
 	* Graph View : Unit Price line (SF bug 1647463)
@@ -23,7 +31,7 @@ On the road for v0.4.6 (Nausicaa2)
 	* List of quotes view : display the number of quotes filtered in list
 
 2007-12-30  Gilles Dumortier <dgil at ieee dot org>
-	* closed.txt updated for main markets (euronext, nyse, ...)
+	* Trading calendar updated for main markets (euronext, nyse, ...)
 
 2007-12-30  Michel Legrand <m_leg at users dot sourceforge dot net>
 	* Patch and new module (itrade_quotes_xetra.py) for FRANKFURT EXCHANGE

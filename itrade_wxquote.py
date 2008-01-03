@@ -309,6 +309,8 @@ class iTradeQuoteInfoWindow(sc.SizedPanel):
         # update the logo if needed
         fit = False
         if nquote and nquote<>self.m_quote:
+            if itrade_config.verbose:
+                print 'QuoteInfoWinfow::refresh New Quote %s - live=%s' % (nquote.ticker(),live)
             self.m_quote = nquote
             self.m_logo = None
             fit = True
@@ -320,6 +322,8 @@ class iTradeQuoteInfoWindow(sc.SizedPanel):
             self.m_quote.compute()
 
         # paint the content
+        if itrade_config.verbose:
+            print 'QuoteInfoWinfow::refresh Paint Quote %s - live=%s' % (self.m_quote.ticker(),live)
         self.paint()
 
         # fit but stay on the space given by the parent
@@ -576,12 +580,15 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         self.m_hasLegend = self.m_dispLegend
 
     def InitPage(self):
+        print '$$$InitPage'
         self.RedrawAll(redraw=False)
 
     def DonePage(self):
+        print '$$$DonePage'
         pass
 
     def RedrawAll(self,redraw=True):
+        print '$$$RedrawAll redraw=%s' % redraw
         self.ChartRealize()
         if redraw:
             self.m_canvas.draw()
@@ -592,6 +599,7 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         event.Skip()
 
     def refresh(self):
+        print '$$$refresh'
         self.RedrawAll()
 
     def OnHome(self,event):
@@ -984,7 +992,7 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
         self.m_parent = parent
         self.m_port = parent.portfolio()
         self.m_curpage = page
-        page = self.init(quote,page)
+        page = self.init(quote,page,fromInit=True)
         wx.EVT_NOTEBOOK_PAGE_CHANGED(self, self.GetId(), self.OnPageChanged)
         wx.EVT_NOTEBOOK_PAGE_CHANGING(self, self.GetId(), self.OnPageChanging)
         self.SetSelection(page)
@@ -996,7 +1004,9 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
         old = event.GetOldSelection()
         new = event.GetSelection()
         sel = self.GetSelection()
-        info('OnPageChanged,  old:%d, new:%d, sel:%d\n' % (old, new, sel))
+        if itrade_config.verbose:
+            print
+            print 'QuoteNotebookWindow::OnPageChanged: old=%d new=%d sel=%d' % (old, new, sel)
         if old<>new:
             if old>=0:
                 self.win[old].DonePage()
@@ -1006,14 +1016,16 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
         event.Skip()
 
     def OnPageChanging(self, event):
-        # not used - only traces
-        old = event.GetOldSelection()
-        new = event.GetSelection()
-        sel = self.GetSelection()
-        debug('OnPageChanging, old:%d, new:%d, sel:%d\n' % (old, new, sel))
+        # not used - only for traces
+        if 0:
+            old = event.GetOldSelection()
+            new = event.GetSelection()
+            sel = self.GetSelection()
+            if itrade_config.verbose:
+                print 'QuoteNotebookWindow::OnPageChanging: old=%d new=%d sel=%d' % (old, new, sel)
         event.Skip()
 
-    def init(self,nquote=None,page=0):
+    def init(self,nquote=None,page=0,fromInit=False):
         # check new quote
         if nquote<>self.m_quote:
             self.m_quote = nquote
@@ -1062,22 +1074,24 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
             self.AddPage(self.win[self.ID_PAGE_PROP], message('quote_properties'))
 
             # be sure to init & display the selected page
-            self.win[page].InitPage()
+            if fromInit: self.win[page].InitPage()
 
             return page
 
     def refresh(self,nquote=None,live=False):
         if nquote:
             # refresh the new quote
-            info('QuoteNotebookWindow::refresh %s new quote - page %d' % (nquote.ticker(),self.m_curpage))
+            if itrade_config.verbose:
+                print 'QuoteNotebookWindow::refresh Init New Quote : %s - page: %d' % (nquote.ticker(),self.m_curpage)
             page = self.init(nquote,self.m_curpage)
-            print 'refresh: internal page=',page
+            if itrade_config.verbose:
+                print 'QuoteNotebookWindow::refresh Internal Page : %s - page: %d' % (nquote.ticker(),page)
             self.SetSelection(page)
         else:
             # refresh current page
-            info('QuoteNotebookWindow::refresh %s live=%d page=%d' % (self.m_quote.ticker(),live,self.m_curpage))
             if (self.m_curpage==self.ID_PAGE_LIVE) or (not live):
-                print 'LIVE'
+                if itrade_config.verbose:
+                    print 'QuoteNotebookWindow::refresh Current Quote %s live=%s page: %d' % (self.m_quote.ticker(),live,self.m_curpage)
                 self.win[self.m_curpage].refresh()
 
 # ============================================================================
@@ -1138,36 +1152,40 @@ class iTradeQuoteWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin):
         if not nquote:
             nquote = select_iTradeQuote(self,self.m_quote,filter=True,market=None)
         if nquote and nquote<>self.m_quote:
-            info('SelectQuote: %s - %s' % (nquote.ticker(),nquote.key()))
+            if itrade_config.verbose:
+                print
+                print 'QuoteWindow::SelectQuote: %s -> %s %s' % (self.m_quote.ticker(),nquote.ticker(),nquote.key())
             self.stopLive(self.m_quote)
             self.unregisterLive(self.m_quote)
             self.m_notewindow.Hide()
             self.m_quote = nquote
-            self.refresh(self.m_quote)
             self.registerLive(self.m_quote,itrade_config.refreshLive)
             self.setTitle()
+            self.refresh(self.m_quote)
             self.m_notewindow.Show()
 
     # ---[ Refresh mechanism ] ------------------------------------------------
 
     def refresh(self,nquote=None,live=False):
-        info('QuoteWindow::refresh %s' % self.m_quote.ticker())
+        if itrade_config.verbose:
+            print'QuoteWindow::refresh %s %s: live=%s' % (self.m_quote.ticker(),self.m_quote.key(),live)
         self.m_infowindow.refresh(nquote,live)
         self.m_notewindow.refresh(nquote,live)
 
     def OnLive(self, evt):
         # be sure this quote is still under population
-        if self.isRunning(evt.quote):
-            info('%s: %s' % (evt.quote.key(),evt.param))
+        if evt.quote == self.m_quote and self.isRunning(evt.quote):
+            if itrade_config.verbose:
+                print 'QuoteWindow::OnLive %s %s: %s' % (evt.quote.ticker(),evt.quote.key(),evt.param)
             self.refresh(live=True)
         else:
-            info('%s: %s - bad' % (evt.quote.key(),evt.param))
+            if itrade_config.verbose:
+                print 'QuoteWindow::OnLive %s %s: %s - NOT RUNNING' % (evt.quote.ticker(),evt.quote.key(),evt.param)
 
     # ---[ Default Windows handlers ] -----------------------------------------
 
     # Default OnSize handler
     def OnSize(self, event):
-        debug('QuoteWindow::OnSize')
         w,h = self.GetClientSizeTuple()
         self.m_infowindow.SetDimensions(0, 0, 129, h)
         self.m_notewindow.SetDimensions(130, 0, w-130, h)
@@ -1175,13 +1193,14 @@ class iTradeQuoteWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin):
 
     # Default OnDestroy handler
     def OnDestroy(self, evt):
-        # stop & unregister live
-        self.stopLive(self.m_quote)
-        self.unregisterLive(self.m_quote)
+        if self.m_id == evt.GetId():
+            # stop & unregister live
+            self.stopLive(self.m_quote)
+            self.unregisterLive(self.m_quote)
 
-        # remove view from the parent stack
-        if self.m_parent and (self.m_id == evt.GetId()):
-            self.m_parent.m_hView = None
+            # remove view from the parent stack
+            if self.m_parent:
+                self.m_parent.m_hView = None
 
     # Default OnExit handler
     def OnExit(self, evt):
