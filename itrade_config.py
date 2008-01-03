@@ -36,11 +36,11 @@
 # ============================================================================
 
 __author__ = "Gilles Dumortier (dgil@ieee.org)"
-__version__ = "0.4.6"
+__version__ = "0.4.8"
 __status__ = "alpha"
 __copyright__ = "Copyright (c) 2004-2008 Gilles Dumortier"
 __license__ = "GPLv3 or later"
-__credits__ = """Jeremiah Fincher (ansi colors in command line), Mark Pilgrim (Universal Feed Parser http://feedparser.org/)"""
+__credits__ = """Mark Pilgrim (Universal Feed Parser http://feedparser.org/)"""
 
 # ============================================================================
 # Imports
@@ -84,7 +84,7 @@ softwareLatest  = 'http://itrade.svn.sourceforge.net/svnroot/itrade/trunk/OFFICI
 
 # iTrade version (major.minor)
 softwareVersion = __version__
-softwareVersionName = 'Nausicaa2 - (unstable) (%s)' % __svnversion__
+softwareVersionName = 'Druuna - (unstable) (%s)' % __svnversion__
 softwareStatus = __status__
 
 print '%s(%s) - %s %s' % (softwareName,softwareStatus,softwareVersion,softwareVersionName)

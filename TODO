@@ -23,22 +23,6 @@ TODO ITEMS by VERSION
  ~ : in progress
 ===============================================================================
 
-Version 0.4.6 (Nausicaa2)
- + Australian Market
- + Extensions & Plugins basic Mechanism
- + Matrix use the Notebook display
- + Basic Stops Management
- + Toronto Markets (yahoo connector)
- + Switzerland Market (yahoo connector)
- + Italian Market (yahoo connector)
- + main market indicator
- + Proxy Connection
- + LSE Markets (yahoo connector)
- + IRISH exchange (yahoo connector)
- + MADRID exchange (yahoo connector)
- + FRANKFURT exchange (yahoo connector)
- ~ better Linux support
-
 Version 0.4.8 (Druuna)
 
 TO BE DEFINED
@@ -123,6 +107,22 @@ SDR and short positions
 ===============================================================================
 ITEMS DONE by VERSION (History)
 ===============================================================================
+
+Version 0.4.6 (Nausicaa2) - DONE - 2008/01/03
+ + Australian Market
+ + Extensions & Plugins basic Mechanism
+ + Matrix use the Notebook display
+ + Basic Stops Management
+ + Toronto Markets (yahoo connector)
+ + Switzerland Market (yahoo connector)
+ + Italian Market (yahoo connector)
+ + main market indicator
+ + Proxy Connection
+ + LSE Markets (yahoo connector)
+ + IRISH exchange (yahoo connector)
+ + MADRID exchange (yahoo connector)
+ + FRANKFURT exchange (yahoo connector)
+ ~ better Linux support
 
 Version 0.4.5 (Nausicaa) - 2006/12/10
  + Multi-currencies support in portfolio and matrix

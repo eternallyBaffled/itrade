@@ -1,8 +1,19 @@
 /iTrade/ChangeLog
 ===============================================================================
 
-On the road for v0.4.6 (Nausicaa2)
+On the road for v0.4.8 (Druuna)
+
 ===============================================================================
+
+2006-01-03  Gilles Dumortier <dgil at ieee dot org>
+	* New instable tarball + update website
+
+===============================================================================
+
+2006-01-03  Gilles Dumortier <dgil at ieee dot org>
+	* Prepare 0.4.6 official release
+		SVN tag : ITRADE_0_4_6_NAUSICAA2_TAG
+		SVN branch : ITRADE_0_4_6_NAUSICAA2_BRANCH
 
 2008-01-03  Gilles Dumortier <dgil at ieee dot org>
 	* View Quote : Graph : Refresh Broken (SF bug 1665668) : Fix a lot of
