@@ -6,6 +6,9 @@ On the road for v0.4.8 (Druuna)
 ===============================================================================
 
 2006-01-03  Gilles Dumortier <dgil at ieee dot org>
+	* Thanks to michel help, able to fix two issues with Yahoo connector
+	  (SF bug 1848473) : percent was badly computed, percent / prevclose
+	  were not correctly used in the matrix
 	* Fix Amex tickers with "." or "-" : suffix for Yahoo (SF bug 1726101)
 	* Fix Toronto exchange tickers with 2 "-" for Yahoo (SF bug 1723060)
 	* New instable tarball + update website
