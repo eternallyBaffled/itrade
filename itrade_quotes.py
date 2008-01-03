@@ -195,7 +195,8 @@ class Quote(object):
         self.m_weektrades = None
         self.m_monthtrades = None
 
-        self.m_percent = None
+        self.m_percent   = None
+        self.m_prevclose = None
 
     def reinit(self):
         #info('%s::reinit' %(self.name()))
@@ -628,11 +629,14 @@ class Quote(object):
         self.m_daytrades.imp(data,bLive)
 
         # only one line
-        if bLive and len(data)>=1 and self.list()==QLIST_INDICES:
-            item = itrade_csv.parse(data[0],8)
+        if bLive and len(data)>=1: # and self.list()==QLIST_INDICES:
+            item = itrade_csv.parse(data[0],9)
             if len(item)>7:
                 # percent is included !
                 self.m_percent = string.atof (item[7])
+            if len(item)>8:
+                # previous close is included !
+                self.m_prevclose = string.atof (item[8])
 
     # ---[ save or export trades / date is unique key ] ---
 
@@ -829,6 +833,10 @@ class Quote(object):
         return None
 
     def nv_prevclose(self,d=None):
+        if self.m_prevclose != None:
+            #print '$$ %s nv_prevclose:' % self.ticker(),self.m_prevclose
+            return self.m_prevclose
+
         if self.m_daytrades:
             tc = self.m_daytrades.prevtrade(d)
             if tc:
@@ -844,8 +852,10 @@ class Quote(object):
         return None
 
     def nv_percent(self,d=None):
-        if self.m_percent:
+        if self.m_percent != None:
+            #print '$$ %s nv_percent:' % self.ticker(),self.m_percent
             return self.m_percent
+
         if self.m_daytrades:
             tc = self.nv_close(d)
             tp = self.nv_prevclose(d)

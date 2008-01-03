@@ -424,8 +424,8 @@ def yahooTicker(ticker,market,place):
             if len(s)==2:
                 ticker= s[0]+'-P'+s[1]
 
-    if pticker!=ticker and itrade_config.verbose:
-        print 'convert to Yahoo ticker %s -> %s' % (pticker,ticker)
+    #if pticker!=ticker and itrade_config.verbose:
+    #    print 'convert to Yahoo ticker %s -> %s' % (pticker,ticker)
 
     # build the ticker using the suffix
     key = market + '.' + place

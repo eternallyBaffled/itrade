@@ -252,10 +252,11 @@ class LiveUpdate_yahoo(object):
             debug('volume : invalid zero value %d' % volume)
             return None
 
-        percent = (1.0 - ((value - change) / value))*100.0
+        #percent = (1.0 - ((value - change) / value))*100.0
+        percent = (change / (value - change))*100.0
         #print 'key:',key,'percent = ', percent
 
-        # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME;PERCENT
+        # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME;PERCENT;PREVIOUS
         data = (
           key,
           date,
@@ -264,12 +265,16 @@ class LiveUpdate_yahoo(object):
           low,
           value,
           volume,
-          percent
+          percent,
+          (value-change)
         )
         data = map(lambda (val): '%s' % str(val), data)
         data = string.join(data, ';')
 
-        #print data
+        # temp: hunting an issue (SF bug 1848473)
+        if itrade_config.verbose:
+            print data
+
         return data
 
     # ---[ cache management on data ] ---
