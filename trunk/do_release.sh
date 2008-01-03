@@ -11,7 +11,7 @@
 to_be_removed='do_release.sh do_images.sh ethereal/* data/quotes.txt.org cache/* usrdata.dev/* images/*.png images/*.gif images/*.jpg images/*.bmp'
 
 target="$HOME/itrade_snapshot_`date +'%F'`.tar.gz"
-#target="$HOME/itrade_0_4_6_nausicaa2_`date +'%F'`.tar.gz"
+#target="$HOME/itrade_0_4_8_druuna_`date +'%F'`.tar.gz"
 #export SVN_RSH=ssh
 
 cd /tmp

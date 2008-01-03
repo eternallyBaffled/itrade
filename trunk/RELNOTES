@@ -2,7 +2,7 @@
 ===============================================================================
 
 -------------------------------------------------------------------------------
-Version 0.4.6 - Nausicaa2
+Version 0.4.8 - Druuna
 -------------------------------------------------------------------------------
 
  "python itrade.py --help"	for command line help
@@ -24,13 +24,8 @@ Version 0.4.6 - Nausicaa2
  "python itrade.py -x"		to activate experimental features
 
 -------------------------------------------------------------------------------
-Known Issues : v0.4.6 (under dev)
+Known Issues : v0.4.8 (under dev)
 -------------------------------------------------------------------------------
-
-- In the Operations and Graph Views, some icon are badly displayed (text or
-  lines are missing because of bad transparency management). This is an issue
-  with wxPython 2.6.x. This problem is fixed with wxPython 2.8.x
-  https://sourceforge.net/tracker/index.php?func=detail&aid=1641799&group_id=128261&atid=711187
 
 - Missing some Menu or Button labels
   (accents not well supported on some Linux distribution)
@@ -52,13 +47,22 @@ Known Issues : v0.4.6 (under dev)
 
 	install python-wxaddons package from /etc/apt/sources.list
 
-- Donwload LSE list of quotes is crashing python DLL :
-  check that your are using XLRD version 0.6.1 *final* or better.
-  the 0.6.1a4 release is known to crash iTrade during the second download of LSE
-
 ===============================================================================
 Previous release notes
 ===============================================================================
+
+-------------------------------------------------------------------------------
+Known Issues : v0.4.6
+-------------------------------------------------------------------------------
+
+- In the Operations and Graph Views, some icon are badly displayed (text or
+  lines are missing because of bad transparency management). This is an issue
+  with wxPython 2.6.x. This problem is fixed with wxPython 2.8.x
+  https://sourceforge.net/tracker/index.php?func=detail&aid=1641799&group_id=128261&atid=711187
+
+- Donwload LSE list of quotes is crashing python DLL :
+  check that your are using XLRD version 0.6.1 *final* or better.
+  the 0.6.1a4 release is known to crash iTrade during the second download of LSE
 
 -------------------------------------------------------------------------------
 Known Issues : v0.4.5
