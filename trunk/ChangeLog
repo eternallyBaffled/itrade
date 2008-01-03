@@ -6,6 +6,7 @@ On the road for v0.4.8 (Druuna)
 ===============================================================================
 
 2006-01-03  Gilles Dumortier <dgil at ieee dot org>
+	* Fix Toronto exchange tickers with 2 "-" for Yahoo (SF bug 1723060)
 	* New instable tarball + update website
 
 ===============================================================================
