@@ -62,11 +62,12 @@ from itrade_wxutil import iTradeInformation
 
 class iTradeQuotePropertiesPanel(wx.Panel):
 
-    def __init__(self,parent,id,quote):
+    def __init__(self,parent,id,quote,root):
         wx.Panel.__init__(self, parent, id)
         self.m_id = id
         self.m_quote = quote
         self.m_parent = parent
+        self.m_wincb = root
         self.m_parent.aRet = False
 
         # vertical general layout
@@ -256,8 +257,14 @@ class iTradeQuotePropertiesPanel(wx.Panel):
     def OnReload(self,event):
         dlg = wx.ProgressDialog(message('main_refreshing'),"",1*itrade_config.numTradeYears,self,wx.PD_APP_MODAL)
         dlg.Update(0,self.m_quote.name())
+
+        # force flush and reload from network of historical data
         self.m_quote.flushAndReload(dlg)
         dlg.Destroy()
+
+        # force a refresh on the root window
+        if self.m_wincb:
+            self.m_wincb.OnRefresh()
 
     def OnImport(self,event):
         dlg = wx.FileDialog(self.m_parent, message('import_from_file'), itrade_config.dirImport, "", "*.txt", wx.OPEN|wx.FILE_MUST_EXIST)
@@ -266,16 +273,29 @@ class iTradeQuotePropertiesPanel(wx.Panel):
             filename = dlg.GetFilename()
             file = os.path.join(dirname,filename)
 
-            info('Import file %s' % file)
+            if itrade_config.verbose:
+                print 'Import file %s for quote %s' % (file,self.m_quote.key())
+
+            # clear everything
+            self.m_quote.flushTrades()
+
+            # import the file
             self.m_quote.loadTrades(file)
             self.m_quote.saveTrades()
 
-            # __xdlg2 = wx.MessageDialog(self, message('imported_from_file') % file, message('import_from_file'), wx.OK | wx.ICON_INFORMATION)
-            # __xdlg2.ShowModal()
-            # __xdlg2.Destroy()
+            # be sure indicators have been updated
+            self.m_quote.compute()
+
             iTradeInformation(self, message('imported_from_file') % file, message('import_from_file'))
 
-        dlg.Destroy()
+            dlg.Destroy()
+            dlg = None
+
+            # force a refresh on the root window
+            if self.m_wincb:
+                self.m_wincb.OnRefresh()
+
+        if dlg: dlg.Destroy()
 
     def OnExport(self,event):
         dlg = wx.FileDialog(self.m_parent, message('export_to_file'), itrade_config.dirExport, "", "*.txt", wx.SAVE|wx.OVERWRITE_PROMPT)
@@ -283,13 +303,11 @@ class iTradeQuotePropertiesPanel(wx.Panel):
             dirname  = dlg.GetDirectory()
             filename = dlg.GetFilename()
             file = os.path.join(dirname,filename)
-            info('Export file %s' % file)
+            if itrade_config.verbose:
+                print 'Export file %s for quote %s' % (file,self.m_quote.key())
 
             self.m_quote.saveTrades(file)
 
-            #__xdlg2 = wx.MessageDialog(self, message('exported_to_file') % file, message('export_to_file'), wx.OK | wx.ICON_INFORMATION)
-            #__xdlg2.ShowModal()
-            #__xdlg2.Destroy()
             iTradeInformation(self,message('exported_to_file') % file, message('export_to_file'))
 
             #
@@ -420,7 +438,7 @@ class iTradeQuotePropertyWindow(wx.Frame):
         self.setTitle()
 
         # property panel
-        self.m_propwindow = iTradeQuotePropertiesPanel(self,wx.NewId(),self.m_quote)
+        self.m_propwindow = iTradeQuotePropertiesPanel(self,wx.NewId(),self.m_quote,self.m_parent)
 
         # Toolbar
         self.m_toolbar = iTradeQuotePropertyToolbar(self, wx.NewId())
@@ -450,7 +468,7 @@ class iTradeQuotePropertyWindow(wx.Frame):
             info('SelectQuote: %s - %s' % (nquote.ticker(),nquote.key()))
             self.m_quote = nquote
             self.m_propwindow.Destroy()
-            self.m_propwindow = iTradeQuotePropertiesPanel(self,wx.NewId(),self.m_quote)
+            self.m_propwindow = iTradeQuotePropertiesPanel(self,wx.NewId(),self.m_quote,self.m_parent)
             self.OnSize(None)
 
     def OnExit(self,event):
@@ -474,7 +492,7 @@ class iTradeQuotePropertyDialog(wx.Dialog):
         sizer = wx.BoxSizer(wx.VERTICAL)
 
         # property panel
-        self.m_propwindow = iTradeQuotePropertiesPanel(self,wx.NewId(),self.m_quote)
+        self.m_propwindow = iTradeQuotePropertiesPanel(self,wx.NewId(),self.m_quote,None)
         sizer.Add(self.m_propwindow, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         box = wx.BoxSizer(wx.HORIZONTAL)
