@@ -629,7 +629,13 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         self.updateCheckItems()
         self.InitCurrentPage(bReset=True,bInit=True)
 
-    def OnRefresh(self,event):
+    def OnRefresh(self,event=None):
+        # called by a child (toolbar button, property window, ...)
+        if itrade_config.verbose:
+            print
+            print 'MainWindow::OnRefresh event=%s' % event
+
+        # to force a refresh of the book
         self.m_book.OnRefresh(event)
 
     def OnSize(self, event):

@@ -5,6 +5,9 @@ On the road for v0.4.8 (Druuna)
 
 ===============================================================================
 
+2006-01-05  Gilles Dumortier <dgil at ieee dot org>
+	* Quote View : Refresh after Importing Historic Data (SF bug 1589101)
+
 2006-01-03  Gilles Dumortier <dgil at ieee dot org>
 	* Thanks to michel help, able to fix two issues with Yahoo connector
 	  (SF bug 1848473) : percent was badly computed, percent / prevclose

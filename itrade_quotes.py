@@ -948,6 +948,8 @@ class Quote(object):
                 return None
             d = Datation(tr.date()).date()
             tc = self.m_daytrades.candle(d)
+        else:
+            tc = None
         return tc
 
     def ov_pivots(self):

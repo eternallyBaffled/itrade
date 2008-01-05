@@ -362,8 +362,11 @@ class CustomDataTable(gridlib.PyGridTableBase):
 
         self.data = []
 
-        for trade in quote.trades().trades():
-            self.data.append([trade.date(),trade.nv_volume(),trade.nv_open(),trade.nv_low(),trade.nv_high(),trade.nv_close()])
+        ltrades = quote.trades()
+
+        if ltrades:
+            for trade in ltrades.trades():
+                self.data.append([trade.date(),trade.nv_volume(),trade.nv_open(),trade.nv_low(),trade.nv_high(),trade.nv_close()])
 
     # ---[ required methods for the wxPyGridTableBase interface ] -------------------
 
@@ -371,7 +374,7 @@ class CustomDataTable(gridlib.PyGridTableBase):
         return len(self.data) + 1
 
     def GetNumberCols(self):
-        return len(self.data[0])
+        return len(self.colLabels)
 
     def IsEmptyCell(self, row, col):
         try:
@@ -765,6 +768,9 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         return '%s %s %s' % (message('graph_period'),self.getPeriod(),message('graph_days'))
 
     def ChartRealize(self):
+        # special case __x
+        if self.m_quote.m_daytrades == None: return
+
         if self.m_dispRSI14 or self.m_dispSto:
             nchart = 3
         else:
@@ -1070,7 +1076,7 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
             self.win[self.ID_PAGE_TABLE] = iTradeQuoteTablePanel(self,wx.NewId(),self.m_quote)
             self.AddPage(self.win[self.ID_PAGE_TABLE], message('quote_table'))
 
-            self.win[self.ID_PAGE_PROP] = iTradeQuotePropertiesPanel(self,wx.NewId(),self.m_quote)
+            self.win[self.ID_PAGE_PROP] = iTradeQuotePropertiesPanel(self,wx.NewId(),self.m_quote, self)
             self.AddPage(self.win[self.ID_PAGE_PROP], message('quote_properties'))
 
             # be sure to init & display the selected page
@@ -1082,17 +1088,28 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
         if nquote:
             # refresh the new quote
             if itrade_config.verbose:
-                print 'QuoteNotebookWindow::refresh Init New Quote : %s - page: %d' % (nquote.ticker(),self.m_curpage)
+                print 'QuoteNotebookWindow::refresh Init New Quote : %s - page: %s' % (nquote.ticker(),self.m_curpage)
             page = self.init(nquote,self.m_curpage)
             if itrade_config.verbose:
-                print 'QuoteNotebookWindow::refresh Internal Page : %s - page: %d' % (nquote.ticker(),page)
+                print 'QuoteNotebookWindow::refresh Internal Page : %s - page: %s' % (nquote.ticker(),page)
             self.SetSelection(page)
         else:
             # refresh current page
             if (self.m_curpage==self.ID_PAGE_LIVE) or (not live):
                 if itrade_config.verbose:
-                    print 'QuoteNotebookWindow::refresh Current Quote %s live=%s page: %d' % (self.m_quote.ticker(),live,self.m_curpage)
+                    print 'QuoteNotebookWindow::refresh Current Quote %s live=%s page: %s' % (self.m_quote.ticker(),live,self.m_curpage)
                 self.win[self.m_curpage].refresh()
+
+    def OnRefresh(self,event=None):
+        # called by a child to refresh the book on the current quote (after importing for example)
+        if itrade_config.verbose:
+            print
+            print 'QuoteNotebookWindow::OnRefresh'
+
+        # tp force the refresh
+        nquote = self.m_quote
+        self.m_quote = None
+        self.refresh(nquote)
 
 # ============================================================================
 # iTradeQuoteWindow
