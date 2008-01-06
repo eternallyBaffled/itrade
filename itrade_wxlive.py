@@ -40,6 +40,7 @@ import os
 import logging
 import time
 import thread
+import random
 
 # wxPython system
 import itrade_wxversion
@@ -93,16 +94,21 @@ class UpdateLiveThread:
         return self.m_running
 
     def Run(self,p):
+        # initial delay is random
+        time.sleep(random.randint(0,self.m_sleeptime))
+
         while (self.m_keepGoing):
             #if itrade_config.verbose:
             #    print 'UpdateLiveThread::Run(): %s %f %s' % (self.m_quote,self.m_sleeptime,self.m_param)
 
             # update live information
             itrade_import.liveupdate_from_internet(self.m_quote)
-            evt = UpdateLiveEvent(quote=self.m_quote,param=p)
-            if self.m_win: wx.PostEvent(self.m_win,evt)
+            if self.m_keepGoing:
+                evt = UpdateLiveEvent(quote=self.m_quote,param=p)
+                if self.m_win: wx.PostEvent(self.m_win,evt)
 
-            if self.m_keepGoing: time.sleep(self.m_sleeptime)
+            if self.m_keepGoing:
+                time.sleep(self.m_sleeptime)
 
         self.m_running = False
 
@@ -207,34 +213,39 @@ class UpdateLiveCurrencyThread:
         self.m_sleeptime = sleeptime
         self.m_param = param
         #if itrade_config.verbose:
-            #print 'UpdateLiveCurrencyThread::__init__(): %s %f %s' % (key,sleeptime,param)
+        #    print 'UpdateLiveCurrencyThread::__init__(): %s %f %s' % (key,sleeptime,param)
 
     def Start(self):
         self.m_keepGoing = True
         self.m_running = True
         thread.start_new_thread(self.Run,(self.m_param,))
         #if itrade_config.verbose:
-            #print 'UpdateLiveCurrencyThread::Start(): %s %f %s' % (self.m_key,self.m_sleeptime,self.m_param)
+        #    print 'UpdateLiveCurrencyThread::Start(): %s %f %s' % (self.m_key,self.m_sleeptime,self.m_param)
 
     def Stop(self):
         self.m_keepGoing = False
         #if itrade_config.verbose:
-            #print 'UpdateLiveCurrencyThread::Stop(): %s %f %s' % (self.m_key,self.m_sleeptime,self.m_param)
+        #    print 'UpdateLiveCurrencyThread::Stop(): %s %f %s' % (self.m_key,self.m_sleeptime,self.m_param)
 
     def IsRunning(self):
         return self.m_running
 
     def Run(self,p):
+        # initial delay is random
+        time.sleep(random.randint(0,self.m_sleeptime))
+
         while (self.m_keepGoing):
             #if itrade_config.verbose:
-                #print 'UpdateLiveCurrencyThread::Run(): %s %f %s' % (self.m_key,self.m_sleeptime,self.m_param)
+            #    print 'UpdateLiveCurrencyThread::Run(): %s %f %s' % (self.m_key,self.m_sleeptime,self.m_param)
 
             # update live information
             itrade_currency.currencies.get(self.m_curTo,self.m_curFrom)
-            evt = UpdateLiveCurrencyEvent(key=self.m_key,param=p)
-            wx.PostEvent(self.m_win,evt)
+            if self.m_keepGoing:
+                evt = UpdateLiveCurrencyEvent(key=self.m_key,param=p)
+                if self.m_win: wx.PostEvent(self.m_win,evt)
 
-            time.sleep(self.m_sleeptime)
+            if self.m_keepGoing:
+                time.sleep(self.m_sleeptime)
 
         self.m_running = False
 

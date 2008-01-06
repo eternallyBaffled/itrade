@@ -6,6 +6,7 @@ On the road for v0.4.8 (Druuna)
 ===============================================================================
 
 2006-01-06  Gilles Dumortier <dgil at ieee dot org>
+	* Currency View : exception at exit (SF bug 1863036)
 	* Currency View : bad N/A (SF bug 1862976)
 	* Implement Currency Conversion (itrade_wxconvert.py) (SF bug 1498677)
 
