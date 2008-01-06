@@ -55,6 +55,7 @@ from itrade_currency import currencies
 # iTrade wxPython system
 from itrade_wxmixin import iTrade_wxFrame
 from itrade_wxlive import iTrade_wxLiveCurrencyMixin,EVT_UPDATE_LIVECURRENCY
+from itrade_wxconvert import open_iTradeConverter
 
 # ============================================================================
 # column number
@@ -69,6 +70,8 @@ IDC_DESC = 3
 # ============================================================================
 # menu identifier
 # ============================================================================
+
+ID_CONVERT = 100
 
 ID_CLOSE = 111
 
@@ -89,6 +92,7 @@ class iTradeCurrencyToolbar(wx.ToolBar):
 
     def _init_toolbar(self):
         self._NTB2_EXIT = wx.NewId()
+        self._NTB2_CONVERT = wx.NewId()
         self._NTB2_REFRESH = wx.NewId()
 
         self.SetToolBitmapSize(wx.Size(24,24))
@@ -96,12 +100,18 @@ class iTradeCurrencyToolbar(wx.ToolBar):
                            message('main_close'), message('main_desc_close'))
 
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+        self.AddSimpleTool(self._NTB2_CONVERT, wx.Bitmap(os.path.join(itrade_config.dirRes, 'convert.png')),
+                           message('main_view_convert'), message('main_view_desc_convert'))
         self.AddSimpleTool(self._NTB2_REFRESH, wx.Bitmap(os.path.join(itrade_config.dirRes, 'refresh.png')),
                            message('main_view_refresh'), message('main_view_desc_refresh'))
 
         wx.EVT_TOOL(self, self._NTB2_EXIT, self.onExit)
+        wx.EVT_TOOL(self, self._NTB2_CONVERT, self.onConvert)
         wx.EVT_TOOL(self, self._NTB2_REFRESH, self.onRefresh)
         self.Realize()
+
+    def onConvert(self, event):
+        self.m_parent.OnConvert(event)
 
     def onRefresh(self, event):
         self.m_parent.OnRefresh(event)
@@ -140,6 +150,7 @@ class iTradeCurrenciesWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveCurrencyMixin)
         self.filemenu.Append(ID_CLOSE,message('main_close'),message('main_desc_close'))
 
         self.viewmenu = wx.Menu()
+        self.viewmenu.Append(ID_CONVERT, message('main_view_convert'),message('main_view_desc_convert'))
         self.viewmenu.Append(ID_REFRESH, message('main_view_refresh'),message('main_view_desc_refresh'))
         self.viewmenu.AppendCheckItem(ID_AUTOREFRESH, message('main_view_autorefresh'),message('main_view_desc_autorefresh'))
 
@@ -168,6 +179,7 @@ class iTradeCurrenciesWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveCurrencyMixin)
         wx.EVT_SIZE(self, self.OnSize)
 
         wx.EVT_MENU(self, ID_CLOSE, self.OnClose)
+        wx.EVT_MENU(self, ID_CONVERT, self.OnConvert)
         wx.EVT_MENU(self, ID_REFRESH, self.OnRefresh)
         wx.EVT_MENU(self, ID_AUTOREFRESH, self.OnAutoRefresh)
 
@@ -207,6 +219,7 @@ class iTradeCurrenciesWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveCurrencyMixin)
 
     def OnCloseWindow(self, evt):
         self.stopLiveCurrency(bBusy=False)
+        self.unregisterLiveCurrency()
         self.saveConfig()
         currencies.save()
         self.Destroy()
@@ -260,6 +273,11 @@ class iTradeCurrenciesWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveCurrencyMixin)
     def OnLiveCurrency(self, evt):
         if self.isRunningCurrency(evt.key):
             self.refreshLine(evt.key,evt.param,True)
+
+    # --- [ converter ] ----------------------------------------------
+
+    def OnConvert(self, evt):
+        open_iTradeConverter(self)
 
     # --- [ content management ] -------------------------------------
 

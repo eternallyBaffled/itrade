@@ -44,6 +44,8 @@ main_view_desc_trading; Display general Trading information for the portfolio
 
 main_view_compute;&Computer
 main_view_desc_compute; Computer
+main_view_convert;Con&verter
+main_view_desc_convert; Converter between two currencies
 
 main_view_refresh;&Refresh now
 main_view_desc_refresh; Refresh now the current view
@@ -614,5 +616,7 @@ rss_freshness;Last scan :
 
 remove_quote_title;Remove the Quote
 remove_quote_info;Do you confirm the remove of the quote %s from the matrix ?
+
+converter_title;Currencies Converter
 
 test;test message
