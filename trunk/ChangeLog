@@ -5,6 +5,9 @@ On the road for v0.4.8 (Druuna)
 
 ===============================================================================
 
+2006-01-06  Gilles Dumortier <dgil at ieee dot org>
+	* Implement Currency Conversion (itrade_wxconvert.py) (SF bug 1498677)
+
 2006-01-05  Gilles Dumortier <dgil at ieee dot org>
 	* Quote View : Refresh after Importing Historic Data (SF bug 1589101)
 

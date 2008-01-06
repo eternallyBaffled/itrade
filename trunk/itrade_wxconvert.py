@@ -42,15 +42,22 @@ import itrade_wxversion
 import wx
 from wx.lib import masked
 import wxaddons.sized_controls as sc
+import wx.lib.newevent
 
 # iTrade system
 from itrade_logging import *
 from itrade_local import message,getGroupChar,getDecimalChar
 from itrade_config import *
-from itrade_currency import list_of_currencies
+from itrade_currency import list_of_currencies,convert,currencies
 
 # iTrade wxPython system
 from itrade_wxutil import iTradeSizedDialog
+
+# ============================================================================
+# Creates a new Event class and a EVT binder function
+# ============================================================================
+
+(UpdateConvertEvent,EVT_UPDATE_CONVERT) = wx.lib.newevent.NewEvent()
 
 # ============================================================================
 # iTradeConverterDialog
@@ -74,23 +81,28 @@ class iTradeConverterDialog(iTradeSizedDialog):
         # Row 1 : Org Currency Value
         self.wxOrgVal = masked.Ctrl(pane, integerWidth=9, fractionWidth=2, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupDigits = True, groupChar=getGroupChar(), decimalChar=getDecimalChar(), selectOnEntry=True )
         self.wxOrgVal.SetValue(1)
+        masked.EVT_NUM(self, self.wxOrgVal.GetId(), self.OnValueChange)
+
         self.wxOrgCur = wx.ComboBox(pane,-1, "", size=wx.Size(80,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
 
         for c in list_of_currencies():
             self.wxOrgCur.Append(c,c)
 
         self.wxOrgCur.SetSelection(0)
+        self.m_orgcur = 'EUR'
         wx.EVT_COMBOBOX(self,self.wxOrgCur.GetId(),self.OnOrgCurrency)
 
         # Row 2 : Dest Currency Value
-        self.wxDestVal = masked.Ctrl(pane, integerWidth=9, fractionWidth=2, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupDigits = True, groupChar=getGroupChar(), decimalChar=getDecimalChar(), selectOnEntry=True )
-        self.wxDestVal.SetValue(1)
+        self.wxDestVal = wx.StaticText(pane, -1, "", size=(100,-1), style = wx.ALIGN_RIGHT | wx.ST_NO_AUTORESIZE)
+        self.wxDestVal.SetLabel('')
+        self.wxDestVal.SetSizerProps(valign='center')
         self.wxDestCur = wx.ComboBox(pane,-1, "", size=wx.Size(80,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
 
         for c in list_of_currencies():
             self.wxDestCur.Append(c,c)
 
         self.wxDestCur.SetSelection(1)
+        self.m_destcur = 'USD'
         wx.EVT_COMBOBOX(self,self.wxDestCur.GetId(),self.OnDestCurrency)
 
         # Last Row : OK and Cancel
@@ -111,11 +123,45 @@ class iTradeConverterDialog(iTradeSizedDialog):
         self.Fit()
         self.SetMinSize(self.GetSize())
 
+        EVT_UPDATE_CONVERT(self, self.OnUpdateConvert)
+
+        # convert now
+        self.convertValue()
+
+    def OnUpdateConvert(self,event):
+        # can be long ...
+        wx.SetCursor(wx.HOURGLASS_CURSOR)
+
+        # update currency rate if needed
+        if not currencies.used(self.m_destcur,self.m_orgcur):
+            currencies.inuse(self.m_destcur,self.m_orgcur,True)
+            currencies.get(self.m_destcur,self.m_orgcur)
+
+        # get the value and convert
+        o = self.wxOrgVal.GetValue()
+        d = convert(self.m_destcur,self.m_orgcur,o)
+        self.wxDestVal.SetLabel('%.3f' % d)
+
+        # should be enough !
+        wx.SetCursor(wx.STANDARD_CURSOR)
+
+    def convertValue(self):
+        evt = UpdateConvertEvent()
+        wx.PostEvent(self,evt)
+
     def OnOrgCurrency(self,event):
-        pass
+        self.m_orgcur = self.wxOrgCur.GetClientData(self.wxOrgCur.GetSelection())
+        #print '$$$ org curr',self.m_orgcur
+        self.convertValue()
 
     def OnDestCurrency(self,event):
-        pass
+        self.m_destcur = self.wxDestCur.GetClientData(self.wxDestCur.GetSelection())
+        #print '$$$ dest curr',self.m_destcur
+        self.convertValue()
+
+    def OnValueChange(self,event):
+        #print '$$$ OnValueChange'
+        self.convertValue()
 
 # ============================================================================
 # open_iTradeConverter

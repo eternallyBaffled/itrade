@@ -70,6 +70,7 @@ from itrade_wxlogin import login_UI
 from itrade_wxconnection import connection_UI
 from itrade_wxstops import addOrEditStops_iTradeQuote,removeStops_iTradeQuote
 from itrade_wxmixin import iTrade_wxFrame
+from itrade_wxconvert import open_iTradeConverter
 
 from itrade_wxpanes import iTrade_MatrixPortfolioPanel,iTrade_MatrixQuotesPanel,iTrade_MatrixStopsPanel,iTrade_MatrixIndicatorsPanel,iTrade_TradingPanel
 from itrade_wxmoney import iTradeEvaluationPanel
@@ -101,6 +102,7 @@ ID_CURRENCIES = 213
 ID_ALERTS = 214
 
 ID_COMPUTE = 221
+ID_CONVERT = 222
 
 ID_SMALL_VIEW = 230
 ID_NORMAL_VIEW = 231
@@ -184,6 +186,7 @@ class iTradeMainToolbar(wx.ToolBar):
         self._NTB2_EDIT = wx.NewId()
         self._NTB2_SAVE_AS = wx.NewId()
         self._NTB2_MONEY = wx.NewId()
+        self._NTB2_CURRENCIES = wx.NewId()
         self._NTB2_OPERATIONS = wx.NewId()
         self._NTB2_ALERTS = wx.NewId()
         self._NTB2_QUOTE = wx.NewId()
@@ -207,6 +210,8 @@ class iTradeMainToolbar(wx.ToolBar):
                            message('main_view_money'), message('main_view_desc_money'))
         self.AddSimpleTool(self._NTB2_ALERTS, wx.Bitmap(os.path.join(itrade_config.dirRes, 'bell.png')),
                            message('main_view_alerts'), message('main_view_desc_alerts'))
+        self.AddSimpleTool(self._NTB2_CURRENCIES, wx.Bitmap(os.path.join(itrade_config.dirRes, 'currencies.png')),
+                           message('main_view_currencies'), message('main_view_desc_currencies'))
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
         self.AddSimpleTool(self._NTB2_QUOTE, wx.Bitmap(os.path.join(itrade_config.dirRes, 'graph.png')),
                            message('main_quote_graph'), message('main_quote_desc_graph'))
@@ -225,6 +230,7 @@ class iTradeMainToolbar(wx.ToolBar):
         wx.EVT_TOOL(self, self._NTB2_OPEN, self.onOpen)
         wx.EVT_TOOL(self, self._NTB2_EDIT, self.onEdit)
         wx.EVT_TOOL(self, self._NTB2_OPERATIONS, self.onOperations)
+        wx.EVT_TOOL(self, self._NTB2_CURRENCIES, self.onCurrencies)
         wx.EVT_TOOL(self, self._NTB2_MONEY, self.onMoney)
         wx.EVT_TOOL(self, self._NTB2_ALERTS, self.onAlerts)
         wx.EVT_TOOL(self, self._NTB2_QUOTE, self.onQuote)
@@ -252,6 +258,9 @@ class iTradeMainToolbar(wx.ToolBar):
 
     def onMoney(self,event):
         self.m_parent.OnMoney(event)
+
+    def onCurrencies(self,event):
+        self.m_parent.OnCurrencies(event)
 
     def onCompute(self,event):
         self.m_parent.OnCompute(event)
@@ -506,6 +515,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         self.viewmenu.Append(ID_CURRENCIES, message('main_view_currencies'),message('main_view_desc_currencies'))
         self.viewmenu.Append(ID_ALERTS, message('main_view_alerts'),message('main_view_desc_alerts'))
         self.viewmenu.AppendSeparator()
+        self.viewmenu.Append(ID_CONVERT, message('main_view_convert'),message('main_view_desc_convert'))
         self.viewmenu.Append(ID_COMPUTE, message('main_view_compute'),message('main_view_desc_compute'))
 
         self.optionsmenu = wx.Menu()
@@ -584,6 +594,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         wx.EVT_MENU(self, ID_TRADING, self.OnTrading)
         wx.EVT_MENU(self, ID_OPERATIONS, self.OnOperations)
         wx.EVT_MENU(self, ID_EVALUATION, self.OnEvaluation)
+        wx.EVT_MENU(self, ID_CONVERT, self.OnConvert)
         wx.EVT_MENU(self, ID_COMPUTE, self.OnCompute)
         wx.EVT_MENU(self, ID_ALERTS, self.OnAlerts)
         wx.EVT_MENU(self, ID_CURRENCIES, self.OnCurrencies)
@@ -900,6 +911,9 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
     def OnCompute(self,e):
         quote = self.currentQuote()
         open_iTradeMoney(self,1,self.m_portfolio,quote)
+
+    def OnConvert(self,e):
+        open_iTradeConverter(self)
 
     def OnAlerts(self,e):
         open_iTradeAlerts(self,self.m_portfolio)

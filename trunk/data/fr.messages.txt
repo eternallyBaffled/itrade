@@ -48,6 +48,8 @@ main_view_desc_trading; Affiche les informations générales de Trading du portefe
 
 main_view_compute;&Calculette
 main_view_desc_compute; Calculette
+main_view_convert;Con&version
+main_view_desc_convert; Conversion entre deux devises
 
 main_view_refresh;&Tout mettre à jour
 main_view_desc_refresh; Mettre à jour toutes les informations de la vue courante maintenant
@@ -613,5 +615,7 @@ rss_freshness;Dernière mise à jour :
 
 remove_quote_title;Supprimer une valeur
 remove_quote_info;Confirmez-vous la suppression de la matrice de la valeur %s ?
+
+converter_title;Conversion de Devises
 
 test;message de test

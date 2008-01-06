@@ -45,8 +45,11 @@ main_view_evaluation; &Desempenho
 main_view_desc_evaluation; Avaliação do desempenho da carteira
 main_view_trading;&Trading
 main_view_desc_trading;Informações gerais de Trading da conta
+
 main_view_compute;&Computador
 main_view_desc_compute; Computador
+main_view_convert;__xCon&verter
+main_view_desc_convert;__x Converter between two currencies
 
 main_view_refresh;&Actualizar agora
 main_view_desc_refresh; Actualizar agora a vista actual
@@ -626,5 +629,7 @@ rss_freshness;Último scan:
 
 remove_quote_title;Apagar a Cotação
 remove_quote_info;Suprimir realmente a acção %s ?
+
+converter_title;__xCurrencies Converter
 
 test;Mensagem de teste
