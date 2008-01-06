@@ -272,8 +272,8 @@ class LiveUpdate_yahoo(object):
         data = string.join(data, ';')
 
         # temp: hunting an issue (SF bug 1848473)
-        if itrade_config.verbose:
-            print data
+        # if itrade_config.verbose:
+        #    print data
 
         return data
 
