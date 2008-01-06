@@ -113,6 +113,8 @@ class Currencies(object):
     # ---[ Load / Save cache file ] ---
 
     def update(self,curTo,curFrom,rate):
+        if curFrom == 'N/A' or curTo == 'N/A':
+            return rate
         if curTo <> curFrom:
             key = self.key(curTo,curFrom)
             if self.m_currencies.has_key(key):
@@ -149,6 +151,8 @@ class Currencies(object):
         return curTo.upper() + curFrom.upper()
 
     def rate(self,curTo,curFrom):
+        if curFrom == 'N/A' or curTo == 'N/A':
+            return 1.0
         if curTo == curFrom:
             return 1.0
         key = self.key(curTo,curFrom)
@@ -166,6 +170,8 @@ class Currencies(object):
     # ---[ Currency in use or not ? ] ---
 
     def used(self,curTo,curFrom):
+        if curFrom == 'N/A' or curTo == 'N/A':
+            return False
         if curTo == curFrom:
             return True
         key = self.key(curTo,curFrom)
@@ -200,6 +206,9 @@ class Currencies(object):
 
     def get(self,curTo,curFrom):
         if not itrade_config.isConnected():
+            return None
+
+        if curFrom == 'N/A' or curTo == 'N/A':
             return None
 
         if self.m_connection==None:
