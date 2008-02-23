@@ -98,6 +98,7 @@ main_options_lang_english;Anglais
 main_options_lang_french;Français
 main_options_lang_portuguese;Portugais
 main_options_lang_deutch;Allemand
+main_options_lang_italian;Italien
 
 main_options_cache;&Cache
 main_options_desc_cache; Gestion des données cachées
