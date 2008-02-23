@@ -5,15 +5,18 @@ On the road for v0.4.8 (Druuna)
 
 ===============================================================================
 
-2006-01-06  Gilles Dumortier <dgil at ieee dot org>
+2008-02-23 Mirco Martinelli <mirco dot martinelli at fastwebnet dot it>
+	* Italian translation ! (merged by dgil)
+
+2008-01-06  Gilles Dumortier <dgil at ieee dot org>
 	* Currency View : exception at exit (SF bug 1863036)
 	* Currency View : bad N/A (SF bug 1862976)
 	* Implement Currency Conversion (itrade_wxconvert.py) (SF bug 1498677)
 
-2006-01-05  Gilles Dumortier <dgil at ieee dot org>
+2008-01-05  Gilles Dumortier <dgil at ieee dot org>
 	* Quote View : Refresh after Importing Historic Data (SF bug 1589101)
 
-2006-01-03  Gilles Dumortier <dgil at ieee dot org>
+2008-01-03  Gilles Dumortier <dgil at ieee dot org>
 	* Thanks to michel help, able to fix two issues with Yahoo connector
 	  (SF bug 1848473) : percent was badly computed, percent / prevclose
 	  were not correctly used in the matrix
@@ -23,7 +26,7 @@ On the road for v0.4.8 (Druuna)
 
 ===============================================================================
 
-2006-01-03  Gilles Dumortier <dgil at ieee dot org>
+2008-01-03  Gilles Dumortier <dgil at ieee dot org>
 	* Prepare 0.4.6 official release
 		SVN tag : ITRADE_0_4_6_NAUSICAA2_TAG
 		SVN branch : ITRADE_0_4_6_NAUSICAA2_BRANCH
@@ -33,7 +36,7 @@ On the road for v0.4.8 (Druuna)
 	  issues on the refresh mechanism when launching the window, changing
 	  the page or changing the quote.
 
-2007-01-02  Michel Legrand <m_leg at users dot sourceforge dot net>
+2008-01-02  Michel Legrand <m_leg at users dot sourceforge dot net>
 	* Trading calendar updated for MILAN EXCHANGE (data/closed.txt)
 
 2008-01-02  Gilles Dumortier <dgil at ieee dot org>

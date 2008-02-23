@@ -54,6 +54,7 @@ nl_supported = {
     'fr': "Français",
     'pt': "Portuguese",
     'de': "Deutch",
+    'it': "Italian",
     'en': 'English',
     'us': 'English'
     }
@@ -62,6 +63,7 @@ nl_posix = {
     'fr': 'fr_FR',
     'pt': 'pt_PT',
     'de': 'de_DE',
+    'it': "it_IT",
     'en': 'en_US',
     'us': 'en_US',
     }
@@ -70,6 +72,7 @@ nl_autodetect = {
     'fr_FR': 'fr',
     'pt_PT': 'pt',
     'de_DE': 'de',
+    'it_IT': 'it',
     'en_US': 'en',
     'English_United States': 'en'
     }
@@ -86,6 +89,7 @@ nl_groupsep = {
     'fr' : ' ',
     'pt' : ' ',
     'de' : ' ',
+    'it' : ' ',
     'en' : ',',
     'us' : ','
     }
@@ -105,6 +109,7 @@ nl_decsep = {
     'fr' : ',',
     'pt' : ',',
     'de' : ',',
+    'it' : ',',
     'en' : '.',
     'us' : '.'
     }
@@ -124,6 +129,7 @@ nl_shortdatefmt = {
     'fr' : '%d.%m',
     'pt' : '%d.%m',
     'de' : '%d.%m',
+    'it' : '%d.%m',
     'en' : '%m.%d',
     'us' : '%m.%d'
     }
@@ -321,6 +327,9 @@ if __name__=='__main__':
     setLang('de')
     gMessage.load()
     print 'pack de: %s' % gMessage.getLangFile()
+    setLang('it')
+    gMessage.load()
+    print 'pack it: %s' % gMessage.getLangFile()
     print
 
     setLang('fr')
@@ -333,6 +342,8 @@ if __name__=='__main__':
     print 'pt:', message('test')
     setLang('de')
     print 'de:', message('test')
+    setLang('it')
+    print 'it:', message('test')
     setLang('ar')
     print 'ar:', message('test')
 
@@ -351,6 +362,8 @@ if __name__=='__main__':
     print '6th december 2005 in portuguese (%s) : ' % getLocale(),datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x ')
     setLang('de')
     print '6th december 2005 in deutch (%s) : ' % getLocale(),datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x ')
+    setLang('it')
+    print '6 dicembre 2005 in italian (%s) : ' % getLocale(),datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x ')
     setLang()
     print '6th december 2005 in default lang (%s) : ' % getLocale(),datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x ')
 

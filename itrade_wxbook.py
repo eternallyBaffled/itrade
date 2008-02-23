@@ -133,7 +133,8 @@ ID_LANG_ENGLISH = 401
 ID_LANG_FRENCH = 402
 ID_LANG_PORTUGUESE = 403
 ID_LANG_DEUTCH = 404
-ID_LANG_LAST = 404
+ID_LANG_ITALIAN = 405
+ID_LANG_LAST = 405
 
 ID_CACHE = 499
 ID_CACHE_ERASE_DATA = 500
@@ -535,6 +536,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         self.langmenu.AppendRadioItem(ID_LANG_FRENCH, message('main_options_lang_french'),message('main_options_lang_french'))
         self.langmenu.AppendRadioItem(ID_LANG_PORTUGUESE, message('main_options_lang_portuguese'),message('main_options_lang_portuguese'))
         self.langmenu.AppendRadioItem(ID_LANG_DEUTCH, message('main_options_lang_deutch'),message('main_options_lang_deutch'))
+        self.langmenu.AppendRadioItem(ID_LANG_ITALIAN, message('main_options_lang_italian'),message('main_options_lang_italian'))
         self.optionsmenu.AppendMenu(ID_LANG,message('main_options_lang'),self.langmenu,message('main_options_desc_lang'))
         if itrade_config.lang == 255:
             self.optionsmenu.Enable(ID_LANG,False)
@@ -619,6 +621,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         wx.EVT_MENU(self, ID_LANG_FRENCH, self.OnLangFrench)
         wx.EVT_MENU(self, ID_LANG_PORTUGUESE, self.OnLangPortuguese)
         wx.EVT_MENU(self, ID_LANG_DEUTCH, self.OnLangDeutch)
+        wx.EVT_MENU(self, ID_LANG_ITALIAN, self.OnLangItalian)
 
         wx.EVT_MENU(self, ID_CACHE_ERASE_DATA, self.OnCacheEraseData)
         wx.EVT_MENU(self, ID_CACHE_ERASE_NEWS, self.OnCacheEraseNews)
@@ -826,6 +829,9 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
 
             m = self.langmenu.FindItemById(ID_LANG_DEUTCH)
             m.Check(itrade_config.lang==4)
+
+            m = self.langmenu.FindItemById(ID_LANG_ITALIAN)
+            m.Check(itrade_config.lang==5)
 
         # refresh Enable state based on current View
         m = self.quotemenu.FindItemById(ID_ADD_QUOTE)
@@ -1049,6 +1055,8 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
             lang = 'pt'
         elif itrade_config.lang==4:
             lang = 'de'
+        elif itrade_config.lang==5:
+            lang = 'it'
         elif itrade_config.lang==0:
             lang = gMessage.getAutoDetectedLang('us')
         else:
@@ -1092,6 +1100,10 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
 
     def OnLangDeutch(self,e):
         itrade_config.lang = 4
+        self.OnChangeLang()
+
+    def OnLangItalian(self,e):
+        itrade_config.lang = 5
         self.OnChangeLang()
 
     # --- [ cache management ] -------------------------------------
