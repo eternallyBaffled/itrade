@@ -38,6 +38,8 @@ NSE OF INDIA        	NSE	YAHOO FINANCE
 NEW ZEALAND EXCHANGE    NZE	YAHOO FINANCE
 BUENOS AIRES EXCHANGE   BUE	YAHOO FINANCE
 OSLO EXCHANGE		OSL	YAHOO FINANCE
+STOCKHOLM EXCHANGE	STO	YAHOO FINANCE
+COPENHAGEN EXCHANGE	CSE     YAHOO FINANCE
 
 ===============================================================================
 History data
@@ -72,6 +74,8 @@ NSE OF INDIA        	NSE	YAHOO FINANCE
 NEW ZEALAND EXCHANGE    NZE	YAHOO FINANCE
 BUENOS AIRES EXCHANGE   BUE	YAHOO FINANCE
 OSLO EXCHANGE		OSL	YAHOO FINANCE
+STOCKHOLM EXCHANGE	STO	YAHOO FINANCE
+COPENHAGEN EXCHANGE	CSE     YAHOO FINANCE
 
 Manual importation is possible.
 File format is EBP (ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME)
@@ -109,6 +113,8 @@ NSE OF INDIA        	NSE	www.nse-india.com
 NEW ZEALAND EXCHANGE    NZE	NZXMARKET
 BUENOS AIRES EXCHANGE   BUE     BOLSAR
 OSLO EXCHANGE		OSL	OSLOBORS
+STOCKHOLM EXCHANGE	STO	OMX MARKET
+COPENHAGEN EXCHANGE	CSE     OMX MARKET
 
 ===============================================================================
 Intraday data
@@ -143,5 +149,7 @@ NSE OF INDIA        	NSE	not available yet
 NEW ZEALAND EXCHANGE    NZE	not available yet
 BUENOS AIRES EXCHANGE   BUE	not available yet
 OSLO EXCHANGE		OSL	not available yet
+STOCKHOLM EXCHANGE	STO	not available yet
+COPENHAGEN EXCHANGE	CSE     not available yet
 
 ===============================================================================
