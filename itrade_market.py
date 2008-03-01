@@ -71,6 +71,18 @@ isin_market = {
     'ie': 'IRISH EXCHANGE',
     'es': 'MADRID EXCHANGE',
     'de': 'FRANKFURT EXCHANGE',
+    'no': 'OSLO EXCHANGE',
+    'se': 'STOCKHOLM EXCHANGE',
+    'dk': 'COPENHAGEN EXCHANGE',
+    'br': 'SAO PAOLO EXCHANGE',
+    'hk': 'HONG KONG EXCHANGE',
+    'cn': 'SHANGHAI EXCHANGE',
+    'cn': 'SHENZHEN EXCHANGE',
+    'in': 'NATIONAL EXCHANGE OF INDIA',
+    'in': 'BOMBAY EXCHANGE',
+    'nz': 'NEW ZEALAND EXCHANGE',
+    'ar': 'BUENOS AIRES EXCHANGE',
+    'mx': 'MEXICO EXCHANGE',
     }
 
 def isin2market(isin):
@@ -101,7 +113,7 @@ market_indice = {
     'LSE SETS': 'US2605661048',
     'LSE SETSmm': 'US2605661048',
     'LSE SEAQ': 'US2605661048',
-    'ASX': 'US2605661048',
+    'ASX': 'AU0000000004',
     'TORONTO EXCHANGE': 'US2605661048',
     'TORONTO VENTURE': 'US2605661048',
     'MILAN EXCHANGE': 'IT0003137749',
@@ -109,6 +121,18 @@ market_indice = {
     'IRISH EXCHANGE': 'IE0001477250',
     'MADRID EXCHANGE': 'ES0SI0000005',
     'FRANKFURT EXCHANGE': 'DE0008469008',
+    'OSLO EXCHANGE': 'NO0007035327',
+    'STOCKHOLM EXCHANGE': 'SE0000337842',
+    'COPENHAGEN EXCHANGE': 'DX0000001376',
+    'SAO PAOLO EXCHANGE': 'BRIBOVINDM18',
+    'HONG KONG EXCHANGE': 'HK0000004322',
+    'SHANGHAI EXCHANGE': 'QT0002571112',
+    'SHENZHEN EXCHANGE': 'CN0000000006',
+    'NATIONAL EXCHANGE OF INDIA': 'IN0000000001',
+    'BOMBAY EXCHANGE': 'IN0000000024',
+    'NEW ZEALAND EXCHANGE': 'NZ0000000002',
+    'BUENOS AIRES EXCHANGE': 'AR0000000001',
+    'MEXICO EXCHANGE': 'MX0000000001',
     }
 
 def getDefaultIndice(market):
@@ -142,6 +166,18 @@ market_currency = {
     'IRISH EXCHANGE': 'EUR',
     'MADRID EXCHANGE': 'EUR',
     'FRANKFURT EXCHANGE': 'EUR',
+    'OSLO EXCHANGE': 'NOK',
+    'STOCKHOLM EXCHANGE': 'SEK',
+    'COPENHAGEN EXCHANGE': 'DKK',
+    'SAO PAOLO EXCHANGE': 'BRL',
+    'HONG KONG EXCHANGE': 'HKD',
+    'SHANGHAI EXCHANGE': 'CNY',
+    'SHENZHEN EXCHANGE': 'CNY',
+    'NATIONAL EXCHANGE OF INDIA': 'INR',
+    'BOMBAY EXCHANGE': 'INR',
+    'NEW ZEALAND EXCHANGE': 'NZD',
+    'BUENOS AIRES EXCHANGE': 'ARS',
+    'MEXICO EXCHANGE': 'MXN',
     }
 
 def market2currency(market):
@@ -175,6 +211,18 @@ _lom = {
     'IRISH EXCHANGE': False,
     'MADRID EXCHANGE': False,
     'FRANKFURT EXCHANGE': False,
+    'OSLO EXCHANGE': False,
+    'STOCKHOLM EXCHANGE': False,
+    'COPENHAGEN EXCHANGE': False,
+    'SAO PAOLO EXCHANGE': False,
+    'HONG KONG EXCHANGE': False,
+    'SHANGHAI EXCHANGE': False,
+    'SHENZHEN EXCHANGE': False,
+    'NATIONAL EXCHANGE OF INDIA': False,
+    'BOMBAY EXCHANGE': False,
+    'NEW ZEALAND EXCHANGE': False,
+    'BUENOS AIRES EXCHANGE': False,
+    'MEXICO EXCHANGE': False,
     }
 
 def set_market_loaded(market,set=True):
@@ -250,6 +298,31 @@ def compute_country(isin,market,place):
             return 'ES'
         if market=='FRANKFURT EXCHANGE':
             return 'DE'
+        if market=='OSLO EXCHANGE':
+            return 'NO'
+        if market=='STOCKHOLM EXCHANGE':
+            return 'SE'
+        if market=='COPENHAGEN EXCHANGE':
+            return 'DK'
+        if market=='SAO PAOLO EXCHANGE':
+            return 'BR'
+        if market=='HONG KONG EXCHANGE':
+            return 'HK'
+        if market=='SHANGHAI EXCHANGE':
+            return 'CN'
+        if market=='SHENZHEN EXCHANGE':
+            return 'CN'
+        if market=='NATIONAL EXCHANGE OF INDIA':
+            return 'IN'
+        if market=='BOMBAY EXCHANGE':
+            return 'IN'
+        if market=='NEW ZEALAND EXCHANGE':
+            return 'NZ'
+        if market=='BUENOS AIRES EXCHANGE':
+            return 'AR'
+        if market=='MEXICO EXCHANGE':
+            return 'MX'
+
     return '??'
 
 # ============================================================================
@@ -300,6 +373,31 @@ def list_of_places(market):
         lop.append('MAD')
     if market=='FRANKFURT EXCHANGE':
         lop.append('FRA')
+    if market=='OSLO EXCHANGE':
+        lop.append('OSL')
+    if market=='STOCKHOLM EXCHANGE':
+        lop.append('STO')
+    if market=='COPENHAGEN EXCHANGE':
+        lop.append('CSE')
+    if market=='SAO PAOLO EXCHANGE':
+        lop.append('SAO')
+    if market=='HONG KONG EXCHANGE':
+        lop.append('HKG')
+    if market=='SHANGHAI EXCHANGE':
+        lop.append('SHG')
+    if market=='SHENZHEN EXCHANGE':
+        lop.append('SHE')
+    if market=='NATIONAL EXCHANGE OF INDIA':
+        lop.append('NSE')
+    if market=='BOMBAY EXCHANGE':
+        lop.append('BSE')
+    if market=='NEW ZEALAND EXCHANGE':
+        lop.append('NZE')
+    if market=='BUENOS AIRES EXCHANGE':
+        lop.append('BUE')
+    if market=='MEXICO EXCHANGE':
+        lop.append('MEX')
+
     return lop
 
 # ============================================================================
@@ -326,6 +424,18 @@ market_place = {
     'IRISH EXCHANGE': 'DUB',
     'MADRID EXCHANGE': 'MAD',
     'FRANKFURT EXCHANGE': 'FRA',
+    'OSLO EXCHANGE': 'OSL',
+    'STOCKHOLM EXCHANGE': 'STO',
+    'COPENHAGEN EXCHANGE': 'CSE',
+    'SAO PAOLO EXCHANGE': 'SAO',
+    'HONG KONG EXCHANGE': 'HKG',
+    'SHANGHAI EXCHANGE': 'SHG',
+    'SHENZHEN EXCHANGE': 'SHE',
+    'NATIONAL EXCHANGE OF INDIA': 'NSE',
+    'BOMBAY EXCHANGE': 'BSE',
+    'NEW ZEALAND EXCHANGE': 'NZE',
+    'BUENOS AIRES EXCHANGE': 'BUE',
+    'MEXICO EXCHANGE': 'MEX',
     }
 
 def market2place(market):
@@ -358,6 +468,18 @@ place_timezone = {
     "MIL":  "Europe/Rome",
     "XSWX": "Europe/Zurich",
     "XVTX": "Europe/Zurich",
+    "OSL":  "Europe/Oslo",
+    "STO":  "Europe/Stockholm",
+    "CSE":  "Europe/Copenhagen",
+    "SAO":  "America/Sao_Paulo",
+    "HKG":  "Asia/Hong_Kong",
+    "SHG":  "Asia/Shanghai",
+    "SHE":  "Asia/Hong_Kong",
+    "NSE":  "Asia/Colombo",
+    "BSE":  "Asia/Colombo",
+    "NZE":  "Pacific/Auckland",
+    "BUE":  "America/Buenos_Aires",
+    "MEX":  "America/Mexico_City",
     }
 
 def convertConnectorTimeToPlaceTime(mdatetime,zone,place):
@@ -395,6 +517,18 @@ yahoo_suffix = {
     'IRISH EXCHANGE.DUB': '.IR',
     'MADRID EXCHANGE.MAD': '.MC',
     'FRANKFURT EXCHANGE.FRA': '.F',
+    'OSLO EXCHANGE.OSL': '.OL',
+    'STOCKHOLM EXCHANGE.STO': '.ST',
+    'COPENHAGEN EXCHANGE.CSE': '.CO',
+    'SAO PAOLO EXCHANGE.SAO': '.SA',
+    'HONG KONG EXCHANGE.HKG': '.HK',
+    'SHANGHAI EXCHANGE.SHG': '.SS',
+    'SHENZHEN EXCHANGE.SHE': '.SZ',
+    'NATIONAL EXCHANGE OF INDIA.NSE': '.NS',
+    'BOMBAY EXCHANGE.BSE': '.BO',
+    'NEW ZEALAND EXCHANGE.NZE': '.NZ',
+    'BUENOS AIRES EXCHANGE.BUE': '.BA',
+    'MEXICO EXCHANGE.MEX': '.MX'
     }
 
 yahoo_map_tickers = {}

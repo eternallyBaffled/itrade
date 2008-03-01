@@ -132,7 +132,8 @@ class LiveUpdate_yahoo(object):
         val = (int(hour)*60) + int(min)
         per = clock[-2:]
         if per=='pm':
-            val = val + 12*60
+            if hour < 12:
+                val = val + 12*60
         #print clock,clo,hour,min,val,per
         if val>self.m_lastclock and date>=self.m_lastdate:
             self.m_lastdate = date
@@ -390,6 +391,31 @@ registerLiveConnector('IRISH EXCHANGE','DUB',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,
 registerLiveConnector('MADRID EXCHANGE','MAD',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 
 registerLiveConnector('FRANKFURT EXCHANGE','FRA',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+
+registerLiveConnector('STOCKHOLM EXCHANGE','STO',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+
+registerLiveConnector('COPENHAGEN EXCHANGE','CSE',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+
+registerLiveConnector('OSLO EXCHANGE','OSL',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+
+registerLiveConnector('SAO PAOLO EXCHANGE','SAO',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+
+registerLiveConnector('HONG KONG EXCHANGE','HKG',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+
+registerLiveConnector('SHANGHAI EXCHANGE','SHG',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+
+registerLiveConnector('SHENZHEN EXCHANGE','SHE',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+
+registerLiveConnector('NATIONAL EXCHANGE OF INDIA','NSE',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+
+registerLiveConnector('BOMBAY EXCHANGE','BSE',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+
+registerLiveConnector('NEW ZEALAND EXCHANGE','NZE',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+
+registerLiveConnector('BUENOS AIRES EXCHANGE','BUE',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+
+registerLiveConnector('MEXICO EXCHANGE','MEX',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+
 
 # ============================================================================
 # Test ME

@@ -275,6 +275,30 @@ intradayGraphUrl['MADRID EXCHANGE'] = "http://ichart.finance.yahoo.com/b?s=%s.MC
 intradayGraphUrlUseISIN['MADRID EXCHANGE'] = False
 intradayGraphUrl['FRANKFURT EXCHANGE'] = "http://ichart.finance.yahoo.com/b?s=%s.DE"
 intradayGraphUrlUseISIN['FRANKFURT EXCHANGE'] = False
+intradayGraphUrl['STOCKHOLM EXCHANGE'] = "http://ichart.finance.yahoo.com/b?s=%s.ST"
+intradayGraphUrlUseISIN['STOCKHOLM EXCHANGE'] = False
+intradayGraphUrl['COPENHAGEN EXCHANGE'] = "http://ichart.finance.yahoo.com/b?s=%s.CO"
+intradayGraphUrlUseISIN['COPENHAGEN EXCHANGE'] = False
+intradayGraphUrl['OSLO EXCHANGE'] = "http://ichart.finance.yahoo.com/b?s=%s.OL"
+intradayGraphUrlUseISIN['OSLO EXCHANGE'] = False
+intradayGraphUrl['SAO PAOLO EXCHANGE'] = "http://ichart.finance.yahoo.com/b?s=%s.SA"
+intradayGraphUrlUseISIN['SAO PAOLO EXCHANGE'] = False
+intradayGraphUrl['HONG KONG EXCHANGE'] = "http://ichart.finance.yahoo.com/b?s=%s.HK"
+intradayGraphUrlUseISIN['HONG KONG EXCHANGE'] = False
+intradayGraphUrl['SHANGHAI EXCHANGE'] = "http://ichart.finance.yahoo.com/b?s=%s.SS"
+intradayGraphUrlUseISIN['SHANGHAI EXCHANGE'] = False
+intradayGraphUrl['SHENZHEN EXCHANGE'] = "http://ichart.finance.yahoo.com/b?s=%s.SZ"
+intradayGraphUrlUseISIN['SHENZHEN EXCHANGE'] = False
+intradayGraphUrl['NATIONAL EXCHANGE OF INDIA'] = "http://ichart.finance.yahoo.com/b?s=%s.NS"
+intradayGraphUrlUseISIN['NATIONAL EXCHANGE OF INDIA'] = False
+intradayGraphUrl['BOMBAY EXCHANGE'] = "http://ichart.finance.yahoo.com/b?s=%s.BO"
+intradayGraphUrlUseISIN['BOMBAY EXCHANGE'] = False
+intradayGraphUrl['NEW ZEALAND EXCHANGE'] = "http://ichart.finance.yahoo.com/b?s=%s.NZ"
+intradayGraphUrlUseISIN['NEW ZEALAND EXCHANGE'] = False
+intradayGraphUrl['BUENOS AIRES EXCHANGE'] = "http://ichart.finance.yahoo.com/b?s=%s.BA"
+intradayGraphUrlUseISIN['BUENOS AIRES EXCHANGE'] = False
+intradayGraphUrl['MEXICO EXCHANGE'] = "http://ichart.finance.yahoo.com/b?s=%s.MX"
+intradayGraphUrlUseISIN['MEXICO EXCHANGE'] = False
 
 # in ms, time before activating XYPopup
 timerForXYPopup = 500

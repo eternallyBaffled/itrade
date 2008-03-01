@@ -233,6 +233,30 @@ registerImportConnector('MADRID EXCHANGE','MAD',QLIST_ANY,QTAG_IMPORT,gImportYah
 
 registerImportConnector('FRANKFURT EXCHANGE','FRA',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
 
+registerImportConnector('STOCKHOLM EXCHANGE','STO',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
+
+registerImportConnector('COPENHAGEN EXCHANGE','CSE',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
+
+registerImportConnector('OSLO EXCHANGE','OSL',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
+
+registerImportConnector('SAO PAOLO EXCHANGE','SAO',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
+
+registerImportConnector('HONG KONG EXCHANGE','HKG',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
+
+registerImportConnector('SHANGHAI EXCHANGE','SHG',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
+
+registerImportConnector('SHENZHEN EXCHANGE','SHE',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
+
+registerImportConnector('NATIONAL EXCHANGE OF INDIA','NSE',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
+
+registerImportConnector('BOMBAY EXCHANGE','BSE',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
+
+registerImportConnector('NEW ZEALAND EXCHANGE','NZE',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
+
+registerImportConnector('BUENOS AIRES EXCHANGE','BUE',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
+
+registerImportConnector('MEXICO EXCHANGE','MEX',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
+
 # ============================================================================
 # Test ME
 #
