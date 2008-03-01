@@ -41,6 +41,7 @@ OSLO EXCHANGE		OSL	YAHOO FINANCE
 STOCKHOLM EXCHANGE	STO	YAHOO FINANCE
 COPENHAGEN EXCHANGE	CSE     YAHOO FINANCE
 SHENZHEN EXCHANGE	SHE	YAHOO FINANCE
+BOMBAY EXCHANGE		BSE	YAHOO FINANCE
 
 ===============================================================================
 History data
@@ -78,6 +79,7 @@ OSLO EXCHANGE		OSL	YAHOO FINANCE
 STOCKHOLM EXCHANGE	STO	YAHOO FINANCE
 COPENHAGEN EXCHANGE	CSE     YAHOO FINANCE
 SHENZHEN EXCHANGE	SHE	YAHOO FINANCE
+BOMBAY EXCHANGE		BSE	YAHOO FINANCE
 
 Manual importation is possible.
 File format is EBP (ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME)
@@ -118,6 +120,7 @@ OSLO EXCHANGE		OSL	OSLOBORS
 STOCKHOLM EXCHANGE	STO	OMX MARKET
 COPENHAGEN EXCHANGE	CSE     OMX MARKET
 SHENZHEN EXCHANGE	SHE	www.szse.cn
+BOMBAY EXCHANGE		BSE	BSE INDIA
 
 ===============================================================================
 Intraday data
@@ -155,5 +158,6 @@ OSLO EXCHANGE		OSL	not available yet
 STOCKHOLM EXCHANGE	STO	not available yet
 COPENHAGEN EXCHANGE	CSE     not available yet
 SHENZHEN EXCHANGE	SHE	not available yet
+BOMBAY EXCHANGE		BSE	not available yet
 
 ===============================================================================
