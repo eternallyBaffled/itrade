@@ -157,7 +157,7 @@ class iTradeQuoteListDialog(wx.Dialog):
         label = wx.StaticText(self, -1, message('prop_market'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.editMarket = wx.ComboBox(self,-1, "", size=wx.Size(160,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
+        self.editMarket = wx.ComboBox(self,-1, "", size=wx.Size(200,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
         box.Add(self.editMarket, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_COMBOBOX(self,self.editMarket.GetId(),self.OnMarket)
 
@@ -418,7 +418,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         label = wx.StaticText(self, -1, message('quote_select_market'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.wxMarketCtrl = wx.ComboBox(self,-1, "", size=wx.Size(140,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
+        self.wxMarketCtrl = wx.ComboBox(self,-1, "", size=wx.Size(200,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
         box.Add(self.wxMarketCtrl, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_COMBOBOX(self,self.wxMarketCtrl.GetId(),self.OnMarket)
 
