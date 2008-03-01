@@ -40,6 +40,7 @@ itrade_quotes_buenos-aires.py
 itrade_quotes_oslo.py
 itrade_quotes_omx.py
 itrade_quotes_shenzhen.py
+itrade_quotes_bombay.py
 
 # login
 
