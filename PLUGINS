@@ -37,6 +37,7 @@ FRANKFURT EXCHANGE	FRA	YAHOO FINANCE
 NSE OF INDIA        	NSE	YAHOO FINANCE
 NEW ZEALAND EXCHANGE    NZE	YAHOO FINANCE
 BUENOS AIRES EXCHANGE   BUE	YAHOO FINANCE
+OSLO EXCHANGE		OSL	YAHOO FINANCE
 
 ===============================================================================
 History data
@@ -70,6 +71,7 @@ FRANKFURT EXCHANGE	FRA	YAHOO FINANCE
 NSE OF INDIA        	NSE	YAHOO FINANCE
 NEW ZEALAND EXCHANGE    NZE	YAHOO FINANCE
 BUENOS AIRES EXCHANGE   BUE	YAHOO FINANCE
+OSLO EXCHANGE		OSL	YAHOO FINANCE
 
 Manual importation is possible.
 File format is EBP (ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME)
@@ -106,6 +108,7 @@ FRANKFURT EXCHANGE	FRA	XETRA
 NSE OF INDIA        	NSE	www.nse-india.com
 NEW ZEALAND EXCHANGE    NZE	NZXMARKET
 BUENOS AIRES EXCHANGE   BUE     BOLSAR
+OSLO EXCHANGE		OSL	OSLOBORS
 
 ===============================================================================
 Intraday data
@@ -139,5 +142,6 @@ FRANKFURT EXCHANGE	FRA	not available yet
 NSE OF INDIA        	NSE	not available yet
 NEW ZEALAND EXCHANGE    NZE	not available yet
 BUENOS AIRES EXCHANGE   BUE	not available yet
+OSLO EXCHANGE		OSL	not available yet
 
 ===============================================================================
