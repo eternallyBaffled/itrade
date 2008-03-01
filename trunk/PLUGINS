@@ -34,6 +34,8 @@ SWISS EXCHANGE		XVTX	YAHOO FINANCE
 IRISH EXCHANGE          DUB	YAHOO FINANCE
 MADRID EXCHANGE		MAD	YAHOO FINANCE
 FRANKFURT EXCHANGE	FRA	YAHOO FINANCE
+NSE OF INDIA        	NSE	YAHOO FINANCE
+NEW ZEALAND EXCHANGE    NZE	YAHOO FINANCE
 
 ===============================================================================
 History data
@@ -64,6 +66,8 @@ SWISS EXCHANGE		XVTX	YAHOO FINANCE
 IRISH EXCHANGE          DUB	YAHOO FINANCE
 MADRID EXCHANGE		MAD	YAHOO FINANCE
 FRANKFURT EXCHANGE	FRA	YAHOO FINANCE
+NSE OF INDIA        	NSE	YAHOO FINANCE
+NEW ZEALAND EXCHANGE    NZE	YAHOO FINANCE
 
 Manual importation is possible.
 File format is EBP (ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME)
@@ -97,6 +101,8 @@ SWISS EXCHANGE		XVTX	SWX
 IRISH EXCHANGE          DUB	IRISH STOCK EXCHANGE (www.ise.ie)
 MADRID EXCHANGE		MAD	not available yet
 FRANKFURT EXCHANGE	FRA	XETRA
+NSE OF INDIA        	NSE	www.nse-india.com
+NEW ZEALAND EXCHANGE    NZE	http://www.nzx.com/nzxmarket/nzsx/sx_market_list
 
 ===============================================================================
 Intraday data
@@ -127,5 +133,7 @@ SWISS EXCHANGE		XVTX	not available yet
 IRISH EXCHANGE          DUB	not available yet
 MADRID EXCHANGE		MAD	not available yet
 FRANKFURT EXCHANGE	FRA	not available yet
+NSE OF INDIA        	NSE	not available yet
+NEW ZEALAND EXCHANGE    NZE	not available yet
 
 ===============================================================================
