@@ -62,6 +62,16 @@ currencies_CUR = {
     'GBX' : u'\u0070', # 'p',
     'AUD' : u'\u0024', # '$'
     'CHF' : u'\u0046', # 'F'
+    'NOK' : u'\u006B\u0072', #'Kr'
+    'SEK' : u'\u006B\u0072', #'Kr'
+    'DKK' : u'\u006B\u0072', #'Kr'
+    'BRL' : u'\u0052\u0024\u0020', #'R$'
+    'HKD' : u'\u0048\u004B\u0024', #'HK$'
+    'CNY' : u'\uFFE5', #'¥'
+    'INR' : u'\u0930\u0941', #''
+    'NZD' : u'\u0024', # '$'
+    'ARS' : u'\u0024', # '$'
+    'MXN' : u'\u0024', # '$'
     'N/A' : u'\u0020', # ' '
     }
 
@@ -72,7 +82,7 @@ def currency2symbol(cur):
         return cur
 
 def list_of_currencies():
-    return ('EUR','USD','JPY','GBP','GBX','AUD','CAD','CHF')
+    return ('EUR','USD','JPY','GBP','GBX','AUD','CAD','CHF','NOK','SEK','DKK','BRL','HKD','CNY','INR','NZD','ARS','MXN',)
 
 # ============================================================================
 # Build list of supported currencies
