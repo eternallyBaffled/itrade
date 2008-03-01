@@ -37,6 +37,7 @@ itrade_quotes_xetra.py
 itrade_quotes_nse.py
 itrade_quotes_nze.py
 itrade_quotes_buenos-aires.py
+itrade_quotes_oslo.py
 
 # login
 

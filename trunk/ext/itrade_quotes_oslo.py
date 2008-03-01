@@ -2,15 +2,14 @@
 # -*- coding: iso-8859-1 -*-
 # ============================================================================
 # Project Name : iTrade
-# Module Name  : itrade_quotes_buenos-aires.py
+# Module Name  : itrade_quotes_oslo.py
 #
-# Description: List of quotes from
-#   http://www.bolsar.com/NET/Research/Especies/Acciones.aspx
+# Description: List of quotes from http://www.oslobors.no/ob/vis_aksjer
 #
 # Developed for iTrade code (http://itrade.sourceforge.net).
 #
 # Original template for "plug-in" to iTrade is from Gilles Dumortier.
-# New code for BUE is from Michel Legrand.
+# New code for OSLO is from Michel Legrand.
 #
 # Portions created by the Initial Developer are Copyright (C) 2007-2008 the
 # Initial Developer. All Rights Reserved.
@@ -44,7 +43,6 @@ import re
 import thread
 import time
 import string
-import urllib
 
 # iTrade system
 import itrade_config
@@ -54,88 +52,95 @@ from itrade_ext import *
 from itrade_connection import ITradeConnection
 
 # ============================================================================
-# Import_ListOfQuotes_BUE()
+# Import_ListOfQuotes_OSLO()
 #
 # ============================================================================
 
-
-def Import_ListOfQuotes_BUE(quotes,market='BUENOS AIRES EXCHANGE',dlg=None,x=0):
+def Import_ListOfQuotes_OSLO(quotes,market='OSLO EXCHANGE',dlg=None,x=0):
     print 'Update %s list of symbols' % market
     connection=ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
 
-    if market=='BUENOS AIRES EXCHANGE':
-        url = 'http://www.bolsar.com/NET/Research/Especies/Acciones.aspx'
+    if market=='OSLO EXCHANGE':
+        url = "http://www.oslobors.no/ob/vis_aksjer"
     else:
         return False
 
-    try:
-        data=urllib.urlopen(url)
+    def splitLines(buf):
+        lines = string.split(buf, '\n')
+        lines = filter(lambda x:x, lines)
+        def removeCarriage(s):
+            if s[-1]=='\r':
+                return s[:-1]
+            else:
+                return s
+        lines = [removeCarriage(l) for l in lines]
+        return lines
 
+    try:
+        data=connection.getDataFromUrl(url)
     except:
-        debug('Import_ListOfQuotes_BUE unable to connect :-(')
+        debug('Import_ListOfQuotes_OSLO:unable to connect :-(')
         return False
 
+    # returns the data
+    lines = splitLines(data)
+
+    count = 0
     nlines = 0
-    i = 0
-    n = 0
-    ch_ticker = '		<td Class="Oscuro"><A href="/NET/Research/Especies/Acciones.aspx?especie='
-    ch_name = '		<td><A class="LinkAzul" href="../sociedades/fichaTecnica.aspx?emisor='
+    i = 1
 
-    #typical lines:
-            #<tr Class="Claro">
-    #		<td Class="Oscuro"><A href="/NET/Research/Especies/Acciones.aspx?especie=4">ACIN</a></td>
-    #		<td>Ordinarias Escriturales &quot;B&quot; (1 Voto)</td>
-    #		<td>ARP008791179</td>
-    #		<td><A class="LinkAzul" href="../sociedades/fichaTecnica.aspx?emisor=2">ACINDAR S.A.</a></td>
+    for line in lines:
 
-    for line in data:
-        if ch_ticker in line:
-            i = 1
-            ticker = line[len(ch_ticker):]
-            ticker = ticker[ticker.index('">')+2 : ticker.index('</a></td>')]
-            #print ticker
-        elif i == 1:
-            n= n + 1
-            if n == 2:
-                isin = line[line.index('<td>')+4:line.index('</td>')]
+        #typical lines:
+        #<a href="/ob/aksje_kursutvikling?menu2show=1.1.2.1.&p_instrid=ticker.ose.ASC" target="_top">ABG Sundal Collier</a>
+        #</p>
+        #</td><td>
+        #<p style="text-align:left;">NO0003021909</p>
+        # extract data
+
+        if i==1:
+            ch ='<a href="/ob/aksje_kursutvikling?menu2show=1.1.2.1.&p_instrid=ticker.ose.'
+            if ch == line[:len(ch)]:
+                i = 1 - i
+                ch = line.strip()
+                ch = ch[73:-4]
+                ticker = ch[:ch.index('"')]
+                name = ch[ch.index('>')+1:]
+                #print name,type(name)
+                name = name.replace('&amp;','&')
+                name = name.replace('&aelig;','ae')#Æ
+                name = name.replace('&oslash;','o')#ø
+                name = name.replace('&Oslash;','O')#Ø
+                #name = name.upper()
+                #print name
+
+        elif i==0:
+            ch ='<p style="text-align:left;">'
+            if ch == line[:len(ch)]:
+                i = 1 - i
+                ch = line.strip()
+                isin = ch[28:-4]
                 #print isin
-            if n == 3:
-                name = line[len(ch_name):]
-                name = name[name.index('">')+2:name.index('</a></td>')]
-
-                name = name.decode('utf-8').encode('cp1252')
-
-                name = name.replace(' S.A.','')
-                name = name.replace(' S. A.','')
-                name = name.replace(',','')
-
-                name = name.replace('í','i') #í
-                name = name.replace('Í','i') #Í
-                name = name.replace('ó','o') #Ó
-                name = name.replace('Á','a') #Á
-                name = name.replace('Ñ','n') #Ñ
-
-                name = name.upper()
-                i = 0
-                n = 0
 
                 # ok to proceed
-                if isin!='':
-                    quotes.addQuote(isin=isin,name=name, \
-                    ticker=ticker,market='BUENOS AIRES EXCHANGE',currency='ARS',place='BUE',country='AR')
-                    nlines = nlines + 1
 
-    print 'Imported %d lines from BUENOS AIRES EXCHANGE data.' % (nlines)
-    data.close()
+                quotes.addQuote(isin=isin,name=name, \
+                ticker=ticker,market='OSLO EXCHANGE',currency='NOK',place='OSL',country='NO')
+                count = count + 1
+
+                nlines = nlines + 1
+
+    print 'Imported %d/%d lines from OSLO EXCHANGE data.' % (count,nlines)
+
     return True
 
 # ============================================================================
 # Export me
 # ============================================================================
 
-registerListSymbolConnector('BUENOS AIRES EXCHANGE','BUE',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_BUE)
+registerListSymbolConnector('OSLO EXCHANGE','OSL',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_OSLO)
 
 # ============================================================================
 # Test ME
@@ -146,7 +151,7 @@ if __name__=='__main__':
 
     from itrade_quotes import quotes
 
-    Import_ListOfQuotes_BUE(quotes,'BUENOS AIRES EXCHANGE')
+    Import_ListOfQuotes_OSLO(quotes,'OSLO EXCHANGE')
     quotes.saveListOfQuotes()
 
 # ============================================================================
