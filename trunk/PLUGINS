@@ -40,6 +40,7 @@ BUENOS AIRES EXCHANGE   BUE	YAHOO FINANCE
 OSLO EXCHANGE		OSL	YAHOO FINANCE
 STOCKHOLM EXCHANGE	STO	YAHOO FINANCE
 COPENHAGEN EXCHANGE	CSE     YAHOO FINANCE
+SHENZHEN EXCHANGE	SHE	YAHOO FINANCE
 
 ===============================================================================
 History data
@@ -76,6 +77,7 @@ BUENOS AIRES EXCHANGE   BUE	YAHOO FINANCE
 OSLO EXCHANGE		OSL	YAHOO FINANCE
 STOCKHOLM EXCHANGE	STO	YAHOO FINANCE
 COPENHAGEN EXCHANGE	CSE     YAHOO FINANCE
+SHENZHEN EXCHANGE	SHE	YAHOO FINANCE
 
 Manual importation is possible.
 File format is EBP (ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME)
@@ -115,6 +117,7 @@ BUENOS AIRES EXCHANGE   BUE     BOLSAR
 OSLO EXCHANGE		OSL	OSLOBORS
 STOCKHOLM EXCHANGE	STO	OMX MARKET
 COPENHAGEN EXCHANGE	CSE     OMX MARKET
+SHENZHEN EXCHANGE	SHE	www.szse.cn
 
 ===============================================================================
 Intraday data
@@ -151,5 +154,6 @@ BUENOS AIRES EXCHANGE   BUE	not available yet
 OSLO EXCHANGE		OSL	not available yet
 STOCKHOLM EXCHANGE	STO	not available yet
 COPENHAGEN EXCHANGE	CSE     not available yet
+SHENZHEN EXCHANGE	SHE	not available yet
 
 ===============================================================================
