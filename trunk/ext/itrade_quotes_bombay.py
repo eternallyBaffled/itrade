@@ -85,7 +85,7 @@ def Import_ListOfQuotes_BSE(quotes,market='BOMBAY EXCHANGE',dlg=None,x=0):
 
     # symbol list of bombay exchange
 
-    group = ['A','B1','B2','S','T','TS'] #['Z'] no quote in group Z with yahoo
+    group = ['A','B','S','T','TS'] #['Z'] no quote in group Z with yahoo
     select_alpha = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','[0-9]']
 
     nlines = 0
@@ -93,7 +93,7 @@ def Import_ListOfQuotes_BSE(quotes,market='BOMBAY EXCHANGE',dlg=None,x=0):
 
 
     for groupLetter in group:
-        n = 0
+
         if groupLetter == 'Z': beginurl = 'http://www.bseindia.com/about/datal/disp.asp?';groupLetter='';midurl='select_alp='
 
         for letter in select_alpha:
@@ -105,9 +105,11 @@ def Import_ListOfQuotes_BSE(quotes,market='BOMBAY EXCHANGE',dlg=None,x=0):
                 url = beginurl+groupLetter+midurl+letter
                 if currentpage>1: url=url+endurl+str(currentpage)
 
-                print
-                print 'Import List of Compagnies Group-%s , Letter %s, Page %s' % (groupLetter,letter,currentpage)
-                print
+                dlg.Update(x,'%s : %s , %s'%(market,groupLetter,letter))
+
+                #print
+                #print 'Import List of Compagnies Group-%s , Letter %s, Page %s' % (groupLetter,letter,currentpage)
+                #print
 
                 try:
                     source = urllib.urlopen(url)
@@ -125,25 +127,16 @@ def Import_ListOfQuotes_BSE(quotes,market='BOMBAY EXCHANGE',dlg=None,x=0):
                     if line.find('href=..') and len(line)>50:
                         ticker = line[:line.index('>')]
                         name = line[len(ticker)+1:line.index('<')]
-
-                        # build isin group
-                        n = n + 1
-                        newisin = str(n)
-                        if len(newisin) == 1: falseisin = groupLetter+'-000000000'+newisin
-                        if len(newisin) == 2: falseisin = groupLetter+'-00000000'+newisin
-                        if len(newisin) == 3: falseisin = groupLetter+'-0000000'+newisin
-                        if len(newisin) == 4: falseisin = groupLetter+'-000000'+newisin
-                        if len(groupLetter) == 2: falseisin = falseisin[:3]+falseisin[4:]
-                        #fileticker.write(falseisin+';'+name+';'+ticker+endLine+'\n')
+                        isin = ''
 
                         # ok to proceed
-                        falseisin = ''
-                        quotes.addQuote(isin=falseisin,name=name, \
+
+                        quotes.addQuote(isin=isin,name=name, \
                         ticker=ticker,market='BOMBAY EXCHANGE',currency='INR',place='BSE',country='IN')
 
                         nlines = nlines + 1
 
-                        print name,ticker
+                        #print name,ticker
 
                     if line.find('Next')<>-1:
                         next_page = 0
