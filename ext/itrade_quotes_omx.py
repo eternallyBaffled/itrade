@@ -9,7 +9,7 @@
 # The Original Code is iTrade code (http://itrade.sourceforge.net).
 #
 # Original template for "plug-in" to iTrade is from Gilles Dumortier.
-# New code for BUE is from Michel Legrand.
+# New code for OMX is from Michel Legrand.
 #
 # Portions created by the Initial Developer are Copyright (C) 2004-2008 the
 # Initial Developer. All Rights Reserved.
@@ -68,7 +68,7 @@ def Import_ListOfQuotes_OMX(quotes,market='STOCKHOLM EXCHANGE',dlg=None,x=0):
     # find url to update list
     ch ='href="/digitalAssets/'
     try:
-        url = connection.getDataFromUrl('http://omxgroup.com/nordicexchange/products/')
+        url = connection.getDataFromUrl('http://www.omxnordicexchange.com/products/')
     except:
         info('Import_ListOfQuotes_OMX_%s:unable to get XLS file name :-(' % market)
         return False
