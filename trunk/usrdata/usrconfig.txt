@@ -1,6 +1,6 @@
 [column]
 indicators = 8;0
-portfolio = 10;1
+portfolio = 5;0
 stops = 10;0
 quotes = 11;1
 

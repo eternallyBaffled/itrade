@@ -388,6 +388,8 @@ portfolio_desc_opdelete; Supprime l'opération courante
 portfolio_opmodify;&Modifier
 portfolio_desc_opmodify; Modifie l'opération courante
 
+portfolio_text;Taille du texte
+portfolio_desc_text;Choix de la taille du texte pour l'affichage des opérations
 portfolio_view_small;Texte rétréci
 portfolio_view_desc_small; Utilise une taille rétrécie de texte pour l'affichage des opérations
 portfolio_view_normal;Texte normal

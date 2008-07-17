@@ -72,9 +72,9 @@ ID_DISPCASH = 122
 ID_DISPSRD = 123
 ID_DISPPVAL = 124
 
-ID_SMALL_VIEW = 230
-ID_NORMAL_VIEW = 231
-ID_BIG_VIEW = 232
+ID_SMALL_TEXT = 230
+ID_NORMAL_TEXT = 231
+ID_BIG_TEXT = 232
 
 ID_MODIFY = 150
 ID_DELETE = 151
@@ -89,11 +89,11 @@ ID_ALLYEARS = 203
 # display mode
 # ============================================================================
 
+DISP_ALL    = 0
 DISP_QUOTES = 1
 DISP_CASH   = 2
+DISP_SRD    = 3
 DISP_PVAL   = 4
-DISP_SRD    = 8
-DISP_ALL    = 15
 
 # ============================================================================
 # period mode
@@ -474,8 +474,8 @@ class iTradeOperationToolbar(wx.ToolBar):
         self._NTB2_DISPALL = wx.NewId()
         self._NTB2_DISPQUOTES = wx.NewId()
         self._NTB2_DISPCASH = wx.NewId()
-        self._NTB2_DISPPVAL = wx.NewId()
         self._NTB2_DISPSRD = wx.NewId()
+        self._NTB2_DISPPVAL = wx.NewId()
 
         self._NTB2_ADD = wx.NewId()
         self._NTB2_MODIFY = wx.NewId()
@@ -494,8 +494,8 @@ class iTradeOperationToolbar(wx.ToolBar):
         self.AddRadioLabelTool(self._NTB2_DISPALL,'',wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispall.png')),wx.NullBitmap,message('portfolio_dispall'),message('portfolio_desc_dispall'))
         self.AddRadioLabelTool(self._NTB2_DISPQUOTES,'',wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispquote.png')),wx.NullBitmap,message('portfolio_dispquotes'),message('portfolio_desc_dispquotes'))
         self.AddRadioLabelTool(self._NTB2_DISPCASH,'',wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispcash.png')),wx.NullBitmap,message('portfolio_dispcash'),message('portfolio_desc_dispcash'))
-        self.AddRadioLabelTool(self._NTB2_DISPPVAL,'',wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispvalue.png')),wx.NullBitmap,message('portfolio_dispvalues'),message('portfolio_desc_dispvalues'))
         self.AddRadioLabelTool(self._NTB2_DISPSRD,'',wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispsrd.png')),wx.NullBitmap,message('portfolio_dispsrd'),message('portfolio_desc_dispsrd'))
+        self.AddRadioLabelTool(self._NTB2_DISPPVAL,'',wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispvalue.png')),wx.NullBitmap,message('portfolio_dispvalues'),message('portfolio_desc_dispvalues'))
 
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
 
@@ -515,8 +515,8 @@ class iTradeOperationToolbar(wx.ToolBar):
         wx.EVT_TOOL(self, self._NTB2_DISPALL, self.onDispAll)
         wx.EVT_TOOL(self, self._NTB2_DISPQUOTES, self.onDispQuotes)
         wx.EVT_TOOL(self, self._NTB2_DISPCASH, self.onDispCash)
-        wx.EVT_TOOL(self, self._NTB2_DISPPVAL, self.onDispPVal)
         wx.EVT_TOOL(self, self._NTB2_DISPSRD, self.onDispSRD)
+        wx.EVT_TOOL(self, self._NTB2_DISPPVAL, self.onDispPVal)
 
         wx.EVT_TOOL(self, self._NTB2_MODIFY, self.onModify)
         wx.EVT_TOOL(self, self._NTB2_DELETE, self.onDelete)
@@ -538,11 +538,11 @@ class iTradeOperationToolbar(wx.ToolBar):
     def onDispCash(self,event):
         self.m_parent.OnDispCash(event)
 
-    def onDispPVal(self,event):
-        self.m_parent.OnDispPVal(event)
-
     def onDispSRD(self,event):
         self.m_parent.OnDispSRD(event)
+
+    def onDispPVal(self,event):
+        self.m_parent.OnDispPVal(event)
 
     def onAdd(self,event):
         self.m_parent.OnAdd(event)
@@ -593,15 +593,16 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
 
         self.dispmenu = wx.Menu()
         self.dispmenu.AppendRadioItem(ID_DISPALL,message('portfolio_dispall'),message('portfolio_desc_dispall'))
-        #self.dispmenu.AppendSeparator()
         self.dispmenu.AppendRadioItem(ID_DISPQUOTES,message('portfolio_dispquotes'),message('portfolio_desc_dispquotes'))
         self.dispmenu.AppendRadioItem(ID_DISPCASH,message('portfolio_dispcash'),message('portfolio_desc_dispcash'))
-        self.dispmenu.AppendRadioItem(ID_DISPPVAL,message('portfolio_dispvalues'),message('portfolio_desc_dispvalues'))
         self.dispmenu.AppendRadioItem(ID_DISPSRD,message('portfolio_dispsrd'),message('portfolio_desc_dispsrd'))
+        self.dispmenu.AppendRadioItem(ID_DISPPVAL,message('portfolio_dispvalues'),message('portfolio_desc_dispvalues'))
         self.dispmenu.AppendSeparator()
-        self.dispmenu.AppendRadioItem(ID_SMALL_VIEW, message('portfolio_view_small'),message('portfolio_view_desc_small'))
-        self.dispmenu.AppendRadioItem(ID_NORMAL_VIEW, message('portfolio_view_normal'),message('portfolio_view_desc_normal'))
-        self.dispmenu.AppendRadioItem(ID_BIG_VIEW, message('portfolio_view_big'),message('portfolio_view_desc_big'))
+	self.textmenu = wx.Menu()
+	self.dispmenu.AppendSubMenu(self.textmenu, message('portfolio_text'),message('portfolio_desc_text'))
+        self.textmenu.AppendRadioItem(ID_SMALL_TEXT, message('portfolio_view_small'),message('portfolio_view_desc_small'))
+        self.textmenu.AppendRadioItem(ID_NORMAL_TEXT, message('portfolio_view_normal'),message('portfolio_view_desc_normal'))
+        self.textmenu.AppendRadioItem(ID_BIG_TEXT, message('portfolio_view_big'),message('portfolio_view_desc_big'))
 
         self.opmenu = wx.Menu()
         self.opmenu.Append(ID_MODIFY,message('portfolio_opmodify'),message('portfolio_desc_opmodify'))
@@ -669,12 +670,12 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
         wx.EVT_MENU(self, ID_DISPALL, self.OnDispAll)
         wx.EVT_MENU(self, ID_DISPQUOTES, self.OnDispQuotes)
         wx.EVT_MENU(self, ID_DISPCASH, self.OnDispCash)
-        wx.EVT_MENU(self, ID_DISPPVAL, self.OnDispPVal)
         wx.EVT_MENU(self, ID_DISPSRD, self.OnDispSRD)
+        wx.EVT_MENU(self, ID_DISPPVAL, self.OnDispPVal)
 
-        wx.EVT_MENU(self, ID_SMALL_VIEW, self.OnViewSmall)
-        wx.EVT_MENU(self, ID_NORMAL_VIEW, self.OnViewNormal)
-        wx.EVT_MENU(self, ID_BIG_VIEW, self.OnViewBig)
+        wx.EVT_MENU(self, ID_SMALL_TEXT, self.OnTextSmall)
+        wx.EVT_MENU(self, ID_NORMAL_TEXT, self.OnTextNormal)
+        wx.EVT_MENU(self, ID_BIG_TEXT, self.OnTextBig)
 
         wx.EVT_MENU(self, ID_MODIFY, self.OnModify)
         wx.EVT_MENU(self, ID_DELETE, self.OnDelete)
@@ -709,15 +710,15 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
         for i in range(0,IDC_RESERVED):
             self.m_list.SetColumnWidth(i, wx.LIST_AUTOSIZE)
 
-    def OnViewSmall(self,e):
+    def OnTextSmall(self,e):
         itrade_config.operationFontSize = 1
         self.OnChangeViewText()
 
-    def OnViewNormal(self,e):
+    def OnTextNormal(self,e):
         itrade_config.operationFontSize = 2
         self.OnChangeViewText()
 
-    def OnViewBig(self,e):
+    def OnTextBig(self,e):
         itrade_config.operationFontSize = 3
         self.OnChangeViewText()
 
@@ -872,10 +873,11 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
                         else:
                             self.m_list.SetStringItem(x,IDC_SRD,'')
                             vsrd = 0.0
+                        self.m_list.SetStringItem(x,IDC_RESERVED,'%d' % eachOp.ref())
                     else:
                         vsrd = 0.0
+                        self.m_list.SetStringItem(x,IDC_SRD,'%d' % eachOp.ref())
 
-                    self.m_list.SetStringItem(x,IDC_RESERVED,'%d' % eachOp.ref())
                     self.itemDataMap[x] = (eachOp.date().strftime('%Y%M%D'),eachOp.operation(),eachOp.description(),eachOp.nv_number(),vdebit,vcredit,eachOp.nv_expenses(),balance,vsrd)
                     self.itemOpMap[x] = eachOp.ref()
 
@@ -917,14 +919,15 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
 
     def updateMenuItems(self):
         # period
-        m = self.permenu.FindItemById(ID_30DAYS)
-        m.Check(self.m_period == PERIOD_30DAYS)
-        m = self.permenu.FindItemById(ID_90DAYS)
-        m.Check(self.m_period == PERIOD_90DAYS)
-        m = self.permenu.FindItemById(ID_CURRENTYEAR)
-        m.Check(self.m_period == PERIOD_CURRENTYEAR)
-        m = self.permenu.FindItemById(ID_ALLYEARS)
-        m.Check(self.m_period == PERIOD_ALLYEARS)
+        if self.m_period == PERIOD_ALLYEARS:
+            m = self.permenu.FindItemById(ID_ALLYEARS)
+        elif self.m_period == PERIOD_CURRENTYEAR:
+            m = self.permenu.FindItemById(ID_CURRENTYEAR)
+        elif self.m_period == PERIOD_90DAYS:
+            m = self.permenu.FindItemById(ID_90DAYS)
+        elif self.m_period == PERIOD_30DAYS:
+            m = self.permenu.FindItemById(ID_30DAYS)
+        m.Check(True)
 
         # operations
         m = self.opmenu.FindItemById(ID_DELETE)
@@ -934,22 +937,23 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
         m.Enable(self.m_currentItem>=0)
 
         # display
-        m = self.dispmenu.FindItemById(ID_DISPALL)
-        m.Check(self.m_mode == DISP_ALL)
-        m = self.dispmenu.FindItemById(ID_DISPQUOTES)
-        m.Check(self.m_mode == DISP_QUOTES)
-        m = self.dispmenu.FindItemById(ID_DISPCASH)
-        m.Check(self.m_mode == DISP_CASH)
-        m = self.dispmenu.FindItemById(ID_DISPSRD)
-        m.Check(self.m_mode == DISP_SRD)
-        m = self.dispmenu.FindItemById(ID_DISPPVAL)
-        m.Check(self.m_mode == DISP_PVAL)
+        if self.m_mode == DISP_ALL:
+            m = self.dispmenu.FindItemById(ID_DISPALL)
+        elif self.m_mode == DISP_QUOTES:
+            m = self.dispmenu.FindItemById(ID_DISPQUOTES)
+        elif self.m_mode == DISP_CASH:
+            m = self.dispmenu.FindItemById(ID_DISPCASH)
+        elif self.m_mode == DISP_SRD:
+            m = self.dispmenu.FindItemById(ID_DISPSRD)
+        elif self.m_mode == DISP_PVAL:
+            m = self.dispmenu.FindItemById(ID_DISPPVAL)
+        m.Check(True)
 
-        m = self.dispmenu.FindItemById(ID_SMALL_VIEW)
+        m = self.textmenu.FindItemById(ID_SMALL_TEXT)
         m.Check(itrade_config.operationFontSize==1)
-        m = self.dispmenu.FindItemById(ID_NORMAL_VIEW)
+        m = self.textmenu.FindItemById(ID_NORMAL_TEXT)
         m.Check(itrade_config.operationFontSize==2)
-        m = self.dispmenu.FindItemById(ID_BIG_VIEW)
+        m = self.textmenu.FindItemById(ID_BIG_TEXT)
         m.Check(itrade_config.operationFontSize==3)
 
     def OnClose(self,e):
@@ -957,57 +961,57 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
 
     def OnDispAll(self,e):
         self.m_mode = DISP_ALL
-        self.populate()
         self.updateMenuItems()
         self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_DISPALL,True)
+        self.populate()
 
     def OnDispQuotes(self,e):
         self.m_mode = DISP_QUOTES
-        self.populate()
         self.updateMenuItems()
         self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_DISPQUOTES,True)
+        self.populate()
 
     def OnDispCash(self,e):
         self.m_mode = DISP_CASH
-        self.populate()
         self.updateMenuItems()
         self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_DISPCASH,True)
+        self.populate()
 
     def OnDispSRD(self,e):
         self.m_mode = DISP_SRD
-        self.populate()
         self.updateMenuItems()
         self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_DISPSRD,True)
+        self.populate()
 
     def OnDispPVal(self,e):
         self.m_mode = DISP_PVAL
-        self.populate()
         self.updateMenuItems()
         self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_DISPPVAL,True)
+        self.populate()
 
     def On30Days(self,e):
         self.m_period = PERIOD_30DAYS
-        self.populate()
         self.updateMenuItems()
         self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_30DAYS,True)
+        self.populate()
 
     def On90Days(self,e):
         self.m_period = PERIOD_90DAYS
-        self.populate()
         self.updateMenuItems()
         self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_90DAYS,True)
+        self.populate()
 
     def OnCurrentYear(self,e):
         self.m_period = PERIOD_CURRENTYEAR
-        self.populate()
         self.updateMenuItems()
         self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_CURRENTYEAR,True)
+        self.populate()
 
     def OnAllYears(self,e):
         self.m_period = PERIOD_ALLYEARS
-        self.populate()
         self.updateMenuItems()
         self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_ALLYEARS,True)
+        self.populate()
 
     def OnSize(self, event):
         w,h = self.GetClientSizeTuple()

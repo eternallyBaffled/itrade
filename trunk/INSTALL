@@ -49,7 +49,7 @@ This is how I did it on my Slackware 10.2:
 	./configure --prefix=/usr; make; su -c "make install"
 2. Install glib2 (2.12.13)
 	Download the source from "http://www.gtk.org/download/"
-	While you are there, download also gtk (1.10.14) and pango (1.12.4) but
+	While you are there, download also gtk (2.10.14) and pango (1.12.4) but
 	don't try to install them now
 	Remove the slackware package named "glib2"
 	./configure --prefix=/usr; make; su -c "make install"
