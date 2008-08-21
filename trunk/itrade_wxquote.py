@@ -54,7 +54,7 @@ from itrade_config import *
 import itrade_wxversion
 import wx
 import wx.grid as gridlib
-import wxaddons.sized_controls as sc
+import wx.lib.sized_controls as sc
 
 # matplotlib system
 import matplotlib

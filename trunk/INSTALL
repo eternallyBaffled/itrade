@@ -9,10 +9,10 @@ Installation information can be found in the user guide :
 
 From iTrade source package, we recommend you to install :
 
- Python      http://www.python.org                    v 2.5 or better
- wxPython    http://www.wxpython.org                  v 2.8.x or better (UNICODE)
- numpy       http://sourceforge.net/projects/numpy    v 1.0 or better
- matplotlib  http://matplotlib.sourceforge.net        v 0.91.x or better
+ Python      http://www.python.org                    v 2.5.x or better
+ wxPython    http://www.wxpython.org                  v 2.8.8.x or better (UNICODE)
+ numpy       http://sourceforge.net/projects/numpy    v 1.1.x or better
+ matplotlib  http://matplotlib.sourceforge.net        v 0.98.x or better
  xlrd        http://www.lexicon.net/sjmachin/xlrd.htm v 0.6.1 or better
 
 Attention :
