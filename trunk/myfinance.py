@@ -480,7 +480,7 @@ def candlestick2(ax, opens, closes, highs, lows, width=4,
 
     offsetsBars = [ (i, open) for i,open in zip(xrange(len(opens)), opens) if open != -1 ]
 
-    sx = ax.figure.dpi * Value(1/72.0)  # scale for points
+    sx = ax.figure.dpi * (1.0/72.0)  # scale for points
     sy = (ax.bbox.ur().y() - ax.bbox.ll().y()) / (ax.viewLim.ur().y() - ax.viewLim.ll().y())
 
     barTransform = Affine2D().scale(sx,sy)
@@ -580,7 +580,7 @@ def volume_overlay(ax, opens, closes, volumes,
 
     bars = [ ( (left, 0), (left, v), (right, v), (right, 0)) for v in volumes if v >= 0 ]
 
-    sx = ax.figure.dpi * Value(1/72.0)  # scale for points
+    sx = ax.figure.dpi * (1.0/72.0)  # scale for points
     sy = (ax.bbox.ur().y() - ax.bbox.ll().y()) / (ax.viewLim.ur().y() - ax.viewLim.ll().y())
 
     barTransform = Affine2D().scale(sx,sy)
