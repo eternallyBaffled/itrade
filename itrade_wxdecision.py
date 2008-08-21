@@ -42,7 +42,7 @@ import locale
 # wxPython system
 import itrade_wxversion
 import wx
-import wxaddons.sized_controls as sc
+import wx.lib.sized_controls as sc
 
 # iTrade system
 from itrade_logging import *

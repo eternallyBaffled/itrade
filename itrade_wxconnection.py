@@ -43,7 +43,7 @@ import logging
 import itrade_wxversion
 import wx
 from wx.lib import masked
-import wxaddons.sized_controls as sc
+import wx.lib.sized_controls as sc
 
 # iTrade system
 from itrade_logging import *

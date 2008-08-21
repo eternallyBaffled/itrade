@@ -47,7 +47,7 @@ import locale
 import itrade_wxversion
 import wx
 import wx.lib.mixins.listctrl as wxl
-import wxaddons.sized_controls as sc
+import wx.lib.sized_controls as sc
 
 # iTrade system
 from itrade_logging import *

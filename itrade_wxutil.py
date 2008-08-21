@@ -52,7 +52,7 @@ import itrade_wxversion
 import wx
 import wx.html
 import wx.lib.wxpTag
-import wxaddons.sized_controls as sc
+import wx.lib.sized_controls as sc
 
 # matplotlib helpers
 from matplotlib.colors import colorConverter
