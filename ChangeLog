@@ -5,6 +5,12 @@ On the road for v0.4.8 (Druuna)
 
 ===============================================================================
 
+2008-08-21  Gilles Dumortier <dgil at ieee dot org>
+	* error with latest version of matplotlib - starting 0.98.1 and after
+	  (SF bug 2024622)
+	* error with latest version of wxPython - starting 2.8.8.0 and after
+	  (SF bug 2024616)
+
 2008-03-01  Gilles Dumortier <dgil at ieee dot org>
 	* some markets have long name - adjust combobox width
 
