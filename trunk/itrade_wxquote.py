@@ -60,7 +60,8 @@ import wx.lib.sized_controls as sc
 import matplotlib
 
 from matplotlib.dates import date2num, num2date
-from myfinance import candlestick, plot_day_summary2, candlestick2, index_bar, volume_overlay2, plot_day_summary3
+from myfinance import candlestick, plot_day_summary2, candlestick2, volume_overlay2, plot_day_summary3
+#from myfinance import index_bar
 
 # iTrade wxPython system
 from itrade_wxhtml import *
@@ -815,10 +816,15 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         if num>0:
 
             if self.m_dispChart1Type == 'c':
-                lc = candlestick2(self.chart1, self.m_quote.m_daytrades.m_inOpen[begin:end], self.m_quote.m_daytrades.m_inClose[begin:end], self.m_quote.m_daytrades.m_inHigh[begin:end], self.m_quote.m_daytrades.m_inLow[begin:end], width = self.zoomWidth[self.zoomLevel], colorup = 'g', colordown = 'r', alpha=1.0)
+                # __x matplotlib 0.98.3 nok
+                #lc = candlestick2(self.chart1, self.m_quote.m_daytrades.m_inOpen[begin:end], self.m_quote.m_daytrades.m_inClose[begin:end], self.m_quote.m_daytrades.m_inHigh[begin:end], self.m_quote.m_daytrades.m_inLow[begin:end], width = self.zoomWidth[self.zoomLevel], colorup = 'g', colordown = 'r', alpha=1.0)
+                pass
             elif self.m_dispChart1Type == 'l':
-                lc = plot_day_summary3(self.chart1, self.m_quote.m_daytrades.m_inClose[begin:end], ticksize=self.zoomWidth[self.zoomLevel], color='k')
+                # __x matplotlib 0.98.3 nok
+                #lc = plot_day_summary3(self.chart1, self.m_quote.m_daytrades.m_inClose[begin:end], ticksize=self.zoomWidth[self.zoomLevel], color='k')
+                pass
             elif self.m_dispChart1Type == 'o':
+                # __x matplotlib 0.98.3 ok
                 lc = plot_day_summary2(self.chart1, self.m_quote.m_daytrades.m_inOpen[begin:end], self.m_quote.m_daytrades.m_inClose[begin:end], self.m_quote.m_daytrades.m_inHigh[begin:end], self.m_quote.m_daytrades.m_inLow[begin:end], ticksize=self.zoomWidth[self.zoomLevel], colorup='k', colordown='r')
             else:
                 lc = None
@@ -839,6 +845,7 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
                 volume_overlay2(self.chart1vol, self.m_quote.m_daytrades.m_inClose[begin-1:end], self.m_quote.m_daytrades.m_inVol[begin-1:end], colorup='g', colordown='r', width=self.zoomWidth[self.zoomLevel]+1,alpha=0.5)
             #l5 = self.chart1vol.plot(self.m_quote.m_daytrades.m_ovb[begin:end],'k')
 
+            # __x matplotlib 0.98.3 nok
             volume_overlay2(self.chart2, self.m_quote.m_daytrades.m_inClose[begin-1:end], self.m_quote.m_daytrades.m_inVol[begin-1:end], colorup='g', colordown='r', width=self.zoomWidth[self.zoomLevel]+1,alpha=1.0)
             lvma15 = self.chart2.plot(self.m_quote.m_daytrades.m_vma15[begin:end],'r',antialiased=False,linewidth=0.05)
             lovb = self.chart2vol.plot(self.m_quote.m_daytrades.m_ovb[begin:end],'k',antialiased=False,linewidth=0.05)
