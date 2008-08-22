@@ -634,15 +634,15 @@ def volume_overlay2(ax, closes, volumes,
 
     """
 
-    opens = np.array(closes[:-1])
-    last = 0
-    for i in range(0,len(opens)):
-        if opens[i] == -1:
-            opens[i] = last
-        else:
-            last = opens[i]
-    return volume_overlay(ax,opens,closes[1:],volumes[1:],colorup,colordown,width,alpha)
-    #return volume_overlay(ax,closes[:-1],closes[1:],volumes[1:],colorup,colordown,width,alpha)
+    #opens = np.array(closes[:-1])
+    #last = 0
+    #for i in range(0,len(opens)):
+    #    if opens[i] == -1:
+    #        opens[i] = last
+    #    else:
+    #        last = opens[i]
+    #return volume_overlay(ax,opens,closes[1:],volumes[1:],colorup,colordown,width,alpha)
+    return volume_overlay(ax,closes[:-1],closes[1:],volumes[1:],colorup,colordown,width,alpha)
 
 
 def volume_overlay3(ax, quotes,
