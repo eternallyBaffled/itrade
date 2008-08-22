@@ -481,7 +481,7 @@ def candlestick2(ax, opens, closes, highs, lows, width=4,
     offsetsBars = [ (i, open) for i,open in zip(xrange(len(opens)), opens) if open != -1 ]
 
     sx = ax.figure.dpi * (1.0/72.0)  # scale for points
-    sy = (ax.bbox.ur().y() - ax.bbox.ll().y()) / (ax.viewLim.ur().y() - ax.viewLim.ll().y())
+    sy = ax.bbox.height / ax.viewLim.height
 
     barTransform = Affine2D().scale(sx,sy)
 
@@ -531,9 +531,6 @@ def candlestick2(ax, opens, closes, highs, lows, width=4,
                                    )
     barCollection.set_transform(barTransform)
 
-
-
-
     minx, maxx = (0, len(rangeSegments1))
     miny = min([low for low in lows if low !=-1])
     maxy = max([high for high in highs if high != -1])
@@ -579,14 +576,10 @@ def volume_overlay(ax, opens, closes, volumes,
 
 
     bars = [ ( (left, 0), (left, v), (right, v), (right, 0)) for v in volumes if v >= 0 ]
-
     sx = ax.figure.dpi * (1.0/72.0)  # scale for points
-    sy = (ax.bbox.ur().y() - ax.bbox.ll().y()) / (ax.viewLim.ur().y() - ax.viewLim.ll().y())
-
+    sy = ax.bbox.height / ax.viewLim.height
     barTransform = Affine2D().scale(sx,sy)
-
     offsetsBars = [ (i, 0) for i,v in enumerate(volumes) if v >= 0 ]
-
     #print 'len colors = ',len(colors)
     #print 'len offsetsBars = ',len(offsetsBars)
     #print 'len bars = ',len(bars)
@@ -596,13 +589,11 @@ def volume_overlay(ax, opens, closes, volumes,
     #    print 'volumes:',volumes
     assert(len(offsetsBars)==len(colors))
     assert(len(offsetsBars)==len(bars))
-
     useAA = 0,  # use tuple here
     if width>1:
         lw = 0.5,   # and here
     else:
         lw = 0.2,
-
     barCollection = PolyCollection(bars,
                                    facecolors   = colors,
                                    edgecolors   = ( (0,0,0,1), ),
@@ -617,12 +608,10 @@ def volume_overlay(ax, opens, closes, volumes,
     miny = 0
     maxy = max([v for v in volumes if v >= 0])
     corners = (minx, miny), (maxx, maxy)
-
     ax.update_datalim(corners)
     ax.autoscale_view()
 
     ax.add_collection(barCollection)
-
     # add these last
     return barCollection
 
@@ -645,14 +634,13 @@ def volume_overlay2(ax, closes, volumes,
 
     """
 
-    opens = nx.array(closes[:-1])
+    opens = np.array(closes[:-1])
     last = 0
     for i in range(0,len(opens)):
         if opens[i] == -1:
             opens[i] = last
         else:
             last = opens[i]
-
     return volume_overlay(ax,opens,closes[1:],volumes[1:],colorup,colordown,width,alpha)
     #return volume_overlay(ax,closes[:-1],closes[1:],volumes[1:],colorup,colordown,width,alpha)
 
@@ -693,7 +681,7 @@ def volume_overlay3(ax, quotes,
     bars = [ ( (left, 0), (left, volume), (right, volume), (right, 0)) for d, open, close, high, low, volume in quotes]
 
     sx = ax.figure.dpi * (1.0/72.0)  # scale for points
-    sy = (ax.bbox.ur().y() - ax.bbox.ll().y()) / (ax.viewLim.ur().y() - ax.viewLim.ll().y())
+    sy = ax.bbox.height / ax.viewLim.height
 
     barTransform = Affine2D().scale(sx,sy)
 
@@ -705,7 +693,6 @@ def volume_overlay3(ax, quotes,
         lw = 0.5,   # and here
     else:
         lw = 0.2,
-
     barCollection = PolyCollection(bars,
                                    facecolors   = colors,
                                    edgecolors   = ( (0,0,0,1), ),
@@ -721,8 +708,8 @@ def volume_overlay3(ax, quotes,
     maxy = max([volume for d, open, close, high, low, volume in quotes])
     corners = (minpy, miny), (maxx, maxy)
     ax.update_datalim(corners)
-    #print 'datalim', ax.dataLim.get_bounds()
-    #print 'viewlim', ax.viewLim.get_bounds()
+    #print 'datalim', ax.dataLim.bounds
+    #print 'viewlim', ax.viewLim.bounds
 
     ax.add_collection(barCollection)
     ax.autoscale_view()
@@ -752,7 +739,7 @@ def index_bar(ax, vals,
     bars = [ ( (left, 0), (left, v), (right, v), (right, 0)) for v in vals if v != -1 ]
 
     sx = ax.figure.dpi * (1.0/72.0)  # scale for points
-    sy = (ax.bbox.ur().y() - ax.bbox.ll().y()) / (ax.viewLim.ur().y() - ax.viewLim.ll().y())
+    sy = ax.bbox.height / ax.viewLim.height
 
     barTransform = Affine2D().scale(sx,sy)
 
@@ -779,5 +766,3 @@ def index_bar(ax, vals,
     # add these last
     ax.add_collection(barCollection)
     return barCollection
-
-
