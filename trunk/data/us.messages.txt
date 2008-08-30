@@ -389,6 +389,8 @@ portfolio_desc_opdelete; Delete the current transaction
 portfolio_opmodify;&Modify
 portfolio_desc_opmodify; Modify the current transaction
 
+portfolio_text;Text size
+portfolio_desc_text;Select text size to display the transactions
 portfolio_view_small;Small Text
 portfolio_view_desc_small; Use small text size to display the transactions
 portfolio_view_normal;Normal Text

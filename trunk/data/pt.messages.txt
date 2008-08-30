@@ -398,6 +398,8 @@ portfolio_desc_opdelete; Eliminar a transação actual
 portfolio_opmodify;&Modificar
 portfolio_desc_opmodify; Modificar a transação actual
 
+portfolio_text;Text size
+portfolio_desc_text;Select text size to display the transactions
 portfolio_view_small;Texto pequeno
 portfolio_view_desc_small; Usar o tamanho pequeno de texto para visualizar as transações
 portfolio_view_normal;Texto normal
