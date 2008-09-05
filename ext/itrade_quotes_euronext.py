@@ -39,9 +39,6 @@
 
 # python system
 import logging
-import re
-import thread
-import time
 import string
 
 # iTrade system
