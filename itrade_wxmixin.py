@@ -40,15 +40,16 @@ import os
 import logging
 import pprint
 
-# wxPython system
-import itrade_wxversion
-import wx
-import wx.lib.mixins.listctrl as wxl
-
 # iTrade system
 import itrade_config
 from itrade_logging import *
 from itrade_local import message
+
+# wxPython system
+if not itrade_config.nowxversion:
+    import itrade_wxversion
+import wx
+import wx.lib.mixins.listctrl as wxl
 
 # iTrade wxPython  system
 from itrade_wxutil import iTradeYesNo
@@ -135,7 +136,7 @@ class iTrade_wxFrame(object):
                 self._config = {}
 
     def saveConfig(self):
-        if self.m_name:
+        if self.m_name and not self.IsMaximized():
             if itrade_config.verbose: print 'iTrade_wxFrame::saveConfig',self.m_name
             self._config['position'] = self.GetRestoredPosition()
             self._config['size'] = self.GetRestoredSize()
