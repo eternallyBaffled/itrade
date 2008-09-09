@@ -791,16 +791,16 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
 
         # set column headers
         self.m_list.InsertColumn(IDC_DATE, message('portfolio_list_date'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_OPERATION, message('portfolio_list_operation'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE_USEHEADER)
-        self.m_list.InsertColumn(IDC_DESCRIPTION, message('portfolio_list_description'), wx.LIST_FORMAT_LEFT, 100)
-        self.m_list.InsertColumn(IDC_NUMBER, message('portfolio_list_number'), wx.LIST_FORMAT_RIGHT, 55)
-        self.m_list.InsertColumn(IDC_DEBIT,message('portfolio_list_debit'), wx.LIST_FORMAT_RIGHT, 75)
-        self.m_list.InsertColumn(IDC_CREDIT,message('portfolio_list_credit'), wx.LIST_FORMAT_RIGHT, 75)
-        self.m_list.InsertColumn(IDC_EXPENSES,message('portfolio_list_expense'), wx.LIST_FORMAT_RIGHT, 75)
-        self.m_list.InsertColumn(IDC_BALANCE,message('portfolio_list_balance'), wx.LIST_FORMAT_RIGHT, 75)
+        self.m_list.InsertColumn(IDC_OPERATION, message('portfolio_list_operation'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_DESCRIPTION, message('portfolio_list_description'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_NUMBER, message('portfolio_list_number'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_DEBIT,message('portfolio_list_debit'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_CREDIT,message('portfolio_list_credit'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_EXPENSES,message('portfolio_list_expense'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_BALANCE,message('portfolio_list_balance'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
         if self.filterSRDcolumn():
-            self.m_list.InsertColumn(IDC_SRD,message('portfolio_list_srd'), wx.LIST_FORMAT_RIGHT, 75)
-        self.m_list.InsertColumn(IDC_RESERVED, '', wx.LIST_FORMAT_LEFT, 1)
+            self.m_list.InsertColumn(IDC_SRD,message('portfolio_list_srd'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_RESERVED, '', wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
 
         # populate the list
         x = 0
@@ -851,13 +851,13 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
                         vdebit = 0.0
                         vcredit = eachOp.nv_value()
                     elif sign=='-':
-                        self.m_list.SetStringItem(x,IDC_DEBIT,'- %s' % eachOp.sv_value())
+                        self.m_list.SetStringItem(x,IDC_DEBIT,eachOp.sv_value())
                         vcredit = 0.0
                         vdebit = eachOp.nv_value()
                     elif sign=='~':
                         self.m_list.SetStringItem(x,IDC_CREDIT,eachOp.sv_value())
                         vcredit = eachOp.nv_value()
-                        self.m_list.SetStringItem(x,IDC_DEBIT,'- %s' % eachOp.sv_value())
+                        self.m_list.SetStringItem(x,IDC_DEBIT,eachOp.sv_value())
                         vdebit = eachOp.nv_value()
                     else:
                         vcredit = 0.0
@@ -905,7 +905,12 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
 
         # adjust size of column
         self.m_list.SetColumnWidth(IDC_DATE, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_OPERATION, wx.LIST_AUTOSIZE)
         self.m_list.SetColumnWidth(IDC_DESCRIPTION, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_NUMBER, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_EXPENSES, wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(IDC_SRD, wx.LIST_AUTOSIZE)
+	self.m_list.resizeLastColumn(15)
 
         # default selection
         if len(items)>0:
