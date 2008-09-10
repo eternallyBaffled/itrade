@@ -40,8 +40,6 @@
 #import logging
 
 # wxPython system
-if not itrade_config.nowxversion:
-    import itrade_wxversion
 import wx
 #import wx.lib.mixins.listctrl as wxl
 
@@ -57,6 +55,8 @@ from itrade_ext import *
 from itrade_login import *
 
 # iTrade wx system
+if not itrade_config.nowxversion:
+    import itrade_wxversion
 from itrade_wxquote import open_iTradeQuote,addInMatrix_iTradeQuote,removeFromMatrix_iTradeQuote
 from itrade_wxpropquote import open_iTradeQuoteProperty
 from itrade_wxportfolio import select_iTradePortfolio,properties_iTradePortfolio
