@@ -5,6 +5,10 @@ On the road for v0.4.8 (Druuna)
 
 ===============================================================================
 
+2008-09-10  Jean-Marie Pacquet <jmpacquet at users dot sourceforge dot net>
+	* --nowxversion starting option
+	* make possible to use wxPython version less than 2.8.8.0
+
 2008-08-30  Jean-Marie Pacquet <jmpacquet at users dot sourceforge dot net>
 	* missing update of translation files (SF bug 2084140)
 
