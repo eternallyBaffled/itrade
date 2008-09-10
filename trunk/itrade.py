@@ -74,6 +74,7 @@ def usage():
     print "--nopsyco    do not use psyco                                "
     print "-x           activate experimental features                  "
     print "--verbose    verbose mode (usefull for debugging)            "
+    print "--nowxversion    do not use wxversion                        "
 
 # ============================================================================
 # Main / Command line analysing
@@ -81,7 +82,7 @@ def usage():
 
 def main():
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "xeho:vt:iq:f:l:du:", ["verbose","help", "output=", "ticker=", "quote=","file=","lang=","user=","nopsyco"])
+        opts, args = getopt.getopt(sys.argv[1:], "xeho:vt:iq:f:l:du:", ["verbose","help", "output=", "ticker=", "quote=","file=","lang=","user=","nopsyco","nowxversion"])
     except getopt.GetoptError:
         # print help information and exit:
         usage()
@@ -93,6 +94,7 @@ def main():
     file = None
     wx = True
     nopsyco = False
+    nowxversion = False;
 
     vticker = None
     vquote  = None
@@ -143,6 +145,9 @@ def main():
 
         if o  == "--nopsyco":
             nopsyco = True
+
+        if o  == "--nowxversion":
+            itrade_config.nowxversion = True
 
         if o == "-f" or o == "--file":
             file = a

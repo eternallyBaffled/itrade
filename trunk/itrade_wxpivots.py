@@ -42,7 +42,6 @@ import time
 import thread
 
 # wxPython system
-import itrade_wxversion
 import wx
 
 # iTrade system

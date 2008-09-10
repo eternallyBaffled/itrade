@@ -51,10 +51,15 @@ from itrade_local import message,setLocale
 from itrade_config import *
 
 # wxPython system
-import itrade_wxversion
+if not itrade_config.nowxversion:
+    import itrade_wxversion
 import wx
 import wx.grid as gridlib
-import wx.lib.sized_controls as sc
+# import sized_controls from wx.lib for wxPython version >= 2.8.8.0 (from wxaddons otherwise)
+try:
+    import wx.lib.sized_controls as sc
+except:
+    import wxaddons.sized_controls as sc
 
 # matplotlib system
 import matplotlib

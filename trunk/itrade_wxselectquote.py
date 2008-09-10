@@ -43,12 +43,6 @@ import webbrowser
 import datetime
 import locale
 
-# wxPython system
-import itrade_wxversion
-import wx
-import wx.lib.mixins.listctrl as wxl
-import wx.lib.sized_controls as sc
-
 # iTrade system
 from itrade_logging import *
 from itrade_quotes import *
@@ -61,6 +55,17 @@ from itrade_ext import *
 
 from itrade_wxmixin import iTradeSelectorListCtrl
 from itrade_wxutil import iTradeSizedDialog
+
+# wxPython system
+if not itrade_config.nowxversion:
+    import itrade_wxversion
+import wx
+import wx.lib.mixins.listctrl as wxl
+# import sized_controls from wx.lib for wxPython version >= 2.8.8.0 (from wxaddons otherwise)
+try:
+    import wx.lib.sized_controls as sc
+except:
+    import wxaddons.sized_controls as sc
 
 # ============================================================================
 # iTradeQuoteSelector

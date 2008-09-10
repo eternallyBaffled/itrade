@@ -37,17 +37,24 @@
 
 # python system
 
+# iTrade system
+import itrade_config
+
 # wxPython system
-import itrade_wxversion
+if not itrade_config.nowxversion:
+    import itrade_wxversion
 import wx
 from wx.lib import masked
-import wx.lib.sized_controls as sc
+# import sized_controls from wx.lib for wxPython version >= 2.8.8.0 (from wxaddons otherwise)
+try:
+    import wx.lib.sized_controls as sc
+except:
+    import wxaddons.sized_controls as sc
 import wx.lib.newevent
 
 # iTrade system
 from itrade_logging import *
 from itrade_local import message,getGroupChar,getDecimalChar
-from itrade_config import *
 from itrade_currency import list_of_currencies,convert,currencies
 
 # iTrade wxPython system
