@@ -37,12 +37,12 @@
 # ============================================================================
 
 # python system
-import logging
+#import logging
 
 # wxPython system
 import itrade_wxversion
 import wx
-import wx.lib.mixins.listctrl as wxl
+#import wx.lib.mixins.listctrl as wxl
 
 # iTrade system
 import itrade_config
@@ -66,7 +66,7 @@ from itrade_wxcurrency import open_iTradeCurrencies
 from itrade_wxabout import iTradeAboutBox
 from itrade_wxhtml import iTradeLaunchBrowser
 from itrade_wxlistquote import list_iTradeQuote
-from itrade_wxlogin import login_UI
+#from itrade_wxlogin import login_UI
 from itrade_wxconnection import connection_UI
 from itrade_wxstops import addOrEditStops_iTradeQuote,removeStops_iTradeQuote
 from itrade_wxmixin import iTrade_wxFrame
@@ -80,15 +80,15 @@ from itrade_wxutil import iTradeYesNo,iTradeInformation,iTradeError,FontFromSize
 # menu identifier
 # ============================================================================
 
-ID_OPEN = 100
-ID_NEW = 101
-ID_DELETE = 102
-ID_SAVEAS = 103
-ID_EDIT = 104
+#ID_OPEN = 100
+#ID_NEW = 101
+#ID_DELETE = 102
+#ID_SAVEAS = 103
+#ID_EDIT = 104
 
 ID_MANAGELIST = 110
 
-ID_EXIT = 150
+#ID_EXIT = 150
 
 ID_QUOTES = 200
 ID_PORTFOLIO = 201
@@ -108,7 +108,7 @@ ID_SMALL_VIEW = 230
 ID_NORMAL_VIEW = 231
 ID_BIG_VIEW = 232
 
-ID_REFRESH = 240
+#ID_REFRESH = 240
 ID_AUTOREFRESH = 241
 
 ID_ADD_QUOTE = 300
@@ -128,12 +128,12 @@ ID_ACCESS = 350
 
 ID_LANG = 399
 ID_LANG_FIRST = 400
-ID_LANG_SYSTEM = 400
-ID_LANG_ENGLISH = 401
-ID_LANG_FRENCH = 402
-ID_LANG_PORTUGUESE = 403
-ID_LANG_DEUTCH = 404
-ID_LANG_ITALIAN = 405
+#ID_LANG_SYSTEM = 400
+#ID_LANG_ENGLISH = 401
+#ID_LANG_FRENCH = 402
+#ID_LANG_PORTUGUESE = 403
+#ID_LANG_GERMAN = 404
+#ID_LANG_ITALIAN = 405
 ID_LANG_LAST = 405
 
 ID_CACHE = 499
@@ -143,13 +143,13 @@ ID_CACHE_ERASE_ALL = 510
 
 ID_CONNEXION = 599
 
-ID_CONTENT = 800
+#ID_HELP_CONTENTS = 800
 ID_SUPPORT = 801
 ID_BUG = 802
 ID_FORUM = 803
 ID_DONORS = 804
 ID_CHECKSOFTWARE = 805
-ID_ABOUT = 810
+#ID_ABOUT = 810
 
 # ============================================================================
 # Notebook Page identifier
@@ -471,16 +471,16 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
     def buildMenu(self):
         # the main menu
         self.filemenu = wx.Menu()
-        self.filemenu.Append(ID_OPEN,message('main_open'),message('main_desc_open'))
-        self.filemenu.Append(ID_NEW,message('main_new'),message('main_desc_new'))
-        self.filemenu.Append(ID_SAVEAS,message('main_saveas'),message('main_desc_saveas'))
-        self.filemenu.Append(ID_DELETE,message('main_delete'),message('main_desc_delete'))
+        self.filemenu.Append(wx.ID_OPEN,message('main_open'),message('main_desc_open'))
+        self.filemenu.Append(wx.ID_NEW,message('main_new'),message('main_desc_new'))
+        self.filemenu.Append(wx.ID_SAVEAS,message('main_saveas'),message('main_desc_saveas'))
+        self.filemenu.Append(wx.ID_DELETE,message('main_delete'),message('main_desc_delete'))
         self.filemenu.AppendSeparator()
-        self.filemenu.Append(ID_EDIT,message('main_edit'),message('main_desc_edit'))
+        self.filemenu.Append(wx.ID_EDIT,message('main_edit'),message('main_desc_edit'))
         self.filemenu.AppendSeparator()
         self.filemenu.Append(ID_MANAGELIST,message('main_managelist'),message('main_desc_managelist'))
         self.filemenu.AppendSeparator()
-        self.filemenu.Append(ID_EXIT,message('main_exit'),message('main_desc_exit'))
+        self.filemenu.Append(wx.ID_EXIT,message('main_exit'),message('main_desc_exit'))
 
         self.matrixmenu = wx.Menu()
         self.matrixmenu.Append(ID_QUOTES, message('main_view_quotes'),message('main_view_desc_quotes'))
@@ -492,7 +492,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         self.matrixmenu.AppendRadioItem(ID_NORMAL_VIEW, message('main_view_normal'),message('main_view_desc_normal'))
         self.matrixmenu.AppendRadioItem(ID_BIG_VIEW, message('main_view_big'),message('main_view_desc_big'))
         self.matrixmenu.AppendSeparator()
-        self.matrixmenu.Append(ID_REFRESH, message('main_view_refresh'),message('main_view_desc_refresh'))
+        self.matrixmenu.Append(wx.ID_REFRESH, message('main_view_refresh'),message('main_view_desc_refresh'))
         self.matrixmenu.AppendCheckItem(ID_AUTOREFRESH, message('main_view_autorefresh'),message('main_view_desc_autorefresh'))
 
         self.quotemenu = wx.Menu()
@@ -531,12 +531,12 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
             self.optionsmenu.AppendMenu(ID_ACCESS,message('main_options_access'),self.accessmenu,message('main_options_desc_access'))
 
         self.langmenu = wx.Menu()
-        self.langmenu.AppendRadioItem(ID_LANG_SYSTEM, message('main_options_lang_default'),message('main_options_lang_default'))
-        self.langmenu.AppendRadioItem(ID_LANG_ENGLISH, message('main_options_lang_english'),message('main_options_lang_english'))
-        self.langmenu.AppendRadioItem(ID_LANG_FRENCH, message('main_options_lang_french'),message('main_options_lang_french'))
-        self.langmenu.AppendRadioItem(ID_LANG_PORTUGUESE, message('main_options_lang_portuguese'),message('main_options_lang_portuguese'))
-        self.langmenu.AppendRadioItem(ID_LANG_DEUTCH, message('main_options_lang_deutch'),message('main_options_lang_deutch'))
-        self.langmenu.AppendRadioItem(ID_LANG_ITALIAN, message('main_options_lang_italian'),message('main_options_lang_italian'))
+        self.langmenu.AppendRadioItem(wx.LANGUAGE_DEFAULT, message('main_options_lang_default'),message('main_options_lang_default'))
+        self.langmenu.AppendRadioItem(wx.LANGUAGE_ENGLISH, message('main_options_lang_english'),message('main_options_lang_english'))
+        self.langmenu.AppendRadioItem(wx.LANGUAGE_FRENCH, message('main_options_lang_french'),message('main_options_lang_french'))
+        self.langmenu.AppendRadioItem(wx.LANGUAGE_PORTUGUESE, message('main_options_lang_portuguese'),message('main_options_lang_portuguese'))
+        self.langmenu.AppendRadioItem(wx.LANGUAGE_GERMAN, message('main_options_lang_deutch'),message('main_options_lang_deutch'))
+        self.langmenu.AppendRadioItem(wx.LANGUAGE_ITALIAN, message('main_options_lang_italian'),message('main_options_lang_italian'))
         self.optionsmenu.AppendMenu(ID_LANG,message('main_options_lang'),self.langmenu,message('main_options_desc_lang'))
         if itrade_config.lang == 255:
             self.optionsmenu.Enable(ID_LANG,False)
@@ -551,7 +551,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         self.optionsmenu.Append(ID_CONNEXION,message('main_options_connexion'),message('main_options_desc_connexion'))
 
         self.helpmenu = wx.Menu()
-        self.helpmenu.Append(ID_CONTENT, message('main_help_contents'),message('main_help_desc_contents'))
+        self.helpmenu.Append(wx.ID_HELP_CONTENTS, message('main_help_contents'),message('main_help_desc_contents'))
         self.helpmenu.AppendSeparator()
         self.helpmenu.Append(ID_SUPPORT, message('main_help_support'),message('main_help_desc_support'))
         self.helpmenu.Append(ID_BUG, message('main_help_bugs'),message('main_help_desc_bugs'))
@@ -560,7 +560,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         self.helpmenu.AppendSeparator()
         self.helpmenu.Append(ID_CHECKSOFTWARE, message('main_help_checksoftware'),message('main_help_desc_checksoftware'))
         self.helpmenu.AppendSeparator()
-        self.helpmenu.Append(ID_ABOUT, message('main_about'), message('main_desc_about'))
+        self.helpmenu.Append(wx.ID_ABOUT, message('main_about'), message('main_desc_about'))
 
         # Creating the menubar
         menuBar = wx.MenuBar()
@@ -576,14 +576,14 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         # Adding the MenuBar to the Frame content
         self.SetMenuBar(menuBar)
 
-        wx.EVT_MENU(self, ID_OPEN, self.OnOpen)
-        wx.EVT_MENU(self, ID_NEW, self.OnNew)
-        wx.EVT_MENU(self, ID_DELETE, self.OnDelete)
-        wx.EVT_MENU(self, ID_SAVEAS, self.OnSaveAs)
-        wx.EVT_MENU(self, ID_EDIT, self.OnEdit)
+        wx.EVT_MENU(self, wx.ID_OPEN, self.OnOpen)
+        wx.EVT_MENU(self, wx.ID_NEW, self.OnNew)
+        wx.EVT_MENU(self, wx.ID_DELETE, self.OnDelete)
+        wx.EVT_MENU(self, wx.ID_SAVEAS, self.OnSaveAs)
+        wx.EVT_MENU(self, wx.ID_EDIT, self.OnEdit)
         wx.EVT_MENU(self, ID_MANAGELIST, self.OnManageList)
-        wx.EVT_MENU(self, ID_EXIT, self.OnExit)
-        wx.EVT_MENU(self, ID_CONTENT, self.OnContent)
+        wx.EVT_MENU(self, wx.ID_EXIT, self.OnExit)
+        wx.EVT_MENU(self, wx.ID_HELP_CONTENTS, self.OnContent)
         wx.EVT_MENU(self, ID_SUPPORT, self.OnSupport)
         wx.EVT_MENU(self, ID_BUG, self.OnBug)
         wx.EVT_MENU(self, ID_FORUM, self.OnForum)
@@ -616,12 +616,12 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         for i in range(0,ncon):
             wx.EVT_MENU(self, ID_ACCESS+i+1, self.OnAccess)
 
-        wx.EVT_MENU(self, ID_LANG_SYSTEM, self.OnLangDefault)
-        wx.EVT_MENU(self, ID_LANG_ENGLISH, self.OnLangEnglish)
-        wx.EVT_MENU(self, ID_LANG_FRENCH, self.OnLangFrench)
-        wx.EVT_MENU(self, ID_LANG_PORTUGUESE, self.OnLangPortuguese)
-        wx.EVT_MENU(self, ID_LANG_DEUTCH, self.OnLangDeutch)
-        wx.EVT_MENU(self, ID_LANG_ITALIAN, self.OnLangItalian)
+        wx.EVT_MENU(self, wx.LANGUAGE_DEFAULT, self.OnLangDefault)
+        wx.EVT_MENU(self, wx.LANGUAGE_ENGLISH, self.OnLangEnglish)
+        wx.EVT_MENU(self, wx.LANGUAGE_FRENCH, self.OnLangFrench)
+        wx.EVT_MENU(self, wx.LANGUAGE_PORTUGUESE, self.OnLangPortuguese)
+        wx.EVT_MENU(self, wx.LANGUAGE_GERMAN, self.OnLangDeutch)
+        wx.EVT_MENU(self, wx.LANGUAGE_ITALIAN, self.OnLangItalian)
 
         wx.EVT_MENU(self, ID_CACHE_ERASE_DATA, self.OnCacheEraseData)
         wx.EVT_MENU(self, ID_CACHE_ERASE_NEWS, self.OnCacheEraseNews)
@@ -629,9 +629,9 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
 
         wx.EVT_MENU(self, ID_CONNEXION, self.OnConnexion)
 
-        wx.EVT_MENU(self, ID_REFRESH, self.OnRefresh)
+        wx.EVT_MENU(self, wx.ID_REFRESH, self.OnRefresh)
         wx.EVT_MENU(self, ID_AUTOREFRESH, self.OnAutoRefresh)
-        wx.EVT_MENU(self, ID_ABOUT, self.OnAbout)
+        wx.EVT_MENU(self, wx.ID_ABOUT, self.OnAbout)
 
     # --- [ window management ] -------------------------------------
 
@@ -798,8 +798,6 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
 
     def OnAbout(self,e):
         d = iTradeAboutBox(self)
-        d.ShowModal()
-        d.Destroy()
 
     def updateCheckItems(self):
         m = self.matrixmenu.FindItemById(ID_AUTOREFRESH)
@@ -815,22 +813,22 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         m.Check(itrade_config.matrixFontSize==3)
 
         if itrade_config.lang != 255:
-            m = self.langmenu.FindItemById(ID_LANG_SYSTEM)
+            m = self.langmenu.FindItemById(wx.LANGUAGE_DEFAULT)
             m.Check(itrade_config.lang==0)
 
-            m = self.langmenu.FindItemById(ID_LANG_ENGLISH)
+            m = self.langmenu.FindItemById(wx.LANGUAGE_ENGLISH)
             m.Check(itrade_config.lang==1)
 
-            m = self.langmenu.FindItemById(ID_LANG_FRENCH)
+            m = self.langmenu.FindItemById(wx.LANGUAGE_FRENCH)
             m.Check(itrade_config.lang==2)
 
-            m = self.langmenu.FindItemById(ID_LANG_PORTUGUESE)
+            m = self.langmenu.FindItemById(wx.LANGUAGE_PORTUGUESE)
             m.Check(itrade_config.lang==3)
 
-            m = self.langmenu.FindItemById(ID_LANG_DEUTCH)
+            m = self.langmenu.FindItemById(wx.LANGUAGE_GERMAN)
             m.Check(itrade_config.lang==4)
 
-            m = self.langmenu.FindItemById(ID_LANG_ITALIAN)
+            m = self.langmenu.FindItemById(wx.LANGUAGE_ITALIAN)
             m.Check(itrade_config.lang==5)
 
         # refresh Enable state based on current View
