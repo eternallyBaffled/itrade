@@ -38,8 +38,12 @@
 # python system
 import logging
 
+# iTrade system
+import itrade_config
+
 # wxPython system
-import itrade_wxversion
+if not itrade_config.nowxversion:
+    import itrade_wxversion
 import wx
 
 # ============================================================================

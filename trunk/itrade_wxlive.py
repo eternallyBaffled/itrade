@@ -42,11 +42,6 @@ import time
 import thread
 import random
 
-# wxPython system
-import itrade_wxversion
-import wx
-import wx.lib.newevent
-
 # iTrade system
 import itrade_config
 from itrade_logging import *
@@ -54,6 +49,12 @@ from itrade_local import message
 import itrade_quotes
 import itrade_import
 import itrade_currency
+
+# wxPython system
+if not itrade_config.nowxversion:
+    import itrade_wxversion
+import wx
+import wx.lib.newevent
 
 # ============================================================================
 # Creates a new Event class and a EVT binder function

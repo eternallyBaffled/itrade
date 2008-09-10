@@ -40,8 +40,12 @@
 import logging
 from datetime import *
 
+# iTrade system
+import itrade_config
+
 # wxPython system
-import itrade_wxversion
+if not itrade_config.nowxversion:
+    import itrade_wxversion
 import wx
 
 # iTrade system

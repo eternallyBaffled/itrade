@@ -41,10 +41,6 @@ import logging
 import datetime
 import locale
 
-# wxPython system
-import itrade_wxversion
-import wx
-
 # iTrade system
 from itrade_logging import *
 from itrade_quotes import *
@@ -53,6 +49,11 @@ from itrade_config import *
 #from itrade_import import *
 from itrade_wxselectquote import select_iTradeQuote
 from itrade_wxutil import iTradeInformation
+
+# wxPython system
+if not itrade_config.nowxversion:
+    import itrade_wxversion
+import wx
 
 # ============================================================================
 # iTradeQuotePropertiesPanel

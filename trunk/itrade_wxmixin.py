@@ -46,7 +46,8 @@ from itrade_logging import *
 from itrade_local import message
 
 # wxPython system
-import itrade_wxversion
+if not itrade_config.nowxversion:
+    import itrade_wxversion
 import wx
 import wx.lib.mixins.listctrl as wxl
 
