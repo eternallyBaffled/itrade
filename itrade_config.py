@@ -317,6 +317,9 @@ else:
 # experimental features
 experimental = False
 
+# do not use wxversion
+nowxversion = False
+
 # proxy data
 global proxyHostname
 proxyHostname = None
