@@ -42,7 +42,6 @@
 import logging
 
 # wxPython system
-import itrade_wxversion
 import wx
 import wx.calendar as wxcal
 

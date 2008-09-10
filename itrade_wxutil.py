@@ -46,13 +46,19 @@ import operator
 # itrade system
 from itrade_logging import *
 from itrade_local import message
+import itrade_config
 
 # wxPython system
-import itrade_wxversion
+if not itrade_config.nowxversion:
+    import itrade_wxversion
 import wx
 import wx.html
 import wx.lib.wxpTag
-import wx.lib.sized_controls as sc
+# import sized_controls from wx.lib for wxPython version >= 2.8.8.0 (from wxaddons otherwise)
+try:
+    import wx.lib.sized_controls as sc
+except:
+    import wxaddons.sized_controls as sc
 
 # matplotlib helpers
 from matplotlib.colors import colorConverter

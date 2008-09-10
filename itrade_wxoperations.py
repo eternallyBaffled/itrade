@@ -40,12 +40,20 @@
 from datetime import *
 import logging
 
+# iTrade system
+import itrade_config
+
 # wxPython system
-import itrade_wxversion
+if not itrade_config.nowxversion:
+    import itrade_wxversion
 import wx
 import wx.lib.mixins.listctrl as wxl
 from wx.lib import masked
-import wx.lib.sized_controls as sc
+# import sized_controls from wx.lib for wxPython version >= 2.8.8.0 (from wxaddons otherwise)
+try:
+    import wx.lib.sized_controls as sc
+except:
+    import wxaddons.sized_controls as sc
 
 # iTrade system
 from itrade_logging import *
@@ -709,6 +717,7 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
         self.m_list.SetFont(FontFromSize(itrade_config.operationFontSize))
         for i in range(0,IDC_RESERVED):
             self.m_list.SetColumnWidth(i, wx.LIST_AUTOSIZE)
+	self.m_list.resizeLastColumn(15)
 
     def OnTextSmall(self,e):
         itrade_config.operationFontSize = 1
