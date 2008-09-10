@@ -43,17 +43,18 @@ import logging
 import webbrowser
 import time
 
+# iTrade system
+import itrade_config
+
 # wxPython system
-import itrade_wxversion
+if not itrade_config.nowxversion:
+    import itrade_wxversion
 import wx
 import wx.html as wxhtml
 
 # iTrade system
 from itrade_logging import *
 from itrade_local import message
-
-# iTrade system
-from itrade_logging import *
 from itrade_news import gNews
 
 # ============================================================================

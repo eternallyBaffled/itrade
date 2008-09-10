@@ -41,13 +41,16 @@ import logging
 import time
 import thread
 
+# iTrade system
+import itrade_config
+
 # wxPython system
-import itrade_wxversion
+if not itrade_config.nowxversion:
+    import itrade_wxversion
 import wx
 import wx.lib.mixins.listctrl as wxl
 
 # iTrade system
-import itrade_config
 from itrade_logging import *
 from itrade_local import message
 from itrade_currency import currencies

@@ -41,9 +41,11 @@ import string
 
 # itrade system
 from itrade_logging import *
+import itrade_config
 
 # wxPython system
-import itrade_wxversion
+if not itrade_config.nowxversion:
+    import itrade_wxversion
 import wx
 
 # itrade wxPython system

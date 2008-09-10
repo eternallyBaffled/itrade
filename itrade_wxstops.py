@@ -42,8 +42,12 @@ import logging
 #import datetime
 #import locale
 
+# iTrade system
+import itrade_config
+
 # wxPython system
-import itrade_wxversion
+if not itrade_config.nowxversion:
+    import itrade_wxversion
 import wx
 from wx.lib import masked
 

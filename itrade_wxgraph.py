@@ -41,6 +41,7 @@ import logging
 # iTrade system
 from itrade_logging import *
 from itrade_local import message
+import itrade_config
 
 # matplotlib system
 import matplotlib
@@ -58,7 +59,8 @@ from matplotlib.ticker import  IndexLocator, FuncFormatter, NullFormatter, Multi
 from pylab import *
 
 # wxPython system
-import itrade_wxversion
+if not itrade_config.nowxversion:
+    import itrade_wxversion
 import wx
 
 # iTrade wxPython system

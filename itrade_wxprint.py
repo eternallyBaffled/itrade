@@ -38,18 +38,19 @@
 # python system
 import logging
 
+# iTrade system
+import itrade_config
+from itrade_logging import *
+from itrade_local import message,getLang
+
 # wxPython system
-import itrade_wxversion
+if not itrade_config.nowxversion:
+    import itrade_wxversion
 import wx
 
 # matplotlib system
 import matplotlib.backends.backend_wxagg
 from matplotlib.backends.backend_wx import RendererWx
-
-# iTrade system
-import itrade_config
-from itrade_logging import *
-from itrade_local import message,getLang
 
 # ============================================================================
 # CanvasPrintout

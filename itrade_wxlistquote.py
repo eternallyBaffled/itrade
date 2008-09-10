@@ -44,8 +44,12 @@ import webbrowser
 import datetime
 import locale
 
+# iTrade system
+import itrade_config
+
 # wxPython system
-import itrade_wxversion
+if not itrade_config.nowxversion:
+    import itrade_wxversion
 import wx
 import wx.lib.mixins.listctrl as wxl
 
@@ -53,7 +57,6 @@ import wx.lib.mixins.listctrl as wxl
 from itrade_logging import *
 from itrade_quotes import *
 from itrade_local import message
-from itrade_config import *
 from itrade_market import list_of_markets,compute_country,market2place,list_of_places,market2currency
 from itrade_currency import list_of_currencies
 from itrade_isin import checkISIN

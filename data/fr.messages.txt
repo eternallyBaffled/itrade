@@ -351,7 +351,7 @@ portfolio_list_description;Description
 portfolio_list_number; Quantité
 portfolio_list_debit;   Débit
 portfolio_list_credit;  Crédit
-portfolio_list_expense; Taxes
+portfolio_list_expense; Frais
 portfolio_list_balance; Balance
 portfolio_list_srd;    SRD
 
@@ -517,7 +517,7 @@ money_amount_of_taxes;Impots à payer
 money_taxable_amounts;Montants Imposables
 money_financial_appreciation;Plus values
 money_total_of_transfers;Total des Transferts
-money_expenses_vat;Taxes (Frais, TVA, ...)
+money_expenses_vat;Frais (Courtages, TVA, ...)
 money_portfolio;Portefeuille
 money_description;Description
 money_account_number;Numéro du compte

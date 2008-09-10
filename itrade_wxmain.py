@@ -43,12 +43,14 @@ import logging
 import thread
 import time
 
-# wxPython system
-import itrade_wxversion
-import wx
-
 # iTrade system
 import itrade_config
+
+# wxPython system
+if not itrade_config.nowxversion:
+    import itrade_wxversion
+import wx
+
 from itrade_logging import *
 from itrade_portfolio import loadPortfolio
 from itrade_matrix import createMatrix
