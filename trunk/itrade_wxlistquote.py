@@ -245,6 +245,7 @@ class iTradeQuoteListDialog(wx.Dialog):
         self.checkEnability()
         self.SetAutoLayout(True)
         self.SetSizerAndFit(sizer)
+        self.Layout()
 
     def OnSize(self, event):
         w,h = self.GetClientSizeTuple()
