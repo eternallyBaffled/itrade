@@ -799,6 +799,8 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
 
     def OnAbout(self,e):
         d = iTradeAboutBox(self)
+        d.ShowModal()
+        d.Destroy()
 
     def updateCheckItems(self):
         m = self.matrixmenu.FindItemById(ID_AUTOREFRESH)
