@@ -16,7 +16,7 @@ main_desc_exit; Terminar a aplicação iTrade
 main_close;&Fechar
 main_desc_close; Fechar a janela
 main_managelist;&Controlar símbolos
-main_desc_managelist; Controlar a lista dos símbolos (update por download , de edição, etc.)
+main_desc_managelist; Controlar a lista dos símbolos (update por download, de edição, etc.)
 
 main_window;&Janela
 
@@ -48,9 +48,8 @@ main_view_desc_trading;Informações gerais de Trading da conta
 
 main_view_compute;&Computador
 main_view_desc_compute; Computador
-main_view_convert;__xCon&verter
-main_view_desc_convert;__x Converter between two currencies
-
+main_view_convert;Con&versão
+main_view_desc_convert; Conversão entre dois Divisas
 main_view_refresh;&Actualizar agora
 main_view_desc_refresh; Actualizar agora a vista actual
 main_view_autorefresh;Actualizar automaticamente
@@ -61,7 +60,7 @@ main_view_desc_small; Usar o tamanho pequeno do texto para visualizar a matriz
 main_view_normal;Texto normal
 main_view_desc_normal; Usar o tamanho de texto normal para visualizar a matriz
 main_view_big;Texto grande
-main_view_desc_big; Usar o tamanho de texto grande para vizualizar a matriz
+main_view_desc_big; Usar o tamanho de texto grande para visualizar a matriz
 
 main_quote_add;Adicionar ...
 main_quote_desc_add; Adicionar uma acção na lista
@@ -75,8 +74,8 @@ main_quote_intraday;Intraday
 main_quote_desc_intraday; Visualizar intraday para as acções actualmente seleccionadas
 main_quote_news;Informações
 main_quote_desc_news; Visualizar as notícias para as acções actualmente seleccionadas
-main_quote_table;Raw Data
-main_quote_desc_table; Visualizar os dados brut para as acções actualmente seleccionadas
+main_quote_table;Dado não Corrigido
+main_quote_desc_table; Visualizar os dados não corrigidos para as acções actualmente seleccionadas
 main_quote_analysis;Análises
 main_quote_desc_analysis; Visualizar a análise técnica para as acções actualmente seleccionadas
 main_quote_buy;Comprar
@@ -110,7 +109,7 @@ main_cache_erase_all; Apagar &Tudo
 main_cache_desc_erase_all; Apagar todos os dados (noticia, historiais...) do "cache"
 
 main_options_connexion;&Conexão
-main_options_desc_connexion; Parâmetros de Conexão(Proxy)
+main_options_desc_connexion; Parâmetros de Conexão (Proxy)
 
 main_help;&Ajuda
 main_help_contents;&Índices
@@ -125,7 +124,7 @@ main_help_donors;&Doar o Dinheiro…
 main_help_desc_donors; Como doar o dinheiro para suportar este projecto
 
 main_help_checksoftware;&Verificação das actualizações
-main_help_desc_checksoftware;Verificação se uma nova versão de software està disponível
+main_help_desc_checksoftware;Verificação se uma nova versão de software está disponível
 
 
 checksoftware_needupdate;O programa deve ser actualizado! Querem descarregar da nova versão?
@@ -136,10 +135,10 @@ checksoftware_uptodate;Tem a última versão oficial conhecida
 checksoftware_title;Actualização do Programa
 
 
-checksoftware_development;Tem uma versão em cursos de desenvolvimento.
+checksoftware_development;Tem uma versão em cursos de desenvolvimento
 
 
-checksoftware_error;Impossível obter a informação de versão do programa(network issue ?)
+checksoftware_error;Impossível obter a informação de versão do programa (network issue ?)
 
 main_about;&Sobre ...
 main_desc_about; Informação sobre o iTrade
@@ -176,14 +175,14 @@ ok_desc;Este botão valida e depois termina o diálogo
 valid;Validar
 valid_desc;Este botão valida e depois termina o diálogo
 cancel;Cancelar
-cancel_desc;O botão de cancelamento cancela o diálogo (Duh!)
+cancel_desc;O botão de cancelamento cancela o diálogo (Sim!)
 close;Fechar
 close_desc;O botão de fecho encerra o diálogo
 yes;Sim
 no;Não
 
 isin;ISIN
-ticker;Mnemo
+ticker;Simbolo
 quote;Cotações
 variation;Var.
 date;
@@ -225,9 +224,9 @@ download_symbols_onedesc;Actualizar a lista dos símbolos por download dos dados 
 download_symbols_alllists;Actualizar todas as listas
 download_symbols_alldesc;Actualizar todas as listas dos símbolos por download dos dados da rede
 clear_symbols_onelist;Limpar a lista
-clear_symbols_onedesc;limpar todos os símbolos para esta lista
+clear_symbols_onedesc;Limpar todos os símbolos para esta lista
 clear_symbols_alllists;Limpar todas as listas
-clear_symbols_alldesc;limpar todos os símbolos para todas as listas
+clear_symbols_alldesc;Limpar todos os símbolos para todas as listas
 listquote_clear_confirm_title;Operação irreversível
 listquote_clear_confirm;Para %s, confirmar a operação (%s)?
 listquote_new;Novo
@@ -243,9 +242,9 @@ listquote_saved;A lista dos símbolos foi guardada
 listquote_dirty_save;Você quer guardar a modificação que você fez à lista dos símbolos?
 listquote_nodirty_save;As suas modificações não foram guardadas e não persistirão na sessão actual
 
-listquote_items_zero;__xNone quote found
-listquote_items_one;__xOne quote found
-listquote_items_n;__x%s quotes found
+listquote_items_zero;Valor não encontrado
+listquote_items_one;Só um valor encontrado
+listquote_items_n;%s valores encontrados
 
 listquote_modify_title;Editar o símbolo %s
 listquote_new_title;Novo símbolo
@@ -256,7 +255,7 @@ quote_select_title;Seleccionar um símbolo
 quote_list_title;Gestão dos símbolos
 
 quote_select_isin; ISIN:
-quote_select_ticker;Mnemo/nome:
+quote_select_ticker;Simbolo/nome:
 quote_select_market;Mercado :
 quote_select_list;Lista :
 quote_select_alllist;Nenhum filtro
@@ -286,7 +285,7 @@ money_compute;Cálculo
 money_evaluationchart;Gráfico
 money_money;Gerência de risco
 
-portfolio_title;iTrade - transação
+portfolio_title;iTrade - transacção
 portfolio_select_title;Selecionar uma conta
 portfolio_delete_title;Eliminar uma conta
 portfolio_properties_edit;Editar propriedades da conta
@@ -327,8 +326,8 @@ portfolio_list_accountref;Número da conta
 portfolio_modify;Modificar
 portfolio_new;Novo
 portfolio_delete;Eliminar
-portfolio_date;Data da transação:
-portfolio_operation;Transação :
+portfolio_date;Data da transacção:
+portfolio_operation;Transacção :
 portfolio_description;Descrição :
 portfolio_quote;Acções :
 portfolio_pre_expenses1;incl.
@@ -356,12 +355,12 @@ portfolio_ctrl_quote;Dividendo com partes
 portfolio_ctrl_register;Registo público
 
 portfolio_list_date;Data
-portfolio_list_operation;Transação
+portfolio_list_operation;transacção
 portfolio_list_description;Descrição
 portfolio_list_number; Quantidade
 portfolio_list_debit;  Débito
 portfolio_list_credit; Crédito
-portfolio_list_expense;Despesa
+portfolio_list_expense; Despesas
 portfolio_list_balance; Balanço
 portfolio_list_srd;    SRD
 
@@ -381,31 +380,31 @@ Portfolio_quote;dividendo nas partes
 Portfolio_register;Registo público
 
 portfolio_dispall;&Todos
-portfolio_desc_dispall; Visualizar a lista de todas as transações
+portfolio_desc_dispall; Visualizar a lista de todas as transacções
 portfolio_dispquotes;&Cotações
-portfolio_desc_dispquotes; Visualizar a lista de transações relacionadas com as acções
+portfolio_desc_dispquotes; Visualizar a lista de transacções relacionadas com as acções
 portfolio_dispcash;&Dinheiro
-portfolio_desc_dispcash; Visualizar a lista de transações relacionadas com o dinheiro
+portfolio_desc_dispcash; Visualizar a lista de transacções relacionadas com o dinheiro
 portfolio_dispvalues;&Valores
-portfolio_desc_dispvalues; Visualizar a lista de transações relacionadas com os +/- valores
+portfolio_desc_dispvalues; Visualizar a lista de transacções relacionadas com os +/- valores
 portfolio_dispsrd;&SRD
-portfolio_desc_dispsrd; Visualizar a lista de transações relacionadas com SRD
+portfolio_desc_dispsrd; Visualizar a lista de transacções relacionadas com SRD
 
 portfolio_opadd;&Adicionar ...
-portfolio_desc_opadd; Adicionar uma transação nova
+portfolio_desc_opadd; Adicionar uma transacção nova
 portfolio_opdelete;&Eliminar
-portfolio_desc_opdelete; Eliminar a transação actual
+portfolio_desc_opdelete; Eliminar a transacção actual
 portfolio_opmodify;&Modificar
-portfolio_desc_opmodify; Modificar a transação actual
+portfolio_desc_opmodify; Modificar a transacção actual
 
-portfolio_text;Text size
-portfolio_desc_text;Select text size to display the transactions
-portfolio_view_small;Texto pequeno
-portfolio_view_desc_small; Usar o tamanho pequeno de texto para visualizar as transações
-portfolio_view_normal;Texto normal
-portfolio_view_desc_normal; Usar o tamanho normal de texto para visualizar as transações
-portfolio_view_big;Texto grande
-portfolio_view_desc_big; Usar o tamanho grande de texto para visualizar as transações
+portfolio_text;Zoom do texto
+portfolio_desc_text; Seleccionar zoom de texto para visualizar as transacções
+portfolio_view_small;Mais pequeno
+portfolio_view_desc_small; Usar o tamanho pequeno de texto para visualizar as transacções
+portfolio_view_normal;Normal
+portfolio_view_desc_normal; Usar o tamanho normal de texto para visualizar as transacções
+portfolio_view_big;Maior
+portfolio_view_desc_big; Usar o tamanho grande de texto para visualizar as transacções
 
 portfolio_per30days;&30 dias
 portfolio_desc_per30days; Visualizar os últimos 30 dias
@@ -414,7 +413,7 @@ portfolio_desc_per90days; Visualizar os últimos 90 dias
 portfolio_peryear;&Ano
 portfolio_desc_peryear; Visualizar o presente ano
 portfolio_perall;&Todos
-portfolio_desc_perall; Visualizar todas as transações desde o começo
+portfolio_desc_perall; Visualizar todas as transacções desde o começo
 
 portfolio_menu_file;&Ficheiro
 portfolio_menu_disp;&Visualizar
@@ -479,11 +478,11 @@ prop_tradingstyle;Informação de negócio
 prop_ref;Referência :
 prop_isin;ISIN :
 prop_name;Nome :
-prop_ticker;Mnemo :
+prop_ticker;Simbolo :
 prop_reload;Recarregar
 prop_desc_reload;Recarregar todos os dados
 prop_rename;Renomear
-prop_desc_rename;Renomear o Mnemo desta acção
+prop_desc_rename;Renomear o Simbolo desta acção
 prop_import;Importar
 prop_desc_importe;Importação dos dados da acção
 prop_export;Exportação
@@ -505,11 +504,11 @@ prop_set;Validar
 prop_desc_set;Validar a informação do mercado novo e do conector
 prop_term;Período de investimento (no mês) :
 prop_risk;Nível de risco (em %):
-prop_connhelp;Pensar a efectuar uma regeneração de modo que a modificação seja efectiva.
+prop_connhelp;Pensar a efectuar uma regeneração de modo que a modificação seja efectiva
 
-live_busy;Aguarde um momento por favor, a conecção live está a encerrar…
+live_busy;Aguarde um momento por favor, a conexão live está a encerrar…
 live_notebook;Bloco de notas
-live_lasttrades;últimas transações
+live_lasttrades;Últimas transacções
 live_hours;Horas
 live_qty;Qty
 live_price;Preço
@@ -527,7 +526,7 @@ money_amount_of_taxes;Quantidade de impostos
 money_taxable_amounts;Quantidades Taxáveis
 money_financial_appreciation;Apreciação financeira
 money_total_of_transfers;Total de transferências
-money_expenses_vat;Despesas (VAT, ...)
+money_expenses_vat;Despesas (Corretagem, IVA, ...)
 money_portfolio;Conta
 money_description;Descrição
 money_account_number;Número de conta
@@ -561,8 +560,8 @@ indicator_disconnected;Desconectado
 login_title;Acesso Cliente
 login_fortuneo_desc;Entrar o vosso identificador Fortuneo (conta real ou da demonstração)
 login_boursorama_desc;Entrar o vosso identificador Boursorama (conta cliente ou pseudónimo)
-login_set;Validar
-login_setdesc;Válidar as informações de acesso apreendidas
+login_set; Validar
+login_setdesc;Validar as informações de acesso apreendidas
 login_username;Identificador :
 login_password;Senha :
 login_test;Testar
@@ -579,7 +578,7 @@ page_trading;Trading
 
 print_preview;Visualizar impressão
 print_printing;Imprimir...
-print_errprinting;Erro de impressão.\nVerificar a configuração corrente?
+print_errprinting;Erro de impressão. Verificar a configuração corrente
 print_page;Página: %d
 
 about_url;Lançar o navegador para a ligação: %s
@@ -620,11 +619,11 @@ decision_committedcredit;Committed Margin in %s :
 decision_availablecredit;Available for Margin in %s :
 
 connection_title;Parâmetros de Conexão
-proxy_server_ip;__xProxy IP address (empty if none) :
-proxy_server_port;__xProxy Port (empty if none) :
-proxy_auth_user;__xProxy User Authentication (empty if none) :
-proxy_auth_pwd;__xProxy Password Authentication (empty if none) :
-connection_timeout;__xTimeout delay before error (in seconds, typ. 25) :
+proxy_server_ip;__xProxy IP address (esvazie se nenhum) :
+proxy_server_port;__xProxy Port (esvazie se nenhum) :
+proxy_auth_user;__xProxy User Authentication (esvazie se nenhum) :
+proxy_auth_pwd;__xProxy Password Authentication (esvazie se nenhum) :
+connection_timeout;Atraso antes do erro (em segundos, typ. 25) :
 
 rss_clear;Apagar
 rss_scan;Scan
@@ -633,6 +632,7 @@ rss_freshness;Último scan:
 remove_quote_title;Apagar a Cotação
 remove_quote_info;Suprimir realmente a acção %s ?
 
-converter_title;__xCurrencies Converter
+converter_title;Conversão de Divisas
+
 
 test;Mensagem de teste
