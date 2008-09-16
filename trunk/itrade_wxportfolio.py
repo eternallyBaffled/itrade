@@ -268,8 +268,12 @@ def select_iTradePortfolio(win,dportfolio=None,operation='select'):
     else:
         dlg = iTradePortfolioSelectorListCtrlDialog(win,dportfolio,operation,None)
     if dlg.ShowModal()==wx.ID_OK:
-        info('select_iTradePortfolio() : %s' % dlg.portfolio)
-        portfolio = dlg.portfolio
+        if dlg.portfolio == dportfolio:
+            info('select_iTradePortfolio() : %s is already the current portfolio' % dlg.portfolio)
+            portfolio = None
+        else:
+            info('select_iTradePortfolio() : %s' % dlg.portfolio)
+            portfolio = dlg.portfolio
     else:
         portfolio = None
     dlg.Destroy()
