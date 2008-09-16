@@ -715,8 +715,8 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
         itrade_config.saveConfig()
         self.updateMenuItems()
         self.m_list.SetFont(FontFromSize(itrade_config.operationFontSize))
-        for i in range(0,IDC_RESERVED):
-            self.m_list.SetColumnWidth(i, wx.LIST_AUTOSIZE)
+        for col in range(self.m_list.GetColumnCount() - 1):
+            self.m_list.SetColumnWidth(col, wx.LIST_AUTOSIZE)
 	self.m_list.resizeLastColumn(15)
 
     def OnTextSmall(self,e):
@@ -912,14 +912,10 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
             key, data = items[x]
             self.m_list.SetItemData(x, key)
 
-        # adjust size of column
-        self.m_list.SetColumnWidth(IDC_DATE, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_OPERATION, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_DESCRIPTION, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_NUMBER, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_EXPENSES, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_SRD, wx.LIST_AUTOSIZE)
-	self.m_list.resizeLastColumn(15)
+        # adjust size of columns
+        for col in range(self.m_list.GetColumnCount() - 1):
+            self.m_list.SetColumnWidth(col, wx.LIST_AUTOSIZE)
+        self.m_list.resizeLastColumn(15)
 
         # default selection
         if len(items)>0:
