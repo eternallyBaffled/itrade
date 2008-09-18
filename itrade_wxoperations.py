@@ -715,9 +715,7 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
         itrade_config.saveConfig()
         self.updateMenuItems()
         self.m_list.SetFont(FontFromSize(itrade_config.operationFontSize))
-        for col in range(self.m_list.GetColumnCount() - 1):
-            self.m_list.SetColumnWidth(col, wx.LIST_AUTOSIZE)
-	self.m_list.resizeLastColumn(15)
+        self.populate()
 
     def OnTextSmall(self,e):
         itrade_config.operationFontSize = 1
@@ -799,18 +797,23 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
         self.itemOpMap = {}
 
         # set column headers
-        self.m_list.InsertColumn(IDC_DATE, message('portfolio_list_date'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_OPERATION, message('portfolio_list_operation'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_DESCRIPTION, message('portfolio_list_description'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_NUMBER, message('portfolio_list_number'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_DEBIT,message('portfolio_list_debit'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_CREDIT,message('portfolio_list_credit'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_EXPENSES,message('portfolio_list_expense'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_BALANCE,message('portfolio_list_balance'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_DATE, message('portfolio_list_date'), wx.LIST_FORMAT_LEFT)
+        self.m_list.InsertColumn(IDC_OPERATION, message('portfolio_list_operation'), wx.LIST_FORMAT_LEFT)
+        self.m_list.InsertColumn(IDC_DESCRIPTION, message('portfolio_list_description'), wx.LIST_FORMAT_LEFT)
+        self.m_list.InsertColumn(IDC_NUMBER, message('portfolio_list_number'), wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_DEBIT,message('portfolio_list_debit'), wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_CREDIT,message('portfolio_list_credit'), wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_EXPENSES,message('portfolio_list_expense'), wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_BALANCE,message('portfolio_list_balance'), wx.LIST_FORMAT_RIGHT)
         if self.filterSRDcolumn():
-            self.m_list.InsertColumn(IDC_SRD,message('portfolio_list_srd'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_RESERVED, '', wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
+            self.m_list.InsertColumn(IDC_SRD,message('portfolio_list_srd'), wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_RESERVED, '', wx.LIST_FORMAT_LEFT)
 
+        # remember columns widths with just the header and no data
+        self.m_hdrcolwidths = []
+        for col in range(self.m_list.GetColumnCount() - 1):
+            self.m_list.SetColumnWidth(col, wx.LIST_AUTOSIZE_USEHEADER)
+            self.m_hdrcolwidths.append(self.m_list.GetColumnWidth(col))
         # populate the list
         x = 0
         balance = 0
@@ -913,9 +916,7 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
             self.m_list.SetItemData(x, key)
 
         # adjust size of columns
-        for col in range(self.m_list.GetColumnCount() - 1):
-            self.m_list.SetColumnWidth(col, wx.LIST_AUTOSIZE)
-        self.m_list.resizeLastColumn(15)
+        self.adjustColumns()
 
         # default selection
         if len(items)>0:
@@ -924,6 +925,15 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
             self.m_list.EnsureVisible(self.m_currentItem)
         else:
             self.m_currentItem = -1
+
+    # --- [ adjust columns width ] -------------------------------------
+
+    def adjustColumns(self):
+        for col in range(self.m_list.GetColumnCount() - 1):
+            self.m_list.SetColumnWidth(col, wx.LIST_AUTOSIZE)
+            if self.m_list.GetColumnWidth(col) < self.m_hdrcolwidths[col]:
+                self.m_list.SetColumnWidth(col, self.m_hdrcolwidths[col])
+        self.m_list.resizeLastColumn(15)
 
     # --- [ menu ] -------------------------------------
 
