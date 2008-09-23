@@ -1009,8 +1009,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         sel = self.m_book.GetSelection()
         win = self.m_book.win[sel]
         win.m_list.SetFont(FontFromSize(itrade_config.matrixFontSize))
-        for i in range(0,13):
-            win.m_list.SetColumnWidth(i, wx.LIST_AUTOSIZE)
+        win.populate(bDuringInit=False)
 
     def OnViewSmall(self,e):
         itrade_config.matrixFontSize = 1
