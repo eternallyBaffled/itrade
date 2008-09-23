@@ -397,9 +397,9 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
         self.itemTypeMap = {}
 
         # at least isin and ticker columns !
-        self.m_list.InsertColumn(IDC_ISIN, message('isin'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_TICKER, message('ticker'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE_USEHEADER)
-        self.m_list.InsertColumn(IDC_PRU, message('UPP'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_ISIN, message('isin'), wx.LIST_FORMAT_LEFT)
+        self.m_list.InsertColumn(IDC_TICKER, message('ticker'), wx.LIST_FORMAT_LEFT)
+        self.m_list.InsertColumn(IDC_PRU, message('UPP'), wx.LIST_FORMAT_RIGHT)
 
     def populateMatrixEnd(self):
         # fix the item data
@@ -408,15 +408,8 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
             key, data = items[x]
             self.m_list.SetItemData(x, key)
 
-        # __quirk: wxGTK issue to size correctly the latest column
-        if wx.Platform == "__WXGTK__":
-            w,h = self.m_parent.GetClientSizeTuple()
-            self.m_list.SetDimensions(0, 0, w, h)
-
         # adjust column
-        self.m_list.SetColumnWidth(IDC_ISIN, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_TICKER, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_PRU, wx.LIST_AUTOSIZE)
+        self.adjustColumns()
 
         # sort the default column
         self.SortColumn()
@@ -428,6 +421,15 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
             self.m_list.EnsureVisible(self.m_currentItem)
         else:
             self.m_currentItem = -1
+
+    # --- [ adjust columns width ] -------------------------------------
+
+    def adjustColumns(self):
+        for col in range(self.m_list.GetColumnCount() - 1):
+            self.m_list.SetColumnWidth(col, wx.LIST_AUTOSIZE)
+            if self.m_list.GetColumnWidth(col) < self.m_hdrcolwidths[col]:
+                self.m_list.SetColumnWidth(col, self.m_hdrcolwidths[col])
+        self.m_list.resizeLastColumn(15)
 
     # refresh color of one line
     def refreshColorLine(self,x,color):
@@ -571,15 +573,21 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
     def populateList(self):
         self.populateMatrixBegin()
 
-        self.m_list.InsertColumn(IDC_QTY, message('qty'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_NOTUSED, '', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_PR, message('buy'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_PVU, message('USP'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_PERFDAY, message('perfday'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_PV, message('sell'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_PROFIT, message('profit'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_PERCENT, message('perfper'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_NAME, message('name'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_QTY, message('qty'), wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_NOTUSED, '', wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_PR, message('buy'), wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_PVU, message('USP'), wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_PERFDAY, message('perfday'), wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_PV, message('sell'), wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_PROFIT, message('profit'), wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_PERCENT, message('perfper'), wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_NAME, message('name'), wx.LIST_FORMAT_LEFT)
+
+        # remember columns widths with just the header and no data
+        self.m_hdrcolwidths = []
+        for col in range(self.m_list.GetColumnCount() - 1):
+            self.m_list.SetColumnWidth(col, wx.LIST_AUTOSIZE_USEHEADER)
+            self.m_hdrcolwidths.append(self.m_list.GetColumnWidth(col))
 
         x = 0
         for eachQuote in self.m_matrix.list():
@@ -638,11 +646,6 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
 
         self.m_maxlines = x + 2
 
-        # adjust some column's size
-        self.m_list.SetColumnWidth(IDC_QTY, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_NOTUSED, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_PR, wx.LIST_AUTOSIZE)
-
         # finish populating
         self.populateMatrixEnd()
 
@@ -659,10 +662,7 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
             self.refreshColorLine(x,QUOTE_RED)
 
         # enough space for data ?
-        self.m_list.SetColumnWidth(IDC_PV, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_PR, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_PROFIT, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_PERCENT, wx.LIST_AUTOSIZE)
+        self.adjustColumns()
 
     # refresh one portfolio line
     def refreshPortfolioLine(self,x,disp):
@@ -707,11 +707,7 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
 
         self.m_list.SetItem(item)
 
-        self.m_list.SetColumnWidth(IDC_PVU, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_PERFDAY, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_PV, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_PROFIT, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_PERCENT, wx.LIST_AUTOSIZE)
+        self.adjustColumns()
         return bRef
 
     # refresh all the portfolio
@@ -808,15 +804,21 @@ class iTrade_MatrixQuotesPanel(iTrade_MatrixPanel):
     def populateList(self):
         self.populateMatrixBegin()
 
-        self.m_list.InsertColumn(IDC_VOLUME, message('volume'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_PREV, message('prev'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_OPEN, message('open'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_HIGH, message('high'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_LOW,  message('low'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_CLOSE,message('last'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_PIVOTS,message('pivots'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_PERCENT, ' % ', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_NAME, message('name'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_VOLUME, message('volume'), wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_PREV, message('prev'), wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_OPEN, message('open'), wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_HIGH, message('high'), wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_LOW,  message('low'), wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_CLOSE,message('last'), wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_PIVOTS,message('pivots'), wx.LIST_FORMAT_LEFT)
+        self.m_list.InsertColumn(IDC_PERCENT, ' % ', wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_NAME, message('name'), wx.LIST_FORMAT_LEFT)
+
+        # remember columns widths with just the header and no data
+        self.m_hdrcolwidths = []
+        for col in range(self.m_list.GetColumnCount() - 1):
+            self.m_list.SetColumnWidth(col, wx.LIST_AUTOSIZE_USEHEADER)
+            self.m_hdrcolwidths.append(self.m_list.GetColumnWidth(col))
 
         x = 0
         for eachQuote in self.m_matrix.list():
@@ -892,14 +894,7 @@ class iTrade_MatrixQuotesPanel(iTrade_MatrixPanel):
         # __x self.m_list.SetItem(item)
 
         # enough space for data ?
-        self.m_list.SetColumnWidth(IDC_VOLUME, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_PREV, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_OPEN, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_HIGH, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_LOW, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_PIVOTS, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_CLOSE, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_PERCENT, wx.LIST_AUTOSIZE)
+        self.adjustColumns()
         return bRef
 
     # refresh all quotes
@@ -1010,15 +1005,21 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
     def populateList(self):
         self.populateMatrixBegin()
 
-        self.m_list.InsertColumn(IDC_INVEST, message('buy'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_RISKM, message('risk'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_STOPLOSS, message('stop_minus'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_CURRENT, message('last'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_STOPWIN, message('stop_plus'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_PV, message('sell'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_PROFIT, message('profit'), wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_PERCENT, ' % ', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_NAME, message('name'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_INVEST, message('buy'), wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_RISKM, message('risk'), wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_STOPLOSS, message('stop_minus'), wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_CURRENT, message('last'), wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_STOPWIN, message('stop_plus'), wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_PV, message('sell'), wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_PROFIT, message('profit'), wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_PERCENT, ' % ', wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_NAME, message('name'), wx.LIST_FORMAT_LEFT)
+
+        # remember columns widths with just the header and no data
+        self.m_hdrcolwidths = []
+        for col in range(self.m_list.GetColumnCount() - 1):
+            self.m_list.SetColumnWidth(col, wx.LIST_AUTOSIZE_USEHEADER)
+            self.m_hdrcolwidths.append(self.m_list.GetColumnWidth(col))
 
         x = 0
         for eachQuote in self.m_matrix.list():
@@ -1045,10 +1046,6 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
         self.m_maxlines = x
         for eachQuote in self.itemQuoteMap.values():
             self.registerLive(eachQuote,itrade_config.refreshView,self.m_id)
-
-        # adjust some column's size
-        self.m_list.SetColumnWidth(IDC_STOPLOSS, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_STOPWIN, wx.LIST_AUTOSIZE)
 
         # finish populating
         self.populateMatrixEnd()
@@ -1101,12 +1098,7 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
             item.SetImage(self.idx_noop)
 
         self.m_list.SetItem(item)
-        self.m_list.SetColumnWidth(IDC_INVEST, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_RISKM, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_CURRENT, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_PV, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_PROFIT, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_PERCENT, wx.LIST_AUTOSIZE)
+        self.adjustColumns()
         return bRef
 
     # refresh all the stop
@@ -1216,17 +1208,23 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
     def populateList(self):
         self.populateMatrixBegin()
 
-        self.m_list.InsertColumn(IDC_MA20, 'MMA20', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_MA50, 'MMA50', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_MA100, 'MMA100', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_RSI, 'RSI (%s)'%14, wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_MACD, 'MACD', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_STOCH, 'STO %K (%D)', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_DMI, 'DMI', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_EMV, 'EMV', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_OVB, 'OVB', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_LAST, 'Last', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_LAST+1, '', wx.LIST_FORMAT_RIGHT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_MA20, 'MMA20', wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_MA50, 'MMA50', wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_MA100, 'MMA100', wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_RSI, 'RSI (%s)'%14, wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_MACD, 'MACD', wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_STOCH, 'STO %K (%D)', wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_DMI, 'DMI', wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_EMV, 'EMV', wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_OVB, 'OVB', wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_LAST, 'Last', wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_LAST+1, '', wx.LIST_FORMAT_RIGHT)
+
+        # remember columns widths with just the header and no data
+        self.m_hdrcolwidths = []
+        for col in range(self.m_list.GetColumnCount() - 1):
+            self.m_list.SetColumnWidth(col, wx.LIST_AUTOSIZE_USEHEADER)
+            self.m_hdrcolwidths.append(self.m_list.GetColumnWidth(col))
 
         x = 0
         for eachQuote in self.m_matrix.list():
@@ -1305,16 +1303,7 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
         self.m_list.SetItem(item)
 
         # enough space for data ?
-        self.m_list.SetColumnWidth(IDC_MA20, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_MA50, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_MA100, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_RSI, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_MACD, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_STOCH, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_DMI, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_EMV, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_OVB, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_LAST, wx.LIST_AUTOSIZE)
+        self.adjustColumns()
         return bRef
 
     # refresh all indicators
