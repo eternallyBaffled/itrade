@@ -408,6 +408,11 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
             key, data = items[x]
             self.m_list.SetItemData(x, key)
 
+        # __quirk: wxGTK issue to size correctly the latest column
+        #if wx.Platform == "__WXGTK__":
+        #    w,h = self.m_parent.GetClientSizeTuple()
+        #    self.m_list.SetDimensions(0, 0, w, h)
+
         # adjust column
         self.adjustColumns()
 
@@ -661,9 +666,6 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
         else:
             self.refreshColorLine(x,QUOTE_RED)
 
-        # enough space for data ?
-        self.adjustColumns()
-
     # refresh one portfolio line
     def refreshPortfolioLine(self,x,disp):
         key = self.m_list.GetItemData(x)
@@ -707,7 +709,6 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
 
         self.m_list.SetItem(item)
 
-        self.adjustColumns()
         return bRef
 
     # refresh all the portfolio
@@ -893,8 +894,6 @@ class iTrade_MatrixQuotesPanel(iTrade_MatrixPanel):
         # __x item.SetTextColour(wx.BLACK)
         # __x self.m_list.SetItem(item)
 
-        # enough space for data ?
-        self.adjustColumns()
         return bRef
 
     # refresh all quotes
@@ -1098,7 +1097,6 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
             item.SetImage(self.idx_noop)
 
         self.m_list.SetItem(item)
-        self.adjustColumns()
         return bRef
 
     # refresh all the stop
@@ -1302,8 +1300,6 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
             item.SetImage(self.idx_nochange)
         self.m_list.SetItem(item)
 
-        # enough space for data ?
-        self.adjustColumns()
         return bRef
 
     # refresh all indicators
