@@ -705,7 +705,7 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
             self.m_list.SetStringItem(x,IDC_PERFDAY," ---.-- % ")
             self.m_list.SetStringItem(x,IDC_PV," ---.-- %s" % self.m_portfolio.currency_symbol())
             self.m_list.SetStringItem(x,IDC_PROFIT," ----.-- %s" % self.m_portfolio.currency_symbol())
-            self.m_list.SetStringItem(x,IDC_PERCENT," ---.-- % ")
+            self.m_list.SetStringItem(x,IDC_PERCENT," +---.-- % ")
 
         self.m_list.SetItem(item)
 
@@ -873,18 +873,18 @@ class iTrade_MatrixQuotesPanel(iTrade_MatrixPanel):
                 self.m_list.SetStringItem(x,IDC_OPEN," ---.-- ")
                 self.m_list.SetStringItem(x,IDC_HIGH," ---.-- ")
                 self.m_list.SetStringItem(x,IDC_LOW," ---.-- ")
-                self.m_list.SetStringItem(x,IDC_PIVOTS," --- (-.--) ")
+                self.m_list.SetStringItem(x,IDC_PIVOTS," ---- (-.--) ")
                 self.m_list.SetStringItem(x,IDC_VOLUME," ---------- ")
                 color = QUOTE_NOCHANGE
         else:
             self.m_list.SetStringItem(x,IDC_PREV," ---.-- ")
-            self.m_list.SetStringItem(x,IDC_CLOSE," ---.-- %s" % quote.currency_symbol())
+            self.m_list.SetStringItem(x,IDC_CLOSE," ----.-- %s " % quote.currency_symbol())
             self.m_list.SetStringItem(x,IDC_OPEN," ---.-- ")
             self.m_list.SetStringItem(x,IDC_HIGH," ---.-- ")
             self.m_list.SetStringItem(x,IDC_LOW," ---.-- ")
-            self.m_list.SetStringItem(x,IDC_PIVOTS," --- (-.--) ")
+            self.m_list.SetStringItem(x,IDC_PIVOTS," ---- (-.--) ")
             self.m_list.SetStringItem(x,IDC_VOLUME," ---------- ")
-            self.m_list.SetStringItem(x,IDC_PERCENT," ---.-- %")
+            self.m_list.SetStringItem(x,IDC_PERCENT," +---.-- % ")
             color = QUOTE_INVALID
 
         self.refreshColorLine(x,color)
@@ -1079,7 +1079,7 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
             self.m_list.SetStringItem(x,IDC_CURRENT," ---.-- %s " % quote.currency_symbol())
             self.m_list.SetStringItem(x,IDC_PV," ------ %s" % self.m_portfolio.currency_symbol())
             self.m_list.SetStringItem(x,IDC_PROFIT," ------ %s" % self.m_portfolio.currency_symbol())
-            self.m_list.SetStringItem(x,IDC_PERCENT," ---.-- % ")
+            self.m_list.SetStringItem(x,IDC_PERCENT," +---.-- % ")
             color = QUOTE_INVALID
 
         # update line color and icon
@@ -1215,7 +1215,7 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
         self.m_list.InsertColumn(IDC_DMI, 'DMI', wx.LIST_FORMAT_RIGHT)
         self.m_list.InsertColumn(IDC_EMV, 'EMV', wx.LIST_FORMAT_RIGHT)
         self.m_list.InsertColumn(IDC_OVB, 'OVB', wx.LIST_FORMAT_RIGHT)
-        self.m_list.InsertColumn(IDC_LAST, 'Last', wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_LAST, message('last'), wx.LIST_FORMAT_RIGHT)
         self.m_list.InsertColumn(IDC_LAST+1, '', wx.LIST_FORMAT_RIGHT)
 
         # remember columns widths with just the header and no data
@@ -1281,7 +1281,7 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
             self.m_list.SetStringItem(x,IDC_DMI," ---.-- ")
             self.m_list.SetStringItem(x,IDC_EMV," ---.-- ")
             self.m_list.SetStringItem(x,IDC_OVB," ------ ")
-            self.m_list.SetStringItem(x,IDC_LAST," ---.-- %s" % quote.currency_symbol())
+            self.m_list.SetStringItem(x,IDC_LAST," ----.-- %s " % quote.currency_symbol())
             color = QUOTE_NOCHANGE
 
         # update line color and icon
