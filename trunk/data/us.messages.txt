@@ -51,6 +51,8 @@ main_view_refresh;&Refresh now
 main_view_desc_refresh; Refresh now the current view
 main_view_autorefresh;Auto Refresh
 main_view_desc_autorefresh; Refresh the current view automatically
+main_view_autosize;Auto size columns widths
+main_view_desc_autosize; Auto size columns widths according to data and header
 
 main_view_small;Small Text
 main_view_desc_small; Use small text size to display the matrix
