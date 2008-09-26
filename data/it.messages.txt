@@ -49,6 +49,8 @@ main_view_refresh;&Aggiorna ora
 main_view_desc_refresh; Aggiorna ora visualizzazione corrente
 main_view_autorefresh;Aggiornamento Automatico
 main_view_desc_autorefresh; Aggiorna automaticamente la visualizzazione corrente
+main_view_autosize;__xAuto size columns widths
+main_view_desc_autosize; __xAuto size columns widths according to data and header
 
 main_view_small;Caratteri Piccoli
 main_view_desc_small; Usa caratteri piccoli nella lista titoli

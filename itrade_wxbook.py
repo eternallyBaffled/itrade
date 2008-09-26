@@ -111,6 +111,7 @@ ID_BIG_VIEW = 232
 
 #ID_REFRESH = 240
 ID_AUTOREFRESH = 241
+ID_AUTOSIZE = 242
 
 ID_ADD_QUOTE = 300
 ID_REMOVE_QUOTE = 301
@@ -495,6 +496,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         self.matrixmenu.AppendSeparator()
         self.matrixmenu.Append(wx.ID_REFRESH, message('main_view_refresh'),message('main_view_desc_refresh'))
         self.matrixmenu.AppendCheckItem(ID_AUTOREFRESH, message('main_view_autorefresh'),message('main_view_desc_autorefresh'))
+        self.matrixmenu.Append(ID_AUTOSIZE, message('main_view_autosize'),message('main_view_desc_autosize'))
 
         self.quotemenu = wx.Menu()
         self.quotemenu.Append(ID_ADD_QUOTE, message('main_quote_add'),message('main_quote_desc_add'))
@@ -632,6 +634,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
 
         wx.EVT_MENU(self, wx.ID_REFRESH, self.OnRefresh)
         wx.EVT_MENU(self, ID_AUTOREFRESH, self.OnAutoRefresh)
+        wx.EVT_MENU(self, ID_AUTOSIZE, self.OnAutoSize)
         wx.EVT_MENU(self, wx.ID_ABOUT, self.OnAbout)
 
     # --- [ window management ] -------------------------------------
@@ -1128,6 +1131,13 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
     def OnConnexion(self,e):
         itrade_config.proxyHostname,itrade_config.proxyAuthentication,itrade_config.connectionTimeout = connection_UI(self,itrade_config.proxyHostname,itrade_config.proxyAuthentication,itrade_config.connectionTimeout)
         itrade_config.saveConfig()
+
+    # --- [ autosize management ] -------------------------------------
+
+    def OnAutoSize(self,e):
+        sel = self.m_book.GetSelection()
+        win = self.m_book.win[sel]
+        win.adjustColumns()
 
     # --- [ autorefresh management ] -------------------------------------
 

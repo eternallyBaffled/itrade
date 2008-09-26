@@ -54,6 +54,8 @@ main_view_refresh;&Actualizar agora
 main_view_desc_refresh; Actualizar agora a vista actual
 main_view_autorefresh;Actualizar automaticamente
 main_view_desc_autorefresh; Actualizar automaticamente a vista actual
+main_view_autosize;__xAuto size columns widths
+main_view_desc_autosize; __xAuto size columns widths according to data and header
 
 main_view_small;Texto pequeno
 main_view_desc_small; Usar o tamanho pequeno do texto para visualizar a matriz

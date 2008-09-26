@@ -55,6 +55,8 @@ main_view_refresh;&Tout mettre à jour
 main_view_desc_refresh; Mettre à jour toutes les informations de la vue courante maintenant
 main_view_autorefresh;Mise à jour automatique
 main_view_desc_autorefresh; Mettre à jour toutes les informations de la vue courante automatiquement
+main_view_autosize;Ajuster la largeur des colonnes
+main_view_desc_autosize; Ajuster automatiquement la largeur des colonnes en fonction des données et du titre
 
 main_view_small;Texte rétréci
 main_view_desc_small; Utilise une taille rétrécie de texte pour l'affichage de la matrice
