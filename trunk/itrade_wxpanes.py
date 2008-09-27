@@ -408,12 +408,7 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
             key, data = items[x]
             self.m_list.SetItemData(x, key)
 
-        # __quirk: wxGTK issue to size correctly the latest column
-        #if wx.Platform == "__WXGTK__":
-        #    w,h = self.m_parent.GetClientSizeTuple()
-        #    self.m_list.SetDimensions(0, 0, w, h)
-
-        # adjust column
+        # adjust columns width
         self.adjustColumns()
 
         # sort the default column
