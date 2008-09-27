@@ -194,6 +194,7 @@ class iTradeMainToolbar(wx.ToolBar):
         self._NTB2_ALERTS = wx.NewId()
         self._NTB2_QUOTE = wx.NewId()
         self._NTB2_REFRESH = wx.NewId()
+        self._NTB2_AUTOSIZE = wx.NewId()
         self._NTB2_ABOUT = wx.NewId()
 
         self.SetToolBitmapSize(wx.Size(24,24))
@@ -221,6 +222,8 @@ class iTradeMainToolbar(wx.ToolBar):
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
         self.AddSimpleTool(self._NTB2_REFRESH, wx.Bitmap(os.path.join(itrade_config.dirRes, 'refresh.png')),
                            message('main_view_refresh'), message('main_view_desc_refresh'))
+        self.AddSimpleTool(self._NTB2_AUTOSIZE, wx.Bitmap(os.path.join(itrade_config.dirRes, 'adjust_column.png')),
+                           message('main_view_autosize'), message('main_view_desc_autosize'))
         self.AddSimpleTool(self._NTB2_ABOUT, wx.Bitmap(os.path.join(itrade_config.dirRes, 'about.png')),
                            message('main_about'), message('main_desc_about'))
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
@@ -239,10 +242,14 @@ class iTradeMainToolbar(wx.ToolBar):
         wx.EVT_TOOL(self, self._NTB2_QUOTE, self.onQuote)
         wx.EVT_TOOL(self, self._NTB2_ABOUT, self.onAbout)
         wx.EVT_TOOL(self, self._NTB2_REFRESH, self.onRefresh)
+        wx.EVT_TOOL(self, self._NTB2_AUTOSIZE, self.onAutoSize)
         self.Realize()
 
     def onRefresh(self, event):
         self.m_parent.OnRefresh(event)
+
+    def onAutoSize(self, event):
+        self.m_parent.OnAutoSize(event)
 
     def onOpen(self,event):
         self.m_parent.OnOpen(event)
