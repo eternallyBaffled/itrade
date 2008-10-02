@@ -49,11 +49,12 @@ if not itrade_config.nowxversion:
     import itrade_wxversion
 import wx
 import wx.lib.mixins.listctrl as wxl
+import wx.grid as gridlib
 
 # iTrade system
 from itrade_logging import *
 from itrade_local import message
-from itrade_currency import currencies
+from itrade_currency import currencies, list_of_currencies
 
 # iTrade wxPython system
 from itrade_wxmixin import iTrade_wxFrame
@@ -132,6 +133,19 @@ class iTradeCurrenciesListCtrl(wx.ListCtrl, wxl.ListCtrlAutoWidthMixin):
         wx.ListCtrl.__init__(self, parent, ID, pos, size, style)
         wxl.ListCtrlAutoWidthMixin.__init__(self)
 
+class iTradeCurrenciesMatrix(gridlib.Grid):
+    def __init__(self, parent, ID, pos=wx.DefaultPosition,
+                 size = wx.DefaultSize, style=0, list=None):
+        gridlib.Grid.__init__(self, parent, ID, pos, size, style)
+        self.list = list
+        count = len(list)
+
+        grid = self.CreateGrid(count, count)
+        self.EnableEditing(False)
+        for i in range(count):
+            self.SetColLabelValue(i, list[i])
+            self.SetRowLabelValue(i, list[i])
+
 # ============================================================================
 # iTradeCurrenciesWindow
 # ============================================================================
@@ -174,8 +188,9 @@ class iTradeCurrenciesWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveCurrencyMixin)
         self.m_toolbar = iTradeCurrencyToolbar(self, wx.NewId())
 
         # default list is quotes
-        self.m_list = iTradeCurrenciesListCtrl(self, wx.NewId(),
-                                 style = wx.LC_REPORT | wx.SUNKEN_BORDER | wx.LC_SINGLE_SEL | wx.LC_VRULES | wx.LC_HRULES)
+        self.m_list = iTradeCurrenciesMatrix(self, wx.NewId(),
+                                 style = wx.LC_REPORT | wx.SUNKEN_BORDER | wx.LC_SINGLE_SEL | wx.LC_VRULES | wx.LC_HRULES,
+                                 list=list_of_currencies())
         #self.m_list.SetImageList(self.m_imagelist, wx.IMAGE_LIST_SMALL)
         self.m_list.SetFont(wx.Font(10, wx.SWISS , wx.NORMAL, wx.NORMAL))
 
@@ -256,18 +271,20 @@ class iTradeCurrenciesWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveCurrencyMixin)
         max = len(lst)
         keepGoing = True
         if self.hasFocus():
-            dlg = wx.ProgressDialog(message('currency_refreshing'),"",max,self,wx.PD_CAN_ABORT | wx.PD_APP_MODAL)
+            dlg = wx.ProgressDialog(message('currency_refreshing'), "", max,
+                                    self, wx.PD_CAN_ABORT | wx.PD_APP_MODAL)
         else:
             dlg = None
         for eachKey in lst:
-            if keepGoing:
-                curTo = eachKey[:3]
-                curFrom = eachKey[3:]
-                if dlg:
-                    keepGoing = dlg.Update(x,"%s -> %s" % (curFrom,curTo))
-                currencies.get(curTo,curFrom)
-                self.refreshLine(eachKey,x,True)
-                x = x + 1
+            if not keepGoing:
+                break
+            curTo = eachKey[:3]
+            curFrom = eachKey[3:]
+            if dlg:
+                (keepGoing, skip) = dlg.Update(x,"%s -> %s" % (curFrom,curTo))
+            currencies.get(curTo,curFrom)
+            self.refreshLine(eachKey,x,True)
+            x = x + 1
 
         currencies.save()
         if dlg:
@@ -286,29 +303,28 @@ class iTradeCurrenciesWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveCurrencyMixin)
 
     def refreshLine(self,key,x,disp):
         used ,rate = currencies.m_currencies[key]
-        self.m_list.SetStringItem(x,IDC_RATE,"%.4f" % rate)
+        #self.m_list.SetStringItem(x,IDC_RATE,"%.4f" % rate)
+        list = list_of_currencies()
+        curTo = key[:3]
+        indTo = [i for i in range(len(list)) if list[i] == curTo][0]
+        curFrom = key[3:]
+        indFrom = [i for i in range(len(list)) if list[i] == curFrom][0]
+        self.m_list.SetCellValue(indFrom, indTo, "%.4f" % rate)
+
 
     def populate(self,bDuringInit):
         info('populate duringinit=%d'%bDuringInit)
         # clear current population
         self.stopLiveCurrency(bBusy=False)
         self.unregisterLiveCurrency()
-        self.m_list.ClearAll()
 
-        self.m_list.InsertColumn(IDC_FROM, message('currency_from'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_RATE, message('currency_rate'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_TO, message('currency_to'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_DESC, '', wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
+        list = list_of_currencies()
+        for i in range(len(list)):
+            for j in range(len(list)):
+                # currencies.rate format : curTo, curFrom
+                self.m_list.SetCellValue(i, j, "%.4f" % currencies.rate(list[j], list[i]))
+                self.m_list.SetCellAlignment(i, j, wx.ALIGN_RIGHT, wx.ALIGN_CENTER)
 
-        x = 0
-        for eachKey in currencies.m_currencies.keys():
-            curTo = eachKey[:3]
-            curFrom = eachKey[3:]
-            self.m_list.InsertImageStringItem(x, "1 %s = " % curFrom, -1)
-            self.m_list.SetStringItem(x,IDC_TO,"%s" % curTo)
-            self.registerLiveCurrency(eachKey,itrade_config.refreshCurrencyView,x)
-            self.refreshLine(eachKey,x,False)
-            x = x + 1
 
         if not bDuringInit and itrade_config.bAutoRefreshCurrencyView:
             self.startLiveCurrency()
