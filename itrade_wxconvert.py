@@ -71,10 +71,9 @@ from itrade_wxutil import iTradeSizedDialog
 # ============================================================================
 
 class iTradeConverterDialog(iTradeSizedDialog):
-
-    def __init__(self, parent):
-
-        iTradeSizedDialog.__init__(self,parent,-1,message('converter_title'),size=(420, 420),style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
+    def __init__(self, parent, curSelected=(0, 1)):
+        iTradeSizedDialog.__init__(self,parent,-1,message('converter_title'),
+                                   size=(420, 420),style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
 
         # container
         container = self.GetContentsPane()
@@ -92,11 +91,14 @@ class iTradeConverterDialog(iTradeSizedDialog):
 
         self.wxOrgCur = wx.ComboBox(pane,-1, "", size=wx.Size(80,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
 
-        for c in list_of_currencies():
+        list = list_of_currencies()
+        (curFrom, curTo) = curSelected
+
+        for c in list:
             self.wxOrgCur.Append(c,c)
 
-        self.wxOrgCur.SetSelection(0)
-        self.m_orgcur = 'EUR'
+        self.wxOrgCur.SetSelection(curFrom)
+        self.m_orgcur = list[curFrom]
         wx.EVT_COMBOBOX(self,self.wxOrgCur.GetId(),self.OnOrgCurrency)
 
         # Row 2 : Dest Currency Value
@@ -105,11 +107,11 @@ class iTradeConverterDialog(iTradeSizedDialog):
         self.wxDestVal.SetSizerProps(valign='center')
         self.wxDestCur = wx.ComboBox(pane,-1, "", size=wx.Size(80,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
 
-        for c in list_of_currencies():
+        for c in list:
             self.wxDestCur.Append(c,c)
 
-        self.wxDestCur.SetSelection(1)
-        self.m_destcur = 'USD'
+        self.wxDestCur.SetSelection(curTo)
+        self.m_destcur = list[curTo]
         wx.EVT_COMBOBOX(self,self.wxDestCur.GetId(),self.OnDestCurrency)
 
         # Last Row : OK and Cancel
@@ -176,8 +178,8 @@ class iTradeConverterDialog(iTradeSizedDialog):
 #   win     parent window
 # ============================================================================
 
-def open_iTradeConverter(win):
-    dlg = iTradeConverterDialog(win)
+def open_iTradeConverter(win, curSelected=(0, 1)):
+    dlg = iTradeConverterDialog(win, curSelected)
     dlg.ShowModal()
     dlg.Destroy()
 

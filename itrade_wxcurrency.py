@@ -146,6 +146,8 @@ class iTradeCurrenciesMatrix(gridlib.Grid):
             self.SetColLabelValue(i, list[i])
             self.SetRowLabelValue(i, list[i])
 
+        self.Bind(wx.grid.EVT_GRID_CELL_LEFT_DCLICK, parent.OnDClick)
+
 # ============================================================================
 # iTradeCurrenciesWindow
 # ============================================================================
@@ -298,6 +300,11 @@ class iTradeCurrenciesWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveCurrencyMixin)
 
     def OnConvert(self, evt):
         open_iTradeConverter(self)
+
+    def OnDClick(self, evt):
+        row = evt.GetRow()
+        col = evt.GetCol()
+        open_iTradeConverter(self, (row, col))
 
     # --- [ content management ] -------------------------------------
 
