@@ -4,7 +4,7 @@
 # Project Name : iTrade
 # Module Name  : itrade_quotes_lse.py
 #
-# Description: List of quotes from swx.com : LSE MARKETS (SETS, SETSmm, SEAQ)
+# Description: List of quotes from http://www.londonstockexchange.com/en-gb/products/membershiptrading/tradingservices/: LSE MARKETS (SETS, SETSqx, SEAQ)
 # The Original Code is iTrade code (http://itrade.sourceforge.net).
 #
 # The Initial Developer of the Original Code is Gilles Dumortier.
@@ -66,11 +66,14 @@ def Import_ListOfQuotes_LSE(quotes,market='LSE SETS',dlg=None,x=0):
     import xlrd
 
     if market=='LSE SETS':
-        url = "http://www.londonstockexchange.com/NR/rdonlyres/1BCC9E48-6846-411B-8F2A-06F1DD17EB22/0/ListofSETSsecurities.xls"
-    elif market=='LSE SETSmm':
-        url = "http://www.londonstockexchange.com/NR/rdonlyres/6B92591A-68A2-4715-8333-F28FD517AB27/0/ListofSETSmmsecurities.xls"
+        #url = "http://www.londonstockexchange.com/NR/rdonlyres/A754BE95-0901-4B95-BD85-CF959A36C3B2/0/ListofSETSsecurities.xls"
+        url = 'http://www.londonstockexchange.com/traders-and-brokers/products-services/trading-services/sets/list-set.xls'
+    elif market=='LSE SETSqx':
+        #url = "http://www.londonstockexchange.com/NR/rdonlyres/B460DAC6-5790-43DD-87ED-5F4CBF5D80EA/0/ListofSETSQXCCPsecurities.xls"
+        url = 'http://www.londonstockexchange.com/traders-and-brokers/products-services/trading-services/setsqx/ccp-securities.xls'
     elif market=='LSE SEAQ':
-        url = "http://www.londonstockexchange.com/NR/rdonlyres/9731A6AB-B60B-469F-BE6B-A721247CE76C/0/ListofSEAQsecurities.xls"
+        url = 'http://www.londonstockexchange.com/traders-and-brokers/products-services/trading-services/seaq/list-seaq.xls'
+        #url = "http://www.londonstockexchange.com/NR/rdonlyres/1960A958-B1CB-4B05-AF86-23FB54317D8E/0/ListofSEAQsecurities.xls"
     else:
         return False
 
@@ -101,7 +104,7 @@ def Import_ListOfQuotes_LSE(quotes,market='LSE SETS',dlg=None,x=0):
     n = 0
     indice = {}
 
-    print 'Import_ListOfQuotes_LSE_%s:' % market,'book',book,'sheet',sh,'nrows=',sh.nrows
+    #print 'Import_ListOfQuotes_LSE_%s:' % market,'book',book,'sheet',sh,'nrows=',sh.nrows
 
     for line in range(sh.nrows):
         if sh.cell_type(line,1) != xlrd.XL_CELL_EMPTY:
@@ -125,16 +128,18 @@ def Import_ListOfQuotes_LSE(quotes,market='LSE SETS',dlg=None,x=0):
             else:
                 ticker = sh.cell_value(line,iTicker)
                 if type(ticker)==float: ticker='%s' % ticker
-                #print line,iTicker,ticker,type(ticker)
                 if ticker[-1:]=='.':
                     ticker = ticker[:-1]
+                    
                 name = sh.cell_value(line,iName).replace(',',' ')
-                #print line,'>',sh.cell_value(line,iISIN),' : ',name,ticker
+
+                name = name.encode('cp1252')
+                name = name.replace('£',' ')
+
                 quotes.addQuote(isin=sh.cell_value(line,iISIN),name=name, \
                     ticker=ticker,market=market,\
                     currency=sh.cell_value(line,iCurrency),place='LON',\
                     country=sh.cell_value(line,iCountry))
-
                 n = n + 1
 
     print 'Imported %d/%d lines from %s data.' % (n,sh.nrows,market)
@@ -147,7 +152,7 @@ def Import_ListOfQuotes_LSE(quotes,market='LSE SETS',dlg=None,x=0):
 
 if itrade_excel.canReadExcel:
     registerListSymbolConnector('LSE SETS','LON',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_LSE)
-    registerListSymbolConnector('LSE SETSmm','LON',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_LSE)
+    registerListSymbolConnector('LSE SETSqx','LON',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_LSE)
     registerListSymbolConnector('LSE SEAQ','LON',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_LSE)
 
 # ============================================================================
@@ -162,7 +167,7 @@ if __name__=='__main__':
 
     if itrade_excel.canReadExcel:
         Import_ListOfQuotes_LSE(quotes,'LSE SETS')
-        Import_ListOfQuotes_LSE(quotes,'LSE SETSmm')
+        Import_ListOfQuotes_LSE(quotes,'LSE SETSqx')
         Import_ListOfQuotes_LSE(quotes,'LSE SEAQ')
 
         quotes.saveListOfQuotes()
