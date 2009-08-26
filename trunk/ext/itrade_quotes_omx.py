@@ -4,7 +4,7 @@
 # Project Name : iTrade
 # Module Name  : itrade_quotes_omx.py
 #
-# Description: List of quotes from omx.com : OMX MARKET (STOCKHOLM,COPENHAGEN)
+# Description: List of quotes from http://www.nasdaqomxnordic.com : OMX MARKET (STOCKHOLM,COPENHAGEN)
 #
 # The Original Code is iTrade code (http://itrade.sourceforge.net).
 #
@@ -68,7 +68,7 @@ def Import_ListOfQuotes_OMX(quotes,market='STOCKHOLM EXCHANGE',dlg=None,x=0):
     # find url to update list
     ch ='href="/digitalAssets/'
     try:
-        url = connection.getDataFromUrl('http://www.omxnordicexchange.com/products/')
+        url = connection.getDataFromUrl('http://www.nasdaqomxnordic.com/News/listings/')
     except:
         info('Import_ListOfQuotes_OMX_%s:unable to get XLS file name :-(' % market)
         return False
@@ -80,17 +80,16 @@ def Import_ListOfQuotes_OMX(quotes,market='STOCKHOLM EXCHANGE',dlg=None,x=0):
         info('Import_ListOfQuotes_OMX_%s:unable to parse XLS file name :-(' % market)
         return False
 
-    #print endurl
 
-    url = "http://www.omxgroup.com/digitalAssets/" + endurl
-    print url
+    url = "http://www.nasdaqomxnordic.com/digitalAssets/" + endurl
 
     if market=='STOCKHOLM EXCHANGE':
         m_place='STO'
         country='SE'
 
     elif market=='COPENHAGEN EXCHANGE':
-        m_place='CSE'
+        #m_place='CSE'
+	m_place='CPH'
         country='DK'
     else:
         return False
@@ -113,9 +112,7 @@ def Import_ListOfQuotes_OMX(quotes,market='STOCKHOLM EXCHANGE',dlg=None,x=0):
     except:
         info('Import_ListOfQuotes_OMX_%s:unable to connect :-(' % market)
         return False
-
-    #print data[:250]
-
+    
     # returns the data
     book = itrade_excel.open_excel(file=None,content=data)
     sh = book.sheet_by_index(1)
@@ -123,7 +120,7 @@ def Import_ListOfQuotes_OMX(quotes,market='STOCKHOLM EXCHANGE',dlg=None,x=0):
     indice = {}
     country = ''
 
-    print 'Import_ListOfQuotes_OMX_%s:' % market,'book',book,'sheet',sh,'nrows=',sh.nrows
+    #print 'Import_ListOfQuotes_OMX_%s:' % market,'book',book,'sheet',sh,'nrows=',sh.nrows
 
     for line in range(sh.nrows):
         if sh.cell_type(line,1) != xlrd.XL_CELL_EMPTY:
@@ -136,7 +133,7 @@ def Import_ListOfQuotes_OMX(quotes,market='STOCKHOLM EXCHANGE',dlg=None,x=0):
                     if val=='ISIN': n = n + 1
 
                 if n==1:
-                    if itrade_config.verbose: print 'Indice:',indice
+                    #if itrade_config.verbose: print 'Indice:',indice
 
                     iISIN = indice['ISIN']
                     iTicker = indice['Short Name']
@@ -147,6 +144,8 @@ def Import_ListOfQuotes_OMX(quotes,market='STOCKHOLM EXCHANGE',dlg=None,x=0):
                 place=sh.cell_value(line,iPlace)
 
                 if place == m_place :
+                    if place == 'CPH' : place = 'CSE'
+                    
                     isin=sh.cell_value(line,iISIN)
 
                     ticker = sh.cell_value(line,iTicker)
@@ -154,14 +153,18 @@ def Import_ListOfQuotes_OMX(quotes,market='STOCKHOLM EXCHANGE',dlg=None,x=0):
                     ticker=ticker.replace(' ','')
 
                     name = sh.cell_value(line,0)
-                    #name=name.upper()
-                    #print name,type(name)
+                    name = name.strip()
+                    # caractere error in this name
+                    # Black Earth Farming Ltd. SDB ('á' is between Farming and Ltd)
+                    if 'Black Earth Farming' in name:
+                        name = 'Black Earth Farming Ltd. SDB'
 
                     name = name.encode('cp1252')
 
                     name = name.replace('æ','ae')
-                    name = name.replace('å','a')
                     name = name.replace('ä','a')
+                    name = name.replace('å','a')
+                    #name = name.replace('á',' ')not valid
                     name = name.replace('Å','A')
                     name = name.replace('ø','o')
                     name = name.replace('Ø','O')
@@ -169,16 +172,14 @@ def Import_ListOfQuotes_OMX(quotes,market='STOCKHOLM EXCHANGE',dlg=None,x=0):
                     name = name.replace('ö','o')
                     name = name.replace('Ö','O')
                     name = name.replace('ü','u')
-
                     name = name.replace(',',' ')
-
+                    
                     currency=sh.cell_value(line,iCurrency)
                     quotes.addQuote(isin = isin,name = name,ticker = ticker,market = market,currency=currency,place=place,country=country)
-                    #print isin,name,ticker,currency,place,country
 
                     n = n + 1
 
-    print 'Imported %d/%d lines from %s data.' % (n,sh.nrows,market)
+    print 'Imported %d/%d lines from %s data.' % (n-1,sh.nrows,market)
 
     return True
 
