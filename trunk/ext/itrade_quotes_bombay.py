@@ -73,7 +73,7 @@ def Import_ListOfQuotes_BSE(quotes,market='BOMBAY EXCHANGE',dlg=None,x=0):
         return False
 
     def splitLines(buf):
-        lines = string.split(buf, '\n')
+        lines = string.split(buf, 'stockreach.htm?')
         lines = filter(lambda x:x, lines)
         def removeCarriage(s):
             if s[-1]=='\r':
@@ -117,16 +117,15 @@ def Import_ListOfQuotes_BSE(quotes,market='BOMBAY EXCHANGE',dlg=None,x=0):
                     debug('Import_ListOfQuotes_BSE unable to connect :-(')
 
                 data = source.read()
-                data = data.replace('scripcd=','scripcd=\n')
 
                 # returns the data
                 lines = splitLines(data)
 
                 for line in lines[1:]:
                     count = count + 1
-                    if line.find('href=..') and len(line)>50:
-                        ticker = line[:line.index('>')]
-                        name = line[len(ticker)+1:line.index('<')]
+                    if 'scripcd=' in line:
+                        ticker = line[8:line.index('>')]
+                        name = line[len(ticker)+9:line.index('<')]
                         isin = ''
 
                         # ok to proceed
