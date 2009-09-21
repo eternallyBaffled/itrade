@@ -874,36 +874,36 @@ class Quote(object):
         if x!=None:
             st,re,rb,rh,cl = self.currentStatus()
             if st=='OK':
-                return "%3.2f%s" % (x,sc)
+                return "%3.3f%s" % (x,sc)
             elif st=='SUSPEND+':
-                return "%3.2f%s(+)" % (x,sc)
+                return "%3.3f%s(+)" % (x,sc)
             elif st=='SUSPEND-':
-                return "%3.2f%s(-)" % (x,sc)
+                return "%3.3f%s(-)" % (x,sc)
             elif st=='SUSPEND':
-                return "%3.2f%s(s)" % (x,sc)
+                return "%3.3f%s(s)" % (x,sc)
             elif st=='CLOSED':
-                return "%3.2f%s(c)" % (x,sc)
+                return "%3.3f%s(c)" % (x,sc)
             else:
-                return "%3.2f%s(%s)" % (x,sc,st)
-        return " ---.--%s" % sc
+                return "%3.3f%s(%s)" % (x,sc,st)
+        return " ---.---%s" % sc
 
     def sv_open(self,d=None):
         x = self.nv_open(d)
         if x!=None:
-            return "%3.2f" % x
-        return " ---.-- "
+            return "%3.3f" % x
+        return " ---.--- "
 
     def sv_low(self,d=None):
         x = self.nv_low(d)
         if x!=None:
-            return "%3.2f" % x
-        return " ---.-- "
+            return "%3.3f" % x
+        return " ---.--- "
 
     def sv_high(self,d=None):
         x = self.nv_high(d)
         if x!=None:
-            return "%3.2f" % x
-        return " ---.-- "
+            return "%3.3f" % x
+        return " ---.--- "
 
     def sv_volume(self,d=None):
         x = self.nv_volume(d)
@@ -914,8 +914,8 @@ class Quote(object):
     def sv_prevclose(self,d=None):
         x = self.nv_prevclose(d)
         if x!=None:
-            return "%3.2f" % x
-        return " ---.-- "
+            return "%3.3f" % x
+        return " ---.--- "
 
     def sv_percent(self,d=None):
         try:
