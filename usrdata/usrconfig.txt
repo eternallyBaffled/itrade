@@ -1,11 +1,10 @@
 [column]
-indicators = 8;0
-portfolio = 5;0
-stops = 10;0
+indicators = 1;1
+portfolio = 9;1
+stops = 11;1
 quotes = 11;1
 
 [net]
-connectiontimeout = 25
 
 [view]
 
