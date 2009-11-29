@@ -137,6 +137,10 @@ class Import_yahoo(object):
         query = string.join(query, '&')
         url = yahooUrl(quote.market(),live=False) + '?' + query
 
+        #specific yahoo ticker to import historical prices of KOREA KOSDAQ EXCHANGE from uk.yahoo.finance - ticker = A + ticker
+        if quote.market()== 'KOREA KOSDAQ EXCHANGE':
+            url = url = url[:44]+'A'+url[44:]
+
         debug("Import_yahoo:getdata: url=%s ",url)
         try:
             buf=self.m_connection.getDataFromUrl(url)
@@ -211,7 +215,7 @@ registerImportConnector('TORONTO VENTURE','TOR',QLIST_ANY,QTAG_IMPORT,gImportYah
 registerImportConnector('TORONTO EXCHANGE','TOR',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
 
 registerImportConnector('LSE SETS','LON',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('LSE SETSmm','LON',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('LSE SETSqx','LON',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
 registerImportConnector('LSE SEAQ','LON',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
 
 registerImportConnector('MILAN EXCHANGE','MIL',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
@@ -239,7 +243,7 @@ registerImportConnector('COPENHAGEN EXCHANGE','CSE',QLIST_ANY,QTAG_IMPORT,gImpor
 
 registerImportConnector('OSLO EXCHANGE','OSL',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
 
-registerImportConnector('SAO PAOLO EXCHANGE','SAO',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('SAO PAULO EXCHANGE','SAO',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
 
 registerImportConnector('HONG KONG EXCHANGE','HKG',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
 
@@ -256,6 +260,14 @@ registerImportConnector('NEW ZEALAND EXCHANGE','NZE',QLIST_ANY,QTAG_IMPORT,gImpo
 registerImportConnector('BUENOS AIRES EXCHANGE','BUE',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
 
 registerImportConnector('MEXICO EXCHANGE','MEX',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
+
+registerImportConnector('SINGAPORE EXCHANGE','SGX',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
+
+registerImportConnector('KOREA STOCK EXCHANGE','KRX',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
+
+registerImportConnector('KOREA KOSDAQ EXCHANGE','KOS',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
+
+registerImportConnector('WIENER BORSE','WBO',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
 
 # ============================================================================
 # Test ME

@@ -39,6 +39,9 @@
 
 # python system
 import logging
+#import re
+#import thread
+#import time
 import string
 
 # iTrade system
@@ -65,13 +68,30 @@ def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT',dlg=None,x=0):
     cha = "7213"
 
     if market=='EURONEXT':
-        url = "http://www.euronext.com/search/download/trapridownloadpopup.jcsv?pricesearchresults=actif&filter=1&lan=EN&belongsToList=market_EURLS&cha=%s&format=txt&formatDecimal=.&formatDate=dd/MM/yy" % cha
+
+        urls = ["http://www.euronext.com/search/download/trapridownloadpopup.jcsv?pricesearchresults=actif&filter=1&belongsToList=market_EURLS&lan=EN&mep=8629&resultsTitle=Paris+-+Euronext&cha=%s&format=txt&formatDecimal=.&formatDate=dd/MM/yy" % cha
+               ,"http://www.euronext.com/search/download/trapridownloadpopup.jcsv?pricesearchresults=actif&filter=1&belongsToList=market_EURLS&lan=EN&mep=8626&resultsTitle=Amsterdam+-+Euronext&cha=%s&format=txt&formatDecimal=.&formatDate=dd/MM/yy" % cha
+               ,"http://www.euronext.com/search/download/trapridownloadpopup.jcsv?pricesearchresults=actif&filter=1&belongsToList=market_EURLS&lan=EN&mep=8627&resultsTitle=Brussels+-+Euronext&cha=%s&format=txt&formatDecimal=.&formatDate=dd/MM/yy" % cha
+               ,"http://www.euronext.com/search/download/trapridownloadpopup.jcsv?pricesearchresults=actif&filter=1&belongsToList=market_EURLS&lan=EN&mep=8628&resultsTitle=Lisbon+-+Euronext&cha=%s&format=txt&formatDecimal=.&formatDate=dd/MM/yy" % cha
+               ]
+
+
     elif market=='ALTERNEXT':
-        url = "http://www.euronext.com/search/download/trapridownloadpopup.jcsv?pricesearchresults=actif&filter=1&lan=EN&belongsToList=market_ALTX&cha=%s&format=txt&formatDecimal=.&formatDate=dd/MM/yy" % cha
+
+        urls = ["http://www.euronext.com/search/download/trapridownloadpopup.jcsv?pricesearchresults=actif&filter=1&belongsToList=market_ALTX&mep=8629&lan=EN&resultsTitle=Paris+-+Alternext&cha=%s&format=txt&formatDecimal=.&formatDate=dd/MM/yy" % cha
+               ,"http://www.euronext.com/search/download/trapridownloadpopup.jcsv?pricesearchresults=actif&filter=1&belongsToList=market_ALTX&mep=8626&lan=EN&resultsTitle=Amsterdam+-+Alternext&cha=%s&format=txt&formatDecimal=.&formatDate=dd/MM/yy" % cha
+               ,"http://www.euronext.com/search/download/trapridownloadpopup.jcsv?pricesearchresults=actif&filter=1&belongsToList=market_ALTX&mep=8627&lan=EN&resultsTitle=Brussels+-+Alternext&cha=%s&format=txt&formatDecimal=.&formatDate=dd/MM/yy" % cha
+               ]
+
+
     elif market=='PARIS MARCHE LIBRE':
-        url = "http://www.euronext.com/search/download/trapridownloadpopup.jcsv?pricesearchresults=actif&filter=1&lan=EN&belongsToList=market_MC&cha=%s&format=txt&formatDecimal=.&formatDate=dd/MM/yy" % cha
+        urls = ["http://www.euronext.com/search/download/trapridownloadpopup.jcsv?pricesearchresults=actif&filter=1&belongsToList=market_MC&lan=EN&mep=8629&resultsTitle=Paris+-+Marché+Libre&cha=%s&format=txt&formatDecimal=.&formatDate=dd/MM/yy" % cha
+]
+
     elif market=='BRUXELLES MARCHE LIBRE':
-        url = "http://www.euronext.com/search/download/trapridownloadpopup.jcsv?pricesearchresults=actif&filter=1&lan=EN&belongsToList=market_BRUMC&cha=%s&format=txt&formatDecimal=.&formatDate=dd/MM/yy" % cha
+        urls = ["http://www.euronext.com/search/download/trapridownloadpopup.jcsv?pricesearchresults=actif&filter=1&belongsToList=market_BRUMC&lan=EN&mep=8627&resultsTitle=Brussels+-+Marché+Libre&cha=%s&format=txt&formatDecimal=.&formatDate=dd/MM/yy" % cha
+]
+
     else:
         return False
 
@@ -86,88 +106,92 @@ def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT',dlg=None,x=0):
         lines = [removeCarriage(l) for l in lines]
         return lines
 
-    try:
-        data=connection.getDataFromUrl(url)
-    except:
-        debug('Import_ListOfQuotes_Euronext:unable to connect :-(')
-        return False
+    for urlline in urls :
+        url = urlline
+       
 
-    indice = {}
-    """
-    "Instrument's name";
-    "ISIN";
-    "Euronext code";
-    "MEP";
-    "Symbol";
-    "ICB Sector (Level 4)";
-    "Trading currency";
-    "Last";
-    "Volume";
-    "D/D-1 (%)";
-    "Date - time (CET)";
-    "Turnover";
-    "Total number of shares";
-    "Capitalisation";
-    "Trading mode";
-    "Day First";
-    "Day High";
-    "Day High / Date - time (CET)";
-    "Day Low";
-    "Day Low / Date - time (CET)";
-    "31-12/Change (%)";
-    "31-12/High";
-    "31-12/High/Date";
-    "31-12/Low";
-    "31-12/Low/Date";
-    "52 weeks/Change (%)";
-    "52 weeks/High";
-    "52 weeks/High/Date";
-    "52 weeks/Low";
-    "52 weeks/Low/Date";
-    "Suspended";
-    "Suspended / Date - time (CET)";
-    "Reserved";
-    "Reserved / Date - time (CET)"
-    """
+        try:
+            data=connection.getDataFromUrl(url)
+        except:
+            debug('Import_ListOfQuotes_Euronext:unable to connect :-(')
+            return False
 
-    # returns the data
-    lines = splitLines(data)
-    count = 0
+        indice = {}
+        """
+        "Instrument's name";
+        "ISIN";
+        "Euronext code";
+        "Market";
+        "Symbol";
+        "ICB Sector (Level 4)";
+        "Trading currency";
+        "Last";
+        "Volume";
+        "D/D-1 (%)";
+        "Date - time (CET)";
+        "Turnover";
+        "Total number of shares";
+        "Capitalisation";
+        "Trading mode";
+        "Day First";
+        "Day High";
+        "Day High / Date - time (CET)";
+        "Day Low";
+        "Day Low / Date - time (CET)";
+        "31-12/Change (%)";
+        "31-12/High";
+        "31-12/High/Date";
+        "31-12/Low";
+        "31-12/Low/Date";
+        "52 weeks/Change (%)";
+        "52 weeks/High";
+        "52 weeks/High/Date";
+        "52 weeks/Low";
+        "52 weeks/Low/Date";
+        "Suspended";
+        "Suspended / Date - time (CET)";
+        "Reserved";
+        "Reserved / Date - time (CET)"
+        """
 
-    for line in lines:
-        data = string.split (line, ';')
+        # returns the data
+        lines = splitLines(data)
+        count = 0
 
-        if len(data)>2:
-            if not indice.has_key("ISIN"):
-                i = 0
-                for ind in data:
-                    indice[ind] = i
-                    i = i + 1
+        for line in lines:
+            data = string.split (line, ';')
 
-                iName = indice["Instrument's name"]
-                iISIN = indice["ISIN"]
-                iMEP = indice["MEP"]
-                iTicker = indice["Symbol"]
-                iCurr = indice["Trading currency"]
+            if len(data)>2:
+                if not indice.has_key("ISIN"):
+                    i = 0
+                    for ind in data:
+                        indice[ind] = i
+                        i = i + 1
 
-            else:
-                if data[iISIN]!="ISIN":
-                    if checkISIN(data[iISIN]):
-                        if data[iMEP]=='PAR' or data[iMEP]=='BRU' or data[iMEP]=='AMS' or data[iMEP]=='LIS':
-                            name = filterName(data[iName])
-                            quotes.addQuote(isin=data[iISIN],name=name,ticker=data[iTicker],market=market,currency=data[iCurr],place=data[iMEP],country=None)
-                            count = count + 1
+                    iName = indice["Instrument's name"]
+                    iISIN = indice["ISIN"]
+                    iMEP = indice["Market"]
+                    iTicker = indice["Symbol"]
+                    iCurr = indice["Trading currency"]
+
+                else:
+                    if data[iISIN]!="ISIN":
+                        if checkISIN(data[iISIN]):
+                            if data[iMEP]=='PAR' or data[iMEP]=='BRU' or data[iMEP]=='AMS' or data[iMEP]=='LIS':
+                                name = filterName(data[iName])
+                                quotes.addQuote(isin=data[iISIN],name=name,ticker=data[iTicker],market=market,currency=data[iCurr],place=data[iMEP],country=None)
+                                count = count + 1
+                            else:
+                                if itrade_config.verbose:
+                                    print 'unknown place :',data[iMEP],'>>>',data
                         else:
                             if itrade_config.verbose:
-                                print 'unknown place :',data[iMEP],'>>>',data
-                    else:
-                        if itrade_config.verbose:
-                            print 'invalid ISIN :',data[iISIN],'>>>',data
+                                print 'invalid ISIN :',data[iISIN],'>>>',data
 
-        else:
-            print len(data),'>>>',data
-
-    print 'Imported %d/%d lines from %s data.' % (count,len(lines),market)
+            else:
+                print len(data),'>>>',data
+        print 'Imported %d/%d lines from %s data.' % (count,len(lines),market)
+            
 
     return True
 

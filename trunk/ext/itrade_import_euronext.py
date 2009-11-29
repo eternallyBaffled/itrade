@@ -142,6 +142,9 @@ class Import_euronext(object):
             ('cha', '2593'),
             ('lan', 'EN'),
             #('idInstrument', IdInstrument),
+            ('fileFormat', 'xls'),
+            ('separator', ''),
+            ('dateFormat', 'dd/MM/yy'),
             ('isinCode', quote.isin()),
             ('selectedMep', euronext_place2mep(quote.place())),
             ('indexCompo', ''),
@@ -150,14 +153,14 @@ class Import_euronext(object):
             ('low', 'on'),
             ('closing', 'on'),
             ('volume', 'on'),
-            ('dateFrom', '%02d/%02d/%04d' % (d1[2],d1[1],d1[0])),
+            ('dateFrom', '01/01/1970'),
             ('dateTo', '%02d/%02d/%04d' % (d2[2],d2[1],d2[0])),
             ('typeDownload', '2'),
         )
         query = map(lambda (var, val): '%s=%s' % (var, str(val)), query)
         query = string.join(query, '&')
         url = self.m_url + '?' + query
-
+        #print url
         debug("Import_euronext:getdata: url=%s ",url)
         try:
             buf=self.m_connection.getDataFromUrl(url)

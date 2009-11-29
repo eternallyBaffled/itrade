@@ -2,14 +2,14 @@
 # -*- coding: iso-8859-1 -*-
 # ============================================================================
 # Project Name : iTrade
-# Module Name  : itrade_quotes_nze.py
+# Module Name  : itrade_quotes_vienna.py
 #
-# Description: List of quotes from http://www.nzx.com/
+# Description: List of quotes from http://en.wienerborse.at/
 #
 # Developed for iTrade code (http://itrade.sourceforge.net).
 #
 # Original template for "plug-in" to iTrade is	from Gilles Dumortier.
-# New code for NZE is from Michel Legrand.
+# New code for VIENNER BORSE is from Michel Legrand.
 
 # Portions created by the Initial Developer are Copyright (C) 2007-2008 the
 # Initial Developer. All Rights Reserved.
@@ -43,7 +43,6 @@ import re
 import thread
 import time
 import string
-import urllib
 
 # iTrade system
 import itrade_config
@@ -53,20 +52,17 @@ from itrade_ext import *
 from itrade_connection import ITradeConnection
 
 # ============================================================================
-# Import_ListOfQuotes_NZE()
+# Import_ListOfQuotes_WBO()
 #
 # ============================================================================
 
-
-def Import_ListOfQuotes_NZE(quotes,market='NEW ZEALAND EXCHANGE',dlg=None,x=0):
+def Import_ListOfQuotes_WBO(quotes,market='WIENER BORSE',dlg=None,x=0):
     print 'Update %s list of symbols' % market
     connection=ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
-    
-    if market=='NEW ZEALAND EXCHANGE':
-
-        url = 'http://www.nzx.com/markets/all-securities/NZSX/pricebysecurity/'
+    if market=='WIENER BORSE':
+        url = "http://en.wienerborse.at/marketplace_products/trading/auction/?query=&markets=A_G_D&market=all"
 
     else:
 
@@ -83,68 +79,67 @@ def Import_ListOfQuotes_NZE(quotes,market='NEW ZEALAND EXCHANGE',dlg=None,x=0):
         lines = [removeCarriage(l) for l in lines]
         return lines
 
+    info('Import_ListOfQuotes_WBO_%s:connect to %s' % (market,url))
+
     try:
         data=connection.getDataFromUrl(url)
     except:
-        debug('Import_ListOfQuotes_NZE unable to connect :-(')
+        debug('Import_ListOfQuotes_WBO:unable to connect :-(')
         return False
 
     # returns the data
     lines = splitLines(data)
-    nlines = 0
 
-    n = 0
+    count = 0
+    n = 1
+    i = 0
 
-    symbol_list = []
-
-    debline = '/markets/NZSX/'
-
-    for line in lines[200:]:
-
-        if debline in line:
-            ticker = line[(line.find('/markets/NZSX/')+14): line.find('</a></div></td>')]
-            ticker = ticker[(ticker.find('">')+2):]
-
-            symbol_list.append(ticker)
-            n = n + 1
-
-    # extract names and isin codes
-
-    i=1
-
-    for symbol in symbol_list:
+    for line in lines:
         
-        urlsymbol = 'http://www.nzx.com/markets/NZSX/'+symbol
+        #typical lines:
+        #<td class="left">AT00000ATEC9</td>
+        #<td class="left">ATEC</td>
+        #<td class="left">A-TEC INDUSTRIES AG</td>
+        #<td class="left">08:55</td>
+        #<td class="left">12:00</td>
+        #<td class="left">17:30</td>
+        
+        # extract data
 
-        source = urllib.urlopen(urlsymbol)
-        data=source.readlines()
+        if '<th colspan="6"><b>Prime Market.at</b></th>' in line : n = 0
 
-        for line in data[200:]:
-            if ')</h2>' in line:
-                name = line[(line.find('>')+1): (line.find('(')-1)]
+        if n == 0 :
+            
+            if '<td class="left">' in line :
+                i = i + 1
+                ch = line[(line.find('>')+1):(line.find ('</td>'))]
+                if i == 1 :
+                    isin = ch
+                elif i == 2 :
+                    ticker = ch
+                elif i == 3 :
+                    name = ch
+                    name = name.replace('ä','a')#\xe4
+                    name = name.replace('ö','o')#\xf6
+                    name = name.replace('Ö','O')#\xd6
+                    name = name.replace('ü','u')#\xfc
+                    name = name.replace('ß','?')#\xdf
+                    
+                elif i == 6 :
+                    i = 0
+                    
+                    #print isin, name, ticker
+                            
+                    # ok to proceed
+                            
+                    quotes.addQuote(isin = isin,name = name, \
+                    ticker = ticker,market= market,currency = 'EUR', \
+                    place = 'WBO',country = 'AT')
+                    
+                    count = count + 1
 
-            if i == 0:
-                
-                nlines = nlines + 1
-                
-                #Partial activation of the Progressbar
-                
-                dlg.Update(x,'%s : %s / %s'%('NZSX wait ~ 7mn',nlines,n))
-               
-                i = 1
-                isin = line[(line.find('">')+2): line.find('</div></td>')]
 
-                # ok to proceed
-                # print isin,name,symbol        
-                quotes.addQuote(isin=isin,name=name, \
-                ticker=symbol,market='NEW ZEALAND EXCHANGE',currency='NZD',place='NZE',country='NZ')
-                break
-                source.close()
-           
-            if 'ISIN' in line:
-                i = 1 - i
-
-    print 'Imported %d lines from NEW ZEALAND EXCHANGE data.' % (nlines)
+    print 'Imported %d lines from WIENER BORSE' % (count)
 
     return True
 
@@ -152,7 +147,7 @@ def Import_ListOfQuotes_NZE(quotes,market='NEW ZEALAND EXCHANGE',dlg=None,x=0):
 # Export me
 # ============================================================================
 
-registerListSymbolConnector('NEW ZEALAND EXCHANGE','NZE',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_NZE)
+registerListSymbolConnector('WIENER BORSE','WBO',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_WBO)
 
 # ============================================================================
 # Test ME
@@ -163,7 +158,7 @@ if __name__=='__main__':
 
     from itrade_quotes import quotes
 
-    Import_ListOfQuotes_NZE(quotes,'NEW ZEALAND EXCHANGE')
+    Import_ListOfQuotes_WBO(quotes,'WIENER BORSE')
     quotes.saveListOfQuotes()
 
 # ============================================================================

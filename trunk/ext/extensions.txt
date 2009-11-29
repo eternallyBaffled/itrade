@@ -20,10 +20,13 @@
 # import historical data
 itrade_import_euronext.py
 itrade_import_yahoo.py
+itrade_import_yahoo_japan.py
 
 # import live data
 itrade_liveupdate_euronext.py
 itrade_liveupdate_yahoo.py
+itrade_liveupdate_yahoo_japan.py
+itrade_liveupdate_realtime.py
 
 # import list of quotes
 itrade_quotes_asx.py
@@ -41,7 +44,16 @@ itrade_quotes_oslo.py
 itrade_quotes_omx.py
 itrade_quotes_shenzhen.py
 itrade_quotes_bombay.py
-
+itrade_quotes_hong-kong.py
+itrade_quotes_singapore.py
+itrade_quotes_krx.py
+itrade_quotes_mexico.py
+itrade_quotes_madrid.py
+itrade_quotes_sao-paulo.py
+itrade_quotes_milan.py
+itrade_quotes_vienna.py
+itrade_quotes_shanghai.py
+itrade_quotes_tokyo.py
 # login
 
 # -----------------------------------------------------------------------------

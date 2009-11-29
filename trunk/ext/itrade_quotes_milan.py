@@ -2,14 +2,14 @@
 # -*- coding: iso-8859-1 -*-
 # ============================================================================
 # Project Name : iTrade
-# Module Name  : itrade_quotes_swx.py
+# Module Name  : itrade_quotes_milan.py
 #
-# Description: List of quotes from swx.com : SWISS MARKET
+# Description: List of quotes from http://www.borsaitaliana.it/
 # The Original Code is iTrade code (http://itrade.sourceforge.net).
 #
 # The Initial Developer of the Original Code is Gilles Dumortier.
-# New code for SWX is from Michel Legrand.
-#
+# New code for Milan is from Michel Legrand.
+
 # Portions created by the Initial Developer are Copyright (C) 2004-2008 the
 # Initial Developer. All Rights Reserved.
 #
@@ -29,7 +29,7 @@
 # along with this program; see http://www.gnu.org/licenses/gpl.html
 #
 # History       Rev   Description
-# 2007-04-14    dgil  Wrote it from scratch
+# 2007-05-15    dgil  Wrote it from scratch
 # ============================================================================
 
 # ============================================================================
@@ -45,41 +45,29 @@ import string
 
 # iTrade system
 import itrade_config
-import itrade_csv
+import itrade_excel
 from itrade_logging import *
 from itrade_defs import *
 from itrade_ext import *
 from itrade_connection import ITradeConnection
 
 # ============================================================================
-# Import_ListOfQuotes_SWX()
+# Import_ListOfQuotes_LSE()
 #
 # ============================================================================
 
-def Import_ListOfQuotes_SWX(quotes,market='SWISS EXCHANGE',dlg=None,x=0):
+def Import_ListOfQuotes_MIL(quotes,market='MILAN EXCHANGE',dlg=None,x=0):
     print 'Update %s list of symbols' % market
     connection = ITradeConnection(cookies = None,
                                proxy = itrade_config.proxyHostname,
                                proxyAuth = itrade_config.proxyAuthentication,
                                connectionTimeout = itrade_config.connectionTimeout
                                )
-    if market=='SWISS EXCHANGE':    
-        # find url to update list
-        ch = 'a href="/data/market/statistics/swiss_blue_chip_shares_'
-        
-        try:
-            url = connection.getDataFromUrl('http://www.six-swiss-exchange.com/marketpulse/shares/explorer/download/download_en.html')
-        except:
-            info('Import_ListOfQuotes_SWX_%s:unable to get file name :-(' % market)
-            return False
 
-        if url.find(ch):
-            date = url.find(ch)+len(ch)
-            date = url[date:url.index('.csv',date)]
-        else:
-            info('Import_ListOfQuotes_SWX_%s:unable to get Date :-(' % market)
-            return False
+    import xlrd
 
+    if market=='MILAN EXCHANGE':
+        url = 'http://www.borsaitaliana.it/documenti/rubriche/borsainforma/ems.xls'
     else:
         return False
 
@@ -94,47 +82,56 @@ def Import_ListOfQuotes_SWX(quotes,market='SWISS EXCHANGE',dlg=None,x=0):
         lines = [removeCarriage(l) for l in lines]
         return lines
 
-    select_shares = ['swiss_blue_chip_shares_','mid_and_small_caps_swiss_shares_','foreign_shares_']
+    info('Import_ListOfQuotes_MIL_%s:connect to %s' % (market,url))
 
-    for type_shares in select_shares:
-        
-        url = 'http://www.six-swiss-exchange.com/data/market/statistics/' + type_shares + date + '.csv'
+    try:
+        data = connection.getDataFromUrl(url)
+    except:
+        info('Import_ListOfQuotes_MIL_%s:unable to connect :-(' % market)
+        return False
 
-        info('Import_ListOfQuotes_SWX:connect to %s' % url)
 
-        try:
-            data=connection.getDataFromUrl(url)
-        except:
-            info('Import_ListOfQuotes_SWX:unable to connect :-(')
-            return False
 
-        # returns the data
-        lines = splitLines(data)
-        n = 0
+    # returns the data
+    book = itrade_excel.open_excel(file=None,content=data)
+    sh = book.sheet_by_index(0)
+    n = 0
+    count = 0
+    indice = {}
 
-        indice = {}
+    print 'Import_ListOfQuotes_MIL_%s:' % market,'book',book,'sheet',sh,'nrows=',sh.nrows
 
-        for line in lines:
-            item = itrade_csv.parse(line,7)
-            if len(item)>2:
-                if n==0:
-                    i = 0
-                    for ind in item:
-                        indice[ind] = i
-                        i = i + 1
+    for line in range(sh.nrows):
+        if sh.cell_type(line,1) != xlrd.XL_CELL_EMPTY:
+            if n==0:
+                for i in range(sh.ncols):
+                    val = sh.cell_value(line,i)
+                    indice[val] = i
 
-                    iISIN = indice['ISIN']
-                    iName = indice['ShortName']
-                    iCurrency = indice['TradingBaseCurrency']
-                    iExchange = indice['Exchange']
-                    iCountry = indice['GeographicalAreaCode']
-                    iTicker = indice['ValorSymbol']
-                else:
-                    quotes.addQuote(isin=item[iISIN],name=item[iName].replace(',',' '), ticker=item[iTicker],market='SWISS EXCHANGE',\
-                        currency=item[iCurrency],place=item[iExchange],country=item[iCountry])
-                n = n + 1
+                    # be sure we have detected the title
+                    if val == 'ISIN_CODE': n = n + 1
 
-    print 'Imported %d/%d lines from %s data.' % (n,len(lines),market)
+                if n==1:
+                    if itrade_config.verbose: print 'Indice:',indice
+
+                    iISIN = indice['ISIN_CODE']
+                    iName = indice['SHARE_NAME']
+                    iTicker = indice['LOCAL_TIDM']
+                    n = n +1
+            else:
+                isin = sh.cell_value(line,iISIN)
+                ticker = sh.cell_value(line,iTicker)
+                name = sh.cell_value(line,iName)
+                
+                name = name.encode('cp1252')
+                
+                if name <> '':
+                    quotes.addQuote(isin=isin,name=name, \
+                        ticker=ticker,market=market,\
+                        currency='EUR',place='MIL',country='IT')
+                    count = count + 1
+
+    print 'Imported %d/%d lines from %s data.' % (count,sh.nrows,market)
 
     return True
 
@@ -142,8 +139,8 @@ def Import_ListOfQuotes_SWX(quotes,market='SWISS EXCHANGE',dlg=None,x=0):
 # Export me
 # ============================================================================
 
-registerListSymbolConnector('SWISS EXCHANGE','XSWX',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_SWX)
-registerListSymbolConnector('SWISS EXCHANGE','XVTX',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_SWX)
+if itrade_excel.canReadExcel:
+    registerListSymbolConnector('MILAN EXCHANGE','MIL',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_MIL)
 
 # ============================================================================
 # Test ME
@@ -155,9 +152,12 @@ if __name__=='__main__':
 
     from itrade_quotes import quotes
 
-    Import_ListOfQuotes_SWX(quotes,'XSWX')
-    Import_ListOfQuotes_SWX(quotes,'XVTX')
-    quotes.saveListOfQuotes()
+    if itrade_excel.canReadExcel:
+        Import_ListOfQuotes_LSE(quotes,'MILAN EXCHANGE')
+        
+        quotes.saveListOfQuotes()
+    else:
+        print 'XLRD package not installed :-('
 
 # ============================================================================
 # That's all folks !

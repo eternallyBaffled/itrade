@@ -156,10 +156,11 @@ class LiveUpdate_yahoo(object):
         else:
             ss = sname
 
+            
         query = (
-          ('s', ss),
-          ('f', 'sl1d1t1c1ohgvbap'),
-          ('e', '.csv'),
+            ('s', ss),
+            ('f', 'sl1d1t1c1ohgv'),
+            ('e', '.csv'),
         )
         query = map(lambda (var, val): '%s=%s' % (var, str(val)), query)
         query = string.join(query, '&')
@@ -178,6 +179,7 @@ class LiveUpdate_yahoo(object):
             if itrade_config.verbose:
                 info('unknown %s quote (400 Bad Request) from Yahoo' % (quote.ticker()))
             return None
+
 
         sdata = string.split (data, ',')
         if len (sdata) < 9:
@@ -300,18 +302,20 @@ class LiveUpdate_yahoo(object):
     def currentNotebook(self,quote):
         #
         key = quote.key()
+
         if not self.m_dcmpd.has_key(key):
             # no data for this quote !
             return [],[]
         d = self.m_dcmpd[key]
 
-        buy = []
-        buy.append([0,0,d[9]])
+        #buy = []
+        #buy.append([0,0,d[9]])
 
-        sell = []
-        sell.append([0,0,d[10]])
+        #sell = []
+        #sell.append([0,0,d[10]])
 
-        return buy,sell
+        #return buy,sell
+        return [],[]
 
     # ---[ status of quote ] ---
 
@@ -373,7 +377,7 @@ registerLiveConnector('TORONTO VENTURE','TOR',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo
 registerLiveConnector('TORONTO EXCHANGE','TOR',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 
 registerLiveConnector('LSE SETS','LON',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
-registerLiveConnector('LSE SETSmm','LON',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('LSE SETSqx','LON',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 registerLiveConnector('LSE SEAQ','LON',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 
 registerLiveConnector('MILAN EXCHANGE','MIL',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
@@ -398,7 +402,7 @@ registerLiveConnector('COPENHAGEN EXCHANGE','CSE',QLIST_ANY,QTAG_DIFFERED,gLiveY
 
 registerLiveConnector('OSLO EXCHANGE','OSL',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 
-registerLiveConnector('SAO PAOLO EXCHANGE','SAO',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('SAO PAULO EXCHANGE','SAO',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 
 registerLiveConnector('HONG KONG EXCHANGE','HKG',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 
@@ -416,6 +420,13 @@ registerLiveConnector('BUENOS AIRES EXCHANGE','BUE',QLIST_ANY,QTAG_DIFFERED,gLiv
 
 registerLiveConnector('MEXICO EXCHANGE','MEX',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 
+registerLiveConnector('SINGAPORE EXCHANGE','SGX',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+
+registerLiveConnector('KOREA STOCK EXCHANGE','KRX',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+
+registerLiveConnector('KOREA KOSDAQ EXCHANGE','KOS',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+
+registerLiveConnector('WIENER BORSE','WBO',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 
 # ============================================================================
 # Test ME
