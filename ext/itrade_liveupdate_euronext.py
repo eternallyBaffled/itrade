@@ -147,8 +147,10 @@ class LiveUpdate_Euronext(object):
         return sdate,sp[1]
 
     def convertClock(self,place,clock,date):
-        min = clock[-2:]
-        hour = clock[:-3]
+        #min = clock[-2:]
+        #hour = clock[:-3]
+        min = clock[3:5]
+        hour = clock[:2]
         val = (int(hour)*60) + int(min)
         #print 'clock:',clock,hour,min,val
         if val>self.m_lastclock and date>=self.m_lastdate:

@@ -2,16 +2,14 @@
 # -*- coding: iso-8859-1 -*-
 # ============================================================================
 # Project Name : iTrade
-# Module Name  : itrade_quotes_nze.py
+# Module Name  : itrade_quotes_krx.py
 #
-# Description: List of quotes from http://www.nzx.com/
+# Description: List of quotes from http://eng.krx.co.kr/: KOREA STOCK EXCHANGE - KOREA KOSDAQ EXCHANGE
+# The Original Code is iTrade code (http://itrade.sourceforge.net).
 #
-# Developed for iTrade code (http://itrade.sourceforge.net).
+# The Initial Developer of the Original Code is Gilles Dumortier.
 #
-# Original template for "plug-in" to iTrade is	from Gilles Dumortier.
-# New code for NZE is from Michel Legrand.
-
-# Portions created by the Initial Developer are Copyright (C) 2007-2008 the
+# Portions created by the Initial Developer are Copyright (C) 2004-2008 the
 # Initial Developer. All Rights Reserved.
 #
 # Contributor(s):
@@ -30,7 +28,7 @@
 # along with this program; see http://www.gnu.org/licenses/gpl.html
 #
 # History       Rev   Description
-# 2007-12-28    dgil  Wrote it from template
+# 2007-05-15    dgil  Wrote it from scratch
 # ============================================================================
 
 # ============================================================================
@@ -43,7 +41,6 @@ import re
 import thread
 import time
 import string
-import urllib
 
 # iTrade system
 import itrade_config
@@ -53,23 +50,26 @@ from itrade_ext import *
 from itrade_connection import ITradeConnection
 
 # ============================================================================
-# Import_ListOfQuotes_NZE()
+# Import_ListOfQuotes_KRX()
 #
 # ============================================================================
 
-
-def Import_ListOfQuotes_NZE(quotes,market='NEW ZEALAND EXCHANGE',dlg=None,x=0):
+def Import_ListOfQuotes_KRX(quotes,market='KOREA STOCK EXCHANGE',dlg=None,x=0):
     print 'Update %s list of symbols' % market
-    connection=ITradeConnection(cookies=None,
-                                proxy=itrade_config.proxyHostname,
-                                proxyAuth=itrade_config.proxyAuthentication)
-    
-    if market=='NEW ZEALAND EXCHANGE':
+    connection = ITradeConnection(cookies = None,
+                               proxy = itrade_config.proxyHostname,
+                               proxyAuth = itrade_config.proxyAuthentication,
+                               connectionTimeout = itrade_config.connectionTimeout
+                               )
 
-        url = 'http://www.nzx.com/markets/all-securities/NZSX/pricebysecurity/'
 
+    if market=='KOREA STOCK EXCHANGE':
+        url = 'http://eng.krx.co.kr/anylogic/process//mki/com/itemSearch.xml?&word=&mkt_typ=S&mnu_typ=&charOrder=&market_gubun=kospiVal'
+        place = 'KRX'
+    elif market=='KOREA KOSDAQ EXCHANGE':
+        url = 'http://eng.krx.co.kr/anylogic/process//mki/com/itemSearch.xml?&word=&mkt_typ=S&mnu_typ=&charOrder=&market_gubun=kosdaqVal'
+        place = 'KOS'
     else:
-
         return False
 
     def splitLines(buf):
@@ -83,68 +83,40 @@ def Import_ListOfQuotes_NZE(quotes,market='NEW ZEALAND EXCHANGE',dlg=None,x=0):
         lines = [removeCarriage(l) for l in lines]
         return lines
 
-    try:
-        data=connection.getDataFromUrl(url)
-    except:
-        debug('Import_ListOfQuotes_NZE unable to connect :-(')
-        return False
+    info('Import_ListOfQuotes_KRX_%s:connect to %s' % (market,url))
 
+    try:
+        data = connection.getDataFromUrl(url)
+    except:
+        info('Import_ListOfQuotes_KRX_%s:unable to connect :-(' % market)
+        return False
+    
     # returns the data
     lines = splitLines(data)
-    nlines = 0
-
     n = 0
 
-    symbol_list = []
+    print 'Import_ListOfQuotes_KRX_%s:' % market
 
-    debline = '/markets/NZSX/'
-
-    for line in lines[200:]:
-
-        if debline in line:
-            ticker = line[(line.find('/markets/NZSX/')+14): line.find('</a></div></td>')]
-            ticker = ticker[(ticker.find('">')+2):]
-
-            symbol_list.append(ticker)
+    for line in lines:
+        if line.find('<result><isu_cd>')<> -1:
             n = n + 1
 
-    # extract names and isin codes
-
-    i=1
-
-    for symbol in symbol_list:
+            isin = line[line.index('<result><isu_cd>')+16:line.index('</isu_cd><shrt_isu_cd>A')]
         
-        urlsymbol = 'http://www.nzx.com/markets/NZSX/'+symbol
+            ticker = line[line.index('</isu_cd><shrt_isu_cd>A')+23:line.index('</shrt_isu_cd><isu_nm>')]
+        
+            name = line[line.index('</shrt_isu_cd><isu_nm>')+22:line.index('</isu_nm></result>')]
+            if name.find('<![CDATA[')<> -1:
+                name = name[9:-3]
+            name = name.replace(',',' ')
+            name = name.upper()
 
-        source = urllib.urlopen(urlsymbol)
-        data=source.readlines()
-
-        for line in data[200:]:
-            if ')</h2>' in line:
-                name = line[(line.find('>')+1): (line.find('(')-1)]
-
-            if i == 0:
-                
-                nlines = nlines + 1
-                
-                #Partial activation of the Progressbar
-                
-                dlg.Update(x,'%s : %s / %s'%('NZSX wait ~ 7mn',nlines,n))
-               
-                i = 1
-                isin = line[(line.find('">')+2): line.find('</div></td>')]
-
-                # ok to proceed
-                # print isin,name,symbol        
-                quotes.addQuote(isin=isin,name=name, \
-                ticker=symbol,market='NEW ZEALAND EXCHANGE',currency='NZD',place='NZE',country='NZ')
-                break
-                source.close()
-           
-            if 'ISIN' in line:
-                i = 1 - i
-
-    print 'Imported %d lines from NEW ZEALAND EXCHANGE data.' % (nlines)
+            # ok to proceed
+   
+            quotes.addQuote(isin = isin,name = name,ticker = ticker,\
+            market = market,currency = 'KRW',place = place, country = 'KR')
+            
+    print 'Imported %d lines from %s data.' % (n,market)
 
     return True
 
@@ -152,18 +124,21 @@ def Import_ListOfQuotes_NZE(quotes,market='NEW ZEALAND EXCHANGE',dlg=None,x=0):
 # Export me
 # ============================================================================
 
-registerListSymbolConnector('NEW ZEALAND EXCHANGE','NZE',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_NZE)
+registerListSymbolConnector('KOREA STOCK EXCHANGE','KRX',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_KRX)
+registerListSymbolConnector('KOREA KOSDAQ EXCHANGE','KOS',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_KRX)
 
 # ============================================================================
 # Test ME
 # ============================================================================
 
 if __name__=='__main__':
+
     setLevel(logging.INFO)
 
     from itrade_quotes import quotes
-
-    Import_ListOfQuotes_NZE(quotes,'NEW ZEALAND EXCHANGE')
+    
+    Import_ListOfQuotes_LSE(quotes,'KOREA STOCK EXCHANGE')
+    Import_ListOfQuotes_LSE(quotes,'KOREA KOSDAQ EXCHANGE')
     quotes.saveListOfQuotes()
 
 # ============================================================================

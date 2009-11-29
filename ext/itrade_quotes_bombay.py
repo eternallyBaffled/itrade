@@ -64,16 +64,15 @@ def Import_ListOfQuotes_BSE(quotes,market='BOMBAY EXCHANGE',dlg=None,x=0):
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
     if market=='BOMBAY EXCHANGE':
-        beginurl = 'http://www.bseindia.com/datalibrary/disp.asp?flag='
-        midurl = '&select_alp='
-        endurl = '&curpage='
+        beginurl = 'http://test.bseindia.com/scripsearch/scrips.aspx?myScrip='
+        endurl = '&flag=sr'
 
     else:
 
         return False
 
     def splitLines(buf):
-        lines = string.split(buf, 'stockreach.htm?')
+        lines = string.split(buf, '/n')
         lines = filter(lambda x:x, lines)
         def removeCarriage(s):
             if s[-1]=='\r':
@@ -85,73 +84,54 @@ def Import_ListOfQuotes_BSE(quotes,market='BOMBAY EXCHANGE',dlg=None,x=0):
 
     # symbol list of bombay exchange
 
-    group = ['A','B','S','T','TS'] #['Z'] no quote in group Z with yahoo
-    select_alpha = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','[0-9]']
+    select_alpha = ['20MICRONS','3IINFOTECH','3MINDIA','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
 
     nlines = 0
-    currentpage = 1
+    
+    isin = ''
 
+    for letter in select_alpha:
+        
+        url = beginurl+letter+endurl
+        
+        dlg.Update(x,'%s : %s'%(market,letter))
 
-    for groupLetter in group:
+        #print 'Import List of Compagnies, Letter %s' %letter
+        
+        try:
+            source = urllib.urlopen(url)
+        except:
+            debug('Import_ListOfQuotes_BSE unable to connect :-(')
 
-        if groupLetter == 'Z': beginurl = 'http://www.bseindia.com/about/datal/disp.asp?';groupLetter='';midurl='select_alp='
+        data = source.read().replace("cellpadding=0 width='100%'><tr><td class='tbmain'><a href=",'/n')
 
-        for letter in select_alpha:
-            next_page = 0
-            count = 0
+        # returns the data
+        lines = splitLines(data)
 
-            while next_page == 0:
+        for line in lines:
 
-                url = beginurl+groupLetter+midurl+letter
-                if currentpage>1: url=url+endurl+str(currentpage)
-
-                dlg.Update(x,'%s : %s , %s'%(market,groupLetter,letter))
-
-                #print
-                #print 'Import List of Compagnies Group-%s , Letter %s, Page %s' % (groupLetter,letter,currentpage)
-                #print
-
-                try:
-                    source = urllib.urlopen(url)
-                except:
-                    debug('Import_ListOfQuotes_BSE unable to connect :-(')
-
-                data = source.read()
-
-                # returns the data
-                lines = splitLines(data)
-
-                for line in lines[1:]:
-                    count = count + 1
-                    if 'scripcd=' in line:
-                        ticker = line[8:line.index('>')]
-                        name = line[len(ticker)+9:line.index('<')]
-                        isin = ''
-
+            if 'scripcd=' in line:
+                #exclude @-Suspended due to procedural reasons
+                #exclude #-Suspended due to penal reasons
+                if '>#</td></tr>' in line or '>@</td></tr>' in line :
+                    pass
+                else :
+                    name = line[(line.find('">')+2):(line.find ('</a></td><td'))]
+                    #exclude quotes
+                    if 'Fund' in line or 'Maturity' in name :
+                        pass
+                    else :
+                        #scrip_cd = line[(line.find("scripcd=")+8):(line.find ('">'))]
+                        scrip_id = line[(line.find('<u>')+3):(line.find ('</u>'))]
+                            
                         # ok to proceed
 
                         quotes.addQuote(isin=isin,name=name, \
-                        ticker=ticker,market='BOMBAY EXCHANGE',currency='INR',place='BSE',country='IN')
+                        ticker=scrip_id,market='BOMBAY EXCHANGE',currency='INR',place='BSE',country='IN')
 
                         nlines = nlines + 1
-
-                        #print name,ticker
-
-                    if line.find('Next')<>-1:
-                        next_page = 0
-                        count = count + 1
-                        currentpage = currentpage + 1
-                    else:
-                        count=0
-
-                source.close()
-
-                if count == 0: next_page = 1;currentpage = 1
-
-
-
-
-
+                    
+        source.close()
 
     print 'Imported %d lines from BOMBAY EXCHANGE data.' % (nlines)
 

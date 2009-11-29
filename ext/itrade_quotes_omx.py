@@ -150,7 +150,7 @@ def Import_ListOfQuotes_OMX(quotes,market='STOCKHOLM EXCHANGE',dlg=None,x=0):
 
                     ticker = sh.cell_value(line,iTicker)
                     if type(ticker)==float: ticker='%s' % ticker
-                    ticker=ticker.replace(' ','')
+                    ticker=ticker.replace(' ','-')
 
                     name = sh.cell_value(line,0)
                     name = name.strip()
