@@ -74,7 +74,7 @@ isin_market = {
     'no': 'OSLO EXCHANGE',
     'se': 'STOCKHOLM EXCHANGE',
     'dk': 'COPENHAGEN EXCHANGE',
-    'br': 'SAO PAOLO EXCHANGE',
+    'br': 'SAO PAULO EXCHANGE',
     'hk': 'HONG KONG EXCHANGE',
     'cn': 'SHANGHAI EXCHANGE',
     'cn': 'SHENZHEN EXCHANGE',
@@ -83,6 +83,11 @@ isin_market = {
     'nz': 'NEW ZEALAND EXCHANGE',
     'ar': 'BUENOS AIRES EXCHANGE',
     'mx': 'MEXICO EXCHANGE',
+    'sg': 'SINGAPORE EXCHANGE',
+    'kr': 'KOREA STOCK EXCHANGE',
+    'kr': 'KOREA KOSDAQ EXCHANGE',
+    'at': 'WIENER BORSE',
+    'jp': 'TOKYO EXCHANGE',
     }
 
 def isin2market(isin):
@@ -102,37 +107,42 @@ def isin2market(isin):
 # ============================================================================
 
 market_indice = {
-    'EURONEXT': 'FR0003502079',
+    'EURONEXT': 'FR0003500008',
     'ALTERNEXT': 'QS0011040902',
     'PARIS MARCHE LIBRE': 'FR0003500008',
     'BRUXELLES MARCHE LIBRE': 'BE0389555039',
     'NASDAQ': 'US6289081050',
     'NYSE': 'US2605661048',
-    'AMEX': 'US6488151084',
+    'AMEX': 'XC0009697977',
     'OTCBB': 'US6488151084',
-    'LSE SETS': 'US2605661048',
-    'LSE SETSmm': 'US2605661048',
-    'LSE SEAQ': 'US2605661048',
+    'LSE SETS': 'GB0001383545',
+    'LSE SETSqx': 'GB0001383545',
+    'LSE SEAQ': 'GB0001383545',
     'ASX': 'AU0000000004',
-    'TORONTO EXCHANGE': 'US2605661048',
-    'TORONTO VENTURE': 'US2605661048',
-    'MILAN EXCHANGE': 'IT0003137749',
+    'TORONTO EXCHANGE': 'CA0000000001',
+    'TORONTO VENTURE': 'CA0000000002',
+    'MILAN EXCHANGE': 'IT0003065809',
     'SWISS EXCHANGE': 'CH0009980894',
     'IRISH EXCHANGE': 'IE0001477250',
-    'MADRID EXCHANGE': 'ES0SI0000005',
+    'MADRID EXCHANGE': 'ESI500000005',
     'FRANKFURT EXCHANGE': 'DE0008469008',
     'OSLO EXCHANGE': 'NO0007035327',
     'STOCKHOLM EXCHANGE': 'SE0000337842',
     'COPENHAGEN EXCHANGE': 'DX0000001376',
-    'SAO PAOLO EXCHANGE': 'BRIBOVINDM18',
+    'SAO PAULO EXCHANGE': 'BRIBOV000000',
     'HONG KONG EXCHANGE': 'HK0000004322',
-    'SHANGHAI EXCHANGE': 'QT0002571112',
-    'SHENZHEN EXCHANGE': 'CN0000000006',
+    'SHANGHAI EXCHANGE': 'CNM000000019',
+    'SHENZHEN EXCHANGE': 'CNM0000000C8',
     'NATIONAL EXCHANGE OF INDIA': 'IN0000000001',
     'BOMBAY EXCHANGE': 'IN0000000024',
     'NEW ZEALAND EXCHANGE': 'NZ0000000002',
-    'BUENOS AIRES EXCHANGE': 'AR0000000001',
-    'MEXICO EXCHANGE': 'MX0000000001',
+    'BUENOS AIRES EXCHANGE': 'ARMERV160025',
+    'MEXICO EXCHANGE': 'QS0010040614',
+    'SINGAPORE EXCHANGE': 'XC0009653640',
+    'KOREA STOCK EXCHANGE' : 'KR0000000001',
+    'KOREA KOSDAQ EXCHANGE' : 'KR0000000002',
+    'WIENER BORSE' : 'AT0000999982',
+    'TOKYO EXCHANGE' : 'XC0009692440',
     }
 
 def getDefaultIndice(market):
@@ -156,7 +166,7 @@ market_currency = {
     'AMEX': 'USD',
     'OTCBB': 'USD',
     'LSE SETS': 'GBP',
-    'LSE SETSmm': 'GBP',
+    'LSE SETSqx': 'GBP',
     'LSE SEAQ': 'GBP',
     'ASX': 'AUD',
     'TORONTO EXCHANGE': 'CAD',
@@ -169,7 +179,7 @@ market_currency = {
     'OSLO EXCHANGE': 'NOK',
     'STOCKHOLM EXCHANGE': 'SEK',
     'COPENHAGEN EXCHANGE': 'DKK',
-    'SAO PAOLO EXCHANGE': 'BRL',
+    'SAO PAULO EXCHANGE': 'BRL',
     'HONG KONG EXCHANGE': 'HKD',
     'SHANGHAI EXCHANGE': 'CNY',
     'SHENZHEN EXCHANGE': 'CNY',
@@ -178,6 +188,11 @@ market_currency = {
     'NEW ZEALAND EXCHANGE': 'NZD',
     'BUENOS AIRES EXCHANGE': 'ARS',
     'MEXICO EXCHANGE': 'MXN',
+    'SINGAPORE EXCHANGE': 'SGD',
+    'KOREA STOCK EXCHANGE': 'KRW',
+    'KOREA KOSDAQ EXCHANGE': 'KRW',
+    'WIENER BORSE': 'EUR',
+    'TOKYO EXCHANGE': 'JPY',
     }
 
 def market2currency(market):
@@ -197,7 +212,7 @@ _lom = {
     'PARIS MARCHE LIBRE': False,
     'BRUXELLES MARCHE LIBRE': False,
     'LSE SETS': False,
-    'LSE SETSmm': False,
+    'LSE SETSqx': False,
     'LSE SEAQ': False,
     'NASDAQ': False,
     'NYSE': False,
@@ -214,7 +229,7 @@ _lom = {
     'OSLO EXCHANGE': False,
     'STOCKHOLM EXCHANGE': False,
     'COPENHAGEN EXCHANGE': False,
-    'SAO PAOLO EXCHANGE': False,
+    'SAO PAULO EXCHANGE': False,
     'HONG KONG EXCHANGE': False,
     'SHANGHAI EXCHANGE': False,
     'SHENZHEN EXCHANGE': False,
@@ -223,6 +238,11 @@ _lom = {
     'NEW ZEALAND EXCHANGE': False,
     'BUENOS AIRES EXCHANGE': False,
     'MEXICO EXCHANGE': False,
+    'SINGAPORE EXCHANGE': False,
+    'KOREA STOCK EXCHANGE': False,
+    'KOREA KOSDAQ EXCHANGE': False,
+    'WIENER BORSE': False,
+    'TOKYO EXCHANGE':False,
     }
 
 def set_market_loaded(market,set=True):
@@ -274,7 +294,7 @@ def compute_country(isin,market,place):
             return 'FR'
         if market=='BRUXELLES MARCHE LIBRE':
             return 'BE'
-        if market=='LSE SETS' or market=='LSE SETSmm' or market=='LSE SEAQ':
+        if market=='LSE SETS' or market=='LSE SETSqx' or market=='LSE SEAQ':
             return 'GB'
         if market=='NASDAQ':
             return 'US'
@@ -304,7 +324,7 @@ def compute_country(isin,market,place):
             return 'SE'
         if market=='COPENHAGEN EXCHANGE':
             return 'DK'
-        if market=='SAO PAOLO EXCHANGE':
+        if market=='SAO PAULO EXCHANGE':
             return 'BR'
         if market=='HONG KONG EXCHANGE':
             return 'HK'
@@ -322,6 +342,14 @@ def compute_country(isin,market,place):
             return 'AR'
         if market=='MEXICO EXCHANGE':
             return 'MX'
+        if market=='SINGAPORE EXCHANGE':
+            return 'SG'
+        if market=='KOREA STOCK EXCHANGE' or market=='KOREA KOSDAQ EXCHANGE':
+            return 'KR'
+        if market=='WIENER BORSE':
+            return 'AT'
+        if market=='TOKYO EXCHANGE':
+            return 'JP'
 
     return '??'
 
@@ -354,7 +382,7 @@ def list_of_places(market):
         lop.append('NYC')
     if market=='LSE SETS':
         lop.append('LON')
-    if market=='LSE SETSmm':
+    if market=='LSE SETSqx':
         lop.append('LON')
     if market=='LSE SEAQ':
         lop.append('LON')
@@ -379,7 +407,7 @@ def list_of_places(market):
         lop.append('STO')
     if market=='COPENHAGEN EXCHANGE':
         lop.append('CSE')
-    if market=='SAO PAOLO EXCHANGE':
+    if market=='SAO PAULO EXCHANGE':
         lop.append('SAO')
     if market=='HONG KONG EXCHANGE':
         lop.append('HKG')
@@ -397,6 +425,14 @@ def list_of_places(market):
         lop.append('BUE')
     if market=='MEXICO EXCHANGE':
         lop.append('MEX')
+    if market=='KOREA STOCK EXCHANGE':
+        lop.append('KRX')
+    if market=='KOREA KOSDAQ EXCHANGE':
+        lop.append('KOS')
+    if market=='WIENER BORSE':
+        lop.append('WBO')
+    if market=='TOKYO EXCHANGE':
+        lop.append('TKS')
 
     return lop
 
@@ -414,7 +450,7 @@ market_place = {
     'AMEX': 'NYC',
     'OTCBB': 'NYC',
     'LSE SETS': 'LON',
-    'LSE SETSmm': 'LON',
+    'LSE SETSqx': 'LON',
     'LSE SEAQ': 'LON',
     'ASX': 'SYD',
     'TORONTO EXCHANGE': 'TOR',
@@ -427,7 +463,7 @@ market_place = {
     'OSLO EXCHANGE': 'OSL',
     'STOCKHOLM EXCHANGE': 'STO',
     'COPENHAGEN EXCHANGE': 'CSE',
-    'SAO PAOLO EXCHANGE': 'SAO',
+    'SAO PAULO EXCHANGE': 'SAO',
     'HONG KONG EXCHANGE': 'HKG',
     'SHANGHAI EXCHANGE': 'SHG',
     'SHENZHEN EXCHANGE': 'SHE',
@@ -436,6 +472,11 @@ market_place = {
     'NEW ZEALAND EXCHANGE': 'NZE',
     'BUENOS AIRES EXCHANGE': 'BUE',
     'MEXICO EXCHANGE': 'MEX',
+    'SINGAPORE EXCHANGE': 'SGX',
+    'KOREA STOCK EXCHANGE': 'KRX',
+    'KOREA KOSDAQ EXCHANGE': 'KOS',
+    'WIENER BORSE': 'WBO',
+    'TOKYO EXCHANGE': 'TKS',
     }
 
 def market2place(market):
@@ -480,6 +521,11 @@ place_timezone = {
     "NZE":  "Pacific/Auckland",
     "BUE":  "America/Buenos_Aires",
     "MEX":  "America/Mexico_City",
+    "SGX":  "Asia/Singapore",
+    "KRX":  "Asia/Seoul",
+    "KOS":  "Asia/Seoul",
+    "WBO":  "Europe/Vienna",
+    "TKS":  "Asia/Tokyo",
     }
 
 def convertConnectorTimeToPlaceTime(mdatetime,zone,place):
@@ -492,7 +538,6 @@ def convertConnectorTimeToPlaceTime(mdatetime,zone,place):
     #print '*** market time:',market_dt.strftime(fmt)
     place_dt  = place_tz.normalize(market_dt.astimezone(place_tz))
     #print '*** place time:',place_dt.strftime(fmt)
-
     return place_dt
 
 # ============================================================================
@@ -506,7 +551,7 @@ yahoo_suffix = {
     'PARIS MARCHE LIBRE.PAR': '.PA',
     'OTCBB.NYC': '.OB',
     'LSE SETS.LON': '.L',
-    'LSE SETSmm.LON': '.L',
+    'LSE SETSqx.LON': '.L',
     'LSE SEAQ.LON': '.L',
     'ASX.SYD': '.AX',
     'TORONTO EXCHANGE.TOR': '.TO',
@@ -520,7 +565,7 @@ yahoo_suffix = {
     'OSLO EXCHANGE.OSL': '.OL',
     'STOCKHOLM EXCHANGE.STO': '.ST',
     'COPENHAGEN EXCHANGE.CSE': '.CO',
-    'SAO PAOLO EXCHANGE.SAO': '.SA',
+    'SAO PAULO EXCHANGE.SAO': '.SA',
     'HONG KONG EXCHANGE.HKG': '.HK',
     'SHANGHAI EXCHANGE.SHG': '.SS',
     'SHENZHEN EXCHANGE.SHE': '.SZ',
@@ -528,7 +573,12 @@ yahoo_suffix = {
     'BOMBAY EXCHANGE.BSE': '.BO',
     'NEW ZEALAND EXCHANGE.NZE': '.NZ',
     'BUENOS AIRES EXCHANGE.BUE': '.BA',
-    'MEXICO EXCHANGE.MEX': '.MX'
+    'MEXICO EXCHANGE.MEX': '.MX',
+    'SINGAPORE EXCHANGE.SGX': '.SI',
+    'KOREA STOCK EXCHANGE.KRX': '.KS',
+    'KOREA KOSDAQ EXCHANGE.KOS': '.KQ',
+    'WIENER BORSE.WBO': '.VI',
+    'TOKYO EXCHANGE': '.T',
     }
 
 yahoo_map_tickers = {}
@@ -612,14 +662,27 @@ def yahooUrl(market,live):
         if market in ['TORONTO VENTURE','TORONTO EXCHANGE']:
             url = "http://download.finance.yahoo.com/d/quotes.csv"
         else:
-            url = "http://quote.yahoo.com/download/quotes.csv"
+            #url = "http://quote.yahoo.com/download/quotes.csv"
+            url = "http://download.finance.yahoo.com/d/quotes.csv"
     else:
         if market in ['TORONTO VENTURE','TORONTO EXCHANGE']:
-            url = 'http://download.finance.yahoo.com/d/quotes.csv'
+            #url = 'http://download.finance.yahoo.com/d/quotes.csv'
+            url = 'http://ichart.finance.yahoo.com/table.csv'
+            #url = 'http://download.finance.yahoo.com/d/quotes.csv'
         else:
             url = 'http://ichart.finance.yahoo.com/table.csv'
 
     return url
+
+def yahooUrlJapan(market,live):
+    if live:
+        url = "http://quote.yahoo.co.jp/q"
+        #url = 'http://quote.yahoo.co.jp/q?s=%s&d=v2' % (ss)
+    else:
+        url = "http://table.yahoo.co.jp/t"
+        #url = 'http://table.yahoo.co.jp/t?c=%s&a=%s&b=%s&f=%s&d=%s&e=%s&g=d&s=%s.t&y=%s&z=%s.t' % (d1[0],d1[1],d1[2],d2[0],d2[1],d2[2],ss,str(cursor),ss)
+    return url
+
 
 # ============================================================================
 # euronext_IntrusmentId()
