@@ -66,14 +66,11 @@ def Import_ListOfQuotes_LSE(quotes,market='LSE SETS',dlg=None,x=0):
     import xlrd
 
     if market=='LSE SETS':
-        #url = "http://www.londonstockexchange.com/NR/rdonlyres/A754BE95-0901-4B95-BD85-CF959A36C3B2/0/ListofSETSsecurities.xls"
-        url = 'http://www.londonstockexchange.com/traders-and-brokers/products-services/trading-services/sets/list-set.xls'
+        url = 'http://www.londonstockexchange.com/traders-and-brokers/products-services/trading-services/sets/list-sets.xls'
     elif market=='LSE SETSqx':
-        #url = "http://www.londonstockexchange.com/NR/rdonlyres/B460DAC6-5790-43DD-87ED-5F4CBF5D80EA/0/ListofSETSQXCCPsecurities.xls"
         url = 'http://www.londonstockexchange.com/traders-and-brokers/products-services/trading-services/setsqx/ccp-securities.xls'
     elif market=='LSE SEAQ':
         url = 'http://www.londonstockexchange.com/traders-and-brokers/products-services/trading-services/seaq/list-seaq.xls'
-        #url = "http://www.londonstockexchange.com/NR/rdonlyres/1960A958-B1CB-4B05-AF86-23FB54317D8E/0/ListofSEAQsecurities.xls"
     else:
         return False
 
@@ -132,10 +129,9 @@ def Import_ListOfQuotes_LSE(quotes,market='LSE SETS',dlg=None,x=0):
                     ticker = ticker[:-1]
                     
                 name = sh.cell_value(line,iName).replace(',',' ')
-
                 name = name.encode('cp1252')
                 name = name.replace('£',' ')
-
+                name = name.replace('  ','')
                 quotes.addQuote(isin=sh.cell_value(line,iISIN),name=name, \
                     ticker=ticker,market=market,\
                     currency=sh.cell_value(line,iCurrency),place='LON',\
