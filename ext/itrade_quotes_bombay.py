@@ -63,10 +63,10 @@ def Import_ListOfQuotes_BSE(quotes,market='BOMBAY EXCHANGE',dlg=None,x=0):
     connection=ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
+    
     if market=='BOMBAY EXCHANGE':
-        beginurl = 'http://test.bseindia.com/scripsearch/scrips.aspx?myScrip='
+        starturl = 'http://test.bseindia.com/scripsearch/scrips.aspx?myScrip='
         endurl = '&flag=sr'
-
     else:
 
         return False
@@ -81,59 +81,53 @@ def Import_ListOfQuotes_BSE(quotes,market='BOMBAY EXCHANGE',dlg=None,x=0):
                 return s
         lines = [removeCarriage(l) for l in lines]
         return lines
-
-    # symbol list of bombay exchange
-
-    select_alpha = ['20MICRONS','3IINFOTECH','3MINDIA','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
-
-    nlines = 0
     
+    select_alpha = ['20MICRONS','3IINFOTECH','3MINDIA','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
+    n = 0
     isin = ''
+
 
     for letter in select_alpha:
         
-        url = beginurl+letter+endurl
-        
-        dlg.Update(x,'%s : %s'%(market,letter))
+        url = starturl+letter+endurl
 
-        #print 'Import List of Compagnies, Letter %s' %letter
-        
         try:
-            source = urllib.urlopen(url)
+            data=connection.getDataFromUrl(url)
         except:
             debug('Import_ListOfQuotes_BSE unable to connect :-(')
-
-        data = source.read().replace("cellpadding=0 width='100%'><tr><td class='tbmain'><a href=",'/n')
-
+            return False
+        data = data.replace("cellpadding=0 width='100%'><tr><td class='tbmain'><a href=",'/n')
         # returns the data
         lines = splitLines(data)
 
-        for line in lines:
 
-            if 'scripcd=' in line:
-                #exclude @-Suspended due to procedural reasons
-                #exclude #-Suspended due to penal reasons
+        for line in lines:
+            
+            if 'scripcode=' in line:
                 if '>#</td></tr>' in line or '>@</td></tr>' in line :
+                    #Suspended due to penal reasons
+                    #Suspended due to procedural reasons
+                    
                     pass
                 else :
-                    name = line[(line.find('">')+2):(line.find ('</a></td><td'))]
-                    #exclude quotes
-                    if 'Fund' in line or 'Maturity' in name :
+                    #scrip_cd = line[(line.find("scripcode=")+10):(line.find ('"'))]
+                    name = line[(line.find('>')+1):(line.find ('</a></td><td'))]
+
+                    if 'Fund' in name or 'Maturity' in name :
                         pass
                     else :
-                        #scrip_cd = line[(line.find("scripcd=")+8):(line.find ('">'))]
-                        scrip_id = line[(line.find('<u>')+3):(line.find ('</u>'))]
-                            
-                        # ok to proceed
+                        ticker = line[(line.find('<u>')+3):(line.find ('</u>'))]
+                        n = n + 1
+                        
+                        #Partial activation of the Progressbar
+                        dlg.Update(x,'B S E : %s /~3400' %n)
 
                         quotes.addQuote(isin=isin,name=name, \
-                        ticker=scrip_id,market='BOMBAY EXCHANGE',currency='INR',place='BSE',country='IN')
+                            ticker=ticker,market='BOMBAY EXCHANGE',currency='INR',place='BSE',country='IN')
 
-                        nlines = nlines + 1
                     
-        source.close()
 
-    print 'Imported %d lines from BOMBAY EXCHANGE data.' % (nlines)
+    print 'Imported %d lines from BOMBAY EXCHANGE data.' %n
 
     return True
 
