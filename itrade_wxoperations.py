@@ -119,13 +119,14 @@ PERIOD_ALLYEARS = 3
 IDC_DATE = 0
 IDC_OPERATION = 1
 IDC_DESCRIPTION = 2
-IDC_NUMBER = 3
-IDC_DEBIT = 4
-IDC_CREDIT = 5
-IDC_EXPENSES = 6
-IDC_BALANCE = 7
-IDC_SRD = 8
-IDC_RESERVED = 9
+IDC_PRU = 3
+IDC_NUMBER = 4
+IDC_DEBIT = 5
+IDC_CREDIT = 6
+IDC_EXPENSES = 7
+IDC_BALANCE = 8
+IDC_SRD = 9
+IDC_RESERVED = 10
 
 # ============================================================================
 #
@@ -801,6 +802,7 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
         self.m_list.InsertColumn(IDC_OPERATION, message('portfolio_list_operation'), wx.LIST_FORMAT_LEFT)
         self.m_list.InsertColumn(IDC_DESCRIPTION, message('portfolio_list_description'), wx.LIST_FORMAT_LEFT)
         self.m_list.InsertColumn(IDC_NUMBER, message('portfolio_list_number'), wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_PRU, message('UPP'), wx.LIST_FORMAT_RIGHT)
         self.m_list.InsertColumn(IDC_DEBIT,message('portfolio_list_debit'), wx.LIST_FORMAT_RIGHT)
         self.m_list.InsertColumn(IDC_CREDIT,message('portfolio_list_credit'), wx.LIST_FORMAT_RIGHT)
         self.m_list.InsertColumn(IDC_EXPENSES,message('portfolio_list_expense'), wx.LIST_FORMAT_RIGHT)
@@ -829,7 +831,7 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
                             balance = balance + eachOp.nv_value()
                             srd = srd + ( eachOp.nv_value() + eachOp.nv_expenses() )
                         else:
-                            srd = srd - eachOp.nv_value()
+                            srd = srd + eachOp.nv_value()
                     else:
                         if self.m_mode == DISP_PVAL:
                             balance = balance + eachOp.nv_pvalue()
@@ -837,7 +839,7 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
                             balance = balance + eachOp.nv_value()
                 elif sign=='-':
                     if eachOp.isSRD():
-                        srd = srd + eachOp.nv_value()
+                        srd = srd - eachOp.nv_value()
                     else:
                         balance = balance - eachOp.nv_value()
 
@@ -889,8 +891,15 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
                     else:
                         vsrd = 0.0
                         self.m_list.SetStringItem(x,IDC_SRD,'%d' % eachOp.ref())
-
-                    self.itemDataMap[x] = (eachOp.date().strftime('%Y%M%D'),eachOp.operation(),eachOp.description(),eachOp.nv_number(),vdebit,vcredit,eachOp.nv_expenses(),balance,vsrd)
+                        
+                    try:
+                        pr = str( '%.2f'%((vcredit + vdebit)/eachOp.nv_number()))
+                        if pr == '0.00' : pr =''
+                    except ZeroDivisionError:
+                        pr = ''
+                    self.m_list.SetStringItem(x,IDC_PRU,pr)
+                    
+                    self.itemDataMap[x] = (eachOp.date().strftime('%Y%M%D'),eachOp.operation(),eachOp.description(),eachOp.nv_number(),pr,vdebit,vcredit,eachOp.nv_expenses(),balance,vsrd)
                     self.itemOpMap[x] = eachOp.ref()
 
                     item = self.m_list.GetItem(x)
