@@ -749,7 +749,18 @@
 20091224;BUENOS AIRES EXCHANGE; Thursday 24 december 2009
 20091225;BUENOS AIRES EXCHANGE; Friday 25 december 2009
 20091231;BUENOS AIRES EXCHANGE; Thursday 31 december 2009
-20100101;BUENOS AIRES EXCHANGE; Friday 1 january 2010
+20100101;BUENOS AIRES EXCHANGE; Friday 1 January 2010 Ano Nuevo
+20100324;BUENOS AIRES EXCHANGE; Wednesday 24 March 2010 Dia Nacional de la Memoria por al Verdad y la Justicia
+20100401;BUENOS AIRES EXCHANGE; Thursday 1 April 2010 Jueves Santo. Festividad Cristiana.
+20100402;BUENOS AIRES EXCHANGE; Friday 2 April 2010 Viernes Santo - Dia del Veterano y de los Caidos en la Guerra de Malvinas
+20100525;BUENOS AIRES EXCHANGE; Tuesday 25 May 2010 Primer Gobierno Patrio
+20100621;BUENOS AIRES EXCHANGE; Monday 21 June 2010 Paso a la Inmortalidad del General Manuel Belgrano (20 de junio).
+20100709;BUENOS AIRES EXCHANGE; Friday 9 July 2010 Dia de la Independencia
+20100816;BUENOS AIRES EXCHANGE; Monday 16 August 2010 Paso a la Inmortalidad del General José de San Martin (17 de agosto).
+20101011;BUENOS AIRES EXCHANGE; Monday 11 October 2010 Dia de la Raza (12 de octubre).
+20101208;BUENOS AIRES EXCHANGE; Wednesday 8 December 2010 Inmaculada Concepcion de Maria 
+20101224;BUENOS AIRES EXCHANGE; Friday 24 December 2010 Feriado por Circular N° 3506 del MERVAL
+20101231;BUENOS AIRES EXCHANGE; Friday 31 December 2010 Feriado por Circular N° 3506 del MERVAL
 
 20080101;MEXICO EXCHANGE; 1 january 2008
 20080204;MEXICO EXCHANGE; 4 february 2008
