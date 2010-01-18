@@ -43,6 +43,7 @@ import thread
 import time
 import string
 
+
 # iTrade system
 import itrade_config
 import itrade_excel
@@ -100,6 +101,7 @@ def Import_ListOfQuotes_HKG(quotes,market='HONG KONG EXCHANGE',dlg=None,x=0):
 
         #print 'Import_ListOfQuotes_HKG_%s:' % market,'book',book,'sheet',sh,'nrows=',sh.nrows
 
+
         for line in range(sh.nrows):
             if sh.cell_type(line,1) != xlrd.XL_CELL_EMPTY:
                 if sh.cell_value(line,3) in ('ORD SH','PREF SH','TRT','RTS'):
@@ -113,18 +115,24 @@ def Import_ListOfQuotes_HKG(quotes,market='HONG KONG EXCHANGE',dlg=None,x=0):
                     if len(ticker) == 3 : ticker='0'+ticker
                             
                     name = sh.cell_value(line,0)
-                    if ticker <> '0657':
-                        name = name.decode().encode('utf8')
-                        name = name.replace(',',' ')
-                        currency='HKD'
-                        place='HKG'
-                        country='HK'
-               
-                        # name=name.upper()
-                        quotes.addQuote(isin = isin,name = name,ticker = ticker,market = 'HONG KONG EXCHANGE',currency = currency,place = place,country = country)
-                        #print isin,name,ticker,currency,place,country
 
-                        n = n + 1
+                    if ticker == '0885':
+                        name = 'FOREFRONT GROUP LIMITED-NEW'
+                    if ticker == '2977':
+                        name = 'FOREFRONT GROUP LIMITED-OLD'
+                    if ticker == '0657':
+                        name = 'G-VISION INTERNATIONAL (HOLDINGS) LTD'
+                        
+                    name = name.decode().encode('utf8')
+                    name = name.replace(',',' ')
+
+                    currency='HKD'
+                    place='HKG'
+                    country='HK'
+               
+                    quotes.addQuote(isin = isin,name = name,ticker = ticker,market = 'HONG KONG EXCHANGE',currency = currency,place = place,country = country)
+
+                    n = n + 1
                 
 
 
