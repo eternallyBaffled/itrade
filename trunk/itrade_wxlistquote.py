@@ -390,8 +390,8 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         self.m_dirty = False
 
         self.m_market = market
-        self.m_qlist = QLIST_USER
-
+        self.m_qlist = QLIST_SYSTEM
+        
         tID = wx.NewId()
         self.m_imagelist = wx.ImageList(16,16)
         self.sm_q = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'quote.png')))
@@ -794,13 +794,14 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         #__xidRet = dlg.ShowModal()
         #__xdlg.Destroy()
         idRet = iTradeYesNo(self, message('listquote_clear_confirm')%(market,txt), message('listquote_clear_confirm_title'))
-        if idRet == wx.ID_NO: return
-
-        wx.SetCursor(wx.HOURGLASS_CURSOR)
-        quotes.removeQuotes(self.m_market,self.m_qlist)
-        self.m_dirty = True
-        self.PopulateList()
-
+        if idRet == wx.ID_YES:
+            wx.SetCursor(wx.HOURGLASS_CURSOR)
+            print 'self.m_market,self.m_qlist:',self.m_market,self.m_qlist
+            quotes.removeQuotes(self.m_market,self.m_qlist)
+            self.m_dirty = True
+            self.PopulateList()
+        else: return
+        
     def OnCancel(self,event):
         if self.m_dirty:
             #__dlg = wx.MessageDialog(self, message('listquote_dirty_save'), message('listquote_save_desc'), wx.CANCEL | wx.YES_NO | wx.YES_DEFAULT | wx.ICON_QUESTION)
