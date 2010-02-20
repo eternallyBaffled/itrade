@@ -68,7 +68,7 @@ def Import_ListOfQuotes_SWX(quotes,market='SWISS EXCHANGE',dlg=None,x=0):
         ch = 'a href="/data/market/statistics/swiss_blue_chip_shares_'
         
         try:
-            url = connection.getDataFromUrl('http://www.six-swiss-exchange.com/marketpulse/shares/explorer/download/download_en.html')
+            url = connection.getDataFromUrl('http://www.six-swiss-exchange.com/shares/explorer/download/download_en.html')
         except:
             info('Import_ListOfQuotes_SWX_%s:unable to get file name :-(' % market)
             return False
@@ -95,7 +95,7 @@ def Import_ListOfQuotes_SWX(quotes,market='SWISS EXCHANGE',dlg=None,x=0):
         return lines
 
     select_shares = ['swiss_blue_chip_shares_','mid_and_small_caps_swiss_shares_','foreign_shares_']
-
+    count = 0
     for type_shares in select_shares:
         
         url = 'http://www.six-swiss-exchange.com/data/market/statistics/' + type_shares + date + '.csv'
@@ -111,7 +111,6 @@ def Import_ListOfQuotes_SWX(quotes,market='SWISS EXCHANGE',dlg=None,x=0):
         # returns the data
         lines = splitLines(data)
         n = 0
-
         indice = {}
 
         for line in lines:
@@ -129,12 +128,13 @@ def Import_ListOfQuotes_SWX(quotes,market='SWISS EXCHANGE',dlg=None,x=0):
                     iExchange = indice['Exchange']
                     iCountry = indice['GeographicalAreaCode']
                     iTicker = indice['ValorSymbol']
+                    n = 1
                 else:
                     quotes.addQuote(isin=item[iISIN],name=item[iName].replace(',',' '), ticker=item[iTicker],market='SWISS EXCHANGE',\
                         currency=item[iCurrency],place=item[iExchange],country=item[iCountry])
-                n = n + 1
+                    count = count + 1
 
-    print 'Imported %d/%d lines from %s data.' % (n,len(lines),market)
+    print 'Imported %d lines from %s data.' % (count,market)
 
     return True
 

@@ -45,14 +45,13 @@ import string
 
 # iTrade system
 import itrade_config
-import itrade_excel
 from itrade_logging import *
 from itrade_defs import *
 from itrade_ext import *
 from itrade_connection import ITradeConnection
 
 # ============================================================================
-# Import_ListOfQuotes_LSE()
+# Import_ListOfQuotes_MIL()
 #
 # ============================================================================
 
@@ -64,13 +63,6 @@ def Import_ListOfQuotes_MIL(quotes,market='MILAN EXCHANGE',dlg=None,x=0):
                                connectionTimeout = itrade_config.connectionTimeout
                                )
 
-    import xlrd
-
-    if market=='MILAN EXCHANGE':
-        url = 'http://www.borsaitaliana.it/documenti/rubriche/borsainforma/ems.xls'
-    else:
-        return False
-
     def splitLines(buf):
         lines = string.split(buf, '\n')
         lines = filter(lambda x:x, lines)
@@ -81,67 +73,60 @@ def Import_ListOfQuotes_MIL(quotes,market='MILAN EXCHANGE',dlg=None,x=0):
                 return s
         lines = [removeCarriage(l) for l in lines]
         return lines
+    
 
-    info('Import_ListOfQuotes_MIL_%s:connect to %s' % (market,url))
+    if market=='MILAN EXCHANGE':
+        url = "http://www.borsaitaliana.it/bitApp/listino?main_list=1&sub_list=1&service=Results&search=nome&lang=it&target=null&nome= "
+    else:
+        return False
+
+    info('Import_ListOfQuotes_%s:connect to %s' % (market,url))
 
     try:
         data = connection.getDataFromUrl(url)
     except:
-        info('Import_ListOfQuotes_MIL_%s:unable to connect :-(' % market)
+        info('Import_ListOfQuotes_%s:unable to connect :-(' % market)
         return False
-
-
-
+    
     # returns the data
-    book = itrade_excel.open_excel(file=None,content=data)
-    sh = book.sheet_by_index(0)
+    lines = splitLines(data)
+    
     n = 0
-    count = 0
-    indice = {}
 
-    print 'Import_ListOfQuotes_MIL_%s:' % market,'book',book,'sheet',sh,'nrows=',sh.nrows
+    for line in lines:
+        if line.find('a href="/bitApp/listino?target=null&lang=it&service=Detail&from=search&main_list=1&')<> -1:
+            finalurl = 'http://www.borsaitaliana.it'+line[line.index('/'):line.index('" class="table">')]
 
-    for line in range(sh.nrows):
-        if sh.cell_type(line,1) != xlrd.XL_CELL_EMPTY:
-            if n==0:
-                for i in range(sh.ncols):
-                    val = sh.cell_value(line,i)
-                    indice[val] = i
+            try:
+                datas = connection.getDataFromUrl(finalurl)
+            except:
+                info('Import_ListOfQuotes_ISIN_TICKER_NAME_%s:unable to connect :-(' % market)
+                return False
 
-                    # be sure we have detected the title
-                    if val == 'ISIN_CODE': n = n + 1
-
-                if n==1:
-                    if itrade_config.verbose: print 'Indice:',indice
-
-                    iISIN = indice['ISIN_CODE']
-                    iName = indice['SHARE_NAME']
-                    iTicker = indice['LOCAL_TIDM']
-                    n = n +1
-            else:
-                isin = sh.cell_value(line,iISIN)
-                ticker = sh.cell_value(line,iTicker)
-                name = sh.cell_value(line,iName)
-                
-                name = name.encode('cp1252')
-                
-                if name <> '':
+            finaldatas = splitLines(datas)
+            for nline in finaldatas:
+                if nline.find('<b>Denominazione<b>') <> -1:
+                    name = nline[nline.index('"right">')+8:nline.index('</td></tr>')]
+                if nline.find('<b>Codice Isin<b>') <> -1:
+                    isin = nline[nline.index('"right">')+8:nline.index('</td></tr>')]
+                if nline.find('<b>Codice Alfanumerico<b>') <> -1:
+                    ticker = nline[nline.index('"right">')+8:nline.index('</td></tr>')]
+                    
+                    n =  n + 1
+                    dlg.Update(x,'BORSA ITALIANA : %d /~350'%n)
+                    
                     quotes.addQuote(isin=isin,name=name, \
                         ticker=ticker,market=market,\
                         currency='EUR',place='MIL',country='IT')
-                    count = count + 1
-
-    print 'Imported %d/%d lines from %s data.' % (count,sh.nrows,market)
+       
+    print 'Imported %d lines from %s data.' % (n,market)
 
     return True
 
 # ============================================================================
 # Export me
 # ============================================================================
-
-if itrade_excel.canReadExcel:
-    registerListSymbolConnector('MILAN EXCHANGE','MIL',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_MIL)
-
+registerListSymbolConnector('MILAN EXCHANGE','MIL',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_MIL)
 # ============================================================================
 # Test ME
 # ============================================================================
@@ -151,13 +136,8 @@ if __name__=='__main__':
     setLevel(logging.INFO)
 
     from itrade_quotes import quotes
-
-    if itrade_excel.canReadExcel:
-        Import_ListOfQuotes_LSE(quotes,'MILAN EXCHANGE')
-        
-        quotes.saveListOfQuotes()
-    else:
-        print 'XLRD package not installed :-('
+    Import_ListOfQuotes_LSE(quotes,'MILAN EXCHANGE')
+    quotes.saveListOfQuotes()
 
 # ============================================================================
 # That's all folks !
