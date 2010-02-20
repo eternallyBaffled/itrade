@@ -90,7 +90,7 @@ def Import_ListOfQuotes_SHE(quotes,market='SHENZHEN EXCHANGE',dlg=None,x=0):
         info('Import_ListOfQuotes_SHE_%s:unable to connect :-(' % market)
         return False
 
-    data = data.replace("style='mso-number-format:\@'   align='center'>",'\n')
+    data = data.replace("style='mso-number-format:\@' align='center' >",'\n')
 
     # returns the data
     lines = splitLines(data)
@@ -101,9 +101,10 @@ def Import_ListOfQuotes_SHE(quotes,market='SHENZHEN EXCHANGE',dlg=None,x=0):
 
     for line in lines[1:]:
         #print lines
-        if line.find("</td><td  class='cls-data-td'     align='left'>"):
+        if line.find("</td><td  class='cls-data-td'  align='left' >"):
             ticker = line[:line.index('<')]
-            name = line[53:line.index('<',53)]
+            
+            name = line[51:line.index('<',51)]
             name = name.replace(',',' ')
 
             if name[-2:] == '-B':
@@ -111,10 +112,10 @@ def Import_ListOfQuotes_SHE(quotes,market='SHENZHEN EXCHANGE',dlg=None,x=0):
                 name = name[:-2]
             else:
                 currency = 'CNY'
-
+               
+            if ticker=='000517': name = 'RONGAN PROPERTY CO'
+            if ticker=='000529': name = 'GUANGDONG MEIYA'
             if ticker=='000650': name = 'RHENE PHARMACY CO'
-            if ticker=='000880': name = 'JULI SHANDONG'
-            # name=name.upper()
 
             quotes.addQuote(isin = '',name = name,ticker = ticker,market = 'SHENZHEN EXCHANGE',currency = currency,place = 'SHE',country = 'CN')
             nlines = nlines + 1
