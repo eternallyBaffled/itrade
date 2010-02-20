@@ -65,7 +65,7 @@ def Import_ListOfQuotes_Xetra(quotes,market='FRANKFURT EXCHANGE',dlg=None,x=0):
                                )
 
     if market=='FRANKFURT EXCHANGE':
-        url = "http://info.xetra.de/download_xetrawerte.txt"
+        url = 'http://deutsche-boerse.com/dbag/dispatch/en/xetraCSV/gdb_navigation/trading/20_tradable_instruments/900_tradable_instruments/100_xetra'
     else:
         return False
 
@@ -80,12 +80,10 @@ def Import_ListOfQuotes_Xetra(quotes,market='FRANKFURT EXCHANGE',dlg=None,x=0):
         lines = [removeCarriage(l) for l in lines]
         return lines
 
-    #info('Import_ListOfQuotes_Xetra:connect %s to %s' % (market,url))
-
     try:
         data=connection.getDataFromUrl(url)
     except:
-        debug('Import_ListOfQuotes_Xetra:unable to connect :-(')
+        debug('Import_ListOfQuotes_Deutsche Borse AG :unable to connect :-(')
         return False
 
     # returns the data
@@ -96,12 +94,12 @@ def Import_ListOfQuotes_Xetra(quotes,market='FRANKFURT EXCHANGE',dlg=None,x=0):
         data = string.split (line, ';')    # ; delimited
 
         if len(data) >5:
-            if data[6] in ('GER0','GER1','GER2','DAX1','MDAX1','SDX1','TDX1'):
-                quotes.addQuote(isin=data[1],name=data[0].replace(',',' '),ticker=data[3],\
-                    market='FRANKFURT EXCHANGE',currency='EUR',place='FRA',country='DE')
+            if data[8] in ('GER0','GER1','GER2','DAX1','MDAX1','SDX1','TDX1'):
+                name = data[0].replace(',','').replace('  ','').replace (' -','-').replace ('. ','.').replace(' + ','&').replace('+','&')
+                quotes.addQuote(isin=data[1],name=name,ticker=data[4],market='FRANKFURT EXCHANGE',currency='EUR',place='FRA',country='DE')
                 n = n + 1
 
-    print 'Imported %d/%d lines from %s data.' % (n,len(lines),'Xetra')
+    print 'Imported %d/%d lines from %s data.' % (n,len(lines),'Deutsche Borse AG')
 
     return True
 
