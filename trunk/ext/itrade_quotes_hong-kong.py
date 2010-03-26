@@ -68,7 +68,8 @@ def Import_ListOfQuotes_HKG(quotes,market='HONG KONG EXCHANGE',dlg=None,x=0):
 
     if market=='HONG KONG EXCHANGE':
         # Two urls for download list of HONG KONG EXCHANGE
-        urls = ['http://www.hkex.com.hk/tradinfo/isincode/isino.xls','http://www.hkex.com.hk/tradinfo/isincode/isinsehk.xls']
+        urls = ['http://www.hkex.com.hk/eng/market/sec_tradinfo/isincode/documents/isino.xls','http://www.hkex.com.hk/eng/market/sec_tradinfo/isincode/documents/isinsehk.xls']
+        
         n = 0        
     else:
         return False
@@ -116,10 +117,6 @@ def Import_ListOfQuotes_HKG(quotes,market='HONG KONG EXCHANGE',dlg=None,x=0):
                             
                     name = sh.cell_value(line,0)
 
-                    if ticker == '0885':
-                        name = 'FOREFRONT GROUP LIMITED-NEW'
-                    if ticker == '2977':
-                        name = 'FOREFRONT GROUP LIMITED-OLD'
                     if ticker == '0657':
                         name = 'G-VISION INTERNATIONAL (HOLDINGS) LTD'
                         
