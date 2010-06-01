@@ -115,12 +115,11 @@ def Import_ListOfQuotes_MADRID(quotes,market='MADRID EXCHANGE',dlg=None,x=0):
                     
                     pos= lineticker.find(ch)+ len(ch)
                     ticker = lineticker[pos:lineticker.index(' &nbsp',pos)]
-                    count = count + 1
                     break
                 
             #Partial activation of the Progressbar
+            count = count + 1
             dlg.Update(x,'MADRID : %s /~130'%count)
-                   
             quotes.addQuote(isin=isin,name=name, \
                 ticker=ticker,market=market,\
                 currency='EUR',place='MAD',country='ES')

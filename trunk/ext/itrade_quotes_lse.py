@@ -114,7 +114,7 @@ def Import_ListOfQuotes_LSE(quotes,market='LSE SETS',dlg=None,x=0):
                     if val=='ISIN': n = n + 1
 
                 if n==1:
-                    if itrade_config.verbose: print 'Indice:',indice
+                    #if itrade_config.verbose: print 'Indice:',indice
 
                     iISIN = indice['ISIN']
                     iName = indice['Short Name']

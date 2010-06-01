@@ -4,7 +4,7 @@
 # Project Name : iTrade
 # Module Name  : itrade_quotes_nze.py
 #
-# Description: List of quotes from http://www.nzx.com/
+# Description: List of quotes from http://www.findata.co.nz/
 #
 # Developed for iTrade code (http://itrade.sourceforge.net).
 #
@@ -65,11 +65,8 @@ def Import_ListOfQuotes_NZE(quotes,market='NEW ZEALAND EXCHANGE',dlg=None,x=0):
                                 proxyAuth=itrade_config.proxyAuthentication)
     
     if market=='NEW ZEALAND EXCHANGE':
-
-        url = 'http://www.nzx.com/markets/all-securities/NZSX/pricebysecurity/'
-
+        url = 'http://www.findata.co.nz/Markets/NZX/%s.htm'
     else:
-
         return False
 
     def splitLines(buf):
@@ -82,69 +79,42 @@ def Import_ListOfQuotes_NZE(quotes,market='NEW ZEALAND EXCHANGE',dlg=None,x=0):
                 return s
         lines = [removeCarriage(l) for l in lines]
         return lines
+    
+    select_alpha = map(chr,range(65,91)) # A to Z
+    
+    count = 0
+    isin = ''
+    
+    for letter in select_alpha:
 
-    try:
-        data=connection.getDataFromUrl(url)
-    except:
-        debug('Import_ListOfQuotes_NZE unable to connect :-(')
-        return False
+        if dlg:
+            dlg.Update(x,"    NZX   :  %s  to  Z"%letter)
+     
+        try:
+            data=connection.getDataFromUrl(url%letter)
+        except:
+                debug('Import_ListOfQuotes_NZE unable to connect :-(')
+                return False
 
-    # returns the data
-    lines = splitLines(data)
-    nlines = 0
+        # returns the data
+        lines = splitLines(data)
 
-    n = 0
-
-    symbol_list = []
-
-    debline = '/markets/NZSX/'
-
-    for line in lines[200:]:
-
-        if debline in line:
-            ticker = line[(line.find('/markets/NZSX/')+14): line.find('</a></div></td>')]
-            ticker = ticker[(ticker.find('">')+2):]
-
-            symbol_list.append(ticker)
-            n = n + 1
-
-    # extract names and isin codes
-
-    i=1
-
-    for symbol in symbol_list:
+        for line in lines[190:]:
         
-        urlsymbol = 'http://www.nzx.com/markets/NZSX/'+symbol
+            if '"hideInfo();">' in line:
+                tickername = line[line.find('"hideInfo();">')+14:line.find('</td><td align=right>')]
+                if not 'Index' in tickername:
+                    ticker = tickername[:tickername.index('<')]
+                    if not '0' in ticker[-1:]:
+                        name = tickername[tickername.index('<td>')+4:]
 
-        source = urllib.urlopen(urlsymbol)
-        data=source.readlines()
+                        count = count + 1
 
-        for line in data[200:]:
-            if ')</h2>' in line:
-                name = line[(line.find('>')+1): (line.find('(')-1)]
+                        # ok to proceed
+                        quotes.addQuote(isin=isin,name=name, \
+                        ticker=ticker,market='NEW ZEALAND EXCHANGE',currency='NZD',place='NZE',country='NZ')
 
-            if i == 0:
-                
-                nlines = nlines + 1
-                
-                #Partial activation of the Progressbar
-                
-                dlg.Update(x,'%s : %s / %s'%('NZSX wait ~ 7mn',nlines,n))
-               
-                i = 1
-                isin = line[(line.find('">')+2): line.find('</div></td>')]
-
-                # ok to proceed
-                # print isin,name,symbol        
-                quotes.addQuote(isin=isin,name=name, \
-                ticker=symbol,market='NEW ZEALAND EXCHANGE',currency='NZD',place='NZE',country='NZ')
-                break
-                source.close()
-           
-            if 'ISIN' in line:
-                i = 1 - i
-
-    print 'Imported %d lines from NEW ZEALAND EXCHANGE data.' % (nlines)
+    print 'Imported %d lines from NEW ZEALAND EXCHANGE data.' % (count)
 
     return True
 

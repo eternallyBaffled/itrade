@@ -110,7 +110,6 @@ def Import_ListOfQuotes_IE(quotes,market='IRISH EXCHANGE',dlg=None,x=0):
                 data = data[:sp2]
                 data = data.strip()
                 data = data.upper()
-                print data
 
                 # fill the next field
                 if sedol=='':

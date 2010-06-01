@@ -182,8 +182,13 @@ class LiveUpdate_RealTime(object):
                 if 'Nyse Euronext - Données temps réel' in line:
                     line = lines[n]
                     
-                    value = line[line.find('<strong>')+8:line.find('</strong>')].replace(' ','').replace('EUR','').replace('Pts','').replace('(s)','').replace('(c)','').replace('(h)','')
-                    #print value  
+                    value = line[line.find('<strong>')+8:line.find('</strong>')]
+                    if '(' in value:
+                        stat = value[value.find('(')+1:value.find(')')]
+                    else :
+                        stat = ''
+                    value = value.replace(' ','').replace('EUR','').replace('Pts','').replace('(s)','').replace('(c)','').replace('(h)','').replace('(u)','')
+                    #print 'value:',value
                     line = lines[n+2]
                     percent = line[line.find('s">')+3:line.find('%</span></strong></li>')].replace(' ','')
                     #print percent
@@ -207,15 +212,18 @@ class LiveUpdate_RealTime(object):
                     line = lines[n+8]
                     previous = line[line.find('<li>')+4:line.find('</li>')].replace(' ','')
                     #print previous
+                    
                     c_datetime = datetime.today()
                     c_date = "%04d%02d%02d" % (c_datetime.year,c_datetime.month,c_datetime.day)
                         
-
                     sdate,sclock = self.BoursoDate(date_time)
-                    if (c_date==sdate):
-                        key = quote.key()
-                        self.m_dcmpd[key] = sdate
-                        self.m_clock[key] = self.convertClock(quote.place(),sclock,sdate)
+
+                    # be sure not an oldest day !
+                    #if (c_date==sdate):
+                    key = quote.key()
+                    self.m_dcmpd[key] = sdate
+                    self.m_clock[key] = self.convertClock(quote.place(),sclock,sdate)
+                    
                     data = ';'.join([quote.key(),sdate,open,high,low,value,volume,percent])
 
                     return data
@@ -266,8 +274,9 @@ class LiveUpdate_RealTime(object):
         return itrade_config.isConnected()
 
     def currentStatus(self,quote):
-        #
+
         key = quote.key()
+
         if not self.m_dcmpd.has_key(key):
             # no data for this quote !
             return "UNKNOWN","::","0.00","0.00","::"
@@ -307,7 +316,7 @@ class LiveUpdate_RealTime(object):
 try:
     ignore(gLiveABC)
 except NameError:
-    gLiveABC = LiveUpdate_RealTime()
+    gLiveABC = LiveUpdate_RealTime('euronext')
 registerLiveConnector('EURONEXT','PAR',QLIST_ANY,QTAG_LIVE,gLiveABC,bDefault=False)
 registerLiveConnector('ALTERNEXT','PAR',QLIST_ANY,QTAG_LIVE,gLiveABC,bDefault=False)
 registerLiveConnector('PARIS MARCHE LIBRE','PAR',QLIST_ANY,QTAG_LIVE,gLiveABC,bDefault=False)

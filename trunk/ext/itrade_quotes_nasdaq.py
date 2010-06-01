@@ -2,7 +2,7 @@
 # -*- coding: iso-8859-1 -*-
 # ============================================================================
 # Project Name : iTrade
-# Module Name  : itrade_quotes_nyse.py
+# Module Name  : itrade_quotes_nasdaq.py
 #
 # Description: List of quotes from http://www.nasdaq.com : NYSE, NASDAQ, AMEX
 #
