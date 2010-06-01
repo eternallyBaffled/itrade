@@ -27,12 +27,15 @@ itrade_liveupdate_euronext.py
 itrade_liveupdate_yahoo.py
 itrade_liveupdate_yahoo_japan.py
 itrade_liveupdate_realtime.py
+#itrade_liveupdate_euronext_realtime.py
+itrade_liveupdate_euronext_bonds.py
 
 # import list of quotes
 itrade_quotes_asx.py
 itrade_quotes_barchart.py
 itrade_quotes_euronext.py
-itrade_quotes_nyse.py
+itrade_quotes_nasdaq.py
+itrade_quotes_otcbb.py
 itrade_quotes_swx.py
 itrade_quotes_lse.py
 itrade_quotes_ie.py

@@ -60,7 +60,7 @@ from itrade_connection import ITradeConnection
 global barchart_data
 barchart_data = {}
 
-def Import_ListOfQuotes_BARCHART(quotes,market='NASDAQ',dlg=None,x=0):
+def Import_ListOfQuotes_BARCHART(quotes,market='TOTRONTO EXCHANGE',dlg=None,x=0):
     global barchart_data
     print 'Update %s list of symbols' % market
     connection = ITradeConnection(cookies = None,
@@ -69,21 +69,20 @@ def Import_ListOfQuotes_BARCHART(quotes,market='NASDAQ',dlg=None,x=0):
                                connectionTimeout = itrade_config.connectionTimeout
                                )
 
-    if market=='NASDAQ' or market=='AMEX' or market=='OTCBB' or market == 'NYSE':
-        url = "http://www2.barchart.com/lookup.asp?name=%s&opt1=1&start=all&type=&search_usstocks=1&search_usfunds=&search_canstocks="
-        m_currency = 'USD'
-        m_place = 'NYC'
-        m_country = 'US'
-    elif market=='TORONTO EXCHANGE' or market=='TORONTO VENTURE':
-        url = "http://www2.barchart.com/lookup.asp?name=%s&opt1=1&start=all&type=&search_usstocks=&search_usfunds=&search_canstocks=1"
+    if market=='TORONTO EXCHANGE' or market=='TORONTO VENTURE':
+        url = 'http://www.barchart.com/lookup.php?field=name&string=%s&search=begins&type[]=CAN&_dts1=-exchange&_dtp1=0'
         m_currency = 'CAD'
         m_place = 'TOR'
         m_country = 'CA'
+        if market == 'TORONTO EXCHANGE':
+            exchange = 'TSX<'
+        else:
+            exchange = 'TSX-V<'
     else:
         return False
 
     def splitLines(buf):
-        lines = string.split(buf, '\n')
+        lines = string.split(buf, '<tr id="dt1_')
         lines = filter(lambda x:x, lines)
         def removeCarriage(s):
             if s[-1]=='\r':
@@ -96,8 +95,8 @@ def Import_ListOfQuotes_BARCHART(quotes,market='NASDAQ',dlg=None,x=0):
     def import_letter(letter,dlg,x):
 
         if dlg:
-            dlg.Update(x,"BARCHART %s:'%s'"%(market,letter))
-            print x,"BARCHART %s:'%s'"%(market,letter)
+            dlg.Update(x,"%s:'%s'"%(market,letter))
+            print x,"%s:'%s'"%(market,letter)
 
         if not barchart_data.has_key("%s.%s" % (letter,m_country)):
             # read file (for debugging) or get file from network
@@ -118,76 +117,25 @@ def Import_ListOfQuotes_BARCHART(quotes,market='NASDAQ',dlg=None,x=0):
 
             # returns the data
             barchart_data["%s.%s" % (letter,m_country)] = data
-
-        #
+            
         lines = splitLines(barchart_data["%s.%s" % (letter,m_country)])
-        ticker = ''
-        name = ''
-        exchange = ''
+
         count = 0
 
         for line in lines:
-            # Typical lines :
-            # <TD class=bcText><a href="http://quote.barchart.com/quote.asp?sym=ONJP&code=BSTK" class=bcMLink>1 900 JACKPOT INC</a></TD>
-            # <TD class=bcText align=right><a href="http://quote.barchart.com/quote.asp?sym=ONJP&code=BSTK" class=bcMLink>ONJP</a></TD>
-            # <TD class=bcText align=right> OTCBB </TD>
 
-            scode = re.search('align=right',line,re.IGNORECASE|re.MULTILINE)
-            if scode:
-                scode = scode.end()
-                sexch = re.search(' </td>',line[scode+2:],re.IGNORECASE|re.MULTILINE)
-                if sexch:
-                    sexch = sexch.start()
-                    data = line[scode+2:]
-                    data = data[:sexch]
-                    exchange = data.upper()
+            if exchange in line and 'nowrap' in line:
+                ticker = line[:line.index('">')]
+                if not '-DB' in ticker:  # ignore DEBit
+                    ticker = ticker[:-3]
+                
+                    name = line[line.index('/quotes/'):line.index('</a>')]
+                    name = name[name.index('">')+2:]
+            
 
-            sstart = re.search('class=bcMLink>',line,re.IGNORECASE|re.MULTILINE)
-            if sstart:
-                sstart = sstart.end()
-                send = re.search('</a></td>',line[sstart:],re.IGNORECASE|re.MULTILINE)
-                if send:
-                    send = send.start()
-                    data = line[sstart:]
-                    data = data[:send]
-
-                    if scode:
-                        ticker = data.upper()
-                    else:
-                        name = data
-
-            if name!='' and ticker!='' and exchange!='':
-                #print '"',name, '" - "',ticker, '" - "',exchange,'"'
-                name = filterName(name)
-
-                if exchange=='TSX': exchange='TORONTO EXCHANGE'
-                if exchange=='TSX.V' : exchange='TORONTO VENTURE'
-
-                #print '"',name, '" - "',ticker, '" - "',exchange,'" market:',market
-
-                ignore = False
-                if exchange=='TORONTO EXCHANGE':
-                    if ticker[0:4] == "ITT-" or ticker[0:4] == "IRT-": # ignore indices : managed by hand in symbols/indices.txt
-                        ignore = True
-                        #print 'ignore Index : "',name, '" - "',ticker, '" - "',exchange,'" market:',market
-
-                    s = ticker.split('-')
-                    if len(s)==3:
-                        if s[1]=="DB" : # ignore DEBit
-                            ignore = True
-                            #print 'ignore Index : "',name, '" - "',ticker, '" - "',exchange,'" market:',market
-
-                if not ignore and exchange==market:
-                    if ticker[-3:]=='.TO' or ticker[-3:]=='.VN':
-                        ticker = ticker[:-3]
-
-                    quotes.addQuote(isin='',name=name,ticker=ticker,market=exchange,currency=m_currency,place=m_place,country=m_country)
+                    quotes.addQuote(isin='',name=name,ticker=ticker,market=market,currency=m_currency,place=m_place,country=m_country)
                     count = count + 1
 
-                # reset everything
-                name = ''
-                ticker = ''
-                exchange = ''
 
         print 'Imported %d lines from BARCHART data (letter=%s)' % (count,letter)
 
@@ -233,11 +181,6 @@ def Import_ListOfQuotes_BARCHART(quotes,market='NASDAQ',dlg=None,x=0):
 # Export me
 # ============================================================================
 
-registerListSymbolConnector('NASDAQ','NYC',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_BARCHART)
-registerListSymbolConnector('AMEX','NYC',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_BARCHART)
-registerListSymbolConnector('OTCBB','NYC',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_BARCHART)
-registerListSymbolConnector('NYSE','NYC',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_BARCHART)
-
 registerListSymbolConnector('TORONTO EXCHANGE','TOR',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_BARCHART)
 registerListSymbolConnector('TORONTO VENTURE','TOR',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_BARCHART)
 
@@ -250,10 +193,6 @@ if __name__=='__main__':
 
     from itrade_quotes import quotes
 
-    Import_ListOfQuotes_BARCHART(quotes,'NASDAQ')
-    Import_ListOfQuotes_BARCHART(quotes,'AMEX')
-    Import_ListOfQuotes_BARCHART(quotes,'OTCBB')
-    Import_ListOfQuotes_BARCHART(quotes,'NYSE')
     Import_ListOfQuotes_BARCHART(quotes,'TORONTO EXCHANGE')
     Import_ListOfQuotes_BARCHART(quotes,'TORONTO VENTURE')
     quotes.saveListOfQuotes()
