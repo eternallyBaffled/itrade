@@ -5,10 +5,12 @@
 # Module Name  : itrade_quotes_krx.py
 #
 # Description: List of quotes from http://eng.krx.co.kr/: KOREA STOCK EXCHANGE - KOREA KOSDAQ EXCHANGE
-# The Original Code is iTrade code (http://itrade.sourceforge.net).
 #
-# The Initial Developer of the Original Code is Gilles Dumortier.
+# Developed for iTrade code (http://itrade.sourceforge.net).
 #
+# Original template for "plug-in" to iTrade is	from Gilles Dumortier.
+# New code for KRX is from Michel Legrand.
+
 # Portions created by the Initial Developer are Copyright (C) 2004-2008 the
 # Initial Developer. All Rights Reserved.
 #
@@ -41,6 +43,9 @@ import re
 import thread
 import time
 import string
+import httplib
+import urllib2
+import cookielib
 
 # iTrade system
 import itrade_config
@@ -64,16 +69,16 @@ def Import_ListOfQuotes_KRX(quotes,market='KOREA STOCK EXCHANGE',dlg=None,x=0):
 
 
     if market=='KOREA STOCK EXCHANGE':
-        url = 'http://eng.krx.co.kr/anylogic/process//mki/com/itemSearch.xml?&word=&mkt_typ=S&mnu_typ=&charOrder=&market_gubun=kospiVal'
+        params = "isu_cd=&gbn=1&market_gubun=1&isu_nm=&sort=&std_ind_cd=&std_ind_cd1=&par_pr=&cpta_scl=&sttl_trm=&lst_stk_vl=1&in_lst_stk_vl=&in_lst_stk_vl2=&cpt=1&in_cpt=&in_cpt2=&nat_tot_amt=1&in_nat_tot_amt=&in_nat_tot_amt2="
         place = 'KRX'
     elif market=='KOREA KOSDAQ EXCHANGE':
-        url = 'http://eng.krx.co.kr/anylogic/process//mki/com/itemSearch.xml?&word=&mkt_typ=S&mnu_typ=&charOrder=&market_gubun=kosdaqVal'
+        params = "isu_cd=&gbn=2&market_gubun=2&isu_nm=&sort=&std_ind_cd=&std_ind_cd1=&par_pr=&cpta_scl=&sttl_trm=&lst_stk_vl=1&in_lst_stk_vl=&in_lst_stk_vl2=&cpt=1&in_cpt=&in_cpt2=&nat_tot_amt=1&in_nat_tot_amt=&in_nat_tot_amt2="
         place = 'KOS'
     else:
         return False
 
     def splitLines(buf):
-        lines = string.split(buf, '\n')
+        lines = string.split(buf, '</td></tr>')
         lines = filter(lambda x:x, lines)
         def removeCarriage(s):
             if s[-1]=='\r':
@@ -83,38 +88,76 @@ def Import_ListOfQuotes_KRX(quotes,market='KOREA STOCK EXCHANGE',dlg=None,x=0):
         lines = [removeCarriage(l) for l in lines]
         return lines
 
-    info('Import_ListOfQuotes_KRX_%s:connect to %s' % (market,url))
+    url = 'http://eng.krx.co.kr'
 
+    info('Import_ListOfQuotes_KRX_%s:connect to %s' % (market,url))
+    
     try:
         data = connection.getDataFromUrl(url)
     except:
         info('Import_ListOfQuotes_KRX_%s:unable to connect :-(' % market)
         return False
     
+    cj = None
+
+    urlopen = urllib2.urlopen
+    Request = urllib2.Request
+    cj = cookielib.LWPCookieJar()
+    opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
+    urllib2.install_opener(opener)
+
+    req = Request(url)
+    handle = urlopen(req)
+
+    cj = str(cj)
+    cookie = cj[cj.find('JSESSIONID'):cj.find(' for eng.krx.co.kr/>]>')]
+    
+    host = 'eng.krx.co.kr'
+
+    url = "/por_eng/corelogic/process/ldr/lst_s_001.xhtml?data-only=true"
+    
+    headers = { "Host": host
+                    , "User-Agent": "Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3 (.NET CLR 3.5.30729)"
+                    , "Accept": "text/javascript, text/html, application/xml, text/xml, */*"
+                    , "Accept-Language": "fr"
+                    , "Accept-Encoding": "gzip,deflate"
+                    , "Accept-Charset": "ISO-8859-1,utf-8;q=0.7,*;q=0.7"
+                    , "Keep-Alive":115
+                    , "Connection": "keep-alive"
+                    , "X-Requested-With": "XMLHttpRequest"
+                    , "X-Prototype-Version": "1.6.1"
+                    , "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+                    , "Referer": "http://eng.krx.co.kr/m6/m6_1/m6_1_1/JHPENG06001_01.jsp"
+                    , "Content-Length": len(params)
+                    , "Cookie": cookie
+                    , "Pragma": "no-cache"
+                    , "Cache-Control": "no-cache"
+
+                }
+    conn = httplib.HTTPConnection(host,80)
+    conn.request("POST",url,params,headers)
+
+    response = conn.getresponse()
+            
     # returns the data
+    data = response.read()
+    
     lines = splitLines(data)
     n = 0
-
+    isin = ''
     print 'Import_ListOfQuotes_KRX_%s:' % market
 
     for line in lines:
-        if line.find('<result><isu_cd>')<> -1:
-            n = n + 1
+        ticker = line[8:line.index('</td><td>')]
+        name = line[line.find('</td><td>')+9:]
+        name = name[:name.find('</td><td>')]
+        name = name.replace(',','')
+        name = name.replace(';','')
 
-            isin = line[line.index('<result><isu_cd>')+16:line.index('</isu_cd><shrt_isu_cd>A')]
-        
-            ticker = line[line.index('</isu_cd><shrt_isu_cd>A')+23:line.index('</shrt_isu_cd><isu_nm>')]
-        
-            name = line[line.index('</shrt_isu_cd><isu_nm>')+22:line.index('</isu_nm></result>')]
-            if name.find('<![CDATA[')<> -1:
-                name = name[9:-3]
-            name = name.replace(',',' ')
-            name = name.upper()
-
-            # ok to proceed
-   
-            quotes.addQuote(isin = isin,name = name,ticker = ticker,\
-            market = market,currency = 'KRW',place = place, country = 'KR')
+        # ok to proceed
+        n = n + 1        
+        quotes.addQuote(isin = isin,name = name,ticker = ticker,\
+        market = market,currency = 'KRW',place = place, country = 'KR')
             
     print 'Imported %d lines from %s data.' % (n,market)
 
