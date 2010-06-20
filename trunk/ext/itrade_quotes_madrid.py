@@ -8,7 +8,7 @@
 # The Original Code is iTrade code (http://itrade.sourceforge.net).
 #
 # The Initial Developer of the Original Code is Gilles Dumortier.
-# New code for Bolsa Madrid is from Michel Legrand.
+# New code for Bolsa de Madrid is from Michel Legrand.
 
 # Portions created by the Initial Developer are Copyright (C) 2004-2008 the
 # Initial Developer. All Rights Reserved.
@@ -45,6 +45,7 @@ import string
 
 # iTrade system
 import itrade_config
+import itrade_excel
 from itrade_logging import *
 from itrade_defs import *
 from itrade_ext import *
@@ -62,9 +63,10 @@ def Import_ListOfQuotes_MADRID(quotes,market='MADRID EXCHANGE',dlg=None,x=0):
                                proxyAuth = itrade_config.proxyAuthentication,
                                connectionTimeout = itrade_config.connectionTimeout
                                )
+    import xlrd
 
     if market=='MADRID EXCHANGE':
-        url = 'http://www.bolsamadrid.es/ing/empresas/empresas_alf.xls'# is actually tab delimited
+        url = 'http://www.sbolsas.com/data/listadodevalores.xls'
     else:
         return False
 
@@ -89,43 +91,53 @@ def Import_ListOfQuotes_MADRID(quotes,market='MADRID EXCHANGE',dlg=None,x=0):
 
 
     # returns the data
-    lines = splitLines(data)
-    count = 0
-    ch = 'Ticker:</b></font>&nbsp;'
-    ticker=''
 
-    for line in lines[2:]:
-        data = string.split (line, '\t')    # tab delimited
-        if data[5] == 'Continuous Market':
-            isin=data[2].strip()
-            name=data[1].replace(',',' ').replace('ñ','n')
+    book = itrade_excel.open_excel(file=None,content=data)
+    sh = book.sheet_by_index(0)
+    n = 0
+    indice = {}
 
-            url2 = 'http://www.bolsamadrid.es/comun/fichaemp/fichavalor.asp?isin='+isin+'&id=ing'
-            try:
-                dataticker = connection.getDataFromUrl(url2)
-            except:
-                info('Import_ListOfQuotes_MADRID_%s:unable to connect :-(' % market)
-                return False
 
-            linesticker = splitLines(dataticker)
+    for line in range(sh.nrows):
+        if sh.cell_type(line,1) != xlrd.XL_CELL_EMPTY:
+            if n==0:
+                for i in range(sh.ncols):
+                    val = sh.cell_value(line,i)
+                    indice[val] = i
 
-            for lineticker in linesticker:
-                
-                if 'Ticker' in lineticker:
+                    # be sure we have detected the title
+                    if val=='ISIN': n = n + 1
+
+                if n==1:
+
+                    iISIN = indice['ISIN']
+                    iTicker = indice['ISIN']-1
+                    iName = indice ['ISIN']+1
+
+            else:
+
+                isin = sh.cell_value(line,iISIN)
+                ticker = sh.cell_value(line,iTicker)
+                ticker = ticker.strip()
+                if 'BBVA' in ticker and len(ticker)== 5:
+                    pass
+                else:
+                    ticker = ticker.replace('.','-')
                     
-                    pos= lineticker.find(ch)+ len(ch)
-                    ticker = lineticker[pos:lineticker.index(' &nbsp',pos)]
-                    break
-                
-            #Partial activation of the Progressbar
-            count = count + 1
-            dlg.Update(x,'MADRID : %s /~130'%count)
-            quotes.addQuote(isin=isin,name=name, \
-                ticker=ticker,market=market,\
-                currency='EUR',place='MAD',country='ES')
-            
-            ticker = ''
-    print 'Imported %d lines from %s' % (count,market)
+                    name = sh.cell_value(line,iName)
+                    if not 'LYX' in name:
+                        name = name.encode('cp1252')
+                        
+                        name = name.strip()
+                        name = name.replace(',',' ')
+                        name = name.replace('Ñ','N')
+                        name = name.replace('Ç','C')
+                        
+                        quotes.addQuote(isin=isin,name=name, \
+                            ticker=ticker,market=market,\
+                            currency='EUR',place='MAD',country='ES')
+                        n = n + 1
+    print 'Imported %d lines from %s' % (n-1,market)
 
     return True
 
