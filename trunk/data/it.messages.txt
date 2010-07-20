@@ -252,6 +252,7 @@ quote_select_syslist;Azioni
 quote_select_usrlist;Modificate Dall'Utente
 quote_select_indiceslist;Indici
 quote_select_trackerslist;Trackers
+quote_select_bondslist;Obbligazioni
 quote_select_filterfield;Only traded quotes
 
 quote_graphdaily;Giornaliero

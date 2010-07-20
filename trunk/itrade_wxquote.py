@@ -821,15 +821,10 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         if num>0:
 
             if self.m_dispChart1Type == 'c':
-                # __x matplotlib 0.98.3 nok
-                #lc = candlestick2(self.chart1, self.m_quote.m_daytrades.m_inOpen[begin:end], self.m_quote.m_daytrades.m_inClose[begin:end], self.m_quote.m_daytrades.m_inHigh[begin:end], self.m_quote.m_daytrades.m_inLow[begin:end], width = self.zoomWidth[self.zoomLevel], colorup = 'g', colordown = 'r', alpha=1.0)
-                pass
+                lc = candlestick2(self.chart1, self.m_quote.m_daytrades.m_inOpen[begin:end], self.m_quote.m_daytrades.m_inClose[begin:end], self.m_quote.m_daytrades.m_inHigh[begin:end], self.m_quote.m_daytrades.m_inLow[begin:end], width = self.zoomWidth[self.zoomLevel], colorup = 'g', colordown = 'r', alpha=1.0)
             elif self.m_dispChart1Type == 'l':
-                # __x matplotlib 0.98.3 nok
-                #lc = plot_day_summary3(self.chart1, self.m_quote.m_daytrades.m_inClose[begin:end], ticksize=self.zoomWidth[self.zoomLevel], color='k')
-                pass
+                lc = plot_day_summary3(self.chart1, self.m_quote.m_daytrades.m_inClose[begin:end], ticksize=self.zoomWidth[self.zoomLevel], color='k')
             elif self.m_dispChart1Type == 'o':
-                # __x matplotlib 0.98.3 ok
                 lc = plot_day_summary2(self.chart1, self.m_quote.m_daytrades.m_inOpen[begin:end], self.m_quote.m_daytrades.m_inClose[begin:end], self.m_quote.m_daytrades.m_inHigh[begin:end], self.m_quote.m_daytrades.m_inLow[begin:end], ticksize=self.zoomWidth[self.zoomLevel], colorup='k', colordown='r')
             else:
                 lc = None

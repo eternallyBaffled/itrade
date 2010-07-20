@@ -1,0 +1,462 @@
+#!/usr/bin/env python
+# ============================================================================
+# Project Name : iTrade
+# Module Name  : itrade_liveupdate_euronext_bonds.py
+#
+# Description: Live update quotes from euronext.com : EURONEXT
+#
+# The Original Code is iTrade code (http://itrade.sourceforge.net).
+#
+# The Initial Developer of the Original Code is	Gilles Dumortier.
+# New code for euronext_bonds is from Michel Legrand.
+#
+# Portions created by the Initial Developer are Copyright (C) 2004-2008 the
+# Initial Developer. All Rights Reserved.
+#
+# Contributor(s):
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; see http://www.gnu.org/licenses/gpl.html
+#
+# History       Rev   Description
+# 2005-06-10    dgil  Wrote it from scratch
+# ============================================================================
+
+# ============================================================================
+# Imports
+# ============================================================================
+
+# python system
+import logging
+import re
+import string
+import thread
+from datetime import *
+
+# iTrade system
+from itrade_logging import *
+from itrade_quotes import *
+from itrade_datation import Datation,jjmmaa2yyyymmdd
+from itrade_defs import *
+from itrade_ext import *
+from itrade_market import euronext_place2mep,convertConnectorTimeToPlaceTime
+from itrade_connection import ITradeConnection
+import itrade_config
+
+# ============================================================================
+# LiveUpdate_Euronext_bonds()
+#
+#  Euronext returns all the quotes then we have to extract only the quote
+#  we want to return :-(
+#  design idea : if the quote is requested within the same second, use a
+#  cached data to extract !
+# ============================================================================
+
+class LiveUpdate_Euronext_bonds(object):
+    def __init__(self,market='EURONEXT'):
+        debug('LiveUpdate_Euronext_bonds:__init__')
+        self.m_connected = False
+        self.m_livelock = thread.allocate_lock()
+        self.m_data = None
+
+        self.m_clock = {}
+        self.m_dcmpd = {}
+        self.m_lastclock = 0
+        self.m_lastdate = "20070101"
+
+        self.m_market = market
+        self.m_url = 'http://www.euronext.com/tools/datacentre/dataCentreDownloadExcell.jcsv'
+
+        self.m_connection = ITradeConnection(cookies = None,
+                                           proxy = itrade_config.proxyHostname,
+                                           proxyAuth = itrade_config.proxyAuthentication,
+                                           connectionTimeout = itrade_config.connectionTimeout
+                                           )
+
+
+    # ---[ reentrant ] ---
+    def acquire(self):
+        # not reentrant because of global states : m_viewstate/m_data
+        self.m_livelock.acquire()
+
+    def release(self):
+        self.m_livelock.release()
+
+    # ---[ properties ] ---
+
+    def name(self):
+        return 'euronext_bonds'
+
+    def delay(self):
+        return 15
+
+    def timezone(self):
+        # timezone of the livedata (see pytz all_timezones)
+        return "CET"
+
+    # ---[ connexion ] ---
+
+    def connect(self):
+        return True
+
+    def disconnect(self):
+        pass
+
+    def alive(self):
+        return self.m_connected
+
+    # ---[ state ] ---
+
+    def getstate(self):
+        # no state
+        return True
+
+    # ---[ code to get data ] ---
+
+    def splitLines(self,buf):
+        lines = string.split(buf, '\n')
+        lines = filter(lambda x:x, lines)
+        def removeCarriage(s):
+            if s[-1]=='\r':
+                return s[:-1]
+            else:
+                return s
+        lines = [removeCarriage(l) for l in lines]
+        return lines
+
+    def euronextDate(self,date):
+        sp = string.split(date,' ')
+        #print 'euronextDate:',sp
+
+        # Date part is easy
+        sdate = jjmmaa2yyyymmdd(sp[0])
+
+        if len(sp)==1:
+            return sdate,"00:00"
+        return sdate,sp[1]
+
+    def convertClock(self,place,clock,date):
+        #min = clock[-2:]
+        #hour = clock[:-3]
+        min = clock[3:5]
+        hour = clock[:2]
+        val = (int(hour)*60) + int(min)
+        #print 'clock:',clock,hour,min,val
+        if val>self.m_lastclock and date>=self.m_lastdate:
+            self.m_lastdate = date
+            self.m_lastclock = val
+
+        # convert from connector timezone to market place timezone
+        mdatetime = datetime(int(date[0:4]),int(date[4:6]),int(date[6:8]),val/60,val%60)
+        mdatetime = convertConnectorTimeToPlaceTime(mdatetime,self.timezone(),place)
+
+        return "%d:%02d" % (mdatetime.hour,mdatetime.minute)
+
+    def parseFValue(self,d):
+        val = string.split(d,',')
+        ret = ''
+        for val in val:
+            ret = ret+val
+        return string.atof(ret)
+
+    def parseLValue(self,d):
+        if d=='-': return 0
+        if ',' in d:
+            s = ','
+        else:
+            s = '\xA0'
+        val = string.split(d,s)
+        ret = ''
+        for val in val:
+            ret = ret+val
+        return string.atol(ret)
+
+    def getdata(self,quote):
+        self.m_connected = False
+        debug("LiveUpdate_Euronext_bonds:getdata quote:%s market:%s" % (quote,self.m_market))
+#http://www.euronext.com/tools/datacentre/dataCentreDownloadExcell.jcsv        
+#cha=3022&lan=EN&fileFormat=txt&separator=.&dateFormat=dd/MM/yy&isinCode=FR0010733626&selectedMep=1&typeDownload=4        
+
+        query = (
+            ('cha', '3022'),
+            ('lan', 'EN'),
+            ('fileFormat', 'xls'),
+            ('separator', '.'),
+            ('dateFormat', 'dd/MM/yy'),
+            ('isinCode', quote.isin()),
+            ('selectedMep', euronext_place2mep(quote.place())),
+            ('typeDownload', '4'),
+        )
+
+        
+        query = map(lambda (var, val): '%s=%s' % (var, str(val)), query)
+        query = string.join(query, '&')
+        url = self.m_url + '?' + query
+
+        debug("LiveUpdate_Euronext_bonds:getdata: url=%s ",url)
+        try:
+            buf=self.m_connection.getDataFromUrl(url)
+        except:
+            debug('LiveUpdate_Euronext_bonds:unable to connect :-(')
+            return None
+
+        # pull data
+        lines = self.splitLines(buf)
+        data = ''
+
+        indice = {}
+        """
+        "Instrument's name";
+        "ISIN";
+        "Euronext code";
+        "Market";
+        "Symbol";
+        "New issues";
+        "Accrued coupon %";
+        "Trading currency";
+        "Last";
+        "Volume";
+        "Date - time (CET)";
+        "Turnover";
+        "Maturity date";
+        "Trading mode";
+        "Type";
+        "Fallers";
+        "Day First";
+        "Day High";
+        "Day High / Date - time (CET)";
+        "Day Low";
+        "Day Low / Date - time (CET)";
+        "31-12/Change (%)";
+        "31-12/High";
+        "31-12/High/Date";
+        "31-12/Low";
+        "31-12/Low/Date";
+        "52 weeks/Change (%)";
+        "52 weeks/High";
+        "52 weeks/High/Date";
+        "52 weeks/Low";
+        "52 weeks/Low/Date";
+        "Issuer nationality";
+        "Issuer name";
+        "Nominal value";
+        "Nominal currency";
+        "Coupon rate %";
+        "Nature";
+        "Repayment date";
+        "Number of days until maturity";
+        "Repayment price (cur./%)";
+        "Accrued coupon %";
+        "Total nb of bonds";
+        "Issue amount";
+        "Issue price";
+        "Issue price currency";
+        "Issue date";
+        "Previous gross coupon";
+        "Previous net coupon";
+        "Coupon currency";
+        "Coupon previous date";
+        "Halted";
+        "Halted / Date - time (CET)";
+        "Halted";
+        "Halted / Date - time (CET)"
+        """
+
+        for eachLine in lines:
+            sdata = string.split (eachLine, '\t')
+
+            if len(sdata)>2:
+                if not indice.has_key("ISIN"):
+                    i = 0
+                    for ind in sdata:
+                        indice[ind] = i
+                        i = i + 1
+
+                    iName = indice["Instrument's name"]
+                    iISIN = indice["ISIN"]
+                    iDate = indice["Date - time (CET)"]
+                    iOpen = indice["Day First"]
+                    iLast = indice["Last"]
+                    iHigh = indice["Day High"]
+                    iLow = indice["Day Low"]
+
+                    if indice.has_key("Volume"):
+                        iVolume = indice["Volume"]
+                    else:
+                        iVolume = -1
+                else:
+                    if (sdata[iISIN]<>"ISIN") and (sdata[iDate]!='-'):
+                        c_datetime = datetime.today()
+                        c_date = "%04d%02d%02d" % (c_datetime.year,c_datetime.month,c_datetime.day)
+                        #print 'Today is :', c_date
+
+                        sdate,sclock = self.euronextDate(sdata[iDate])
+
+                        # be sure we have volume (or indices)
+                        if (quote.list() == QLIST_INDICES or sdata[iVolume]<>'-'):
+
+                            # be sure not an oldest day !
+                            if (c_date==sdate) or (quote.list() == QLIST_INDICES):
+                                key = quote.key()
+                                self.m_dcmpd[key] = sdate
+                                self.m_clock[key] = self.convertClock(quote.place(),sclock,sdate)
+
+                            #
+                            open = self.parseFValue(sdata[iOpen])
+                            high = self.parseFValue(sdata[iHigh])
+                            low = self.parseFValue(sdata[iLow])
+                            value = self.parseFValue(sdata[iLast])
+                            #no percent previous day just 31-12/Change (%)
+                            
+                            if iVolume!=-1:
+                                volume = self.parseLValue(sdata[iVolume])
+                            else:
+                                volume = 0
+
+                            # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME
+                            data = (
+                              quote.key(),
+                              sdate,
+                              open,
+                              high,
+                              low,
+                              value,
+                              volume
+                            )
+                            data = map(lambda (val): '%s' % str(val), data)
+                            data = string.join(data, ';')
+
+                            return data
+                    else:
+                        #print sdata
+                        pass
+
+        return None
+
+    # ---[ cache management on data ] ---
+
+    def getcacheddata(self,quote):
+        return None
+
+    def iscacheddataenoughfreshq(self):
+        return False
+
+    def cacheddatanotfresh(self):
+        # no cache
+        pass
+
+    # ---[ notebook of order ] ---
+
+    def hasNotebook(self):
+        return False
+
+    # ---[ status of quote ] ---
+
+    def hasStatus(self):
+        return itrade_config.isConnected()
+
+    def currentStatus(self,quote):
+        #
+        key = quote.key()
+        if not self.m_dcmpd.has_key(key):
+            # no data for this quote !
+            return "UNKNOWN","::","0.00","0.00","::"
+
+        st = 'OK'
+        cl = '::'
+        return st,cl,"-","-",self.m_clock[key]
+
+    def currentTrades(self,quote):
+        # clock,volume,value
+        return None
+
+    def currentMeans(self,quote):
+        # means: sell,buy,last
+        return "-","-","-"
+
+    def currentClock(self,quote=None):
+        if quote==None:
+            if self.m_lastclock==0:
+                return "::"
+            # hh:mm
+            return "%d:%02d" % (self.m_lastclock/60,self.m_lastclock%60)
+        #
+        key = quote.key()
+        if not self.m_clock.has_key(key):
+            # no data for this quote !
+            return "::"
+        else:
+            return self.m_clock[key]
+
+# ============================================================================
+# Export me
+# ============================================================================
+
+try:
+    ignore(gLiveEuronext)
+    
+except NameError:
+    gLiveEuronext = LiveUpdate_Euronext_bonds()
+
+registerLiveConnector('EURONEXT','PAR',QLIST_BONDS,QTAG_LIVE,gLiveEuronext,bDefault=True)
+registerLiveConnector('EURONEXT','BRU',QLIST_BONDS,QTAG_LIVE,gLiveEuronext,bDefault=True)
+registerLiveConnector('EURONEXT','AMS',QLIST_BONDS,QTAG_LIVE,gLiveEuronext,bDefault=True)
+registerLiveConnector('EURONEXT','LIS',QLIST_BONDS,QTAG_LIVE,gLiveEuronext,bDefault=True)
+
+# ============================================================================
+# Test ME
+#
+# ============================================================================
+
+def test(ticker):
+    if gLiveEuronext.iscacheddataenoughfreshq():
+        data = gLiveEuronext.getcacheddata(ticker)
+        if data:
+            debug(data)
+        else:
+            debug("nodata")
+
+    elif gLiveEuronext.connect():
+
+        state = gLiveEuronext.getstate()
+        if state:
+            debug("state=%s" % (state))
+
+            quote = quotes.lookupTicker(ticker,'EURONEXT')
+            data = gLiveEuronext.getdata(quote)
+            if data!=None:
+                if data:
+                    info(data)
+                else:
+                    debug("nodata")
+            else:
+                print "getdata() failure :-("
+        else:
+            print "getstate() failure :-("
+
+        gLiveEuronext.disconnect()
+    else:
+        print "connect() failure :-("
+
+if __name__=='__main__':
+    setLevel(logging.INFO)
+
+    print 'live %s' % date.today()
+    test('OSI')
+    test('GTO')
+    gLiveEuronext.cacheddatanotfresh()
+    test('GTO')
+
+# ============================================================================
+# That's all folks !
+# ============================================================================

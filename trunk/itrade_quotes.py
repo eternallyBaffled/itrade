@@ -1404,6 +1404,10 @@ class Quotes(object):
         if infile:
             self._addLines(infile,list=QLIST_TRACKERS,debug=False)
 
+        infile = itrade_csv.read(None,os.path.join(itrade_config.dirSymbData,'bonds.txt'))
+        if infile:
+            self._addLines(infile,list=QLIST_BONDS,debug=False)
+
         # them open and read user file
         infile = itrade_csv.read(None,os.path.join(itrade_config.dirUserData,'usrquotes.txt'))
         if infile:

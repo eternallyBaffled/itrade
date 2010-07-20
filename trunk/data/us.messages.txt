@@ -253,6 +253,7 @@ quote_select_syslist;Stocks
 quote_select_usrlist;User Edited
 quote_select_indiceslist;Indices
 quote_select_trackerslist;Trackers
+quote_select_bondslist;Bonds
 quote_select_filterfield;Only traded quotes
 
 quote_graphdaily;Daily

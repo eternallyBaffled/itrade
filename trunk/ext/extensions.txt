@@ -19,6 +19,7 @@
 
 # import historical data
 itrade_import_euronext.py
+itrade_import_euronext_bonds.py
 itrade_import_yahoo.py
 itrade_import_yahoo_japan.py
 
@@ -27,7 +28,6 @@ itrade_liveupdate_euronext.py
 itrade_liveupdate_yahoo.py
 itrade_liveupdate_yahoo_japan.py
 itrade_liveupdate_realtime.py
-#itrade_liveupdate_euronext_realtime.py
 itrade_liveupdate_euronext_bonds.py
 
 # import list of quotes

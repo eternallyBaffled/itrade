@@ -174,6 +174,7 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
         if not self.m_qlist_tradableOnly:
             self.wxQListCtrl.Append(message('quote_select_indiceslist'),QLIST_INDICES)
         self.wxQListCtrl.Append(message('quote_select_trackerslist'),QLIST_TRACKERS)
+        self.wxQListCtrl.Append(message('quote_select_bondslist'),QLIST_BONDS)
         self.wxQListCtrl.SetSelection(self.m_qlist)
 
         # select traded or not
