@@ -450,6 +450,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         self.wxQListCtrl.Append(message('quote_select_usrlist'),QLIST_USER)
         self.wxQListCtrl.Append(message('quote_select_indiceslist'),QLIST_INDICES)
         self.wxQListCtrl.Append(message('quote_select_trackerslist'),QLIST_TRACKERS)
+        self.wxQListCtrl.Append(message('quote_select_bondslist'),QLIST_BONDS)
         self.wxQListCtrl.SetSelection(self.m_qlist)
 
         self.wxCount = wx.StaticText(self, -1, '--')
@@ -554,7 +555,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         self.m_list.SetFocus()
 
     def checkEnablity(self):
-        if self.m_qlist == QLIST_INDICES or self.m_qlist == QLIST_TRACKERS:
+        if self.m_qlist == QLIST_INDICES or self.m_qlist == QLIST_TRACKERS or self.m_qlist == QLIST_BONDS:
             self.wxOK.Enable(False)
             self.wxNEW.Enable(False)
             #self.wxPROP.Enable(False)
@@ -618,6 +619,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         for eachQuote in quotes.list():
             if  self.m_qlist==QLIST_ALL or self.m_qlist==eachQuote.list():
                 self.itemDataMap[count] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.name(),eachQuote.place(),eachQuote.market(),eachQuote.liveconnector().name(),eachQuote.importconnector().name())
+
                 self.itemQuoteMap[count] = eachQuote
                 count = count + 1
 

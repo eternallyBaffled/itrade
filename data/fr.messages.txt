@@ -257,6 +257,7 @@ quote_select_syslist;Actions
 quote_select_usrlist;Personnel
 quote_select_indiceslist;Indices
 quote_select_trackerslist;Trackers
+quote_select_bondslist;Obligations
 quote_select_filterfield;Seulement les valeurs tradées
 
 quote_graphdaily;Journalier

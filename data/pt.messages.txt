@@ -265,6 +265,7 @@ quote_select_syslist;Stocks
 quote_select_usrlist;Utilizador editado
 quote_select_indiceslist;Índices
 quote_select_trackerslist;Trackers
+quote_select_bondslist;Obrigações  
 quote_select_filterfield;Somente acções negociadas
 
 quote_graphdaily; Diário

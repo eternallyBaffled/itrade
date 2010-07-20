@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 # ============================================================================
 # Project Name : iTrade
-# Module Name  : itrade_import_euronext.py
+# Module Name  : itrade_import_euronext_bonds.py
 #
 # Description: Import quotes from euronext.com
 #
 # The Original Code is iTrade code (http://itrade.sourceforge.net).
 #
 # The Initial Developer of the Original Code is	Gilles Dumortier.
+# New code for euronext_bonds is from Michel Legrand.
 #
 # Portions created by the Initial Developer are Copyright (C) 2004-2008 the
 # Initial Developer. All Rights Reserved.
@@ -52,13 +53,13 @@ from itrade_connection import ITradeConnection
 import itrade_config
 
 # ============================================================================
-# Import_euronext()
+# Import_euronext_bonds()
 #
 # ============================================================================
 
-class Import_euronext(object):
+class Import_euronext_bonds(object):
     def __init__(self):
-        debug('Import_euronext:__init__')
+        debug('Import_euronext_bonds:__init__')
         self.m_url = 'http://www.euronext.com/tools/datacentre/dataCentreDownloadExcell.jcsv'
 
         self.m_connection = ITradeConnection(cookies = None,
@@ -68,7 +69,7 @@ class Import_euronext(object):
                                            )
 
     def name(self):
-        return 'euronext'
+        return 'euronext_bonds'
 
     def interval_year(self):
         return 2
@@ -136,14 +137,13 @@ class Import_euronext(object):
         d1 = self.parseDate(datedebut)
         d2 = self.parseDate(datefin)
 
-        debug("Import_euronext:getdata quote:%s begin:%s end:%s" % (quote,d1,d2))
+        debug("Import_euronext_bonds:getdata quote:%s begin:%s end:%s" % (quote,d1,d2))
 
         query = (
-            ('cha', '2593'),
+            ('cha', '3022'),
             ('lan', 'EN'),
-            #('idInstrument', IdInstrument),
             ('fileFormat', 'xls'),
-            ('separator', ''),
+            ('separator', '.'),
             ('dateFormat', 'dd/MM/yy'),
             ('isinCode', quote.isin()),
             ('selectedMep', euronext_place2mep(quote.place())),
@@ -161,11 +161,11 @@ class Import_euronext(object):
         query = string.join(query, '&')
         url = self.m_url + '?' + query
         #print url
-        debug("Import_euronext:getdata: url=%s ",url)
+        debug("Import_euronext_bonds:getdata: url=%s ",url)
         try:
             buf=self.m_connection.getDataFromUrl(url)
         except:
-            debug('Import_euronext:unable to connect :-(')
+            debug('Import_euronext_bonds:unable to connect :-(')
             return None
 
         # pull data
@@ -184,7 +184,6 @@ class Import_euronext(object):
                     low = self.parseFValue(sdata[3])
                     value = self.parseFValue(sdata[4])
                     volume = self.parseLValue(sdata[5])
-
                     # encode in EBP format
                     # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME
                     line = (
@@ -211,40 +210,12 @@ class Import_euronext(object):
 try:
     ignore(gImportEuronext)
 except NameError:
-    gImportEuronext = Import_euronext()
+    gImportEuronext = Import_euronext_bonds()
 
-registerImportConnector('EURONEXT','PAR',QLIST_ANY,QTAG_IMPORT,gImportEuronext,bDefault=False)
-registerImportConnector('EURONEXT','PAR',QLIST_SYSTEM,QTAG_IMPORT,gImportEuronext,bDefault=True)
-registerImportConnector('EURONEXT','PAR',QLIST_INDICES,QTAG_IMPORT,gImportEuronext,bDefault=True)
-registerImportConnector('EURONEXT','PAR',QLIST_TRACKERS,QTAG_IMPORT,gImportEuronext,bDefault=True)
-
-registerImportConnector('EURONEXT','BRU',QLIST_ANY,QTAG_IMPORT,gImportEuronext,bDefault=False)
-registerImportConnector('EURONEXT','BRU',QLIST_SYSTEM,QTAG_IMPORT,gImportEuronext,bDefault=True)
-registerImportConnector('EURONEXT','BRU',QLIST_INDICES,QTAG_IMPORT,gImportEuronext,bDefault=True)
-registerImportConnector('EURONEXT','BRU',QLIST_TRACKERS,QTAG_IMPORT,gImportEuronext,bDefault=True)
-
-registerImportConnector('EURONEXT','AMS',QLIST_ANY,QTAG_IMPORT,gImportEuronext,bDefault=False)
-registerImportConnector('EURONEXT','AMS',QLIST_SYSTEM,QTAG_IMPORT,gImportEuronext,bDefault=True)
-registerImportConnector('EURONEXT','AMS',QLIST_INDICES,QTAG_IMPORT,gImportEuronext,bDefault=True)
-registerImportConnector('EURONEXT','AMS',QLIST_TRACKERS,QTAG_IMPORT,gImportEuronext,bDefault=True)
-
-registerImportConnector('EURONEXT','LIS',QLIST_ANY,QTAG_IMPORT,gImportEuronext,bDefault=False)
-registerImportConnector('EURONEXT','LIS',QLIST_SYSTEM,QTAG_IMPORT,gImportEuronext,bDefault=True)
-registerImportConnector('EURONEXT','LIS',QLIST_INDICES,QTAG_IMPORT,gImportEuronext,bDefault=True)
-registerImportConnector('EURONEXT','LIS',QLIST_TRACKERS,QTAG_IMPORT,gImportEuronext,bDefault=True)
-
-registerImportConnector('ALTERNEXT','PAR',QLIST_ANY,QTAG_IMPORT,gImportEuronext,bDefault=False)
-registerImportConnector('ALTERNEXT','PAR',QLIST_INDICES,QTAG_IMPORT,gImportEuronext,bDefault=True)
-registerImportConnector('ALTERNEXT','PAR',QLIST_TRACKERS,QTAG_IMPORT,gImportEuronext,bDefault=True)
-
-registerImportConnector('ALTERNEXT','BRU',QLIST_ANY,QTAG_IMPORT,gImportEuronext,bDefault=True)
-registerImportConnector('ALTERNEXT','AMS',QLIST_ANY,QTAG_IMPORT,gImportEuronext,bDefault=True)
-
-registerImportConnector('PARIS MARCHE LIBRE','PAR',QLIST_ANY,QTAG_IMPORT,gImportEuronext,bDefault=False)
-registerImportConnector('PARIS MARCHE LIBRE','PAR',QLIST_INDICES,QTAG_IMPORT,gImportEuronext,bDefault=True)
-registerImportConnector('PARIS MARCHE LIBRE','PAR',QLIST_TRACKERS,QTAG_IMPORT,gImportEuronext,bDefault=True)
-
-registerImportConnector('BRUXELLES MARCHE LIBRE','BRU',QLIST_ANY,QTAG_IMPORT,gImportEuronext,bDefault=True)
+registerImportConnector('EURONEXT','PAR',QLIST_BONDS,QTAG_IMPORT,gImportEuronext,bDefault=True)
+registerImportConnector('EURONEXT','BRU',QLIST_BONDS,QTAG_IMPORT,gImportEuronext,bDefault=True)
+registerImportConnector('EURONEXT','AMS',QLIST_BONDS,QTAG_IMPORT,gImportEuronext,bDefault=True)
+registerImportConnector('EURONEXT','LIS',QLIST_BONDS,QTAG_IMPORT,gImportEuronext,bDefault=True)
 
 # ============================================================================
 # Test ME
