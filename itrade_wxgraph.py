@@ -282,8 +282,8 @@ class GObject(object):
         axe = self.chart2axe(obj[1])
 
         # compute rect
-        figheight = self.m_canvas.figure.bbox.height
-        left,bottom,width,height = axe.bbox.bounds
+        figheight = self.m_canvas.figure.bbox.height()
+        left,bottom,width,height = axe.bbox.get_bounds()
         bottom = figheight-bottom
         top = bottom - height
         right = left + width
@@ -728,9 +728,9 @@ class iTrade_wxPanelGraph(GObject,PanelPrint):
             self.erase_cursor()
             return
 
-        figheight = self.m_canvas.figure.bbox.height
+        figheight = self.m_canvas.figure.bbox.height()
         ax = event.inaxes
-        left,bottom,width,height = ax.bbox.bounds
+        left,bottom,width,height = ax.bbox.get_bounds()
         bottom = figheight-bottom
         top = bottom - height
         right = left + width

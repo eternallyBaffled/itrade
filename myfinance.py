@@ -4,30 +4,27 @@ financial data.   User contributions welcome!
 
 """
 #from __future__ import division
-import os, time, warnings
+import os, time, warnings, md5
 from urllib import urlopen
 
-try:
-    from hashlib import md5
-except ImportError:
-    from md5 import md5 #Deprecated in 2.5
 
 try: import datetime
 except ImportError:
     raise SystemExit('The finance module requires datetime support (python2.3)')
 
-import numpy as np
-
 from matplotlib import verbose, get_configdir
-from matplotlib.dates import date2num
+from matplotlib.artist import Artist
+from matplotlib.dates import date2num, num2date
 from matplotlib.cbook import Bunch
 from matplotlib.collections import LineCollection, PolyCollection
 from matplotlib.colors import colorConverter
 from matplotlib.lines import Line2D, TICKLEFT, TICKRIGHT
 from matplotlib.patches import Rectangle
-from matplotlib.transforms import Affine2D
+import matplotlib.numerix as nx
+from matplotlib.transforms import scale_transform, Value, zero, one, \
+     scale_sep_transform, blend_xy_sep_transform
 
-
+from pylab import gca
 
 configdir = get_configdir()
 cachedir = os.path.join(configdir, 'finance.cache')
@@ -47,22 +44,13 @@ def parse_yahoo_historical(fh, asobject=False, adjusted=True):
     results = []
 
     lines = fh.readlines()
-
-    datefmt = None
-
     for line in lines[1:]:
 
         vals = line.split(',')
 
         if len(vals)!=7: continue
         datestr = vals[0]
-        if datefmt is None:
-            try:
-                datefmt = '%Y-%m-%d'
-                dt = datetime.date(*time.strptime(datestr, datefmt)[:3])
-            except ValueError:
-                datefmt = '%d-%b-%y'  # Old Yahoo--cached file?
-        dt = datetime.date(*time.strptime(datestr, datefmt)[:3])
+        dt = datetime.date(*time.strptime(datestr, '%d-%b-%y')[:3])
         d = date2num(dt)
         open, high, low, close =  [float(val) for val in vals[1:5]]
         volume = int(vals[5])
@@ -79,7 +67,7 @@ def parse_yahoo_historical(fh, asobject=False, adjusted=True):
     if asobject:
         if len(results)==0: return None
         else:
-            date, open, close, high, low, volume = map(np.asarray, zip(*results))
+            date, open, close, high, low, volume = map(nx.asarray, zip(*results))
         return Bunch(date=date, open=open, close=close, high=high, low=low, volume=volume)
     else:
 
@@ -115,7 +103,7 @@ def fetch_historical_yahoo(ticker, date1, date2, cachename=None):
 
 
     if cachename is None:
-        cachename = os.path.join(cachedir, md5(url).hexdigest())
+        cachename = os.path.join(cachedir, md5.md5(url).hexdigest())
     if os.path.exists(cachename):
         fh = file(cachename)
         verbose.report('Using cachefile %s for %s'%(cachename, ticker))
@@ -336,9 +324,9 @@ def plot_day_summary2(ax, opens, closes, highs, lows, ticksize=4,
     offsetsClose = [ (i, close) for i, close in zip(xrange(len(closes)), closes) if close != -1 ]
 
 
-    scale = ax.figure.dpi * (1.0/72.0)
+    scale = ax.figure.dpi * Value(1/72.0)
 
-    tickTransform = Affine2D().scale(scale, 0.0)
+    tickTransform = scale_transform( scale, zero())
 
     r,g,b = colorConverter.to_rgb(colorup)
     colorup = r,g,b,1
@@ -383,10 +371,10 @@ def plot_day_summary2(ax, opens, closes, highs, lows, ticksize=4,
                                      )
     closeCollection.set_transform(tickTransform)
 
-    minpy, maxx = (0, len(rangeSegments))
+    minx, maxx = (0, len(rangeSegments))
     miny = min([low for low in lows if low !=-1])
     maxy = max([high for high in highs if high != -1])
-    corners = (minpy, miny), (maxx, maxy)
+    corners = (minx, miny), (maxx, maxy)
     ax.update_datalim(corners)
     ax.autoscale_view()
 
@@ -480,10 +468,12 @@ def candlestick2(ax, opens, closes, highs, lows, width=4,
 
     offsetsBars = [ (i, open) for i,open in zip(xrange(len(opens)), opens) if open != -1 ]
 
-    sx = ax.figure.dpi * (1.0/72.0)  # scale for points
-    sy = ax.bbox.height / ax.viewLim.height
+    sx = ax.figure.dpi * Value(1/72.0)  # scale for points
+    sy = (ax.bbox.ur().y() - ax.bbox.ll().y()) / (ax.viewLim.ur().y() - ax.viewLim.ll().y())
 
-    barTransform = Affine2D().scale(sx,sy)
+    barTransform = scale_sep_transform(sx,sy)
+
+
 
     r,g,b = colorConverter.to_rgb(colorup)
     colorup = r,g,b,alpha
@@ -531,6 +521,9 @@ def candlestick2(ax, opens, closes, highs, lows, width=4,
                                    )
     barCollection.set_transform(barTransform)
 
+
+
+
     minx, maxx = (0, len(rangeSegments1))
     miny = min([low for low in lows if low !=-1])
     maxy = max([high for high in highs if high != -1])
@@ -576,10 +569,14 @@ def volume_overlay(ax, opens, closes, volumes,
 
 
     bars = [ ( (left, 0), (left, v), (right, v), (right, 0)) for v in volumes if v >= 0 ]
-    sx = ax.figure.dpi * (1.0/72.0)  # scale for points
-    sy = ax.bbox.height / ax.viewLim.height
-    barTransform = Affine2D().scale(sx,sy)
+
+    sx = ax.figure.dpi * Value(1/72.0)  # scale for points
+    sy = (ax.bbox.ur().y() - ax.bbox.ll().y()) / (ax.viewLim.ur().y() - ax.viewLim.ll().y())
+
+    barTransform = scale_sep_transform(sx,sy)
+
     offsetsBars = [ (i, 0) for i,v in enumerate(volumes) if v >= 0 ]
+
     #print 'len colors = ',len(colors)
     #print 'len offsetsBars = ',len(offsetsBars)
     #print 'len bars = ',len(bars)
@@ -589,11 +586,13 @@ def volume_overlay(ax, opens, closes, volumes,
     #    print 'volumes:',volumes
     assert(len(offsetsBars)==len(colors))
     assert(len(offsetsBars)==len(bars))
+
     useAA = 0,  # use tuple here
     if width>1:
         lw = 0.5,   # and here
     else:
         lw = 0.2,
+
     barCollection = PolyCollection(bars,
                                    facecolors   = colors,
                                    edgecolors   = ( (0,0,0,1), ),
@@ -608,10 +607,12 @@ def volume_overlay(ax, opens, closes, volumes,
     miny = 0
     maxy = max([v for v in volumes if v >= 0])
     corners = (minx, miny), (maxx, maxy)
+
     ax.update_datalim(corners)
     ax.autoscale_view()
 
     ax.add_collection(barCollection)
+
     # add these last
     return barCollection
 
@@ -634,15 +635,16 @@ def volume_overlay2(ax, closes, volumes,
 
     """
 
-    #opens = np.array(closes[:-1])
-    #last = 0
-    #for i in range(0,len(opens)):
-    #    if opens[i] == -1:
-    #        opens[i] = last
-    #    else:
-    #        last = opens[i]
-    #return volume_overlay(ax,opens,closes[1:],volumes[1:],colorup,colordown,width,alpha)
-    return volume_overlay(ax,closes[:-1],closes[1:],volumes[1:],colorup,colordown,width,alpha)
+    opens = nx.array(closes[:-1])
+    last = 0
+    for i in range(0,len(opens)):
+        if opens[i] == -1:
+            opens[i] = last
+        else:
+            last = opens[i]
+
+    return volume_overlay(ax,opens,closes[1:],volumes[1:],colorup,colordown,width,alpha)
+    #return volume_overlay(ax,closes[:-1],closes[1:],volumes[1:],colorup,colordown,width,alpha)
 
 
 def volume_overlay3(ax, quotes,
@@ -680,10 +682,10 @@ def volume_overlay3(ax, quotes,
 
     bars = [ ( (left, 0), (left, volume), (right, volume), (right, 0)) for d, open, close, high, low, volume in quotes]
 
-    sx = ax.figure.dpi * (1.0/72.0)  # scale for points
-    sy = ax.bbox.height / ax.viewLim.height
+    sx = ax.figure.dpi * Value(1/72.0)  # scale for points
+    sy = (ax.bbox.ur().y() - ax.bbox.ll().y()) / (ax.viewLim.ur().y() - ax.viewLim.ll().y())
 
-    barTransform = Affine2D().scale(sx,sy)
+    barTransform = scale_sep_transform(sx,sy)
 
     dates = [d for d, open, close, high, low, volume in quotes]
     offsetsBars = [(d, 0) for d in dates]
@@ -693,6 +695,7 @@ def volume_overlay3(ax, quotes,
         lw = 0.5,   # and here
     else:
         lw = 0.2,
+
     barCollection = PolyCollection(bars,
                                    facecolors   = colors,
                                    edgecolors   = ( (0,0,0,1), ),
@@ -703,13 +706,18 @@ def volume_overlay3(ax, quotes,
                                    )
     barCollection.set_transform(barTransform)
 
-    minpy, maxx = (min(dates), max(dates))
+
+
+
+
+
+    minx, maxx = (min(dates), max(dates))
     miny = 0
     maxy = max([volume for d, open, close, high, low, volume in quotes])
-    corners = (minpy, miny), (maxx, maxy)
+    corners = (minx, miny), (maxx, maxy)
     ax.update_datalim(corners)
-    #print 'datalim', ax.dataLim.bounds
-    #print 'viewlim', ax.viewLim.bounds
+    #print 'datalim', ax.dataLim.get_bounds()
+    #print 'viewlim', ax.viewLim.get_bounds()
 
     ax.add_collection(barCollection)
     ax.autoscale_view()
@@ -738,10 +746,10 @@ def index_bar(ax, vals,
 
     bars = [ ( (left, 0), (left, v), (right, v), (right, 0)) for v in vals if v != -1 ]
 
-    sx = ax.figure.dpi * (1.0/72.0)  # scale for points
-    sy = ax.bbox.height / ax.viewLim.height
+    sx = ax.figure.dpi * Value(1/72.0)  # scale for points
+    sy = (ax.bbox.ur().y() - ax.bbox.ll().y()) / (ax.viewLim.ur().y() - ax.viewLim.ll().y())
 
-    barTransform = Affine2D().scale(sx,sy)
+    barTransform = scale_sep_transform(sx,sy)
 
     offsetsBars = [ (i, 0) for i,v in enumerate(vals) if v != -1 ]
 
@@ -756,13 +764,15 @@ def index_bar(ax, vals,
     barCollection.set_transform(barTransform)
 
 
-    minpy, maxx = (0, len(offsetsBars))
+    minx, maxx = (0, len(offsetsBars))
     miny = 0
     maxy = max([v for v in vals if v!=-1])
-    corners = (minpy, miny), (maxx, maxy)
+    corners = (minx, miny), (maxx, maxy)
     ax.update_datalim(corners)
     ax.autoscale_view()
 
     # add these last
     ax.add_collection(barCollection)
     return barCollection
+
+
