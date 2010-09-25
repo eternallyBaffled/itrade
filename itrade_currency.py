@@ -74,6 +74,7 @@ currencies_CUR = {
     'MXN' : u'\u0024', # '$'
     'SGD' : u'\u0024', # '$'
     'KRW' : u'\uFFE6', # 'w  u20A9 caracter not accepted'
+    'TWD' : u'\u004E\u0054\u0024', #'NT$'
     'N/A' : u'\u0020', # ' '
     }
 
@@ -84,7 +85,7 @@ def currency2symbol(cur):
         return cur
 
 def list_of_currencies():
-    return ('EUR','USD','JPY','GBP','GBX','AUD','CAD','CHF','NOK','SEK','DKK','BRL','HKD','CNY','INR','NZD','ARS','MXN','SGD','KRW')
+    return ('EUR','USD','JPY','GBP','GBX','AUD','CAD','CHF','NOK','SEK','DKK','BRL','HKD','CNY','INR','NZD','ARS','MXN','SGD','KRW','TWD')
 
 # ============================================================================
 # Build list of supported currencies

@@ -57,6 +57,7 @@ itrade_quotes_milan.py
 itrade_quotes_vienna.py
 itrade_quotes_shanghai.py
 itrade_quotes_tokyo.py
+itrade_quotes_taipei.py
 # login
 
 # -----------------------------------------------------------------------------

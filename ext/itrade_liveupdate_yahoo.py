@@ -428,6 +428,8 @@ registerLiveConnector('KOREA KOSDAQ EXCHANGE','KOS',QLIST_ANY,QTAG_DIFFERED,gLiv
 
 registerLiveConnector('WIENER BORSE','WBO',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 
+registerLiveConnector('TAIWAN STOCK EXCHANGE','TAI',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+
 # ============================================================================
 # Test ME
 #
