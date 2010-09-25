@@ -120,7 +120,6 @@ class Import_yahoo(object):
             ss = "%5E" + sname[1:]
         else:
             ss = sname
-
         query = (
             ('s', ss),
             ('a', '%02d' % (int(d1[1])-1)),
@@ -268,6 +267,8 @@ registerImportConnector('KOREA STOCK EXCHANGE','KRX',QLIST_ANY,QTAG_IMPORT,gImpo
 registerImportConnector('KOREA KOSDAQ EXCHANGE','KOS',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
 
 registerImportConnector('WIENER BORSE','WBO',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
+
+registerImportConnector('TAIWAN STOCK EXCHANGE','TAI',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
 
 # ============================================================================
 # Test ME

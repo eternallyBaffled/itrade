@@ -88,6 +88,7 @@ isin_market = {
     'kr': 'KOREA KOSDAQ EXCHANGE',
     'at': 'WIENER BORSE',
     'jp': 'TOKYO EXCHANGE',
+    'tw': 'TAIWAN STOCK EXCHANGE',
     }
 
 def isin2market(isin):
@@ -143,6 +144,7 @@ market_indice = {
     'KOREA KOSDAQ EXCHANGE' : 'KR0000000002',
     'WIENER BORSE' : 'AT0000999982',
     'TOKYO EXCHANGE' : 'XC0009692440',
+    'TAIWAN STOCK EXCHANGE' : 'TW0000000001',
     }
 
 def getDefaultIndice(market):
@@ -193,6 +195,7 @@ market_currency = {
     'KOREA KOSDAQ EXCHANGE': 'KRW',
     'WIENER BORSE': 'EUR',
     'TOKYO EXCHANGE': 'JPY',
+    'TAIWAN STOCK EXCHANGE': 'TWD',
     }
 
 def market2currency(market):
@@ -243,6 +246,7 @@ _lom = {
     'KOREA KOSDAQ EXCHANGE': False,
     'WIENER BORSE': False,
     'TOKYO EXCHANGE':False,
+    'TAIWAN STOCK EXCHANGE': False,
     }
 
 def set_market_loaded(market,set=True):
@@ -350,6 +354,8 @@ def compute_country(isin,market,place):
             return 'AT'
         if market=='TOKYO EXCHANGE':
             return 'JP'
+        if market=='TAIWAN STOCK EXCHANGE':
+            return 'TW'
 
     return '??'
 
@@ -433,6 +439,8 @@ def list_of_places(market):
         lop.append('WBO')
     if market=='TOKYO EXCHANGE':
         lop.append('TKS')
+    if market=='TAIWAN STOCK EXCHANGE':
+        lop.append('TAI')
 
     return lop
 
@@ -477,6 +485,7 @@ market_place = {
     'KOREA KOSDAQ EXCHANGE': 'KOS',
     'WIENER BORSE': 'WBO',
     'TOKYO EXCHANGE': 'TKS',
+    'TAIWAN STOCK EXCHANGE': 'TAI',
     }
 
 def market2place(market):
@@ -526,6 +535,7 @@ place_timezone = {
     "KOS":  "Asia/Seoul",
     "WBO":  "Europe/Vienna",
     "TKS":  "Asia/Tokyo",
+    "TAI":  "Asia/Taipei",
     }
 
 def convertConnectorTimeToPlaceTime(mdatetime,zone,place):
@@ -579,6 +589,7 @@ yahoo_suffix = {
     'KOREA KOSDAQ EXCHANGE.KOS': '.KQ',
     'WIENER BORSE.WBO': '.VI',
     'TOKYO EXCHANGE': '.T',
+    'TAIWAN STOCK EXCHANGE.TAI': '.TW',
     }
 
 yahoo_map_tickers = {}

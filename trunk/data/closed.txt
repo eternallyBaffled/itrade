@@ -972,6 +972,15 @@
 20100524;SWISS EXCHANGE; lundi 24 mai 2010 Whitmonday
 
 
+20100101;TAIWAIN STOCK EXCHANGE; Friday 01 January 2010 New Year
+20100215;TAIWAIN STOCK EXCHANGE; Monday 15 February 2010 Chinese Lunar New Year
+20100216;TAIWAIN STOCK EXCHANGE; Tuesday 16 February 2010 Chinese Lunar New Year
+20100217;TAIWAIN STOCK EXCHANGE; Wednesday 17 February 2010 Chinese Lunar New Year
+20100218;TAIWAIN STOCK EXCHANGE; Thursday 18 February 2010 Chinese Lunar New Year
+20100219;TAIWAIN STOCK EXCHANGE; Friday 19 February 2010 Chinese Lunar New Year
+20100405;TAIWAIN STOCK EXCHANGE; Monday 05 April 2010 Tomb Sweeping Day
+20100616;TAIWAIN STOCK EXCHANGE; Wednesday 16 June 2010 Dragon Boat Festival
+20100922;TAIWAIN STOCK EXCHANGE; Wednesday 22 September 2010 Moon Festival
 
 
 

@@ -309,6 +309,8 @@ intradayGraphUrl['WIENER BORSE'] = "http://uk.ichart.yahoo.com/t?s=%s.VI"
 intradayGraphUrlUseISIN['WIENER BORSE'] = False
 intradayGraphUrl['TOKYO EXCHANGE'] = "http://gchart.yahoo.co.jp/b?s=%s.T"
 intradayGraphUrlUseISIN['TOKYO EXCHANGE'] = False
+intradayGraphUrl['TAIWAN STOCK EXCHANGE'] = "http://ichart.finance.yahoo.com/b?s=%s.TW"
+intradayGraphUrlUseISIN['TAIWAN STOCK EXCHANGE'] = False
 
 # in ms, time before activating XYPopup
 timerForXYPopup = 500
