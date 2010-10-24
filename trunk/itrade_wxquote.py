@@ -831,15 +831,15 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
 
             if not self.m_dispBollinger:
                 lma20 = self.chart1.plot(self.m_quote.m_daytrades.m_ma20[begin:end],'m')
-            lma50 = self.chart1.plot(self.m_quote.m_daytrades.m_ma50[begin:end],'r')
-            lma100 = self.chart1.plot(self.m_quote.m_daytrades.m_ma100[begin:end],'b')
+            lma50 = self.chart1.plot(self.m_quote.m_daytrades.m_ma50[begin:end],'r',scalex = False)
+            lma100 = self.chart1.plot(self.m_quote.m_daytrades.m_ma100[begin:end],'b',scalex = False)
             if self.m_dispMA150:
-                lma150 = self.chart1.plot(self.m_quote.m_daytrades.m_ma150[begin:end],'c')
+                lma150 = self.chart1.plot(self.m_quote.m_daytrades.m_ma150[begin:end],'c',scalex = False)
 
             if self.m_dispBollinger:
-                lma20 = self.chart1.plot(self.m_quote.m_daytrades.m_bollM[begin:end],'m--')
-                lu = self.chart1.plot(self.m_quote.m_daytrades.m_bollUp[begin:end],'k')
-                ld = self.chart1.plot(self.m_quote.m_daytrades.m_bollDn[begin:end],'k')
+                lma20 = self.chart1.plot(self.m_quote.m_daytrades.m_bollM[begin:end],'m--',scalex = False)
+                lu = self.chart1.plot(self.m_quote.m_daytrades.m_bollUp[begin:end],'k',scalex = False)
+                ld = self.chart1.plot(self.m_quote.m_daytrades.m_bollDn[begin:end],'k',scalex = False)
 
             if self.m_dispOverlaidVolume:
                 volume_overlay2(self.chart1vol, self.m_quote.m_daytrades.m_inClose[begin-1:end], self.m_quote.m_daytrades.m_inVol[begin-1:end], colorup='g', colordown='r', width=self.zoomWidth[self.zoomLevel]+1,alpha=0.5)
@@ -868,11 +868,11 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
                 matplotlib.rcParams['lines.antialiased']=False
 
                 if self.m_dispMA150:
-                    self.legend1 = self.chart1.legend((lma20, lma50, lma100, lma150), ('MMA(20)','MMA(50)','MMA(100)','MMA(150)'), loc=2, numpoints=2, pad=0.3, axespad=0.025) #'upper left'
+                    self.legend1 = self.chart1.legend((lma20, lma50, lma100, lma150), ('MMA(20)','MMA(50)','MMA(100)','MMA(150)'), loc=2, numpoints=2, borderpad=0.3, borderaxespad=0.025) #'upper left'
                 else:
-                    self.legend1 = self.chart1.legend((lma20, lma50, lma100), ('MMA(20)','MMA(50)','MMA(100)'), loc=2, numpoints=2, pad=0.3, axespad=0.025) #'upper left'
+                    self.legend1 = self.chart1.legend((lma20, lma50, lma100), ('MMA(20)','MMA(50)','MMA(100)'), loc=2, numpoints=2, borderpad=0.3, borderaxespad=0.025) #'upper left'
 
-                self.legend2 = self.chart2.legend((lvma15, lovb), ('VMA(15)', 'OVB'), loc=2, numpoints=2, pad=0.3, axespad=0.025) #'upper left'
+                self.legend2 = self.chart2.legend((lvma15, lovb), ('VMA(15)', 'OVB'), loc=2, numpoints=2, borderpad=0.3, borderaxespad=0.025) #'upper left'
 
                 if self.m_dispRSI14:
                     if self.m_dispSto:
@@ -889,7 +889,7 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
                         ll1 = None
                         ll2 = None
                 if ll1:
-                    self.legend3 = self.chart3.legend(ll1, ll2, loc=2, numpoints=2, pad=0.3, axespad=0.025) #'upper left'
+                    self.legend3 = self.chart3.legend(ll1, ll2, loc=2, numpoints=2, borderpad=0.3, borderaxespad=0.025) #'upper left'
 
                 matplotlib.rcParams['lines.antialiased']=old
 
@@ -1325,7 +1325,7 @@ if __name__=='__main__':
 
     port = loadPortfolio('default')
 
-    q = quotes.lookupTicker('SAF','EURONEXT')
+    q = quotes.lookupTicker('GTO','EURONEXT')
     if q:
         open_iTradeQuote(None,port,q)
         app.MainLoop()
