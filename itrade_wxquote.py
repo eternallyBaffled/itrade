@@ -847,7 +847,7 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
 
             # __x matplotlib 0.98.3 nok
             volume_overlay2(self.chart2, self.m_quote.m_daytrades.m_inClose[begin-1:end], self.m_quote.m_daytrades.m_inVol[begin-1:end], colorup='g', colordown='r', width=self.zoomWidth[self.zoomLevel]+1,alpha=1.0)
-            lvma15 = self.chart2.plot(self.m_quote.m_daytrades.m_vma15[begin:end],'r',antialiased=False,linewidth=0.05)
+            lvma15 = self.chart2.plot(self.m_quote.m_daytrades.m_vma15[begin:end],'r',antialiased=False,linewidth=0.05,scalex = False)
             lovb = self.chart2vol.plot(self.m_quote.m_daytrades.m_ovb[begin:end],'k',antialiased=False,linewidth=0.05)
             #index_bar(self.chart2, self.m_quote.m_daytrades.m_inVol[begin:end], facecolor='g', edgecolor='k', width=4,alpha=1.0)
 
@@ -857,8 +857,8 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
                 rsi14 = None
 
             if self.m_dispSto:
-                stoK = self.chart3.plot(self.m_quote.m_daytrades.m_stoK[begin:end],'b',antialiased=False,linewidth=0.05)
-                stoD = self.chart3.plot(self.m_quote.m_daytrades.m_stoD[begin:end],'m--',antialiased=False,linewidth=0.05)
+                stoK = self.chart3.plot(self.m_quote.m_daytrades.m_stoK[begin:end],'b',antialiased=False,linewidth=0.05,scalex = False)
+                stoD = self.chart3.plot(self.m_quote.m_daytrades.m_stoD[begin:end],'m--',antialiased=False,linewidth=0.05,scalex = False)
             else:
                 stoK = None
                 stoD = None
