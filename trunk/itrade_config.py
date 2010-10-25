@@ -235,13 +235,13 @@ intradayGraphUrl = {}
 intradayGraphUrlUseISIN = {}
 #intradayGraphUrl['EURONEXT'] = "http://charts.production.euronext.com/i_chart.html?ISIN=%s&ID_EXCHANGE=1&QUALITY=DLY&PREV_CLOSE=1&SUPP_INFO=1&DISPLAY=1&VOL=1&GRID=1&SCALE=1"
 #intradayGraphUrlUseISIN['EURONEXT'] = True
-intradayGraphUrl['EURONEXT'] = "http://www.abcbourse.com/Graphes/graphe.aspx?s=%sp&m=g&t=lc"
+intradayGraphUrl['EURONEXT'] = "http://www.abcbourse.com/graphes/graphe.ashx?s=%sp&m=g&t=lc"
 intradayGraphUrlUseISIN['EURONEXT'] = False
-intradayGraphUrl['ALTERNEXT'] = "http://www.abcbourse.com/Graphes/graphe.aspx?s=%sp&m=g&t=lc"
+intradayGraphUrl['ALTERNEXT'] = "http://www.abcbourse.com/graphes/graphe.ashx?s=%sp&m=g&t=lc"
 intradayGraphUrlUseISIN['ALTERNEXT'] = False
-intradayGraphUrl['PARIS MARCHE LIBRE'] = "http://www.abcbourse.com/Graphes/graphe.aspx?s=%sp&m=g&t=lc"
+intradayGraphUrl['PARIS MARCHE LIBRE'] = "http://www.abcbourse.com/graphes/graphe.ashx?s=%sp&m=g&t=lc"
 intradayGraphUrlUseISIN['PARIS MARCHE LIBRE'] = False
-intradayGraphUrl['BRUXELLES MARCHE LIBRE'] = "http://www.abcbourse.com/Graphes/graphe.aspx?s=%sp&m=g&t=lc"
+intradayGraphUrl['BRUXELLES MARCHE LIBRE'] = "http://www.abcbourse.com/graphes/graphe.ashx?s=%sp&m=g&t=lc"
 intradayGraphUrlUseISIN['BRUXELLES MARCHE LIBRE'] = False
 intradayGraphUrl['NASDAQ'] = "http://ichart.finance.yahoo.com/b?s=%s"
 intradayGraphUrlUseISIN['NASDAQ'] = False
