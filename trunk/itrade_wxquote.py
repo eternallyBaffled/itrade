@@ -65,7 +65,7 @@ except:
 import matplotlib
 
 from matplotlib.dates import date2num, num2date
-from myfinance import candlestick, plot_day_summary2, candlestick2, volume_overlay2, plot_day_summary3
+from myfinance import candlestick, plot_day_summary2, candlestick2, volume_overlay, plot_day_summary3
 #from myfinance import index_bar
 
 # iTrade wxPython system
@@ -830,7 +830,7 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
                 lc = None
 
             if not self.m_dispBollinger:
-                lma20 = self.chart1.plot(self.m_quote.m_daytrades.m_ma20[begin:end],'m')
+                lma20 = self.chart1.plot(self.m_quote.m_daytrades.m_ma20[begin:end],'m',scalex = False)
             lma50 = self.chart1.plot(self.m_quote.m_daytrades.m_ma50[begin:end],'r',scalex = False)
             lma100 = self.chart1.plot(self.m_quote.m_daytrades.m_ma100[begin:end],'b',scalex = False)
             if self.m_dispMA150:
@@ -842,11 +842,10 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
                 ld = self.chart1.plot(self.m_quote.m_daytrades.m_bollDn[begin:end],'k',scalex = False)
 
             if self.m_dispOverlaidVolume:
-                volume_overlay2(self.chart1vol, self.m_quote.m_daytrades.m_inClose[begin-1:end], self.m_quote.m_daytrades.m_inVol[begin-1:end], colorup='g', colordown='r', width=self.zoomWidth[self.zoomLevel]+1,alpha=0.5)
+                volume_overlay(self.chart1vol, self.m_quote.m_daytrades.m_inClose[begin-1:end], self.m_quote.m_daytrades.m_inVol[begin-1:end], colorup='g', colordown='r', width=self.zoomWidth[self.zoomLevel]+1,alpha=0.5)
             #l5 = self.chart1vol.plot(self.m_quote.m_daytrades.m_ovb[begin:end],'k')
 
-            # __x matplotlib 0.98.3 nok
-            volume_overlay2(self.chart2, self.m_quote.m_daytrades.m_inClose[begin-1:end], self.m_quote.m_daytrades.m_inVol[begin-1:end], colorup='g', colordown='r', width=self.zoomWidth[self.zoomLevel]+1,alpha=1.0)
+            volume_overlay(self.chart2, self.m_quote.m_daytrades.m_inClose[begin-1:end], self.m_quote.m_daytrades.m_inVol[begin-1:end], colorup='g', colordown='r', width=self.zoomWidth[self.zoomLevel]+1,alpha=1.0)
             lvma15 = self.chart2.plot(self.m_quote.m_daytrades.m_vma15[begin:end],'r',antialiased=False,linewidth=0.05,scalex = False)
             lovb = self.chart2vol.plot(self.m_quote.m_daytrades.m_ovb[begin:end],'k',antialiased=False,linewidth=0.05)
             #index_bar(self.chart2, self.m_quote.m_daytrades.m_inVol[begin:end], facecolor='g', edgecolor='k', width=4,alpha=1.0)
