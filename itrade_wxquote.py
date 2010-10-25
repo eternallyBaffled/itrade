@@ -699,7 +699,6 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         # Popup the menu.  If an item is selected then its handler
         # will be called before PopupMenu returns.
         self.m_toolbar.PopupMenu(self.popmenu)
-        #self.m_toolbar.PopupMenu(self.popmenu, wx.Point(self.x, self.y))
         self.popmenu.Destroy()
 
     def OnPopup_dispChart1Candlestick(self,event):
@@ -868,11 +867,11 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
                 matplotlib.rcParams['lines.antialiased']=False
 
                 if self.m_dispMA150:
-                    self.legend1 = self.chart1.legend((lma20, lma50, lma100, lma150), ('MMA(20)','MMA(50)','MMA(100)','MMA(150)'), loc=2, numpoints=2, borderpad=0.3, borderaxespad=0.025) #'upper left'
+                    self.legend1 = self.chart1.legend((lma20, lma50, lma100, lma150), ('MMA(20)','MMA(50)','MMA(100)','MMA(150)'), loc=2, numpoints=2, borderpad=0, borderaxespad=0, labelspacing=0) #'upper left'
                 else:
-                    self.legend1 = self.chart1.legend((lma20, lma50, lma100), ('MMA(20)','MMA(50)','MMA(100)'), loc=2, numpoints=2, borderpad=0.3, borderaxespad=0.025) #'upper left'
+                    self.legend1 = self.chart1.legend((lma20, lma50, lma100), ('MMA(20)','MMA(50)','MMA(100)'), loc=2, numpoints=2, borderpad=0, borderaxespad=0, labelspacing=0) #'upper left'
 
-                self.legend2 = self.chart2.legend((lvma15, lovb), ('VMA(15)', 'OVB'), loc=2, numpoints=2, borderpad=0.3, borderaxespad=0.025) #'upper left'
+                self.legend2 = self.chart2.legend((lvma15, lovb), ('VMA(15)', 'OVB'), loc=2, numpoints=2, borderpad=0, borderaxespad=0, labelspacing=0) #'upper left'
 
                 if self.m_dispRSI14:
                     if self.m_dispSto:
@@ -889,7 +888,7 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
                         ll1 = None
                         ll2 = None
                 if ll1:
-                    self.legend3 = self.chart3.legend(ll1, ll2, loc=2, numpoints=2, borderpad=0.3, borderaxespad=0.025) #'upper left'
+                    self.legend3 = self.chart3.legend(ll1, ll2, loc=2, numpoints=2, borderpad=0, borderaxespad=0, labelspacing=0) #'upper left'
 
                 matplotlib.rcParams['lines.antialiased']=old
 
