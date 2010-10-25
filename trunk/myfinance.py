@@ -573,8 +573,8 @@ def volume_overlay(ax, opens, closes, volumes,
     left = -width/2.0
 
 
-    bars = [ ( (left, 0), (left, v), (right, v), (right, 0)) for v in volumes if v >= 0 ]
-    offsetsBars = [ (i, 0) for i,v in enumerate(volumes) if v >= 0 ]
+    bars = [ ( (left, 0), (left, v), (right, v), (right, 0)) for open, close, v in zip(opens, closes, volumes) if open!=-1 and close !=-1 and v >= 0 ]
+    offsetsBars = [ (i, 0) for i,v in enumerate(volumes) if v >= 0 and opens[i]!=-1 and closes[i]!=-1]
     #print 'len colors = ',len(colors)
     #print 'len offsetsBars = ',len(offsetsBars)
     #print 'len bars = ',len(bars)
