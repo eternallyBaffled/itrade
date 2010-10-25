@@ -383,10 +383,10 @@ def plot_day_summary2(ax, opens, closes, highs, lows, ticksize=4,
                                      )
     closeCollection.set_transform(tickTransform)
 
-    minpy, maxx = (0, len(rangeSegments))
+    minx, maxx = (0, len(rangeSegments))
     miny = min([low for low in lows if low !=-1])
     maxy = max([high for high in highs if high != -1])
-    corners = (minpy, miny), (maxx, maxy)
+    corners = (minx, miny), (maxx, maxy)
     ax.update_datalim(corners)
     ax.autoscale_view()
 
@@ -543,22 +543,36 @@ def candlestick2(ax, opens, closes, highs, lows, width=4,
     ax.add_collection(rangeCollection2)
     return rangeCollection1, rangeCollection2, barCollection
 
-def volume_overlay(ax, opens, closes, volumes,
+def volume_overlay(ax, closes, volumes,
                    colorup='k', colordown='r',
                    width=4, alpha=1.0):
     """
-    Add a volume overlay to the current axes.  The opens and closes
-    are used to determine the color of the bar.  -1 is missing.  If a
-    value is missing on one it must be missing on all
+    Add a volume overlay to the current axes.  The closes are used to
+    determine the color of the bar.  -1 is missing.  If a value is
+    missing on one it must be missing on all
 
     ax          : an Axes instance to plot to
     width       : the bar width in points
-    colorup     : the color of the lines where close >= open
-    colordown   : the color of the lines where close <  open
+    colorup     : the color of the lines where close >= previous close
+    colordown   : the color of the lines where close <  previous close
     alpha       : bar transparency
 
+    nb: first point is not displayed - it is used only for choosing the
+    right color
 
     """
+
+    # Make sure we always have a previous close (carry over last close)
+    pcloses = np.array(closes[:-1])
+    last = 0
+    for i in range(0,len(pcloses)):
+        if pcloses[i] == -1:
+            pcloses[i] = last
+        else:
+            last = pcloses[i]
+    # Skip first point
+    ccloses = closes[1:]
+    cvolumes = volumes[1:]
 
     r,g,b = colorConverter.to_rgb(colorup)
     colorup = r,g,b,alpha
@@ -567,21 +581,13 @@ def volume_overlay(ax, opens, closes, volumes,
     colord = { True : colorup,
                False : colordown,
                }
-    colors = [colord[open<=close] for open, close in zip(opens, closes) if open!=-1 and close !=-1]
+    colors = [colord[pclose<=close] for pclose, close, v in zip(pcloses, ccloses, cvolumes) if close !=-1 and v >= 0]
 
     right = width/2.0
     left = -width/2.0
 
-
-    bars = [ ( (left, 0), (left, v), (right, v), (right, 0)) for open, close, v in zip(opens, closes, volumes) if open!=-1 and close !=-1 and v >= 0 ]
-    offsetsBars = [ (i, 0) for i,v in enumerate(volumes) if v >= 0 and opens[i]!=-1 and closes[i]!=-1]
-    #print 'len colors = ',len(colors)
-    #print 'len offsetsBars = ',len(offsetsBars)
-    #print 'len bars = ',len(bars)
-    #if (len(colors) != len(bars)):
-    #    print 'closes:',closes
-    #    print 'opens:', opens
-    #    print 'volumes:',volumes
+    bars = [ ( (left, 0), (left, v), (right, v), (right, 0)) for v in cvolumes if v >= 0 ]
+    offsetsBars = [ (i, 0) for i,v in enumerate(cvolumes) if v >= 0 ]
     assert(len(offsetsBars)==len(colors))
     assert(len(offsetsBars)==len(bars))
     useAA = 0,  # use tuple here
@@ -600,7 +606,7 @@ def volume_overlay(ax, opens, closes, volumes,
 
     minx, maxx = (0, len(offsetsBars))
     miny = 0
-    maxy = max([v for v in volumes if v >= 0])
+    maxy = max([v for v in cvolumes if v >= 0])
     corners = (minx, miny), (maxx, maxy)
     ax.update_datalim(corners)
     ax.autoscale_view()
@@ -613,36 +619,6 @@ def volume_overlay(ax, opens, closes, volumes,
     ax.add_collection(barCollection)
     # add these last
     return barCollection
-
-def volume_overlay2(ax, closes, volumes,
-                   colorup='k', colordown='r',
-                   width=4, alpha=1.0):
-    """
-    Add a volume overlay to the current axes.  The closes are used to
-    determine the color of the bar.  -1 is missing.  If a value is
-    missing on one it must be missing on all
-
-    ax          : an Axes instance to plot to
-    width       : the bar width in points
-    colorup     : the color of the lines where close >= open
-    colordown   : the color of the lines where close <  open
-    alpha       : bar transparency
-
-    nb: first point is not displayed - it is used only for choosing the
-    right color
-
-    """
-
-    #opens = np.array(closes[:-1])
-    #last = 0
-    #for i in range(0,len(opens)):
-    #    if opens[i] == -1:
-    #        opens[i] = last
-    #    else:
-    #        last = opens[i]
-    #return volume_overlay(ax,opens,closes[1:],volumes[1:],colorup,colordown,width,alpha)
-    return volume_overlay(ax,closes[:-1],closes[1:],volumes[1:],colorup,colordown,width,alpha)
-
 
 def volume_overlay3(ax, quotes,
                    colorup='k', colordown='r',
@@ -696,10 +672,10 @@ def volume_overlay3(ax, quotes,
                                    transOffset  = ax.transData,
                                    )
 
-    minpy, maxx = (min(dates), max(dates))
+    minx, maxx = (min(dates), max(dates))
     miny = 0
     maxy = max([volume for d, open, close, high, low, volume in quotes])
-    corners = (minpy, miny), (maxx, maxy)
+    corners = (minx, miny), (maxx, maxy)
     ax.update_datalim(corners)
     ax.autoscale_view()
 
@@ -746,10 +722,10 @@ def index_bar(ax, vals,
                                    transOffset  = ax.transData,
                                    )
 
-    minpy, maxx = (0, len(offsetsBars))
+    minx, maxx = (0, len(offsetsBars))
     miny = 0
     maxy = max([v for v in vals if v!=-1])
-    corners = (minpy, miny), (maxx, maxy)
+    corners = (minx, miny), (maxx, maxy)
     ax.update_datalim(corners)
     ax.autoscale_view()
 
