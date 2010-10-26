@@ -612,8 +612,11 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
             if self.m_width != w and self.m_height != h:
                 self.m_width = w
                 self.m_height = h
+                if not "gtk2" in wx.PlatformInfo:
+                    self.RedrawAll()
             else:
-                self.RedrawAll()
+                if "gtk2" in wx.PlatformInfo:
+                    self.RedrawAll()
         event.Skip()
 
     def RedrawAll(self,redraw=True):
