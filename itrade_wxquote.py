@@ -558,7 +558,16 @@ class iTradeQuoteLivePanel(wx.Panel):
 class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
     def __init__(self, parent, id, quote):
         wx.Panel.__init__(self, parent, id)
+        #                   style=wx.FULL_REPAINT_ON_RESIZE)
         iTrade_wxPanelGraph.__init__(self, parent, id, size=(5,4))
+        #self.resizeTimer = wx.Timer(self)
+        #self.Bind(wx.EVT_SIZE, self.OnSize)
+        #self.Bind(wx.EVT_PAINT, self.OnPaint)
+        #self.Bind(wx.EVT_TIMER, self.DoThaw)
+
+        self.Bind(wx.EVT_SIZE, self.OnSize)
+        self.m_width = 0
+        self.m_height = 0
 
         self.m_id = id
         self.m_quote = quote
@@ -596,6 +605,17 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         print '$$$DonePage'
         pass
 
+    def OnSize(self, event):
+        w,h = event.GetSize()
+        print '$$$SizeEvent',w,h
+        if w > 0 and h > 0:
+            if self.m_width != w and self.m_height != h:
+                self.m_width = w
+                self.m_height = h
+            else:
+                self.RedrawAll()
+        event.Skip()
+
     def RedrawAll(self,redraw=True):
         print '$$$RedrawAll redraw=%s' % redraw
         self.ChartRealize()
@@ -603,7 +623,23 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
             self.m_canvas.draw()
             self.drawAllObjects()
 
+    #def OnSize(self, event):
+    #    w,h = event.GetSize()
+    #    print '$$$SizeEvent',w,h
+    #    if not self.resizeTimer.IsRunning():
+    #        print "freezing"
+    #        self.Freeze()
+    #    self.resizeTimer.Start(500, oneShot=True)
+    #    self.RedrawAll()
+    #    event.Skip()
+
+    #def DoThaw(self, event):
+    #    print "thawing"
+    #    self.Thaw()
+
     def OnPaint(self,event):
+        size = self.GetClientSize()
+        print "OnPaint:", size
         self.erase_cursor()
         event.Skip()
 
