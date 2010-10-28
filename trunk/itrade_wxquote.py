@@ -558,16 +558,7 @@ class iTradeQuoteLivePanel(wx.Panel):
 class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
     def __init__(self, parent, id, quote):
         wx.Panel.__init__(self, parent, id)
-        #                   style=wx.FULL_REPAINT_ON_RESIZE)
         iTrade_wxPanelGraph.__init__(self, parent, id, size=(5,4))
-        #self.resizeTimer = wx.Timer(self)
-        #self.Bind(wx.EVT_SIZE, self.OnSize)
-        #self.Bind(wx.EVT_PAINT, self.OnPaint)
-        #self.Bind(wx.EVT_TIMER, self.DoThaw)
-
-        self.Bind(wx.EVT_SIZE, self.OnSize)
-        self.m_width = 0
-        self.m_height = 0
 
         self.m_id = id
         self.m_quote = quote
@@ -576,7 +567,6 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
 
         self.zoomPeriod = (20,40,80,160,320)
         self.zoomIncPeriod = (5,10,20,40,80)
-        self.zoomWidth = (9,6,3,2,1)
         self.zoomMultiple = (2,5,10,20,40)
         self.zoomLevel = 2
         self.zoomMaxLevel = len(self.zoomPeriod)-1
@@ -605,40 +595,12 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         print '$$$DonePage'
         pass
 
-    def OnSize(self, event):
-        w,h = event.GetSize()
-        print '$$$SizeEvent',w,h
-        if w > 0 and h > 0:
-            if self.m_width != w and self.m_height != h:
-                self.m_width = w
-                self.m_height = h
-                if not "gtk2" in wx.PlatformInfo:
-                    self.RedrawAll()
-            else:
-                if "gtk2" in wx.PlatformInfo:
-                    self.RedrawAll()
-        event.Skip()
-
     def RedrawAll(self,redraw=True):
         print '$$$RedrawAll redraw=%s' % redraw
         self.ChartRealize()
         if redraw:
             self.m_canvas.draw()
             self.drawAllObjects()
-
-    #def OnSize(self, event):
-    #    w,h = event.GetSize()
-    #    print '$$$SizeEvent',w,h
-    #    if not self.resizeTimer.IsRunning():
-    #        print "freezing"
-    #        self.Freeze()
-    #    self.resizeTimer.Start(500, oneShot=True)
-    #    self.RedrawAll()
-    #    event.Skip()
-
-    #def DoThaw(self, event):
-    #    print "thawing"
-    #    self.Thaw()
 
     def OnPaint(self,event):
         size = self.GetClientSize()
@@ -860,11 +822,11 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         if num>0:
 
             if self.m_dispChart1Type == 'c':
-                lc = candlestick2(self.chart1, self.m_quote.m_daytrades.m_inOpen[begin:end], self.m_quote.m_daytrades.m_inClose[begin:end], self.m_quote.m_daytrades.m_inHigh[begin:end], self.m_quote.m_daytrades.m_inLow[begin:end], width = self.zoomWidth[self.zoomLevel], colorup = 'g', colordown = 'r', alpha=1.0)
+                lc = candlestick2(self.chart1, self.m_quote.m_daytrades.m_inOpen[begin:end], self.m_quote.m_daytrades.m_inClose[begin:end], self.m_quote.m_daytrades.m_inHigh[begin:end], self.m_quote.m_daytrades.m_inLow[begin:end], colorup = 'g', colordown = 'r', alpha=1.0)
             elif self.m_dispChart1Type == 'l':
-                lc = plot_day_summary3(self.chart1, self.m_quote.m_daytrades.m_inClose[begin:end], ticksize=self.zoomWidth[self.zoomLevel], color='k')
+                lc = plot_day_summary3(self.chart1, self.m_quote.m_daytrades.m_inClose[begin:end], color='k')
             elif self.m_dispChart1Type == 'o':
-                lc = plot_day_summary2(self.chart1, self.m_quote.m_daytrades.m_inOpen[begin:end], self.m_quote.m_daytrades.m_inClose[begin:end], self.m_quote.m_daytrades.m_inHigh[begin:end], self.m_quote.m_daytrades.m_inLow[begin:end], ticksize=self.zoomWidth[self.zoomLevel], colorup='k', colordown='r')
+                lc = plot_day_summary2(self.chart1, self.m_quote.m_daytrades.m_inOpen[begin:end], self.m_quote.m_daytrades.m_inClose[begin:end], self.m_quote.m_daytrades.m_inHigh[begin:end], self.m_quote.m_daytrades.m_inLow[begin:end], colorup='k', colordown='r')
             else:
                 lc = None
 
@@ -881,10 +843,10 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
                 ld = self.chart1.plot(self.m_quote.m_daytrades.m_bollDn[begin:end],'k',scalex = False)
 
             if self.m_dispOverlaidVolume:
-                volume_overlay(self.chart1vol, self.m_quote.m_daytrades.m_inClose[begin-1:end], self.m_quote.m_daytrades.m_inVol[begin-1:end], colorup='g', colordown='r', width=self.zoomWidth[self.zoomLevel]+1,alpha=0.5)
+                volume_overlay(self.chart1vol, self.m_quote.m_daytrades.m_inClose[begin-1:end], self.m_quote.m_daytrades.m_inVol[begin-1:end], colorup='g', colordown='r', alpha=0.5)
             #l5 = self.chart1vol.plot(self.m_quote.m_daytrades.m_ovb[begin:end],'k')
 
-            volume_overlay(self.chart2, self.m_quote.m_daytrades.m_inClose[begin-1:end], self.m_quote.m_daytrades.m_inVol[begin-1:end], colorup='g', colordown='r', width=self.zoomWidth[self.zoomLevel]+1,alpha=1.0)
+            volume_overlay(self.chart2, self.m_quote.m_daytrades.m_inClose[begin-1:end], self.m_quote.m_daytrades.m_inVol[begin-1:end], colorup='g', colordown='r', alpha=1.0)
             lvma15 = self.chart2.plot(self.m_quote.m_daytrades.m_vma15[begin:end],'r',antialiased=False,linewidth=0.05,scalex = False)
             lovb = self.chart2vol.plot(self.m_quote.m_daytrades.m_ovb[begin:end],'k',antialiased=False,linewidth=0.05)
             #index_bar(self.chart2, self.m_quote.m_daytrades.m_inVol[begin:end], facecolor='g', edgecolor='k', width=4,alpha=1.0)

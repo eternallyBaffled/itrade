@@ -121,8 +121,10 @@ def fetch_historical_yahoo(ticker, date1, date2, cachename=None):
         verbose.report('Using cachefile %s for %s'%(cachename, ticker))
     else:
         if not os.path.isdir(cachedir): os.mkdir(cachedir)
+        urlfh = urlopen(url)
+
         fh = file(cachename, 'w')
-        fh.write(urlopen(url).read())
+        fh.write(urlfh.read())
         fh.close()
         verbose.report('Saved %s data to cache file %s'%(ticker, cachename))
         fh = file(cachename, 'r')
@@ -224,6 +226,7 @@ def plot_day_summary(ax, quotes, ticksize=3,
         ax.add_line(vline)
         ax.add_line(oline)
         ax.add_line(cline)
+
 
     ax.autoscale_view()
 
@@ -336,7 +339,7 @@ def plot_day_summary2(ax, opens, closes, highs, lows, ticksize=4,
     offsetsClose = [ (i, close) for i, close in zip(xrange(len(closes)), closes) if close != -1 ]
 
 
-    scale = ax.figure.dpi / 72.0
+    scale = ax.figure.dpi * (1.0/72.0)
 
     tickTransform = Affine2D().scale(scale, 0.0)
 
@@ -447,7 +450,7 @@ def plot_day_summary3(ax, closes, ticksize=4,
     return rangeCollection
 
 
-def candlestick2(ax, opens, closes, highs, lows, width=4,
+def candlestick2(ax, opens, closes, highs, lows, width=0.8,
                  colorup='k', colordown='r',
                  alpha=0.75,
                 ):
@@ -458,7 +461,7 @@ def candlestick2(ax, opens, closes, highs, lows, width=4,
 
 
     ax          : an Axes instance to plot to
-    width       : the bar width in points
+    width       : fraction of a day for the rectangle width
     colorup     : the color of the lines where close >= open
     colordown   : the color of the lines where close <  open
     alpha       : bar transparency
@@ -468,15 +471,12 @@ def candlestick2(ax, opens, closes, highs, lows, width=4,
 
     # note this code assumes if any value open, close, low, high is
     # missing they all are missing
-    right = width/2.0
-    left = -width/2.0
 
-    barVerts = [ ( (left, 0), (left, close-open), (right, close-open), (right, 0) ) for open, close in zip(opens, closes) if open != -1 and close!=-1 ]
+    delta = width/2.
+    barVerts = [ ( (i-delta, open), (i-delta, close), (i+delta, close), (i+delta, open) ) for i, open, close in zip(xrange(len(opens)), opens, closes) if open != -1 and close!=-1 ]
 
     rangeSegments1 = [ ((i, low), (i, min(close,open))) for i, low, close, open in zip(xrange(len(lows)), lows, closes, opens) if low != -1 ]
     rangeSegments2 = [ ((i, max(close,open)), (i, high)) for i, high, close, open in zip(xrange(len(lows)), highs, closes, opens) if high != -1 ]
-
-    offsetsBars = [ (i, open) for i,open in zip(xrange(len(opens)), opens) if open != -1 ]
 
     r,g,b = colorConverter.to_rgb(colorup)
     colorup = r,g,b,alpha
@@ -490,17 +490,9 @@ def candlestick2(ax, opens, closes, highs, lows, width=4,
 
     assert(len(barVerts)==len(rangeSegments1))
     assert(len(barVerts)==len(rangeSegments2))
-    assert(len(rangeSegments1)==len(offsetsBars))
-    assert(len(rangeSegments2)==len(offsetsBars))
-    assert(len(offsetsBars)==len(colors))
 
     useAA = 0,  # use tuple here
-
-    if width>1:
-        lw = 0.5,   # and here
-    else:
-        lw = 0.2,
-
+    lw = 0.5,   # and here
     rangeCollection1 = LineCollection(rangeSegments1,
                                      colors       = ( (0,0,0,1), ),
                                      linewidths   = lw,
@@ -519,8 +511,6 @@ def candlestick2(ax, opens, closes, highs, lows, width=4,
                                    edgecolors   = ( (0,0,0,1), ),
                                    antialiaseds = useAA,
                                    linewidths   = lw,
-                                   offsets      = offsetsBars,
-                                   transOffset  = ax.transData,
                                    )
 
     minx, maxx = (0, len(rangeSegments1))
@@ -531,12 +521,6 @@ def candlestick2(ax, opens, closes, highs, lows, width=4,
     ax.update_datalim(corners)
     ax.autoscale_view()
 
-    sx = ax.figure.dpi / 72.0  # scale for points
-    sy = ax.bbox.height / ax.viewLim.height
-
-    barTransform = Affine2D().scale(sx,sy)
-    barCollection.set_transform(barTransform)
-
     # add these last
     ax.add_collection(barCollection)
     ax.add_collection(rangeCollection1)
@@ -545,14 +529,14 @@ def candlestick2(ax, opens, closes, highs, lows, width=4,
 
 def volume_overlay(ax, closes, volumes,
                    colorup='k', colordown='r',
-                   width=4, alpha=1.0):
+                   width=1.0, alpha=1.0):
     """
     Add a volume overlay to the current axes.  The closes are used to
     determine the color of the bar.  -1 is missing.  If a value is
     missing on one it must be missing on all
 
     ax          : an Axes instance to plot to
-    width       : the bar width in points
+    width       : fraction of a day for the rectangle width
     colorup     : the color of the lines where close >= previous close
     colordown   : the color of the lines where close <  previous close
     alpha       : bar transparency
@@ -583,41 +567,26 @@ def volume_overlay(ax, closes, volumes,
                }
     colors = [colord[pclose<=close] for pclose, close, v in zip(pcloses, ccloses, cvolumes) if close !=-1 and v >= 0]
 
-    right = width/2.0
-    left = -width/2.0
+    delta = width/2.
+    bars = [ ( (i-delta, 0), (i-delta, v), (i+delta, v), (i+delta, 0)) for i, v in enumerate(cvolumes) if v >= 0 ]
 
-    bars = [ ( (left, 0), (left, v), (right, v), (right, 0)) for v in cvolumes if v >= 0 ]
-    offsetsBars = [ (i, 0) for i,v in enumerate(cvolumes) if v >= 0 ]
-    assert(len(offsetsBars)==len(colors))
-    assert(len(offsetsBars)==len(bars))
+    assert(len(bars)==len(colors))
+
     useAA = 0,  # use tuple here
-    if width>1:
-        lw = 0.5,   # and here
-    else:
-        lw = 0.2,
+    lw = 0.5,   # and here
     barCollection = PolyCollection(bars,
                                    facecolors   = colors,
                                    edgecolors   = ( (0,0,0,1), ),
                                    antialiaseds = useAA,
                                    linewidths   = lw,
-                                   offsets      = offsetsBars,
-                                   transOffset  = ax.transData,
                                    )
 
-    minx, maxx = (0, len(offsetsBars))
-    miny = 0
-    maxy = max([v for v in cvolumes if v >= 0])
-    corners = (minx, miny), (maxx, maxy)
+    corners = (0, 0), (len(bars), max(cvolumes))
     ax.update_datalim(corners)
     ax.autoscale_view()
 
-    sx = ax.figure.dpi / 72.0  # scale for points
-    sy = ax.bbox.height / ax.viewLim.height
-    barTransform = Affine2D().scale(sx,sy)
-    barCollection.set_transform(barTransform)
-
-    ax.add_collection(barCollection)
     # add these last
+    ax.add_collection(barCollection)
     return barCollection
 
 def volume_overlay3(ax, quotes,
@@ -655,14 +624,16 @@ def volume_overlay3(ax, quotes,
 
     bars = [ ( (left, 0), (left, volume), (right, volume), (right, 0)) for d, open, close, high, low, volume in quotes]
 
+    sx = ax.figure.dpi * (1.0/72.0)  # scale for points
+    sy = ax.bbox.height / ax.viewLim.height
+
+    barTransform = Affine2D().scale(sx,sy)
+
     dates = [d for d, open, close, high, low, volume in quotes]
     offsetsBars = [(d, 0) for d in dates]
 
     useAA = 0,  # use tuple here
-    if width>1:
-        lw = 0.5,   # and here
-    else:
-        lw = 0.2,
+    lw = 0.5,   # and here
     barCollection = PolyCollection(bars,
                                    facecolors   = colors,
                                    edgecolors   = ( (0,0,0,1), ),
@@ -671,21 +642,23 @@ def volume_overlay3(ax, quotes,
                                    offsets      = offsetsBars,
                                    transOffset  = ax.transData,
                                    )
-
-    minx, maxx = (min(dates), max(dates))
-    miny = 0
-    maxy = max([volume for d, open, close, high, low, volume in quotes])
-    corners = (minx, miny), (maxx, maxy)
-    ax.update_datalim(corners)
-    ax.autoscale_view()
-
-    sx = ax.figure.dpi / 72.0  # scale for points
-    sy = ax.bbox.height / ax.viewLim.height
-
-    barTransform = Affine2D().scale(sx,sy)
     barCollection.set_transform(barTransform)
 
+
+
+
+
+
+    minpy, maxx = (min(dates), max(dates))
+    miny = 0
+    maxy = max([volume for d, open, close, high, low, volume in quotes])
+    corners = (minpy, miny), (maxx, maxy)
+    ax.update_datalim(corners)
+    #print 'datalim', ax.dataLim.get_bounds()
+    #print 'viewlim', ax.viewLim.get_bounds()
+
     ax.add_collection(barCollection)
+    ax.autoscale_view()
 
     return barCollection
 
@@ -711,6 +684,11 @@ def index_bar(ax, vals,
 
     bars = [ ( (left, 0), (left, v), (right, v), (right, 0)) for v in vals if v != -1 ]
 
+    sx = ax.figure.dpi * (1.0/72.0)  # scale for points
+    sy = ax.bbox.height / ax.viewLim.height
+
+    barTransform = Affine2D().scale(sx,sy)
+
     offsetsBars = [ (i, 0) for i,v in enumerate(vals) if v != -1 ]
 
     barCollection = PolyCollection(bars,
@@ -728,12 +706,6 @@ def index_bar(ax, vals,
     corners = (minx, miny), (maxx, maxy)
     ax.update_datalim(corners)
     ax.autoscale_view()
-
-    sx = ax.figure.dpi / 72.0  # scale for points
-    sy = ax.bbox.height / ax.viewLim.height
-
-    barTransform = Affine2D().scale(sx,sy)
-    barCollection.set_transform(barTransform)
 
     # add these last
     ax.add_collection(barCollection)
