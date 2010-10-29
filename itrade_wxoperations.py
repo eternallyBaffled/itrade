@@ -899,7 +899,7 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
                         pr = ''
                     self.m_list.SetStringItem(x,IDC_PRU,pr)
                     
-                    self.itemDataMap[x] = (eachOp.date().strftime('%Y%M%D'),eachOp.operation(),eachOp.description(),eachOp.nv_number(),pr,vdebit,vcredit,eachOp.nv_expenses(),balance,vsrd)
+                    self.itemDataMap[x] = (eachOp.date().strftime('%Y%m%d'),eachOp.operation(),eachOp.description(),eachOp.nv_number(),pr,vdebit,vcredit,eachOp.nv_expenses(),balance,vsrd)
                     self.itemOpMap[x] = eachOp.ref()
 
                     item = self.m_list.GetItem(x)
