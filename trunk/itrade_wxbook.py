@@ -705,7 +705,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
 
     def OnOpen(self,e):
         dp = select_iTradePortfolio(self,self.m_portfolio,'select')
-        if dp:
+        if dp != self.m_portfolio:
             # can be long ...
             wx.SetCursor(wx.HOURGLASS_CURSOR)
             self.DoneCurrentPage()
