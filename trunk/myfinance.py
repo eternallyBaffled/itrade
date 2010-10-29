@@ -450,7 +450,7 @@ def plot_day_summary3(ax, closes, ticksize=4,
     return rangeCollection
 
 
-def candlestick2(ax, opens, closes, highs, lows, width=0.8,
+def candlestick2(ax, opens, closes, highs, lows, width=0.6,
                  colorup='k', colordown='r',
                  alpha=0.75,
                 ):
@@ -529,7 +529,7 @@ def candlestick2(ax, opens, closes, highs, lows, width=0.8,
 
 def volume_overlay(ax, closes, volumes,
                    colorup='k', colordown='r',
-                   width=1.0, alpha=1.0):
+                   width=0.7, alpha=1.0):
     """
     Add a volume overlay to the current axes.  The closes are used to
     determine the color of the bar.  -1 is missing.  If a value is
