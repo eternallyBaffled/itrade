@@ -431,6 +431,8 @@ def list_of_places(market):
         lop.append('BUE')
     if market=='MEXICO EXCHANGE':
         lop.append('MEX')
+    if market=='SINGAPORE EXCHANGE':
+        lop.append('SGX')
     if market=='KOREA STOCK EXCHANGE':
         lop.append('KRX')
     if market=='KOREA KOSDAQ EXCHANGE':
