@@ -156,9 +156,9 @@ class Trades(object):
     def quote(self):
         return self.m_quote
 
-    def trades(self):
+    def trades(self, newerfirst=True):
         items = self.m_trades.values()
-        items.sort(key=Trade.date)
+        items.sort(key=Trade.date, reverse=newerfirst)
         return items
         #return self.m_trades
 
