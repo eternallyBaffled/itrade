@@ -173,7 +173,7 @@ isin;ISIN
 ticker;Ticker
 quote;Prezzo
 variation;Var.
-date;
+date;Data
 time;il
 name;Nome
 volume;Volume

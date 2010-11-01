@@ -377,7 +377,7 @@ class CustomDataTable(gridlib.PyGridTableBase):
     # ---[ required methods for the wxPyGridTableBase interface ] -------------------
 
     def GetNumberRows(self):
-        return len(self.data) + 1
+        return len(self.data)
 
     def GetNumberCols(self):
         return len(self.colLabels)

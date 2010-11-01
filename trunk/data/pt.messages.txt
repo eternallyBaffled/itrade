@@ -187,7 +187,7 @@ isin;ISIN
 ticker;Simbolo
 quote;Cotações
 variation;Var.
-date;
+date;Data
 time;em
 name;Nome
 volume;Volume
