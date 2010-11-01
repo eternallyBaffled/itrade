@@ -62,12 +62,12 @@ try:
     infile = f.readlines()
     f.close()
     if len(infile)>1:
-        infile = infile[1].split(' ')
-        __svnversion__ = infile[0]
+        revline = infile[1].split(' ')
+        __svnversion__ = revline[0]
     else:
-        __svnversion__ = 'r???'
+        __svnversion__ = 'x???'
 except IOError:
-    __svnversion__ = 'r???'
+    __svnversion__ = 'x???'
 
 # ============================================================================
 # Default configuration
@@ -320,7 +320,7 @@ global lang
 lang = 0
 
 # verbose mode
-if __svnversion__ != 'r???':
+if __svnversion__[0] != 'x':
     verbose = False
 else:
     print 'Verbose mode : forced ON (under development release)'
@@ -364,7 +364,7 @@ def checkNewRelease(ping=False):
     #__svnversion__ = 'r565'
 
     # development release : do not test
-    if not ping and __svnversion__ == 'r???':
+    if not ping and __svnversion__[0] == 'x':
         if verbose:
             print 'checkNewRelease(): development release'
         return 'dev'
@@ -389,7 +389,7 @@ def checkNewRelease(ping=False):
         return 'err'
 
     # development release : do not test
-    if __svnversion__ == 'r???':
+    if __svnversion__[0] == 'x':
         if verbose:
             print 'checkNewRelease(): development release (ping)'
         return 'dev'

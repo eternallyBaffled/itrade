@@ -179,7 +179,7 @@ isin;ISIN
 ticker;Titre
 quote;Valeur
 variation;Var.
-date;Le
+date;Date
 time;à
 name;Nom
 volume;Volume

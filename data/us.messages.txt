@@ -175,7 +175,7 @@ isin;ISIN
 ticker;Ticker
 quote;Quote
 variation;Var.
-date;
+date;Date
 time;at
 name;Name
 volume;Volume
