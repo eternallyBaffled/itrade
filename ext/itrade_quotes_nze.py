@@ -99,7 +99,7 @@ def Import_ListOfQuotes_NZE(quotes,market='NEW ZEALAND EXCHANGE',dlg=None,x=0):
         # returns the data
         lines = splitLines(data)
 
-        for line in lines[190:]:
+        for line in lines:
         
             if '"hideInfo();">' in line:
                 tickername = line[line.find('"hideInfo();">')+14:line.find('</td><td align=right>')]
