@@ -44,6 +44,7 @@ import re
 import thread
 import time
 import string
+import httplib
 
 # iTrade system
 import itrade_config
@@ -67,7 +68,8 @@ def Import_ListOfQuotes_NSE(quotes,market='NATIONAL EXCHANGE OF INDIA',dlg=None,
                                )
 
     if market=='NATIONAL EXCHANGE OF INDIA':
-        url = "http://www.nseindia.com/content/equities/EQUITY_L.csv" # is actually tab delimited
+        
+        url = "http://www.nseindia.com/content/equities/EQUITY_L.csv"
     else:
         return False
 
@@ -84,27 +86,56 @@ def Import_ListOfQuotes_NSE(quotes,market='NATIONAL EXCHANGE OF INDIA',dlg=None,
 
     info('Import_ListOfQuotes_NSE:connect to %s' % url)
 
+    url = 'http://www.nseindia.com/content/equities/EQUITY_L.csv'
+
+    host = 'www.nseindia.com'
+
+    headers = { "Host": host
+                , "User-Agent": " Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.9.2.12) Gecko/20101026 Firefox/3.6.12"
+                , "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+                , "Accept-Language": " fr,fr-fr;q=0.8,en-us;q=0.5,en;q=0.3"
+                , "Accept-Encoding": "gzip,deflate"
+                , "Accept-Charset": "ISO-8859-1,utf-8;q=0.7,*;q=0.7"
+                , "Keep-Alive":115
+                , "Connection": "keep-alive"
+                }
+    
     try:
-        data=connection.getDataFromUrl(url)
+        conn = httplib.HTTPConnection(host,80)
+        conn.request("GET",url,None,headers)
+        response = conn.getresponse()
     except:
-        info('Import_ListOfQuotes_NSE:unable to connect :-(')
+        debug('Import_ListOfQuotes_NSE unable to connect :-(')
         return False
+
+    #print response.status, response.reason
+    debug("status:%s reason:%s" %(response.status, response.reason))
+    if response.status != 200:
+        debug('Import_ListOfQuotes_NSE:status!=200')
+        return False
+    
+    data =response.read()
 
     # returns the data
     lines = splitLines(data)
+    
+    response.close()
+    
     nlines = 0
 
     for line in lines[1:]:
-        data = string.split (line, ',')    # , delimited
-        name = data[1]
-        name = name.replace('Limited','LTD')
-        ticker = data[0]
-        if len(ticker)>9: ticker = ticker[:9]
-
-        quotes.addQuote(isin=data[6],name=name,ticker=ticker,\
-        market='NATIONAL EXCHANGE OF INDIA',currency='INR',place='NSE',country='IN')
-
-        nlines = nlines + 1
+        data = string.split (line, ',')
+        if len(data) == 8:
+            name = data[1]
+            name = name.replace('Limited','LTD')
+            ticker = data[0]
+            if len(ticker)>9:
+                ticker = ticker[:9]
+            isin = data[6]
+            if isin != 'INE195A01028':
+                quotes.addQuote(isin=isin,name=name,ticker=ticker,\
+                market='NATIONAL EXCHANGE OF INDIA',currency='INR',place='NSE',country='IN')
+                nlines = nlines + 1
 
     print 'Imported %d lines from %s data.' % (nlines,market)
 
