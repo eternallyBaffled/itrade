@@ -174,7 +174,7 @@ class Import_yahoo(object):
                 value = string.atof(sdata[6])   #   Adj. Close*
                 volume = string.atoi(sdata[5])
 
-                if volume>=0:
+                if volume > 0:
                     # encode in EBP format
                     # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME
                     line = (
