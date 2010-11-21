@@ -134,14 +134,24 @@ def Import_ListOfQuotes_KRX(quotes,market='KOREA STOCK EXCHANGE',dlg=None,x=0):
                     , "Cache-Control": "no-cache"
 
                 }
-    conn = httplib.HTTPConnection(host,80)
-    conn.request("POST",url,params,headers)
 
-    response = conn.getresponse()
+    try:
+        conn = httplib.HTTPConnection(host,80)
+        conn.request("POST",url,params,headers)
+        response = conn.getresponse()
+    except:
+        debug('Import_ListOfQuotes_KRX unable to connect :-(')
+        return False
+
+    debug("status:%s reason:%s" %(response.status, response.reason))
+    if response.status != 200:
+        debug('Import_ListOfQuotes_KRX:status!=200')
+        return False
             
-    # returns the data
     data = response.read()
     
+    # returns the data
+   
     lines = splitLines(data)
     n = 0
     isin = ''
