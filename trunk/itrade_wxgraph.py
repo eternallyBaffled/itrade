@@ -465,12 +465,16 @@ class iTrade_wxToolbarGraph(wx.ToolBar):
         self.m_parent.OnToolTrash(event)
 
     def save(self,event):
-        filetypes = self.m_canvas._get_imagesave_wildcards()
-        dlg = wx.FileDialog(self.m_parent, message('save_to_file'), itrade_config.dirSnapshots, "", filetypes, wx.SAVE|wx.OVERWRITE_PROMPT|wx.CHANGE_DIR)
+        filetypes, exts, filter_index = self.m_canvas._get_imagesave_wildcards()
+        default_file = self.m_parent.m_quote.name() + "." + self.m_canvas.get_default_filetype()
+        dlg = wx.FileDialog(self.m_parent, message('save_to_file'),
+                            itrade_config.dirSnapshots,default_file,filetypes,
+                            wx.SAVE|wx.OVERWRITE_PROMPT|wx.CHANGE_DIR)
+        dlg.SetFilterIndex(filter_index)
         if dlg.ShowModal() == wx.ID_OK:
             dirname  = dlg.GetDirectory()
             filename = dlg.GetFilename()
-            debug('Save file dir:%s name:%s' % (dirname, filename))
+            debug('Save file dir:%s name:%s' % (dirname, filename), 3, self)
             self.m_canvas.print_figure(os.path.join(dirname, filename))
         dlg.Destroy()
 
