@@ -77,8 +77,6 @@ class LiveUpdate_RealTime(object):
                                            connectionTimeout = itrade_config.connectionTimeout
                                            )
         
-        
-
     # ---[ reentrant ] ---
     def acquire(self):
         self.m_livelock.acquire()
@@ -134,6 +132,7 @@ class LiveUpdate_RealTime(object):
 
     def BoursoDate(self,date):
         sp = string.split(date,' ')
+        
         # Date part is easy
         sdate = jjmmaa2yyyymmdd(sp[0])
 
@@ -161,76 +160,76 @@ class LiveUpdate_RealTime(object):
     
 
     def getdata(self,quote):
-        debug("LiveUpdate_Bousorama:getdata quote:%s " % quote)
         self.m_connected = False
+        debug("LiveUpdate_Bousorama:getdata quote:%s market:%s" % (quote,self.m_market))
         ss = quote.ticker()
         ss = ss.lower()
         #if ss =='^FCHI': ss='CAC'
         if ss =='^FCHI': ss='FR0003500008'
         url = 'http://www.boursorama.com/recherche/index.phtml?search%5Bquery%5D='+ss+'&search%5Btype%5D=rapide&search%5Bcategorie%5D=STK&search%5Bbourse%5D=country%3A33'
-        #url = 'http://www.boursorama.com/cours.phtml?symbole=1rP%s' %ss
-        #url = 'http://www.boursorama.com/cours.phtml?symbole=1rP'+ss+'&search[query]='+ss
-        
+        debug("LiveUpdate_Bousorama:getdata url=%s " ,url)
         try:
             data=self.m_connection.getDataFromUrl(url)
-            data = data.replace('\t','')
-            lines = self.splitLines(data)
-
-            n = - 1
-            for line in lines:
-                n=n+1
-                if 'Nyse Euronext - Données temps réel' in line:
-                    line = lines[n]
+        except:
+            debug('LiveUpdate_Boursorama:unable to connect :-(')
+            return None
+        data = data.replace('\t','')
+        lines = self.splitLines(data)
+        n = - 1
+        for line in lines:
+            n=n+1
+            if 'Nyse Euronext - Données temps réel' in line:
+                line = lines[n]
                     
-                    value = line[line.find('<strong>')+8:line.find('</strong>')]
-                    if '(' in value:
-                        stat = value[value.find('(')+1:value.find(')')]
-                    else :
-                        stat = ''
-                    value = value.replace(' ','').replace('EUR','').replace('Pts','').replace('(s)','').replace('(c)','').replace('(h)','').replace('(u)','')
-                    #print 'value:',value
-                    line = lines[n+2]
-                    percent = line[line.find('s">')+3:line.find('%</span></strong></li>')].replace(' ','')
-                    #print percent
-                    line = lines[n+3]
-                    date_time = line[line.find('<li>')+4:line.find('</li>')]
-                    date_time = date_time[:8]+' '+date_time[-8:]
-                    #print date_time
-                    line = lines[n+4]
-                    volume = line[line.find('<li>')+4:line.find('</li>')].replace(' ','')
-                    if 'M' in line : volume  = '0'
-                    #print volume
-                    line = lines[n+5]
-                    open = line[line.find('<li>')+4:line.find('</li>')].replace(' ','')
-                    #print open
-                    line = lines[n+6]
-                    high = line[line.find('<li>')+4:line.find('</li>')].replace(' ','')
-                    #print high
-                    line = lines[n+7]
-                    low = line[line.find('<li>')+4:line.find('</li>')].replace(' ','')
-                    #print low
-                    line = lines[n+8]
-                    previous = line[line.find('<li>')+4:line.find('</li>')].replace(' ','')
-                    #print previous
+                value = line[line.find('<b>')+3:line.find('</b>')]
+                if '(' in value:
+                    stat = value[value.find('(')+1:value.find(')')]
+                else :
+                    stat = ''
+                value = value.replace(' ','').replace('EUR','').replace('Pts','').replace('(s)','').replace('(c)','').replace('(h)','').replace('(u)','')
+                #print 'value:',value
+                line = lines[n+5]
+                percent = line[line.rfind('s">')+3:line.find('%</span></td>')].replace(' ','')
+                #print percent
+                line = lines[n+9]
+                date_time = line[line.find('<td>')+4:line.find('</td>')]
+                date_time = date_time[:8]+' '+date_time[-8:]
+                #print date_time
+                line = lines[n+13]
+                volume = line[line.find('<td>')+4:line.find('</td>')].replace(' ','')
+                if 'M' in line : volume  = '0'
+                if volume == '0' and quote.list()!=QLIST_INDICES:
+                    debug('volume : no trade to day %s' % volume)
+                    return None
+                #print volume
+                line = lines[n+17]
+                open = line[line.find('<td>')+4:line.find('</td>')].replace(' ','')
+                #print open
+                line = lines[n+21]
+                high = line[line.find('<td>')+4:line.find('</td>')].replace(' ','')
+                #print high
+                line = lines[n+25]
+                low = line[line.find('<td>')+4:line.find('</td>')].replace(' ','')
+                #print low
+                line = lines[n+29]
+                previous = line[line.find('<td>')+4:line.find('</td>')].replace(' ','')
+                #print previous
                     
-                    c_datetime = datetime.today()
-                    c_date = "%04d%02d%02d" % (c_datetime.year,c_datetime.month,c_datetime.day)
+                c_datetime = datetime.today()
+                c_date = "%04d%02d%02d" % (c_datetime.year,c_datetime.month,c_datetime.day)
                         
-                    sdate,sclock = self.BoursoDate(date_time)
+                sdate,sclock = self.BoursoDate(date_time)
 
-                    # be sure not an oldest day !
-                    #if (c_date==sdate):
+                # be sure not an oldest day !
+                if (c_date==sdate) or (quote.list() == QLIST_INDICES):
                     key = quote.key()
                     self.m_dcmpd[key] = sdate
                     self.m_clock[key] = self.convertClock(quote.place(),sclock,sdate)
                     
-                    data = ';'.join([quote.key(),sdate,open,high,low,value,volume,percent])
+                data = ';'.join([quote.key(),sdate,open,high,low,value,volume,percent])
 
-                    return data
+                return data
 
-        except:
-            debug('LiveUpdate_Boursorama:unable to connect :-(')
-            return None
 
     # ---[ cache management on data ] ---
 
