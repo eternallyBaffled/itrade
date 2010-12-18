@@ -26,16 +26,27 @@
 20100101;EURONEXT; Friday 01 January 2010 New Year's Day
 20100402;EURONEXT; Friday 02 April 2010 Good Friday
 20100405;EURONEXT; Monday 05 April 2010 Easter Monday
+20110422;EURONEXT; Friday 22 April 2011 (Good Friday)
+20110425;EURONEXT; Monday 25 April 2011 (Easter Monday)
+20111226;EURONEXT; Monday 26 December 2011
 
 20100101;ALTERNEXT; Friday 01 January 2010 New Year's Day
 20100402;ALTERNEXT; Friday 02 April 2010 Good Friday
 20100405;ALTERNEXT; Monday 05 April 2010 Easter Monday
-
+20110422;ALTERNEXT; Friday 22 April 2011 (Good Friday)
+20110425;ALTERNEXT; Monday 25 April 2011 (Easter Monday)
+20111226;ALTERNEXT; Monday 26 December 2011
 
 20100101;PARIS MARCHE LIBRE; Friday 01 January 2010 New Year's Day
 20100402;PARIS MARCHE LIBRE; Friday 02 April 2010 Good Friday
 20100405;PARIS MARCHE LIBRE; Monday 05 April 2010 Easter Monday
+20110422;PARIS MARCHE LIBRE; Friday 22 April 2011 (Good Friday)
+20110425;PARIS MARCHE LIBRE; Monday 25 April 2011 (Easter Monday)
+20111226;PARIS MARCHE LIBRE; Monday 26 December 2011
 
+20110422;BRUXELLES MARCHE LIBRE; Friday 22 April 2011 Good Friday
+20110425;BRUXELLES MARCHE LIBRE; Monday 25 April 2011 Easter Monday
+20111226;BRUXELLES MARCHE LIBRE; Monday 26 December 2011 Christmas Holiday
 
 20060220;NASDAQ; 20 february 2006
 20060414;NASDAQ; 14 april 2006
@@ -77,6 +88,14 @@
 20101111;NASDAQ; Thursday 11 November 2010 Veteran's Day
 20101125;NASDAQ; Thursday 25 November 2010 Thanksgiving
 20101224;NASDAQ; Friday 24 December 2010 Christmas day (OBS)
+20110117;NASDAQ; Monday 17 January 2011 Martin Luther King, Jr. Day
+20110221;NASDAQ; Monday 21 February 2011 Washington Birthday
+20110422;NASDAQ; Friday 22 April 2011 Good Friday
+20110530;NASDAQ; Monday 30 May 2011 Memorial Day
+20110704;NASDAQ; Wednesday 04 July 2011 Independence Day
+20110905;NASDAQ; Monday 05 September 2011 Labor Day
+20111124;NASDAQ; Thursday 24 November 2011 Thanksgiving Day
+20111226;NASDAQ; Monday 26 December 2011 Christmas day (OBS)
 
 20060220;NYSE; 20 february 2006
 20060414;NYSE; 14 april 2006
@@ -121,7 +140,7 @@
 20110221;NYSE; Monday 21 February 2011 Washington Birthday
 20110422;NYSE; Friday 22 April 2011 Good Friday
 20110530;NYSE; Monday 30 May 2011 Memorial Day
-20010704;NYSE; Wednesday 04 July 2011 Independence Day
+20110704;NYSE; Wednesday 04 July 2011 Independence Day
 20110905;NYSE; Monday 05 September 2011 Labor Day
 20111124;NYSE; Thursday 24 November 2011 Thanksgiving Day
 20111226;NYSE; Monday 26 December 2011 Christmas day (OBS)
@@ -135,6 +154,14 @@
 20100906;OTCBB; Monday 06 September 2010 Labor Day
 20101125;OTCBB; Thursday 25 November 2010 Thanksgiving
 20101224;OTCBB; Friday 24 December 2010 Christmas day (OBS)
+20110117;OTCBB; Monday 17 January 2011 Martin Luther King, Jr. Day
+20110221;OTCBB; Monday 21 February 2011 Washington Birthday
+20110422;OTCBB; Friday 22 April 2011 Good Friday
+20110530;OTCBB; Monday 30 May 2011 Memorial Day
+20110704;OTCBB; Monday 04 July 2011 Independence Day
+20110905;OTCBB; Monday 05 September 2011 Labor Day
+20111124;OTCBB; Thursday 24 November 2011 Thanksgiving Day
+20111226;OTCBB; Monday 26 December 2011 Christmas day (OBS)
 
 20070101;LSE; 1 january 2007
 20070406;LSE; 6 april 2007
@@ -169,6 +196,15 @@
 20100830;LSE; Monday 30 August 2010 Summer Bank Holiday
 20101227;LSE; Monday 27 December 2010 Christmas OBS
 20101228;LSE; Tuesday 28 December 2010 Boxing Day OBS
+20110103;LSE; Monday 03 January 2011 New Year's Day
+20110422;LSE; Friday 22 April 2011 Good Friday
+20110425;LSE; Monday 25 April 2011 Easter Monday
+20110429;LSE; Friday 29 April 2011 Royal Wedding Celebration
+20110502;LSE; Monday 02 May 2011 Early May Bank Holid
+20110530;LSE; Monday 30 May 2011 Late May Bank Holida
+20110829;LSE; Monday 29 August 2011 Summer Bank Holiday
+20111226;LSE; Monday 26 December 2011 Christmas
+20111227;LSE; Tuesday 27 December 2011 Boxing Day
 
 20070101;AMEX; 1 january 2007
 20070406;AMEX; 6 april 2007
@@ -210,7 +246,7 @@
 20110221;AMEX; Monday 21 February 2011 Washington Birthday
 20110422;AMEX; Friday 22 April 2011 Good Friday
 20110530;AMEX; Monday 30 May 2011 Memorial Day
-20010704;AMEX; Wednesday 04 July 2011 Independence Day
+20110704;AMEX; Wednesday 04 July 2011 Independence Day
 20110905;AMEX; Monday 05 September 2011 Labor Day
 20111124;AMEX; Thursday 24 November 2011 Thanksgiving Day
 20111226;AMEX; Monday 26 December 2011 Christmas day (OBS)
@@ -238,7 +274,9 @@
 20100405;MADRID EXCHANGE; Monday 05 April 2010 Easter Monday
 20101224;MADRID EXCHANGE; Friday 24 December 2010 Christmas Eve
 20101231;MADRID EXCHANGE; Friday 31 december 2010 Exchange Holiday
-
+20110422;MADRID EXCHANGE; Friday 22 April 2011 Good Friday
+20110425;MADRID EXCHANGE; Monday 25 April 2011 Easter Monday
+20111226;MADRID EXCHANGE; Monday 26 December 2011 Christmas Holiday
 
 20071225;IRISH EXCHANGE; 25 december 2007
 20071226;IRISH EXCHANGE; 26 december 2007
@@ -263,6 +301,13 @@
 20100607;IRISH EXCHANGE; Monday 07 June 2010 June BankHoliday
 20101227;IRISH EXCHANGE; Monday 27 december 2010 Public Holiday in lieu of Christmas Day
 20101228;IRISH EXCHANGE; Tuesday 28 december 2010 Public Holiday in lieu of St. Stephen’s Day
+20110103;IRISH EXCHANGE; Monday 3rd January 2011 In lieu of New Year’s Day
+20110422;IRISH EXCHANGE; Friday 22nd April 2011 Good Friday
+20110425;IRISH EXCHANGE; Monday 25th April 2011 Easter Monday
+20110502;IRISH EXCHANGE; Monday 2nd  May 2011 May Bank Holiday
+20110606;IRISH EXCHANGE; Monday 6th  June 2011 June Bank Holiday
+20111226;IRISH EXCHANGE; Monday 26th December 2011 St. Stephen’s Day
+20111227;IRISH EXCHANGE; Tuesday 27th December 2011 Public Holiday in lieu of Christmas Day
 
 20071224;FRANKFURT EXCHANGE; 24 december 2007
 20071225;FRANKFURT EXCHANGE; 25 december 2007
@@ -284,6 +329,9 @@
 20100101;FRANKFURT EXCHANGE; Friday 01 January 2010 New Year's Day
 20100402;FRANKFURT EXCHANGE; Friday 02 April 2010 Good Friday
 20100405;FRANKFURT EXCHANGE; Monday 05 April 2010 Easter Monday
+20110422;FRANKFURT EXCHANGE; Friday 22 April 2011 Good Friday
+20110425;FRANKFURT EXCHANGE; Monday 25 April 2011 Easter Monday
+20111226;FRANKFURT EXCHANGE; Monday 26 December 2011 Christmas Holiday
 
 20080101;MILAN EXCHANGE; 1 january 2008
 20080321;MILAN EXCHANGE; 21 march 2008
@@ -303,6 +351,10 @@
 20100101;MILAN EXCHANGE; Friday 1 january 2010 New Year's Day
 20100402;MILAN EXCHANGE; Friday 02 April 2010 Good Friday
 20100405;MILAN EXCHANGE; Monday 05 April 2010 Easter Monday
+20110422;MILAN EXCHANGE; Friday 22 April 2011 Good Friday
+20110425;MILAN EXCHANGE; Monday 25 April 2011 Easter Monday
+20110815;MILAN EXCHANGE; Monday 15 August 2011 Assumption Day
+20111226;MILAN EXCHANGE; Monday 26 December 2011 Christmas Holiday
 
 20080101;OSLO EXCHANGE; 1 january 2008
 20080320;OSLO EXCHANGE; 20 march 2008
@@ -331,6 +383,13 @@
 20100517;OSLO EXCHANGE; Monday 17 May 2010 Constitution Day
 20100524;OSLO EXCHANGE; Monday 24 May 2010 Whitmonday
 20101224;OSLO EXCHANGE; Friday 24 December 2010 Christmas Eve
+20110421;OSLO EXCHANGE; Thursday 21 April 2011 Holy Thursday
+20110422;OSLO EXCHANGE; Friday 22 April 2011 Good Friday
+20110425;OSLO EXCHANGE; Monday 25 April 2011 Easter Monday
+20110517;OSLO EXCHANGE; Tuesday 17 May 2011 Constitution Day
+20110602;OSLO EXCHANGE; Thursday 02 June 2011 Ascention Day
+20110613;OSLO EXCHANGE; Monday 13 June 2011 Whitmonday
+20111226;OSLO EXCHANGE; Monday 26 December 2011 Boxing Day
 
 20080101;COPENHAGEN EXCHANGE; 1 january 2008
 20080320;COPENHAGEN EXCHANGE; 20 march 2008
@@ -365,6 +424,14 @@
 20100524;COPENHAGEN EXCHANGE; Monday 24 May 2010 Whitmonday
 20101224;COPENHAGEN EXCHANGE; Friday 24 December 2010 Christmas Eve
 20101231;COPENHAGEN EXCHANGE; Friday 31 December 2010 New Year's Eve
+20110421;COPENHAGEN EXCHANGE; Thursday 21 April 2011 Holy Thursday
+20110422;COPENHAGEN EXCHANGE; Friday 22 April 2011 Good Friday
+20110425;COPENHAGEN EXCHANGE; Monday 25 April 2011 Easter Monday
+20110520;COPENHAGEN EXCHANGE; Friday 20 May 2011 General Prayer Day
+20110602;COPENHAGEN EXCHANGE; Thursday 02 June 2011 Ascension Day
+20110603;COPENHAGEN EXCHANGE; Friday 03 June 2011 Day after Ascension
+20110613;COPENHAGEN EXCHANGE; Monday 13 June 2011 Whitmonday
+20111226;COPENHAGEN EXCHANGE; Monday 26 December 2011 Christmas Holiday
 
 20080101;STOCKHOLM EXCHANGE; 1 january 2008
 20080321;STOCKHOLM EXCHANGE; 21 march 2008
@@ -394,6 +461,13 @@
 20100625;STOCKHOLM EXCHANGE; Friday 25 June 2010 Midsummer Eve OBS
 20101224;STOCKHOLM EXCHANGE; Friday 24 December 2010 Christmas Eve
 20101231;STOCKHOLM EXCHANGE; Friday 31 December 2010 New Year's Eve
+20110106;STOCKHOLM EXCHANGE; Thursday 06 January 2011 Epiphany
+20110422;STOCKHOLM EXCHANGE; Friday 22 April 2011 Good Friday
+20110425;STOCKHOLM EXCHANGE; Monday 25 April 2011 Easter Monday
+20110602;STOCKHOLM EXCHANGE; Thursday 02 June 2011 Ascention Day
+20110606;STOCKHOLM EXCHANGE; Monday 06 June 2011 National Day
+20110624;STOCKHOLM EXCHANGE; Friday 24 June 2011 Midsummer Eve
+20111226;STOCKHOLM EXCHANGE; Monday 26 December 2011 Boxing Day
 
 20080101;SAO PAULO EXCHANGE; 1 january 2008
 20080204;SAO PAULO EXCHANGE; 4 february 2008
@@ -428,6 +502,17 @@
 20101115;SAO PAULO EXCHANGE; Monday 15 November 2010 Proclamation of the Republic Day
 20101224;SAO PAULO EXCHANGE; Friday 24 December 2010 Christmas Eve
 20101231;SAO PAULO EXCHANGE; Friday 31 December 2010 New Year’s Eve
+20110125;SAO PAULO EXCHANGE; Tuesday 25 January 2011 Sao Paulo City Anniversary (a city holiday)
+20110307;SAO PAULO EXCHANGE; Monday 7 mars 2011 Carnival
+20110308;SAO PAULO EXCHANGE; Tuesday 8 mars 2011 Carnival
+20110421;SAO PAULO EXCHANGE; Thurstday 21 April 2011 Tiradentes Day
+20110422;SAO PAULO EXCHANGE; Friday 22 April 2011 Good Friday
+20110623;SAO PAULO EXCHANGE; Thursday 23 June 2011 Corpus Christi Day
+20110907;SAO PAULO EXCHANGE; Wednesday 7 September 2011 Independence Day
+20111012;SAO PAULO EXCHANGE; Wednesday 12 October 2011 Our Lady of Aparecida Day
+20111102;SAO PAULO EXCHANGE; Wednesday 2 November 2011 All Souls’ Day
+20111115;SAO PAULO EXCHANGE; Tuesday 15 November 2011 Proclamation of the Republic Day
+20111230;SAO PAULO EXCHANGE; Friday 30 december 2011 Last working day of the year (bank back offices to remain open) 
 
 20080101;HONG KONG EXCHANGE; 1 january 2008
 20080207;HONG KONG EXCHANGE; 7 febrary 2008
@@ -468,6 +553,19 @@
 20100923;HONG KONG EXCHANGE; Thursday 23 September 2010 Day Follow.Mid-autm.
 20101001;HONG KONG EXCHANGE; Friday 01 October 2010 Chinese National Day
 20101227;HONG KONG EXCHANGE; Monday 27 December 2010 Christmas Holiday Ob
+20110203;HONG KONG EXCHANGE; Thursday 03 February 2011 Lunar New Year 1
+20110204;HONG KONG EXCHANGE; Friday 04 February 2011 Lunar New Year 2
+20110405;HONG KONG EXCHANGE; Tuesday 05 April 2011 Ching Ming Festival
+20110422;HONG KONG EXCHANGE; Friday 22 April 2011 Good Friday
+20110425;HONG KONG EXCHANGE; Monday 25 April 2011 Easter Monday
+20110502;HONG KONG EXCHANGE; Monday 02 May 2011 Labour Day
+20110510;HONG KONG EXCHANGE; Tuesday 10 May 2011 Buddhas Birthday
+20110606;HONG KONG EXCHANGE; Monday 06 June 2011 Tueng Ng Day
+20110701;HONG KONG EXCHANGE; Friday 01 July 2011 SAR Establishment Da
+20110913;HONG KONG EXCHANGE; Tuesday 13 September 2011 Day Following Mid au
+20111005;HONG KONG EXCHANGE; Wednesday 05 October 2011 Chung Yeung Day
+20111226;HONG KONG EXCHANGE; Monday 26 December 2011 Christmas Holiday
+20111227;HONG KONG EXCHANGE; Tuesday 27 December 2011 Christmas Day
 
 20080101;SHANGHAI EXCHANGE; 1 January 2008
 20080206;SHANGHAI EXCHANGE; 6 February 2008
@@ -522,6 +620,18 @@
 20101005;SHANGHAI EXCHANGE; Tuesday 05 October 2010 National Day
 20101006;SHANGHAI EXCHANGE; Wednesday 06 October 2010 National Day
 20101007;SHANGHAI EXCHANGE; Thursday 07 October 2010 National Day
+20110103;SHANGHAI EXCHANGE; Monday 3 January 2011 New Year's Day OBS
+20110202;SHANGHAI EXCHANGE; Wednesday 2 February 2011 Lunar NY Eve 1
+20110203;SHANGHAI EXCHANGE; Thursday 3 February 2011 Lunar New Year 1
+20110204;SHANGHAI EXCHANGE; Friday 4 February 2011 Lunar New Year 2
+20110207;SHANGHAI EXCHANGE; Monday 7 February 2011 Lunar New Year 5
+20110208;SHANGHAI EXCHANGE; Tuesday 8 February 2011 Lunar New Year 6
+20110405;SHANGHAI EXCHANGE; Tuesday 5 April 2011 Ching Ming Festival
+20110606;SHANGHAI EXCHANGE; Monday 6 June 2011 Dragon Boat Festival (Tuen Ng Day)*
+20110912;SHANGHAI EXCHANGE; Monday 12 September 2011 Mid-autumn Festival*
+20111003;SHANGHAI EXCHANGE; Monday 3 October 2011 National Day 3
+20111004;SHANGHAI EXCHANGE; Tuesday 4 October 2011 National Day 4
+20111005;SHANGHAI EXCHANGE; Wednesday 5 October 2011 National Day 5
 
 20080101;SHENZHEN EXCHANGE; 1 January 2008
 20080206;SHENZHEN EXCHANGE; 6 February 2008
@@ -576,7 +686,18 @@
 20101005;SHENZHEN EXCHANGE; Tuesday 05 October 2010 National Day
 20101006;SHENZHEN EXCHANGE; Wednesday 06 October 2010 National Day
 20101007;SHENZHEN EXCHANGE; Thursday 07 October 2010 National Day
-
+20110103;SHENZHEN EXCHANGE; Monday 3 January 2011 New Year's Day OBS
+20110202;SHENZHEN EXCHANGE; Wednesday 2 February 2011 Lunar NY Eve 1
+20110203;SHENZHEN EXCHANGE; Thursday 3 February 2011 Lunar New Year 1
+20110204;SHENZHEN EXCHANGE; Friday 4 February 2011 Lunar New Year 2
+20110207;SHENZHEN EXCHANGE; Monday 7 February 2011 Lunar New Year 5
+20110208;SHENZHEN EXCHANGE; Tuesday 8 February 2011 Lunar New Year 6
+20110405;SHENZHEN EXCHANGE; Tuesday 5 April 2011 Ching Ming Festival
+20110606;SHENZHEN EXCHANGE; Monday 6 June 2011 Dragon Boat Festival (Tuen Ng Day)*
+20110912;SHENZHEN EXCHANGE; Monday 12 September 2011 Mid-autumn Festival*
+20111003;SHENZHEN EXCHANGE; Monday 3 October 2011 National Day 3
+20111004;SHENZHEN EXCHANGE; Tuesday 4 October 2011 National Day 4
+20111005;SHENZHEN EXCHANGE; Wednesday 5 October 2011 National Day 5
 
 20080306;NATIONAL EXCHANGE OF INDIA; 6 march 2008
 20080320;NATIONAL EXCHANGE OF INDIA; 20 march 2008
@@ -622,6 +743,15 @@
 20101105;NATIONAL EXCHANGE OF INDIA; Friday 5 November 2010 Diwali Amavasya (Laxmi Puja)
 20101117;NATIONAL EXCHANGE OF INDIA; Wednesday 17 November 2010 Bakri-Id
 20101217;NATIONAL EXCHANGE OF INDIA; Friday 17 December 2010 Moharum
+20110126;NATIONAL EXCHANGE OF INDIA; Wednesday 26 January 2011 Republic Day
+20110303;NATIONAL EXCHANGE OF INDIA; Thursday 3 mars 2011 Mahashivratri
+20110412;NATIONAL EXCHANGE OF INDIA; Tuesday 12 april 2011 Rav Navmi
+20110414;NATIONAL EXCHANGE OF INDIA; Thursday 14 April 2011 Dr. Babasaheb Ambedkar Jayanti
+20110422;NATIONAL EXCHANGE OF INDIA; Friday 22 April 2011 Good Friday
+20110815;NATIONAL EXCHANGE OF INDIA; Monday 15 august 2011 Idependence Day
+20110830;NATIONAL EXCHANGE OF INDIA; Tuesday 30 august 2011 Ramzan Id
+20111026;NATIONAL EXCHANGE OF INDIA; Wednesday 26 october 2011 Diwali Amavasya (Laxmi Puja)
+20111226;NATIONAL EXCHANGE OF INDIA; Monday 26 december 2011 Moharum
 
 20080306;BOMBAY EXCHANGE; 6 march 2008
 20080320;BOMBAY EXCHANGE; 20 march 2008
@@ -667,6 +797,15 @@
 20101105;BOMBAY EXCHANGE; Friday 5 November 2010 Diwali Amavasya (Laxmi Puja)
 20101117;BOMBAY EXCHANGE; Wednesday 17 November 2010 Bakri-Id
 20101217;BOMBAY EXCHANGE; Friday 17 December 2010 Moharum
+20110126;BOMBAY EXCHANGE; Wednesday 26 January 2011 Republic Day
+20110303;BOMBAY EXCHANGE; Thursday 3 mars 2011 Mahashivratri
+20110412;BOMBAY EXCHANGE; Tuesday 12 april 2011 Rav Navmi
+20110414;BOMBAY EXCHANGE; Thursday 14 April 2011 Dr. Babasaheb Ambedkar Jayanti
+20110422;BOMBAY EXCHANGE; Friday 22 April 2011 Good Friday
+20110815;BOMBAY EXCHANGE; Monday 15 august 2011 Idependence Day
+20110830;BOMBAY EXCHANGE; Tuesday 30 august 2011 Ramzan Id
+20111026;BOMBAY EXCHANGE; Wednesday 26 october 2011 Diwali Amavasya (Laxmi Puja)
+20111226;BOMBAY EXCHANGE; Monday 26 december 2011 Moharum
 
 20080101;NEW ZEALAND EXCHANGE; Tuesday 1 january 2008
 20080102;NEW ZEALAND EXCHANGE; Wednesday 2 January 2008
@@ -695,7 +834,14 @@
 20101025;NEW ZEALAND EXCHANGE; Monday 25 October 2010 Labour Day
 20101227;NEW ZEALAND EXCHANGE; Monday 27 December 2010 Christmas Day OBS
 20101228;NEW ZEALAND EXCHANGE; Tuesday 28 December 2010 Boxing Day OBS
-
+20110103;NEW ZEALAND EXCHANGE; Monday 03 January 2011 New Year's Day
+20110104;NEW ZEALAND EXCHANGE; Tuesday 04 January 2011 New Year's Obs
+20110422;NEW ZEALAND EXCHANGE; Friday 22 April 2011 Good Friday
+20110425;NEW ZEALAND EXCHANGE; Monday 25 April 2011 Easter Monday
+20110606;NEW ZEALAND EXCHANGE; Monday 06 June 2011 Queen's Birthday
+20111024;NEW ZEALAND EXCHANGE; Monday 24 October 2011 Labour Day
+20111226;NEW ZEALAND EXCHANGE; Monday 26 December 2011 Christmas Day
+20111227;NEW ZEALAND EXCHANGE; Tuesday 27 December 2011 Boxing Day
 
 20080101;ASX; Tuesday 1 january 2008
 20080128;ASX; Monday 28 january 2008
@@ -721,6 +867,14 @@
 20101004;ASX; Monday 04 October 2010 Labour Day
 20101227;ASX; Monday 27 December 2010 Christmas Day OBS
 20101228;ASX; Tuesday 28 December 2010 Boxing Day OBS
+20110103;ASX; Monday 03 January 2011 New Year's Day
+20110126;ASX; Wednesday 26 January 2011 Australia Day
+20110422;ASX; Friday 22 April 2011 Good Friday
+20110425;ASX; Monday 25 April 2011 Easter Monday
+20110426;ASX; Tuesday 26 April 2011 ANZAC Day Observance
+20110613;ASX; Monday 13 June 2011 Queen's Birthday
+20111226;ASX; Monday 26 December 2011 Christmas Day
+20111227;ASX; Tuesday 27 December 2011 Boxing Day
 
 20080101;BUENOS AIRES EXCHANGE; 1 january 2008
 20080320;BUENOS AIRES EXCHANGE; 20 march 2008
@@ -761,6 +915,19 @@
 20101208;BUENOS AIRES EXCHANGE; Wednesday 8 December 2010 Inmaculada Concepcion de Maria 
 20101224;BUENOS AIRES EXCHANGE; Friday 24 December 2010 Feriado por Circular N° 3506 del MERVAL
 20101231;BUENOS AIRES EXCHANGE; Friday 31 December 2010 Feriado por Circular N° 3506 del MERVAL
+20110307;BUENOS AIRES EXCHANGE; Monday 7 March 2011 Carnaval
+20110308;BUENOS AIRES EXCHANGE; Tuesday 8 March 2011 Carnaval
+20110324;BUENOS AIRES EXCHANGE; Thursday 24 March 2011 Dia Nacional de la Memoria por la Verdad y la Justicia
+20110325;BUENOS AIRES EXCHANGE; Friday 25 March 2011 Feriado con fin turistico
+20110421;BUENOS AIRES EXCHANGE; Thursday 21 April 2011 Jueves Santo. Festividad Cristiana
+20110422;BUENOS AIRES EXCHANGE; Friday 22 April 2011 Viernes Santo
+20110525;BUENOS AIRES EXCHANGE; Wednesday 25 May 2011 Primer Gobierno Patrio
+20110620;BUENOS AIRES EXCHANGE; Monday 20 June 2011 Paso a la Inmortalidad del General Manuel Belgrano.
+20110815;BUENOS AIRES EXCHANGE; Monday 15 August 2011 Paso a la Inmortalidad del General José de San Martin (17 de agosto)
+20111010;BUENOS AIRES EXCHANGE; Monday 10 October 2011 Dia del Respeto a la Diversidad Cultural (12 de octubre)
+20111128;BUENOS AIRES EXCHANGE; Monday 28 November 2011 Dia de la Soberania Nacional (22 de noviembre)
+20111208;BUENOS AIRES EXCHANGE; Thursday 8 December 2011 Inmaculada Concepcion de Maria
+20111209;BUENOS AIRES EXCHANGE; Friday 9 December 2011 Feriado con fin turistico
 
 20080101;MEXICO EXCHANGE; 1 january 2008
 20080204;MEXICO EXCHANGE; 4 february 2008
@@ -791,6 +958,14 @@
 20100916;MEXICO EXCHANGE; Thursday 16 September 2010 Independence Day
 20101102;MEXICO EXCHANGE; Tuesday 02 November 2010 All Soul's Day
 20101115;MEXICO EXCHANGE; Monday 15 November 2010 Mexican Revolution
+20110207;MEXICO EXCHANGE; Monday 07 February 2011 Constitution Day
+20110321;MEXICO EXCHANGE; Monday 21 March 2011 Juarez's Birthday
+20110421;MEXICO EXCHANGE; Thursday 21 April 2011 Holy Thursday
+20110422;MEXICO EXCHANGE; Friday 22 April 2011 Good Friday
+20110916;MEXICO EXCHANGE; Friday 16 September 2011 Independence Day
+20111102;MEXICO EXCHANGE; Wednesday 02 November 2011 All Soul's Day
+20111121;MEXICO EXCHANGE; Monday 21 November 2011 Mexican Revolution
+20111212;MEXICO EXCHANGE; Monday 12 December 2011 Our Lady of Guadalup
 
 20080101;SINGAPORE EXCHANGE; Tuesday 1 january 2008
 20080207;SINGAPORE EXCHANGE; Thursday 7 february 2008
@@ -823,6 +998,15 @@
 20101105;SINGAPORE EXCHANGE; Friday 5 Nov 2010 Deepavali
 20101117;SINGAPORE EXCHANGE; Wednesday 17 Nov 2010 Hari Raya Haji
 20101225;SINGAPORE EXCHANGE; Saturday 25 Dec 2010 Christmas Day
+20110203;SINGAPORE EXCHANGE; Thursday 3 February 2011 Chinese New Year
+20110204;SINGAPORE EXCHANGE; Friday 4 February 2011 Chinese New Year
+20110422;SINGAPORE EXCHANGE; Friday 22 April 2011 Good Friday
+20110502;SINGAPORE EXCHANGE; Monday 2 May Labour Day
+20110517;SINGAPORE EXCHANGE; Tuesday 17 may 2011 Vesak Day
+20110809;SINGAPORE EXCHANGE; Tuesday 9 August 2011 National Day
+20110830;SINGAPORE EXCHANGE; Tuesday 30 August 2011 Hari Raya Puasa
+20111107;SINGAPORE EXCHANGE; Monday 7 November 2011 Hari Raya Haji
+20111226;SINGAPORE EXCHANGE; Monday 26 December 2011 Christmas Day
 
 20081225;KOREA STOCK EXCHANGE; Thursday 25 december 2008
 20090101;KOREA STOCK EXCHANGE; Thursday 01 january 2009
@@ -841,6 +1025,18 @@
 20100717;KOREA STOCK EXCHANGE; Sat 17 Jul 2010 Constitution Day (Je Hun Jul)
 20100922;KOREA STOCK EXCHANGE; Wed 22 Sep 2010 Chuseok (Thanksgiving Day)
 20101225;KOREA STOCK EXCHANGE; Sat 25 Dec 2010 Christmas Day
+20110202;KOREA STOCK EXCHANGE; Wednesday 2 February 2011 Lunar New Year's Day
+20110203;KOREA STOCK EXCHANGE; Thursday 3 February 2011 Lunar New Year's Day
+20110204;KOREA STOCK EXCHANGE; Friday 4 February 2011 Lunar New Year's Day
+20110301;KOREA STOCK EXCHANGE; Tuesday 1 March 2011 Independence Declaration Day
+20110505;KOREA STOCK EXCHANGE; Thursday 5 May 2011 Children's Day 
+20110510;KOREA STOCK EXCHANGE; Tuesday 10 May 2011 Buddha's Birthday
+20110606;KOREA STOCK EXCHANGE; Monday 6 June 2011 Memorial Day
+20110815;KOREA STOCK EXCHANGE; Monday 15 August 2011 Independence Day
+20110912;KOREA STOCK EXCHANGE; Monday 12 September 2011 Korean Thanksgiving Day
+20110913;KOREA STOCK EXCHANGE; Tuesday 13 September 2011 Korean Thanksgiving Day
+20111003;KOREA STOCK EXCHANGE; Monday 3 October 2011 The National Foundation Day of Korea
+20111230;KOREA STOCK EXCHANGE; Friday 30 December New Year’s Eve
 
 20081225;KOREA KOSDAQ EXCHANGE; Thursday 25 december 2008
 20090101;KOREA KOSDAQ EXCHANGE; Thursday 01 january 2009
@@ -859,6 +1055,18 @@
 20100717;KOREA KOSDAQ EXCHANGE; Sat 17 Jul 2010 Constitution Day (Je Hun Jul)
 20100922;KOREA KOSDAQ EXCHANGE; Wed 22 Sep 2010 Chuseok (Thanksgiving Day)
 20101225;KOREA KOSDAQ EXCHANGE; Sat 25 Dec 2010 Christmas Day
+20110202;KOREA KOSDAQ EXCHANGE; Wednesday 2 February 2011 Lunar New Year's Day
+20110203;KOREA KOSDAQ EXCHANGE; Thursday 3 February 2011 Lunar New Year's Day
+20110204;KOREA KOSDAQ EXCHANGE; Friday 4 February 2011 Lunar New Year's Day
+20110301;KOREA KOSDAQ EXCHANGE; Tuesday 1 March 2011 Independence Declaration Day
+20110505;KOREA KOSDAQ EXCHANGE; Thursday 5 May 2011 Children's Day 
+20110510;KOREA KOSDAQ EXCHANGE; Tuesday 10 May 2011 Buddha's Birthday
+20110606;KOREA KOSDAQ EXCHANGE; Monday 6 June 2011 Memorial Day
+20110815;KOREA KOSDAQ EXCHANGE; Monday 15 August 2011 Independence Day
+20110912;KOREA KOSDAQ EXCHANGE; Monday 12 September 2011 Korean Thanksgiving Day
+20110913;KOREA KOSDAQ EXCHANGE; Tuesday 13 September 2011 Korean Thanksgiving Day
+20111003;KOREA KOSDAQ EXCHANGE; Monday 3 October 2011 The National Foundation Day of Korea
+20111230;KOREA KOSDAQ EXCHANGE; Friday 30 December New Year’s Eve
 
 20090101;WIENER BORSE; Thursday 01 january 2009
 20090106;WIENER BORSE; Tuesday 06 january 2009
@@ -885,6 +1093,18 @@
 20101208;WIENER BORSE; Wednesday 8 December 2010 Immaculate Conception
 20101224;WIENER BORSE; Friday 24 december 2010 Christmas Eve
 20101231;WIENER BORSE; Friday 31 december 2010 Exchange Holiday
+20110106;WIENER BORSE; Thursday 6 January 2011 Epiphany Day
+20110422;WIENER BORSE; Friday 22 April 2011 Good Friday
+20110425;WIENER BORSE; Monday 25 April 2011 Easter Monday
+20110602;WIENER BORSE; Thursday 2 June 2011 Ascension Day
+20110613;WIENER BORSE; Monday 13 June 2011 Whit Day
+20110623;WIENER BORSE; Thursday 23 June 2011 Corpus Christi Day
+20110815;WIENER BORSE; Mondy 15 August 2011 Assumption Day
+20111026;WIENER BORSE; Wennesday 26 October 2011 National Holiday
+20110101;WIENER BORSE; Tuesday 1 November 2011 All Saint's Day
+20111208;WIENER BORSE; Thursday 8 December 2011 Immaculate Conception
+20111226;WIENER BORSE; Monday 26 december 2011 St.Stephen's Day
+20111230;WIENER BORSE; Friday 30 december 2011 Exchange Holiday
 
 20090101;TOKYO EXCHANGE; Thursday 01 january 2009
 20090102;TOKYO EXCHANGE; Friday 02 january 2009
@@ -935,6 +1155,21 @@
 20101123;TOKYO EXCHANGE; Tuesday 23 November 2010 Labour Thanksgiving
 20101223;TOKYO EXCHANGE; Thursday 23 December 2010 Emperor's Birthday
 20101231;TOKYO EXCHANGE; Friday 31 December 2010 New Year's Eve
+20110103;TOKYO EXCHANGE; Monday 03 January 2011 Bank Holiday 3
+20110110;TOKYO EXCHANGE; Monday 10 January 2011 Coming of Age Day
+20110211;TOKYO EXCHANGE; Friday 11 February 2011 Nat. Founding Day
+20110321;TOKYO EXCHANGE; Monday 21 March 2011 Vernal Equinox
+20110429;TOKYO EXCHANGE; Friday 29 April 2011 Showa Day
+20110503;TOKYO EXCHANGE; Tuesday 03 May 2011 Constituition Day
+20110504;TOKYO EXCHANGE; Wednesday 04 May 2011 Greenery Day
+20110505;TOKYO EXCHANGE; Thursday 05 May 2011 Children's Day
+20110718;TOKYO EXCHANGE; Monday 18 July 2011 Marine Day
+20110919;TOKYO EXCHANGE; Monday 19 September 2011 Respect for the Aged
+20110923;TOKYO EXCHANGE; Friday 23 September 2011 Autumn Equinox
+20111010;TOKYO EXCHANGE; Monday 10 October 2011 Health-Sports Day
+20111103;TOKYO EXCHANGE; Thursday 03 November 2011 Culture Day
+20111123;TOKYO EXCHANGE; Wednesday 23 November 2011 Labour Thanksgiving
+20111223;TOKYO EXCHANGE; Friday 23 December 2011 Emperor's Birthday
 
 20091225;TORONTO EXCHANGE; Friday 25 december 2009
 20100101;TORONTO EXCHANGE; Friday 01 January 2010 New Years's Day
@@ -947,6 +1182,16 @@
 20101111;TORONTO EXCHANGE; Thursday 11 November 2010 Remembrance Day
 20101227;TORONTO EXCHANGE; Monday 27 December 2010 Christmas OBS
 20101228;TORONTO EXCHANGE; Tuesday 28 December 2010 Boxing Day OBS
+20110103;TORONTO EXCHANGE; 3 January 2011 New Year's Day
+20110221;TORONTO EXCHANGE; 21 February 2011 Family Day
+20110422;TORONTO EXCHANGE; Friday 22 April 2011 (Good Friday)
+20110523;TORONTO EXCHANGE; 23 may 2011 Victoria Day
+20110701;TORONTO EXCHANGE; 1 july 2011 Canada Day
+20110801;TORONTO EXCHANGE; 1 August 2011 Civic Holiday
+20110905;TORONTO EXCHANGE; 5 September 2011 Labour Day
+20111010;TORONTO EXCHANGE; 10 October 2011 Thanksgiving Day
+20111226;TOTONTO EXCHANGE; 26 December 2011 Christmas Day (In lieu of December 25)
+20111227;TOTONTO EXCHANGE; 27 December 2011 Boxing Day (In lieu of December 26)
 
 20091225;TORONTO VENTURE; Friday 25 december 2009
 20100101;TORONTO VENTURE; Friday 01 January 2010 New Years's Day
@@ -959,18 +1204,28 @@
 20101111;TORONTO VENTURE; Thursday 11 November 2010 Remembrance Day
 20101227;TORONTO VENTURE; Monday 27 December 2010 Christmas OBS
 20101228;TORONTO VENTURE; Tuesday 28 December 2010 Boxing Day OBS
-
-20100101;MILAN EXCHANGE; Friday 01 January 2010 New Year's Day
-20100402;MILAN EXCHANGE; Friday 02 April 2010 Good Friday
-20100405;MILAN EXCHANGE; Monday 05 April 2010 Easter Monday
-
+20110103;TORONTO VENTURE; 3 January 2011 New Year's Day
+20110221;TORONTO VENTURE; 21 February 2011 Family Day
+20110422;TORONTO VENTURE; Friday 22 April 2011 (Good Friday)
+20110523;TORONTO VENTURE; 23 may 2011 Victoria Day
+20110701;TORONTO VENTURE; 1 july 2011 Canada Day
+20110801;TORONTO VENTURE; 1 August 2011 Civic Holiday
+20110905;TORONTO VENTURE; 5 September 2011 Labour Day
+20111010;TORONTO VENTURE; 10 October 2011 Thanksgiving Day
+20111226;TOTONTO VENTURE; 26 December 2011 Christmas Day (In lieu of December 25)
+20111227;TOTONTO VENTURE; 27 December 2011 Boxing Day (In lieu of December 26)
 
 20100101;SWISS EXCHANGE; Friday 1 january 2010 New Year’s Day
 20100402;SWISS EXCHANGE; Friday 2 april 2010 Good Friday
 20100405;SWISS EXCHANGE; Monday 5 april 2010 Easter Monday
 20100513;SWISS EXCHANGE; jeudi 13 mai 2010 Ascension Day
 20100524;SWISS EXCHANGE; lundi 24 mai 2010 Whitmonday
-
+20110422;SWISS EXCHANGE; Friday 22 April 2011 (Good Friday)
+20110425;SWISS EXCHANGE; Monday 25 April 2011 (Easter Monday)
+20110602;SWISS EXCHANGE; Thursday 2 June 2011 Ascension Day
+20110613;SWISS EXCHANGE; Monday 13 June 2011 Whit Day
+20110801;SWISS EXCHANGE; Monday 1 August 2011 National Day
+20111226;SWISS EXCHANGE; Monday 26 december 2011 St.Stephen's Day
 
 20100101;TAIWAIN STOCK EXCHANGE; Friday 01 January 2010 New Year
 20100215;TAIWAIN STOCK EXCHANGE; Monday 15 February 2010 Chinese Lunar New Year
@@ -981,12 +1236,16 @@
 20100405;TAIWAIN STOCK EXCHANGE; Monday 05 April 2010 Tomb Sweeping Day
 20100616;TAIWAIN STOCK EXCHANGE; Wednesday 16 June 2010 Dragon Boat Festival
 20100922;TAIWAIN STOCK EXCHANGE; Wednesday 22 September 2010 Moon Festival
-
-
-
-
-
-
-
-
-
+20110131;TAIWAIN STOCK EXCHANGE; Monday 31 January 2011 No Trading
+20110201;TAIWAIN STOCK EXCHANGE; TUesday 1 February 2011 No Trading
+20110202;TAIWAIN STOCK EXCHANGE; Wednesday 2 February 2011 Lunar New Year’s Eve
+20110203;TAIWAIN STOCK EXCHANGE; Thursday 3 February 2011 Spring Festival
+20110204;TAIWAIN STOCK EXCHANGE; Friday 4 February 2011 Spring Festival
+20110207;TAIWAIN STOCK EXCHANGE; Monday 7 February 2011 Spring Festival
+20110228;TAIWAIN STOCK EXCHANGE; Monday 28 February 2011 Lunar New Year’s Eve
+20110404;TAIWAIN STOCK EXCHANGE; Monday 4 April 2011 Children’s Day
+20110405;TAIWAIN STOCK EXCHANGE; Tuesday 5 April 2011 Tomb-sweeping Day
+20110502;TAIWAIN STOCK EXCHANGE; Monday 2 May 2011 Labor Day
+20110606;TAIWAIN STOCK EXCHANGE; Monday 6 June 2011 Dragon Boat Festival
+20110912;TAIWAIN STOCK EXCHANGE; Monday 12 Sepember 2011 Mid-autumn Festival
+20111010;TAIWAIN STOCK EXCHANGE; Monday 10 October 2011 National Day
