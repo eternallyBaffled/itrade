@@ -75,6 +75,9 @@ class CSV(object):
     def parse(self,line,maxn):
         #debug('CSV::parse() before :%s' % line);
         line = line.strip()
+        if line == '':
+            # skip blank lines
+            return None
         line = line.split(';')
         #debug('CSV::parse() after :%s' % line);
         return line

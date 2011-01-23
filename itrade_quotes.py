@@ -1408,7 +1408,7 @@ class Quotes(object):
         if infile:
             self._addLines(infile,list=QLIST_BONDS,debug=False)
 
-        # them open and read user file
+        # then open and read user file
         infile = itrade_csv.read(None,os.path.join(itrade_config.dirUserData,'usrquotes.txt'))
         if infile:
             self._addLines(infile,list=QLIST_USER,debug=False)
@@ -1541,7 +1541,23 @@ def initQuotesModule():
 if __name__=='__main__':
     setLevel(logging.INFO)
 
+     # load configuration
+    import itrade_config
+    itrade_config.loadConfig()
+
+    from itrade_local import *
+    setLang('us')
+    gMessage.load()
+
+   # load extensions
+    import itrade_ext
+    itrade_ext.loadExtensions(itrade_config.fileExtData,itrade_config.dirExtData)
+
     initQuotesModule()
+
+    infile = itrade_csv.read(None,os.path.join(itrade_config.dirSymbData,'quotes.EURONEXT.txt'))
+    if infile:
+        quotes._addLines(infile,list=QLIST_ALL,debug=False)
 
     info('test1 %s' % quotes.lookupISIN('FR0000072621'));
     quote = quotes.lookupTicker('OSI','EURONEXT')
@@ -1555,11 +1571,11 @@ if __name__=='__main__':
     quote.loadTrades('import/Cortal-2005-01-07.txt')
     info('test6 %s' % quote.trades().trade('20050104'));
 
-    quotes.loadTrades('import/Cortal-2005-01-07.txt')
-    quotes.loadTrades('import/Cortal-2005-01-14.txt')
-    quotes.loadTrades('import/Cortal-2005-01-21.txt')
-    quote = quotes.lookupTicker('EADT','EURONEXT')
-    info('test7 %s' % quote.trades().trade('20050104'));
+#    quotes.loadTrades('import/Cortal-2005-01-07.txt')
+#    quotes.loadTrades('import/Cortal-2005-01-14.txt')
+#    quotes.loadTrades('import/Cortal-2005-01-21.txt')
+#    quote = quotes.lookupTicker('EADT','EURONEXT')
+#    info('test7 %s' % quote.trades().trade('20050104'));
 
 #    quotes.saveTrades()
 #    quotes.saveListOfQuotes(os.path.join(itrade_config.dirSymbData,'test.txt'))

@@ -366,7 +366,11 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
         count = 0
         for eachCtrl in quotes.list():
             if eachCtrl.list()==QLIST_INDICES:
-                self.wxIndicatorCtrl.Append(eachCtrl.name(),eachCtrl.isin())
+                #self.wxIndicatorCtrl.Append(eachCtrl.name(),eachCtrl.isin())
+                try:
+                    self.wxIndicatorCtrl.Append(eachCtrl.name(),eachCtrl.isin())
+                except:
+                    print 'eachCtrl:',eachCtrl
                 if eachCtrl.isin()==self.m_indice:
                     idx = count
                 count = count + 1

@@ -211,7 +211,7 @@ if __name__=='__main__':
     eval = p.computeOperations()
     info('cash : %f' % p.nv_cash())
     info('investissement : %f' % p.nv_invest())
-    info('evaluation : %f' % eval)
+#    info('evaluation : %f' % eval)
 
 # ============================================================================
 # That's all folks !
