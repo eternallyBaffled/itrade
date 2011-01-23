@@ -1391,7 +1391,8 @@ def cmdline_evaluatePortfolio(year=2006):
     print '... %s:%s:%s ' % (p.filename(),p.name(),p.accountref())
 
     print '--- build a matrix -----------'
-    m = createMatrix(p.filename(),p)
+#    m = createMatrix(p.filename(),p)
+    m = createMatrix(p.filename())
 
     print '--- liveupdate this matrix ---'
     m.update()

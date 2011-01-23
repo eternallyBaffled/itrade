@@ -70,6 +70,7 @@ class iTrade_SplashScreen(wx.SplashScreen):
 
         thread.start_new_thread(self.Run,())
 
+        #setLevel(logging.DEBUG)
         print '--- load current portfolio ---'
         self.m_portfolio = loadPortfolio()
         print 'Portfolio : %s:%s:%s:%s:%f ' % (self.m_portfolio.filename(),self.m_portfolio.name(),self.m_portfolio.accountref(),self.m_portfolio.market(),self.m_portfolio.vat())
