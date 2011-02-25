@@ -14,6 +14,7 @@ From iTrade source package, we recommend you to install :
  numpy       http://sourceforge.net/projects/numpy    v 1.1.x or better
  matplotlib  http://matplotlib.sourceforge.net        v 0.98.x or better
  xlrd        http://www.lexicon.net/sjmachin/xlrd.htm v 0.6.1 or better
+ restkit	 http://pypi.python.org/pypi/restkit/     v 2.1.4 or better
 
 Attention :
 If you have some trouble running iTrade after migrating from a previous version,
