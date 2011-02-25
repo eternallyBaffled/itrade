@@ -56,11 +56,11 @@ from itrade_candle import *
 class Trade(object):
     def __init__(self,trades,d,open,high,low,close,volume,idx):
         if d[4]=='-':
-            #debug('Trade::__init__():%s: %d %d %d' % (d,long(d[0:4]),long(d[5:7]),long(d[8:10])));
-            self.m_date = date(long(d[0:4]),long(d[5:7]),long(d[8:10]))
+            #debug('Trade::__init__():%s: %d %d %d' % (d,int(d[0:4]),int(d[5:7]),int(d[8:10])));
+            self.m_date = date(int(d[0:4]),int(d[5:7]),int(d[8:10]))
         else:
-            #debug('Trade::__init__():%s: %d %d %d' % (d,long(d[0:4]),long(d[4:6]),long(d[6:8])));
-            self.m_date = date(long(d[0:4]),long(d[4:6]),long(d[6:8]))
+            #debug('Trade::__init__():%s: %d %d %d' % (d,int(d[0:4]),int(d[4:6]),int(d[6:8])));
+            self.m_date = date(int(d[0:4]),int(d[4:6]),int(d[6:8]))
         self.m_open = float(open)
         if self.m_open<0.0: self.m_open=0.0
         self.m_close = float(close)
@@ -653,20 +653,27 @@ class Trades(object):
 if __name__=='__main__':
     setLevel(logging.INFO)
 
-    from itrade_quotes import quotes
+   # load extensions
+    import itrade_ext
+    itrade_ext.loadExtensions(itrade_config.fileExtData,itrade_config.dirExtData)
 
-    quote = quotes.lookupTicket('AUSY','EURONEXT');
-    info('test1 %s' % quote );
+    from itrade_quotes import quotes, initQuotesModule
+    initQuotesModule()
+    quotes.loadMarket('EURONEXT')
+    quotes.loadMarket('NASDAQ')
 
     quote = quotes.lookupTicker('AAPL','NASDAQ');
+    info('test1 %s' % quote );
+
+    quote = quotes.lookupTicker('OSI','EURONEXT');
     info('test2 %s' % quote );
 
-    trade = Trades(quote)
-    trade.load('import/Cortal-2005-01-07.txt')
-    trade.load('import/Cortal-2005-01-14.txt')
-    trade.load('import/Cortal-2005-01-21.txt')
+    trades = Trades(quote)
+    trades.load('import/Cortal-2005-01-07.txt')
+    trades.load('import/Cortal-2005-01-14.txt')
+    trades.load('import/Cortal-2005-01-21.txt')
 
-    info('test3 %s' % trade.trade('20050104'));
+    info('test3 %s' % trades.trade(date(2005,01,04)));
 
 # ============================================================================
 # That's all folks !

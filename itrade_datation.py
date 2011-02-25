@@ -134,7 +134,7 @@ class Calendar(object):
         if not isinstance(d,Datation):
             raise TypeError("parameter shall be date, Datation or string object")
 
-        debug('isopen %s ? %s ' % (d,self.m_closed))
+        #debug('isopen %s ? %s ' % (d,self.m_closed))
 
         # is it saturday or sunday ?
         if d.weekday()>=SATURDAY:
@@ -332,11 +332,11 @@ class Datation(object):
             self.m_date = d
         else:
             if d[4]=='-':
-                debug('Datation::__init__():%s: %d %d %d' % (d,long(d[0:4]),long(d[5:7]),long(d[8:10])));
-                self.m_date = date(long(d[0:4]),long(d[5:7]),long(d[8:10]))
+                #debug('Datation::__init__():%s: %d %d %d' % (d,int(d[0:4]),int(d[5:7]),int(d[8:10])));
+                self.m_date = date(int(d[0:4]),int(d[5:7]),int(d[8:10]))
             else:
-                debug('Datation::__init__():%s: %d %d %d' % (d,long(d[0:4]),long(d[4:6]),long(d[6:8])));
-                self.m_date = date(long(d[0:4]),long(d[4:6]),long(d[6:8]))
+                #debug('Datation::__init__():%s: %d %d %d' % (d,int(d[0:4]),int(d[4:6]),int(d[6:8])));
+                self.m_date = date(int(d[0:4]),int(d[4:6]),int(d[6:8]))
 
     def __str__(self):
         return '%4.4d%2.2d%2.2d' % (self.m_date.year,self.m_date.month,self.m_date.day)
@@ -402,8 +402,8 @@ except NameError:
 if __name__=='__main__':
     setLevel(logging.INFO)
 
-    info('test0 1==%s' % gCal.add('2004-12-31'));
-    info('test0 0==%s' % gCal.add('20041231'));
+    info('test0 1==%s' % gCal.addClosed('2004-12-31'));
+    info('test0 0==%s' % gCal.addClosed('20041231'));
 
     info('test1 0==%s' % gCal.isopen('2005-01-01'));
     info('test2 0==%s' % gCal.isopen('20050101'));

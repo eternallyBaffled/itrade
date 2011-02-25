@@ -300,13 +300,13 @@
 20100503;IRISH EXCHANGE; Monday 03 May 2010 May Bank Holiday
 20100607;IRISH EXCHANGE; Monday 07 June 2010 June BankHoliday
 20101227;IRISH EXCHANGE; Monday 27 december 2010 Public Holiday in lieu of Christmas Day
-20101228;IRISH EXCHANGE; Tuesday 28 december 2010 Public Holiday in lieu of St. Stephen’s Day
-20110103;IRISH EXCHANGE; Monday 3rd January 2011 In lieu of New Year’s Day
+20101228;IRISH EXCHANGE; Tuesday 28 december 2010 Public Holiday in lieu of St. Stephen's Day
+20110103;IRISH EXCHANGE; Monday 3rd January 2011 In lieu of New Year's Day
 20110422;IRISH EXCHANGE; Friday 22nd April 2011 Good Friday
 20110425;IRISH EXCHANGE; Monday 25th April 2011 Easter Monday
 20110502;IRISH EXCHANGE; Monday 2nd  May 2011 May Bank Holiday
 20110606;IRISH EXCHANGE; Monday 6th  June 2011 June Bank Holiday
-20111226;IRISH EXCHANGE; Monday 26th December 2011 St. Stephen’s Day
+20111226;IRISH EXCHANGE; Monday 26th December 2011 St. Stephen's Day
 20111227;IRISH EXCHANGE; Tuesday 27th December 2011 Public Holiday in lieu of Christmas Day
 
 20071224;FRANKFURT EXCHANGE; 24 december 2007
@@ -488,7 +488,7 @@
 20091012;SAO PAULO EXCHANGE; 12 october 2009
 20091102;SAO PAULO EXCHANGE; 2 november 2009
 20091225;SAO PAULO EXCHANGE; 25 december 2009
-20100101;SAO PAULO EXCHANGE; Friday 1 January 2010 New Year’s Day
+20100101;SAO PAULO EXCHANGE; Friday 1 January 2010 New Year's Day
 20100125;SAO PAULO EXCHANGE; Monday 25 January 2010 Sao Paulo City Anniversary (a city holiday)
 20100215;SAO PAULO EXCHANGE; Monday 15 February 2010 Carnival
 20100216;SAO PAULO EXCHANGE; Tuesday 16 February 2010 Carnival
@@ -498,10 +498,10 @@
 20100709;SAO PAULO EXCHANGE; Friday 9 July 2010 1932 Constitutionalist Revolution Day (state holiday)
 20100907;SAO PAULO EXCHANGE; Tuesday 7 September 2010 Independence Day
 20101012;SAO PAULO EXCHANGE; Tuesday 12 October 2010 Our Lady of Aparecida Day
-20101102;SAO PAULO EXCHANGE; Tuesday 2 November 2010 All Souls’ Day
+20101102;SAO PAULO EXCHANGE; Tuesday 2 November 2010 All Souls' Day
 20101115;SAO PAULO EXCHANGE; Monday 15 November 2010 Proclamation of the Republic Day
 20101224;SAO PAULO EXCHANGE; Friday 24 December 2010 Christmas Eve
-20101231;SAO PAULO EXCHANGE; Friday 31 December 2010 New Year’s Eve
+20101231;SAO PAULO EXCHANGE; Friday 31 December 2010 New Year's Eve
 20110125;SAO PAULO EXCHANGE; Tuesday 25 January 2011 Sao Paulo City Anniversary (a city holiday)
 20110307;SAO PAULO EXCHANGE; Monday 7 mars 2011 Carnival
 20110308;SAO PAULO EXCHANGE; Tuesday 8 mars 2011 Carnival
@@ -510,7 +510,7 @@
 20110623;SAO PAULO EXCHANGE; Thursday 23 June 2011 Corpus Christi Day
 20110907;SAO PAULO EXCHANGE; Wednesday 7 September 2011 Independence Day
 20111012;SAO PAULO EXCHANGE; Wednesday 12 October 2011 Our Lady of Aparecida Day
-20111102;SAO PAULO EXCHANGE; Wednesday 2 November 2011 All Souls’ Day
+20111102;SAO PAULO EXCHANGE; Wednesday 2 November 2011 All Souls' Day
 20111115;SAO PAULO EXCHANGE; Tuesday 15 November 2011 Proclamation of the Republic Day
 20111230;SAO PAULO EXCHANGE; Friday 30 december 2011 Last working day of the year (bank back offices to remain open) 
 
@@ -1036,7 +1036,7 @@
 20110912;KOREA STOCK EXCHANGE; Monday 12 September 2011 Korean Thanksgiving Day
 20110913;KOREA STOCK EXCHANGE; Tuesday 13 September 2011 Korean Thanksgiving Day
 20111003;KOREA STOCK EXCHANGE; Monday 3 October 2011 The National Foundation Day of Korea
-20111230;KOREA STOCK EXCHANGE; Friday 30 December New Year’s Eve
+20111230;KOREA STOCK EXCHANGE; Friday 30 December New Year's Eve
 
 20081225;KOREA KOSDAQ EXCHANGE; Thursday 25 december 2008
 20090101;KOREA KOSDAQ EXCHANGE; Thursday 01 january 2009
@@ -1066,7 +1066,7 @@
 20110912;KOREA KOSDAQ EXCHANGE; Monday 12 September 2011 Korean Thanksgiving Day
 20110913;KOREA KOSDAQ EXCHANGE; Tuesday 13 September 2011 Korean Thanksgiving Day
 20111003;KOREA KOSDAQ EXCHANGE; Monday 3 October 2011 The National Foundation Day of Korea
-20111230;KOREA KOSDAQ EXCHANGE; Friday 30 December New Year’s Eve
+20111230;KOREA KOSDAQ EXCHANGE; Friday 30 December New Year's Eve
 
 20090101;WIENER BORSE; Thursday 01 january 2009
 20090106;WIENER BORSE; Tuesday 06 january 2009
@@ -1215,7 +1215,7 @@
 20111226;TOTONTO VENTURE; 26 December 2011 Christmas Day (In lieu of December 25)
 20111227;TOTONTO VENTURE; 27 December 2011 Boxing Day (In lieu of December 26)
 
-20100101;SWISS EXCHANGE; Friday 1 january 2010 New Year’s Day
+20100101;SWISS EXCHANGE; Friday 1 january 2010 New Year's Day
 20100402;SWISS EXCHANGE; Friday 2 april 2010 Good Friday
 20100405;SWISS EXCHANGE; Monday 5 april 2010 Easter Monday
 20100513;SWISS EXCHANGE; jeudi 13 mai 2010 Ascension Day
@@ -1238,12 +1238,12 @@
 20100922;TAIWAIN STOCK EXCHANGE; Wednesday 22 September 2010 Moon Festival
 20110131;TAIWAIN STOCK EXCHANGE; Monday 31 January 2011 No Trading
 20110201;TAIWAIN STOCK EXCHANGE; TUesday 1 February 2011 No Trading
-20110202;TAIWAIN STOCK EXCHANGE; Wednesday 2 February 2011 Lunar New Year’s Eve
+20110202;TAIWAIN STOCK EXCHANGE; Wednesday 2 February 2011 Lunar New Year's Eve
 20110203;TAIWAIN STOCK EXCHANGE; Thursday 3 February 2011 Spring Festival
 20110204;TAIWAIN STOCK EXCHANGE; Friday 4 February 2011 Spring Festival
 20110207;TAIWAIN STOCK EXCHANGE; Monday 7 February 2011 Spring Festival
-20110228;TAIWAIN STOCK EXCHANGE; Monday 28 February 2011 Lunar New Year’s Eve
-20110404;TAIWAIN STOCK EXCHANGE; Monday 4 April 2011 Children’s Day
+20110228;TAIWAIN STOCK EXCHANGE; Monday 28 February 2011 Lunar New Year's Eve
+20110404;TAIWAIN STOCK EXCHANGE; Monday 4 April 2011 Children's Day
 20110405;TAIWAIN STOCK EXCHANGE; Tuesday 5 April 2011 Tomb-sweeping Day
 20110502;TAIWAIN STOCK EXCHANGE; Monday 2 May 2011 Labor Day
 20110606;TAIWAIN STOCK EXCHANGE; Monday 6 June 2011 Dragon Boat Festival
