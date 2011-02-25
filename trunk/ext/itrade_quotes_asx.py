@@ -4,7 +4,7 @@
 # Project Name : iTrade
 # Module Name  : itrade_quotes_asx.py
 #
-# Description: List of quotes from http://www.asx.com.au/resources/codes/index.htm
+# Description: List of quotes from asx.com.au : ASX
 # ASX - Australian Stock Exchange
 #
 # Developed for iTrade code (http://itrade.sourceforge.net).
@@ -44,11 +44,12 @@ import re
 import thread
 import time
 import string
+import restkit
 
 # iTrade system
 import itrade_config
-import itrade_excel
 from itrade_logging import *
+from itrade_isin import buildISIN,extractCUSIP
 from itrade_defs import *
 from itrade_ext import *
 from itrade_connection import ITradeConnection
@@ -65,11 +66,9 @@ def Import_ListOfQuotes_ASX(quotes,market='ASX',dlg=None,x=0):
                                proxyAuth = itrade_config.proxyAuthentication,
                                connectionTimeout = itrade_config.connectionTimeout
                                )
-    import xlrd
 
     if market=='ASX':
-        url = "http://www.asx.com.au/programs/ISIN.xls" # Excel file
-        n = 0
+        url = "http://www.asx.com.au/documents/resources/ISIN.xls" # is actually tab delimited
     else:
         return False
 
@@ -85,46 +84,32 @@ def Import_ListOfQuotes_ASX(quotes,market='ASX',dlg=None,x=0):
         return lines
 
     try:
-        data=connection.getDataFromUrl(url)
+        #data=connection.getDataFromUrl(url)
+        source = restkit.request(url, headers=[('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')])
+        data = source.body_string()       
     except:
         debug('Import_ListOfQuotes_ASX:unable to connect :-(')
         return False
 
     # returns the data
-    book = itrade_excel.open_excel(file=None,content=data)
-    sh = book.sheet_by_index(0)
+    lines = splitLines(data)
+    n = 0
 
-    #print 'Import_ListOfQuotes_ASX_%s:' % market,'book',book,'sheet',sh,'nrows=',sh.nrows
+    for line in lines[5:]:      # skip header lines (PeterMills> 2007-06-22)
+        data = string.split (line, '\t')    # tab delimited
+        if data[2]=='ORDINARY FULLY PAID':   # only want ordinary shares
+             quotes.addQuote(isin=data[3],name=data[1].replace(',',' '), \
+             ticker=data[0],market='ASX',currency='AUD',place='SYD',country='AU')
+             n = n + 1
 
-    for line in range(sh.nrows):
-        if sh.cell_type(line,1) != xlrd.XL_CELL_EMPTY:
-
-            if sh.cell_value(line,2)=='ORDINARY FULLY PAID':   # only want ordinary shares
-
-                isin = sh.cell_value(line,3)
-                
-                name = sh.cell_value(line,1)
-                
-                name = name.encode('cp1252') # must encode like that
-                
-                name = name.replace(',',' ')
-                
-                ticker = sh.cell_value(line,0)
-                
-                quotes.addQuote(isin = isin,name = name, \
-                ticker = ticker,market='ASX',currency='AUD',place='SYD',country='AU')
-
-                n = n + 1
-
-
-    print 'Imported %d lines from %s data.' % (n,market)
+    print 'Imported %d/%d lines from ASX data.' % (n,len(lines))
 
     return True
 # ============================================================================
 # Export me
 # ============================================================================
-if itrade_excel.canReadExcel:
-    registerListSymbolConnector('ASX','SYD',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_ASX)
+
+registerListSymbolConnector('ASX','SYD',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_ASX)
 
 # ============================================================================
 # Test ME
@@ -134,13 +119,9 @@ if __name__=='__main__':
     setLevel(logging.INFO)
 
     from itrade_quotes import quotes
-    
-    if itrade_excel.canReadExcel:
-        Import_ListOfQuotes_ASX(quotes,'ASX')
 
-        quotes.saveListOfQuotes()
-    else:
-        print 'XLRD package not installed :-('
+    Import_ListOfQuotes_ASX(quotes,'ASX')
+    quotes.saveListOfQuotes()
 
 # ============================================================================
 # That's all folks !

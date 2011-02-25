@@ -41,6 +41,7 @@ import re
 import thread
 import time
 import string
+import restkit
 
 # iTrade system
 import itrade_config
@@ -88,12 +89,11 @@ def Import_ListOfQuotes_LSE(quotes,market='LSE SETS',dlg=None,x=0):
     info('Import_ListOfQuotes_LSE_%s:connect to %s' % (market,url))
 
     try:
-        data = connection.getDataFromUrl(url)
+        source = restkit.request(url, headers=[('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')])
+        data = source.body_string()
     except:
         info('Import_ListOfQuotes_LSE_%s:unable to connect :-(' % market)
         return False
-
-    #print data[:250]
 
     # returns the data
     book = itrade_excel.open_excel(file=None,content=data)
