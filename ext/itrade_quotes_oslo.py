@@ -99,8 +99,8 @@ def Import_ListOfQuotes_OSLO(quotes,market='OSLO EXCHANGE',dlg=None,x=0):
         lines = splitLines(data)
 
         #typical line
-        #newt__ticker=ASC" title="">ABG Sundal Collier Holding</a></td><td class="c1 o">NO0003021909</td><td class="c2 l">ASC</td></tr><tr id="manamind_isinList__stock_table_table_r2" class="r2"><td class="c0 f"><a href="
-        
+        #newt__ticker=TFSO" title="">24Seven Technology Group</a></td><td class="c2">NO0010279474</td><td class="c3 o l">TFSO</td></tr><tr id="manamind_isinList__stock_table_table_r2" class="r2"><td class="c0 f"><div title="Aksjer på Oslo Børs"><img src="http://ose.asp.manamind.com/ob/images/markedssymbol-XOSL-tiny.png" width="8" height="8" /></div></td><td class="c1 o"><a href=
+
         for line in lines:
    
             if line.find('newt__ticker=')<> -1:
@@ -118,7 +118,7 @@ def Import_ListOfQuotes_OSLO(quotes,market='OSLO EXCHANGE',dlg=None,x=0):
                 name = name.replace('&Oslash;','OE')
                 name = name.replace('&amp;','&')
 
-                isin = line[line.index('class="c1 o">')+13:line.index('</td><td class="c2 l">')]
+                isin = line[line.index('class="c2">')+11:line.index('</td><td class="c3 o l">')]
 
 
                 #ok to proceed
