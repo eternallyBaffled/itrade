@@ -90,13 +90,13 @@ def Import_ListOfQuotes_Xetra(quotes,market='FRANKFURT EXCHANGE',dlg=None,x=0):
     lines = splitLines(data)
     n = 0
 
-    for line in lines[2:]:
+    for line in lines[7:]:
         data = string.split (line, ';')    # ; delimited
 
         if len(data) >5:
-            if data[8] in ('GER0','GER1','GER2','DAX1','MDAX1','SDX1','TDX1'):
-                name = data[0].replace(',','').replace('  ','').replace (' -','-').replace ('. ','.').replace(' + ','&').replace('+','&')
-                quotes.addQuote(isin=data[1],name=name,ticker=data[4],market='FRANKFURT EXCHANGE',currency='EUR',place='FRA',country='DE')
+            if data[9] in ('GER0'):
+                name = data[1].replace(',','').replace('  ','').replace (' -','-').replace ('. ','.').replace(' + ','&').replace('+','&')
+                quotes.addQuote(isin=data[2],name=name,ticker=data[5],market='FRANKFURT EXCHANGE',currency=data[37],place='FRA',country='DE')
                 n = n + 1
 
     print 'Imported %d/%d lines from %s data.' % (n,len(lines),'Deutsche Borse AG')
