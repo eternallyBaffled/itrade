@@ -68,7 +68,7 @@ def Import_ListOfQuotes_OMX(quotes,market='STOCKHOLM EXCHANGE',dlg=None,x=0):
     # find url to update list
     ch ='href="/digitalAssets/'
     try:
-        url = connection.getDataFromUrl('http://www.nasdaqomxnordic.com/News/listings/')
+        url = connection.getDataFromUrl('http://www.nasdaqomxnordic.com/shares?languadeID=1')
     except:
         info('Import_ListOfQuotes_OMX_%s:unable to get XLS file name :-(' % market)
         return False
@@ -82,7 +82,6 @@ def Import_ListOfQuotes_OMX(quotes,market='STOCKHOLM EXCHANGE',dlg=None,x=0):
 
 
     url = "http://www.nasdaqomxnordic.com/digitalAssets/" + endurl
-
     if market=='STOCKHOLM EXCHANGE':
         m_place='STO'
         country='SE'

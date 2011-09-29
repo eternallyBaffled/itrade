@@ -44,6 +44,7 @@ import thread
 import string
 import time
 import urllib
+import restkit
 
 # iTrade system
 import itrade_config
@@ -163,13 +164,26 @@ class LiveUpdate_RealTime(object):
         self.m_connected = False
         debug("LiveUpdate_Bousorama:getdata quote:%s market:%s" % (quote,self.m_market))
         ss = quote.ticker()
-        ss = ss.lower()
         #if ss =='^FCHI': ss='CAC'
         if ss =='^FCHI': ss='FR0003500008'
-        url = 'http://www.boursorama.com/recherche/index.phtml?search%5Bquery%5D='+ss+'&search%5Btype%5D=rapide&search%5Bcategorie%5D=STK&search%5Bbourse%5D=country%3A33'
+        
+        url = 'http://www.boursorama.com/recherche/index.phtml?search%5Bquery%5D='+ ss
+
         debug("LiveUpdate_Bousorama:getdata url=%s " ,url)
         try:
-            data=self.m_connection.getDataFromUrl(url)
+            source = urllib.urlopen(url)
+            data = source.read()
+            source.close()
+            
+            if '<a href="/cours.phtml?symbole=' in data:
+                presymbole = data[data.find('<a href="/cours.phtml?symbole=')+30:data.find('<a href="/cours.phtml?symbole=')+45]
+
+                ticker = presymbole[:presymbole.find('"><b>')]
+                url = 'http://www.boursorama.com/cours.phtml?symbole='+ ticker
+                source = restkit.request(url, headers=[('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')])
+                data = source.body_string()
+            else:
+                return None
         except:
             debug('LiveUpdate_Boursorama:unable to connect :-(')
             return None
@@ -194,6 +208,7 @@ class LiveUpdate_RealTime(object):
                 line = lines[n+9]
                 date_time = line[line.find('<td>')+4:line.find('</td>')]
                 date_time = date_time[:8]+' '+date_time[-8:]
+                #date_time = line[line.find('<td>')+4:line.find('&nbsp')]               
                 #print date_time
                 line = lines[n+13]
                 volume = line[line.find('<td>')+4:line.find('</td>')].replace(' ','')
