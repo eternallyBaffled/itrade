@@ -205,8 +205,8 @@ class LiveUpdate_RealTime(object):
                 percent = line[line.rfind('">')+2:line.find('%</span>')].replace(' ','')
                 #print percent
                 line = lines[n+15]
-                date_time = line[line.rfind('">')+2:line.find('</span>')]
-                #date_time = date_time[:8]+' '+date_time[-8:]
+                date_time = line[line.find('<td>')+4:line.find('</span>')]
+                date_time = date_time[:8]+' '+date_time[-8:]
                 #print date_time
                 line = lines[n+19]
                 volume = line[line.rfind('">')+2:line.find('</span>')].replace(' ','')
