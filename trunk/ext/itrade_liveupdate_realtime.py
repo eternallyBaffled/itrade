@@ -158,43 +158,40 @@ class LiveUpdate_RealTime(object):
 
         return "%d:%02d" % (mdatetime.hour,mdatetime.minute)
 
-    
-
     def getdata(self,quote):
         self.m_connected = False
         debug("LiveUpdate_Bousorama:getdata quote:%s market:%s" % (quote,self.m_market))
-        ss = quote.ticker()
-        #if ss =='^FCHI': ss='CAC'
-        if ss =='^FCHI': ss='PX1'
-        a = '- '+ss+'</span><span class="links"><div class="extra-links"><a href="/bourse/cours/graphiques/historique.phtml?symbole='
-        
-        url = 'http://www.boursorama.com/recherche/index.phtml?search%5Bquery%5D='+ ss
 
-        debug("LiveUpdate_Bousorama:getdata url=%s " ,url)
-        
+        isin = quote.isin()
+        if isin <> '' :
+            url = 'http://www.boursorama.com/recherche/index.phtml?search%5Bquery%5D='+ isin
+            
         try:
             source = restkit.request(url, headers=[('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')])
             data = source.body_string()
             
-            if a in data:
-                presymbol = data[data.find(a)+len(a):data.find(a)+len(a)+15]
-                ss= presymbol[:presymbol.find('">')]
-                url = 'http://www.boursorama.com/cours.phtml?symbole='+ ss
+            if 'class="isin-code">'+isin in data:
+                    
+                symbol = data[data.index('class="isin-code">'):data.index('">Graphique')]
+                symbol = symbol[symbol.find('symbole=')+ 8:]
+
+                url = 'http://www.boursorama.com/cours.phtml?symbole='+ symbol
+
                 source = restkit.request(url, headers=[('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')])
                 data = source.body_string()
-            else:
-                return None
         except:
             debug('LiveUpdate_Boursorama:unable to connect :-(')
             return None
-        data = data.replace('\t','')
+        
+        data = data.replace('\t','').replace ('</span>','')
         lines = self.splitLines(data)
-        n = - 1
-        for line in lines:
+        n = 279
+        
+        for line in lines[280:330]:
             n=n+1
             if '<table class="info-valeur list">' in line:
                 line = lines[n+6]
-                value = line[line.find('"cotation">')+11:line.find('</span>')]
+                value = line[line.find('"cotation">')+11:line.find('</b>')]
                 if '(' in value:
                     stat = value[value.find('(')+1:value.find(')')]
                 else :
@@ -202,30 +199,30 @@ class LiveUpdate_RealTime(object):
                 value = value.replace(' ','').replace('EUR','').replace('Pts','').replace('(s)','').replace('(c)','').replace('(h)','').replace('(u)','')
                 #print 'value:',value
                 line = lines[n+11]
-                percent = line[line.rfind('">')+2:line.find('%</span>')].replace(' ','')
+                percent = line[line.rfind('">')+2:line.find('%</td>')].replace(' ','')
                 #print percent
                 line = lines[n+15]
-                date_time = line[line.find('<td>')+4:line.find('</span>')]
+                date_time = line[line.find('<td>')+4:line.find('</td>')]
                 date_time = date_time[:8]+' '+date_time[-8:]
                 #print date_time
                 line = lines[n+19]
-                volume = line[line.rfind('">')+2:line.find('</span>')].replace(' ','')
+                volume = line[line.rfind('">')+2:line.find('</td>')].replace(' ','').replace('<td>','').replace('td>','')
                 if 'M' in line : volume  = '0'
                 if volume == '0' and quote.list()!=QLIST_INDICES:
                     debug('volume : no trade to day %s' % volume)
                     return None
-                #print volume
+                #print'volume:', volume
                 line = lines[n+23]
-                open = line[line.find('"cotation">')+11:line.find('</span>')].replace(' ','')
+                open = line[line.find('"cotation">')+11:line.find('</td>')].replace(' ','')
                 #print open
                 line = lines[n+27]
-                high = (line[line.find('"cotation">')+11:line.find('</span>')]).replace(' ','')
+                high = (line[line.find('"cotation">')+11:line.find('</td>')]).replace(' ','')
                 #print high
                 line = lines[n+31]
-                low = line[line.find('"cotation">')+11:line.find('</span>')].replace(' ','')
+                low = line[line.find('"cotation">')+11:line.find('</td>')].replace(' ','')
                 #print low
                 line = lines[n+35]
-                previous = line[line.find('"cotation">')+11:line.find('</span>')].replace(' ','')
+                previous = line[line.find('"cotation">')+11:line.find('</td>')].replace(' ','')
                 #print previous
                     
                 c_datetime = datetime.today()
@@ -242,7 +239,6 @@ class LiveUpdate_RealTime(object):
                 data = ';'.join([quote.key(),sdate,open,high,low,value,volume,percent])
 
                 return data
-
 
     # ---[ cache management on data ] ---
 
