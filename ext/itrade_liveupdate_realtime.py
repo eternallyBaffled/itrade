@@ -71,7 +71,7 @@ class LiveUpdate_RealTime(object):
         self.m_lastclock = 0
         self.m_lastdate = "20070101"
         self.m_market = market
-
+        self.isin_symbol = {}
         self.m_connection = ITradeConnection(cookies = None,
                                            proxy = itrade_config.proxyHostname,
                                            proxyAuth = itrade_config.proxyAuthentication,
@@ -158,35 +158,46 @@ class LiveUpdate_RealTime(object):
 
         return "%d:%02d" % (mdatetime.hour,mdatetime.minute)
 
+    
     def getdata(self,quote):
         self.m_connected = False
         debug("LiveUpdate_Bousorama:getdata quote:%s market:%s" % (quote,self.m_market))
 
         isin = quote.isin()
-        if isin <> '' :
-            url = 'http://www.boursorama.com/recherche/index.phtml?search%5Bquery%5D='+ isin
+        if isin != '' :
+            if  not isin in self.isin_symbol:
+                
+                url = 'http://www.boursorama.com/recherche/index.phtml?search%5Bquery%5D='+ isin
             
-        try:
-            source = restkit.request(url, headers=[('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')])
-            data = source.body_string()
+                try:
+                    source = restkit.request(url, headers=[('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')])
+                    data = source.body_string()
             
-            if 'class="isin-code">'+isin in data:
+                    if 'class="isin-code">'+isin in data:
                     
-                symbol = data[data.index('class="isin-code">'):data.index('">Graphique')]
-                symbol = symbol[symbol.find('symbole=')+ 8:]
+                        symbol = data[data.index('class="isin-code">'):data.index('">Graphique')]
+                        symbol = symbol[symbol.find('symbole=')+ 8:]
+                        #add in dictionary
+                        self.isin_symbol [isin] = symbol
+                except:
+                    debug('LiveUpdate_Boursorama:unable to connect :-(')
+                    return None
 
+            else:
+                symbol = self.isin_symbol[isin]
+                
+            try:
                 url = 'http://www.boursorama.com/cours.phtml?symbole='+ symbol
 
                 source = restkit.request(url, headers=[('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')])
                 data = source.body_string()
-        except:
-            debug('LiveUpdate_Boursorama:unable to connect :-(')
-            return None
+            except:
+                debug('LiveUpdate_Boursorama:unable to connect :-(')
+                return None
         
         data = data.replace('\t','').replace ('</span>','')
         lines = self.splitLines(data)
         n = 279
-        
         for line in lines[280:330]:
             n=n+1
             if '<table class="info-valeur list">' in line:
@@ -211,7 +222,6 @@ class LiveUpdate_RealTime(object):
                 if volume == '0' and quote.list()!=QLIST_INDICES:
                     debug('volume : no trade to day %s' % volume)
                     return None
-                #print'volume:', volume
                 line = lines[n+23]
                 open = line[line.find('"cotation">')+11:line.find('</td>')].replace(' ','')
                 #print open
@@ -239,7 +249,8 @@ class LiveUpdate_RealTime(object):
                 data = ';'.join([quote.key(),sdate,open,high,low,value,volume,percent])
 
                 return data
-
+        return None
+    
     # ---[ cache management on data ] ---
 
     def getcacheddata(self,quote):
