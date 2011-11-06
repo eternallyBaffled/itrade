@@ -607,6 +607,7 @@ class iTradeDialog(iTradeSizedDialog):
 def iTradeInformation(parent,text,caption=message('info_caption')):
     #dlg = HTMLDialog(parent=parent,caption=caption,text=text,buttons=OKButton(makedefault=1),image="box_info.png")
     dlg = iTradeDialog(parent=parent,caption=caption,text=text,style=wx.OK|wx.ICON_INFORMATION)
+    idRet = dlg.CentreOnParent()
     idRet = dlg.ShowModal()
     dlg.Destroy()
     return idRet
@@ -623,6 +624,7 @@ def iTradeInformation(parent,text,caption=message('info_caption')):
 def iTradeError(parent,text,caption=message('alert_caption')):
     #dlg = HTMLDialog(parent=parent,caption=caption,text=text,buttons=OKButton(makedefault=1),image="box_alert.png")
     dlg = iTradeDialog(parent=parent,caption=caption,text=text,style=wx.OK|wx.ICON_ERROR)
+    idRet = dlg.CentreOnParent()
     idRet = dlg.ShowModal()
     dlg.Destroy()
     return idRet
@@ -653,6 +655,7 @@ def iTradeYesNo(parent,text,caption,bCanCancel=False,bYesDefault=True):
         style = style | wx.NO_DEFAULT
 
     dlg = iTradeDialog(parent=parent,caption=caption,text=text,style=style)
+    idRet = dlg.CentreOnParent()
     idRet = dlg.ShowModal()
     dlg.Destroy()
     return idRet

@@ -834,6 +834,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
 
 def list_iTradeQuote(win,market=None):
     dlg = iTradeQuoteListCtrlDialog(win,market)
+    dlg.CentreOnParent()
     dlg.ShowModal()
     dlg.Destroy()
 

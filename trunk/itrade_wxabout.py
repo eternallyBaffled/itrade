@@ -259,6 +259,7 @@ if __name__=='__main__':
 
     app = wx.PySimpleApp()
     dlg = iTradeAboutBox(None)
+    dlg.CentreOnParent()
     dlg.ShowModal()
     dlg.Destroy()
     app.MainLoop()

@@ -809,6 +809,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
 
     def OnAbout(self,e):
         d = iTradeAboutBox(self)
+        d.CentreOnParent()
         d.ShowModal()
         d.Destroy()
 
