@@ -180,6 +180,7 @@ class iTradeConverterDialog(iTradeSizedDialog):
 
 def open_iTradeConverter(win, curSelected=(0, 1)):
     dlg = iTradeConverterDialog(win, curSelected)
+    dlg.CentreOnParent()
     dlg.ShowModal()
     dlg.Destroy()
 

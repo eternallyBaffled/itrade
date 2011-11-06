@@ -224,6 +224,7 @@ def addOrEditStops_iTradeQuote(win,quote,market,bAdd=True):
         print 'addOrEditStops_iTradeQuote() : Add?(%d) quote : %s' % (bAdd,quote)
 
         dlg = iTradeStopsDialog(win,quote,bAdd=bAdd)
+        idRet = dlg.CentreOnParent()
         idRet = dlg.ShowModal()
         dlg.Destroy()
         if idRet == wx.ID_OK:

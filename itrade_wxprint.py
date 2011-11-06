@@ -242,6 +242,7 @@ class iTrade_wxPanelPrint(object):
         psdd.CalculatePaperSizeFromId()
 
         dlg = wx.PageSetupDialog(self, psdd)
+        dlg.CentreOnParent()
         dlg.ShowModal()
 
         # this makes a copy of the wx.PrintData instead of just saving
