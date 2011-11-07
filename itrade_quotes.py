@@ -1043,6 +1043,7 @@ class Quote(object):
     def isOpen(self):
         return gCal.isopen(date.today(),self.m_market)
 
+
     # ---[ compute all the data ] ---
 
     def compute(self,todate=None):
@@ -1052,6 +1053,26 @@ class Quote(object):
 
     # ---[ Trends ] ---
 
+    def colorLine(self,d=None):
+        if self.m_percent == None:
+            if self.m_daytrades:
+                tc = self.nv_close(d)
+                tp = self.nv_prevclose(d)
+                if tc and tp:
+                    self.m_percent =((tc/tp)*100)-100
+                else:
+                    return QUOTE_INVALID
+            else:
+                return QUOTE_INVALID
+            
+        if self.m_percent > 0:
+            return QUOTE_GREEN
+        elif self.m_percent < 0:
+            return QUOTE_RED
+        else:
+            return QUOTE_NOCHANGE
+    
+
     def colorTrend(self,d=None):
         if self.m_daytrades:
             if d==None:
@@ -1060,19 +1081,22 @@ class Quote(object):
             else:
                 tc = self.m_daytrades.trade(d)
                 #print 'colorTrend: specific close : %.2f date : %s ' % (tc.nv_close(),tc.date())
+                
             tp = self.m_daytrades.prevtrade(d)
             if not tp:
                 return QUOTE_INVALID
-            #print 'colorTrend: previous close : %.2f date : %s ' % (tp.nv_close(),tp.date())
+            
             if tc.nv_close()==tp.nv_close():
-                #print 'colorTrend: no change '
-                return QUOTE_NOCHANGE
+                return self.colorLine()
+                
             elif tc.nv_close()<tp.nv_close():
-                #print 'colorTrend: RED '
-                return QUOTE_RED
+                return self.colorLine()
+                
+            elif tc.nv_close()>tp.nv_close():
+                return self.colorLine()
+                
             else:
-                #print 'colorTrend: GREEN '
-                return QUOTE_GREEN
+                return QUOTE_INVALID
         return QUOTE_INVALID
 
     def colorStop(self):
