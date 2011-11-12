@@ -86,11 +86,15 @@ def Import_ListOfQuotes_SAO(quotes,market='SAO PAULO EXCHANGE',dlg=None,x=0):
         lines = [removeCarriage(l) for l in lines]
         return lines
 
-    info('Import_ListOfQuotes_SAO_%s:connect to %s' % (market,url))
+    info('Import_ListOfQuotes_BOVESPA_%s:connect to %s' % (market,url))
     
-    urllib.urlretrieve(url,'Securities_Traded.zip')
-    zfile = zipfile.ZipFile('Securities_Traded.zip')
-    data = zfile.read('SECURITIES_TRADED.TXT')
+    try:
+        urllib.urlretrieve(url,'Securities_Traded.zip')
+        zfile = zipfile.ZipFile('Securities_Traded.zip')
+        data = zfile.read('SECURITIES_TRADED.TXT')
+    except:
+        debug('Import_ListOfQuotes_BOVESPA:unable to connect :-(')
+        return False
     
     # returns the data
     
