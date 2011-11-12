@@ -37,11 +37,14 @@
 # ============================================================================
 
 # python system
+import os
 import logging
 import re
 import thread
 import time
 import string
+import urllib
+import pyPdf
 
 # iTrade system
 import itrade_config
@@ -63,15 +66,14 @@ def Import_ListOfQuotes_MADRID(quotes,market='MADRID EXCHANGE',dlg=None,x=0):
                                proxyAuth = itrade_config.proxyAuthentication,
                                connectionTimeout = itrade_config.connectionTimeout
                                )
-    import xlrd
 
     if market=='MADRID EXCHANGE':
-        url = 'http://www.sbolsas.com/data/listadodevalores.xls'
+        url = 'http://www.sbolsas.com/data/listadodevalores.pdf'
     else:
         return False
 
     def splitLines(buf):
-        lines = string.split(buf, '\n')
+        lines = string.split(buf, cr)
         lines = filter(lambda x:x, lines)
         def removeCarriage(s):
             if s[-1]=='\r':
@@ -83,62 +85,49 @@ def Import_ListOfQuotes_MADRID(quotes,market='MADRID EXCHANGE',dlg=None,x=0):
 
     info('Import_ListOfQuotes_MADRID_%s:connect to %s' % (market,url))
 
+    f = 'listadodevalores.pdf'
+    n = 0
+
     try:
-        data = connection.getDataFromUrl(url)
+        urllib.urlretrieve(url, f)
     except:
         info('Import_ListOfQuotes_MADRID_%s:unable to connect :-(' % market)
         return False
 
-
     # returns the data
 
-    book = itrade_excel.open_excel(file=None,content=data)
-    sh = book.sheet_by_index(0)
-    n = 0
-    indice = {}
+    source = open(f, 'rb')
+    pdf = pyPdf.PdfFileReader(source)
 
-
-    for line in range(sh.nrows):
-        if sh.cell_type(line,1) != xlrd.XL_CELL_EMPTY:
-            if n==0:
-                for i in range(sh.ncols):
-                    val = sh.cell_value(line,i)
-                    indice[val] = i
-
-                    # be sure we have detected the title
-                    if val=='ISIN': n = n + 1
-
-                if n==1:
-
-                    iISIN = indice['ISIN']
-                    iTicker = indice['ISIN']-1
-                    iName = indice ['ISIN']+1
-
+    for page in pdf.pages:
+        
+        data = page.extractText()
+        cr = data[data.find('+')+ 2:data.find('+')+10]
+        lines =splitLines(data)
+        
+        for line in lines[1:]:
+            ticker = line[0:5]
+            ticker = ticker.strip()
+            if 'BBVA' in ticker and len(ticker)== 5:
+                pass
             else:
-
-                isin = sh.cell_value(line,iISIN)
-                ticker = sh.cell_value(line,iTicker)
-                ticker = ticker.strip()
-                if 'BBVA' in ticker and len(ticker)== 5:
-                    pass
-                else:
-                    ticker = ticker.replace('.','-')
-                    
-                    name = sh.cell_value(line,iName)
-                    if not 'LYX' in name:
-                        name = name.encode('cp1252')
-                        
-                        name = name.strip()
-                        name = name.replace(',',' ')
-                        name = name.replace('Ñ','N')
-                        name = name.replace('Ç','C')
-                        
-                        quotes.addQuote(isin=isin,name=name, \
-                            ticker=ticker,market=market,\
-                            currency='EUR',place='MAD',country='ES')
-                        n = n + 1
-    print 'Imported %d lines from %s' % (n-1,market)
-
+                ticker = ticker.replace('.','-')
+                isin = line[5:17]
+                name = line[18:30]
+                if not 'LYX' in name:
+                    name = name.encode('cp1252')
+                    name = name.strip()
+                    name = name.replace(',',' ')
+                    name = name.replace('Ñ','N')
+                    name = name.replace('Ç','C')
+                           
+                    quotes.addQuote(isin=isin,name=name, \
+                                ticker=ticker,market=market,\
+                                currency='EUR',place='MAD',country='ES')
+                    n = n + 1
+    print 'Imported %d lines from %s' % (n,market)
+    source.close()   
+    os.remove(f)
     return True
 
 # ============================================================================

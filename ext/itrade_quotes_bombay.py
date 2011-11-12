@@ -112,15 +112,15 @@ def Import_ListOfQuotes_BSE(quotes,market='BOMBAY EXCHANGE',dlg=None,x=0):
                 else :
                     #scrip_cd = line[(line.find("scripcode=")+10):(line.find ('"'))]
                     name = line[(line.find('>')+1):(line.find ('</a></td><td'))]
-
-                    if 'Fund' in name or 'Maturity' in name :
+                    name = name.upper()
+                    if 'FUND' in name or 'MATURYTY' in name :
                         pass
                     else :
                         ticker = line[(line.find('<u>')+3):(line.find ('</u>'))]
                         n = n + 1
                         
                         #Partial activation of the Progressbar
-                        dlg.Update(x,'B S E : %s /~3400' %n)
+                        dlg.Update(x,'B S E : %s /~3600' %n)
 
                         quotes.addQuote(isin=isin,name=name, \
                             ticker=ticker,market='BOMBAY EXCHANGE',currency='INR',place='BSE',country='IN')
