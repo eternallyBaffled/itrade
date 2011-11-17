@@ -45,6 +45,7 @@ import string
 import time
 import urllib
 import restkit
+import cPickle
 
 # iTrade system
 import itrade_config
@@ -67,11 +68,11 @@ class LiveUpdate_RealTime(object):
         self.m_livelock = thread.allocate_lock()        
         self.m_conn = None
         self.m_clock = {}
+        self.m_dateindice = {}
         self.m_dcmpd = {}
         self.m_lastclock = 0
         self.m_lastdate = "20070101"
         self.m_market = market
-        self.isin_symbol = {}
         self.m_connection = ITradeConnection(cookies = None,
                                            proxy = itrade_config.proxyHostname,
                                            proxyAuth = itrade_config.proxyAuthentication,
@@ -157,6 +158,64 @@ class LiveUpdate_RealTime(object):
         mdatetime = convertConnectorTimeToPlaceTime(mdatetime,self.timezone(),place)
 
         return "%d:%02d" % (mdatetime.hour,mdatetime.minute)
+    
+
+    # must to declare isin_symbol 'global'
+    
+    global isin_symbol
+
+    try:
+        select_isin = []
+        isin_symbol = {}
+        
+        # try to open dictionnary of ticker_bourso.txt
+        f = open(os.path.join(itrade_config.dirUserData,'ticker_bourso.txt'),'r')
+        isin_symbol = cPickle.load(f)
+        f.close()
+
+    except:
+
+        # read isin codes of properties.txt file in directory usrdata
+        
+        try:
+            source = open(os.path.join(itrade_config.dirUserData,'properties.txt'),'r')
+            source.close()
+
+            for linedata in data:
+                if 'live;realtime' in linedata:
+                
+                    isin = linedata[:linedata.find('.')]
+                    select_isin.append(isin)
+
+            # extract pre_symbol
+
+            for isin in select_isin:
+
+                url = 'http://www.boursorama.com/recherche/index.phtml?search%5Bquery%5D='+ isin
+
+                try:
+                    source = restkit.request(url, headers=[('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')])
+                    data_symbol = source.body_string()
+
+                    if 'class="isin-code">'+isin in data_symbol:
+                            
+                            
+                        symbol = data_symbol[data_symbol.index('class="isin-code">'):data_symbol.index('">Graphique')]
+                        symbol = symbol[symbol.find('symbole=')+ 8:]
+                            
+                        isin_symbol [isin] = symbol
+
+                    else:
+                        pass
+                except:
+                    pass
+
+            dic = open(os.path.join(itrade_config.dirUserData,'ticker_bourso.txt'), 'w')
+            cPickle.dump(isin_symbol,dic)
+            dic.close()
+        
+        except:
+            pass
 
     
     def getdata(self,quote):
@@ -164,41 +223,56 @@ class LiveUpdate_RealTime(object):
         debug("LiveUpdate_Bousorama:getdata quote:%s market:%s" % (quote,self.m_market))
 
         isin = quote.isin()
+
+        # add a value, default is yahoo connector
+        # with realtime connector, must to have pre_symbol to extract quote
+
         if isin != '' :
-            if  not isin in self.isin_symbol:
-                
+            if  not isin in isin_symbol:
+
                 url = 'http://www.boursorama.com/recherche/index.phtml?search%5Bquery%5D='+ isin
-            
-                try:
+                
+                try: 
                     source = restkit.request(url, headers=[('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')])
                     data = source.body_string()
-            
+
                     if 'class="isin-code">'+isin in data:
-                    
+
                         symbol = data[data.index('class="isin-code">'):data.index('">Graphique')]
                         symbol = symbol[symbol.find('symbole=')+ 8:]
-                        #add in dictionary
-                        self.isin_symbol [isin] = symbol
+
+                        isin_symbol [isin] = symbol
+
+                        dic = open(os.path.join(itrade_config.dirUserData,'ticker_bourso.txt'), 'w')
+                        cPickle.dump(isin_symbol,dic)
+                        dic.close()
+
+                    else:
+                        pass
+
                 except:
                     debug('LiveUpdate_Boursorama:unable to connect :-(')
                     return None
+        else:
+            return None
 
-            else:
-                symbol = self.isin_symbol[isin]
-                
-            try:
-                url = 'http://www.boursorama.com/cours.phtml?symbole='+ symbol
+        symbol = isin_symbol[isin]
 
-                source = restkit.request(url, headers=[('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')])
-                data = source.body_string()
-            except:
-                debug('LiveUpdate_Boursorama:unable to connect :-(')
-                return None
-        
+        # extract all datas
+
+        try:
+            url = 'http://www.boursorama.com/cours.phtml?symbole='+ symbol
+
+            source = restkit.request(url, headers=[('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')])
+            data = source.body_string()
+        except:
+            debug('LiveUpdate_Boursorama:unable to connect :-(')
+            return None
+
         data = data.replace('\t','').replace ('</span>','')
         lines = self.splitLines(data)
-        n = 279
-        for line in lines[280:330]:
+        n = 159
+        for line in lines[160:210]:
             n=n+1
             if '<table class="info-valeur list">' in line:
                 line = lines[n+6]
@@ -207,50 +281,51 @@ class LiveUpdate_RealTime(object):
                     stat = value[value.find('(')+1:value.find(')')]
                 else :
                     stat = ''
-                value = value.replace(' ','').replace('EUR','').replace('Pts','').replace('(s)','').replace('(c)','').replace('(h)','').replace('(u)','')
-                #print 'value:',value
+
+                last = value.replace(' ','').replace('EUR','').replace('Pts','').replace('(s)','').replace('(c)','').replace('(h)','').replace('(u)','')
+
                 line = lines[n+11]
                 percent = line[line.rfind('">')+2:line.find('%</td>')].replace(' ','')
-                #print percent
+
                 line = lines[n+15]
                 date_time = line[line.find('<td>')+4:line.find('</td>')]
                 date_time = date_time[:8]+' '+date_time[-8:]
-                #print date_time
+
                 line = lines[n+19]
                 volume = line[line.rfind('">')+2:line.find('</td>')].replace(' ','').replace('<td>','').replace('td>','')
                 if 'M' in line : volume  = '0'
                 if volume == '0' and quote.list()!=QLIST_INDICES:
-                    debug('volume : no trade to day %s' % volume)
+                    #info('volume : no trade to day %s' % volume)
                     return None
                 line = lines[n+23]
-                open = line[line.find('"cotation">')+11:line.find('</td>')].replace(' ','')
-                #print open
+                first = line[line.find('"cotation">')+11:line.find('</td>')].replace(' ','')
+
                 line = lines[n+27]
                 high = (line[line.find('"cotation">')+11:line.find('</td>')]).replace(' ','')
-                #print high
+
                 line = lines[n+31]
                 low = line[line.find('"cotation">')+11:line.find('</td>')].replace(' ','')
-                #print low
+
                 line = lines[n+35]
                 previous = line[line.find('"cotation">')+11:line.find('</td>')].replace(' ','')
-                #print previous
-                    
+
                 c_datetime = datetime.today()
                 c_date = "%04d%02d%02d" % (c_datetime.year,c_datetime.month,c_datetime.day)
-                        
+
                 sdate,sclock = self.BoursoDate(date_time)
 
                 # be sure not an oldest day !
                 if (c_date==sdate) or (quote.list() == QLIST_INDICES):
                     key = quote.key()
                     self.m_dcmpd[key] = sdate
+                    self.m_dateindice[key] = str(sdate[6:8]) + '/' + str(sdate[4:6]) + '/' +str(sdate[0:4])
                     self.m_clock[key] = self.convertClock(quote.place(),sclock,sdate)
-                    
-                data = ';'.join([quote.key(),sdate,open,high,low,value,volume,percent])
+
+                data = ';'.join([quote.key(),sdate,first,high,low,last,volume,percent])
 
                 return data
         return None
-    
+
     # ---[ cache management on data ] ---
 
     def getcacheddata(self,quote):
@@ -318,6 +393,13 @@ class LiveUpdate_RealTime(object):
         else:
             return self.m_clock[key]
 
+    def currentDate(self,quote=None):
+        key = quote.key()
+        if not self.m_dateindice.has_key(key):
+            # no date for this quote !
+            return "----"
+        else:
+            return self.m_dateindice[key]
 
     def currentTrades(self,quote):
         # clock,volume,value

@@ -63,7 +63,7 @@ class LiveUpdate_yahoo(object):
 
         self.m_connected = False
         self.m_livelock = thread.allocate_lock()
-
+        self.m_dateindice = {}
         self.m_clock = {}
         self.m_dcmpd = {}
         self.m_lastclock = 0
@@ -132,9 +132,14 @@ class LiveUpdate_yahoo(object):
         val = (int(hour)*60) + int(min)
         per = clock[-2:]
         if per=='pm':
-            if hour < 12:
+            if int(hour) < 12:
                 val = val + 12*60
-        #print clock,clo,hour,min,val,per
+        elif per == 'am':
+            if int(hour) >= 12:
+                val = val - 12*60
+
+        #print clock,clo,hour,min,val,per,date
+
         if val>self.m_lastclock and date>=self.m_lastdate:
             self.m_lastdate = date
             self.m_lastclock = val
@@ -214,6 +219,7 @@ class LiveUpdate_yahoo(object):
             date = self.yahooDate(sdata[2])
             self.m_dcmpd[key] = sdata
             self.m_clock[key] = self.convertClock(quote.place(),sclock,date)
+            self.m_dateindice[key] = sdata[2].replace('"','')
         except ValueError:
             if itrade_config.verbose:
                 info('invalid datation for %s : %s %s' % (quote.ticker(),sclock,sdata[2]))
@@ -336,17 +342,25 @@ class LiveUpdate_yahoo(object):
 
     def currentClock(self,quote=None):
         if quote==None:
-            if self.m_lastclock==0:
+            if self.m_lastclock == 0:
                 return "::"
             # hh:mm
             return "%d:%02d" % (self.m_lastclock/60,self.m_lastclock%60)
-        #
+
         key = quote.key()
         if not self.m_clock.has_key(key):
             # no data for this quote !
             return "::"
         else:
             return self.m_clock[key]
+
+    def currentDate(self,quote=None):
+        key = quote.key()
+        if not self.m_dateindice.has_key(key):
+            # no date for this quote !
+            return "----"
+        else:
+            return self.m_dateindice[key]
 
     def currentTrades(self,quote):
         # clock,volume,value

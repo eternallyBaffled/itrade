@@ -70,6 +70,7 @@ class LiveUpdate_Euronext(object):
         self.m_data = None
 
         self.m_clock = {}
+        self.m_dateindice = {}
         self.m_dcmpd = {}
         self.m_lastclock = 0
         self.m_lastdate = "20070101"
@@ -207,7 +208,6 @@ class LiveUpdate_Euronext(object):
         query = map(lambda (var, val): '%s=%s' % (var, str(val)), query)
         query = string.join(query, '&')
         url = self.m_url + '?' + query
-
         debug("LiveUpdate_Euronext:getdata: url=%s ",url)
         try:
             buf=self.m_connection.getDataFromUrl(url)
@@ -297,6 +297,7 @@ class LiveUpdate_Euronext(object):
                             if (c_date==sdate) or (quote.list() == QLIST_INDICES):
                                 key = quote.key()
                                 self.m_dcmpd[key] = sdate
+                                self.m_dateindice[key] = str(sdate[6:8]) + '/' + str(sdate[4:6]) + '/' +str(sdate[0:4])
                                 self.m_clock[key] = self.convertClock(quote.place(),sclock,sdate)
 
                             #
@@ -327,7 +328,7 @@ class LiveUpdate_Euronext(object):
 
                             return data
                     else:
-                        print sdata
+                        #print sdata
                         pass
 
         return None
@@ -386,6 +387,14 @@ class LiveUpdate_Euronext(object):
             return "::"
         else:
             return self.m_clock[key]
+
+    def currentDate(self,quote=None):
+        key = quote.key()
+        if not self.m_dateindice.has_key(key):
+            # no date for this quote !
+            return "----"
+        else:
+            return self.m_dateindice[key]
 
 # ============================================================================
 # Export me
