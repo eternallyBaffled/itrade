@@ -296,14 +296,16 @@ class iTradeMainToolbar(wx.ToolBar):
         self.m_indicator.ChangeValue(label)
 
     def SetIndicator(self,market,connector,indice):
+
         clock = connector.currentClock(indice)
+        dateclock = connector.currentDate(indice)
         if clock=="::":
-            label = " " + indice.market() + ": " + message('indicator_disconnected')
+            label = " " + indice.market() + " : " + message('indicator_disconnected')
             self.m_indicator.SetBackgroundColour(cDISCONNECTED)
         else:
-            label = " " + indice.market() + "- " + clock
+            label = " " + indice.market() + " - " + dateclock+ " - " + clock
             if indice:
-                label = label + " - " + indice.name() + ": "+ indice.sv_close()+ " (" + indice.sv_percent()+ " )"
+                label = label + "  -  " + indice.name() + " : "+ indice.sv_close()+ "  ( " + indice.sv_percent()+ " )"
             if label==self.m_indicator.GetValue():
                 self.m_indicator.SetBackgroundColour(cCONNECTED)
             else:

@@ -64,7 +64,7 @@ class LiveUpdate_yahoojp(object):
         debug('LiveUpdate_yahoojp:__init__')
         self.m_connected = False
         self.m_livelock = thread.allocate_lock()
-
+        self.m_dateindice = {}
         self.m_clock = {}
         self.m_dcmpd = {}
         self.m_lastclock = 0
@@ -158,7 +158,6 @@ class LiveUpdate_yahoojp(object):
 
         sname = yahooTicker(quote.ticker(),quote.market(),quote.place())
         ss = sname
-        
         url = yahooUrlJapan(quote.market(),live=True) + '?' +'s=%s&d=v2' % (ss)
 
         debug("LiveUpdate_yahoojp:getdata: url=%s",url)
@@ -169,17 +168,12 @@ class LiveUpdate_yahoojp(object):
             data = data.replace('</td>','\n')
             lines = self.splitLines(data)
 
-
-            date = time.strftime('%m/%d/%Y')
-            frenchhour = time.strftime('%H:%M')
-
-
             # returns the data
             
             for line in lines:
                 if 'uncompressed' in line:
                     year = line[line.find('JST ')+4:line.find(' -->')]
-                else : year = '2009'
+                else : year = '0000'
 
                    
                 
@@ -220,11 +214,11 @@ class LiveUpdate_yahoojp(object):
                     if i == 1:
                         date_time = line[len(ch):]
                         if date_time.find(':')<> -1:
-                            #print "c'est l'heure de la dernière cotation"
+                            #print "last clock"
                             sclock = '"'+date_time+'"'
                             date = local_date
                         else :
-                            #print "c'est la date de la dernière cotation"
+                            #print "last date"
                             if date_time == '---':
                                 date = 'N/A'
                             else:
@@ -282,6 +276,7 @@ class LiveUpdate_yahoojp(object):
 
 
             sdata = string.split (data, ',')
+
             if len (sdata) < 9:
                 if itrade_config.verbose:
                     info('invalid data (bad answer length) for %s quote' % (quote.ticker()))
@@ -311,6 +306,8 @@ class LiveUpdate_yahoojp(object):
                 date = self.yahooDate(sdata[2])
                 self.m_dcmpd[key] = sdata
                 self.m_clock[key] = self.convertClock(quote.place(),sclock,date)
+                self.m_dateindice[key] = sdata[2].replace('"','')
+
             except ValueError:
                 if itrade_config.verbose:
                     info('invalid datation for %s : %s : %s' % (quote.ticker(),sclock,sdata[2]))
@@ -442,6 +439,14 @@ class LiveUpdate_yahoojp(object):
             return "::"
         else:
             return self.m_clock[key]
+
+    def currentDate(self,quote=None):
+        key = quote.key()
+        if not self.m_dateindice.has_key(key):
+            # no date for this quote !
+            return "-/-/-"
+        else:
+            return self.m_dateindice[key]
 
     def currentTrades(self,quote):
         # clock,volume,value

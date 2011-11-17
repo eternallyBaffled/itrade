@@ -192,7 +192,8 @@ if not os.path.exists(dirRes):
     raise('invalid installation ! %s folder does not exist !' % dirRes)
 
 # number of trading years
-numTradeYears = 12
+#numTradeYears = 12
+numTradeYears = 2
 
 # refresh in seconds for a view
 refreshView = 6
