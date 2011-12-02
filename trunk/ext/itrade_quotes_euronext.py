@@ -58,7 +58,8 @@ from itrade_connection import ITradeConnection
 # ============================================================================
 
 def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT',dlg=None,x=0):
-    print 'Update %s list of symbols' % market
+    if itrade_config.verbose:
+        print 'Update %s list of symbols' % market
     connection = ITradeConnection(cookies = None,
                                proxy = itrade_config.proxyHostname,
                                proxyAuth = itrade_config.proxyAuthentication,
@@ -189,8 +190,10 @@ def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT',dlg=None,x=0):
                                 print 'invalid ISIN :',data[iISIN],'>>>',data
 
             else:
-                print len(data),'>>>',data
-        print 'Imported %d/%d lines from %s data.' % (count,len(lines),market)
+                #print len(data),'>>>',data
+                pass
+        if itrade_config.verbose:
+            print 'Imported %d/%d lines from %s' % (count,len(lines),market)
             
 
     return True

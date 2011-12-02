@@ -57,7 +57,8 @@ from itrade_connection import ITradeConnection
 # ============================================================================
 
 def Import_ListOfQuotes_WBO(quotes,market='WIENER BORSE',dlg=None,x=0):
-    print 'Update %s list of symbols' % market
+    if itrade_config.verbose:
+        print 'Update %s list of symbols' % market
     connection=ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
@@ -138,8 +139,8 @@ def Import_ListOfQuotes_WBO(quotes,market='WIENER BORSE',dlg=None,x=0):
                     
                     count = count + 1
 
-
-    print 'Imported %d lines from WIENER BORSE' % (count)
+    if itrade_config.verbose:
+        print 'Imported %d lines from WIENER BORSE' % (count)
 
     return True
 

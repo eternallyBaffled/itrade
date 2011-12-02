@@ -58,7 +58,8 @@ from itrade_connection import ITradeConnection
 # ============================================================================
 
 def Import_ListOfQuotes_SHG(quotes,market='SHANGHAI EXCHANGE',dlg=None,x=0):
-    print 'Update %s list of symbols' % market
+    if itrade_config.verbose:
+        print 'Update %s list of symbols' % market
     connection=ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
@@ -199,8 +200,8 @@ def Import_ListOfQuotes_SHG(quotes,market='SHANGHAI EXCHANGE',dlg=None,x=0):
                     name = name[:-5]
 
                 
-                                    
-    print 'Imported %d lines from SHANGHAI EXCHANGE data.' %count
+    if itrade_config.verbose:                                    
+        print 'Imported %d lines from SHANGHAI EXCHANGE' %count
 
 
         

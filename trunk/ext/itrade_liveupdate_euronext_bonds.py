@@ -407,7 +407,6 @@ try:
     
 except NameError:
     gLiveEuronext = LiveUpdate_Euronext_bonds()
-
 registerLiveConnector('EURONEXT','PAR',QLIST_BONDS,QTAG_LIVE,gLiveEuronext,bDefault=True)
 registerLiveConnector('EURONEXT','BRU',QLIST_BONDS,QTAG_LIVE,gLiveEuronext,bDefault=True)
 registerLiveConnector('EURONEXT','AMS',QLIST_BONDS,QTAG_LIVE,gLiveEuronext,bDefault=True)

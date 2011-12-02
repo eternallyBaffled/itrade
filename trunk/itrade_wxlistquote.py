@@ -798,7 +798,6 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         idRet = iTradeYesNo(self, message('listquote_clear_confirm')%(market,txt), message('listquote_clear_confirm_title'))
         if idRet == wx.ID_YES:
             wx.SetCursor(wx.HOURGLASS_CURSOR)
-            print 'self.m_market,self.m_qlist:',self.m_market,self.m_qlist
             quotes.removeQuotes(self.m_market,self.m_qlist)
             self.m_dirty = True
             self.PopulateList()

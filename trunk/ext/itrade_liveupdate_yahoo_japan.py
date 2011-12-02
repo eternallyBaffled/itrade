@@ -348,8 +348,11 @@ class LiveUpdate_yahoojp(object):
             if volume==0 and quote.list()!=QLIST_INDICES:
                 debug('volume : invalid zero value %d' % volume)
                 return None
-
-            percent = (change / (value - change))*100.0
+            else:
+                if value-change <= 0:
+                    return None
+                else:
+                    percent = (change / (value - change))*100.0
 
             # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME;PERCENT;PREVIOUS
             data = (

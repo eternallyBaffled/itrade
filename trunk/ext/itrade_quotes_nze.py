@@ -59,7 +59,8 @@ from itrade_connection import ITradeConnection
 
 
 def Import_ListOfQuotes_NZE(quotes,market='NEW ZEALAND EXCHANGE',dlg=None,x=0):
-    print 'Update %s list of symbols' % market
+    if itrade_config.verbose:
+        print 'Update %s list of symbols' % market
     connection=ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
@@ -113,8 +114,8 @@ def Import_ListOfQuotes_NZE(quotes,market='NEW ZEALAND EXCHANGE',dlg=None,x=0):
                         # ok to proceed
                         quotes.addQuote(isin=isin,name=name, \
                         ticker=ticker,market='NEW ZEALAND EXCHANGE',currency='NZD',place='NZE',country='NZ')
-
-    print 'Imported %d lines from NEW ZEALAND EXCHANGE data.' % (count)
+    if itrade_config.verbose:
+        print 'Imported %d lines from NEW ZEALAND EXCHANGE' % (count)
 
     return True
 

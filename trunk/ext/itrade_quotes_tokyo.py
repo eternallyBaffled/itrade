@@ -60,7 +60,8 @@ from itrade_connection import ITradeConnection
 # ============================================================================
 
 def Import_ListOfQuotes_TKS(quotes,market='TOKYO EXCHANGE',dlg=None,x=0):
-    print 'Update %s list of symbols' % market
+    if itrade_config.verbose:
+        print 'Update %s list of symbols' % market
     connection=ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
@@ -111,7 +112,6 @@ def Import_ListOfQuotes_TKS(quotes,market='TOKYO EXCHANGE',dlg=None,x=0):
         conn = httplib.HTTPConnection(host,80)
         conn.request("GET",url,None,headers)
         response = conn.getresponse()
-        #print response.status, response.reason
         data = response.read()
         lines = splitLines(data)
         response.close()
@@ -131,7 +131,6 @@ def Import_ListOfQuotes_TKS(quotes,market='TOKYO EXCHANGE',dlg=None,x=0):
                 name = line[(line.find('"lst">')+6):(line.find ('</a>'))]
                 name = name.replace(',','')
                 name = name.replace('  ',' ')
-                #print name,ticker
                 
                 # ok to proceed
                 
@@ -142,8 +141,8 @@ def Import_ListOfQuotes_TKS(quotes,market='TOKYO EXCHANGE',dlg=None,x=0):
                 place = 'TKS',country = 'JP')
         if q == 0:
             break
-
-    print 'Imported %d lines from TOKYO EXCHANGE' % (count)
+    if itrade_config.verbose:
+        print 'Imported %d lines from TOKYO EXCHANGE' % (count)
 
     return True
 

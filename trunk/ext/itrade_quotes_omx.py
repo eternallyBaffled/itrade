@@ -58,7 +58,8 @@ from itrade_connection import ITradeConnection
 # ============================================================================
 
 def Import_ListOfQuotes_OMX(quotes,market='STOCKHOLM EXCHANGE',dlg=None,x=0):
-    print 'Update %s list of symbols' % market
+    if itrade_config.verbose:
+        print 'Update %s list of symbols' % market
     connection=ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
@@ -132,7 +133,6 @@ def Import_ListOfQuotes_OMX(quotes,market='STOCKHOLM EXCHANGE',dlg=None,x=0):
                     if val=='ISIN': n = n + 1
 
                 if n==1:
-                    #if itrade_config.verbose: print 'Indice:',indice
 
                     iISIN = indice['ISIN']
                     iTicker = indice['Short Name']
@@ -177,8 +177,8 @@ def Import_ListOfQuotes_OMX(quotes,market='STOCKHOLM EXCHANGE',dlg=None,x=0):
                     quotes.addQuote(isin = isin,name = name,ticker = ticker,market = market,currency=currency,place=place,country=country)
 
                     n = n + 1
-
-    print 'Imported %d/%d lines from %s data.' % (n-1,sh.nrows,market)
+    if itrade_config.verbose:
+        print 'Imported %d/%d lines from %s' % (n-1,sh.nrows,market)
 
     return True
 

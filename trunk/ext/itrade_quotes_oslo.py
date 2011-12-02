@@ -57,7 +57,8 @@ from itrade_connection import ITradeConnection
 # ============================================================================
 
 def Import_ListOfQuotes_OSLO(quotes,market='OSLO EXCHANGE',dlg=None,x=0):
-    print 'Update %s list of symbols' % market
+    if itrade_config.verbose:
+        print 'Update %s list of symbols' % market
     connection=ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
@@ -132,8 +133,8 @@ def Import_ListOfQuotes_OSLO(quotes,market='OSLO EXCHANGE',dlg=None,x=0):
                             currency='NOK',place='OSL',country='NO')
 
                 nlines = nlines + 1
-
-    print 'Imported %d lines from OSLO EXCHANGE data.' % (nlines)
+    if itrade_config.verbose:
+        print 'Imported %d lines from OSLO EXCHANGE' % (nlines)
 
     return True
 

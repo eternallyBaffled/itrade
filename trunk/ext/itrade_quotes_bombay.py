@@ -59,7 +59,8 @@ from itrade_connection import ITradeConnection
 
 
 def Import_ListOfQuotes_BSE(quotes,market='BOMBAY EXCHANGE',dlg=None,x=0):
-    print 'Update %s list of symbols' % market
+    if itrade_config.verbose:
+        print 'Update %s list of symbols' % market
     connection=ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
@@ -126,8 +127,8 @@ def Import_ListOfQuotes_BSE(quotes,market='BOMBAY EXCHANGE',dlg=None,x=0):
                             ticker=ticker,market='BOMBAY EXCHANGE',currency='INR',place='BSE',country='IN')
 
                     
-
-    print 'Imported %d lines from BOMBAY EXCHANGE data.' %n
+    if itrade_config.verbose:
+        print 'Imported %d lines from BOMBAY EXCHANGE' %n
 
     return True
 

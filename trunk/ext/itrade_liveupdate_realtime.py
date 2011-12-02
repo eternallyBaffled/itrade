@@ -56,6 +56,7 @@ from itrade_ext import *
 from itrade_market import yahooTicker,convertConnectorTimeToPlaceTime
 from itrade_connection import ITradeConnection
 from datetime import *
+
 # ============================================================================
 # LiveUpdate_RealTime()
 #
@@ -281,9 +282,8 @@ class LiveUpdate_RealTime(object):
                     stat = value[value.find('(')+1:value.find(')')]
                 else :
                     stat = ''
-
                 last = value.replace(' ','').replace('EUR','').replace('Pts','').replace('(s)','').replace('(c)','').replace('(h)','').replace('(u)','')
-
+                last = last.replace('%','')
                 line = lines[n+11]
                 percent = line[line.rfind('">')+2:line.find('%</td>')].replace(' ','')
 
@@ -324,6 +324,7 @@ class LiveUpdate_RealTime(object):
                 data = ';'.join([quote.key(),sdate,first,high,low,last,volume,percent])
 
                 return data
+
         return None
 
     # ---[ cache management on data ] ---
@@ -415,13 +416,20 @@ class LiveUpdate_RealTime(object):
 # ============================================================================
 
 try:
-    ignore(gLiveABC)
+    ignore(gLiveRealTime)
 except NameError:
-    gLiveABC = LiveUpdate_RealTime('euronext')
-registerLiveConnector('EURONEXT','PAR',QLIST_ANY,QTAG_LIVE,gLiveABC,bDefault=False)
-registerLiveConnector('ALTERNEXT','PAR',QLIST_ANY,QTAG_LIVE,gLiveABC,bDefault=False)
-registerLiveConnector('PARIS MARCHE LIBRE','PAR',QLIST_ANY,QTAG_LIVE,gLiveABC,bDefault=False)
-registerLiveConnector('BRUXELLES MARCHE LIBRE','BRU',QLIST_ANY,QTAG_LIVE,gLiveABC,bDefault=False)
+    gLiveRealTime = LiveUpdate_RealTime('euronext_bonds')
+    
+registerLiveConnector('EURONEXT','PAR',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
+registerLiveConnector('EURONEXT','BRU',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
+registerLiveConnector('EURONEXT','AMS',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
+registerLiveConnector('EURONEXT','LIS',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
+
+registerLiveConnector('ALTERNEXT','PAR',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
+registerLiveConnector('ALTERNEXT','AMS',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
+registerLiveConnector('ALTERNEXT','BRU',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
+registerLiveConnector('PARIS MARCHE LIBRE','PAR',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
+registerLiveConnector('BRUXELLES MARCHE LIBRE','BRU',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
 
 # ============================================================================
 # Test ME
@@ -429,21 +437,21 @@ registerLiveConnector('BRUXELLES MARCHE LIBRE','BRU',QLIST_ANY,QTAG_LIVE,gLiveAB
 # ============================================================================
 
 def test(ticker):
-    if gLiveABC.iscacheddataenoughfreshq():
-        data = gLiveABC.getcacheddata(ticker)
+    if gLiveRealTime.iscacheddataenoughfreshq():
+        data = gLiveRealTime.getcacheddata(ticker)
         if data:
             debug(data)
         else:
             debug("nodata")
 
-    elif gLiveABC.connect():
+    elif gLiveRealTime.connect():
 
-        state = gLiveABC.getstate()
+        state = gLiveRealTime.getstate()
         if state:
             debug("state=%s" % (state))
 
             quote = quotes.lookupTicker(ticker,'EURONEXT')
-            data = gLiveABC.getdata(quote)
+            data = gLiveRealTime.getdata(quote)
             if data!=None:
                 if data:
                     info(data)
@@ -454,7 +462,7 @@ def test(ticker):
         else:
             print "getstate() failure :-("
 
-        gLiveABC.disconnect()
+        gLiveRealTime.disconnect()
     else:
         print "connect() failure :-("
 
@@ -464,7 +472,7 @@ if __name__=='__main__':
     print 'live %s' % date.today()
     test('OSI')
     test('EADT')
-    gLiveABC.cacheddatanotfresh()
+    gLiveRealTime.cacheddatanotfresh()
     test('EADT')
 
 # ============================================================================

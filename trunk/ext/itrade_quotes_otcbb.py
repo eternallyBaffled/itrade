@@ -57,7 +57,8 @@ from itrade_connection import ITradeConnection
 # ============================================================================
 
 def Import_ListOfQuotes_OTCBB(quotes,market='OTCBB',dlg=None,x=0):
-    print 'Update %s list of symbols' % market
+    if itrade_config.verbose:
+        print 'Update %s list of symbols' % market
     connection = ITradeConnection(cookies = None,
                                proxy = itrade_config.proxyHostname,
                                proxyAuth = itrade_config.proxyAuthentication,
@@ -99,8 +100,8 @@ def Import_ListOfQuotes_OTCBB(quotes,market='OTCBB',dlg=None,x=0):
                 name =name.replace(',','')
                 ticker = data[0]
                 quotes.addQuote(isin=isin,name=name,ticker=ticker,market='OTCBB',currency='USD',place='NYC',country='US')
-
-    print 'Imported %d lines from OTCBB data.' % count
+    if itrade_config.verbose:
+        print 'Imported %d lines from OTCBB data.' % count
 
     return True
 

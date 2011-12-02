@@ -57,7 +57,8 @@ from itrade_connection import ITradeConnection
 # ============================================================================
 
 def Import_ListOfQuotes_SWX(quotes,market='SWISS EXCHANGE',dlg=None,x=0):
-    print 'Update %s list of symbols' % market
+    if itrade_config.verbose:
+        print 'Update %s list of symbols' % market
     connection = ITradeConnection(cookies = None,
                                proxy = itrade_config.proxyHostname,
                                proxyAuth = itrade_config.proxyAuthentication,
@@ -133,8 +134,8 @@ def Import_ListOfQuotes_SWX(quotes,market='SWISS EXCHANGE',dlg=None,x=0):
                     quotes.addQuote(isin=item[iISIN],name=item[iName].replace(',',' '), ticker=item[iTicker],market='SWISS EXCHANGE',\
                         currency=item[iCurrency],place=item[iExchange],country=item[iCountry])
                     count = count + 1
-
-    print 'Imported %d lines from %s data.' % (count,market)
+    if itrade_config.verbose:
+        print 'Imported %d lines from %s' % (count,market)
 
     return True
 

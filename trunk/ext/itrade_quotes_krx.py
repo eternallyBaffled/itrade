@@ -60,7 +60,8 @@ from itrade_connection import ITradeConnection
 # ============================================================================
 
 def Import_ListOfQuotes_KRX(quotes,market='KOREA STOCK EXCHANGE',dlg=None,x=0):
-    print 'Update %s list of symbols' % market
+    if itrade_config.verbose:
+        print 'Update %s list of symbols' % market
     connection = ITradeConnection(cookies = None,
                                proxy = itrade_config.proxyHostname,
                                proxyAuth = itrade_config.proxyAuthentication,
@@ -168,8 +169,8 @@ def Import_ListOfQuotes_KRX(quotes,market='KOREA STOCK EXCHANGE',dlg=None,x=0):
         n = n + 1        
         quotes.addQuote(isin = isin,name = name,ticker = ticker,\
         market = market,currency = 'KRW',place = place, country = 'KR')
-            
-    print 'Imported %d lines from %s data.' % (n,market)
+    if itrade_config.verbose:            
+        print 'Imported %d lines from %s data.' % (n,market)
 
     return True
 
