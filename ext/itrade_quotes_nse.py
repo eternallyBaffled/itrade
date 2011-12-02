@@ -60,7 +60,8 @@ from itrade_connection import ITradeConnection
 # ============================================================================
 
 def Import_ListOfQuotes_NSE(quotes,market='NATIONAL EXCHANGE OF INDIA',dlg=None,x=0):
-    print 'Update %s list of symbols' % market
+    if itrade_config.verbose:
+        print 'Update %s list of symbols' % market
     connection = ITradeConnection(cookies = None,
                                proxy = itrade_config.proxyHostname,
                                proxyAuth = itrade_config.proxyAuthentication,
@@ -108,7 +109,6 @@ def Import_ListOfQuotes_NSE(quotes,market='NATIONAL EXCHANGE OF INDIA',dlg=None,
         debug('Import_ListOfQuotes_NSE unable to connect :-(')
         return False
 
-    #print response.status, response.reason
     debug("status:%s reason:%s" %(response.status, response.reason))
     if response.status != 200:
         debug('Import_ListOfQuotes_NSE:status!=200')
@@ -136,8 +136,8 @@ def Import_ListOfQuotes_NSE(quotes,market='NATIONAL EXCHANGE OF INDIA',dlg=None,
                 quotes.addQuote(isin=isin,name=name,ticker=ticker,\
                 market='NATIONAL EXCHANGE OF INDIA',currency='INR',place='NSE',country='IN')
                 nlines = nlines + 1
-
-    print 'Imported %d lines from %s data.' % (nlines,market)
+    if itrade_config.verbose:
+        print 'Imported %d lines from %s data.' % (nlines,market)
 
     return True
 

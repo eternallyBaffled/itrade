@@ -60,7 +60,8 @@ from itrade_connection import ITradeConnection
 # ============================================================================
 
 def Import_ListOfQuotes_SAO(quotes,market='SAO PAULO EXCHANGE',dlg=None,x=0):
-    print 'Update %s list of symbols' % market
+    if itrade_config.verbose:
+        print 'Update %s list of symbols' % market
     connection=ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
@@ -120,8 +121,8 @@ def Import_ListOfQuotes_SAO(quotes,market='SAO PAULO EXCHANGE',dlg=None,x=0):
             if bdi_code == '002':
                 n= n + 1
                 quotes.addQuote(isin = isin,name = short_name+'-'+specific_code,ticker = ticker,market = market,currency = currency,place = place,country = country)
-                
-    print 'Imported %d lines from %s data.' % (n,market)
+    if itrade_config.verbose:                
+        print 'Imported %d lines from %s data.' % (n,market)
     
     zfile.close()
     os.remove('Securities_Traded.zip')

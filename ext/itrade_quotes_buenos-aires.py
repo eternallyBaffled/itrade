@@ -60,7 +60,8 @@ from itrade_connection import ITradeConnection
 
 
 def Import_ListOfQuotes_BUE(quotes,market='BUENOS AIRES EXCHANGE',dlg=None,x=0):
-    print 'Update %s list of symbols' % market
+    if itrade_config.verbose:
+        print 'Update %s list of symbols' % market
     connection=ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
@@ -126,8 +127,8 @@ def Import_ListOfQuotes_BUE(quotes,market='BUENOS AIRES EXCHANGE',dlg=None,x=0):
                     quotes.addQuote(isin=isin,name=name, \
                     ticker=ticker,market='BUENOS AIRES EXCHANGE',currency='ARS',place='BUE',country='AR')
                     nlines = nlines + 1
-
-    print 'Imported %d lines from BUENOS AIRES EXCHANGE data.' % (nlines)
+    if itrade_config.verbose:
+        print 'Imported %d lines from BUENOS AIRES EXCHANGE data.' % (nlines)
     data.close()
     return True
 

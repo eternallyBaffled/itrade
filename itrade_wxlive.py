@@ -55,7 +55,7 @@ if not itrade_config.nowxversion:
     import itrade_wxversion
 import wx
 import wx.lib.newevent
-
+import wx.lib.agw.pybusyinfo as PBI
 # ============================================================================
 # Creates a new Event class and a EVT binder function
 # ============================================================================
@@ -179,7 +179,7 @@ class iTrade_wxLiveMixin:
                 if len(self.m_threads.values()):
                     # stop live for all registered quotes
                     if bBusy:
-                        busy = wx.BusyInfo(message('live_busy'))
+                        busy = PBI.PyBusyInfo(message('live_busy'), parent=self)
                         wx.Yield()
 
                     for t in self.m_threads.values():
@@ -314,7 +314,7 @@ class iTrade_wxLiveCurrencyMixin:
                 if len(self.m_threads.values()):
                     # stop live for all registered currencies
                     if bBusy:
-                        busy = wx.BusyInfo(message('live_busy'))
+                        busy = PBI.PyBusyInfo(message('live_busy'), parent=self, title= '')
                         wx.Yield()
 
                     for t in self.m_threads.values():

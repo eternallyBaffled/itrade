@@ -57,7 +57,8 @@ from itrade_connection import ITradeConnection
 # ============================================================================
 
 def Import_ListOfQuotes_LSE(quotes,market='LSE SETS',dlg=None,x=0):
-    print 'Update %s list of symbols' % market
+    if itrade_config.verbose:
+        print 'Update %s list of symbols' % market
     connection = ITradeConnection(cookies = None,
                                proxy = itrade_config.proxyHostname,
                                proxyAuth = itrade_config.proxyAuthentication,
@@ -137,8 +138,8 @@ def Import_ListOfQuotes_LSE(quotes,market='LSE SETS',dlg=None,x=0):
                     currency=sh.cell_value(line,iCurrency),place='LON',\
                     country=sh.cell_value(line,iCountry))
                 n = n + 1
-
-    print 'Imported %d/%d lines from %s data.' % (n,sh.nrows,market)
+    if itrade_config.verbose:
+        print 'Imported %d/%d lines from %s' % (n,sh.nrows,market)
 
     return True
 

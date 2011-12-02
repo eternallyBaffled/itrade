@@ -57,7 +57,8 @@ from itrade_connection import ITradeConnection
 # ============================================================================
 
 def Import_ListOfQuotes_IE(quotes,market='IRISH EXCHANGE',dlg=None,x=0):
-    print 'Update %s list of symbols' % market
+    if itrade_config.verbose:
+        print 'Update %s list of symbols' % market
     connection = ITradeConnection(cookies = None,
                                proxy = itrade_config.proxyHostname,
                                proxyAuth = itrade_config.proxyAuthentication,
@@ -139,8 +140,8 @@ def Import_ListOfQuotes_IE(quotes,market='IRISH EXCHANGE',dlg=None,x=0):
                     inst = ''
                     tick = ''
                     nlines = nlines + 1
-
-    print 'Imported %d/%d lines from IRISH EXCHANGE data.' % (count,nlines)
+    if itrade_config.verbose:
+        print 'Imported %d/%d lines from IRISH EXCHANGE data.' % (count,nlines)
 
     return True
 

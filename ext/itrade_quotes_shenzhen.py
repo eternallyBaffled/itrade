@@ -58,7 +58,8 @@ from itrade_connection import ITradeConnection
 
 
 def Import_ListOfQuotes_SHE(quotes,market='SHENZHEN EXCHANGE',dlg=None,x=0):
-    print 'Update %s list of symbols' % market
+    if itrade_config.verbose:
+        print 'Update %s list of symbols' % market
     connection=ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
@@ -100,7 +101,7 @@ def Import_ListOfQuotes_SHE(quotes,market='SHENZHEN EXCHANGE',dlg=None,x=0):
     #print 'Import_ListOfQuotes_SHE_%s:' % market,'book',book,'sheet',sh,'nrows=',sh.nrows
 
     for line in lines[2:]:
-        #print lines
+
         if line.find("</td><td  class='cls-data-td'  align='left' >"):
             ticker = line[:line.index('<')]
             
@@ -120,8 +121,8 @@ def Import_ListOfQuotes_SHE(quotes,market='SHENZHEN EXCHANGE',dlg=None,x=0):
             quotes.addQuote(isin = '',name = name,ticker = ticker,market = 'SHENZHEN EXCHANGE',currency = currency,place = 'SHE',country = 'CN')
             nlines = nlines + 1
 
-
-    print 'Imported %d lines from %s data.' % (nlines,market)
+    if itrade_config.verbose:
+        print 'Imported %d lines from %s data.' % (nlines,market)
 
     return True
 

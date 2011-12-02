@@ -60,7 +60,8 @@ from itrade_connection import ITradeConnection
 # ============================================================================
 
 def Import_ListOfQuotes_MADRID(quotes,market='MADRID EXCHANGE',dlg=None,x=0):
-    print 'Update %s list of symbols' % market
+    if itrade_config.verbose:
+        print 'Update %s list of symbols' % market
     connection = ITradeConnection(cookies = None,
                                proxy = itrade_config.proxyHostname,
                                proxyAuth = itrade_config.proxyAuthentication,
@@ -125,7 +126,8 @@ def Import_ListOfQuotes_MADRID(quotes,market='MADRID EXCHANGE',dlg=None,x=0):
                                 ticker=ticker,market=market,\
                                 currency='EUR',place='MAD',country='ES')
                     n = n + 1
-    print 'Imported %d lines from %s' % (n,market)
+    if itrade_config.verbose:
+        print 'Imported %d lines from %s' % (n,market)
     source.close()   
     os.remove(f)
     return True

@@ -57,7 +57,8 @@ from itrade_connection import ITradeConnection
 # ============================================================================
 
 def Import_ListOfQuotes_Xetra(quotes,market='FRANKFURT EXCHANGE',dlg=None,x=0):
-    print 'Update %s list of symbols' % market
+    if itrade_config.verbose:
+        print 'Update %s list of symbols' % market
     connection = ITradeConnection(cookies = None,
                                proxy = itrade_config.proxyHostname,
                                proxyAuth = itrade_config.proxyAuthentication,
@@ -90,16 +91,17 @@ def Import_ListOfQuotes_Xetra(quotes,market='FRANKFURT EXCHANGE',dlg=None,x=0):
     lines = splitLines(data)
     n = 0
 
-    for line in lines[7:]:
+    for line in lines[6:]:
         data = string.split (line, ';')    # ; delimited
 
         if len(data) >5:
-            if data[9] in ('GER0'):
-                name = data[1].replace(',','').replace('  ','').replace (' -','-').replace ('. ','.').replace(' + ','&').replace('+','&')
-                quotes.addQuote(isin=data[2],name=name,ticker=data[5],market='FRANKFURT EXCHANGE',currency=data[37],place='FRA',country='DE')
-                n = n + 1
-
-    print 'Imported %d/%d lines from %s data.' % (n,len(lines),'Deutsche Borse AG')
+            if data[8] == 'EQUITIES FFM2':
+                if data[2][:2] == 'DE':
+                    name = data[1].replace(',','').replace('  ','').replace (' -','-').replace ('. ','.').replace(' + ','&').replace('+','&')
+                    quotes.addQuote(isin=data[2],name=name,ticker=data[5],market='FRANKFURT EXCHANGE',currency=data[37],place='FRA',country='DE')
+                    n = n + 1
+    if itrade_config.verbose:
+        print 'Imported %d/%d lines from %s' % (n,len(lines),market)
 
     return True
 

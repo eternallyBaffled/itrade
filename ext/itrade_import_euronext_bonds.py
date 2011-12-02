@@ -211,7 +211,6 @@ try:
     ignore(gImportEuronext)
 except NameError:
     gImportEuronext = Import_euronext_bonds()
-
 registerImportConnector('EURONEXT','PAR',QLIST_BONDS,QTAG_IMPORT,gImportEuronext,bDefault=True)
 registerImportConnector('EURONEXT','BRU',QLIST_BONDS,QTAG_IMPORT,gImportEuronext,bDefault=True)
 registerImportConnector('EURONEXT','AMS',QLIST_BONDS,QTAG_IMPORT,gImportEuronext,bDefault=True)

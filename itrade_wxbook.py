@@ -169,10 +169,6 @@ ID_PAGE_EVALUATION = 5
 #
 # ============================================================================
 
-cCONNECTED_I = wx.Colour(51,210,51)
-cCONNECTED = wx.Colour(51,255,51)
-cDISCONNECTED = wx.Colour(255,51,51)
-
 class iTradeMainToolbar(wx.ToolBar):
 
     def __init__(self,parent,id):
@@ -203,17 +199,22 @@ class iTradeMainToolbar(wx.ToolBar):
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
         self.AddSimpleTool(self._NTB2_NEW, wx.ArtProvider.GetBitmap(wx.ART_NEW, wx.ART_TOOLBAR),
                            message('main_new'), message('main_desc_new'))
+        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
         self.AddSimpleTool(self._NTB2_OPEN, wx.ArtProvider.GetBitmap(wx.ART_FILE_OPEN, wx.ART_TOOLBAR),
                            message('main_open'), message('main_desc_open'))
+        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
         self.AddSimpleTool(self._NTB2_EDIT, wx.ArtProvider.GetBitmap(wx.ART_EXECUTABLE_FILE, wx.ART_TOOLBAR),
                            message('main_edit'), message('main_desc_edit'))
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
         self.AddSimpleTool(self._NTB2_OPERATIONS, wx.ArtProvider.GetBitmap(wx.ART_REPORT_VIEW, wx.ART_TOOLBAR),
                            message('main_view_operations'), message('main_view_desc_operations'))
+        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
         self.AddSimpleTool(self._NTB2_MONEY, wx.Bitmap(os.path.join(itrade_config.dirRes, 'money.png')),
                            message('main_view_money'), message('main_view_desc_money'))
+        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
         self.AddSimpleTool(self._NTB2_ALERTS, wx.Bitmap(os.path.join(itrade_config.dirRes, 'bell.png')),
                            message('main_view_alerts'), message('main_view_desc_alerts'))
+        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
         self.AddSimpleTool(self._NTB2_CURRENCIES, wx.Bitmap(os.path.join(itrade_config.dirRes, 'currencies.png')),
                            message('main_view_currencies'), message('main_view_desc_currencies'))
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
@@ -222,12 +223,15 @@ class iTradeMainToolbar(wx.ToolBar):
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
         self.AddSimpleTool(self._NTB2_REFRESH, wx.Bitmap(os.path.join(itrade_config.dirRes, 'refresh.png')),
                            message('main_view_refresh'), message('main_view_desc_refresh'))
+        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
         self.AddSimpleTool(self._NTB2_AUTOSIZE, wx.Bitmap(os.path.join(itrade_config.dirRes, 'adjust_column.png')),
                            message('main_view_autosize'), message('main_view_desc_autosize'))
+        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
         self.AddSimpleTool(self._NTB2_ABOUT, wx.Bitmap(os.path.join(itrade_config.dirRes, 'about.png')),
                            message('main_about'), message('main_desc_about'))
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
-        self.m_indicator = wx.TextCtrl(self, -1, "", size=(300,15), style=wx.BORDER_NONE|wx.ALIGN_LEFT|wx.TE_READONLY)
+        self.m_indicator = wx.TextCtrl(self, -1, "", size=(700,-1),style=wx.ALIGN_LEFT|wx.TE_READONLY)
+
         self.AddControl(self.m_indicator)
         self.ClearIndicator()
 
@@ -291,37 +295,46 @@ class iTradeMainToolbar(wx.ToolBar):
             label = " " + message('indicator_autorefresh')
         else:
             label = " " + message('indicator_noautorefresh')
-        self.m_indicator.SetBackgroundColour(wx.NullColour)
+        self.m_indicator.SetForegroundColour(wx.NullColour)
         #self.m_indicator.ClearBackground()
         self.m_indicator.ChangeValue(label)
 
     def SetIndicator(self,market,connector,indice):
-
         clock = connector.currentClock(indice)
         dateclock = connector.currentDate(indice)
         if clock=="::":
             label = " " + indice.market() + " : " + message('indicator_disconnected')
-            self.m_indicator.SetBackgroundColour(cDISCONNECTED)
+            self.m_indicator.SetForegroundColour(wx.BLACK)
+
         else:
             label = " " + indice.market() + " - " + dateclock+ " - " + clock
             if indice:
                 label = label + "  -  " + indice.name() + " : "+ indice.sv_close()+ "  ( " + indice.sv_percent()+ " )"
+                if indice.sv_percent()[0] == '-':
+                    # red FF0000
+                    color = wx.Colour(255,0,0)
+                elif indice.sv_percent()[0] == ' ':
+                    color = wx.BLACK
+                else:
+                    # blue4 00008B
+                    color = wx.Colour(0,0,139)
+
             if label==self.m_indicator.GetValue():
-                self.m_indicator.SetBackgroundColour(cCONNECTED)
+                # display indice red or blue
+                self.ClearIndicator()
+                self.m_indicator.SetForegroundColour(color)
             else:
-                self.m_indicator.SetBackgroundColour(cCONNECTED_I)
-        #self.m_indicator.ClearBackground()
+                if indice.sv_percent()[0] == '-':
+                    # Orange - FF7F00 Indice change
+                    color = wx.Colour(255,127,0)
+                elif indice.sv_percent()[0] == ' ':
+                    color = wx.BLACK
+                else:
+                    # green4 008B00 Indice change
+                    color = wx.Colour(0,139,0)
+                self.ClearIndicator()
+                self.m_indicator.SetForegroundColour(color)
         self.m_indicator.ChangeValue(label)
-	# get indicator and toolbar positions and sizes
-	indicatorposition = self.m_indicator.GetScreenPosition()
-	indicatorsize = self.m_indicator.GetClientSize()
-	toolbarposition = self.GetScreenPosition()
-	toolbarsize = self.GetClientSize()
-	# compute width... minus 2 because it only works that way with gtk 2.6
-	computedwidth = toolbarsize.width + toolbarposition.x - indicatorposition.x - 2
-	if indicatorsize.width != computedwidth:
-	    indicatorsize.SetWidth(computedwidth)
-	    self.m_indicator.SetSize(indicatorsize)
 
 
 # ============================================================================

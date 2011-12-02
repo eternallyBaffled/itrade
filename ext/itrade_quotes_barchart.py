@@ -62,7 +62,8 @@ barchart_data = {}
 
 def Import_ListOfQuotes_BARCHART(quotes,market='TOTRONTO EXCHANGE',dlg=None,x=0):
     global barchart_data
-    print 'Update %s list of symbols' % market
+    if itrade_config.verbose:
+        print 'Update %s list of symbols' % market
     connection = ITradeConnection(cookies = None,
                                proxy = itrade_config.proxyHostname,
                                proxyAuth = itrade_config.proxyAuthentication,
@@ -96,7 +97,7 @@ def Import_ListOfQuotes_BARCHART(quotes,market='TOTRONTO EXCHANGE',dlg=None,x=0)
 
         if dlg:
             dlg.Update(x,"%s:'%s'"%(market,letter))
-            print x,"%s:'%s'"%(market,letter)
+            #print x,"%s:'%s'"%(market,letter)
 
         if not barchart_data.has_key("%s.%s" % (letter,m_country)):
             # read file (for debugging) or get file from network
@@ -136,8 +137,8 @@ def Import_ListOfQuotes_BARCHART(quotes,market='TOTRONTO EXCHANGE',dlg=None,x=0)
                     quotes.addQuote(isin='',name=name,ticker=ticker,market=market,currency=m_currency,place=m_place,country=m_country)
                     count = count + 1
 
-
-        print 'Imported %d lines from BARCHART data (letter=%s)' % (count,letter)
+        if itrade_config.verbose:
+            print 'Imported %d lines from BARCHART(letter=%s)' % (count,letter)
 
     import_letter('1',dlg,x-1)
     import_letter('2',dlg,x)

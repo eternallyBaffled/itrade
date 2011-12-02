@@ -59,7 +59,8 @@ from itrade_connection import ITradeConnection
 
 
 def Import_ListOfQuotes_HKG(quotes,market='HONG KONG EXCHANGE',dlg=None,x=0):
-    print 'Update %s list of symbols' % market
+    if itrade_config.verbose:
+        print 'Update %s list of symbols' % market
     connection=ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
@@ -132,8 +133,8 @@ def Import_ListOfQuotes_HKG(quotes,market='HONG KONG EXCHANGE',dlg=None,x=0):
                     n = n + 1
                 
 
-
-    print 'Imported %d lines from %s data.' % (n,market)
+    if itrade_config.verbose:
+        print 'Imported %d lines from %s ' % (n,market)
 
     return True
 
