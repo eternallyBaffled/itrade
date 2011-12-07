@@ -230,7 +230,7 @@ class iTradeMainToolbar(wx.ToolBar):
         self.AddSimpleTool(self._NTB2_ABOUT, wx.Bitmap(os.path.join(itrade_config.dirRes, 'about.png')),
                            message('main_about'), message('main_desc_about'))
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
-        self.m_indicator = wx.TextCtrl(self, -1, "", size=(700,-1),style=wx.ALIGN_LEFT|wx.TE_READONLY)
+        self.m_indicator = wx.TextCtrl(self, -1, "", size=(300,15),style=wx.BORDER_NONE|wx.ALIGN_LEFT|wx.TE_READONLY)
 
         self.AddControl(self.m_indicator)
         self.ClearIndicator()
@@ -335,6 +335,16 @@ class iTradeMainToolbar(wx.ToolBar):
                 self.ClearIndicator()
                 self.m_indicator.SetForegroundColour(color)
         self.m_indicator.ChangeValue(label)
+        # get indicator and toolbar positions and sizes
+        indicatorposition = self.m_indicator.GetScreenPosition()
+        indicatorsize = self.m_indicator.GetClientSize()
+        toolbarposition = self.GetScreenPosition()
+        toolbarsize = self.GetClientSize()
+	# compute width... minus 2 because it only works that way with gtk 2.6
+        computedwidth = toolbarsize.width + toolbarposition.x - indicatorposition.x - 2
+        if indicatorsize.width != computedwidth:
+            indicatorsize.SetWidth(computedwidth)
+            self.m_indicator.SetSize(indicatorsize)
 
 
 # ============================================================================
