@@ -230,12 +230,9 @@ class iTradeQuotePropertiesPanel(wx.Panel):
         self._sizer.AddSizer(thebox, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
         # auto layout
+        self.SetAutoLayout(True)
         self.SetSizer(self._sizer)
-
-        # a little trick to make sure that you can't resize the dialog to
-        # less screen space than the controls need
-        self.Fit()
-        self.SetMinSize(self.GetSize())
+        self.Layout()
 
     # --- [ window management ] -----------------------------------------------
 
@@ -431,9 +428,10 @@ class iTradeQuotePropertyWindow(wx.Frame):
 
     def __init__(self,parent,quote,dpage=1):
         self.m_id = wx.NewId()
-        wx.Frame.__init__(self,None,self.m_id, size = ( 580,400), style= wx.DEFAULT_FRAME_STYLE & ~(wx.RESIZE_BORDER | wx.RESIZE_BOX | wx.MAXIMIZE_BOX))
+        wx.Frame.__init__(self,None,self.m_id, style= wx.DEFAULT_FRAME_STYLE|wx.FULL_REPAINT_ON_RESIZE|wx.TAB_TRAVERSAL)
         self.m_quote = quote
         self.m_parent = parent
+        self.m_framesizer = wx.BoxSizer(wx.VERTICAL)
 
         # fix title
         self.setTitle()
@@ -445,18 +443,14 @@ class iTradeQuotePropertyWindow(wx.Frame):
         self.m_toolbar = iTradeQuotePropertyToolbar(self, wx.NewId())
 
         wx.EVT_WINDOW_DESTROY(self, self.OnDestroy)
-        wx.EVT_SIZE(self, self.OnSize)
+
+        self.m_framesizer.Add(self.m_toolbar, 0, wx.EXPAND)
+        self.m_framesizer.Add(self.m_propwindow, 1, wx.EXPAND)
+        self.SetSizer(self.m_framesizer)
+        self.Fit()
 
     def setTitle(self):
-        w,h = self.GetClientSizeTuple()
         self.SetTitle("%s %s - %s" % (message('quote_title'),self.m_quote.ticker(),self.m_quote.market()))
-
-    def OnSize(self, event):
-        debug('QuotePropertyWindow::OnSize')
-        w,h = self.GetClientSizeTuple()
-        self.m_propwindow.SetDimensions(0, 32, w,h-32)
-        self.m_toolbar.SetDimensions(0, 0, w, 32)
-        self.setTitle()
 
     def OnDestroy(self, evt):
         if self.m_parent and (self.m_id == evt.GetId()):
