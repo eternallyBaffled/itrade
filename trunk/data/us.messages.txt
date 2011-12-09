@@ -492,7 +492,7 @@ prop_typeofclock;Delay :
 prop_islive;Real time
 prop_isslive;Live
 prop_isdiffered;Differed
-prop_isnotlive;Differed time (%d minuts)
+prop_isnotlive;Differed time (%d minutes)
 prop_liveconnector;Live Connector :
 prop_impconnector;Import Connector :
 prop_set;Set

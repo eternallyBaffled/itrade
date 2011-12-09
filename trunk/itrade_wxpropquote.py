@@ -464,7 +464,6 @@ class iTradeQuotePropertyWindow(wx.Frame):
             self.m_quote = nquote
             self.m_propwindow.Destroy()
             self.m_propwindow = iTradeQuotePropertiesPanel(self,wx.NewId(),self.m_quote,self.m_parent)
-            self.OnSize(None)
 
     def OnExit(self,event):
         self.Close()

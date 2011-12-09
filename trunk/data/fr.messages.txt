@@ -498,7 +498,7 @@ prop_set;Valide
 prop_desc_set;Valide les nouvelles informations de marché et de connection
 prop_term;Période d'investissement moyenne (en mois) :
 prop_risk;Niveau de risque acceptable par ligne (en %) :
-prop_connhelp;Pensez à forcer le raffraichissement de la valeur pour la prise en compte du changement de connecteur.
+prop_connhelp;Pensez à forcer le rafraîchissement de la valeur pour la prise en compte du changement de connecteur.
 
 live_busy;Patientez s.v.p., la connexion live doit être arrêtée ...
 live_notebook;Carnet d'Ordres
