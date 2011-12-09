@@ -1,10 +1,10 @@
-[view]
-
-[net]
-
 [column]
 indicators = -1;1
 portfolio = -1;1
 stops = -1;1
 quotes = -1;1
+
+[net]
+
+[view]
 
