@@ -9,7 +9,7 @@
 # The Original Code is iTrade code (http://itrade.sourceforge.net).
 #
 # The Initial Developer of the Original Code is	Gilles Dumortier.
-# New code for realtime is from Michel Legrand.
+# New code for realtime is from Jean-Marie Pacquet and Michel Legrand.
 
 # Portions created by the Initial Developer are Copyright (C) 2004-2008 the
 # Initial Developer. All Rights Reserved.
@@ -43,8 +43,7 @@ import re
 import thread
 import string
 import time
-import urllib
-import restkit
+import urllib2
 import cPickle
 
 # iTrade system
@@ -80,6 +79,60 @@ class LiveUpdate_RealTime(object):
                                            connectionTimeout = itrade_config.connectionTimeout
                                            )
         
+        try:
+            select_isin = []
+            self.m_isinsymbol = {}
+            symbol = ''
+        
+            # try to open dictionnary of ticker_bourso.txt
+            f = open(os.path.join(itrade_config.dirUserData,'ticker_bourso.txt'),'r')
+            self.m_isinsymbol = cPickle.load(f)
+            f.close()
+
+        except:
+            print 'Missing or invalid file: ticker_bourso.txt'
+
+            # read isin codes of properties.txt file in directory usrdata
+            try:
+                source = open(os.path.join(itrade_config.dirUserData,'properties.txt'),'r')
+                data = source.readlines()
+                source.close()
+                for linedata in data:
+                    if 'live;realtime' in linedata:
+                        isin = linedata[:linedata.find('.')]
+                        debug('isin:%s' % isin)
+                        select_isin.append(isin)
+                        debug('%s' % select_isin)
+
+                # extract pre_symbol
+                for isin in select_isin:
+                    req = urllib2.Request('http://www.boursorama.com/recherche/index.phtml?search%5Bquery%5D=' + isin)
+                    req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
+                    try:
+                        f = urllib2.urlopen(req)
+                        data = f.read()
+                        if 'href="/cours.phtml?symbole=' in data:
+                            a  = data.index('href="/cours.phtml?symbole=')
+                            if a < 35440 :
+                                symbol = data[a+27:a+43]
+                                symbol = symbol[:symbol.find('">')]
+                                self.m_isinsymbol [isin] = symbol
+                                debug('%s found and added in dictionary (%s)' % (isin,symbol))
+                            else:
+                                symbol = ''
+                        else:
+                            symbol = ''
+
+                    except:
+                        pass
+
+                dic = open(os.path.join(itrade_config.dirUserData,'ticker_bourso.txt'), 'w')
+                cPickle.dump(self.m_isinsymbol,dic)
+                dic.close()
+
+            except:
+                pass
+
     # ---[ reentrant ] ---
     def acquire(self):
         self.m_livelock.acquire()
@@ -161,70 +214,6 @@ class LiveUpdate_RealTime(object):
         return "%d:%02d" % (mdatetime.hour,mdatetime.minute)
     
 
-    # must to declare isin_symbol 'global'
-    
-    global isin_symbol
-
-    try:
-        select_isin = []
-        isin_symbol = {}
-        symbol = ''
-        
-        # try to open dictionnary of ticker_bourso.txt
-        f = open(os.path.join(itrade_config.dirUserData,'ticker_bourso.txt'),'r')
-        isin_symbol = cPickle.load(f)
-        f.close()
-
-    except:
-        print 'no file or empty file or corrupt file (ticker_bourso.txt)'
-
-        # read isin codes of properties.txt file in directory usrdata
-        
-        try:
-            source = open(os.path.join(itrade_config.dirUserData,'properties.txt'),'r')
-            data = source.readlines()
-            source.close()
-
-            for linedata in data:
-                if 'live;realtime' in linedata:
-                
-                    isin = linedata[:linedata.find('.')]
-                    #print 'isin:',isin
-                    select_isin.append(isin)
-                    #print select_isin
-
-            # extract pre_symbol
-
-            for isin in select_isin:
-
-                url = 'http://www.boursorama.com/recherche/index.phtml?search%5Bquery%5D='+ isin
-
-                try:
-                    source = restkit.request(url, headers=[('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')])
-                    data = source.body_string()
-
-                    if 'href="/cours.phtml?symbole=' in data:
-                        a  = data.index('href="/cours.phtml?symbole=')
-                        if a < 35440 :
-                            symbol = data[a+27:a+43]
-                            symbol = symbol[:symbol.find('">')]
-                            isin_symbol [isin] = symbol
-                            #print isin +" found and add in dictionary"
-                        else:
-                            symbol = ''
-                    else:
-                        symbol = ''
-                        
-                except:
-                    pass
-
-            dic = open(os.path.join(itrade_config.dirUserData,'ticker_bourso.txt'), 'w')
-            cPickle.dump(isin_symbol,dic)
-            dic.close()
-        
-        except:
-            pass
-
     
     def getdata(self,quote):
         self.m_connected = False
@@ -233,17 +222,17 @@ class LiveUpdate_RealTime(object):
         isin = quote.isin()
 
         # add a value, default is yahoo connector
-        # with realtime connector, must to have pre_symbol to extract quote
+        # with boursorama realtime connector, must have pre_symbol to extract quote
 
         if isin != '' :
-            if  not isin in isin_symbol:
+            if  not isin in self.m_isinsymbol:
 
-                url = 'http://www.boursorama.com/recherche/index.phtml?search%5Bquery%5D='+ isin
+                req = urllib2.Request('http://www.boursorama.com/recherche/index.phtml?search%5Bquery%5D=' + isin)
+                req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
                 
                 try: 
-                    source = restkit.request(url, headers=[('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')])
-                    data = source.body_string()
-
+                    f = urllib2.urlopen(req)
+                    data = f.read()
 
                     if 'href="/cours.phtml?symbole=' in data:
                         a  = data.index('href="/cours.phtml?symbole=')
@@ -251,16 +240,16 @@ class LiveUpdate_RealTime(object):
                         if a < 35440 :
                             symbol = data[a+27:a+43]
                             symbol = symbol[:symbol.find('">')]
-                            isin_symbol [isin] = symbol
-                            #print isin + " add in dictionary"
+                            self.m_isinsymbol [isin] = symbol
+                            print isin + " add in dictionary"
                             
                             if symbol[:2] in ('1u','1y','2a','OP'):
                                 pass
                             else:
-                                isin_symbol [isin] = symbol
+                                self.m_isinsymbol [isin] = symbol
 
                                 dic = open(os.path.join(itrade_config.dirUserData,'ticker_bourso.txt'), 'w')
-                                cPickle.dump(isin_symbol,dic)
+                                cPickle.dump(self.m_isinsymbol,dic)
                                 dic.close()
                         else:
                             return None
@@ -273,7 +262,8 @@ class LiveUpdate_RealTime(object):
         else:
             return None
 
-        symbol = isin_symbol[isin]
+        symbol = self.m_isinsymbol[isin]
+        debug('Symbole=%s' % symbol)
 
         # extract all datas
 
@@ -282,12 +272,13 @@ class LiveUpdate_RealTime(object):
                '1RT' in symbol or \
                '1z' in symbol or \
                '1g' in symbol:
-                url = 'http://www.boursorama.com/bourse/trackers/etf.phtml?symbole='+symbol
+                req = urllib2.Request('http://www.boursorama.com/bourse/trackers/etf.phtml?symbole=' + symbol)
             else:
-                url = 'http://www.boursorama.com/cours.phtml?symbole='+ symbol
+                req = urllib2.Request('http://www.boursorama.com/cours.phtml?symbole=' + symbol)
+            req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
 
-            source = restkit.request(url, headers=[('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')])
-            data = source.body_string()
+            f = urllib2.urlopen(req)
+            data = f.read()
         except:
             debug('LiveUpdate_Boursorama:unable to connect :-(')
             return None
@@ -444,6 +435,8 @@ class LiveUpdate_RealTime(object):
 # Export me
 # ============================================================================
 
+if __name__=='__main__':
+    setLevel(logging.DEBUG)
 gLiveRealTime = LiveUpdate_RealTime()
     
 registerLiveConnector('EURONEXT','PAR',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
@@ -496,8 +489,6 @@ def test(ticker):
         print "connect() failure :-("
 
 if __name__=='__main__':
-    setLevel(logging.DEBUG)
-
     print 'live %s' % date.today()
    # load euronext import extension
     import itrade_ext
@@ -505,9 +496,9 @@ if __name__=='__main__':
     quotes.loadMarket('EURONEXT')
 
     test('OSI')
-    test('EADT')
+    test('GTO')
     gLiveRealTime.cacheddatanotfresh()
-    test('EADT')
+    test('GTO')
 
 # ============================================================================
 # That's all folks !
