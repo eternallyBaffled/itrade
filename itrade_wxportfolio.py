@@ -238,11 +238,11 @@ class iTradePortfolioSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterM
         self.currentItem = event.m_itemIndex
         #debug("OnItemSelected: %s\nTopItem: %s" % (self.m_list.GetItemText(self.currentItem), self.m_list.GetTopItem()))
         portfolio = portfolios.portfolio(self.m_list.GetItemText(self.currentItem))
-        self.wxNameCtrl.SetLabel(portfolio.filename())
+        self.wxNameCtrl.SetValue(portfolio.filename())
         event.Skip()
 
     def OnValid(self,event):
-        name = self.wxNameCtrl.GetLabel()
+        name = self.wxNameCtrl.GetValue()
         portfolio = portfolios.portfolio(name)
         if not portfolio:
             portfolio = portfolios.portfolio(name.lower())

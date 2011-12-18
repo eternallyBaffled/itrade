@@ -141,13 +141,13 @@ class iTradeLoginDialog(wx.Dialog):
         event.Skip(False)
 
     def OnValid(self,event):
-        self.m_username = self.wxUsernameCtrl.GetLabel().strip()
-        self.m_password = self.wxPasswordCtrl.GetLabel().strip()
+        self.m_username = self.wxUsernameCtrl.GetValue().strip()
+        self.m_password = self.wxPasswordCtrl.GetValue().strip()
         self.EndModal(wx.ID_OK)
 
     def OnTest(self,event):
-        u = self.wxUsernameCtrl.GetLabel().strip()
-        p = self.wxPasswordCtrl.GetLabel().strip()
+        u = self.wxUsernameCtrl.GetValue().strip()
+        p = self.wxPasswordCtrl.GetValue().strip()
         ret = self.m_connector.login(u,p)
         self.m_connector.logout()
         if ret:

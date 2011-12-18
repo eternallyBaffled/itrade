@@ -433,7 +433,7 @@ class iTrade_wxLive(wx.Panel):
         self.m_parent.stopLive(self.m_quote)
 
     def cell(self,ref,nvalue):
-        c = ref.GetLabel()
+        c = ref.GetValue()
         if c=="-":
             c = 0
         else:
@@ -445,23 +445,23 @@ class iTrade_wxLive(wx.Panel):
         ref.SetBackgroundColour(bg)
         ref.ClearBackground()
         if nvalue==0:
-            ref.SetLabel("-")
+            ref.SetValue("-")
         else:
-            ref.SetLabel("%d" % nvalue)
+            ref.SetValue("%d" % nvalue)
         return bg
 
     def cells(self,ref,svalue):
-        if ref.GetLabel()==svalue:
+        if ref.GetValue()==svalue:
             bg = wx.NullColour
         else:
             bg = cNEUTRAL
         ref.SetBackgroundColour(bg)
         ref.ClearBackground()
-        ref.SetLabel(svalue)
+        ref.SetValue(svalue)
         return bg
 
     def cellfd(self,ref,nvalue):
-        c1 = ref.GetLabel()
+        c1 = ref.GetValue()
         if c1=='-':
             bg = wx.NullColour
         else:
@@ -481,7 +481,7 @@ class iTrade_wxLive(wx.Panel):
     def setcell(self,ref,val,bg=wx.NullColour):
         ref.SetBackgroundColour(bg)
         ref.ClearBackground()
-        ref.SetLabel(val)
+        ref.SetValue(val)
         return bg
 
     def displayMeans(self,m):
@@ -537,7 +537,7 @@ class iTrade_wxLive(wx.Panel):
         if clock=="::":
             self.setcell(self.m_sclock," ",cNEGATIF)
         else:
-            if clock==self.m_sclock.GetLabel():
+            if clock==self.m_sclock.GetValue():
                 self.setcell(self.m_sclock,clock)
             else:
                 self.setcell(self.m_sclock,clock,cPOSITIF)
@@ -572,9 +572,9 @@ class iTrade_wxLive(wx.Panel):
     def foundIndex(self,lt):
         ssi = 0
         for trade in lt:
-            if trade[0]==self.hourlt[ssi].GetLabel():
-                if ("%d"%trade[1])==self.qtelt[ssi].GetLabel():
-                    if trade[2]==self.pricelt[ssi].GetLabel():
+            if trade[0]==self.hourlt[ssi].GetValue():
+                if ("%d"%trade[1])==self.qtelt[ssi].GetValue():
+                    if trade[2]==self.pricelt[ssi].GetValue():
                         return ssi
             ssi = ssi + 1
         return ssi

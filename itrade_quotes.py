@@ -615,7 +615,7 @@ class Quote(object):
     # ---[ load or import trades / date is unique key ] ---
 
     def loadTrades(self,fn=None):
-        #debug('Quote:loadTrades %s' % self.ticker)
+        debug('Quote:loadTrades %s' % self.m_ticker)
         if self.m_daytrades==None:
             self.m_daytrades = itrade_trades.Trades(self)
         self.m_daytrades.load(fn)
@@ -1546,10 +1546,7 @@ class Quotes(object):
 # Export
 # ============================================================================
 
-try:
-    ignore(quotes)
-except NameError:
-    quotes = Quotes()
+quotes = Quotes()
 
 # ============================================================================
 # initQuotesModule()
@@ -1573,15 +1570,10 @@ if __name__=='__main__':
     setLang('us')
     gMessage.load()
 
-   # load extensions
+   # load euronext extensions
     import itrade_ext
-    itrade_ext.loadExtensions(itrade_config.fileExtData,itrade_config.dirExtData)
+    itrade_ext.loadOneExtension('itrade_import_euronext.py',itrade_config.dirExtData)
 
-    initQuotesModule()
-
-#    infile = itrade_csv.read(None,os.path.join(itrade_config.dirSymbData,'quotes.EURONEXT.txt'))
-#    if infile:
-#        quotes._addLines(infile,list=QLIST_ALL,debug=False)
     quotes.loadMarket('EURONEXT')
 
     info('test1 %s' % quotes.lookupISIN('FR0000072621'));
@@ -1603,7 +1595,7 @@ if __name__=='__main__':
     info('test7 %s' % quote.trades().trade(date(2005,1,4)));
 
 #    quotes.saveTrades()
-#    quotes.saveListOfQuotes(os.path.join(itrade_config.dirSymbData,'test.txt'))
+    quotes.saveListOfQuotes()
 
     print fmtVolume(1)
     print fmtVolume(12)

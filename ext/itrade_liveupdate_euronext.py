@@ -400,12 +400,8 @@ class LiveUpdate_Euronext(object):
 # Export me
 # ============================================================================
 
-try:
-    ignore(gLiveEuronext)
-    ignore(gLiveAlternext)
-except NameError:
-    gLiveEuronext = LiveUpdate_Euronext('euronext')
-    gLiveAlternext = LiveUpdate_Euronext('alternext')
+gLiveEuronext = LiveUpdate_Euronext('euronext')
+gLiveAlternext = LiveUpdate_Euronext('alternext')
 
 registerLiveConnector('EURONEXT','PAR',QLIST_ANY,QTAG_DIFFERED,gLiveEuronext,bDefault=True)
 registerLiveConnector('EURONEXT','PAR',QLIST_INDICES,QTAG_DIFFERED,gLiveEuronext,bDefault=True)
@@ -441,14 +437,17 @@ def test(ticker):
             debug("state=%s" % (state))
 
             quote = quotes.lookupTicker(ticker,'EURONEXT')
-            data = gLiveEuronext.getdata(quote)
-            if data!=None:
-                if data:
-                    info(data)
+            if (quote):
+                data = gLiveEuronext.getdata(quote)
+                if data!=None:
+                    if data:
+                        info(data)
+                    else:
+                        debug("nodata")
                 else:
-                    debug("nodata")
+                    print "getdata() failure :-("
             else:
-                print "getdata() failure :-("
+                print "Unknown ticker %s on EURONEXT" % (ticker)
         else:
             print "getstate() failure :-("
 
@@ -457,9 +456,15 @@ def test(ticker):
         print "connect() failure :-("
 
 if __name__=='__main__':
-    setLevel(logging.INFO)
+    setLevel(logging.DEBUG)
 
     print 'live %s' % date.today()
+
+   # load euronext import extension
+    import itrade_ext
+    itrade_ext.loadOneExtension('itrade_import_euronext.py',itrade_config.dirExtData)
+    quotes.loadMarket('EURONEXT')
+
     test('OSI')
     test('GTO')
     gLiveEuronext.cacheddatanotfresh()

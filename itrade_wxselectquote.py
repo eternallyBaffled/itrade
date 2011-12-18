@@ -233,8 +233,8 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
     def resetFields(self):
         self.m_isin = ''
         self.m_ticker = ''
-        self.wxIsinCtrl.SetLabel('')
-        self.wxTickerCtrl.SetLabel('')
+        self.wxIsinCtrl.SetValue('')
+        self.wxTickerCtrl.SetValue('')
         self.m_list.SetFocus()
 
     def OnFilter(self,event=None):
@@ -389,11 +389,11 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
                 else:
                     self.m_isin = ''
                     self.m_place = ''
-                    self.wxIsinCtrl.SetLabel('')
+                    self.wxIsinCtrl.SetValue('')
             else:
                 self.m_isin = ''
                 self.m_place = ''
-                self.wxIsinCtrl.SetLabel('')
+                self.wxIsinCtrl.SetValue('')
 
         if self.m_editing:
             # refresh filtering begin of ticker
@@ -411,12 +411,12 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
                 self.m_isin = quote.isin()
                 self.m_ticker = quote.ticker()
                 self.m_place = quote.place()
-                v = self.wxTickerCtrl.GetLabel()
+                v = self.wxTickerCtrl.GetValue()
                 #print 'isin:',isin,' label %s=?=%s' % (v,quote.ticker()), 'line=%d' % self.itemLineMap[quote.ticker()]
                 if v!= quote.ticker():
-                    self.wxTickerCtrl.SetLabel(quote.ticker())
+                    self.wxTickerCtrl.SetValue(quote.ticker())
             else:
-                self.wxTickerCtrl.SetLabel('')
+                self.wxTickerCtrl.SetValue('')
         #print 'isin:',isin,' currentItem:',self.currentItem
         event.Skip()
 
@@ -435,10 +435,8 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
         self.m_isin = quote.isin()
         self.m_place = quote.place()
         self.m_ticker = quote.ticker()
-        #if self.m_isin != self.wxIsinCtrl.GetLabel():
-        self.wxIsinCtrl.SetLabel(self.m_isin)
-        #if self.m_ticker != self.wxTickerCtrl.GetLabel():
-        self.wxTickerCtrl.SetLabel(self.m_ticker)
+        self.wxIsinCtrl.SetValue(self.m_isin)
+        self.wxTickerCtrl.SetValue(self.m_ticker)
         event.Skip()
         #print ']-- OnItemSelected'
 

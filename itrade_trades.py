@@ -56,10 +56,10 @@ from itrade_candle import *
 class Trade(object):
     def __init__(self,trades,d,open,high,low,close,volume,idx):
         if d[4]=='-':
-            #debug('Trade::__init__():%s: %d %d %d' % (d,int(d[0:4]),int(d[5:7]),int(d[8:10])));
+            debug('Trade::__init__():%s: %d %d %d' % (d,int(d[0:4]),int(d[5:7]),int(d[8:10])));
             self.m_date = date(int(d[0:4]),int(d[5:7]),int(d[8:10]))
         else:
-            #debug('Trade::__init__():%s: %d %d %d' % (d,int(d[0:4]),int(d[4:6]),int(d[6:8])));
+            debug('Trade::__init__():%s: %d %d %d' % (d,int(d[0:4]),int(d[4:6]),int(d[6:8])));
             self.m_date = date(int(d[0:4]),int(d[4:6]),int(d[6:8]))
         self.m_open = float(open)
         if self.m_open<0.0: self.m_open=0.0
@@ -118,7 +118,7 @@ def create_array(defval):
 
 class Trades(object):
     def __init__(self,quote):
-        #debug('Trades:__init__(%s)' % quote)
+        debug('Trades:__init__(%s)' % quote)
         self.m_quote = quote
         self._init_()
 
@@ -184,12 +184,13 @@ class Trades(object):
         #print 'Trades:load::',infile
         if infile:
             # scan each line to read each trade
-            #debug('Trades::load %s %s' % (self.m_quote.ticker(),self.m_quote.key()))
+            debug('Trades::load %s %s' % (self.m_quote.ticker(),self.m_quote.key()))
             for eachLine in infile:
                 item = itrade_csv.parse(eachLine,7)
                 if item:
                     if (item[0]==self.m_quote.key()) or (item[0]==self.m_quote.isin() and item[0]!=''):
                         #print item
+                        debug('Trades::load %s on %s' % (item[5],item[1]))
                         self.add(item,bImporting=True);
 
     def imp(self,data,bLive):
@@ -226,11 +227,11 @@ class Trades(object):
                 self.m_trades[ajd] = tr
 
     def add(self,item,bImporting):
-        #debug('Trades::add() before: %s : bImporting=%s' % (item,bImporting));
+        debug('Trades::add() before: %s : bImporting=%s' % (item,bImporting));
 
         idx = gCal.index(Datation(item[1]).date())
         if idx==-1:
-            #debug('invalid data: %s' % item)
+            debug('invalid date in: %s' % item)
             # __x need to save file
             self.m_dirty = True
             return False
@@ -297,7 +298,7 @@ class Trades(object):
         if self.m_trades.has_key(d):
             return self.m_trades[d]
         else:
-            #info('trades:trade() not found: %s' % d)
+            info('trades:trade() not found: %s' % d)
             return None
 
     def has_trade(self,idx):

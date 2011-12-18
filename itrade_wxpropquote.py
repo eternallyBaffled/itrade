@@ -326,8 +326,8 @@ class iTradeQuotePropertiesPanel(wx.Panel):
         self.saveThenDisplayReference()
 
     def OnRename(self,event):
-        self.m_quote.set_name(self.editName.GetLabel())
-        self.m_quote.set_ticker(self.editTicker.GetLabel().upper())
+        self.m_quote.set_name(self.editName.GetValue())
+        self.m_quote.set_ticker(self.editTicker.GetValue().upper())
 
         # then refresh the display
         self.saveThenDisplayReference()
@@ -379,8 +379,8 @@ class iTradeQuotePropertiesPanel(wx.Panel):
         self.saveThenDisplayConnector()
 
     def OnSetConnector(self,event):
-        self.m_quote.set_liveconnector(self.editLiveConnector.GetLabel().lower())
-        self.m_quote.set_importconnector(self.editImportConnector.GetLabel().lower())
+        self.m_quote.set_liveconnector(self.editLiveConnector.GetValue().lower())
+        self.m_quote.set_importconnector(self.editImportConnector.GetValue().lower())
 
         # then refresh the display
         self.saveThenDisplayConnector()
