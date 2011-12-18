@@ -257,13 +257,13 @@ class iTradeQuoteListDialog(wx.Dialog):
     def OnValid(self,event):
         if self.Validate() and self.TransferDataFromWindow():
             # get fields
-            self.m_isin = self.editISIN.GetLabel()
-            self.m_name = self.editName.GetLabel()
-            self.m_ticker = self.editTicker.GetLabel()
-            self.m_market = self.editMarket.GetLabel()
-            self.m_country = self.dispCountry.GetLabel()
-            self.m_currency = self.editCurrency.GetLabel()
-            self.m_place = self.editPlace.GetLabel()
+            self.m_isin = self.editISIN.GetValue()
+            self.m_name = self.editName.GetValue()
+            self.m_ticker = self.editTicker.GetValue()
+            self.m_market = self.editMarket.GetValue()
+            self.m_country = self.dispCountry.GetValue()
+            self.m_currency = self.editCurrency.GetValue()
+            self.m_place = self.editPlace.GetValue()
 
             # check isin ?
             if self.qmode == QLIST_ADD:
@@ -334,10 +334,10 @@ class iTradeQuoteListDialog(wx.Dialog):
         self.m_place = t
 
     def refreshPage(self,evt):
-        self.editPlace.SetLabel(self.m_place)
-        self.editCurrency.SetLabel(self.m_currency)
+        self.editPlace.SetValue(self.m_place)
+        self.editCurrency.SetValue(self.m_currency)
         self.m_country = compute_country(self.m_isin,self.m_market,self.m_place)
-        self.dispCountry.SetLabel(self.m_country)
+        self.dispCountry.SetValue(self.m_country)
 
     def OnISINEdited(self,event):
         self.m_isin = event.GetString()

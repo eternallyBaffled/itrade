@@ -96,7 +96,7 @@ class iTradeConnectionDialog(iTradeSizedDialog):
         label = wx.StaticText(pane, -1, message('proxy_server_ip'))
         label.SetSizerProps(valign='center')
         self.wxIPCtrl = masked.Ctrl(pane, -1, controlType = masked.controlTypes.IPADDR, size=(120,-1))
-        self.wxIPCtrl.SetLabel(self.m_ip)
+        self.wxIPCtrl.SetValue(self.m_ip)
 
         label = wx.StaticText(pane, -1, message('proxy_server_port'))
         label.SetSizerProps(valign='center')
@@ -146,10 +146,10 @@ class iTradeConnectionDialog(iTradeSizedDialog):
         self.SetMinSize(self.GetSize())
 
     def OnValid(self,event):
-        self.m_ip = self.wxIPCtrl.GetLabel().strip()
+        self.m_ip = self.wxIPCtrl.GetValue().strip()
         self.m_port = self.wxPortCtrl.GetValue()
-        self.m_user = self.wxUserCtrl.GetLabel().strip()
-        self.m_pwd = self.wxPwdCtrl.GetLabel().strip()
+        self.m_user = self.wxUserCtrl.GetValue().strip()
+        self.m_pwd = self.wxPwdCtrl.GetValue().strip()
 
         if self.m_user!='':
             self.m_auth = self.m_user + ":" + self.m_pwd

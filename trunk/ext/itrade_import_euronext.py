@@ -208,10 +208,7 @@ class Import_euronext(object):
 # Export me
 # ============================================================================
 
-try:
-    ignore(gImportEuronext)
-except NameError:
-    gImportEuronext = Import_euronext()
+gImportEuronext = Import_euronext()
 
 registerImportConnector('EURONEXT','PAR',QLIST_ANY,QTAG_IMPORT,gImportEuronext,bDefault=False)
 registerImportConnector('EURONEXT','PAR',QLIST_SYSTEM,QTAG_IMPORT,gImportEuronext,bDefault=True)
@@ -278,6 +275,8 @@ def test(ticker,d):
 
 if __name__=='__main__':
     setLevel(logging.INFO)
+
+    quotes.loadMarket('EURONEXT')
 
     # never failed - fixed date
     print "15/03/2005"
