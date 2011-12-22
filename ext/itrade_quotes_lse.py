@@ -41,7 +41,7 @@ import re
 import thread
 import time
 import string
-import restkit
+import urllib2
 
 # iTrade system
 import itrade_config
@@ -88,10 +88,12 @@ def Import_ListOfQuotes_LSE(quotes,market='LSE SETS',dlg=None,x=0):
         return lines
 
     info('Import_ListOfQuotes_LSE_%s:connect to %s' % (market,url))
+    req = urllib2.Request(url)
+    req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
 
     try:
-        source = restkit.request(url, headers=[('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')])
-        data = source.body_string()
+        f = urllib2.urlopen(req)
+        data = f.read()
     except:
         info('Import_ListOfQuotes_LSE_%s:unable to connect :-(' % market)
         return False
