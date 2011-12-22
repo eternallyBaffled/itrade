@@ -758,6 +758,24 @@
 20111003;SHANGHAI EXCHANGE; Monday 3 October 2011 National Day 3
 20111004;SHANGHAI EXCHANGE; Tuesday 4 October 2011 National Day 4
 20111005;SHANGHAI EXCHANGE; Wednesday 5 October 2011 National Day 5
+20120102;SHANGHAI EXCHANGE; Monday 02 January 2012 New Years Day
+20120103;SHANGHAI EXCHANGE; Tuesday 03 January 2012 New Years Day
+20120123;SHANGHAI EXCHANGE; Monday 23 January 2012 Spring Festival (Chinese New Year)
+20120124;SHANGHAI EXCHANGE; Tuesday 24 January 2012 Spring Festival (Chinese New Year)
+20120125;SHANGHAI EXCHANGE; Wednesday 25 January 2012 Spring Festival (Chinese New Year)
+20120126;SHANGHAI EXCHANGE; Thursday 26 January 2012 Spring Festival (Chinese New Year)
+20120127;SHANGHAI EXCHANGE; Friday 27 January 2012 Spring Festival (Chinese New Year)
+20120402;SHANGHAI EXCHANGE; Monday 02 April 2012 Tomb-sweeping Day
+20120403;SHANGHAI EXCHANGE; Tuesday 03 April 2012 Tomb-sweeping Day
+20120404;SHANGHAI EXCHANGE; Wednesday 04 April 2012 Tomb-sweeping Day
+20120430;SHANGHAI EXCHANGE; Monday 02 April 2012 Labor Day
+20120105;SHANGHAI EXCHANGE; Tuesday 03 April 2012 Labor Day
+20120624;SHANGHAI EXCHANGE; Friday 24 June 2012 Dragon Boat Festival
+20121001;SHANGHAI EXCHANGE; Monday 01 October 2012 Mid-Autumn Festival, National Day
+20121002;SHANGHAI EXCHANGE; Tuesday 02 October 2012 Mid-Autumn Festival, National Day
+20121003;SHANGHAI EXCHANGE; Wednesday 03 October 2012 Mid-Autumn Festival, National Day
+20121004;SHANGHAI EXCHANGE; Thursday 04 October 2012 Mid-Autumn Festival, National Day
+20121005;SHANGHAI EXCHANGE; Friday 05 October 2012 Mid-Autumn Festival, National Day
 
 20080101;SHENZHEN EXCHANGE; 1 January 2008
 20080206;SHENZHEN EXCHANGE; 6 February 2008
@@ -824,6 +842,25 @@
 20111003;SHENZHEN EXCHANGE; Monday 3 October 2011 National Day 3
 20111004;SHENZHEN EXCHANGE; Tuesday 4 October 2011 National Day 4
 20111005;SHENZHEN EXCHANGE; Wednesday 5 October 2011 National Day 5
+20120102;SHENZHEN EXCHANGE; Monday 02 January 2012 New Years Day
+20120103;SHENZHEN EXCHANGE; Tuesday 03 January 2012 New Years Day
+20120123;SHENZHEN EXCHANGE; Monday 23 January 2012 Spring Festival (Chinese New Year)
+20120124;SHENZHEN EXCHANGE; Tuesday 24 January 2012 Spring Festival (Chinese New Year)
+20120125;SHENZHEN EXCHANGE; Wednesday 25 January 2012 Spring Festival (Chinese New Year)
+20120126;SHENZHEN EXCHANGE; Thursday 26 January 2012 Spring Festival (Chinese New Year)
+20120127;SHENZHEN EXCHANGE; Friday 27 January 2012 Spring Festival (Chinese New Year)
+20120402;SHENZHEN EXCHANGE; Monday 02 April 2012 Tomb-sweeping Day
+20120403;SHENZHEN EXCHANGE; Tuesday 03 April 2012 Tomb-sweeping Day
+20120404;SHENZHEN EXCHANGE; Wednesday 04 April 2012 Tomb-sweeping Day
+20120430;SHENZHEN EXCHANGE; Monday 02 April 2012 Labor Day
+20120105;SHENZHEN EXCHANGE; Tuesday 03 April 2012 Labor Day
+20120624;SHENZHEN EXCHANGE; Friday 24 June 2012 Dragon Boat Festival
+20121001;SHENZHEN EXCHANGE; Monday 01 October 2012 Mid-Autumn Festival, National Day
+20121002;SHENZHEN EXCHANGE; Tuesday 02 October 2012 Mid-Autumn Festival, National Day
+20121003;SHENZHEN EXCHANGE; Wednesday 03 October 2012 Mid-Autumn Festival, National Day
+20121004;SHENZHEN EXCHANGE; Thursday 04 October 2012 Mid-Autumn Festival, National Day
+20121005;SHENZHEN EXCHANGE; Friday 05 October 2012 Mid-Autumn Festival, National Day
+
 
 20080306;NATIONAL EXCHANGE OF INDIA; 6 march 2008
 20080320;NATIONAL EXCHANGE OF INDIA; 20 march 2008
@@ -878,6 +915,21 @@
 20110830;NATIONAL EXCHANGE OF INDIA; Tuesday 30 august 2011 Ramzan Id
 20111026;NATIONAL EXCHANGE OF INDIA; Wednesday 26 october 2011 Diwali Amavasya (Laxmi Puja)
 20111226;NATIONAL EXCHANGE OF INDIA; Monday 26 december 2011 Moharum
+20120126;NATIONAL EXCHANGE OF INDIA; Thursday 26 january 2012 Republiv day
+20120220;NATIONAL EXCHANGE OF INDIA; Monday 20 february 2012 Mahashivratri
+20120308;NATIONAL EXCHANGE OF INDIA; Thursday 08 mars 2012 Holi
+20120405;NATIONAL EXCHANGE OF INDIA; Thursday 05 april 2012 Mahavir Jayanti
+20120406;NATIONAL EXCHANGE OF INDIA; Friday 06 april 2012 Good friday
+20120501;NATIONAL EXCHANGE OF INDIA; Tuesday 01 may 2012 Maharashtra Day
+20120815;NATIONAL EXCHANGE OF INDIA; Wednesday 15 August 2012 Indpendence ay
+20120820;NATIONAL EXCHANGE OF INDIA; Monday 20 August 2012 Ramzan Id
+20120919;NATIONAL EXCHANGE OF INDIA; Wednesday 19 september 2012 Ganesh Chaturthi
+20121002;NATIONAL EXCHANGE OF INDIA; Tuesday 02 october 2012 Mahatma Gandhi Jayanti
+20121024;NATIONAL EXCHANGE OF INDIA; Wednesday 24 october 2012 Dussera - Vijaya Dashmi
+20121113;NATIONAL EXCHANGE OF INDIA; Tuesday 13 november 2012 Diwali Amavasya (Laxmi Pujan)
+20121114;NATIONAL EXCHANGE OF INDIA; Wednesday 14 november 2012 Diwali Balipratipada
+20121128;NATIONAL EXCHANGE OF INDIA; Wednesday 28 november 2012 Gurunanak Jayanti
+20121225;NATIONAL EXCHANGE OF INDIA; Tuesday 25 december 2012 Christmas
 
 20080306;BOMBAY EXCHANGE; 6 march 2008
 20080320;BOMBAY EXCHANGE; 20 march 2008
@@ -932,6 +984,22 @@
 20110830;BOMBAY EXCHANGE; Tuesday 30 august 2011 Ramzan Id
 20111026;BOMBAY EXCHANGE; Wednesday 26 october 2011 Diwali Amavasya (Laxmi Puja)
 20111226;BOMBAY EXCHANGE; Monday 26 december 2011 Moharum
+20120126;BOMBAY EXCHANGE; Thursday 26 january 2012 Republiv day
+20120220;BOMBAY EXCHANGE; Monday 20 february 2012 Mahashivratri
+20120308;BOMBAY EXCHANGE; Thursday 08 mars 2012 Holi
+20120405;BOMBAY EXCHANGE; Thursday 05 april 2012 Mahavir Jayanti
+20120406;BOMBAY EXCHANGE; Friday 06 april 2012 Good friday
+20120501;BOMBAY EXCHANGE; Tuesday 01 may 2012 Maharashtra Day
+20120815;BOMBAY EXCHANGE; Wednesday 15 August 2012 Indpendence ay
+20120820;BOMBAY EXCHANGE; Monday 20 August 2012 Ramzan Id
+20120919;BOMBAY EXCHANGE; Wednesday 19 september 2012 Ganesh Chaturthi
+20121002;BOMBAY EXCHANGE; Tuesday 02 october 2012 Mahatma Gandhi Jayanti
+20121024;BOMBAY EXCHANGE; Wednesday 24 october 2012 Dussera - Vijaya Dashmi
+20121113;BOMBAY EXCHANGE; Tuesday 13 november 2012 Diwali Amavasya (Laxmi Pujan)
+20121114;BOMBAY EXCHANGE; Wednesday 14 november 2012 Diwali Balipratipada
+20121128;BOMBAY EXCHANGE; Wednesday 28 november 2012 Gurunanak Jayanti
+20121225;BOMBAY EXCHANGE; Tuesday 25 december 2012 Christmas
+
 
 20080101;NEW ZEALAND EXCHANGE; Tuesday 1 january 2008
 20080102;NEW ZEALAND EXCHANGE; Wednesday 2 January 2008
@@ -1515,8 +1583,6 @@
 20110606;TAIWAN STOCK EXCHANGE; Monday 6 June 2011 Dragon Boat Festival
 20110912;TAIWAN STOCK EXCHANGE; Monday 12 Sepember 2011 Mid-autumn Festival
 20111010;TAIWAN STOCK EXCHANGE; Monday 10 October 2011 National Day
-
-
 20120119;TAIWAN STOCK EXCHANGE; Thursday 19 January 2012 No trading
 20120122;TAIWAN STOCK EXCHANGE; Sunday 22 January 2012 Lunar New Year's Eve
 20120123;TAIWAN STOCK EXCHANGE; Monday 23 January 2012 Spring Festival
