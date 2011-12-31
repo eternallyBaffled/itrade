@@ -111,15 +111,16 @@ class LiveUpdate_RealTime(object):
                     try:
                         f = urllib2.urlopen(req)
                         data = f.read()
-                        if 'href="/cours.phtml?symbole=' in data:
-                            a  = data.index('href="/cours.phtml?symbole=')
-                            if a < 35440 :
-                                symbol = data[a+27:a+43]
-                                symbol = symbol[:symbol.find('">')]
-                                self.m_isinsymbol [isin] = symbol
-                                debug('%s found and added in dictionary (%s)' % (isin,symbol))
-                            else:
-                                symbol = ''
+
+                        ch = 'class="bourse fit block">'
+
+                        if data.find(ch)!= -1:
+                            b = data.find(ch)
+                            a = data.find('href="/cours.phtml?symbole=',b)
+                            symbol = data[a+27:a+43]
+                            symbol = symbol[:symbol.find('">')]
+                            self.m_isinsymbol [isin] = symbol
+                            debug('%s found and added in dictionary (%s)' % (isin,symbol))
                         else:
                             symbol = ''
 
@@ -234,25 +235,21 @@ class LiveUpdate_RealTime(object):
                     f = urllib2.urlopen(req)
                     data = f.read()
 
-                    if 'href="/cours.phtml?symbole=' in data:
-                        a  = data.index('href="/cours.phtml?symbole=')
-                        #print a
-                        if a < 35440 :
-                            symbol = data[a+27:a+43]
-                            symbol = symbol[:symbol.find('">')]
-                            self.m_isinsymbol [isin] = symbol
-                            print isin + " add in dictionary"
-                            
-                            if symbol[:2] in ('1u','1y','2a','OP'):
-                                pass
-                            else:
-                                self.m_isinsymbol [isin] = symbol
+                    ch = 'class="bourse fit block">'
 
-                                dic = open(os.path.join(itrade_config.dirUserData,'ticker_bourso.txt'), 'w')
-                                cPickle.dump(self.m_isinsymbol,dic)
-                                dic.close()
+                    if data.find(ch)!= -1:
+                        b = data.find(ch)
+                        a = data.find('href="/cours.phtml?symbole=',b)
+                        symbol = data[a+27:a+43]
+                        symbol = symbol[:symbol.find('">')]
+                        if symbol[:2] in ('1u','1y','2a','OP'):
+                            pass
                         else:
-                            return None
+                            self.m_isinsymbol [isin] = symbol
+                            debug('%s found and added in dictionary (%s)' % (isin,symbol))
+                            dic = open(os.path.join(itrade_config.dirUserData,'ticker_bourso.txt'), 'w')
+                            cPickle.dump(self.m_isinsymbol,dic)
+                            dic.close()
                     else:
                         return None
 

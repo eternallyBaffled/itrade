@@ -64,23 +64,13 @@ def Import_ListOfQuotes_SWX(quotes,market='SWISS EXCHANGE',dlg=None,x=0):
                                proxyAuth = itrade_config.proxyAuthentication,
                                connectionTimeout = itrade_config.connectionTimeout
                                )
-    if market=='SWISS EXCHANGE':    
-        # find url to update list
-        ch = 'a href="/data/market/statistics/swiss_blue_chip_shares_'
-        
+    if market=='SWISS EXCHANGE':
+        url = 'http://www.six-swiss-exchange.com/shares/companies/download/issuers_all_fr.csv'
         try:
-            url = connection.getDataFromUrl('http://www.six-swiss-exchange.com/shares/explorer/download/download_en.html')
+            data = connection.getDataFromUrl(url)
         except:
             info('Import_ListOfQuotes_SWX_%s:unable to get file name :-(' % market)
             return False
-
-        if url.find(ch):
-            date = url.find(ch)+len(ch)
-            date = url[date:url.index('.csv',date)]
-        else:
-            info('Import_ListOfQuotes_SWX_%s:unable to get Date :-(' % market)
-            return False
-
     else:
         return False
 
@@ -95,47 +85,34 @@ def Import_ListOfQuotes_SWX(quotes,market='SWISS EXCHANGE',dlg=None,x=0):
         lines = [removeCarriage(l) for l in lines]
         return lines
 
-    select_shares = ['swiss_blue_chip_shares_','mid_and_small_caps_swiss_shares_','foreign_shares_']
-    count = 0
-    for type_shares in select_shares:
+    # returns the data
+    lines = splitLines(data)
+    n = 0
+    isin = ''
+    for line in lines[1:]:
+        line = line.replace('!',' ')
+        line = line.replace(',',' ')
+        line = line.replace('à','a')
+        line = line.replace('ä','a')
+        line = line.replace('â','a')
+        line = line.replace('ö','o')
+        line = line.replace('ü','u')
+        line = line.replace('é','e')
+        line = line.replace('è','e')
+        line = line.replace('+',' ')
         
-        url = 'http://www.six-swiss-exchange.com/data/market/statistics/' + type_shares + date + '.csv'
+        data = string.split(line,';') # csv line
+        name = data[0].strip()
+        ticker = data[1].strip()
+        country = data[3].strip()
+        currency = data[4].strip()
+        exchange = data[5].strip()
 
-        info('Import_ListOfQuotes_SWX:connect to %s' % url)
-
-        try:
-            data=connection.getDataFromUrl(url)
-        except:
-            info('Import_ListOfQuotes_SWX:unable to connect :-(')
-            return False
-
-        # returns the data
-        lines = splitLines(data)
-        n = 0
-        indice = {}
-
-        for line in lines:
-            item = itrade_csv.parse(line,7)
-            if len(item)>2:
-                if n==0:
-                    i = 0
-                    for ind in item:
-                        indice[ind] = i
-                        i = i + 1
-
-                    iISIN = indice['ISIN']
-                    iName = indice['ShortName']
-                    iCurrency = indice['TradingBaseCurrency']
-                    iExchange = indice['Exchange']
-                    iCountry = indice['GeographicalAreaCode']
-                    iTicker = indice['ValorSymbol']
-                    n = 1
-                else:
-                    quotes.addQuote(isin=item[iISIN],name=item[iName].replace(',',' '), ticker=item[iTicker],market='SWISS EXCHANGE',\
-                        currency=item[iCurrency],place=item[iExchange],country=item[iCountry])
-                    count = count + 1
+        quotes.addQuote(isin=isin,name=name, ticker=ticker,market='SWISS EXCHANGE',\
+            currency=currency,place=exchange,country=country)
+        n = n + 1
     if itrade_config.verbose:
-        print 'Imported %d lines from %s' % (count,market)
+        print 'Imported %d lines from %s' % (n,market)
 
     return True
 
