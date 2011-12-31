@@ -91,34 +91,41 @@ def Import_ListOfQuotes_ASX(quotes,market='ASX',dlg=None,x=0):
         return False
 
     # returns the data
-    book = itrade_excel.open_excel(file=None,content=data)
-    sh = book.sheet_by_index(0)
+    try:
+        book = itrade_excel.open_excel(file=None,content=data)
+        sh = book.sheet_by_index(0)
 
-    #print 'Import_ListOfQuotes_ASX_%s:' % market,'book',book,'sheet',sh,'nrows=',sh.nrows
+        for line in range(sh.nrows):
+            if sh.cell_type(line,1) != xlrd.XL_CELL_EMPTY:
 
-    for line in range(sh.nrows):
-        if sh.cell_type(line,1) != xlrd.XL_CELL_EMPTY:
+                if sh.cell_value(line,2)=='ORDINARY FULLY PAID':   # only want ordinary shares
+                    isin = sh.cell_value(line,3)
+                    name = sh.cell_value(line,1)
+                    name = name.encode('cp1252') # must encode like that
+                    name = name.replace(',',' ')
+                    ticker = sh.cell_value(line,0)
+                    quotes.addQuote(isin = isin,name = name, \
+                    ticker = ticker,market='ASX',currency='AUD',place='SYD',country='AU')
 
-            if sh.cell_value(line,2)=='ORDINARY FULLY PAID':   # only want ordinary shares
+                    n = n + 1
+                    
+    except:
+        lines = splitLines(data)
 
-                isin = sh.cell_value(line,3)
-                
-                name = sh.cell_value(line,1)
-                
-                name = name.encode('cp1252') # must encode like that
-                
-                name = name.replace(',',' ')
-                
-                ticker = sh.cell_value(line,0)
-                #print isin,name, ticker
-                
+        for line in lines[5:]:
+            # skip header lines (PeterMills> 2007-06-22)
+            data = string.split (line, '\t')    # tab delimited
+            if data[2]=='ORDINARY FULLY PAID':  # only want ordinary shares
+                isin=data[3]
+                name=data[1].replace(',',' ')
+                ticker=data[0]
                 quotes.addQuote(isin = isin,name = name, \
                 ticker = ticker,market='ASX',currency='AUD',place='SYD',country='AU')
 
                 n = n + 1
 
-
-    print 'Imported %d lines from %s data.' % (n,market)
+    if itrade_config.verbose:
+        print 'Imported %d lines from %s data.' % (n,market)
 
     return True
 # ============================================================================
