@@ -105,25 +105,28 @@ class LiveUpdate_RealTime(object):
                         debug('%s' % select_isin)
 
                 # extract pre_symbol
+                i = 0
                 for isin in select_isin:
                     req = urllib2.Request('http://www.boursorama.com/recherche/index.phtml?search%5Bquery%5D=' + isin)
                     req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
                     try:
                         f = urllib2.urlopen(req)
                         data = f.read()
-
+                        f.close()
+                        
                         ch = 'class="bourse fit block">'
 
                         if data.find(ch)!= -1:
                             b = data.find(ch)
-                            a = data.find('href="/cours.phtml?symbole=',b)
-                            symbol = data[a+27:a+43]
-                            symbol = symbol[:symbol.find('">')]
-                            self.m_isinsymbol [isin] = symbol
-                            debug('%s found and added in dictionary (%s)' % (isin,symbol))
-                        else:
-                            symbol = ''
-
+                            if data.find('>Valeurs<',b) != - 1:
+                                if data.find('class="exchange">Nyse Euro<',b) != -1:
+                                    c = data.find('class="exchange">Nyse Euro<',b)
+                                    a = data.find('href="/cours.phtml?symbole=',0,c)
+                                    i = i + 1
+                                    symbol = data[a+27:a+43]
+                                    symbol = symbol[:symbol.find('">')]
+                                    self.m_isinsymbol [isin] = symbol
+                                    debug('%s found and added in dictionary (%s)' % (isin,symbol))
                     except:
                         pass
 
@@ -234,22 +237,27 @@ class LiveUpdate_RealTime(object):
                 try: 
                     f = urllib2.urlopen(req)
                     data = f.read()
-
+                    f.close()
+                        
                     ch = 'class="bourse fit block">'
 
                     if data.find(ch)!= -1:
                         b = data.find(ch)
-                        a = data.find('href="/cours.phtml?symbole=',b)
-                        symbol = data[a+27:a+43]
-                        symbol = symbol[:symbol.find('">')]
-                        if symbol[:2] in ('1u','1y','2a','OP'):
-                            pass
+                        if data.find('>Valeurs<',b) != - 1:
+                            if data.find('class="exchange">Nyse Euro<',b) != -1:
+                                c = data.find('class="exchange">Nyse Euro<',b)
+                                a = data.find('href="/cours.phtml?symbole=',0,c)
+                                symbol = data[a+27:a+43]
+                                symbol = symbol[:symbol.find('">')]
+                                self.m_isinsymbol [isin] = symbol
+                                debug('%s found and added in dictionary (%s)' % (isin,symbol))
+                                dic = open(os.path.join(itrade_config.dirUserData,'ticker_bourso.txt'), 'w')
+                                cPickle.dump(self.m_isinsymbol,dic)
+                                dic.close()
+                            else:
+                                return None
                         else:
-                            self.m_isinsymbol [isin] = symbol
-                            debug('%s found and added in dictionary (%s)' % (isin,symbol))
-                            dic = open(os.path.join(itrade_config.dirUserData,'ticker_bourso.txt'), 'w')
-                            cPickle.dump(self.m_isinsymbol,dic)
-                            dic.close()
+                            return None
                     else:
                         return None
 
@@ -276,6 +284,7 @@ class LiveUpdate_RealTime(object):
 
             f = urllib2.urlopen(req)
             data = f.read()
+            f.close()
         except:
             debug('LiveUpdate_Boursorama:unable to connect :-(')
             return None
