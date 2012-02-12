@@ -854,7 +854,7 @@ class Portfolio(object):
 
     def sameyear(self,op,cd=None):
         if cd==None:
-            cd = date.today().year
+            cd = datetime.date.today().year
         if cd == op.date().year:
             return True
         else:
