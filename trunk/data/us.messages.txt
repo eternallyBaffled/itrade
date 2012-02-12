@@ -322,6 +322,7 @@ portfolio_modify;Modify
 portfolio_new;New
 portfolio_delete;Delete
 portfolio_date;Date of transaction :
+portfolio_time;Time of transaction :
 portfolio_operation;Transaction :
 portfolio_description;Description :
 portfolio_quote;Quote :
