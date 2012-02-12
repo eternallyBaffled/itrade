@@ -37,7 +37,7 @@
 # ============================================================================
 
 # python system
-from datetime import *
+from datetime import datetime
 import logging
 
 # iTrade system
@@ -186,7 +186,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
                     self.m_name = ""
             else:
                 self.m_name = op.name()
-            self.m_date = op.date()
+            self.m_datetime = op.datetime()
             self.m_ref = op.ref()
         else:
             self.m_type = OPERATION_SELL
@@ -194,7 +194,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
             self.m_expenses = 0.0
             self.m_number = 0
             self.m_name = ""
-            self.m_date = date.today()
+            self.m_datetime = datetime.now()
             self.m_ref = -1
 
         self.m_parent = parent
@@ -209,7 +209,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
             tb = '??'
         tt = tb + ' %s - %s %s'
         if op:
-            self.tt = tt % (op.date().strftime('%x'),op.operation(),op.description())
+            self.tt = tt % (op.datetime().strftime('%x'),op.operation(),op.description())
         else:
             self.tt = tb
 
@@ -225,15 +225,23 @@ class iTradeOperationDialog(iTradeSizedDialog):
         pane.SetSizerType("form")
         pane.SetSizerProps(expand=True)
 
-        # Row1 : date
+        # Row 1 : date
         label = wx.StaticText(pane, -1, message('portfolio_date'))
         label.SetSizerProps(valign='center')
 
-        ssdatetime = wx.DateTimeFromDMY(self.m_date.day,self.m_date.month-1,self.m_date.year)
+        ssdatetime = wx.DateTimeFromDMY(self.m_datetime.day,self.m_datetime.month-1,self.m_datetime.year)
         self.wxDateCtrl = wx.DatePickerCtrl(pane, -1, ssdatetime , size = (120,-1), style = wx.DP_DROPDOWN | wx.DP_SHOWCENTURY)
         wx.EVT_DATE_CHANGED(self, self.wxDateCtrl.GetId(), self.OnDate)
 
-        # Row 2 : kind of operation
+        # Row 2 : time
+        label = wx.StaticText(pane, -1, message('portfolio_time'))
+        label.SetSizerProps(valign='center')
+
+        hhmmsstime = wx.DateTimeFromHMS(self.m_datetime.hour, self.m_datetime.minute, self.m_datetime.second)
+        self.wxTimeCtrl = masked.TimeCtrl(pane, -1, hhmmsstime, format='24HHMMSS')
+        self.Bind(masked.EVT_TIMEUPDATE, self.OnTime, self.wxTimeCtrl )
+
+        # Row 3 : kind of operation
         label = wx.StaticText(pane, -1, message('portfolio_operation'))
         label.SetSizerProps(valign='center')
 
@@ -250,7 +258,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
 
         self.wxTypeCtrl.SetSelection(idx)
 
-        # Row 3 : quote
+        # Row 4 : quote
         btnpane = sc.SizedPanel(container, -1)
         btnpane.SetSizerType("horizontal")
         btnpane.SetSizerProps(expand=True)
@@ -267,7 +275,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
         wx.EVT_TEXT( self, self.wxNameCtrl.GetId(), self.OnDescChange )
         self.wxNameCtrl.SetSizerProps(expand=True)
 
-        # Row 4 : value
+        # Row 5 : value
         btnpane = sc.SizedPanel(container, -1)
         btnpane.SetSizerType("horizontal")
         btnpane.SetSizerProps(expand=True)
@@ -334,11 +342,11 @@ class iTradeOperationDialog(iTradeSizedDialog):
 
     def OnValid(self,event):
         if self.Validate() and self.TransferDataFromWindow():
-            self.aRet = (self.m_date.__str__(),self.m_type,self.m_name,self.m_value,self.m_expenses,self.m_number,self.m_ref)
+            self.aRet = (self.m_datetime.__str__(),self.m_type,self.m_name,self.m_value,self.m_expenses,self.m_number,self.m_ref)
             self.EndModal(wx.ID_OK)
 
     def refreshPage(self):
-        self.wxDateCtrl.SetValue(wx.DateTimeFromDMY(self.m_date.day,self.m_date.month-1,self.m_date.year))
+        self.wxDateCtrl.SetValue(wx.DateTimeFromDMY(self.m_datetime.day,self.m_datetime.month-1,self.m_datetime.year))
         self.wxValueCtrl.SetValue(self.m_value)
         self.wxExpensesCtrl.SetValue(self.m_expenses)
         self.wxNumberCtrl.SetValue(self.m_number)
@@ -414,7 +422,14 @@ class iTradeOperationDialog(iTradeSizedDialog):
         dRet = self.wxDateCtrl.GetValue()
         if dRet:
             debug('OnDate: %s\n' % dRet)
-            self.m_date = date(dRet.GetYear(),dRet.GetMonth()+1,dRet.GetDay())
+            self.m_datetime = self.m_datetime.combine(datetime.date(dRet.GetYear(),dRet.GetMonth()+1,dRet.GetDay()), self.m_datetime.time())
+            self.refreshPage()
+
+    def OnTime(self, evt):
+        dRet = self.wxTimeCtrl.GetValue(as_wxDateTime=True)
+        if dRet:
+            debug('OnTime: %s\n' % dRet)
+            self.m_datetime = self.m_datetime.combine(self.m_datetime.date(), datetime.time(dRet.GetHour(), dRet.GetMinute(), dRet.GetSecond()))
             self.refreshPage()
 
     def OnType(self,evt):

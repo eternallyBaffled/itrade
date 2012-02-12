@@ -36,7 +36,7 @@
 # ============================================================================
 
 # python system
-from datetime import *
+import datetime
 import logging
 
 # iTrade system
@@ -224,15 +224,15 @@ operation_incl_taxes = {
 class Operation(object):
     def __init__(self,d,t,m,v,e,n,vat,ref):
 
-        # decode the date (string) to convert to date
-        if isinstance(d,date):
-            self.m_date = d
-        elif d[4]=='-':
-            debug('Operation::__init__():%s: %d %d %d' % (d,long(d[0:4]),long(d[5:7]),long(d[8:10])));
-            self.m_date = date(long(d[0:4]),long(d[5:7]),long(d[8:10]))
+        # decode the datetime (string) to convert to datetime
+        if isinstance(d,datetime.datetime):
+            self.m_datetime = d
         else:
-            debug('Operation::__init__():%s: %d %d %d' % (d,long(d[0:4]),long(d[4:6]),long(d[6:8])));
-            self.m_date = date(long(d[0:4]),long(d[4:6]),long(d[6:8]))
+            debug('Operation::__init__():%s' % d);
+            try:
+                self.m_datetime = datetime.datetime.strptime(d,"%Y-%m-%d %H:%M:%S")
+            except ValueError:
+                self.m_datetime = datetime.datetime.strptime(d,"%Y-%m-%d")
 
         self.m_type = t
         self.m_value = float(v)
@@ -268,9 +268,9 @@ class Operation(object):
 
     def __repr__(self):
         if self.m_quote:
-            return '%s;%s;%s;%f;%f;%d;%f' % (self.m_date, self.m_type, self.m_quote.key(), self.m_value, self.m_expenses, self.m_number, self.m_vat)
+            return '%s;%s;%s;%f;%f;%d;%f' % (self.m_datetime, self.m_type, self.m_quote.key(), self.m_value, self.m_expenses, self.m_number, self.m_vat)
         else:
-            return '%s;%s;%s;%f;%f;%d;%f' % (self.m_date, self.m_type, self.m_name, self.m_value, self.m_expenses, self.m_number, self.m_vat)
+            return '%s;%s;%s;%f;%f;%d;%f' % (self.m_datetime, self.m_type, self.m_name, self.m_value, self.m_expenses, self.m_number, self.m_vat)
 
     def ref(self):
         return self.m_ref
@@ -319,15 +319,17 @@ class Operation(object):
         if self.m_name: return self.m_name
         return ""
 
+    def datetime(self):
+        return self.m_datetime
+
     def date(self):
-        return self.m_date
+        return self.m_datetime.date()
+
+    def time(self):
+        return self.m_datetime.time()
 
     def sv_date(self):
         return self.date().strftime('%x')
-
-    def setDate(self,nd):
-        self.m_date = nd
-        return self.m_date
 
     def quote(self):
         if self.isQuote():
@@ -500,7 +502,7 @@ class Operations(object):
 
     def list(self):
         items = self.m_operations.values()
-        nlist = [(x.date(), x) for x in items]
+        nlist = [(x.datetime(), x) for x in items]
         nlist.sort()
         nlist = [val for (key, val) in nlist]
         #print nlist
@@ -1427,10 +1429,7 @@ def cmdline_evaluatePortfolio(year=2006):
 # Export
 # ============================================================================
 
-try:
-    ignore(portfolios)
-except NameError:
-    portfolios = Portfolios()
+portfolios = Portfolios()
 
 # ============================================================================
 # initPortfolioModule()
@@ -1448,7 +1447,7 @@ if __name__=='__main__':
 
     initPortfolioModule()
 
-    cmdline_evaluatePortfolio(2006)
+    cmdline_evaluatePortfolio(2012)
 
 # ============================================================================
 # That's all folks !

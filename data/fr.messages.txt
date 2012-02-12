@@ -320,7 +320,8 @@ portfolio_list_accountref;Numéro de Compte
 portfolio_modify;Modifie
 portfolio_new;Nouveau
 portfolio_delete;Supprime
-portfolio_date;Date de valeur :
+portfolio_date;Date d'opération:
+portfolio_time;Heure d'opération:
 portfolio_operation;Opération :
 portfolio_description;Description :
 portfolio_quote;Valeur :
