@@ -37,7 +37,7 @@
 # ============================================================================
 
 # python system
-from datetime import datetime
+import datetime
 import logging
 
 # iTrade system
@@ -194,7 +194,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
             self.m_expenses = 0.0
             self.m_number = 0
             self.m_name = ""
-            self.m_datetime = datetime.now()
+            self.m_datetime = datetime.datetime.now()
             self.m_ref = -1
 
         self.m_parent = parent
@@ -796,13 +796,13 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
             return True
         elif self.m_period == PERIOD_CURRENTYEAR:
             # year should be the current one
-            return op.date().year==date.today().year
+            return op.date().year==datetime.date.today().year
         elif self.m_period == PERIOD_90DAYS:
             # last 90 days
-            return (date.today() - op.date()) <= timedelta(90)
+            return (datetime.date.today() - op.date()) <= timedelta(90)
         elif self.m_period == PERIOD_30DAYS:
             # last 30 days
-            return (date.today() - op.date()) <= timedelta(30)
+            return (datetime.date.today() - op.date()) <= timedelta(30)
         return False
 
     # --- [ list population ] -------------------------------------
@@ -1221,7 +1221,7 @@ def add_iTradeOperation(win,portfolio,quote,type):
         key = quote.key()
     else:
         key = None
-    op = Operation(d=date.today(),t=type,m=key,v='0.0',e='0.0',n='0',vat=portfolio.vat(),ref=-1)
+    op = Operation(d=datetime.datetime.now(),t=type,m=key,v='0.0',e='0.0',n='0',vat=portfolio.vat(),ref=-1)
     aRet = edit_iTradeOperation(win,op,OPERATION_ADD,market=portfolio.market(),currency=portfolio.currency())
     if aRet:
         info('add_iTradeOperation: date=%s type=%s name=%s value=%12.2f expenses=%12.2f number=%d ref=%d' %(aRet[0],aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6]))
