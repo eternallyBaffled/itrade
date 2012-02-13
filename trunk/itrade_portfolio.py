@@ -230,9 +230,12 @@ class Operation(object):
         else:
             debug('Operation::__init__():%s' % d);
             try:
-                self.m_datetime = datetime.datetime.strptime(d,'%Y-%m-%d %H:%M:%S')
+                self.m_datetime = datetime.datetime.strptime(d,'%Y-%m-%d %H:%M:%S.%f')
             except ValueError:
-                self.m_datetime = datetime.datetime.strptime(d,'%Y-%m-%d')
+                try:
+                    self.m_datetime = datetime.datetime.strptime(d,'%Y-%m-%d %H:%M:%S')
+                except ValueError:
+                    self.m_datetime = datetime.datetime.strptime(d,'%Y-%m-%d')
 
         self.m_type = t
         self.m_value = float(v)

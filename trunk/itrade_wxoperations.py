@@ -342,7 +342,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
 
     def OnValid(self,event):
         if self.Validate() and self.TransferDataFromWindow():
-            self.aRet = (self.m_datetime.strftime('%Y-%m-%d %H:%M:%S'),self.m_type,self.m_name,self.m_value,self.m_expenses,self.m_number,self.m_ref)
+            self.aRet = (self.m_datetime,self.m_type,self.m_name,self.m_value,self.m_expenses,self.m_number,self.m_ref)
             self.EndModal(wx.ID_OK)
 
     def refreshPage(self):
@@ -1137,7 +1137,7 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
 
         aRet = edit_iTradeOperation(self,self.m_port.getOperation(ind),OPERATION_MODIFY,currency=self.m_port.currency())
         if aRet:
-            info('OnModify: date=%s type=%s name=%s value=%12.2f expenses=%12.2f number=%d ref=%d' %(aRet[0],aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6]))
+            info('OnModify: date=%s type=%s name=%s value=%12.2f expenses=%12.2f number=%d ref=%d' %(aRet[0].strftime('%Y-%m-%d %H:%M:%S'),aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6]))
             self.m_port.delOperation(ind)
             self.m_port.addOperation(aRet)
             self.RebuildList()
@@ -1149,7 +1149,7 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
 
         aRet = edit_iTradeOperation(self,self.m_port.getOperation(ind),OPERATION_DELETE,currency=self.m_port.currency())
         if aRet:
-            info('OnDelete: date=%s type=%s name=%s value=%12.2f expenses=%12.2f number=%d ref=%d' %(aRet[0],aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6]))
+            info('OnDelete: date=%s type=%s name=%s value=%12.2f expenses=%12.2f number=%d ref=%d' %(aRet[0].strftime('%Y-%m-%d %H:%M:%S'),aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6]))
             self.m_port.delOperation(ind)
             self.RebuildList()
 
@@ -1157,7 +1157,7 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
         info("OnAdd")
         aRet = edit_iTradeOperation(self,None,OPERATION_ADD,market=self.m_port.market(),currency=self.m_port.currency())
         if aRet:
-            info('OnAdd: date=%s type=%s name=%s value=%12.2f expenses=%12.2f number=%d ref=%d' %(aRet[0],aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6]))
+            info('OnAdd: date=%s type=%s name=%s value=%12.2f expenses=%12.2f number=%d ref=%d' %(aRet[0].strftime('%Y-%m-%d %H:%M:%S'),aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6]))
             self.m_port.addOperation(aRet)
             self.RebuildList()
 
@@ -1224,7 +1224,7 @@ def add_iTradeOperation(win,portfolio,quote,type):
     op = Operation(d=datetime.datetime.now(),t=type,m=key,v='0.0',e='0.0',n='0',vat=portfolio.vat(),ref=-1)
     aRet = edit_iTradeOperation(win,op,OPERATION_ADD,market=portfolio.market(),currency=portfolio.currency())
     if aRet:
-        info('add_iTradeOperation: date=%s type=%s name=%s value=%12.2f expenses=%12.2f number=%d ref=%d' %(aRet[0],aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6]))
+        info('add_iTradeOperation: date=%s type=%s name=%s value=%12.2f expenses=%12.2f number=%d ref=%d' %(aRet[0].strftime('%Y-%m-%d %H:%M:%S'),aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6]))
         portfolio.addOperation(aRet)
         portfolio.saveOperations()
         return True
