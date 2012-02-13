@@ -342,7 +342,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
 
     def OnValid(self,event):
         if self.Validate() and self.TransferDataFromWindow():
-            self.aRet = (self.m_datetime.__str__(),self.m_type,self.m_name,self.m_value,self.m_expenses,self.m_number,self.m_ref)
+            self.aRet = (self.m_datetime.strftime('%Y-%m-%d %H:%M:%S'),self.m_type,self.m_name,self.m_value,self.m_expenses,self.m_number,self.m_ref)
             self.EndModal(wx.ID_OK)
 
     def refreshPage(self):
