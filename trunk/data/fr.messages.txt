@@ -349,7 +349,7 @@ portfolio_ctrl_liquidation;Liquidation SRD
 portfolio_ctrl_quote;Prime d'émission en titres
 portfolio_ctrl_register;Enregistrement Public
 
-portfolio_list_date;Date
+portfolio_list_date;Date & Heure
 portfolio_list_operation;Opération
 portfolio_list_description;Description
 portfolio_list_number; Quantité

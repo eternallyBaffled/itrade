@@ -521,7 +521,7 @@ class Operations(object):
                     self.add(item,False)
 
     def save(self,outfile=None):
-        itrade_csv.write(outfile,os.path.join(itrade_config.dirUserData,'default.operations.txt'),self.m_operations.values())
+        itrade_csv.write(outfile,os.path.join(itrade_config.dirUserData,'default.operations.txt'),self.list())
 
     def add(self,item,bApply):
         debug('Operations::add() before: 0:%s , 1:%s , 2:%s , 3:%s , 4:%s , 5:%s' % (item[0],item[1],item[2],item[3],item[4],item[5]))

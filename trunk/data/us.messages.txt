@@ -350,7 +350,7 @@ portfolio_ctrl_liquidation;Liquidation SDR
 portfolio_ctrl_quote;Dividend with shares
 portfolio_ctrl_register;Public Registration
 
-portfolio_list_date;Date
+portfolio_list_date;Date & Time
 portfolio_list_operation;Transaction
 portfolio_list_description;Description
 portfolio_list_number; Quantity
