@@ -178,14 +178,11 @@ class iTradeOperationDialog(iTradeSizedDialog):
             self.m_value = op.nv_value()
             self.m_expenses = op.nv_expenses()
             self.m_number = op.nv_number()
-            if op.quote():
-                if op.isQuote():
+            self.m_name = op.name()
+            if op.isQuote():
+                if op.quote():
                     self.m_name = op.quote().key()
                     self.m_market = op.quote().market()
-                else:
-                    self.m_name = ""
-            else:
-                self.m_name = op.name()
             self.m_datetime = op.datetime()
             self.m_ref = op.ref()
         else:
@@ -1224,7 +1221,7 @@ def add_iTradeOperation(win,portfolio,quote,type):
     op = Operation(d=datetime.datetime.now(),t=type,m=key,v='0.0',e='0.0',n='0',vat=portfolio.vat(),ref=-1)
     aRet = edit_iTradeOperation(win,op,OPERATION_ADD,market=portfolio.market(),currency=portfolio.currency())
     if aRet:
-        info('add_iTradeOperation: date=%s type=%s name=%s value=%12.2f expenses=%12.2f number=%d ref=%d' %(aRet[0].strftime('%Y-%m-%d %H:%M:%S'),aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6]))
+        info('add_iTradeOperation: date=%s type=%s name=%s value=%12.2f expenses=%12.2f number=%d ref=%d' %(str(aRet[0]),aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6]))
         portfolio.addOperation(aRet)
         portfolio.saveOperations()
         return True
@@ -1240,7 +1237,6 @@ if __name__=='__main__':
     app = wx.PySimpleApp()
 
     # load configuration
-    import itrade_config
     itrade_config.loadConfig()
 
     from itrade_local import *
