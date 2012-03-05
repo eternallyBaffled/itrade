@@ -105,7 +105,6 @@ class LiveUpdate_RealTime(object):
                         debug('%s' % select_isin)
 
                 # extract pre_symbol
-                i = 0
                 for isin in select_isin:
                     req = urllib2.Request('http://www.boursorama.com/recherche/index.phtml?search%5Bquery%5D=' + isin)
                     req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
@@ -122,7 +121,6 @@ class LiveUpdate_RealTime(object):
                                 if data.find('class="exchange">Nyse Euro<',b) != -1:
                                     c = data.find('class="exchange">Nyse Euro<',b)
                                     a = data.find('href="/cours.phtml?symbole=',0,c)
-                                    i = i + 1
                                     symbol = data[a+27:a+43]
                                     symbol = symbol[:symbol.find('">')]
                                     self.m_isinsymbol [isin] = symbol
@@ -192,7 +190,7 @@ class LiveUpdate_RealTime(object):
 
     def BoursoDate(self,date):
         sp = string.split(date,' ')
-        
+
         # Date part is easy
         sdate = jjmmaa2yyyymmdd(sp[0])
 
@@ -291,8 +289,8 @@ class LiveUpdate_RealTime(object):
 
         data = data.replace('\t','').replace ('</span>','')
         lines = self.splitLines(data)
-        n = 159
-        for line in lines[160:210]:
+        n = -1
+        for line in lines:
             n=n+1
             if '<table class="info-valeur list">' in line:
                 line = lines[n+6]
@@ -321,7 +319,7 @@ class LiveUpdate_RealTime(object):
                     volume = line[line.rfind('">')+2:line.find('</td>')].replace(' ','').replace('<td>','').replace('td>','')
                     if 'M' in line : volume  = '0'
                     if volume == '0' and quote.list()!=QLIST_INDICES:
-                        #info('volume : no trade to day %s' % volume)
+                        #info('volume : no trade to day %s' % symbol)
                         return None
                     line = lines[n+23]
                     first = line[line.find('"cotation">')+11:line.find('</td>')].replace(' ','')

@@ -37,10 +37,6 @@ main_view_operations;&Transacções
 main_view_desc_operations; Gerir as transacções na conta actual
 main_view_money;&Gestão de dinheiro
 main_view_desc_money; Gestão de dinheiro
-main_view_alerts;&Notícias e alertas
-main_view_desc_alerts; Notícias e alertas
-main_view_currencies;&Moedas correntes
-main_view_desc_currencies; Moedas correntes
 main_view_evaluation; &Desempenho
 main_view_desc_evaluation; Avaliação do desempenho da carteira
 main_view_trading;&Trading
@@ -50,6 +46,7 @@ main_view_compute;&Computador
 main_view_desc_compute; Computador
 main_view_convert;Con&versão
 main_view_desc_convert; Conversão entre dois Divisas
+
 main_view_refresh;&Actualizar agora
 main_view_desc_refresh; Actualizar agora a vista actual
 main_view_autorefresh;Actualizar automaticamente
@@ -124,22 +121,13 @@ main_help_forum;&Fórum de Usuário
 main_help_desc_forum;Participar na comunidade iTrade sobre o seu Fórum (Francês-inglês)
 main_help_donors;&Doar o Dinheiro…
 main_help_desc_donors; Como doar o dinheiro para suportar este projecto
-
 main_help_checksoftware;&Verificação das actualizações
 main_help_desc_checksoftware;Verificação se uma nova versão de software está disponível
 
-
 checksoftware_needupdate;O programa deve ser actualizado! Querem descarregar da nova versão?
-
-
 checksoftware_uptodate;Tem a última versão oficial conhecida
-
 checksoftware_title;Actualização do Programa
-
-
 checksoftware_development;Tem uma versão em cursos de desenvolvimento
-
-
 checksoftware_error;Impossível obter a informação de versão do programa (network issue ?)
 
 main_about;&Sobre ...
@@ -219,7 +207,7 @@ risk;Risco
 stop_plus;Stop+
 stop_minus;Stop-
 clive;Live
-cimport;Import
+cimport;Importar
 
 download_symbols_onelist;Actualização da lista
 download_symbols_onedesc;Actualizar a lista dos símbolos por download dos dados da rede
@@ -265,7 +253,7 @@ quote_select_syslist;Stocks
 quote_select_usrlist;Utilizador editado
 quote_select_indiceslist;Índices
 quote_select_trackerslist;Trackers
-quote_select_bondslist;Obrigações  
+quote_select_bondslist;Obrigações
 quote_select_filterfield;Somente acções negociadas
 
 quote_graphdaily; Diário
@@ -287,6 +275,10 @@ money_evaluation;Desempenho
 money_compute;Cálculo
 money_evaluationchart;Gráfico
 money_money;Gerência de risco
+main_view_alerts;&Notícias e alertas
+main_view_desc_alerts; Notícias e alertas
+main_view_currencies;&Moedas correntes
+main_view_desc_currencies; Moedas correntes
 
 portfolio_title;iTrade - transacção
 portfolio_select_title;Selecionar uma conta
@@ -330,6 +322,7 @@ portfolio_modify;Modificar
 portfolio_new;Novo
 portfolio_delete;Eliminar
 portfolio_date;Data da transacção:
+portfolio_time;Tempo da transacção :
 portfolio_operation;Transacção :
 portfolio_description;Descrição :
 portfolio_quote;Acções :
@@ -357,7 +350,7 @@ portfolio_ctrl_liquidation;Liquidação SRD
 portfolio_ctrl_quote;Dividendo com partes
 portfolio_ctrl_register;Registo público
 
-portfolio_list_date;Data
+portfolio_list_date;Data e Hora
 portfolio_list_operation;transacção
 portfolio_list_description;Descrição
 portfolio_list_number; Quantidade
@@ -585,8 +578,6 @@ print_errprinting;Erro de impressão. Verificar a configuração corrente
 print_page;Página: %d
 
 about_url;Lançar o navegador para a ligação: %s
-
-
 about_title;Sobre o iTrade
 
 info_caption;iTrade - Informação
@@ -610,10 +601,8 @@ stops_edit_desc;Modificar as informações de Stops
 decision_positiononquote_cash;Cash Position
 decision_positiononquote_credit;Marging Position
 decision_purchasingpower;Poder de Compra
-
 decision_numofshares;Quantidade de Acções :
 decision_upp;Preço de custo unitário :
-
 decision_pp;Preço de custo total :
 decision_profit;Latent Profit in %s :
 decision_profitpercent;Latent Profit in % :
@@ -636,6 +625,5 @@ remove_quote_title;Apagar a Cotação
 remove_quote_info;Suprimir realmente a acção %s ?
 
 converter_title;Conversão de Divisas
-
 
 test;Mensagem de teste

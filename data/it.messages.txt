@@ -44,6 +44,8 @@ main_view_desc_trading; Visualizza Informazioni Trading del Portafoglio
 
 main_view_compute;&Computer
 main_view_desc_compute; Computer
+main_view_convert;Con&verter
+main_view_desc_convert; Converter between two currencies
 
 main_view_refresh;&Aggiorna ora
 main_view_desc_refresh; Aggiorna ora visualizzazione corrente
@@ -230,7 +232,6 @@ listquote_saved;La lista simboli è stata salvata
 listquote_dirty_save;Vuoi salvare le modifiche apportate alla lista simboli ?
 listquote_nodirty_save;Le tue modifiche non sono state salvate e non saranno più visualizzate
 
-
 listquote_items_zero;Non ho trovato nessuna quotazione
 listquote_items_one;Ho trovato una quotazione
 listquote_items_n;Ho trovato %s quotazioni
@@ -321,6 +322,7 @@ portfolio_modify;Modifica
 portfolio_new;Nuovo
 portfolio_delete;Elimina
 portfolio_date;Data operazione :
+portfolio_time;Ora di operazione :
 portfolio_operation;Operazione :
 portfolio_description;Descrizione :
 portfolio_quote;Quotazione :
@@ -348,7 +350,7 @@ portfolio_ctrl_liquidation;Liquidazione Scoperto
 portfolio_ctrl_quote;Premio di emissione in titoli
 portfolio_ctrl_register;Registrazione Pubblica
 
-portfolio_list_date;Data
+portfolio_list_date;Data e Ora
 portfolio_list_operation;Operazione
 portfolio_list_description;Descrizione
 portfolio_list_number;Qtà
