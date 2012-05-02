@@ -95,7 +95,7 @@ def Import_ListOfQuotes_NASDAQ(quotes,market='NASDAQ',dlg=None,x=0):
         if count >0:
             name = line[1]
             name = name.strip()
-            name =name.replace(',','').replace('&quot;','"')
+            name =name.replace(',','').replace('&quot;','"').replace('&#39;',"'")
             ticker = line[0]
             ticker = ticker.strip()
             ticker = ticker.replace('/','-').replace('^','-P')

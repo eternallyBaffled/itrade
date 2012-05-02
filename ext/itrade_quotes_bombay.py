@@ -67,13 +67,13 @@ def Import_ListOfQuotes_BSE(quotes,market='BOMBAY EXCHANGE',dlg=None,x=0):
     
     if market=='BOMBAY EXCHANGE':
         starturl = 'http://test.bseindia.com/scripsearch/scrips.aspx?myScrip='
-        endurl = '&flag=sr'
+        #endurl = '&flag=sr'
     else:
 
         return False
 
     def splitLines(buf):
-        lines = string.split(buf, '/n')
+        lines = string.split(buf, '\r\n')
         lines = filter(lambda x:x, lines)
         def removeCarriage(s):
             if s[-1]=='\r':
@@ -90,41 +90,43 @@ def Import_ListOfQuotes_BSE(quotes,market='BOMBAY EXCHANGE',dlg=None,x=0):
 
     for letter in select_alpha:
         
-        url = starturl+letter+endurl
+        url = starturl+letter
 
         try:
             data=connection.getDataFromUrl(url)
         except:
             debug('Import_ListOfQuotes_BSE unable to connect :-(')
             return False
-        data = data.replace("cellpadding=0 width='100%'><tr><td class='tbmain'><a href=",'/n')
         # returns the data
         lines = splitLines(data)
 
 
         for line in lines:
             
-            if 'scripcode=' in line:
-                if '>#</td></tr>' in line or '>@</td></tr>' in line :
+            if '<td align="center"><font color="#0089CF">' in line:
+            #if '<td align="center" style="color:#0089CF;">' in line:
+                #scrip_cd = line[(line.find('"#0089CF">')+10):(line.find ('</font></td><td'))]
+                name = line[(line.find('#">')+3):(line.find ('</a></td><td'))]
+                name = name.upper()
+                ticker = line[(line.find('<u>')+3):(line.find ('</u>'))]
+                
+                
+                if 'FUND' in name or 'MATURITY' in name :
+                    pass
+                if '>#<' in line or '>@</' in line :
                     #Suspended due to penal reasons
                     #Suspended due to procedural reasons
-                    
                     pass
-                else :
-                    #scrip_cd = line[(line.find("scripcode=")+10):(line.find ('"'))]
-                    name = line[(line.find('>')+1):(line.find ('</a></td><td'))]
-                    name = name.upper()
-                    if 'FUND' in name or 'MATURYTY' in name :
-                        pass
-                    else :
-                        ticker = line[(line.find('<u>')+3):(line.find ('</u>'))]
-                        n = n + 1
-                        
-                        #Partial activation of the Progressbar
-                        dlg.Update(x,'B S E : %s /~3600' %n)
 
-                        quotes.addQuote(isin=isin,name=name, \
-                            ticker=ticker,market='BOMBAY EXCHANGE',currency='INR',place='BSE',country='IN')
+                    
+                else :
+                    #print name,ticker
+                    n = n + 1
+                    #Partial activation of the Progressbar
+                    dlg.Update(x,'B S E : %s /~3800' %n)
+
+                    quotes.addQuote(isin=isin,name=name, \
+                        ticker=ticker,market='BOMBAY EXCHANGE',currency='INR',place='BSE',country='IN')
 
                     
     if itrade_config.verbose:
