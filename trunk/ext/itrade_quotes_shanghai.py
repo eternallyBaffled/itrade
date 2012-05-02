@@ -44,7 +44,7 @@ import thread
 import time
 import string
 import urllib
-
+import urllib2
 # iTrade system
 import itrade_config
 from itrade_logging import *
@@ -84,14 +84,20 @@ def Import_ListOfQuotes_SHG(quotes,market='SHANGHAI EXCHANGE',dlg=None,x=0):
     cursor = 1
     count = 0
     
-    for cursor in range(1,861,20):
+    for cursor in range(1,921,20):
             
         url = urlA+str(cursor)
 
         info('Import_ListOfQuotes_SSE A SHARE:connect to %s' %url)
-        
+        req = urllib2.Request(url)
+        req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
+    
         try:
-            data=connection.getDataFromUrl(url)
+            f = urllib2.urlopen(req)
+            data = f.read()
+            f.close()
+            
+            #data=connection.getDataFromUrl(url)
         except:
             print 'Import_ListOfQuotes_SSE A SHARE:unable to connect to',url
             return False
@@ -129,7 +135,7 @@ def Import_ListOfQuotes_SHG(quotes,market='SHANGHAI EXCHANGE',dlg=None,x=0):
                 
                 count = count + 1
                 
-                dlg.Update(x,'SSE A SHARE: %s / 841'%cursor)
+                dlg.Update(x,'SSE A SHARE: %s / ~1000'%cursor)
                 
                 quotes.addQuote(isin='',name=name, \
                 ticker=ticker,market='SHANGHAI EXCHANGE', \
