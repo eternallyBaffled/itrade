@@ -1,10 +1,10 @@
-[column]
-indicators = -1;1
-portfolio = -1;1
-stops = -1;1
-quotes = -1;1
+[view]
 
 [net]
 
-[view]
+[column]
+indicators = -1;1
+portfolio = 9;1
+stops = -1;1
+quotes = 10;0
 

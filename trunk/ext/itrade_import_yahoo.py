@@ -135,10 +135,6 @@ class Import_yahoo(object):
         query = string.join(query, '&')
         url = yahooUrl(quote.market(),live=False) + '?' + query
 
-        #specific yahoo ticker to import historical prices of KOREA KOSDAQ EXCHANGE from uk.yahoo.finance - ticker = A + ticker
-        if quote.market()== 'KOREA KOSDAQ EXCHANGE':
-            url = url = url[:44]+'A'+url[44:]
-
         debug("Import_yahoo:getdata: url=%s ",url)
         try:
             buf=self.m_connection.getDataFromUrl(url)
@@ -177,19 +173,19 @@ class Import_yahoo(object):
                     # encode in EBP format
                     # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME
                     line = (
-                      quote.key(),
-                      sdate,
-                      open,
-                      high,
-                      low,
-                      value,
-                      volume
+                       quote.key(),
+                       sdate,
+                       open,
+                       high,
+                       low,
+                       value,
+                       volume
                     )
                     line = map(lambda (val): '%s' % str(val), line)
                     line = string.join(line, ';')
-
                     # append
                     data = data + line + '\r\n'
+
         return data
 
 # ============================================================================
@@ -223,31 +219,36 @@ registerImportConnector('SWISS EXCHANGE','XVTX',QLIST_ANY,QTAG_IMPORT,gImportYah
 
 registerImportConnector('EURONEXT','PAR',QLIST_SYSTEM,QTAG_IMPORT,gImportYahoo,bDefault=True)
 registerImportConnector('EURONEXT','PAR',QLIST_USER,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('EURONEXT','PAR',QLIST_INDICES,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('EURONEXT','PAR',QLIST_INDICES,QTAG_IMPORT,gImportYahoo,bDefault=False)
 
 registerImportConnector('EURONEXT','AMS',QLIST_SYSTEM,QTAG_IMPORT,gImportYahoo,bDefault=True)
 registerImportConnector('EURONEXT','AMS',QLIST_USER,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('EURONEXT','AMS',QLIST_INDICES,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('EURONEXT','AMS',QLIST_INDICES,QTAG_IMPORT,gImportYahoo,bDefault=False)
 
 registerImportConnector('EURONEXT','BRU',QLIST_SYSTEM,QTAG_IMPORT,gImportYahoo,bDefault=True)
 registerImportConnector('EURONEXT','BRU',QLIST_USER,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('EURONEXT','BRU',QLIST_INDICES,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('EURONEXT','BRU',QLIST_INDICES,QTAG_IMPORT,gImportYahoo,bDefault=False)
 
 registerImportConnector('EURONEXT','LIS',QLIST_SYSTEM,QTAG_IMPORT,gImportYahoo,bDefault=True)
 registerImportConnector('EURONEXT','LIS',QLIST_USER,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('EURONEXT','LIS',QLIST_INDICES,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('EURONEXT','LIS',QLIST_INDICES,QTAG_IMPORT,gImportYahoo,bDefault=False)
 
 registerImportConnector('ALTERNEXT','PAR',QLIST_SYSTEM,QTAG_IMPORT,gImportYahoo,bDefault=True)
 registerImportConnector('ALTERNEXT','PAR',QLIST_USER,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('ALTERNEXT','PAR',QLIST_INDICES,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('ALTERNEXT','PAR',QLIST_INDICES,QTAG_IMPORT,gImportYahoo,bDefault=False)
 
 registerImportConnector('ALTERNEXT','BRU',QLIST_SYSTEM,QTAG_IMPORT,gImportYahoo,bDefault=True)
 registerImportConnector('ALTERNEXT','BRU',QLIST_USER,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('ALTERNEXT','BRU',QLIST_INDICES,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('ALTERNEXT','BRU',QLIST_INDICES,QTAG_IMPORT,gImportYahoo,bDefault=False)
 
 registerImportConnector('ALTERNEXT','AMS',QLIST_SYSTEM,QTAG_IMPORT,gImportYahoo,bDefault=True)
 registerImportConnector('ALTERNEXT','AMS',QLIST_USER,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('ALTERNEXT','AMS',QLIST_INDICES,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('ALTERNEXT','AMS',QLIST_INDICES,QTAG_IMPORT,gImportYahoo,bDefault=False)
+
+
+registerImportConnector('ALTERNEXT','LIS',QLIST_SYSTEM,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('ALTERNEXT','LIS',QLIST_USER,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('ALTERNEXT','LIS',QLIST_INDICES,QTAG_IMPORT,gImportYahoo,bDefault=False)
 
 registerImportConnector('PARIS MARCHE LIBRE','PAR',QLIST_SYSTEM,QTAG_IMPORT,gImportYahoo,bDefault=True)
 registerImportConnector('PARIS MARCHE LIBRE','PAR',QLIST_USER,QTAG_IMPORT,gImportYahoo,bDefault=True)
@@ -255,7 +256,7 @@ registerImportConnector('PARIS MARCHE LIBRE','PAR',QLIST_INDICES,QTAG_IMPORT,gIm
 
 registerImportConnector('BRUXELLES MARCHE LIBRE','BRU',QLIST_SYSTEM,QTAG_IMPORT,gImportYahoo,bDefault=True)
 registerImportConnector('BRUXELLES MARCHE LIBRE','BRU',QLIST_USER,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('BRUXELLES MARCHE LIBRE','BRU',QLIST_INDICES,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('BRUXELLES MARCHE LIBRE','BRU',QLIST_INDICES,QTAG_IMPORT,gImportYahoo,bDefault=False)
 
 registerImportConnector('IRISH EXCHANGE','DUB',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)
 registerImportConnector('MADRID EXCHANGE','MAD',QLIST_ANY,QTAG_IMPORT,gImportYahoo,bDefault=True)

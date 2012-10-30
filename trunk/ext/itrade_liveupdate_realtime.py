@@ -112,7 +112,7 @@ class LiveUpdate_RealTime(object):
                         f = urllib2.urlopen(req)
                         data = f.read()
                         f.close()
-                        
+
                         ch = 'class="bourse fit block">'
 
                         if data.find(ch)!= -1:
@@ -120,7 +120,7 @@ class LiveUpdate_RealTime(object):
                             if data.find('>Valeurs<',b) != - 1:
                                 if data.find('class="exchange">Nyse Euro<',b) != -1:
                                     c = data.find('class="exchange">Nyse Euro<',b)
-                                    a = data.find('href="/cours.phtml?symbole=',0,c)
+                                    a = data.rfind('href="/cours.phtml?symbole=',0,c)
                                     symbol = data[a+27:a+43]
                                     symbol = symbol[:symbol.find('">')]
                                     self.m_isinsymbol [isin] = symbol
@@ -244,7 +244,7 @@ class LiveUpdate_RealTime(object):
                         if data.find('>Valeurs<',b) != - 1:
                             if data.find('class="exchange">Nyse Euro<',b) != -1:
                                 c = data.find('class="exchange">Nyse Euro<',b)
-                                a = data.find('href="/cours.phtml?symbole=',0,c)
+                                a = data.rfind('href="/cours.phtml?symbole=',0,c)
                                 symbol = data[a+27:a+43]
                                 symbol = symbol[:symbol.find('">')]
                                 self.m_isinsymbol [isin] = symbol
@@ -442,17 +442,24 @@ class LiveUpdate_RealTime(object):
 if __name__=='__main__':
     setLevel(logging.DEBUG)
 gLiveRealTime = LiveUpdate_RealTime()
-    
-registerLiveConnector('EURONEXT','PAR',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
-registerLiveConnector('EURONEXT','BRU',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
-registerLiveConnector('EURONEXT','AMS',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
-registerLiveConnector('EURONEXT','LIS',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
+gLiveAlternext = LiveUpdate_RealTime()
 
+registerLiveConnector('EURONEXT','PAR',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
+#registerLiveConnector('EURONEXT','BRU',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
+#registerLiveConnector('EURONEXT','AMS',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
+#registerLiveConnector('EURONEXT','LIS',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
+registerLiveConnector('EURONEXT','PAR',QLIST_INDICES,QTAG_LIVE,gLiveRealTime,bDefault=False)
+registerLiveConnector('EURONEXT','BRU',QLIST_INDICES,QTAG_LIVE,gLiveRealTime,bDefault=False)
+registerLiveConnector('EURONEXT','AMS',QLIST_INDICES,QTAG_LIVE,gLiveRealTime,bDefault=False)
+registerLiveConnector('EURONEXT','LIS',QLIST_INDICES,QTAG_LIVE,gLiveRealTime,bDefault=False)
 registerLiveConnector('ALTERNEXT','PAR',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
-registerLiveConnector('ALTERNEXT','AMS',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
-registerLiveConnector('ALTERNEXT','BRU',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
+
+#registerLiveConnector('ALTERNEXT','AMS',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
+#registerLiveConnector('ALTERNEXT','BRU',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
+#registerLiveConnector('ALTERNEXT','LIS',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
+
 registerLiveConnector('PARIS MARCHE LIBRE','PAR',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
-registerLiveConnector('BRUXELLES MARCHE LIBRE','BRU',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
+#registerLiveConnector('BRUXELLES MARCHE LIBRE','BRU',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
 
 # ============================================================================
 # Test ME

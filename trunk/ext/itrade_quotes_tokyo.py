@@ -131,7 +131,7 @@ def Import_ListOfQuotes_TKS(quotes,market='TOKYO EXCHANGE',dlg=None,x=0):
                 name = line[(line.find('"lst">')+6):(line.find ('</a>'))]
                 name = name.replace(',','')
                 name = name.replace('  ',' ')
-                
+                name = name.replace('¥',' - ')
                 # ok to proceed
                 
                 dlg.Update(x,'TSE : %s /~2370'%cursor)

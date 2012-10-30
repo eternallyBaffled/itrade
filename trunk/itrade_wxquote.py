@@ -76,7 +76,7 @@ from itrade_wxlive import iTrade_wxLive,iTrade_wxLiveMixin,EVT_UPDATE_LIVE
 from itrade_wxselectquote import select_iTradeQuote
 from itrade_wxpropquote import iTradeQuotePropertiesPanel
 from itrade_wxdecision import iTrade_wxDecision
-
+from itrade_market import yahoosuffix
 # ============================================================================
 # iTradeQuoteToolbar
 #
@@ -1055,10 +1055,13 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
 
             # found the right URL for intraday charting
             m = self.m_quote.market()
-            if not itrade_config.intradayGraphUrl.has_key(m):
-                m = m+"."+self.m_quote.place()
-                if not itrade_config.intradayGraphUrl.has_key(m):
-                    m = None
+            if yahoosuffix(self.m_quote.market(),self.m_quote.place()):
+                suffix = yahoosuffix(self.m_quote.market(),self.m_quote.place())
+            else:
+                suffix = ''
+            if '^' in self.m_quote.ticker():
+                suffix = ''
+
             if m:
                 url = itrade_config.intradayGraphUrl[m]
                 isin = itrade_config.intradayGraphUrlUseISIN[m]
@@ -1066,7 +1069,7 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
                 if isin:
                     url = url % self.m_quote.isin()
                 else:
-                    url = url % self.m_quote.ticker()
+                    url = url % (self.m_quote.ticker()+suffix)
             else:
                 # chart not available because no url
                 url = ''

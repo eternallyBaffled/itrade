@@ -5,7 +5,7 @@
 # Module Name  : itrade_quotes_euronext.py
 #
 # Description: List of quotes from euronext.com : EURONEXT, ALTERNEXT and
-# MARCHE LIBRE (PARIS & BRUXELLES)
+# MARCHE LIBRE (PARIS,AMSTERDAM,BRUXELLES,LISBONNE)
 #
 # The Original Code is iTrade code (http://itrade.sourceforge.net).
 #
@@ -39,10 +39,10 @@
 
 # python system
 import logging
-#import re
-#import thread
-#import time
 import string
+import httplib
+import urllib2
+import cookielib
 
 # iTrade system
 import itrade_config
@@ -64,35 +64,36 @@ def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT',dlg=None,x=0):
                                proxy = itrade_config.proxyHostname,
                                proxyAuth = itrade_config.proxyAuthentication,
                                connectionTimeout = max(45,itrade_config.connectionTimeout)
+
                                )
 
-    cha = "7213"
+    nyse_euronext_market = {
+        #'Easynext Brussels': ('EURONEXT','BRU','BE'),
+        #'Easynext Lisbon': ('EURONEXT','LIS','PT'),
+        'MarchÃ© Libre Brussels': ('BRUXELLES MARCHE LIBRE','BRU','BE'),
+        'MarchÃ© Libre Paris': ('PARIS MARCHE LIBRE','PAR','FR'),
+        'NYSE Alternext Amsterdam': ('ALTERNEXT','AMS','NL'),
+        'NYSE Alternext Brussels': ('ALTERNEXT','BRU','BE'),
+        'NYSE Alternext Brussels,Paris': ('ALTERNEXT','BRU','BE'),
+        'NYSE Alternext Lisbon': ('ALTERNEXT','LIS','PT'),
+        'NYSE Alternext Paris': ('ALTERNEXT','PAR','FR'),
+        'NYSE Alternext Paris,Brussels': ('ALTERNEXT','PAR','BE'),
+        'NYSE Euronext Amsterdam': ('EURONEXT','AMS','NL'),
+        'NYSE Euronext Amsterdam,Brussels': ('EURONEXT','AMS','NL'),
+        'NYSE Euronext Amsterdam,Paris': ('EURONEXT','AMS','NL'),
+        'NYSE Euronext Brussels': ('EURONEXT','BRU','BE'),
+        'NYSE Euronext Brussels,Amsterdam': ('EURONEXT','BRU','BE'),
+        'NYSE Euronext Brussels,Paris': ('EURONEXT','BRU','BE'),
+        'NYSE Euronext Lisbon': ('EURONEXT','LIS','PT'),
+        'NYSE Euronext Paris': ('EURONEXT','PAR','FR'),
+        'NYSE Euronext Paris,Amsterdam': ('EURONEXT','PAR','FR'),
+        'NYSE Euronext Paris,Amsterdam,Brussels': ('EURONEXT','PAR','FR'),
+        'NYSE Euronext Paris,Brussels': ('EURONEXT','PAR','FR'),
+        'NYSE Euronext Paris,London': ('EURONEXT','PAR','FR'),
+        }
 
-    if market=='EURONEXT':
-
-        urls = ["http://www.euronext.com/search/download/trapridownloadpopup.jcsv?pricesearchresults=actif&filter=1&belongsToList=market_EURLS&lan=EN&mep=8629&resultsTitle=Paris+-+Euronext&cha=%s&format=txt&formatDecimal=.&formatDate=dd/MM/yy" % cha
-               ,"http://www.euronext.com/search/download/trapridownloadpopup.jcsv?pricesearchresults=actif&filter=1&belongsToList=market_EURLS&lan=EN&mep=8626&resultsTitle=Amsterdam+-+Euronext&cha=%s&format=txt&formatDecimal=.&formatDate=dd/MM/yy" % cha
-               ,"http://www.euronext.com/search/download/trapridownloadpopup.jcsv?pricesearchresults=actif&filter=1&belongsToList=market_EURLS&lan=EN&mep=8627&resultsTitle=Brussels+-+Euronext&cha=%s&format=txt&formatDecimal=.&formatDate=dd/MM/yy" % cha
-               ,"http://www.euronext.com/search/download/trapridownloadpopup.jcsv?pricesearchresults=actif&filter=1&belongsToList=market_EURLS&lan=EN&mep=8628&resultsTitle=Lisbon+-+Euronext&cha=%s&format=txt&formatDecimal=.&formatDate=dd/MM/yy" % cha
-               ]
-
-
-    elif market=='ALTERNEXT':
-
-        urls = ["http://www.euronext.com/search/download/trapridownloadpopup.jcsv?pricesearchresults=actif&filter=1&belongsToList=market_ALTX&mep=8629&lan=EN&resultsTitle=Paris+-+Alternext&cha=%s&format=txt&formatDecimal=.&formatDate=dd/MM/yy" % cha
-               ,"http://www.euronext.com/search/download/trapridownloadpopup.jcsv?pricesearchresults=actif&filter=1&belongsToList=market_ALTX&mep=8626&lan=EN&resultsTitle=Amsterdam+-+Alternext&cha=%s&format=txt&formatDecimal=.&formatDate=dd/MM/yy" % cha
-               ,"http://www.euronext.com/search/download/trapridownloadpopup.jcsv?pricesearchresults=actif&filter=1&belongsToList=market_ALTX&mep=8627&lan=EN&resultsTitle=Brussels+-+Alternext&cha=%s&format=txt&formatDecimal=.&formatDate=dd/MM/yy" % cha
-               ]
-
-
-    elif market=='PARIS MARCHE LIBRE':
-        urls = ["http://www.euronext.com/search/download/trapridownloadpopup.jcsv?pricesearchresults=actif&filter=1&belongsToList=market_MC&lan=EN&mep=8629&resultsTitle=Paris+-+Marché+Libre&cha=%s&format=txt&formatDecimal=.&formatDate=dd/MM/yy" % cha
-]
-
-    elif market=='BRUXELLES MARCHE LIBRE':
-        urls = ["http://www.euronext.com/search/download/trapridownloadpopup.jcsv?pricesearchresults=actif&filter=1&belongsToList=market_BRUMC&lan=EN&mep=8627&resultsTitle=Brussels+-+Marché+Libre&cha=%s&format=txt&formatDecimal=.&formatDate=dd/MM/yy" % cha
-]
-
+    if market=='EURONEXT' or market == 'ALTERNEXT' or market =='PARIS MARCHE LIBRE' or market =='BRUXELLES MARCHE LIBRE':
+        url = 'https://europeanequities.nyx.com/fr/popup/data/download?ml=nyx_pd_stocks&cmd=default&formKey=nyx_pd_filter_values%3Aa4eb918a59a5b507707ea20eb38f530f'
     else:
         return False
 
@@ -107,93 +108,78 @@ def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT',dlg=None,x=0):
         lines = [removeCarriage(l) for l in lines]
         return lines
 
-    for urlline in urls :
-        url = urlline
-       
+    try:
 
-        try:
-            data=connection.getDataFromUrl(url)
-        except:
-            debug('Import_ListOfQuotes_Euronext:unable to connect :-(')
-            return False
+        host = "europeanequities.nyx.com"
+        cj = None
+        urlopen = urllib2.urlopen
+        Request = urllib2.Request
+        cj = cookielib.LWPCookieJar()
+        opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
+        urllib2.install_opener(opener)
+        req = Request(url)
+        handle = urlopen(req)
+        cj = str(cj)
+        cookie = cj[cj.find('ZDEDebuggerPresent='):cj.find(' for europeanequities.nyx.com/>')]
 
-        indice = {}
-        """
-        "Instrument's name";
-        "ISIN";
-        "Euronext code";
-        "Market";
-        "Symbol";
-        "ICB Sector (Level 4)";
-        "Trading currency";
-        "Last";
-        "Volume";
-        "D/D-1 (%)";
-        "Date - time (CET)";
-        "Turnover";
-        "Total number of shares";
-        "Capitalisation";
-        "Trading mode";
-        "Day First";
-        "Day High";
-        "Day High / Date - time (CET)";
-        "Day Low";
-        "Day Low / Date - time (CET)";
-        "31-12/Change (%)";
-        "31-12/High";
-        "31-12/High/Date";
-        "31-12/Low";
-        "31-12/Low/Date";
-        "52 weeks/Change (%)";
-        "52 weeks/High";
-        "52 weeks/High/Date";
-        "52 weeks/Low";
-        "52 weeks/Low/Date";
-        "Suspended";
-        "Suspended / Date - time (CET)";
-        "Reserved";
-        "Reserved / Date - time (CET)"
-        """
+    except:
+        debug('Import_ListOfQuotes_Euronext:unable to connect :-(')
+        return False
 
-        # returns the data
-        lines = splitLines(data)
-        count = 0
+    # init params and headers
+    params = "format=2&layout=2&decimal_separator=1&date_format=1&op=Go&form_id=nyx_download_form"
 
-        for line in lines:
-            data = string.split (line, ';')
+    headers = { "Accept": "text/html,application/xhtml+xml,application/xml",
+                    "accept-Charset": "ISO-8859-1,utf-8;q=0.7,*;q=0.3",
+                    "Accept-Encoding": "gzip,deflate,sdch",
+                    "Accept-Language": "fr-FR,fr;q=0.8,en-US;q=0.6,en;q=0.4",
+                    "Cache-Control": "max-age=0",
+                    "Connection": "keep-alive",
+                    "Content-Length": len(params),
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "cookie": cookie,
+                    "Host": "europeanequities.nyx.com",
+                    "Origin": "https://europeanequities.nyx.com",
+                    "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.89 Safari/537.1",
+                    "Referer": "https://europeanequities.nyx.com/fr/popup/data/download?ml=nyx_pd_stocks&cmd=default&formKey=nyx_pd_filter_values%3Aa4eb918a59a5b507707ea20eb38f530f",
+                    }
 
-            if len(data)>2:
-                if not indice.has_key("ISIN"):
-                    i = 0
-                    for ind in data:
-                        indice[ind] = i
-                        i = i + 1
+    try:
+        # POST the request
+        conn = httplib.HTTPConnection(host,80)
+        conn.request("POST",url,params,headers)
+        response = conn.getresponse()
+        data = response.read()
+    except:
+        debug('Import_ListOfQuotes_Euronext:unable to connect :-(')
+        return False
 
-                    iName = indice["Instrument's name"]
-                    iISIN = indice["ISIN"]
-                    iMEP = indice["Market"]
-                    iTicker = indice["Symbol"]
-                    iCurr = indice["Trading currency"]
+    # returns the data
 
-                else:
-                    if data[iISIN]!="ISIN":
-                        if checkISIN(data[iISIN]):
-                            if data[iMEP]=='PAR' or data[iMEP]=='BRU' or data[iMEP]=='AMS' or data[iMEP]=='LIS':
-                                name = filterName(data[iName])
-                                quotes.addQuote(isin=data[iISIN],name=name,ticker=data[iTicker],market=market,currency=data[iCurr],place=data[iMEP],country=None)
-                                count = count + 1
-                            else:
-                                if itrade_config.verbose:
-                                    print 'unknown place :',data[iMEP],'>>>',data
-                        else:
-                            if itrade_config.verbose:
-                                print 'invalid ISIN :',data[iISIN],'>>>',data
+    lines = splitLines(data)
 
-            else:
-                #print len(data),'>>>',data
-                pass
-        if itrade_config.verbose:
-            print 'Imported %d/%d lines from %s' % (count,len(lines),market)
+    count = 0
+    for line in lines[5:]:
+        data = line.replace('"','')
+        data = string.split (data, ';')
+        nysemarket = data[3]
+
+        if nysemarket in nyse_euronext_market :
+            if nyse_euronext_market[nysemarket][0] == market:
+                name = data[0]
+                isin = data[1]
+                ticker = data[2]
+                currency = data[4]
+                place = nyse_euronext_market[nysemarket][1]
+                
+                count = count + 1
+                quotes.addQuote(isin=isin,name=name,ticker=ticker,market=market,currency=currency,place=place,country=None)
+                        
+        else:
+            pass
+
+    if itrade_config.verbose:
+        print 'Imported %d/%d lines from %s' % (count,len(lines),market)
             
 
     return True
@@ -203,7 +189,15 @@ def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT',dlg=None,x=0):
 # ============================================================================
 
 registerListSymbolConnector('EURONEXT','PAR',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_Euronext)
+registerListSymbolConnector('EURONEXT','AMS',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_Euronext)
+registerListSymbolConnector('EURONEXT','BRU',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_Euronext)
+registerListSymbolConnector('EURONEXT','LIS',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_Euronext)
+
 registerListSymbolConnector('ALTERNEXT','PAR',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_Euronext)
+registerListSymbolConnector('ALTERNEXT','AMS',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_Euronext)
+registerListSymbolConnector('ALTERNEXT','BRU',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_Euronext)
+registerListSymbolConnector('ALTERNEXT','LIS',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_Euronext)
+
 registerListSymbolConnector('PARIS MARCHE LIBRE','PAR',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_Euronext)
 registerListSymbolConnector('BRUXELLES MARCHE LIBRE','BRU',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_Euronext)
 

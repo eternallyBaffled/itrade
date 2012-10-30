@@ -5,6 +5,12 @@ On the road for v0.4.8 (Druuna)
 
 ===============================================================================
 
+2012-10-30  Michel Legrand <m_leg at users dot sourceforge dot net>
+	* Euronext is restored but too slow (https://europeanequities.nyx.com/fr)
+	* Many markets updated
+	* Better recovery time from http://finance.yahoo.com
+	* Yahoo is now the first connector for Euronext and many markets
+
 2008-09-10  Jean-Marie Pacquet <jmpacquet at users dot sourceforge dot net>
 	* --nowxversion starting option
 	* make possible to use wxPython version less than 2.8.8.0

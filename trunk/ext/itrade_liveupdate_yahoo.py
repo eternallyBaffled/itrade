@@ -41,7 +41,8 @@ import re
 import thread
 import string
 import time
-
+import pytz
+from pytz import timezone
 # iTrade system
 import itrade_config
 from itrade_logging import *
@@ -138,6 +139,15 @@ class LiveUpdate_yahoo(object):
             if int(hour) >= 12:
                 val = val - 12*60
 
+        # yahoo return EDT OR EST time
+        eastern = timezone('US/Eastern')
+        mdatetime = datetime(int(date[0:4]),int(date[4:6]),int(date[6:8]),val/60,val%60)
+        loc_dt = eastern.localize(mdatetime)
+        if str(loc_dt.strftime('%Z')) == 'EDT':
+            val = val-60
+            if val <= 0:
+                val = (12*60)-60
+                
         #print clock,clo,hour,min,val,per,date
 
         if val>self.m_lastclock and date>=self.m_lastdate:
@@ -147,7 +157,6 @@ class LiveUpdate_yahoo(object):
         # convert from connector timezone to market place timezone
         mdatetime = datetime(int(date[0:4]),int(date[4:6]),int(date[6:8]),val/60,val%60)
         mdatetime = convertConnectorTimeToPlaceTime(mdatetime,self.timezone(),place)
-
         return "%d:%02d" % (mdatetime.hour,mdatetime.minute)
 
     def getdata(self,quote):
@@ -361,7 +370,9 @@ class LiveUpdate_yahoo(object):
             # no date for this quote !
             return "----"
         else:
-            return self.m_dateindice[key]
+            # convert yahoo date
+            conv=time.strptime(self.m_dateindice[key],"%m/%d/%Y")
+            return time.strftime("%d/%m/%Y",conv)
 
     def currentTrades(self,quote):
         # clock,volume,value
@@ -401,19 +412,23 @@ registerLiveConnector('SWISS EXCHANGE','XSWX',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo
 registerLiveConnector('SWISS EXCHANGE','XVTX',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 
 registerLiveConnector('EURONEXT','PAR',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
-registerLiveConnector('EURONEXT','PAR',QLIST_INDICES,QTAG_DIFFERED,gLiveYahoo,bDefault=False)
-registerLiveConnector('EURONEXT','AMS',QLIST_INDICES,QTAG_DIFFERED,gLiveYahoo,bDefault=False)
-registerLiveConnector('EURONEXT','BRU',QLIST_INDICES,QTAG_DIFFERED,gLiveYahoo,bDefault=False)
-registerLiveConnector('EURONEXT','LIS',QLIST_INDICES,QTAG_DIFFERED,gLiveYahoo,bDefault=False)
+registerLiveConnector('EURONEXT','BRU',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('EURONEXT','AMS',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('EURONEXT','LIS',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+
+registerLiveConnector('EURONEXT','PAR',QLIST_INDICES,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('EURONEXT','AMS',QLIST_INDICES,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('EURONEXT','BRU',QLIST_INDICES,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('EURONEXT','LIS',QLIST_INDICES,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 
 registerLiveConnector('ALTERNEXT','PAR',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 registerLiveConnector('ALTERNEXT','AMS',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 registerLiveConnector('ALTERNEXT','BRU',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('ALTERNEXT','LIS',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 
 registerLiveConnector('PARIS MARCHE LIBRE','PAR',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 registerLiveConnector('PARIS MARCHE LIBRE','BRU',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 
-registerLiveConnector('BRUXELLES MARCHE LIBRE','BRU',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 registerLiveConnector('BRUXELLES MARCHE LIBRE','BRU',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
 
 registerLiveConnector('IRISH EXCHANGE','DUB',QLIST_ANY,QTAG_DIFFERED,gLiveYahoo,bDefault=True)

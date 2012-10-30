@@ -10,7 +10,7 @@
 # Developed for iTrade code (http://itrade.sourceforge.net).
 #
 # Original template for "plug-in" to iTrade is	from Gilles Dumortier.
-# New code for ASX is from Peter Mills.
+# New code for ASX is from Peter Mills and others.
 #
 # Portions created by the Initial Developer are Copyright (C) 2006-2008 the
 # Initial Developer. All Rights Reserved.
@@ -47,7 +47,6 @@ import string
 
 # iTrade system
 import itrade_config
-import itrade_excel
 from itrade_logging import *
 from itrade_defs import *
 from itrade_ext import *
@@ -65,10 +64,9 @@ def Import_ListOfQuotes_ASX(quotes,market='ASX',dlg=None,x=0):
                                proxyAuth = itrade_config.proxyAuthentication,
                                connectionTimeout = itrade_config.connectionTimeout
                                )
-    import xlrd
 
     if market=='ASX':
-        url = "http://www.asx.com.au/documents/resources/ISIN.xls"
+        url = "http://www.asx.com.au/asx/research/ASXListedCompanies.csv"
         n = 0
     else:
         return False
@@ -91,38 +89,17 @@ def Import_ListOfQuotes_ASX(quotes,market='ASX',dlg=None,x=0):
         return False
 
     # returns the data
-    try:
-        book = itrade_excel.open_excel(file=None,content=data)
-        sh = book.sheet_by_index(0)
-
-        for line in range(sh.nrows):
-            if sh.cell_type(line,1) != xlrd.XL_CELL_EMPTY:
-
-                if sh.cell_value(line,2)=='ORDINARY FULLY PAID':   # only want ordinary shares
-                    isin = sh.cell_value(line,3)
-                    name = sh.cell_value(line,1)
-                    name = name.encode('cp1252') # must encode like that
-                    name = name.replace(',',' ')
-                    ticker = sh.cell_value(line,0)
-                    quotes.addQuote(isin = isin,name = name, \
-                    ticker = ticker,market='ASX',currency='AUD',place='SYD',country='AU')
-
-                    n = n + 1
-                    
-    except:
-        lines = splitLines(data)
-
-        for line in lines[5:]:
-            # skip header lines (PeterMills> 2007-06-22)
-            data = string.split (line, '\t')    # tab delimited
-            if data[2]=='ORDINARY FULLY PAID':  # only want ordinary shares
-                isin=data[3]
-                name=data[1].replace(',',' ')
-                ticker=data[0]
-                quotes.addQuote(isin = isin,name = name, \
+    lines = splitLines(data)
+    isin = ''
+    for line in lines[3:]:
+        line = line.replace('"','')
+        data = string.split (line, ',')
+        name=data[0]
+        ticker=data[1]
+        quotes.addQuote(isin = isin,name = name, \
                 ticker = ticker,market='ASX',currency='AUD',place='SYD',country='AU')
 
-                n = n + 1
+        n = n + 1
 
     if itrade_config.verbose:
         print 'Imported %d lines from %s data.' % (n,market)
@@ -131,8 +108,8 @@ def Import_ListOfQuotes_ASX(quotes,market='ASX',dlg=None,x=0):
 # ============================================================================
 # Export me
 # ============================================================================
-if itrade_excel.canReadExcel:
-    registerListSymbolConnector('ASX','SYD',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_ASX)
+
+registerListSymbolConnector('ASX','SYD',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_ASX)
 
 # ============================================================================
 # Test ME

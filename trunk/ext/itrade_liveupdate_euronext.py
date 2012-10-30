@@ -41,6 +41,7 @@ import logging
 import re
 import string
 import thread
+import urllib2
 from datetime import *
 
 # iTrade system
@@ -49,7 +50,7 @@ from itrade_quotes import *
 from itrade_datation import Datation,jjmmaa2yyyymmdd
 from itrade_defs import *
 from itrade_ext import *
-from itrade_market import euronext_place2mep,convertConnectorTimeToPlaceTime
+from itrade_market import euronextmic,euronext_place2mep,convertConnectorTimeToPlaceTime
 from itrade_connection import ITradeConnection
 import itrade_config
 
@@ -77,7 +78,7 @@ class LiveUpdate_Euronext(object):
 
         self.m_market = market
 
-        self.m_url = 'http://www.euronext.com/tools/datacentre/dataCentreDownloadExcell.jcsv'
+        self.m_url = 'https://europeanequities.nyx.com/fr/nyx_eu_listings/real-time/quote?'
 
         self.m_connection = ITradeConnection(cookies = None,
                                            proxy = itrade_config.proxyHostname,
@@ -148,8 +149,6 @@ class LiveUpdate_Euronext(object):
         return sdate,sp[1]
 
     def convertClock(self,place,clock,date):
-        #min = clock[-2:]
-        #hour = clock[:-3]
         min = clock[3:5]
         hour = clock[:2]
         val = (int(hour)*60) + int(min)
@@ -187,150 +186,129 @@ class LiveUpdate_Euronext(object):
         self.m_connected = False
         debug("LiveUpdate_Euronext:getdata quote:%s market:%s" % (quote,self.m_market))
 
-        #IdInstrument = euronext_InstrumentId(quote)
-        #if IdInstrument == None: return None
+        mic = euronextmic(quote.market(),quote.place())
 
         query = (
-            ('cha', '2593'),
-            ('lan', 'EN'),
-            #('idInstrument', IdInstrument),
-            ('isinCode', quote.isin()),
-            ('selectedMep', euronext_place2mep(quote.place())),
-            ('indexCompo', ''),
-            ('opening', 'on'),
-            ('high', 'on'),
-            ('low', 'on'),
-            ('closing', 'on'),
-            ('volume', 'on'),
-            ('typeDownload', '3'),
-            ('format', ''),
+            ('isin', quote.isin()),
+            ('mic', mic),
         )
         query = map(lambda (var, val): '%s=%s' % (var, str(val)), query)
         query = string.join(query, '&')
-        url = self.m_url + '?' + query
+
+        url = self.m_url + query
+        #print 'url:',url
         debug("LiveUpdate_Euronext:getdata: url=%s ",url)
+
         try:
-            buf=self.m_connection.getDataFromUrl(url)
+
+            req = urllib2.Request(url)
+            req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
+
+            f = urllib2.urlopen(req)
+            buf = f.read()
+            f.close()
+            
         except:
             debug('LiveUpdate_Euronext:unable to connect :-(')
             return None
 
         # pull data
         lines = self.splitLines(buf)
-        data = ''
 
-        indice = {}
-        """
-        "Instrument's name";
-        "ISIN";
-        "Euronext code";
-        "MEP";
-        "Symbol";
-        "ICB Sector (Level 4)";
-        "Trading currency";
-        "Last";
-        "Volume";
-        "D/D-1 (%)";
-        "Date - time (CET)";
-        "Turnover";
-        "Total number of shares";
-        "Capitalisation";
-        "Trading mode";
-        "Day First";
-        "Day High";
-        "Day High / Date - time (CET)";
-        "Day Low";
-        "Day Low / Date - time (CET)";
-        "31-12/Change (%)";
-        "31-12/High";
-        "31-12/High/Date";
-        "31-12/Low";
-        "31-12/Low/Date";
-        "52 weeks/Change (%)";
-        "52 weeks/High";
-        "52 weeks/High/Date";
-        "52 weeks/Low";
-        "52 weeks/Low/Date";
-        "Suspended";
-        "Suspended / Date - time (CET)";
-        "Reserved";
-        "Reserved / Date - time (CET)"
-        """
-
+        i = 0
+        count = 0
         for eachLine in lines:
-            sdata = string.split (eachLine, '\t')
-            #print sdata,len(sdata)
+            count = count + 1
 
-            if len(sdata)>2:
-                if not indice.has_key("ISIN"):
-                    i = 0
-                    for ind in sdata:
-                        indice[ind] = i
-                        i = i + 1
 
-                    iName = indice["Instrument's name"]
-                    iISIN = indice["ISIN"]
-                    iDate = indice["Date - time (CET)"]
-                    iOpen = indice["Day First"]
-                    iLast = indice["Last"]
-                    iHigh = indice["Day High"]
-                    iLow = indice["Day Low"]
-                    iPercent = indice["D/D-1 (%)"]
+            if '"datetimeLastvalue">' in eachLine:
+                iDate = eachLine[eachLine.find('"datetimeLastvalue">')+20:eachLine.find('</span>')].replace('CET','').replace('BST','')
+                iDate = iDate.rstrip()
+                #print count,'iDate:',iDate
+                i = i +1
+                                         
+            if '"lastPriceint">' in eachLine:
+                lastPriceint = eachLine[eachLine.find('"lastPriceint">')+15:eachLine.find('</span>')].replace(',','.')
+                lastPriceint = lastPriceint.replace(',','.')
+                i = i +1
+            if '"lastPricefract">' in eachLine:
+                lastPricefract = eachLine[eachLine.find('"lastPricefract">')+17:eachLine.find('</sup>')]
+                i = i +1
+                iLast = lastPriceint + lastPricefract
+                #print count,'iLast:',iLast
+                
+            if '"cnDiffRelvalue">(' in eachLine:
+                iPercent = eachLine[eachLine.find('"cnDiffRelvalue">(')+18:eachLine.find(')</span>')]
+                iPercent = iPercent.replace('%','').replace(',','.').replace('+','')
+                i = i +1
+                #print count,'iPercent:',iPercent
 
-                    if indice.has_key("Volume"):
-                        iVolume = indice["Volume"]
-                    else:
-                        iVolume = -1
+            if '"todayVolumevalue">' in eachLine:
+                iVolume = eachLine[eachLine.find('"todayVolumevalue">')+19:eachLine.find('&nbsp')].replace('.','').replace(',','')
+                i = i +1
+                #print count,'iVolume:',iVolume
 
-                else:
-                    if (sdata[iISIN]<>"ISIN") and (sdata[iDate]!='-'):
-                        c_datetime = datetime.today()
-                        c_date = "%04d%02d%02d" % (c_datetime.year,c_datetime.month,c_datetime.day)
-                        #print 'Today is :', c_date
+            if '>Ouvert<' in eachLine:
+                eachLine = lines[count]
+                iOpen = eachLine[:eachLine.find('</td>')].replace('.','').replace(',','.')
+                if '%' in iOpen:
+                    iOpen = iOpen[iOpen.find('%')+1:]
+                elif '$' in iOpen:
+                    iOpen = iOpen[iOpen.find('$')+1:]
+                elif '&euro;' in iOpen :
+                    iOpen = iOpen[iOpen.find('&euro;')+6:]   
+                elif '&pound;' in iOpen :
+                    iOpen = iOpen[iOpen.find('&pound;')+7:]   
+                elif '-' in iOpen:
+                    iOpen = '0'
+                    return None
+                i = i + 1
+                #print count,'iOpen:',iOpen
 
-                        sdate,sclock = self.euronextDate(sdata[iDate])
+            if '"highPricevalue">' in eachLine:
+                iHigh = eachLine[eachLine.find('"highPricevalue">')+17:eachLine.find('&nbsp')].replace('.','').replace(',','.')
+                if '-' in iHigh:
+                    iHigh = '0'
+                    return None
+                i = i +1
+                #print count,'iHigh:',iHigh
 
-                        # be sure we have volume (or indices)
-                        if (quote.list() == QLIST_INDICES or sdata[iVolume]<>'-'):
+            if '"lowPricevalue">' in eachLine:
+                iLow = eachLine[eachLine.find('"lowPricevalue">')+16:eachLine.find('&nbsp')].replace('.','').replace(',','.')
+                if '-' in iLow:
+                    iLow = '0'
+                    return None
+                i = i +1
+                #print count,'iLow:',iLow
 
-                            # be sure not an oldest day !
-                            if (c_date==sdate) or (quote.list() == QLIST_INDICES):
-                                key = quote.key()
-                                self.m_dcmpd[key] = sdate
-                                self.m_dateindice[key] = str(sdate[6:8]) + '/' + str(sdate[4:6]) + '/' +str(sdate[0:4])
-                                self.m_clock[key] = self.convertClock(quote.place(),sclock,sdate)
+            if i == 7 and (quote.list()==QLIST_INDICES):
+                iVolume = '0'
+                i = i + 1
 
-                            #
-                            open = self.parseFValue(sdata[iOpen])
-                            high = self.parseFValue(sdata[iHigh])
-                            low = self.parseFValue(sdata[iLow])
-                            value = self.parseFValue(sdata[iLast])
-                            percent = self.parseFValue(sdata[iPercent])
+            if i == 8:
+                count = 0
+                i = 0
+                c_datetime = datetime.today()
+                c_date = "%04d%02d%02d" % (c_datetime.year,c_datetime.month,c_datetime.day)
+                #print 'Today is :', c_date
+            
 
-                            if iVolume!=-1:
-                                volume = self.parseLValue(sdata[iVolume])
-                            else:
-                                volume = 0
+                sdate,sclock = self.euronextDate(iDate)
 
-                            # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME;PERCENT
-                            data = (
-                              quote.key(),
-                              sdate,
-                              open,
-                              high,
-                              low,
-                              value,
-                              volume,
-                              percent
-                            )
-                            data = map(lambda (val): '%s' % str(val), data)
-                            data = string.join(data, ';')
+                # be sure we have volume (or indices)
+                if (quote.list() == QLIST_INDICES or iVolume<>''):
 
-                            return data
-                    else:
-                        #print sdata
-                        pass
+                    # be sure not an oldest day !
+                    if (c_date==sdate) or (quote.list() == QLIST_INDICES):
+                        key = quote.key()
+                        self.m_dcmpd[key] = sdate
+                        self.m_dateindice[key] = str(sdate[6:8]) + '/' + str(sdate[4:6]) + '/' +str(sdate[0:4])
+                        self.m_clock[key] = self.convertClock(quote.place(),sclock,sdate)
 
+                    # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME;PERCENT
+                    data = ';'.join([quote.key(),sdate,iOpen,iHigh,iLow,iLast,iVolume,iPercent])
+                    return data
+            
         return None
 
     # ---[ cache management on data ] ---
@@ -403,19 +381,36 @@ class LiveUpdate_Euronext(object):
 gLiveEuronext = LiveUpdate_Euronext('euronext')
 gLiveAlternext = LiveUpdate_Euronext('alternext')
 
-registerLiveConnector('EURONEXT','PAR',QLIST_ANY,QTAG_DIFFERED,gLiveEuronext,bDefault=True)
+registerLiveConnector('EURONEXT','PAR',QLIST_BONDS,QTAG_DIFFERED,gLiveEuronext,bDefault=True)
+registerLiveConnector('EURONEXT','BRU',QLIST_BONDS,QTAG_DIFFERED,gLiveEuronext,bDefault=True)
+registerLiveConnector('EURONEXT','AMS',QLIST_BONDS,QTAG_DIFFERED,gLiveEuronext,bDefault=True)
+registerLiveConnector('EURONEXT','LIS',QLIST_BONDS,QTAG_DIFFERED,gLiveEuronext,bDefault=True)
+
 registerLiveConnector('EURONEXT','PAR',QLIST_INDICES,QTAG_DIFFERED,gLiveEuronext,bDefault=True)
+registerLiveConnector('EURONEXT','AMS',QLIST_INDICES,QTAG_DIFFERED,gLiveEuronext,bDefault=True)
+registerLiveConnector('EURONEXT','BRU',QLIST_INDICES,QTAG_DIFFERED,gLiveEuronext,bDefault=True)
+registerLiveConnector('EURONEXT','LIS',QLIST_INDICES,QTAG_DIFFERED,gLiveEuronext,bDefault=True)
 
-registerLiveConnector('EURONEXT','BRU',QLIST_ANY,QTAG_DIFFERED,gLiveEuronext,bDefault=True)
-registerLiveConnector('EURONEXT','AMS',QLIST_ANY,QTAG_DIFFERED,gLiveEuronext,bDefault=True)
-registerLiveConnector('EURONEXT','LIS',QLIST_ANY,QTAG_DIFFERED,gLiveEuronext,bDefault=True)
 
-registerLiveConnector('ALTERNEXT','PAR',QLIST_ANY,QTAG_DIFFERED,gLiveAlternext,bDefault=True)
-registerLiveConnector('ALTERNEXT','BRU',QLIST_ANY,QTAG_DIFFERED,gLiveAlternext,bDefault=True)
-registerLiveConnector('ALTERNEXT','AMS',QLIST_ANY,QTAG_DIFFERED,gLiveAlternext,bDefault=True)
+registerLiveConnector('EURONEXT','PAR',QLIST_ANY,QTAG_DIFFERED,gLiveEuronext,bDefault=False)
+registerLiveConnector('EURONEXT','BRU',QLIST_ANY,QTAG_DIFFERED,gLiveEuronext,bDefault=False)
+registerLiveConnector('EURONEXT','AMS',QLIST_ANY,QTAG_DIFFERED,gLiveEuronext,bDefault=False)
+registerLiveConnector('EURONEXT','LIS',QLIST_ANY,QTAG_DIFFERED,gLiveEuronext,bDefault=False)
+
+
+registerLiveConnector('ALTERNEXT','PAR',QLIST_ANY,QTAG_DIFFERED,gLiveAlternext,bDefault=False)
+registerLiveConnector('ALTERNEXT','BRU',QLIST_ANY,QTAG_DIFFERED,gLiveAlternext,bDefault=False)
+registerLiveConnector('ALTERNEXT','AMS',QLIST_ANY,QTAG_DIFFERED,gLiveAlternext,bDefault=False)
+registerLiveConnector('ALTERNEXT','LIS',QLIST_ANY,QTAG_DIFFERED,gLiveAlternext,bDefault=False)
+
+registerLiveConnector('ALTERNEXT','PAR',QLIST_INDICES,QTAG_DIFFERED,gLiveAlternext,bDefault=True)
+registerLiveConnector('ALTERNEXT','BRU',QLIST_INDICES,QTAG_DIFFERED,gLiveAlternext,bDefault=True)
+registerLiveConnector('ALTERNEXT','AMS',QLIST_INDICES,QTAG_DIFFERED,gLiveAlternext,bDefault=True)
+registerLiveConnector('ALTERNEXT','LIS',QLIST_INDICES,QTAG_DIFFERED,gLiveAlternext,bDefault=True)
 
 registerLiveConnector('PARIS MARCHE LIBRE','PAR',QLIST_ANY,QTAG_DIFFERED,gLiveEuronext,bDefault=False)
-registerLiveConnector('BRUXELLES MARCHE LIBRE','BRU',QLIST_ANY,QTAG_DIFFERED,gLiveEuronext,bDefault=True)
+
+registerLiveConnector('BRUXELLES MARCHE LIBRE','BRU',QLIST_ANY,QTAG_DIFFERED,gLiveEuronext,bDefault=False)
 
 # ============================================================================
 # Test ME
