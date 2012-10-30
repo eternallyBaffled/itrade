@@ -45,6 +45,7 @@ import wx
 
 # iTrade system
 import itrade_config
+import time
 from itrade_logging import *
 from itrade_local import message,gMessage,getLang
 from itrade_portfolio import loadPortfolio,OPERATION_BUY,OPERATION_SELL
@@ -76,6 +77,7 @@ from itrade_wxconvert import open_iTradeConverter
 from itrade_wxpanes import iTrade_MatrixPortfolioPanel,iTrade_MatrixQuotesPanel,iTrade_MatrixStopsPanel,iTrade_MatrixIndicatorsPanel,iTrade_TradingPanel
 from itrade_wxmoney import iTradeEvaluationPanel
 from itrade_wxutil import iTradeYesNo,iTradeInformation,iTradeError,FontFromSize
+from itrade_market import date_format
 
 # ============================================================================
 # menu identifier
@@ -300,9 +302,18 @@ class iTradeMainToolbar(wx.ToolBar):
         self.m_indicator.ChangeValue(label)
 
     def SetIndicator(self,market,connector,indice):
-        clock = connector.currentClock(indice)
         dateclock = connector.currentDate(indice)
-        if clock=="::":
+        if dateclock != "----":
+            conv=time.strptime(dateclock,"%d/%m/%Y")
+            dateclock = time.strftime(date_format[indice.market()][0],conv)
+
+        clock = connector.currentClock(indice)
+        if clock != '::':
+            #print'clock:',clock
+            conv=time.strptime(clock,"%H:%M")
+            clock = time.strftime(date_format[indice.market()][1],conv)
+            #print'clock am pm:',clock
+        if clock == "::":
             label = " " + indice.market() + " : " + message('indicator_disconnected')
             self.m_indicator.SetForegroundColour(wx.BLACK)
 

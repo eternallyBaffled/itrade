@@ -98,7 +98,7 @@ def Import_ListOfQuotes_Xetra(quotes,market='FRANKFURT EXCHANGE',dlg=None,x=0):
             if data[8] == 'EQUITIES FFM2':
                 if data[2][:2] == 'DE':
                     name = data[1].replace(',','').replace('  ','').replace (' -','-').replace ('. ','.').replace(' + ','&').replace('+','&')
-                    quotes.addQuote(isin=data[2],name=name,ticker=data[5],market='FRANKFURT EXCHANGE',currency=data[37],place='FRA',country='DE')
+                    quotes.addQuote(isin=data[2],name=name,ticker=data[5],market='FRANKFURT EXCHANGE',currency=data[73],place='FRA',country='DE')
                     n = n + 1
     if itrade_config.verbose:
         print 'Imported %d/%d lines from %s' % (n,len(lines),market)

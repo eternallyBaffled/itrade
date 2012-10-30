@@ -115,13 +115,10 @@ def Import_ListOfQuotes_OSLO(quotes,market='OSLO EXCHANGE',dlg=None,x=0):
                 
                 name = line[line.index(' title="">')+10:line.index('</a></td><td')]
 
-                name = name.replace('&oslash;','oe')
-                name = name.replace('&Oslash;','OE')
-                name = name.replace('&ouml;','o')
-                name = name.replace('&aelig;','ae')
-                name = name.replace('&AElig;','AE')
-                name = name.replace('&Ouml;','O')               
                 name = name.replace('&amp;','&')
+                name = name.replace('ö','o')
+                name = name.replace('æ','ae')
+                name = name.replace('ø','o')
 
                 isin = line[line.index('class="c2">')+11:line.index('</td><td class="c3 o l">')]
 

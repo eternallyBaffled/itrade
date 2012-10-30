@@ -164,7 +164,12 @@ def Import_ListOfQuotes_KRX(quotes,market='KOREA STOCK EXCHANGE',dlg=None,x=0):
         name = name[:name.find('</td><td>')]
         name = name.replace(',','')
         name = name.replace(';','')
-
+        name = name.replace('&amp',' & ')
+        if ticker == '035000':
+            name = 'G'+'||'+'R'
+        if ticker == '060380':
+            name = 'DY S'+'-'+'TEC'
+            
         # ok to proceed
         n = n + 1        
         quotes.addQuote(isin = isin,name = name,ticker = ticker,\

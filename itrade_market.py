@@ -40,7 +40,9 @@
 import logging
 import re
 import string
-
+from datetime import datetime
+import time
+import pytz
 from pytz import timezone
 
 # iTrade system
@@ -62,7 +64,8 @@ isin_market = {
     'pt': 'EURONEXT',
     'qs': 'EURONEXT',
     'it': 'EURONEXT',
-    'uk': 'LSE SETS',
+    'uk': 'LSE SETSqx',
+    'uk': 'LSE SEAQ',
     'us': 'NASDAQ',
     'au': 'ASX',
     'ca': 'TORONTO EXCHANGE',
@@ -374,6 +377,7 @@ def list_of_places(market):
         lop.append('PAR')
         lop.append('BRU')
         lop.append('AMS')
+        lop.append('LIS')
     if market=='PARIS MARCHE LIBRE':
         lop.append('PAR')
     if market=='BRUXELLES MARCHE LIBRE':
@@ -552,6 +556,75 @@ def convertConnectorTimeToPlaceTime(mdatetime,zone,place):
     #print '*** place time:',place_dt.strftime(fmt)
     return place_dt
 
+
+# ============================================================================
+# euronextmic
+# ============================================================================
+
+euronext_mic = {
+    'EURONEXT.PAR': 'XPAR',
+    'EURONEXT.AMS': 'XAMS',
+    'EURONEXT.BRU': 'XBRU',
+    'EURONEXT.LIS': 'XLIS',
+    'ALTERNEXT.PAR': 'ALXP',
+    'ALTERNEXT.AMS': 'ALXA',
+    'ALTERNEXT.BRU': 'ALXB',
+    'ALTERNEXT.LIS': 'ALXL',
+    'PARIS MARCHE LIBRE.PAR': 'XMLI',
+    'BRUXELLES MARCHE LIBRE.BRU': 'MLXB',
+    }
+
+def euronextmic(market,place):
+    key = market + '.' + place
+    if euronext_mic.has_key(key):
+        mic = euronext_mic[key]
+        return mic
+
+# ============================================================================
+# dateformat
+# ============================================================================
+
+date_format = {
+    'EURONEXT': ("%d/%m/%Y","%H:%M"),
+    'ALTERNEXT': ("%d/%m/%Y","%H:%M"),
+    'PARIS MARCHE LIBRE': ("%d/%m/%Y","%H:%M"),
+    'BRUXELLES MARCHE LIBRE': ("%d/%m/%Y","%H:%M"),
+    'NASDAQ': ("%d %b %Y","%I:%M %p"),
+    'NYSE': ("%d %b %Y","%I:%M %p"),
+    'AMEX': ("%d %b %Y","%I:%M %p"),
+    'OTCBB': ("%d %b %Y","%I:%M %p"),
+    'LSE SETS': ("%d %b %Y","%H:%M"),
+    'LSE SETSqx': ("%d %b %Y","%H:%M"),
+    'LSE SEAQ': ("%d %b %Y","%H:%M"),
+    'ASX': ("%d %b %Y","%I:%M %p"),
+    'TORONTO EXCHANGE': ("%b %d,%Y","%H:%M"),
+    'TORONTO VENTURE': ("%b %d,%Y","%H:%M"),
+    'MILAN EXCHANGE': ("%d/%m/%Y","%H:%M"),
+    'SWISS EXCHANGE': ("%d/%m/%Y","%H:%M"),
+    'IRISH EXCHANGE': ("%d/%m/%Y","%H:%M"),
+    'MADRID EXCHANGE': ("%d/%m/%Y","%H:%M"),
+    'FRANKFURT EXCHANGE': ("%d/%m/%Y","%H:%M"),
+    'OSLO EXCHANGE': ("%d.%m.%Y","%H:%M"),
+    'STOCKHOLM EXCHANGE': ("%Y-%m-%d","%H:%M"),
+    'COPENHAGEN EXCHANGE': ("%Y-%m-%d","%H:%M"),
+    'SAO PAULO EXCHANGE': ("%d/%m/%Y","%H:%M"),
+    'HONG KONG EXCHANGE': ("%d/%m/%Y","%H:%M"),
+    'SHANGHAI EXCHANGE': ("%Y-%m-%d","%H:%M"),
+    'SHENZHEN EXCHANGE': ("%Y-%m-%d","%H:%M"),
+    'NATIONAL EXCHANGE OF INDIA': ("%b %d,%Y","%H:%M"),
+    'BOMBAY EXCHANGE': ("%d %b %Y","%H:%M"),
+    'NEW ZEALAND EXCHANGE': ("%d %b %Y","%I:%M %p"),
+    'BUENOS AIRES EXCHANGE': ("%d/%m/%Y","%H:%M"),
+    'MEXICO EXCHANGE': ("%d/%m/%Y","%H:%M"),
+    'SINGAPORE EXCHANGE': ("%d-%m-%Y","%I:%M %p"),
+    'KOREA STOCK EXCHANGE': ("%Y.%m.%d","%H:%M"),
+    'KOREA KOSDAQ EXCHANGE': ("%Y.%m.%d","%H:%M"),
+    'WIENER BORSE': ("%d/%m/%Y","%H:%M"),
+    'TOKYO EXCHANGE': ("%Y/%m/%d","%H:%M"),
+    'TAIWAN STOCK EXCHANGE': ("%Y/%m/%d","%H:%M"),
+    }
+
+
 # ============================================================================
 # yahooTicker
 # ============================================================================
@@ -559,10 +632,14 @@ def convertConnectorTimeToPlaceTime(mdatetime,zone,place):
 yahoo_suffix = {
     'EURONEXT.PAR': '.PA',
     'EURONEXT.AMS': '.AS',
+    'EURONEXT.BRU': '.BR',
+    'EURONEXT.LIS': '.LS',
     'ALTERNEXT.PAR': '.PA',
+    'ALTERNEXT.AMS': '.AS',
+    'ALTERNEXT.BRU': '.BR',
+    'ALTERNEXT.LIS': '.LS',
     'PARIS MARCHE LIBRE.PAR': '.PA',
-    'OTCBB.NYC': '.OB',
-    'LSE SETS.LON': '.L',
+    'BRUXELLES MARCHE LIBRE.BRU': '.BR',
     'LSE SETSqx.LON': '.L',
     'LSE SEAQ.LON': '.L',
     'ASX.SYD': '.AX',
@@ -590,9 +667,16 @@ yahoo_suffix = {
     'KOREA STOCK EXCHANGE.KRX': '.KS',
     'KOREA KOSDAQ EXCHANGE.KOS': '.KQ',
     'WIENER BORSE.WBO': '.VI',
-    'TOKYO EXCHANGE': '.T',
+    'TOKYO EXCHANGE.TKS': '.T',
     'TAIWAN STOCK EXCHANGE.TAI': '.TW',
     }
+
+def yahoosuffix(market,place):
+    key = market + '.' + place
+    if yahoo_suffix.has_key(key):
+        return yahoo_suffix[key]
+    else:
+        return None
 
 yahoo_map_tickers = {}
 

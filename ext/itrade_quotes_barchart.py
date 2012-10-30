@@ -43,6 +43,7 @@ import re
 import thread
 import time
 import string
+import urllib2
 
 # iTrade system
 import itrade_config
@@ -57,11 +58,9 @@ from itrade_connection import ITradeConnection
 #
 # ============================================================================
 
-global barchart_data
-barchart_data = {}
 
 def Import_ListOfQuotes_BARCHART(quotes,market='TOTRONTO EXCHANGE',dlg=None,x=0):
-    global barchart_data
+
     if itrade_config.verbose:
         print 'Update %s list of symbols' % market
     connection = ITradeConnection(cookies = None,
@@ -71,7 +70,8 @@ def Import_ListOfQuotes_BARCHART(quotes,market='TOTRONTO EXCHANGE',dlg=None,x=0)
                                )
 
     if market=='TORONTO EXCHANGE' or market=='TORONTO VENTURE':
-        url = 'http://www.barchart.com/lookup.php?field=name&string=%s&search=begins&type[]=CAN&_dts1=-exchange&_dtp1=0'
+        url = 'http://www.barchart.com/lookup.php?field=name&string=%s&search=begins&type[]=CAN&_dtp1=0'
+
         m_currency = 'CAD'
         m_place = 'TOR'
         m_country = 'CA'
@@ -99,34 +99,28 @@ def Import_ListOfQuotes_BARCHART(quotes,market='TOTRONTO EXCHANGE',dlg=None,x=0)
             dlg.Update(x,"%s:'%s'"%(market,letter))
             #print x,"%s:'%s'"%(market,letter)
 
-        if not barchart_data.has_key("%s.%s" % (letter,m_country)):
-            # read file (for debugging) or get file from network
-            try:
-                fn = open('barchart%s.htm' % letter,'r')
-            except IOError:
-                # can't open the file (existing ?)
-                fn = None
+        try:
+            req = urllib2.Request(url%letter)
+            req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
 
-            if not fn:
-                try:
-                    data=connection.getDataFromUrl(url%letter)
-                except:
-                    print 'Import_ListOfQuotes_BARCHART:unable to connect to',url%letter
-                    return False
-            else:
-                data=fn.read()
+            f = urllib2.urlopen(req)
+            data = f.read()
+            f.close()
+
+        except:
+            print 'Import_ListOfQuotes_BARCHART:unable to connect to',url%letter
+            return False
 
             # returns the data
-            barchart_data["%s.%s" % (letter,m_country)] = data
             
-        lines = splitLines(barchart_data["%s.%s" % (letter,m_country)])
+        lines = splitLines(data)
 
         count = 0
 
         for line in lines:
 
             if exchange in line and 'nowrap' in line:
-                ticker = line[:line.index('">')]
+                ticker = line[:line.index('" class="">')]
                 if not '-DB' in ticker:  # ignore DEBit
                     ticker = ticker[:-3]
                 
@@ -140,15 +134,15 @@ def Import_ListOfQuotes_BARCHART(quotes,market='TOTRONTO EXCHANGE',dlg=None,x=0)
         if itrade_config.verbose:
             print 'Imported %d lines from BARCHART(letter=%s)' % (count,letter)
 
-    import_letter('1',dlg,x-1)
-    import_letter('2',dlg,x)
-    import_letter('3',dlg,x-1)
-    import_letter('4',dlg,x)
-    import_letter('5',dlg,x-1)
-    import_letter('6',dlg,x)
-    import_letter('7',dlg,x-1)
-    import_letter('8',dlg,x)
-    import_letter('9',dlg,x-1)
+    #import_letter('1',dlg,x-1)
+    #import_letter('2',dlg,x)
+    #import_letter('3',dlg,x-1)
+    #import_letter('4',dlg,x)
+    #import_letter('5',dlg,x-1)
+    #import_letter('6',dlg,x)
+    #import_letter('7',dlg,x-1)
+    #import_letter('8',dlg,x)
+    #mport_letter('9',dlg,x-1)
     import_letter('A',dlg,x)
     import_letter('B',dlg,x-1)
     import_letter('C',dlg,x)
