@@ -140,6 +140,10 @@ ID_LANG_FIRST = 400
 #ID_LANG_ITALIAN = 405
 ID_LANG_LAST = 405
 
+# Since "A MenuItem ID of Zero does not work under Mac" and wx.LANGUAGE_DEFAULT=0
+# use an offset for this language selection submenu
+ID_MAC_OFFSET = 1
+
 ID_CACHE = 499
 ID_CACHE_ERASE_DATA = 500
 ID_CACHE_ERASE_NEWS = 501
@@ -577,12 +581,12 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
             self.optionsmenu.AppendMenu(ID_ACCESS,message('main_options_access'),self.accessmenu,message('main_options_desc_access'))
 
         self.langmenu = wx.Menu()
-        self.langmenu.AppendRadioItem(wx.LANGUAGE_DEFAULT, message('main_options_lang_default'),message('main_options_lang_default'))
-        self.langmenu.AppendRadioItem(wx.LANGUAGE_ENGLISH, message('main_options_lang_english'),message('main_options_lang_english'))
-        self.langmenu.AppendRadioItem(wx.LANGUAGE_FRENCH, message('main_options_lang_french'),message('main_options_lang_french'))
-        self.langmenu.AppendRadioItem(wx.LANGUAGE_PORTUGUESE, message('main_options_lang_portuguese'),message('main_options_lang_portuguese'))
-        self.langmenu.AppendRadioItem(wx.LANGUAGE_GERMAN, message('main_options_lang_deutch'),message('main_options_lang_deutch'))
-        self.langmenu.AppendRadioItem(wx.LANGUAGE_ITALIAN, message('main_options_lang_italian'),message('main_options_lang_italian'))
+        self.langmenu.AppendRadioItem(wx.LANGUAGE_DEFAULT + ID_MAC_OFFSET, message('main_options_lang_default'),message('main_options_lang_default'))
+        self.langmenu.AppendRadioItem(wx.LANGUAGE_ENGLISH + ID_MAC_OFFSET, message('main_options_lang_english'),message('main_options_lang_english'))
+        self.langmenu.AppendRadioItem(wx.LANGUAGE_FRENCH + ID_MAC_OFFSET, message('main_options_lang_french'),message('main_options_lang_french'))
+        self.langmenu.AppendRadioItem(wx.LANGUAGE_PORTUGUESE + ID_MAC_OFFSET, message('main_options_lang_portuguese'),message('main_options_lang_portuguese'))
+        self.langmenu.AppendRadioItem(wx.LANGUAGE_GERMAN + ID_MAC_OFFSET, message('main_options_lang_deutch'),message('main_options_lang_deutch'))
+        self.langmenu.AppendRadioItem(wx.LANGUAGE_ITALIAN + ID_MAC_OFFSET, message('main_options_lang_italian'),message('main_options_lang_italian'))
         self.optionsmenu.AppendMenu(ID_LANG,message('main_options_lang'),self.langmenu,message('main_options_desc_lang'))
         if itrade_config.lang == 255:
             self.optionsmenu.Enable(ID_LANG,False)
@@ -662,12 +666,12 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         for i in range(0,ncon):
             wx.EVT_MENU(self, ID_ACCESS+i+1, self.OnAccess)
 
-        wx.EVT_MENU(self, wx.LANGUAGE_DEFAULT, self.OnLangDefault)
-        wx.EVT_MENU(self, wx.LANGUAGE_ENGLISH, self.OnLangEnglish)
-        wx.EVT_MENU(self, wx.LANGUAGE_FRENCH, self.OnLangFrench)
-        wx.EVT_MENU(self, wx.LANGUAGE_PORTUGUESE, self.OnLangPortuguese)
-        wx.EVT_MENU(self, wx.LANGUAGE_GERMAN, self.OnLangDeutch)
-        wx.EVT_MENU(self, wx.LANGUAGE_ITALIAN, self.OnLangItalian)
+        wx.EVT_MENU(self, wx.LANGUAGE_DEFAULT + ID_MAC_OFFSET, self.OnLangDefault)
+        wx.EVT_MENU(self, wx.LANGUAGE_ENGLISH + ID_MAC_OFFSET, self.OnLangEnglish)
+        wx.EVT_MENU(self, wx.LANGUAGE_FRENCH + ID_MAC_OFFSET, self.OnLangFrench)
+        wx.EVT_MENU(self, wx.LANGUAGE_PORTUGUESE + ID_MAC_OFFSET, self.OnLangPortuguese)
+        wx.EVT_MENU(self, wx.LANGUAGE_GERMAN + ID_MAC_OFFSET, self.OnLangDeutch)
+        wx.EVT_MENU(self, wx.LANGUAGE_ITALIAN + ID_MAC_OFFSET, self.OnLangItalian)
 
         wx.EVT_MENU(self, ID_CACHE_ERASE_DATA, self.OnCacheEraseData)
         wx.EVT_MENU(self, ID_CACHE_ERASE_NEWS, self.OnCacheEraseNews)
@@ -863,22 +867,22 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         m.Check(itrade_config.matrixFontSize==3)
 
         if itrade_config.lang != 255:
-            m = self.langmenu.FindItemById(wx.LANGUAGE_DEFAULT)
+            m = self.langmenu.FindItemById(wx.LANGUAGE_DEFAULT + ID_MAC_OFFSET)
             m.Check(itrade_config.lang==0)
 
-            m = self.langmenu.FindItemById(wx.LANGUAGE_ENGLISH)
+            m = self.langmenu.FindItemById(wx.LANGUAGE_ENGLISH + ID_MAC_OFFSET)
             m.Check(itrade_config.lang==1)
 
-            m = self.langmenu.FindItemById(wx.LANGUAGE_FRENCH)
+            m = self.langmenu.FindItemById(wx.LANGUAGE_FRENCH + ID_MAC_OFFSET)
             m.Check(itrade_config.lang==2)
 
-            m = self.langmenu.FindItemById(wx.LANGUAGE_PORTUGUESE)
+            m = self.langmenu.FindItemById(wx.LANGUAGE_PORTUGUESE + ID_MAC_OFFSET)
             m.Check(itrade_config.lang==3)
 
-            m = self.langmenu.FindItemById(wx.LANGUAGE_GERMAN)
+            m = self.langmenu.FindItemById(wx.LANGUAGE_GERMAN + ID_MAC_OFFSET)
             m.Check(itrade_config.lang==4)
 
-            m = self.langmenu.FindItemById(wx.LANGUAGE_ITALIAN)
+            m = self.langmenu.FindItemById(wx.LANGUAGE_ITALIAN + ID_MAC_OFFSET)
             m.Check(itrade_config.lang==5)
 
         # refresh Enable state based on current View
