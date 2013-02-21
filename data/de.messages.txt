@@ -1,0 +1,629 @@
+main_file;&Datei
+main_open;&Openen...
+main_desc_open; Open a Portfolio
+main_new;&Neue...
+main_desc_new;Schaffen Portfolio
+main_delete;&Verwijderen
+main_desc_delete; Delete a Portfolio
+main_save;&Opslaan
+main_desc_save; Save current Portfolio data
+main_saveas;&Opslaan als  ...
+main_desc_saveas; Save Portfolio under new name
+main_edit;&Eigenschappen
+main_desc_edit; edit the current portfolio's properties
+main_exit;&Afsluiten
+main_desc_exit; Terminate iTrade application
+main_close;&Schließen
+main_desc_close; Close the window
+main_managelist;&Manage Symbols
+main_desc_managelist; Manage the List of Symbols (update by downloading, editing, etc.)
+
+main_window;&Fenster
+
+main_view;&Views
+main_quote;&Acktie
+main_matrix;&Matrix
+
+main_view_portfolio;&Portfolio
+main_view_desc_portfolio; Change current view to Portfolio view
+main_view_quotes;&Aktien
+main_view_desc_quotes; Change current view to Quotes view
+main_view_stops;&Stops
+main_view_desc_stops; Change current view to Stops view
+main_view_indicators;&Indikatoren
+main_view_desc_indicators; Change current view to Indicators view
+
+main_view_operations;&Borsentransaktion
+main_view_desc_operations; Manage the transactions on the current portfolio
+main_view_money;&Money Management
+main_view_desc_money; Money Management
+main_view_evaluation;&Schatzung
+main_view_desc_evaluation; Performance evaluation of the portfolio
+main_view_trading;&Trading
+main_view_desc_trading; Display general Trading information for the portfolio
+
+main_view_compute;&Taschenrechner
+main_view_desc_compute;Taschenrechner
+main_view_convert;Con&verter
+main_view_desc_convert; Converter between two currencies
+
+main_view_refresh;&Vernieuwen
+main_view_desc_refresh; Refresh now the current view
+main_view_autorefresh;&Aktualisieren automatisch
+main_view_desc_autorefresh; Refresh the current view automatically
+main_view_autosize;Auto size columns widths
+main_view_desc_autosize; Auto size columns widths according to data and header
+
+main_view_small;Klein Text
+main_view_desc_small; Use small text size to display the matrix
+main_view_normal;Normaal Text
+main_view_desc_normal; Use normal text size to display the matrix
+main_view_big;Groot Text
+main_view_desc_big; Use big text size to display the matrix
+
+main_quote_add;Toevoegenr ...
+main_quote_desc_add; Add a quote in the list
+main_quote_remove;Verwijderen
+main_quote_desc_remove; Remove current select Quote from the list
+main_quote_graph;Historical Graphs
+main_quote_desc_graph; Display historical graphs for the current selected Quote
+main_quote_live;Live
+main_quote_desc_live; Display notebook for the current selected Quote
+main_quote_intraday;Intraday
+main_quote_desc_intraday; Display intraday for the current selected Quote
+main_quote_news;Informations
+main_quote_desc_news; Display news for the current selected Quote
+main_quote_table;Raw Data
+main_quote_desc_table; Display raw data for the current selected Quote
+main_quote_analysis;Analysen
+main_quote_desc_analysis; Display Technical Analysis for the current selected Quote
+main_quote_buy;Kauf
+main_quote_desc_buy; Buy operation for the current selected Quote
+main_quote_sell;Verkauf
+main_quote_desc_sell; Sell operation for the current selected Quote
+main_quote_property;&Eigenschappen
+main_quote_desc_property; Display properties for the current selected Quote
+
+main_options;&Optionen
+
+main_options_access;&Zugang
+main_options_desc_access; Access parameters for some connectors
+
+main_options_lang;&Tall
+main_options_desc_lang; Select language used by this software
+main_options_lang_default;Standardmäßig
+main_options_lang_english;Englische 
+main_options_lang_french;Französisch 
+main_options_lang_portuguese;Portugiesisch 
+main_options_lang_deutch;Deutsch
+main_options_lang_italian;Italienisch 
+
+main_options_cache;&Cache
+main_options_desc_cache; Caching management
+main_cache_erase_data;Löschen &Historische
+main_cache_desc_erase_data;Erase all history data from the cache folder
+main_cache_erase_news;löschen &Informations
+main_cache_desc_erase_news;Erase all news from the cache folder
+main_cache_erase_all;Loschen &alles
+main_cache_desc_erase_all; Erase all data (news, historic, ...) from the cache folder
+
+main_options_connexion;&Verbindung
+main_options_desc_connexion;Verbidung Parameter  (Proxy)
+
+main_help;&Help
+main_help_contents;&Contents
+main_help_desc_contents; Help Contents
+main_help_support;&Technischer service ...
+main_help_desc_support; How to get Technical Support ?
+main_help_bugs;&Programmfehler ...
+main_help_desc_bugs; Create bug report in the project bug tracker
+main_help_forum;&Forum
+main_help_desc_forum; Participate to the iTrade communauty forum (english / french)
+main_help_donors;&Spengen ...
+main_help_desc_donors; How to Donate Money to support this project
+main_help_checksoftware;&Aktualisieren
+main_help_desc_checksoftware;Laatste versie downloaden
+
+checksoftware_needupdate;The software need to be updated ! Do you want download the new release ?
+checksoftware_uptodate;You have the latest known official release.
+checksoftware_title;Aktualisieren
+checksoftware_development;You have a release under development.
+checksoftware_error;Can't get release information for the software (network issue ?)
+
+main_about;&Info …
+main_desc_about;iTrade informatie, versienummer en auteursrechten weergeve
+
+main_title_portfolio;iTrade – Portfolio %s:%s
+main_title_quotes;iTrade – Matrix %s:%s
+main_title_stops;iTrade - Stops %s:%s
+main_title_indicators;iTrade – Indikatoren %s:%s
+main_title_evaluation;iTrade – Schatzung %s:%s
+main_title_trading;iTrade - Trading %s:%s
+
+main_refreshing;Aktualisieren
+
+main_popup_refreshall;Aktualisieren
+main_popup_buy;Kaufen
+main_popup_sell;Verkaufen
+main_popup_remove;Loschen
+main_popup_add;Adden ...
+main_popup_view;View
+main_popup_live;Live
+main_popup_properties;Eigenschaften 
+main_popup_edit;Modifizieren
+main_popup_add_stops;Adden Stops ...
+main_popup_edit_stops;modifizieren Stops ...
+main_popup_remove_stops;Loschen Stops
+
+main_valuation;Schatzung
+
+html_connecting;Verbindung …
+html_noconnect;Keine Verbindung
+
+ok;OK
+ok_desc;This button validates then completes the dialog
+valid;Bestatigen
+valid_desc;This button validates then completes the dialog
+cancel;kündigen
+cancel_desc;The Cancel button cancels the dialog (Duh!)
+close;Schließen 
+close_desc;The Close button close the dialog
+yes;Ja
+no;Nein
+
+isin;ISIN
+ticker;Ticker
+quote;Name
+variation;Verand
+date;Datum
+time;um
+name;Name
+volume;Volumen
+last;Schluss
+open;Erö.
+low;Tief 
+high;Hoch 
+prev;Vortag
+pivots;Pivots
+status;Status
+reopen;Reopen
+high_threshold;Stopp H
+low_threshold;Stopp L
+cmp;CMP
+qty;Vol
+perfday;Verand%
+perfper;Verand%
+profit;Profite
+sell;
+buy;
+UPP;UPP
+USP;USP
+market;Borse
+place;Platz
+all_markets;Borsen
+invalid_isin;Die ISIN Codet %s  ist fehlerhaf
+symbol_not_found;ISIN code %s or name %s not found
+risk;Risiko
+stop_plus;Stop+
+stop_minus;Stop-
+clive;Live
+cimport;Import
+
+download_symbols_onelist;Downloaden 
+download_symbols_onedesc;Update the list of symbols by downloading data from the network
+download_symbols_alllists;Downloaden all
+download_symbols_alldesc;Update all lists of symbols by downloading data from the network
+clear_symbols_onelist;Lijst opruimen
+clear_symbols_onedesc;Clear all symbols for this list
+clear_symbols_alllists;Lijst opruimen
+clear_symbols_alldesc;Clear all symbols for all the lists
+listquote_clear_confirm_title;unmöglich zurück
+listquote_clear_confirm;For %s, do you confirm the operation (%s) ?
+listquote_new;Neu
+listquote_edit;Andern
+listquote_delete;Loschen
+listquote_new_desc;Schaffen  symbol
+listquote_edit_desc;Edit current symbol on the list
+listquote_delete_desc;Delete current symbol on the list
+listquote_duplicate_ref;Symbol % ??s existiert bereits!
+listquote_save;Opslaan
+listquote_save_desc;listquote_save_desc
+listquote_saved;The list of symbols has been saved
+listquote_dirty_save;Do you want to save the modification you have done to the list of symbols ?
+listquote_nodirty_save;Your modifications have not been saved and will not persist the current session
+
+listquote_items_zero;nicht gefunden 
+listquote_items_one;ein Symbol gefunden 
+listquote_items_n;%s Symbol gefunden
+
+listquote_modify_title;Symbol %s  ändern 
+listquote_new_title;Neue Symbol 
+listquote_delete_title;Verwijderen Symbol %s
+
+quote_title;iTrade – daten
+quote_select_title;Stock-picking
+quote_list_title;Verwaltung Symbol 
+
+quote_select_isin;ISIN :
+quote_select_ticker;Ticker : / Name :
+quote_select_market;Börsenplatz :
+quote_select_list;Aktien notieren :
+quote_select_alllist;No filter
+quote_select_syslist;Aktien
+quote_select_usrlist;User
+quote_select_indiceslist;Indizes
+quote_select_trackerslist;Trackers
+quote_select_bondslist;Anleihen
+quote_select_filterfield;wirklich gehandelt 
+
+quote_graphdaily;Taglich
+quote_live;Live
+quote_graphweekly;Wochentlich
+quote_news;Nachrichten 
+quote_analysis;Analysen
+quote_table;Hist. Kurse 
+quote_intraday;Heute
+quote_properties;Eigenschaften 
+
+alerts_title;iTrade - Information und alarmsignal
+alerts_alerts;Alarmesignal
+alerts_news;Information
+
+money_title;iTrade - Money Management
+
+money_evaluation;Schatzung
+money_compute;Taschenrechner
+money_evaluationchart;Chart
+money_money;Risk Management
+main_view_alerts;&Information und alarmsignal
+main_view_desc_alerts;Information und alarmsignal
+main_view_currencies;&Devisen
+main_view_desc_currencies;Wahrungen
+
+portfolio_title;iTrade – Transaktionen
+portfolio_select_title;Auswählen  account
+portfolio_delete_title;Verwijderen Portfolio
+portfolio_properties_edit;Eigenschaften 
+portfolio_properties_create;Schaffen account
+portfolio_properties_delete;Verwijderen account
+portfolio_properties_rename;Naam wijzigen account
+
+portfolio_delete_confirm;Verwijderen account ?
+portfolio_delete_confirm_title;Verwijderen account
+portfolio_exist_info; '%s' existiert bereits!
+portfolio_exist_info_title;Creëren account
+portfolio_rename_confirm;Do you confirm the new reference '%s' ?
+portfolio_rename_confirm_title;Naam wijzigen account
+
+portfolio_properties_btncreate;Creëren
+portfolio_properties_btncreatedesc;Create the new Portfolio
+portfolio_properties_btndelete;Verwijderen
+portfolio_properties_btndeletedesc;Verwijderen account?
+portfolio_properties_btnedit;Veränderungen 
+portfolio_properties_btneditdesc;Gültig account
+portfolio_properties_btnrename;Naam wijzigen
+portfolio_properties_btnrenamedesc;Naam wijzigen account
+portfolio_properties_btnselect;Openen
+portfolio_properties_btnselectdesc;Openen account
+
+portfolio_filename;Referenz :
+portfolio_name;Beschreibung :
+portfolio_accountref;Kontonummer :
+portfolio_market;Markte :
+portfolio_select_textfield;Referenz :
+portfolio_currency;Währung :
+portfolio_indicator;Hauptindikator :
+portfolio_vat;MwSt ( %) :
+portfolio_list_filename;Referenz :
+portfolio_list_name;Beschreibung :
+portfolio_list_accountref;Kontonummer
+
+portfolio_modify;Veränderungen 
+portfolio_new;Neue
+portfolio_delete;Löschen 
+portfolio_date;Datum :
+portfolio_time;Zeit :
+portfolio_operation;Transaktion :
+portfolio_description;Beschreibung :
+portfolio_quote;Name :
+portfolio_pre_expenses1;***
+portfolio_pre_expenses2;und
+portfolio_post_expenses;Finanzkosten
+portfolio_quantity;Anz :
+
+portfolio_field_credit;Kredit :
+portfolio_field_debit;Debit :
+portfolio_field_freeofcharges;keine Gebühr 
+portfolio_field_valorization;Preis :
+
+portfolio_ctrl_sell;Cash Selling 
+portfolio_ctrl_sell_srd;Verkauf SRD
+portfolio_ctrl_buy;Bargeld Ankauf
+portfolio_ctrl_buy_srd;Kaufent SRD
+portfolio_ctrl_debit;Debit
+portfolio_ctrl_credit;Anzahlung
+portfolio_ctrl_fee;Steuern
+portfolio_ctrl_interest;Interessen 
+portfolio_ctrl_detachment;Detachment (non taxable)
+portfolio_ctrl_dividend;Dividende (steuerpflichtig)
+portfolio_ctrl_liquidation;Liquidation SDR
+portfolio_ctrl_quote;Dividend with shares
+portfolio_ctrl_register;Aufnahme 
+
+portfolio_list_date;Datum, Zeit 
+portfolio_list_operation;Transaktion
+portfolio_list_description;Beschreibung :
+portfolio_list_number;Anzahl 
+portfolio_list_debit;Debit
+portfolio_list_credit;Kredit
+portfolio_list_expense;Finanzkosten
+portfolio_list_balance; Balance
+portfolio_list_srd;    SRD
+
+Portfolio_sell;Verkauf 
+Portfolio_sell_srd;Verkauf SRD
+Portfolio_buy;Kauf
+Portfolio_buy_srd;Kauf  SRD
+Portfolio_credit;Anzahlung
+Portfolio_debit;Abhebung
+Portfolio_fee;Steuer
+Portfolio_interest;Zins
+Portfolio_split;split
+Portfolio_detachment;bonus
+Portfolio_dividend;dividende
+Portfolio_liquidation;liquidation
+Portfolio_quote;bonus
+Portfolio_register;public registration
+
+portfolio_dispall;&Alle
+portfolio_desc_dispall; Display list of all transactions
+portfolio_dispquotes;&Watchlist
+portfolio_desc_dispquotes; Display list of quotes related transactions
+portfolio_dispcash;&Cash
+portfolio_desc_dispcash; Display list of cash related transactions
+portfolio_dispvalues;&Guewinne
+portfolio_desc_dispvalues; Display list of +/- values related transactions
+portfolio_dispsrd;&SRD
+portfolio_desc_dispsrd; Display list of SRD related transactions
+
+portfolio_opadd;&Toevoegen ...
+portfolio_desc_opadd; Add a new transaction
+portfolio_opdelete;&Verwijderen
+portfolio_desc_opdelete; Delete the current transaction
+portfolio_opmodify;&Modifizieren
+portfolio_desc_opmodify; Modify the current transaction
+
+portfolio_text;Alternativtext 
+portfolio_desc_text;Select text size to display the transactions
+portfolio_view_small;Klein Tekst
+portfolio_view_desc_small; Use small text size to display the transactions
+portfolio_view_normal;Normaal Tekst
+portfolio_view_desc_normal; Use normal text size to display the transactions
+portfolio_view_big;Groot Tekst
+portfolio_view_desc_big; Use big text size to display the transactions
+
+portfolio_per30days;&30 Dagen
+portfolio_desc_per30days; Display last 30 days
+portfolio_per90days;&90 Dagen
+portfolio_desc_per90days; Display last 90 days
+portfolio_peryear;&laufendes Jahr 
+portfolio_desc_peryear; Display current year
+portfolio_perall;&Alle
+portfolio_desc_perall; Display all transactions since the beginning
+
+portfolio_menu_file;&Datei
+portfolio_menu_disp;&Anzeige 
+portfolio_menu_op;&Borsentransaktion
+portfolio_menu_per;&Filtern 
+
+graph_price;Preis
+graph_volume;Volumen
+graph_period;Zeit :
+graph_days;Tage
+
+backtolist;Zurück zur Liste
+
+popup_open;Eröffnung
+popup_high;Hoch 
+popup_low;Tief
+popup_close;Schluss
+popup_percent;Var. (%s)
+popup_volume;Volumen
+popup_notrade;keine Transaktion
+
+save_to_file;Registrieren 
+export_to_file;exportieren 
+import_from_file;Import aus 
+exported_to_file;Datei %s exportiert wurde 
+imported_from_file;Datei %s importiert wurde 
+
+tb_pan_left;Nach links
+tb_pan_right;nach rechts bewegen 
+tb_save_file;Save plot contents to file
+tb_config;Setzen Grafiken 
+tb_home;zurücksetzen 
+tb_zoom_out; Zoom +
+tb_zoom_in; Zoom -
+tb_setup;Druck-Konfiguration 
+tb_print;Drucken
+tb_preview;Voorbeeld
+
+tb_tool_ind;Display Popup
+tb_tool_hline;Horizontal linien
+tb_tool_vline;Vertikaler Linien
+tb_tool_oline;Linien
+tb_tool_trash;Delete
+tb_tool_fibo;Draw Fibonacci object
+tb_tool_text;Text
+tb_tool_prop;Eigenschaften 
+
+quote_popup_dispMA150;Durchschnitt 150 tage
+quote_popup_dispSto;stochastisch 
+quote_popup_dispRSI14;RSI 14 tage
+quote_popup_dispBollinger;Bollinger
+quote_popup_dispOverlaidVolume;Histogrammchart
+quote_popup_dispLegend;Beschriftung 
+quote_popup_dispGrid;Gitternetz 
+quote_popup_dispChart1Candlestick;Kerzenchart
+quote_popup_dispChart1OHLC;Balkenchart
+quote_popup_dispChart1Line;Linienchart
+
+prop_reference;Referenz 
+prop_marketandconnector;Market and Connector
+prop_tradingstyle;Trading Information
+prop_ref;Referenz :
+prop_isin;ISIN :
+prop_name;Name :
+prop_ticker;Ticker :
+prop_reload;Nachladen 
+prop_desc_reload;Reload all the data
+prop_rename;Naam wijzigen
+prop_desc_rename;Rename the ticker of this quote
+prop_import;Importieren
+prop_desc_importe;Import quote's data
+prop_export;Exportieren
+prop_desc_exporte;Export quote's data
+prop_restore;Standaard
+prop_desc_restore;Restore default value
+prop_market;Borsen :
+prop_country;Land  :
+prop_place;Platz :
+prop_currency;Währung :
+prop_typeofclock;Delay :
+prop_islive;Echtzeit
+prop_isslive;Live
+prop_isdiffered;Zeitlicher Verzögerung 
+prop_isnotlive;Preise sind (%d min) zeitverzögert
+prop_liveconnector;Live Connector :
+prop_impconnector;Import Connector :
+prop_set;Bestatigen
+prop_desc_set;Set new market and connector information
+prop_term;Average Investment period (in month) :
+prop_risk;Acceptable Risk level per line (in %) :
+prop_connhelp;Think to force the refresh of the quote so the connector change will occur.
+
+live_busy;One moment please, waiting live connection to die ...
+live_notebook;Orderbuch
+live_lasttrades;Transaktionen
+live_hours;Zeit 
+live_qty;Vol
+live_price;Preis
+live_buy;Kauf 
+live_sell;Verkauf 
+live_number;Anz
+live_CMP;PMP
+live_FMP;PMR
+
+wxversion_title;wxPython Version Error
+wxversion_msg;The requested version of wxPython is not installed. Please install version %d.%d UNICODE
+
+money_fiscal_year;Geschäftsjahr 
+money_amount_of_taxes;Steuern 
+money_taxable_amounts;Steuerpflichtigen Beträge 
+money_financial_appreciation;Profite
+money_total_of_transfers;die Überweisung
+money_expenses_vat;Finanzkosten,,,
+money_portfolio;Portfolio
+money_description;Beschreibung :
+money_account_number;Kontonummer
+money_percent_of_portfolio;% Portfolio
+money_quote;Aktien
+money_srd;SRD
+money_cash;Cash
+money_initial_investment;Erstinvestition
+money_value;Value
+money_performance;Schatzung
+money_investment_evaluation;Auswertung
+
+currencies_title;Devisen
+currency_menu_file;&Datei 
+currency_menu_view;&View
+
+currency_to;zu
+currency_from;Converteren
+currency_rate;Rate
+currency_refreshing;Update Währung
+
+cache_erase_confirm_title; Erase cache data
+cache_erase_confirm_data; Erase all historic data from the cache ? (data will be regenerated)
+cache_erase_confirm_news; Erase all news from the cache ? (data will be regenerated)
+cache_erase_confirm_all; Erase all data (historic, news, ...) from the cache ? (data will be regenerated)
+
+indicator_autorefresh;Automatische Aktualisieren 
+indicator_noautorefresh;Manuelle Aktualisierung 
+indicator_disconnected;Offline 
+
+login_title;Kontozugriff
+login_fortuneo_desc;Enter your Fortuneo account number (real or demonstration account)
+login_boursorama_desc;Enter your Boursorama account number (Customer account or nickname)
+login_set;Bestatigen
+login_setdesc; Set the entered access information
+login_username;Login :
+login_password;Passwort :
+login_test;Test
+login_testdesc; Try service's access using the entered information
+login_test_ok;Access to the service is working
+login_test_nok;Access to the service is not working
+
+page_portfolio;Portfolio
+page_quotes;Aktien
+page_stops;Stops
+page_indicators;Indikatoren
+page_evaluation;Schatzung
+page_trading;Trading
+
+print_preview;Vorschau 
+print_printing;Drucken 
+print_errprinting;There was a problem printing.\nPerhaps your current printer is not set correctly ?
+print_page;Pagina: %d
+
+about_url;Please point your browser at : %s
+about_title;über iTrade
+
+info_caption;iTrade – Informatie 
+alert_caption;iTrade – Fout
+
+stops_remove_caption;Loschen Stops
+stops_remove_text;Do you confirm stops removing for quote %s ?
+stops_edit_caption;%s - Modifizieren Stops
+stops_add_caption;%s – Schaffen Stops
+stops_last;Letzter Preis :
+stops_portfolio;%s owned shares for a value of %s
+stops_shares_loss;Sales Threshold to cut the losses :
+stops_shares_win;Sales Threshold to take the profits :
+stops_noshares_loss;Purchase range - Low Threshold :
+stops_noshares_win;Purchase range - High Threshold :
+stops_add;Adden
+stops_edit;Modifizieren
+stops_add_desc;Add Stops information
+stops_edit_desc;Modify Stops information
+
+decision_positiononquote_cash;Cash Position
+decision_positiononquote_credit;Marging Position
+decision_purchasingpower;Purchasing Power
+decision_numofshares;Number of shares :
+decision_upp;Price Paid per Share :
+decision_pp;Total Price Paid :
+decision_profit;Profite %s :
+decision_profitpercent;Profite % :
+decision_availablecash;Liquidités disponbiles en %s :
+decision_committedcredit;Engagement SRD en %s :
+decision_availablecredit;Disponible en %s au SRD :
+
+connection_title;Verbindungsparameter 
+proxy_server_ip;Proxy IP address (empty if none) :
+proxy_server_port;Proxy Port (empty if none) :
+proxy_auth_user;Proxy User Authentication (empty if none) :
+proxy_auth_pwd;Proxy Password Authentication (empty if none) :
+connection_timeout;Timeout delay before error (in seconds, typ. 25) :
+
+rss_clear;Verwijderen
+rss_scan;Scannen 
+rss_freshness;Laatste scan 
+
+remove_quote_title;Beseitigung einer Wert
+remove_quote_info;Do you confirm the remove of the quote %s from the matrix ?
+
+converter_title;Valuta Converter 
+
+test;test boodschap
