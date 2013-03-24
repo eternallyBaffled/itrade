@@ -180,35 +180,35 @@ class iTrade_wxLabelPopup(object):
 
 def DrawRectLabel(dc,label,x,y,w,h,colorpen,colorbg,font,vert='top',horz='center'):
 
-        memDC = wx.MemoryDC()
-        bmp = wx.EmptyBitmap(w,h)
+    memDC = wx.MemoryDC()
+    bmp = wx.EmptyBitmap(w,h)
 
-        memDC.SelectObject(bmp)
-        memDC.SetBackground(wx.Brush(colorbg, wx.SOLID))
-        memDC.Clear()
-        memDC.SetTextForeground(colorpen)
-        memDC.SetFont(font)
-        memDC.BeginDrawing()
-        memDC.DrawRectangle(0, 0, bmp.GetWidth(),bmp.GetHeight())
-        memDC.DrawText(label, 0, 0)
-        #memDC.SelectObject(wx.NullBitmap)
-        memDC.EndDrawing()
+    memDC.SelectObject(bmp)
+    memDC.SetBackground(wx.Brush(colorbg, wx.SOLID))
+    memDC.Clear()
+    memDC.SetTextForeground(colorpen)
+    memDC.SetFont(font)
+    memDC.BeginDrawing()
+    memDC.DrawRectangle(0, 0, bmp.GetWidth(),bmp.GetHeight())
+    memDC.DrawText(label, 0, 0)
+    #memDC.SelectObject(wx.NullBitmap)
+    memDC.EndDrawing()
 
-        #mask = wx.Mask(bmp, bg)
-        #bmp.SetMask(mask)
-        #memDC.SelectObject(bmp)
+    #mask = wx.Mask(bmp, bg)
+    #bmp.SetMask(mask)
+    #memDC.SelectObject(bmp)
 
-        if vert=='top':
-            y = y - h + 1
-        if vert=='center':
-            y = y - (h/2) + 1
+    if vert=='top':
+        y = y - h + 1
+    if vert=='center':
+        y = y - (h/2) + 1
 
-        if horz=='left':
-            x = x - w
-        if horz=='center':
-            x = x - (w/2)
+    if horz=='left':
+        x = x - w
+    if horz=='center':
+        x = x - (w/2)
 
-        dc.Blit(x, y, bmp.GetWidth(), bmp.GetHeight(),memDC, 0, 0, wx.COPY, True)
+    dc.Blit(x, y, bmp.GetWidth(), bmp.GetHeight(),memDC, 0, 0, wx.COPY, True)
 
 # ============================================================================
 # Test me

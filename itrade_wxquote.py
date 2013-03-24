@@ -939,7 +939,7 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         elif ax==self.chart3:
             return ' %.2f%% ' % value
         else:
-           return ' unknown axis '
+            return ' unknown axis '
 
 #"Time: %f\n Price:%f\nYOUPIE" %
 

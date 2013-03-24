@@ -232,7 +232,7 @@ class LiveUpdate_Euronext_bonds(object):
                 lastPriceint = eachLine[eachLine.find('"lastPriceint">')+15:eachLine.find('</span>')].replace(',','.')
                 lastPriceint = lastPriceint.replace(',','.')
                 i = i +1
-           if '"lastPricefract">' in eachLine:
+            if '"lastPricefract">' in eachLine:
                 lastPricefract = eachLine[eachLine.find('"lastPricefract">')+17:eachLine.find('</sup>')]
                 i = i +1
                 iLast = lastPriceint + lastPricefract

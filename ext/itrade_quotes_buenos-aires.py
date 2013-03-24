@@ -68,7 +68,7 @@ def Import_ListOfQuotes_BUE(quotes,market='BUENOS AIRES EXCHANGE',dlg=None,x=0):
 
     if market=='BUENOS AIRES EXCHANGE':
         url = 'http://www.bolsar.com/NET/Research/Especies/Acciones.aspx'
-	else:
+    else:
         return False
 
     try:

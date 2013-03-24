@@ -94,8 +94,8 @@ def Import_ListOfQuotes_NZE(quotes,market='NEW ZEALAND EXCHANGE',dlg=None,x=0):
         try:
             data=connection.getDataFromUrl(url%letter)
         except:
-                debug('Import_ListOfQuotes_NZE unable to connect :-(')
-                return False
+            debug('Import_ListOfQuotes_NZE unable to connect :-(')
+            return False
 
         # returns the data
         lines = splitLines(data)
