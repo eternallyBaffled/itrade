@@ -40,8 +40,6 @@
 # python system
 import os
 import logging
-import thread
-import time
 
 # iTrade system
 import itrade_config
@@ -51,7 +49,7 @@ if not itrade_config.nowxversion:
     import itrade_wxversion
 import wx
 
-from itrade_logging import *
+import itrade_logging
 from itrade_portfolio import loadPortfolio
 from itrade_matrix import createMatrix
 
@@ -64,32 +62,11 @@ from itrade_wxbook import iTradeMainWindow
 
 class iTrade_SplashScreen(wx.SplashScreen):
     def __init__(self,app):
-        bmp = wx.Image(os.path.join(itrade_config.dirRes, "itrade.jpg")).ConvertToBitmap()
-        wx.SplashScreen.__init__(self,bmp,wx.SPLASH_CENTRE_ON_SCREEN,0,None,-1)
-        wx.EVT_CLOSE(self,self.OnClose)
-
-        thread.start_new_thread(self.Run,())
-
-        #setLevel(logging.DEBUG)
-        #print '--- load current portfolio ---'
-        self.m_portfolio = loadPortfolio()
-        #print 'Portfolio : %s:%s:%s:%s:%f ' % (self.m_portfolio.filename(),self.m_portfolio.name(),self.m_portfolio.accountref(),self.m_portfolio.market(),self.m_portfolio.vat())
-
-        print '--- build a matrix -----------'
-        self.m_matrix = createMatrix(self.m_portfolio.filename(),self.m_portfolio)
-
-        self.m_frame = iTradeMainWindow(None,self.m_portfolio,self.m_matrix)
-        app.SetTopWindow(self.m_frame)
-
-    def OnClose(self,evt):
-        self.Hide()
-        evt.Skip()
-
-    def Run(self):
-        time.sleep(3)
-        self.Close(True)
-        #if itrade_config.isConnected():
-        #    itrade_config.checkNewRelease(ping=True)
+        image = wx.Image(os.path.join(itrade_config.dirRes, "itrade.jpg"))
+        wx.SplashScreen.__init__(self,
+                                image.ConvertToBitmap(),
+                                wx.SPLASH_CENTRE_ON_SCREEN|wx.SPLASH_NO_TIMEOUT,
+                                0, None, -1)
 
 # ============================================================================
 # iTradeApp
@@ -97,13 +74,28 @@ class iTrade_SplashScreen(wx.SplashScreen):
 
 class iTradeApp(wx.App):
     def OnInit(self):
+        splash = iTrade_SplashScreen(self)
+        splash.Show()
+
         provider = wx.SimpleHelpProvider()
         wx.HelpProvider_Set(provider)
+        wx.SystemOptions.SetOptionInt("mac.window-plain-transition", 1)
+        self._init_app()
 
-        wx.SystemOptions.SetOptionInt("mac.window-plain-transition",1)
-        self.m_splash = iTrade_SplashScreen(self)
-        self.m_splash.Show()
+        splash.Destroy()
         return True
+
+    def _init_app(self):
+        #itrade_logging.setLevel(logging.DEBUG)
+        #print '--- load current portfolio ---'
+        portfolio = loadPortfolio()
+        #print 'Portfolio : %s:%s:%s:%s:%f ' % (portfolio.filename(), portfolio.name(), portfolio.accountref(), portfolio.market(), portfolio.vat())
+
+        print '--- build a matrix -----------'
+        matrix = createMatrix(portfolio.filename(), portfolio)
+
+        frame = iTradeMainWindow(None, portfolio, matrix)
+        self.SetTopWindow(frame)
 
 # ============================================================================
 # start_iTradeWindow
@@ -118,7 +110,7 @@ def start_iTradeWindow():
 # ============================================================================
 
 if __name__=='__main__':
-    setLevel(logging.INFO)
+    itrade_logging.setLevel(logging.INFO)
     start_iTradeWindow()
 
 # ============================================================================

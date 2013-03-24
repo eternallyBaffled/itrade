@@ -355,7 +355,7 @@ class iTradeMainToolbar(wx.ToolBar):
         indicatorsize = self.m_indicator.GetClientSize()
         toolbarposition = self.GetScreenPosition()
         toolbarsize = self.GetClientSize()
-	# compute width... minus 2 because it only works that way with gtk 2.6
+        # compute width... minus 2 because it only works that way with gtk 2.6
         computedwidth = toolbarsize.width + toolbarposition.x - indicatorposition.x - 2
         if indicatorsize.width != computedwidth:
             indicatorsize.SetWidth(computedwidth)
