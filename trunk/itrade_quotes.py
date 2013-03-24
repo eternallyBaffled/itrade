@@ -1513,7 +1513,7 @@ class Quotes(object):
         # return first one
         for eachVal in self.m_quotes.values():
             if (eachVal.ticker() == ticker) and (market==None or (market==eachVal.market())) and (place==None or (place==eachVal.place())):
-                    return eachVal
+                return eachVal
         return None
 
     def lookupPartialTicker(self,ticker,market=None,place=None):
@@ -1521,7 +1521,7 @@ class Quotes(object):
         ret = []
         for eachVal in self.m_quotes.values():
             if (eachVal.ticker().find(ticker,0)==0) and (market==None or (market==eachVal.market())) and (place==None or (place==eachVal.place())):
-                    ret.append(eachVal)
+                ret.append(eachVal)
         return ret
 
     def lookupName(self,name,market,place=None):

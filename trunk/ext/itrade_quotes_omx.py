@@ -89,7 +89,7 @@ def Import_ListOfQuotes_OMX(quotes,market='STOCKHOLM EXCHANGE',dlg=None,x=0):
 
     elif market=='COPENHAGEN EXCHANGE':
         #m_place='CSE'
-	m_place='CPH'
+        m_place='CPH'
         country='DK'
     else:
         return False

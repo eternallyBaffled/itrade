@@ -537,7 +537,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
 
             # be sure every supported market is loaded !
             for market in list_of_markets():
-                    quotes.loadMarket(market)
+                quotes.loadMarket(market)
 
         else:
             self.m_market = self.wxMarketCtrl.GetClientData(idx)

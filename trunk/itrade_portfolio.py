@@ -449,9 +449,9 @@ class Operation(object):
     def nv_pvalue(self):
         if self.m_quote:
             if self.m_type == OPERATION_SELL:
-                    return self.m_value - (self.m_quote.nv_pru(QUOTE_CASH) * self.m_number)
+                return self.m_value - (self.m_quote.nv_pru(QUOTE_CASH) * self.m_number)
             if self.m_type == OPERATION_SELL_SRD:
-                    return self.m_value - (self.m_quote.nv_pru(QUOTE_CREDIT) * self.m_number)
+                return self.m_value - (self.m_quote.nv_pru(QUOTE_CREDIT) * self.m_number)
         return 0
 
     def sv_pvalue(self):
