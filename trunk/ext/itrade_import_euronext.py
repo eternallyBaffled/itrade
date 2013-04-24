@@ -196,7 +196,7 @@ class Import_euronext(object):
             
             if len(sdata)== 11:
                 #print sdata
-                #if (sdata[0]<>"Date") and (quote.list() == QLIST_INDICES):
+                #if (sdata[0] != "Date") and (quote.list() == QLIST_INDICES):
                 sdate = jjmmaa2yyyymmdd(sdata[2])
                 open = self.parseFValue(sdata[3].replace(',','.'))
                 high = self.parseFValue(sdata[4].replace(',','.'))

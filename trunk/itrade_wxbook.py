@@ -416,10 +416,10 @@ class iTradeMainNotebookWindow(wx.Notebook):
         new = event.GetSelection()
         sel = self.GetSelection()
         info('OnPageChanged,  old:%d, new:%d, sel:%d\n' % (old, new, sel))
-        if old<>new:
-            if old>=0:
+        if old != new:
+            if old >= 0:
                 self.win[old].DoneCurrentPage()
-            if new>=0:
+            if new >= 0:
                 self.win[new].InitCurrentPage()
                 self.m_parent.updateTitle(new)
         event.Skip()

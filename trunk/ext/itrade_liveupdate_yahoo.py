@@ -218,7 +218,7 @@ class LiveUpdate_yahoo(object):
 
         # start decoding
         symbol = sdata[0][1:-1]
-        if symbol<>sname:
+        if symbol != sname:
             if itrade_config.verbose:
                 info('invalid ticker : ask for %s and receive %s' % (sname,symbol))
             return None

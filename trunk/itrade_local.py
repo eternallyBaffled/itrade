@@ -249,7 +249,7 @@ class LocalMessages(object):
             return '? %s' % self.m_lang
 
     def addMsg(self,m):
-        if len(m)<>2:
+        if len(m) != 2:
             # well formed ?
             return
         key = '%s%s' % (self.m_lang,m[0])

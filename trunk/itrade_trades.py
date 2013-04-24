@@ -191,7 +191,7 @@ class Trades(object):
                     if (item[0]==self.m_quote.key()) or (item[0]==self.m_quote.isin() and item[0]!=''):
                         #print item
                         debug('Trades::load %s on %s' % (item[5],item[1]))
-                        self.add(item,bImporting=True);
+                        self.add(item,bImporting=True)
 
     def imp(self,data,bLive):
         #debug('Trades::imp %s : %s : bLive=%s' % (self.m_quote.ticker(),data,bLive))
@@ -203,7 +203,7 @@ class Trades(object):
                 if item:
                     if (item[0]==self.m_quote.key()) or (item[0]==self.m_quote.isin() and item[0]!=''):
                         #print item
-                        self.add(item,bImporting=not bLive);
+                        self.add(item,bImporting=not bLive)
 
     def save(self,outfile=None):
         #debug('Trades::save %s %s' % (self.m_quote.ticker(),self.m_quote.key()))
@@ -663,18 +663,18 @@ if __name__=='__main__':
     quotes.loadMarket('EURONEXT')
     quotes.loadMarket('NASDAQ')
 
-    quote = quotes.lookupTicker('AAPL','NASDAQ');
-    info('test1 %s' % quote );
+    quote = quotes.lookupTicker('AAPL','NASDAQ')
+    info('test1 %s' % quote )
 
-    quote = quotes.lookupTicker('OSI','EURONEXT');
-    info('test2 %s' % quote );
+    quote = quotes.lookupTicker('OSI','EURONEXT')
+    info('test2 %s' % quote )
 
     trades = Trades(quote)
     trades.load('import/Cortal-2005-01-07.txt')
     trades.load('import/Cortal-2005-01-14.txt')
     trades.load('import/Cortal-2005-01-21.txt')
 
-    info('test3 %s' % trades.trade(date(2005,01,04)));
+    info('test3 %s' % trades.trade(date(2005,01,04)))
 
 # ============================================================================
 # That's all folks !

@@ -101,7 +101,7 @@ def Import_ListOfQuotes_MIL(quotes,market='MILAN EXCHANGE',dlg=None,x=0):
     n = 0
 
     for line in lines:
-        if line.find('a href="/bitApp/listino?target=null&lang=it&service=Detail&from=search&main_list=1&')<> -1:
+        if line.find('a href="/bitApp/listino?target=null&lang=it&service=Detail&from=search&main_list=1&') != -1:
             finalurl = 'http://www.borsaitaliana.it'+line[line.index('/'):line.index('" class="table">')]
             
             req = urllib2.Request(finalurl)
@@ -116,11 +116,11 @@ def Import_ListOfQuotes_MIL(quotes,market='MILAN EXCHANGE',dlg=None,x=0):
 
             finaldatas = splitLines(datas)
             for nline in finaldatas:
-                if nline.find('<b>Denominazione<b>') <> -1:
+                if nline.find('<b>Denominazione<b>') != -1:
                     name = nline[nline.index('"right">')+8:nline.index('</td></tr>')]
-                if nline.find('<b>Codice Isin<b>') <> -1:
+                if nline.find('<b>Codice Isin<b>') != -1:
                     isin = nline[nline.index('"right">')+8:nline.index('</td></tr>')]
-                if nline.find('<b>Codice Alfanumerico<b>') <> -1:
+                if nline.find('<b>Codice Alfanumerico<b>') != -1:
                     ticker = nline[nline.index('"right">')+8:nline.index('</td></tr>')]
                     
                     n =  n + 1

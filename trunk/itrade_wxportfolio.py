@@ -189,7 +189,7 @@ class iTradePortfolioSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterM
 
         self.itemDataMap = {}
         for eachPortfolio in portfolios.list():
-            if self.m_except<>eachPortfolio.filename():
+            if self.m_except != eachPortfolio.filename():
                 self.itemDataMap[x] = (eachPortfolio.filename(),eachPortfolio.name(),eachPortfolio.accountref())
                 x = x + 1
 

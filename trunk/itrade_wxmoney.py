@@ -313,7 +313,7 @@ class iTradeMoneyNotebookWindow(wx.Notebook):
         new = event.GetSelection()
         sel = self.GetSelection()
         info('OnPageChanged,  old:%d, new:%d, sel:%d\n' % (old, new, sel))
-        if old<>new:
+        if old != new:
             self.win[new].refresh()
         event.Skip()
 

@@ -108,7 +108,7 @@ class LiveUpdate_ABCBourse(object):
         self.m_conn = None
 
     def alive(self):
-        return self.m_data<>None
+        return self.m_data != None
 
     # ---[ state ] ---
 

@@ -511,7 +511,7 @@ class Quote(object):
 
     def low_threshold(self):
         cs,r,rb,rh,cl = self.currentStatus()
-        if rb<>"-":
+        if rb != "-":
             return float(rb)
         else:
             prev = self.nv_prevclose()
@@ -523,7 +523,7 @@ class Quote(object):
 
     def high_threshold(self):
         cs,r,rb,rh,cl = self.currentStatus()
-        if rh<>"-":
+        if rh != "-":
             return float(rh)
         else:
             prev = self.nv_prevclose()

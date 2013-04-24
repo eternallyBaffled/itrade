@@ -212,12 +212,12 @@ class Calendar(object):
         k = self.key(d,market)
 
         if self.m_closed.has_key(k):
-            debug('Calendar::addClosed(): %s k=%s: %s - already !' % (d,k,self.m_closed[k]));
+            debug('Calendar::addClosed(): %s k=%s: %s - already !' % (d,k,self.m_closed[k]))
             return False
         else:
             # add it in the closed list
             self.m_closed[k] = (market,title)
-            debug('Calendar::addClosed(): %s k=%s: %s - added' % (d,k,self.m_closed[k]));
+            debug('Calendar::addClosed(): %s k=%s: %s - added' % (d,k,self.m_closed[k]))
             return True
 
     def addSRD(self,d,market=None,title=None):
@@ -232,12 +232,12 @@ class Calendar(object):
         k = self.key(d,market)
 
         if self.m_srd.has_key(k):
-            debug('Calendar::addSRD(): %s k=%s: %s - already !' % (d,k,self.m_srd[k]));
+            debug('Calendar::addSRD(): %s k=%s: %s - already !' % (d,k,self.m_srd[k]))
             return False
         else:
             # add it in the srd list
             self.m_srd[k] = (market,title)
-            debug('Calendar::addSRD(): %s k=%s: %s - added' % (d,k,self.m_srd[k]));
+            debug('Calendar::addSRD(): %s k=%s: %s - added' % (d,k,self.m_srd[k]))
             return True
 
     def load(self,fn=None):
@@ -332,10 +332,10 @@ class Datation(object):
             self.m_date = d
         else:
             if d[4]=='-':
-                #debug('Datation::__init__():%s: %d %d %d' % (d,int(d[0:4]),int(d[5:7]),int(d[8:10])));
+                #debug('Datation::__init__():%s: %d %d %d' % (d,int(d[0:4]),int(d[5:7]),int(d[8:10])))
                 self.m_date = date(int(d[0:4]),int(d[5:7]),int(d[8:10]))
             else:
-                #debug('Datation::__init__():%s: %d %d %d' % (d,int(d[0:4]),int(d[4:6]),int(d[6:8])));
+                #debug('Datation::__init__():%s: %d %d %d' % (d,int(d[0:4]),int(d[4:6]),int(d[6:8])))
                 self.m_date = date(int(d[0:4]),int(d[4:6]),int(d[6:8]))
 
     def __str__(self):
@@ -402,21 +402,21 @@ except NameError:
 if __name__=='__main__':
     setLevel(logging.INFO)
 
-    info('test0 1==%s' % gCal.addClosed('2010-12-31'));
-    info('test0 0==%s' % gCal.addClosed('20101231'));
+    info('test0 1==%s' % gCal.addClosed('2010-12-31'))
+    info('test0 0==%s' % gCal.addClosed('20101231'))
 
-    info('test1 0==%s' % gCal.isopen('2011-01-01'));
-    info('test2 0==%s' % gCal.isopen('20110101'));
-    info('test3 1==%s' % gCal.isopen('20110104'));
+    info('test1 0==%s' % gCal.isopen('2011-01-01'))
+    info('test2 0==%s' % gCal.isopen('20110101'))
+    info('test3 1==%s' % gCal.isopen('20110104'))
 
-    info('test4 0==%s' % gCal.isopen('20101231'));      # closed in default market (PAR)
-    info('test4 1==%s' % gCal.isopen('20101231','TOK'));# but open in other market
+    info('test4 0==%s' % gCal.isopen('20101231'))      # closed in default market (PAR)
+    info('test4 1==%s' % gCal.isopen('20101231','TOK'))# but open in other market
 
-    info('test5 20110104==%s' % Datation('20110104'));
-    info('test6 20110105==%s' % Datation('20110104').nextopen());
-    info('test7 20110103==%s' % Datation('20110104').prevopen());
-    info('test8 20101230==%s' % Datation('20110103').prevopen());
-    info('test9 20101230==%s' % Datation('20101231').prevopen());
+    info('test5 20110104==%s' % Datation('20110104'))
+    info('test6 20110105==%s' % Datation('20110104').nextopen())
+    info('test7 20110103==%s' % Datation('20110104').prevopen())
+    info('test8 20101230==%s' % Datation('20110103').prevopen())
+    info('test9 20101230==%s' % Datation('20101231').prevopen())
 
     info('test10 20100130>20100101 == %s' % (Datation('20100130')>Datation('20100101')))
     info('test10 20100101>20100130 == %s' % (Datation('20100101')>Datation('20100130')))

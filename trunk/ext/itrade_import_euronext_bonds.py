@@ -199,7 +199,7 @@ class Import_euronext_bonds(object):
             
             if len(sdata)== 11:
                 #print sdata
-                #if (sdata[0]<>"Date") and (quote.list() == QLIST_INDICES):
+                #if (sdata[0] != "Date") and (quote.list() == QLIST_INDICES):
                 sdate = jjmmaa2yyyymmdd(sdata[2])
                 open = self.parseFValue(sdata[3].replace(',','.'))
                 print 'open:',open
