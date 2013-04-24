@@ -203,7 +203,7 @@ def Import_ListOfQuotes_MEX(quotes,market='MEXICO EXCHANGE',dlg=None,x=0):
 
                 if lineserie in line:
                     serie = line[line.index(lineserie)+21:line.index('</span>')]
-                    if serie <>'Series':
+                    if serie != 'Series':
                         newticker = ticker+serie
                         if serie == '*' : newticker = ticker
                         newticker = newticker.replace('&amp;','&')

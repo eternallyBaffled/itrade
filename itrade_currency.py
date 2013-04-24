@@ -128,8 +128,8 @@ class Currencies(object):
     def update(self,curTo,curFrom,rate):
         if curFrom == 'N/A' or curTo == 'N/A':
             return rate
-        if curTo <> curFrom:
-            key = self.key(curTo,curFrom)
+        if curTo != curFrom:
+            key = self.key(curTo, curFrom)
             if self.m_currencies.has_key(key):
                 used,oldrate = self.m_currencies[key]
             else:

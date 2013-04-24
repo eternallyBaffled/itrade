@@ -763,27 +763,27 @@ class LiveUpdate_fortuneo(object):
 
         #
         buy = []
-        if d['CSA_NBL_DEM1']<>"0":
+        if d['CSA_NBL_DEM1'] != "0":
             buy.append(convert(d['CSA_NBL_DEM1'],d['CSA_VOL_DEM1'],d['CSA_CRS_DEM1']))
-            if d['CSA_NBL_DEM2']<>"0":
+            if d['CSA_NBL_DEM2'] != "0":
                 buy.append(convert(d['CSA_NBL_DEM2'],d['CSA_VOL_DEM2'],d['CSA_CRS_DEM2']))
-                if d['CSA_NBL_DEM3']<>"0":
+                if d['CSA_NBL_DEM3'] != "0":
                     buy.append(convert(d['CSA_NBL_DEM3'],d['CSA_VOL_DEM3'],d['CSA_CRS_DEM3']))
-                    if d['CSA_NBL_DEM4']<>"0":
+                    if d['CSA_NBL_DEM4'] != "0":
                         buy.append(convert(d['CSA_NBL_DEM4'],d['CSA_VOL_DEM4'],d['CSA_CRS_DEM4']))
-                        if d['CSA_NBL_DEM5']<>"0":
+                        if d['CSA_NBL_DEM5'] != "0":
                             buy.append(convert(d['CSA_NBL_DEM5'],d['CSA_VOL_DEM5'],d['CSA_CRS_DEM5']))
 
         sell = []
-        if d['CSA_NBL_OFF1']<>"0":
+        if d['CSA_NBL_OFF1'] != "0":
             sell.append(convert(d['CSA_NBL_OFF1'],d['CSA_VOL_OFF1'],d['CSA_CRS_OFF1']))
-            if d['CSA_NBL_OFF2']<>"0":
+            if d['CSA_NBL_OFF2'] != "0":
                 sell.append(convert(d['CSA_NBL_OFF2'],d['CSA_VOL_OFF2'],d['CSA_CRS_OFF2']))
-                if d['CSA_NBL_OFF3']<>"0":
+                if d['CSA_NBL_OFF3'] != "0":
                     sell.append(convert(d['CSA_NBL_OFF3'],d['CSA_VOL_OFF3'],d['CSA_CRS_OFF3']))
-                    if d['CSA_NBL_OFF4']<>"0":
+                    if d['CSA_NBL_OFF4'] != "0":
                         sell.append(convert(d['CSA_NBL_OFF4'],d['CSA_VOL_OFF4'],d['CSA_CRS_OFF4']))
-                        if d['CSA_NBL_OFF5']<>"0":
+                        if d['CSA_NBL_OFF5'] != "0":
                             sell.append(convert(d['CSA_NBL_OFF5'],d['CSA_VOL_OFF5'],d['CSA_CRS_OFF5']))
 
         return buy,sell
@@ -816,15 +816,15 @@ class LiveUpdate_fortuneo(object):
 
         last = []
         cl = d['CSA_HD_COURS'][8:]
-        if cl<>"0:00:00":
+        if cl != "0:00:00":
             last.append((cl,int(d['CSA_VOL_DERNIER']),d['CSA_CRS_DERNIER']))
-            if d['CSA_H_TRANS_2']<>"0:00:00":
+            if d['CSA_H_TRANS_2'] != "0:00:00":
                 last.append((d['CSA_H_TRANS_2'],int(d['CSA_VOL_TRANS_2']),d['CSA_CRS_TRANS_2']))
-                if d['CSA_H_TRANS_3']<>"0:00:00":
+                if d['CSA_H_TRANS_3'] != "0:00:00":
                     last.append((d['CSA_H_TRANS_3'],int(d['CSA_VOL_TRANS_3']),d['CSA_CRS_TRANS_3']))
-                    if d['CSA_H_TRANS_4']<>"0:00:00":
+                    if d['CSA_H_TRANS_4'] != "0:00:00":
                         last.append((d['CSA_H_TRANS_4'],int(d['CSA_VOL_TRANS_4']),d['CSA_CRS_TRANS_4']))
-                        if d['CSA_H_TRANS_5']<>"0:00:00":
+                        if d['CSA_H_TRANS_5'] != "0:00:00":
                             last.append((d['CSA_H_TRANS_5'],int(d['CSA_VOL_TRANS_5']),d['CSA_CRS_TRANS_5']))
 
         return last

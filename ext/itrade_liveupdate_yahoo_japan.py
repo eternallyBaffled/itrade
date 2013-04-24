@@ -213,7 +213,7 @@ class LiveUpdate_yahoojp(object):
                     i=i+1
                     if i == 1:
                         date_time = line[len(ch):]
-                        if date_time.find(':')<> -1:
+                        if date_time.find(':') != -1:
                             #print "last clock"
                             sclock = '"'+date_time+'"'
                             date = local_date
@@ -296,7 +296,7 @@ class LiveUpdate_yahoojp(object):
 
             # start decoding
             symbol = sdata[0][1:-1]
-            if symbol<>sname:
+            if symbol != sname:
                 if itrade_config.verbose:
                     info('invalid ticker : ask for %s and receive %s' % (sname,symbol))
                 return None

@@ -515,13 +515,13 @@ def saveConfig():
 
     # create "View" section
     config.add_section("view")
-    if bAutoRefreshMatrixView <> default_bAutoRefreshMatrixView:
+    if bAutoRefreshMatrixView != default_bAutoRefreshMatrixView:
         config.set("view", "AutoRefreshView", bAutoRefreshMatrixView)
-    if bAutoRefreshCurrencyView <> default_bAutoRefreshCurrencyView:
+    if bAutoRefreshCurrencyView != default_bAutoRefreshCurrencyView:
         config.set("view", "AutoRefreshCurrency", bAutoRefreshCurrencyView)
-    if matrixFontSize <> default_matrixFontSize:
+    if matrixFontSize != default_matrixFontSize:
         config.set("view","MatrixFontSize","%d" % matrixFontSize)
-    if operationFontSize <> default_operationFontSize:
+    if operationFontSize != default_operationFontSize:
         config.set("view","OperationFontSize","%d" % operationFontSize)
     if (lang != 0) and (lang != 255):
         config.set("view","lang","%d" % lang)
@@ -532,7 +532,7 @@ def saveConfig():
         config.set("net","proxyHostname",proxyHostname)
     if proxyAuthentication:
         config.set("net","proxyAuthentication",proxyAuthentication)
-    if connectionTimeout <> default_connectionTimeout:
+    if connectionTimeout != default_connectionTimeout:
         config.set("net","connectionTimeout",connectionTimeout)
 
     # create "Column" section

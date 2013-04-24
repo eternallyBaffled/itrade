@@ -459,7 +459,7 @@ class iTradeQuotePropertyWindow(wx.Frame):
     def OnSelectQuote(self,event,nquote=None):
         if not nquote:
             nquote = select_iTradeQuote(self,self.m_quote,filter=True,market=None,filterEnabled=False)
-        if nquote and nquote<>self.m_quote:
+        if nquote and nquote != self.m_quote:
             info('SelectQuote: %s - %s' % (nquote.ticker(),nquote.key()))
             self.m_quote = nquote
             self.m_propwindow.Destroy()

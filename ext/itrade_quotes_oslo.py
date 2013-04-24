@@ -104,7 +104,7 @@ def Import_ListOfQuotes_OSLO(quotes,market='OSLO EXCHANGE',dlg=None,x=0):
 
         for line in lines:
    
-            if line.find('newt__ticker=')<> -1:
+            if line.find('newt__ticker=') != -1:
 
                 #partial activation of Progressbar
                 dlg.Update(x,'%s : %s / %s'%(market,page,endpage))

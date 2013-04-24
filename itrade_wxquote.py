@@ -314,7 +314,7 @@ class iTradeQuoteInfoWindow(sc.SizedPanel):
 
         # update the logo if needed
         fit = False
-        if nquote and nquote<>self.m_quote:
+        if nquote and nquote != self.m_quote:
             if itrade_config.verbose:
                 print 'QuoteInfoWinfow::refresh New Quote %s - live=%s' % (nquote.ticker(),live)
             self.m_quote = nquote
@@ -1020,10 +1020,10 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
         if itrade_config.verbose:
             print
             print 'QuoteNotebookWindow::OnPageChanged: old=%d new=%d sel=%d' % (old, new, sel)
-        if old<>new:
-            if old>=0:
+        if old != new:
+            if old >= 0:
                 self.win[old].DonePage()
-            if new>=0:
+            if new >= 0:
                 self.m_curpage = new
                 self.win[new].InitPage()
         event.Skip()
@@ -1040,7 +1040,7 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
 
     def init(self,nquote=None,page=0,fromInit=False):
         # check new quote
-        if nquote<>self.m_quote:
+        if nquote != self.m_quote:
             self.m_quote = nquote
 
             # regenerate pages with the new quote
@@ -1178,7 +1178,7 @@ class iTradeQuoteWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin):
     def SelectQuote(self,nquote=None):
         if not nquote:
             nquote = select_iTradeQuote(self,self.m_quote,filter=True,market=None)
-        if nquote and nquote<>self.m_quote:
+        if nquote and nquote != self.m_quote:
             if itrade_config.verbose:
                 print
                 print 'QuoteWindow::SelectQuote: %s -> %s %s' % (self.m_quote.ticker(),nquote.ticker(),nquote.key())

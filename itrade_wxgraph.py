@@ -671,7 +671,7 @@ class iTrade_wxPanelGraph(GObject,PanelPrint):
     def mouse_move(self,event):
         if self.cursorState(event.inaxes):
             # just in case mouse is bad (PinPoint :-( )
-            if self.cursorx<>event.x or self.cursory<>event.y:
+            if self.cursorx != event.x or self.cursory != event.y:
                 debug('Move x:%d,y:%d!' %(event.x, event.y))
                 self.m_timer.Stop()
                 self.cursorx,self.cursory = event.x, event.y

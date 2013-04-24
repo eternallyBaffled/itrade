@@ -296,7 +296,7 @@ class LiveUpdate_Euronext(object):
                 sdate,sclock = self.euronextDate(iDate)
 
                 # be sure we have volume (or indices)
-                if (quote.list() == QLIST_INDICES or iVolume<>''):
+                if (quote.list() == QLIST_INDICES or iVolume != ''):
 
                     # be sure not an oldest day !
                     if (c_date==sdate) or (quote.list() == QLIST_INDICES):
