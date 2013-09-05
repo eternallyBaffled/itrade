@@ -246,7 +246,7 @@ class LiveUpdate_RealTime(object):
                                 c = data.find('class="exchange">Nyse Euro<',b)
                                 a = data.rfind('href="/cours.phtml?symbole=',0,c)
                                 symbol = data[a+27:a+43]
-                                symbol = symbol[:symbol.find('">')]
+                                symbol = symbol[:symbol.find('" >')]
                                 self.m_isinsymbol [isin] = symbol
                                 debug('%s found and added in dictionary (%s)' % (isin,symbol))
                                 dic = open(os.path.join(itrade_config.dirUserData,'ticker_bourso.txt'), 'w')
