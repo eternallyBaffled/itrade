@@ -136,7 +136,7 @@ def itrade_datePicker(win,title,ddate):
 if __name__=='__main__':
     setLevel(logging.INFO)
 
-    app = wx.PySimpleApp()
+    app = wx.App(False)
     print itrade_datePicker(None,"Datepicker",date.today())
 
 # ============================================================================

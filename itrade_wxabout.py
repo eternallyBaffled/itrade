@@ -257,7 +257,7 @@ class iTradeAboutBox(wx.Dialog):
 if __name__=='__main__':
     setLevel(logging.INFO)
 
-    app = wx.PySimpleApp()
+    app = wx.App(False)
     dlg = iTradeAboutBox(None)
     dlg.CentreOnParent()
     dlg.ShowModal()

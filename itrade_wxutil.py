@@ -667,7 +667,7 @@ def iTradeYesNo(parent,text,caption,bCanCancel=False,bYesDefault=True):
 if __name__=='__main__':
     setLevel(logging.INFO)
 
-    app = wx.PySimpleApp()
+    app = wx.App(False)
 
     iRet = iTradeYesNo(None,"message without cancel and default to Yes","caption")
     if iRet == wx.ID_YES:

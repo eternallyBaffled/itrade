@@ -860,7 +860,7 @@ def edit_iTradeQuoteList(win,quote,qmode):
 if __name__=='__main__':
     setLevel(logging.INFO)
 
-    app = wx.PySimpleApp()
+    app = wx.App(False)
 
     #from itrade_local import *
     #setLang('us')

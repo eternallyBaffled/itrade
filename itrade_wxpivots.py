@@ -129,7 +129,7 @@ if __name__=='__main__':
     quote.loadTrades()
     info('%s: %s' % (ticker,quote))
 
-    app = wx.PySimpleApp()
+    app = wx.App(False)
 
     frame = WndTest(None,quote)
     if frame:

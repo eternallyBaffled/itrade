@@ -261,7 +261,7 @@ if __name__=='__main__':
 
     alerts.load()
 
-    app = wx.PySimpleApp()
+    app = wx.App(False)
 
     from itrade_local import *
     setLang('us')

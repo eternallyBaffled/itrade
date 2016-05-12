@@ -473,7 +473,7 @@ def select_iTradeQuote(win,dquote=None,filter=False,market=None,filterEnabled=Tr
 if __name__=='__main__':
     setLevel(logging.INFO)
 
-    app = wx.PySimpleApp()
+    app = wx.App(False)
 
     # load configuration
     import itrade_config

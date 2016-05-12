@@ -580,7 +580,7 @@ def properties_iTradePortfolio(win,portfolio,operation='create'):
 if __name__=='__main__':
     setLevel(logging.INFO)
 
-    app = wx.PySimpleApp()
+    app = wx.App(False)
 
     initPortfolioModule()
 

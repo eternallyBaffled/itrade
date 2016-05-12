@@ -546,7 +546,7 @@ def open_iTradeQuoteProperty(win,quote,bDialog=False):
 if __name__=='__main__':
     setLevel(logging.INFO)
 
-    app = wx.PySimpleApp()
+    app = wx.App(False)
 
     # load configuration
     import itrade_config

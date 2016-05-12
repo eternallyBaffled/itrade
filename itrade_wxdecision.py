@@ -356,7 +356,7 @@ if __name__=='__main__':
 
     port = loadPortfolio('default')
 
-    app = wx.PySimpleApp()
+    app = wx.App(False)
 
     frame = WndTest(None,quote,port)
     if frame:

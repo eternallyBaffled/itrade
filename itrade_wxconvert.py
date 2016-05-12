@@ -191,7 +191,7 @@ def open_iTradeConverter(win, curSelected=(0, 1)):
 if __name__=='__main__':
     setLevel(logging.INFO)
 
-    app = wx.PySimpleApp()
+    app = wx.App(False)
 
     # load configuration
     import itrade_config

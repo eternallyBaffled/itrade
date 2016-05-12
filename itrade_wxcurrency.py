@@ -362,7 +362,7 @@ if __name__=='__main__':
     setLang('us')
     gMessage.load()
 
-    app = wx.PySimpleApp()
+    app = wx.App(False)
 
     open_iTradeCurrencies(None)
     app.MainLoop()

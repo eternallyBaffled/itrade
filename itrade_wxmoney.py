@@ -375,7 +375,7 @@ def open_iTradeMoney(win,page=0,port=None,quote=None):
 if __name__=='__main__':
     setLevel(logging.INFO)
 
-    app = wx.PySimpleApp()
+    app = wx.App(False)
 
     from itrade_local import *
     setLang('us')

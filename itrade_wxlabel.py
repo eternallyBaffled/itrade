@@ -217,7 +217,7 @@ def DrawRectLabel(dc,label,x,y,w,h,colorpen,colorbg,font,vert='top',horz='center
 if __name__=='__main__':
     setLevel(logging.INFO)
 
-    app = wx.PySimpleApp()
+    app = wx.App(False)
     app.MainLoop()
 
 # ============================================================================

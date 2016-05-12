@@ -1304,7 +1304,7 @@ def removeFromMatrix_iTradeQuote(win,matrix,quote):
 if __name__=='__main__':
     setLevel(logging.INFO)
 
-    app = wx.PySimpleApp()
+    app = wx.App(False)
 
     # load configuration
     import itrade_config

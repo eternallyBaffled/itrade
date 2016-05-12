@@ -1234,7 +1234,7 @@ def add_iTradeOperation(win,portfolio,quote,type):
 if __name__=='__main__':
     setLevel(logging.INFO)
 
-    app = wx.PySimpleApp()
+    app = wx.App(False)
 
     # load configuration
     itrade_config.loadConfig()
