@@ -9,16 +9,22 @@ Installation information can be found in the user guide :
 
 From iTrade source package, we recommend you to install :
 
- Python      http://www.python.org                    v 2.5.x or better
- wxPython    http://www.wxpython.org                  v 2.8.8.x or better (UNICODE)
- numpy       http://sourceforge.net/projects/numpy    v 1.1.x or better
- matplotlib  http://matplotlib.sourceforge.net        v 0.98.x or better
- xlrd        http://www.lexicon.net/sjmachin/xlrd.htm v 0.6.1 or better
+ Python      http://www.python.org                    v 2.7
+ wxPython    http://www.wxpython.org                  v 2.8.8.x or better (UNICODE)(tested with 2.8 and 3.0)
+ numpy       http://sourceforge.net/projects/numpy    v 1.1.x or better (tested with 1.11.0)
+ matplotlib  http://matplotlib.sourceforge.net        v 0.98.x or better (tested with 1.5.1)
+ xlrd        http://www.lexicon.net/sjmachin/xlrd.htm v 0.6.1 or better (tested with 0.9.4)
+ feedparser                                           v 5.2.1 or better
 
 Attention :
 If you have some trouble running iTrade after migrating from a previous version,
 be sure you have uninstalled Matplotlib and NumArray/Numpy before installing
 the new versions of these libraries.
+
+Other dependencies:
+pyPdf v1.13, discontinued and forked as pyPdf2 but currently required by one of the importers.
+
+Python 3 is not supported yet. Aside from the iTrade code, we lack a compatible version of wxPython.
 
 -------------------------------------------------------------------------------
 Specific to Linux / Ubuntu Feisty
@@ -109,7 +115,7 @@ Specific to OSX 10.4
  courtesy of Yoshiyuki Nishio
 -------------------------------------------------------------------------------
 
-You can found already compiled packages here (except XLRD but it's optional) :
+You can find already compiled packages here (except XLRD but it's optional) :
 http://pythonmac.org/packages/py25-fat/index.html
 
 Install in this order : python2.5, wxpython2.8, numpy, pytz, matplotlib
