@@ -33,89 +33,23 @@
 # 2007-01-21    dgil  Switch definitively to unicode version of wxPython
 # ============================================================================
 
-# ============================================================================
-# wxPython version required : 2.8.x UNICODE
-# ============================================================================
-
-WXVERSION_MAJOR     = 2
-WXVERSION_MINOR1    = 8
-WXVERSION_MINOR2    = 8
-
-# ============================================================================
-# Imports
-# ============================================================================
-
-# python system
-import re
-
 # wxPython system
 import wxversion
 
 # iTrade system
-from itrade_config import main_is_frozen,verbose
-from itrade_local import message,setLang
+import itrade_config
 
-# ============================================================================
-# resolve_wxversion
-# ============================================================================
 
 def resolve_wxversion():
-    patt = "%d\.%d[0-9\-\.A-Za-z]*-unicode"
-    patts = "-unicode"
+    if itrade_config.verbose:
+        print 'wxPython Installed :', wxversion.getInstalled()
 
-    versions = wxversion.getInstalled()
-    if verbose:
-        print 'wxPython Installed :',versions
-
-    # need to select the more recent one with 'unicode'
-    vSelected = None
-    vSelectedMsg = ''
-    for eachVersion in versions:
-        for min in range(WXVERSION_MINOR1,WXVERSION_MINOR2+1):
-            m = re.search( patt % (WXVERSION_MAJOR,min), eachVersion)
-            if m:
-                if min == WXVERSION_MINOR2:
-                    vSelectedMsg = ''
-                else:
-                    vSelectedMsg = ' (deprecated version - think to update)'
-                vSelected = eachVersion
-                break
-        if m:
-            break
-
-    if vSelected:
-        print 'wxPython Selected  :',vSelected,vSelectedMsg
-        wxversion.select(vSelected)
-        return
-
-    # no compatible version :-( : try to select any release
-    bUnicode = False
-    for eachVersion in versions:
-        m = re.search(patts, eachVersion)
-        if m:
-            print 'wxPython Selected  :',eachVersion
-            wxversion.select(eachVersion)
-            bUnicode = True
-            break
-
-    if not bUnicode:
-        # only ansi release :-( => use US lang
-        setLang('us')
-
-    import sys, wx, webbrowser
-    app = wx.PySimpleApp()
-    wx.MessageBox(message('wxversion_msg') % (WXVERSION_MAJOR,WXVERSION_MINOR2), message('wxversion_title'))
-    app.MainLoop()
-    webbrowser.open("http://wxpython.org/")
-    sys.exit()
+    # unicode is default after 2.8
+    wxversion.select(["2.8-unicode","2.9","3.0"], optionsRequired=True)
 
 # ============================================================================
 # During import
 # ============================================================================
 
-if not main_is_frozen():
+if not itrade_config.main_is_frozen():
     resolve_wxversion()
-
-# ============================================================================
-# That's all folks !
-# ============================================================================
