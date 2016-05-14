@@ -26,17 +26,6 @@ pyPdf v1.13, discontinued and forked as pyPdf2 but currently required by one of 
 
 Python 3 is not supported yet. Aside from the iTrade code, we lack a compatible version of wxPython.
 
--------------------------------------------------------------------------------
-Specific to Linux / Ubuntu Feisty
--------------------------------------------------------------------------------
-
-- On some Linux distro (ubuntu feisty for example) wxaddons could be missing
-  "ImportError: No module named wxaddons.sized_controls"
-
-	deb http://wxpython.wxcommunity.com/apt/ubuntu/feisty /
-	deb-src http://wxpython.wxcommunity.com/apt/ubuntu/feisty /
-
-	install python-wxaddons package from /etc/apt/sources.list
 
 -------------------------------------------------------------------------------
 Specific to Linux / Install from sources

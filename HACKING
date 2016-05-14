@@ -232,7 +232,7 @@ o Context Help in wxDialog object
 
    Typical Usage:
 
-    import wxaddons.sized_controls as sc
+    import wx.lib.sized_controls as sc
     from itrade_wxutil import iTradeSizedDialog
     ...
     class myForm(iTradeSizedDialog):

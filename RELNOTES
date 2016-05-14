@@ -39,13 +39,8 @@ Known Issues : v0.4.8 (under dev)
   the console or log file
   https://sourceforge.net/tracker/index.php?func=detail&aid=1597926&group_id=128261&atid=711187
 
-- wxPython / python-wxaddons : on some Linux distro (ubuntu feisty for example)
-  wxaddons could be missing : "ImportError: No module named wxaddons.sized_controls"
-
-	deb http://wxpython.wxcommunity.com/apt/ubuntu/feisty /
-	deb-src http://wxpython.wxcommunity.com/apt/ubuntu/feisty /
-
-	install python-wxaddons package from /etc/apt/sources.list
+- wxPython / python-wxaddons : are no longer used. We switched to wxPython 2.8.8.0 minimum
+  where the sized_controls are in wx.lib.sized_controls.
 
 ===============================================================================
 Previous release notes

@@ -55,10 +55,7 @@ import wx
 import wx.html
 import wx.lib.wxpTag
 # import sized_controls from wx.lib for wxPython version >= 2.8.8.0 (from wxaddons otherwise)
-try:
-    import wx.lib.sized_controls as sc
-except:
-    import wxaddons.sized_controls as sc
+import wx.lib.sized_controls as sc
 
 # matplotlib helpers
 from matplotlib.colors import colorConverter

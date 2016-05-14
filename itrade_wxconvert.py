@@ -46,10 +46,7 @@ if not itrade_config.nowxversion:
 import wx
 from wx.lib import masked
 # import sized_controls from wx.lib for wxPython version >= 2.8.8.0 (from wxaddons otherwise)
-try:
-    import wx.lib.sized_controls as sc
-except:
-    import wxaddons.sized_controls as sc
+import wx.lib.sized_controls as sc
 import wx.lib.newevent
 
 # iTrade system

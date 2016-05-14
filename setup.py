@@ -77,8 +77,8 @@ setup(windows=["itrade.py"],
                   "excludes": ['_tkagg', '_gtkagg','Tkinter','Tkcontants','Tcl','pywin','pywin.debugger','pywin.debugger.dbgcon','pywin.dialogs','pywin.dialogs.list'],
                   "dll_excludes": ['libgdk_pixbuf-2.0-0.dll','libgdk-win32-2.0-0.dll','libgobject-2.0-0.dll','wxmsw26uh_vc.dll','gdiplus.dll']
                   }
-                },
-)
+                }, requires=['xlrd', 'pytz', 'matplotlib', 'feedparser', 'pyPdf', 'numpy']
+      )
 
 # ============================================================================
 # That's all folks !
