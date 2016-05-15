@@ -133,8 +133,8 @@ class GToolHLine(GTool):
 
         #print 'rect:',rect,'y range:',a,b,b-a,' val=',obj[3],(obj[3] - a),' y=',y
         if y<=rect[3] and y>=rect[1]:
-            lc = wx.NamedColor("BLACK")
-            bg = wx.NamedColor("BLUE")
+            lc = wx.NamedColour("BLACK")
+            bg = "BLUE"
             font = wx.Font(8, wx.ROMAN, wx.NORMAL, wx.NORMAL)
 
             dc.SetPen(wx.Pen(lc, 1, wx.SOLID))
@@ -166,8 +166,8 @@ class GToolUPL(GTool):
 
         #print 'rect:',rect,'y range:',a,b,b-a,' val=',obj[3],(obj[3] - a),' y=',y
         if y<=rect[3] and y>=rect[1]:
-            lc = wx.NamedColor("BLACK")
-            bg = wx.NamedColor("RED")
+            lc = wx.NamedColour("BLACK")
+            bg = "RED"
             font = wx.Font(8, wx.ROMAN, wx.NORMAL, wx.NORMAL)
 
             dc.SetPen(wx.Pen(lc, 1, wx.SOLID))
@@ -217,8 +217,8 @@ class GToolVLine(GTool):
 
             #print 'rect:',rect,'x range:',a,b,b-a,' val=',time,(time - a),' x=',x
 
-            lc = wx.NamedColor("BLACK")
-            bg = wx.NamedColor("BLUE")
+            lc = wx.NamedColour("BLACK")
+            bg = "BLUE"
             font = wx.Font(8, wx.ROMAN, wx.NORMAL, wx.NORMAL)
 
             dc.SetPen(wx.Pen(lc, 1, wx.SOLID))
@@ -531,7 +531,7 @@ class iTrade_wxPanelGraph(GObject,PanelPrint):
     def __init__(self, parent, id, size):
         self.m_parent = parent
 
-        self.SetBackgroundColour(wx.NamedColor("WHITE"))
+        self.SetBackgroundColour("WHITE")
 
         # figure me
         self.figure = Figure(size, dpi = 96)

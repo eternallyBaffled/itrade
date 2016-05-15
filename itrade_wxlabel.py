@@ -109,7 +109,7 @@ class iTrade_wxLabelPopup(object):
             self.max = None
         self.parent = parent
         self.font = wx.Font(8, wx.ROMAN, wx.NORMAL, wx.NORMAL)
-        self.bg = wx.NamedColor("YELLOW")
+        self.bg = wx.NamedColour("YELLOW")
         return wx.MemoryDC()
 
     def BeginPaint(self,dc,w,h):
