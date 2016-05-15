@@ -99,7 +99,7 @@ class News_Boursorama(object):
         return self.m_quote
 
     def splitLines(self,buf):
-        p = re.compile("\d\d/\d\d/\d\d\d\d</td>[ \t\n\r]*<td></td>[ \t\n\r]*.*</td>",re.IGNORECASE|re.MULTILINE)
+        p = re.compile(r"\d\d/\d\d/\d\d\d\d</td>[ \t\n\r]*<td></td>[ \t\n\r]*.*</td>", re.IGNORECASE|re.MULTILINE)
         return p.findall(buf)
 
     def getdata(self,url):
@@ -129,13 +129,13 @@ class News_Boursorama(object):
         for eachLine in iter:
             sdate = time.strptime(eachLine[0:10], "%d/%m/%Y")
             #print '%s -> %s' % (eachLine[0:10],sdate)
-            snum = re.search('news=\d*',eachLine,re.IGNORECASE|re.MULTILINE)
+            snum = re.search(r'news=\d*', eachLine, re.IGNORECASE|re.MULTILINE)
             if snum:
                 snum = snum.group()[5:]
-            stitle = re.search('<a.*>.*</a>',eachLine,re.IGNORECASE|re.MULTILINE)
+            stitle = re.search(r'<a.*>.*</a>', eachLine, re.IGNORECASE|re.MULTILINE)
             if stitle:
                 stitle = stitle.group()
-                stitle = re.search('>.*<',stitle,re.IGNORECASE|re.MULTILINE)
+                stitle = re.search(r'>.*<', stitle, re.IGNORECASE|re.MULTILINE)
                 if stitle:
                     stitle = stitle.group()[1:-1]
 
@@ -164,13 +164,13 @@ class News_Boursorama(object):
                 print 'unable to connect'
             return
 
-        title = re.search('<tr>[ \t\n\r]+<td.*</font></td>[ \t\n\r]+</tr>',buf,re.IGNORECASE|re.MULTILINE|re.DOTALL)
+        title = re.search(r'<tr>[ \t\n\r]+<td.*</font></td>[ \t\n\r]+</tr>', buf, re.IGNORECASE|re.MULTILINE|re.DOTALL)
         if title:
             title = title.group()
         else:
             title = ''
 
-        buf = re.search('<tr>[ \t\n\r]*<td>.*</table>',buf,re.IGNORECASE|re.MULTILINE|re.DOTALL)
+        buf = re.search(r'<tr>[ \t\n\r]*<td>.*</table>', buf, re.IGNORECASE|re.MULTILINE|re.DOTALL)
         if buf:
             buf = buf.group()[:-8]
             #print '----------------('

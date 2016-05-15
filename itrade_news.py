@@ -86,7 +86,7 @@ class News(object):
     def goto(self,parent,url):
         # url is : <service>::<url>
         # __x parent shall be self.m_cb !
-        pos = re.search('::',url)
+        pos = re.search(r'::', url)
         if pos:
             service = url[:pos.start()]
             link = url[pos.end():]

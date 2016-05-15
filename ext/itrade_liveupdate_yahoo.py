@@ -188,7 +188,7 @@ class LiveUpdate_yahoo(object):
             return None
 
         # pull data
-        s400 = re.search("400 Bad Request",data,re.IGNORECASE|re.MULTILINE)
+        s400 = re.search(r"400 Bad Request", data, re.IGNORECASE|re.MULTILINE)
         if s400:
             if itrade_config.verbose:
                 info('unknown %s quote (400 Bad Request) from Yahoo' % (quote.ticker()))

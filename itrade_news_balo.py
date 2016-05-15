@@ -89,7 +89,7 @@ class News_Balo(object):
         return self.m_feed
 
     def splitLines(self,buf):
-        p = re.compile("\d\d/\d\d/\d\d\d\d</td>[ \t\n\r]*<td></td>[ \t\n\r]*.*</td>",re.IGNORECASE|re.MULTILINE)
+        p = re.compile(r"\d\d/\d\d/\d\d\d\d</td>[ \t\n\r]*<td></td>[ \t\n\r]*.*</td>", re.IGNORECASE|re.MULTILINE)
         return p.findall(buf)
 
     def feed(self,url):
@@ -111,13 +111,13 @@ class News_Balo(object):
         for eachLine in iter:
             sdate = eachLine[0:10]
             sdate = datetime.datetime(int(sdate[6:10]),int(sdate[3:5]),int(sdate[0:2])).strftime('%a, %d %b %Y')
-            snum = re.search('news=\d*',eachLine,re.IGNORECASE|re.MULTILINE)
+            snum = re.search(r'news=\d*', eachLine, re.IGNORECASE|re.MULTILINE)
             if snum:
                 snum = snum.group()[5:]
-            stitle = re.search('<a.*>.*</a>',eachLine,re.IGNORECASE|re.MULTILINE)
+            stitle = re.search(r'<a.*>.*</a>', eachLine, re.IGNORECASE|re.MULTILINE)
             if stitle:
                 stitle = stitle.group()
-                stitle = re.search('>.*<',stitle,re.IGNORECASE|re.MULTILINE)
+                stitle = re.search(r'>.*<', stitle, re.IGNORECASE|re.MULTILINE)
                 if stitle:
                     stitle = stitle.group()[1:-1]
 
@@ -147,13 +147,13 @@ class News_Balo(object):
 
         #print buf
 
-        title = re.search('<tr>[ \t\n\r]+<td.*</td>[ \t\n\r]+</tr>',buf,re.IGNORECASE|re.MULTILINE|re.DOTALL)
+        title = re.search(r'<tr>[ \t\n\r]+<td.*</td>[ \t\n\r]+</tr>', buf, re.IGNORECASE|re.MULTILINE|re.DOTALL)
         if title:
             title = title.group()
         else:
             title = ''
 
-        buf = re.search('<tr>[ \t\n\r]*<td>.*</table>',buf,re.IGNORECASE|re.MULTILINE|re.DOTALL)
+        buf = re.search(r'<tr>[ \t\n\r]*<td>.*</table>', buf, re.IGNORECASE|re.MULTILINE|re.DOTALL)
         if buf:
             buf = buf.group()[:-8]
             page = '<html><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><body>' + "<br><a href=':back'>%s</a><H3>" % message('backtolist') + title + "</H3>" + buf + "<br><br><a href=':back'>%s</a>" % message('backtolist')  + "</body></html>"

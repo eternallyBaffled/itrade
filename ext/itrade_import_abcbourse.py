@@ -113,7 +113,7 @@ class Import_ABCBourse(object):
 
         # search for the ___VIEWSTATE variable
         data = response.read()
-        m = re.search('name=\"__VIEWSTATE\"\s*value=\"\S+\"', data)
+        m = re.search(r'name=\"__VIEWSTATE\"\s*value=\"\S+\"', data)
         if m==None:
             debug('Import_ABCBourse:viewstate statement not found !')
             return None

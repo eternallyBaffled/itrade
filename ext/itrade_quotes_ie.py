@@ -101,10 +101,10 @@ def Import_ListOfQuotes_IE(quotes,market='IRISH EXCHANGE',dlg=None,x=0):
 
     for line in lines[1:]:
         # extract data
-        sp1 = re.search('<td class="equityName">',line,re.IGNORECASE|re.MULTILINE)
+        sp1 = re.search(r'<td class="equityName">', line, re.IGNORECASE|re.MULTILINE)
         if sp1:
             sp1 = sp1.end()
-            sp2 = re.search('</td>',line[sp1:],re.IGNORECASE|re.MULTILINE)
+            sp2 = re.search(r'</td>', line[sp1:], re.IGNORECASE|re.MULTILINE)
             if sp2:
                 sp2 = sp2.start()
                 data = line[sp1:]

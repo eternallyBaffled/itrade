@@ -143,7 +143,7 @@ class Login_fortuneo(object):
 
             #print buf
 
-            m = re.search("name=\"BV_SessionID\"\s*value=\"\S+\"",buf,re.IGNORECASE|re.MULTILINE)
+            m = re.search(r"name=\"BV_SessionID\"\s*value=\"\S+\"", buf, re.IGNORECASE|re.MULTILINE)
             if m==None:
                 print 'Login_fortuneo: BV_SessionID statement not found :',buf
                 return False
@@ -152,7 +152,7 @@ class Login_fortuneo(object):
 
             #print 'BV_SessionID = ',BV_SessionID
 
-            m = re.search("name=\"BV_EngineID\"\s*value=\"\S+\"",buf,re.IGNORECASE|re.MULTILINE)
+            m = re.search(r"name=\"BV_EngineID\"\s*value=\"\S+\"", buf, re.IGNORECASE|re.MULTILINE)
             if m==None:
                 print 'Login_fortuneo: BV_EngineID statement not found :',buf
                 return False
@@ -183,7 +183,7 @@ class Login_fortuneo(object):
 
             #print url
 
-            m = re.search("\?BV_SessionID=\S+\&",url,re.IGNORECASE|re.MULTILINE)
+            m = re.search(r"\?BV_SessionID=\S+&", url, re.IGNORECASE|re.MULTILINE)
             if m==None:
                 print 'Login_fortuneo: BV_SessionID statement not found :',url
                 return False
@@ -192,7 +192,7 @@ class Login_fortuneo(object):
 
             #print 'BV_SessionID =',BV_SessionID
 
-            m = re.search("\&BV_EngineID=\S+",url,re.IGNORECASE|re.MULTILINE)
+            m = re.search(r"&BV_EngineID=\S+", url, re.IGNORECASE|re.MULTILINE)
             if m==None:
                 print 'Login_fortuneo: BV_EngineID statement not found :',url
                 return False
@@ -239,7 +239,7 @@ class Login_fortuneo(object):
         buf = flux.read()
 
         # extract cookie
-        m = re.search('startStreaming\( \"\S+\",',buf,re.IGNORECASE|re.MULTILINE)
+        m = re.search(r'startStreaming\( \"\S+\",', buf, re.IGNORECASE|re.MULTILINE)
         if m==None:
             print 'Login_fortuneo: cookie statement not found !'
             return False

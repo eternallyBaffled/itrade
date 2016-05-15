@@ -53,12 +53,12 @@ import itrade_csv
 # some patterns for date
 # ============================================================================
 
-re_p3_1 = re.compile('\d\d\d\d-\d\d-\d\d')
-re_p3_2 = re.compile('\d\d\d\d/\d\d/\d\d')
-re_p4_1 = re.compile('\d\d-\d\d-\d\d')
-re_p4_2 = re.compile('\d\d-\d\d-\d\d\d\d')
-re_p4_3 = re.compile('\d\d/\d\d/\d\d')
-re_p4_4 = re.compile('\d\d/\d\d/\d\d\d\d')
+re_p3_1 = re.compile(r'\d\d\d\d-\d\d-\d\d')
+re_p3_2 = re.compile(r'\d\d\d\d/\d\d/\d\d')
+re_p4_1 = re.compile(r'\d\d-\d\d-\d\d')
+re_p4_2 = re.compile(r'\d\d-\d\d-\d\d\d\d')
+re_p4_3 = re.compile(r'\d\d/\d\d/\d\d')
+re_p4_4 = re.compile(r'\d\d/\d\d/\d\d\d\d')
 
 # ============================================================================
 # some convertion

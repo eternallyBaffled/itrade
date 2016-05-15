@@ -825,11 +825,11 @@ def euronext_InstrumentId(quote):
             except:
                 print 'euronext_InstrumentId: %s exception error' % url
                 return None
-            sid = re.search("selectedMep=%d&amp;idInstrument=\d*&amp;isinCode=%s" % (euronext_place2mep(quote.place()),quote.isin()),buf,re.IGNORECASE|re.MULTILINE)
+            sid = re.search(r"selectedMep=%d&amp;idInstrument=\d*&amp;isinCode=%s" % (euronext_place2mep(quote.place()),quote.isin()), buf, re.IGNORECASE|re.MULTILINE)
             if sid:
                 sid = buf[sid.start():sid.end()]
                 #print'seq-1 found:',sid
-                sexch = re.search("&amp;isinCode",sid,re.IGNORECASE|re.MULTILINE)
+                sexch = re.search(r"&amp;isinCode", sid, re.IGNORECASE|re.MULTILINE)
                 if sexch:
                     IdInstrument = sid[31:sexch.start()]
                     #print 'seq-2 found:',IdInstrument
