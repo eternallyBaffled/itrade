@@ -426,7 +426,7 @@ class HTMLDialog(wx.Dialog):
         buttonstring = HTMLforButtons(buttons,betweenbuttons=betweenbuttons)
 
         # set final content
-        self.theHTMLpage = (self.DefaultHTML
+        the_html_page = (self.DefaultHTML
                             % (colourstring1,colourstring2,
                                boxcolor,
                                imstr1,
@@ -434,7 +434,7 @@ class HTMLDialog(wx.Dialog):
                                buttonstring)
                              )
 
-        self.m_html.SetPage(self.theHTMLpage)
+        self.m_html.SetPage(the_html_page)
 
         if size is None:
             w,h = defaultsize
