@@ -56,10 +56,10 @@ from itrade_candle import *
 class Trade(object):
     def __init__(self,trades,d,open,high,low,close,volume,idx):
         if d[4]=='-':
-            debug('Trade::__init__():%s: %d %d %d' % (d,int(d[0:4]),int(d[5:7]),int(d[8:10])));
+            debug('Trade::__init__():%s: %d %d %d' % (d,int(d[0:4]),int(d[5:7]),int(d[8:10])))
             self.m_date = date(int(d[0:4]),int(d[5:7]),int(d[8:10]))
         else:
-            debug('Trade::__init__():%s: %d %d %d' % (d,int(d[0:4]),int(d[4:6]),int(d[6:8])));
+            debug('Trade::__init__():%s: %d %d %d' % (d,int(d[0:4]),int(d[4:6]),int(d[6:8])))
             self.m_date = date(int(d[0:4]),int(d[4:6]),int(d[6:8]))
         self.m_open = float(open)
         if self.m_open<0.0: self.m_open=0.0
@@ -227,7 +227,7 @@ class Trades(object):
                 self.m_trades[ajd] = tr
 
     def add(self,item,bImporting):
-        debug('Trades::add() before: %s : bImporting=%s' % (item,bImporting));
+        debug('Trades::add() before: %s : bImporting=%s' % (item,bImporting))
 
         idx = gCal.index(Datation(item[1]).date())
         if idx==-1:
@@ -305,7 +305,7 @@ class Trades(object):
         return self.m_inClose[idx] >= 0.0
 
     def ma(self,period,idx):
-        ''' temp '''
+        """ temp """
         if period==20:
             return self.ma20(idx)
         elif period==50:
@@ -318,7 +318,7 @@ class Trades(object):
             return None
 
     def vma(self,period,idx):
-        ''' temp '''
+        """ temp """
         if period==15:
             return self.vma15(idx)
         else:
@@ -353,7 +353,7 @@ class Trades(object):
         return self.m_ma150[idx]
 
     def rsi(self,period,idx):
-        ''' temp '''
+        """ temp """
         if period==14:
             return self.rsi14(idx)
         else:
