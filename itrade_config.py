@@ -98,17 +98,20 @@ bugTrackerURL = 'http://sourceforge.net/tracker/?group_id=128261&atid=711187'
 donorsTrackerURL = 'http://sourceforge.net/donate/index.php?group_id=128261'
 downloadURL = 'http://sourceforge.net/project/showfiles.php?group_id=128261'
 
-manualURL = {}
-manualURL['fr'] = 'http://itrade.sourceforge.net/fr/manual.htm'
-manualURL['en'] = 'http://itrade.sourceforge.net/manual.htm'
+manualURL = {
+    'fr': 'http://itrade.sourceforge.net/fr/manual.htm',
+    'en': 'http://itrade.sourceforge.net/manual.htm'
+}
 
-supportURL = {}
-supportURL['en'] = 'http://itrade.sourceforge.net/support.htm'
-supportURL['fr'] = 'http://itrade.sourceforge.net/fr/support.htm'
+supportURL = {
+    'en': 'http://itrade.sourceforge.net/support.htm',
+    'fr': 'http://itrade.sourceforge.net/fr/support.htm'
+}
 
-forumURL = {}
-forumURL['en'] = 'http://sourceforge.net/forum/forum.php?forum_id=436161'
-forumURL['fr'] = 'http://sourceforge.net/forum/forum.php?forum_id=436160'
+forumURL = {
+    'en': 'http://sourceforge.net/forum/forum.php?forum_id=436161',
+    'fr': 'http://sourceforge.net/forum/forum.php?forum_id=436160'
+}
 
 # use ANSI colors
 useColors = False
@@ -344,12 +347,13 @@ connectionTimeout = default_connectionTimeout
 
 # column
 global column
-column = {}
+column = {
+    'portfolio': "-1;1",
+    'quotes': "-1;1",
+    'indicators': "-1;1",
+    'stops': "-1;1"
+}
 
-column['portfolio'] = "-1;1"
-column['quotes'] = "-1;1"
-column['indicators'] = "-1;1"
-column['stops'] = "-1;1"
 
 # ============================================================================
 # checkNewRelease()
