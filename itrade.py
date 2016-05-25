@@ -94,7 +94,7 @@ def main():
     file = None
     wx = True
     nopsyco = False
-    nowxversion = False;
+    nowxversion = False
 
     vticker = None
     vquote  = None
