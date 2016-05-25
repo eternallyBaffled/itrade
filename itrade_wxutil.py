@@ -459,7 +459,7 @@ class HTMLDialog(wx.Dialog):
             if self.IsModal():
                 self.EndModal(event.GetId())
             else:
-                self.SetReturnCode(event.GetId());
+                self.SetReturnCode(event.GetId())
                 self.Show(False)
 
 # ============================================================================
