@@ -228,7 +228,7 @@ class Operation(object):
         if isinstance(d,datetime.datetime):
             self.m_datetime = d
         else:
-            debug('Operation::__init__():%s' % d);
+            debug('Operation::__init__():%s' % d)
             try:
                 self.m_datetime = datetime.datetime.strptime(d,'%Y-%m-%d %H:%M:%S.%f')
             except ValueError:
@@ -1370,7 +1370,7 @@ def loadPortfolio(fn=None):
 def newPortfolio(fn=None):
     debug('newPortfolio %s',fn)
 
-    # create the porfolio
+    # create the portfolio
     portfolios.reinit()
     p = portfolios.portfolio(fn)
     if p==None:
