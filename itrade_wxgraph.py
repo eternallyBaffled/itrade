@@ -505,29 +505,22 @@ CURSOR_MODE_OLINE = 3
 CURSOR_MODE_FIBO = 4
 CURSOR_MODE_TRASH = 255
 
-# ============================================================================
-# Cursor phase
-# ============================================================================
-
-# ============================================================================
-# FigureCanvasEx
-#
-# be sure the parent is able to draw all its objects
-# ============================================================================
 
 class FigureCanvasEx(FigureCanvas):
+    """be sure the parent is able to draw all its objects"""
 
-    def _onPaint(self,event):
+    def __init__(self, parent, id, figure):
+        FigureCanvas.__init__(self, parent, id, figure)
+        self.m_parent = parent
+
+    def _onPaint(self, event):
         #print '$$$ _onPaint ex : call default _onPaint'
-        FigureCanvas._onPaint(self,event)
+        FigureCanvas._onPaint(self, event)
         #print '$$$ _onPaint ex : call drawAllObjects in parent'
         self.m_parent.drawAllObjects()
 
-# ============================================================================
-# iTrade_wxPanelGraph
-# ============================================================================
 
-class iTrade_wxPanelGraph(GObject,PanelPrint):
+class iTrade_wxPanelGraph(GObject, PanelPrint):
     def __init__(self, parent, id, size):
         self.m_parent = parent
 
@@ -536,10 +529,9 @@ class iTrade_wxPanelGraph(GObject,PanelPrint):
         # figure me
         self.figure = Figure(size, dpi = 96)
         self.m_canvas = FigureCanvasEx(self, -1, self.figure)
-        self.m_canvas.m_parent = self
 
-        GObject.__init__(self,self.m_canvas)
-        PanelPrint.__init__(self,parent,CanvasPrintout,orientation = wx.LANDSCAPE)
+        GObject.__init__(self, self.m_canvas)
+        PanelPrint.__init__(self, parent, CanvasPrintout, orientation = wx.LANDSCAPE)
 
         self.m_canvas.mpl_connect('motion_notify_event', self.mouse_move)
         self.m_canvas.mpl_connect('button_press_event', self.on_click)
