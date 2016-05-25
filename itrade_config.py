@@ -116,34 +116,48 @@ forumURL = {
 # use ANSI colors
 useColors = False
 
+
+class InstallError(Exception):
+    """Base class for installation-related errors."""
+    pass
+
+
+class DirNotFoundError(InstallError):
+    def __init__(self, folder_name):
+        InstallError.__init__(self, 'Invalid installation: folder "%s" does not exist.'% folder_name)
+
+
 # itrade root directory
+# FIXME: Since this will only work when we're called from within the installation folder, this makes unittesting
+# all but impossible as soon as itrade_config is included anywhere. This is probably the only module that should use
+# the global facility idiom and it is the one place where it isn't used. Argh.
 dirRoot=os.path.dirname(sys.argv[0])
 
 # directory for system data
 dirSysData = os.path.join(dirRoot, 'data')
 if not os.path.exists(dirSysData):
-    raise('invalid installation ! %s folder does not exist !' % dirSysData)
+    raise DirNotFoundError(dirSysData)
 
 # directory for brokers data
 dirBrokersData = os.path.join(dirRoot, 'brokers')
 if not os.path.exists(dirBrokersData):
-    raise('invalid installation ! %s folder does not exist !' % dirBrokersData)
+    raise DirNotFoundError(dirBrokersData)
 
 # directory for symbol lists
 dirSymbData = os.path.join(dirRoot, 'symbols')
 if not os.path.exists(dirSymbData):
-    raise('invalid installation ! %s folder does not exist !' % dirSymbData)
+    raise DirNotFoundError(dirSymbData)
 
 # directory for extensions
 dirExtData = os.path.join(dirRoot, 'ext')
 if not os.path.exists(dirExtData):
-    raise('invalid installation ! %s folder does not exist !' % dirExtData)
+    raise DirNotFoundError(dirExtData)
 fileExtData = 'extensions.txt'
 
 # directory for indicators
 dirIndData = os.path.join(dirRoot, 'indicators')
 if not os.path.exists(dirIndData):
-    raise('invalid installation ! %s folder does not exist !' % dirIndData)
+    raise DirNotFoundError(dirIndData)
 fileIndData = 'indicators.txt'
 
 # directory for user data
@@ -192,7 +206,7 @@ if not os.path.exists(dirReports):
 # directory for image ressources
 dirRes = os.path.join(dirRoot, 'res')
 if not os.path.exists(dirRes):
-    raise('invalid installation ! %s folder does not exist !' % dirRes)
+    raise DirNotFoundError(dirRes)
 
 # number of trading years
 #numTradeYears = 12
@@ -382,7 +396,7 @@ def checkNewRelease(ping=False):
     try:
         latest=connection.getDataFromUrl(softwareLatest)
     except IOError:
-        print 'checkNewRelease(): exeption getting OFFICIAL file'
+        print 'checkNewRelease(): exception getting OFFICIAL file'
         return 'err'
 
     if latest[0]!='r':
