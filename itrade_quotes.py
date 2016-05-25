@@ -1576,23 +1576,23 @@ if __name__=='__main__':
 
     quotes.loadMarket('EURONEXT')
 
-    info('test1 %s' % quotes.lookupISIN('FR0000072621'));
+    info('test1 %s' % quotes.lookupISIN('FR0000072621'))
     quote = quotes.lookupTicker('OSI','EURONEXT')
-    info('test2 %s' % quote.ticker());
-    info('test3a %s' % quote.isin());
-    info('test3b %s' % quote.key());
-    info('test4 %s' % quote.name());
-    info('test5 %s' % quote.descr());
+    info('test2 %s' % quote.ticker())
+    info('test3a %s' % quote.isin())
+    info('test3b %s' % quote.key())
+    info('test4 %s' % quote.name())
+    info('test5 %s' % quote.descr())
 
     quote = quotes.lookupTicker('OSI','EURONEXT')
     quote.loadTrades('import/Cortal-2005-01-07.txt')
-    info('test6 %s' % quote.trades().trade(date(2005,01,04)));
+    info('test6 %s' % quote.trades().trade(date(2005,01,04)))
 
     quote = quotes.lookupTicker('EADT','EURONEXT')
     quote.loadTrades('import/Cortal-2005-01-07.txt')
     quote.loadTrades('import/Cortal-2005-01-14.txt')
     quote.loadTrades('import/Cortal-2005-01-21.txt')
-    info('test7 %s' % quote.trades().trade(date(2005,1,4)));
+    info('test7 %s' % quote.trades().trade(date(2005,1,4)))
 
 #    quotes.saveTrades()
     quotes.saveListOfQuotes()
