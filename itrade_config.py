@@ -90,7 +90,6 @@ softwareStatus = __status__
 print '%s(%s) - %s %s' % (softwareName,softwareStatus,softwareVersion,softwareVersionName)
 
 # connection to network
-global gbDisconnected
 gbDisconnected = False
 
 # support
@@ -203,7 +202,7 @@ dirReports = os.path.join(dirRoot, 'reports')
 if not os.path.exists(dirReports):
     os.mkdir(dirReports)
 
-# directory for image ressources
+# directory for image resources
 dirRes = os.path.join(dirRoot, 'res')
 if not os.path.exists(dirRes):
     raise DirNotFoundError(dirRes)
@@ -221,22 +220,18 @@ refreshCurrencyView = 15
 
 # auto refresh the matrix view
 default_bAutoRefreshMatrixView = True
-global bAutoRefreshMatrixView
 bAutoRefreshMatrixView = default_bAutoRefreshMatrixView
 
 # auto refresh the currency view
 default_bAutoRefreshCurrencyView = True
-global bAutoRefreshCurrencyView
 bAutoRefreshCurrencyView = default_bAutoRefreshCurrencyView
 
 # matrix font size
 default_matrixFontSize = 2
-global matrixFontSize
 matrixFontSize = default_matrixFontSize
 
 # operation font size
 default_operationFontSize = 2
-global operationFontSize
 operationFontSize = default_operationFontSize
 
 # is data cached fresh ? (in seconds)
@@ -331,7 +326,6 @@ intradayGraphUrlUseISIN['TAIWAN STOCK EXCHANGE'] = False
 timerForXYPopup = 500
 
 # default lang = system
-global lang
 lang = 0
 
 # verbose mode
@@ -348,19 +342,14 @@ experimental = False
 nowxversion = False
 
 # proxy data
-global proxyHostname
 proxyHostname = None
-
-global proxyAuthentication
 proxyAuthentication = None
 
 # connection timeout
 default_connectionTimeout = 20
-global connectionTimeout
 connectionTimeout = default_connectionTimeout
 
 # column
-global column
 column = {
     'portfolio': "-1;1",
     'quotes': "-1;1",
@@ -427,7 +416,6 @@ def checkNewRelease(ping=False):
 # ============================================================================
 
 def loadConfig(frm=""):
-
     if verbose:
         print "loadConfig called from",frm
 
