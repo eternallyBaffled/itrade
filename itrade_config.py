@@ -207,6 +207,18 @@ dirRes = os.path.join(dirRoot, 'res')
 if not os.path.exists(dirRes):
     raise DirNotFoundError(dirRes)
 
+
+def default_closure_file():
+    return os.path.join(dirSysData, 'closed.txt')
+
+
+def default_srd_file():
+    return os.path.join(dirSysData, 'srd.txt')
+
+
+def default_alerts_file():
+    os.path.join(dirUserData,'alerts.txt')
+
 # number of trading years
 #numTradeYears = 12
 numTradeYears = 2

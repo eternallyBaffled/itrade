@@ -225,7 +225,7 @@ class Alerts(object):
 
     def load(self,fn=None):
         # open and read the file to load these alerts information
-        infile = itrade_csv.read(fn,os.path.join(itrade_config.dirUserData,'alerts.txt'))
+        infile = itrade_csv.read(fn, itrade_config.default_alerts_file())
         if infile:
             # scan each line to read each alert
             for eachLine in infile:
@@ -235,7 +235,7 @@ class Alerts(object):
 
     def save(self,fn=None):
         # open and write the file with these alerts information
-        itrade_csv.write(fn,os.path.join(itrade_config.dirUserData,'alerts.txt'),self.m_alerts.values())
+        itrade_csv.write(fn, itrade_config.default_alerts_file(), self.m_alerts.values())
 
         for eachAlert in self.listAlerts():
             ref = eachAlert.reference()
