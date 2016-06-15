@@ -217,7 +217,11 @@ def default_srd_file():
 
 
 def default_alerts_file():
-    os.path.join(dirUserData,'alerts.txt')
+    return os.path.join(dirUserData, 'alerts.txt')
+
+
+def user_configuration_file():
+    return os.path.join(dirUserData, 'usrconfig.txt')
 
 # number of trading years
 #numTradeYears = 12
@@ -446,7 +450,7 @@ def loadConfig(frm=""):
     config = ConfigParser.ConfigParser()
 
     # read the user configuration file
-    fn = os.path.join(dirUserData,'usrconfig.txt')
+    fn = user_configuration_file()
     print 'User Configuration :',fn
     config.read(fn)
 
@@ -559,10 +563,8 @@ def saveConfig():
         config.set("column",i,column[i])
 
     # write the new configuration file
-    fn = os.path.join(dirUserData,'usrconfig.txt')
-    f = open(fn,'w')
-    config.write(f)
-    f.close()
+    with open(user_configuration_file(), 'w') as f:
+        config.write(f)
 
 # ============================================================================
 # Thomas Heller's function for determining
