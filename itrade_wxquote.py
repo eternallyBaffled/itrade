@@ -552,12 +552,12 @@ class iTradeQuoteLivePanel(wx.Panel):
 # iTradeQuoteGraphPanel
 # ============================================================================
 
-class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
+class iTradeQuoteGraphPanel(wx.Panel, iTrade_wxPanelGraph):
     def __init__(self, parent, id, quote):
         wx.Panel.__init__(self, parent, id)
         iTrade_wxPanelGraph.__init__(self, parent, id, size=(5,4))
 
-        self.m_id = id
+#        self.m_id = id
         self.m_quote = quote
         self.m_nIndex = self.m_quote.lastindex()
         #print 'm_nIndex=',self.m_nIndex
@@ -773,7 +773,8 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
 
     def ChartRealize(self):
         # special case __x
-        if self.m_quote.m_daytrades == None: return
+        if self.m_quote.m_daytrades == None:
+            return
 
         if self.m_dispRSI14 or self.m_dispSto:
             nchart = 3
@@ -816,8 +817,7 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
         # self.m_quote.m_daytrades.m_[begin:end]
         # print 'ChartRealize: begin:',begin,' end:',end,' num:',num
 
-        if num>0:
-
+        if num > 0:
             if self.m_dispChart1Type == 'c':
                 lc = candlestick2(self.chart1, self.m_quote.m_daytrades.m_inOpen[begin:end], self.m_quote.m_daytrades.m_inClose[begin:end], self.m_quote.m_daytrades.m_inHigh[begin:end], self.m_quote.m_daytrades.m_inLow[begin:end], colorup = 'g', colordown = 'r', alpha=1.0)
             elif self.m_dispChart1Type == 'l':
@@ -827,66 +827,45 @@ class iTradeQuoteGraphPanel(wx.Panel,iTrade_wxPanelGraph):
             else:
                 lc = None
 
-            if not self.m_dispBollinger:
-                lma20 = self.chart1.plot(self.m_quote.m_daytrades.m_ma20[begin:end],'m',scalex = False)
-            lma50 = self.chart1.plot(self.m_quote.m_daytrades.m_ma50[begin:end],'r',scalex = False)
-            lma100 = self.chart1.plot(self.m_quote.m_daytrades.m_ma100[begin:end],'b',scalex = False)
+            self.chart1.plot(self.m_quote.m_daytrades.m_ma50[begin:end],'r',scalex = False, label='MMA(50)')
+            self.chart1.plot(self.m_quote.m_daytrades.m_ma100[begin:end],'b',scalex = False, label='MMA(100)')
             if self.m_dispMA150:
-                lma150 = self.chart1.plot(self.m_quote.m_daytrades.m_ma150[begin:end],'c',scalex = False)
+                self.chart1.plot(self.m_quote.m_daytrades.m_ma150[begin:end],'c',scalex = False, label='MMA(150)')
 
             if self.m_dispBollinger:
-                lma20 = self.chart1.plot(self.m_quote.m_daytrades.m_bollM[begin:end],'m--',scalex = False)
-                lu = self.chart1.plot(self.m_quote.m_daytrades.m_bollUp[begin:end],'k',scalex = False)
-                ld = self.chart1.plot(self.m_quote.m_daytrades.m_bollDn[begin:end],'k',scalex = False)
+                self.chart1.plot(self.m_quote.m_daytrades.m_bollM[begin:end],'m--',scalex = False, label='MMA(20)')
+                self.chart1.plot(self.m_quote.m_daytrades.m_bollUp[begin:end],'k',scalex = False)
+                self.chart1.plot(self.m_quote.m_daytrades.m_bollDn[begin:end],'k',scalex = False)
+            else:
+                self.chart1.plot(self.m_quote.m_daytrades.m_ma20[begin:end],'m',scalex = False, label='MMA(20)')
 
             if self.m_dispOverlaidVolume:
                 volume_overlay(self.chart1vol, self.m_quote.m_daytrades.m_inClose[begin-1:end], self.m_quote.m_daytrades.m_inVol[begin-1:end], colorup='g', colordown='r', alpha=0.5)
             #l5 = self.chart1vol.plot(self.m_quote.m_daytrades.m_ovb[begin:end],'k')
 
             volume_overlay(self.chart2, self.m_quote.m_daytrades.m_inClose[begin-1:end], self.m_quote.m_daytrades.m_inVol[begin-1:end], colorup='g', colordown='r', alpha=1.0)
-            lvma15 = self.chart2.plot(self.m_quote.m_daytrades.m_vma15[begin:end],'r',antialiased=False,linewidth=0.05,scalex = False)
-            lovb = self.chart2vol.plot(self.m_quote.m_daytrades.m_ovb[begin:end],'k',antialiased=False,linewidth=0.05)
+            lvma15, = self.chart2.plot(self.m_quote.m_daytrades.m_vma15[begin:end], 'r', antialiased=False, linewidth=0.05, scalex=False, label='VMA(15)')
+            lovb, = self.chart2vol.plot(self.m_quote.m_daytrades.m_ovb[begin:end], 'k', antialiased=False, linewidth=0.05, label='OVB')
             #index_bar(self.chart2, self.m_quote.m_daytrades.m_inVol[begin:end], facecolor='g', edgecolor='k', width=4,alpha=1.0)
 
             if self.m_dispRSI14:
-                rsi14 = self.chart3.plot(self.m_quote.m_daytrades.m_rsi14[begin:end],'k',antialiased=False,linewidth=0.05)
-            else:
-                rsi14 = None
+                self.chart3.plot(self.m_quote.m_daytrades.m_rsi14[begin:end], 'k', antialiased=False, linewidth=0.05, label='RSI(14)')
 
             if self.m_dispSto:
-                stoK = self.chart3.plot(self.m_quote.m_daytrades.m_stoK[begin:end],'b',antialiased=False,linewidth=0.05,scalex = False)
-                stoD = self.chart3.plot(self.m_quote.m_daytrades.m_stoD[begin:end],'m--',antialiased=False,linewidth=0.05,scalex = False)
-            else:
-                stoK = None
-                stoD = None
+                self.chart3.plot(self.m_quote.m_daytrades.m_stoK[begin:end], 'b', antialiased=False, linewidth=0.05, scalex = False, label='Sto %K')
+                self.chart3.plot(self.m_quote.m_daytrades.m_stoD[begin:end], 'm--', antialiased=False, linewidth=0.05, scalex = False, label='Sto %D')
 
             if self.m_dispLegend:
                 old = matplotlib.rcParams['lines.antialiased']
                 matplotlib.rcParams['lines.antialiased']=False
 
-                if self.m_dispMA150:
-                    self.legend1 = self.chart1.legend((lma20, lma50, lma100, lma150), ('MMA(20)','MMA(50)','MMA(100)','MMA(150)'), loc=2, numpoints=2, borderpad=0, borderaxespad=0, labelspacing=0) #'upper left'
-                else:
-                    self.legend1 = self.chart1.legend((lma20, lma50, lma100), ('MMA(20)','MMA(50)','MMA(100)'), loc=2, numpoints=2, borderpad=0, borderaxespad=0, labelspacing=0) #'upper left'
+                self.legend1 = self.chart1.legend(loc='upper left', numpoints=2, borderpad=0, borderaxespad=0,
+                                                  labelspacing=0)
 
-                self.legend2 = self.chart2.legend((lvma15, lovb), ('VMA(15)', 'OVB'), loc=2, numpoints=2, borderpad=0, borderaxespad=0, labelspacing=0) #'upper left'
-
-                if self.m_dispRSI14:
-                    if self.m_dispSto:
-                        ll1 = (rsi14,stoK,stoD)
-                        ll2 = ('RSI(14)','Sto %K','Sto %D')
-                    else:
-                        ll1 = (rsi14,)
-                        ll2 = ('RSI(14)',)
-                else:
-                    if self.m_dispSto:
-                        ll1 = (stoK,stoD)
-                        ll2 = ('Sto %K','Sto %D')
-                    else:
-                        ll1 = None
-                        ll2 = None
-                if ll1:
-                    self.legend3 = self.chart3.legend(ll1, ll2, loc=2, numpoints=2, borderpad=0, borderaxespad=0, labelspacing=0) #'upper left'
+                self.legend2 = self.chart2.legend((lvma15, lovb), ('VMA(15)', 'OVB'), loc='upper left', numpoints=2, borderpad=0, borderaxespad=0, labelspacing=0)
+#                self.legend2 = self.chart2.legend(loc='upper left', numpoints=2, borderpad=0, borderaxespad=0, labelspacing=0)
+                self.legend3 = self.chart3.legend(loc='upper left', numpoints=2, borderpad=0, borderaxespad=0,
+                                                  labelspacing=0)
 
                 matplotlib.rcParams['lines.antialiased']=old
 
