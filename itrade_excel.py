@@ -31,10 +31,8 @@
 # 2007-05-15    dgil  Wrote it from scratch
 # ============================================================================
 
-global canReadExcel
 canReadExcel = True
 
-global xlrd_url
 xlrd_url = 'http://www.lexicon.net/sjmachin/xlrd.htm'
 
 try:
