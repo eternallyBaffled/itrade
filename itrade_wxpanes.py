@@ -559,13 +559,13 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
             old = self.itemDataMap[key]
         else:
             old = None
-        self.itemDataMap[key] = ( quote.isin(),quote.ticker(),quote.nv_pru(xtype),\
-                                  quote.nv_number(xtype),quote.nv_pru(xtype),quote.nv_pr(xtype),\
-                                  quote.nv_close(),quote.nv_percent(),\
-                                  quote.nv_pv(self.m_portfolio.currency(),xtype),\
-                                  quote.nv_profit(self.m_portfolio.currency(),xtype),\
-                                  quote.nv_profitPercent(self.m_portfolio.currency(),xtype),\
-                                  quote.name()\
+        self.itemDataMap[key] = ( quote.isin(),quote.ticker(),quote.nv_pru(xtype),
+                                  quote.nv_number(xtype),quote.nv_pru(xtype),quote.nv_pr(xtype),
+                                  quote.nv_close(),quote.nv_percent(),
+                                  quote.nv_pv(self.m_portfolio.currency(),xtype),
+                                  quote.nv_profit(self.m_portfolio.currency(),xtype),
+                                  quote.nv_profitPercent(self.m_portfolio.currency(),xtype),
+                                  quote.name()
                                 )
         return old
 
@@ -791,8 +791,8 @@ class iTrade_MatrixQuotesPanel(iTrade_MatrixPanel):
             old = self.itemDataMap[key]
         else:
             old = None
-        self.itemDataMap[key] = (quote.isin(),quote.ticker(),quote.nv_pru(xtype),quote.nv_volume(),\
-                                 quote.nv_prevclose(),quote.nv_open(),quote.nv_high(),quote.nv_low(),\
+        self.itemDataMap[key] = (quote.isin(),quote.ticker(),quote.nv_pru(xtype),quote.nv_volume(),
+                                 quote.nv_prevclose(),quote.nv_open(),quote.nv_high(),quote.nv_low(),
                                  quote.nv_close(),quote.sv_pivots(),quote.nv_percent(),quote.name())
         return old
 
@@ -985,13 +985,13 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
             old = self.itemDataMap[key]
         else:
             old = None
-        self.itemDataMap[key] = ( quote.isin(),quote.ticker(),quote.nv_pru(xtype),\
-                                  quote.nv_pr(),quote.nv_riskmoney(self.m_portfolio.currency()),\
-                                  quote.nv_stoploss(),quote.nv_close(),quote.nv_stopwin(),\
-                                  quote.nv_pv(self.m_portfolio.currency()),\
-                                  quote.nv_profit(self.m_portfolio.currency()),\
-                                  quote.nv_profitPercent(self.m_portfolio.currency()),\
-                                  quote.name()\
+        self.itemDataMap[key] = ( quote.isin(),quote.ticker(),quote.nv_pru(xtype),
+                                  quote.nv_pr(),quote.nv_riskmoney(self.m_portfolio.currency()),
+                                  quote.nv_stoploss(),quote.nv_close(),quote.nv_stopwin(),
+                                  quote.nv_pv(self.m_portfolio.currency()),
+                                  quote.nv_profit(self.m_portfolio.currency()),
+                                  quote.nv_profitPercent(self.m_portfolio.currency()),
+                                  quote.name()
                                 )
         return old
 
@@ -1189,11 +1189,11 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
             old = self.itemDataMap[key]
         else:
             old = None
-        self.itemDataMap[key] = ( quote.isin(),quote.ticker(),quote.nv_pru(xtype),\
-                                  quote.nv_ma(20),quote.nv_ma(50),quote.nv_ma(100),\
-                                  quote.nv_rsi(14),key,quote.nv_stoK(),\
-                                  key,key,key,\
-                                  quote.nv_close()\
+        self.itemDataMap[key] = ( quote.isin(),quote.ticker(),quote.nv_pru(xtype),
+                                  quote.nv_ma(20),quote.nv_ma(50),quote.nv_ma(100),
+                                  quote.nv_rsi(14),key,quote.nv_stoK(),
+                                  key,key,key,
+                                  quote.nv_close()
                                 )
         return old
 
