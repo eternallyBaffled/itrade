@@ -132,7 +132,7 @@ class GToolHLine(GTool):
         y = rect[3] - int( (obj[3] - a) * (rect[5] / (b-a)) )
 
         #print 'rect:',rect,'y range:',a,b,b-a,' val=',obj[3],(obj[3] - a),' y=',y
-        if y<=rect[3] and y>=rect[1]:
+        if rect[3] >= y >= rect[1]:
             lc = wx.NamedColour("BLACK")
             bg = "BLUE"
             font = wx.Font(8, wx.ROMAN, wx.NORMAL, wx.NORMAL)
@@ -165,7 +165,7 @@ class GToolUPL(GTool):
         y = rect[3] - int( (obj[3] - a) * (rect[5] / (b-a)) )
 
         #print 'rect:',rect,'y range:',a,b,b-a,' val=',obj[3],(obj[3] - a),' y=',y
-        if y<=rect[3] and y>=rect[1]:
+        if rect[3] >= y >= rect[1]:
             lc = wx.NamedColour("BLACK")
             bg = "RED"
             font = wx.Font(8, wx.ROMAN, wx.NORMAL, wx.NORMAL)
@@ -212,7 +212,7 @@ class GToolVLine(GTool):
 
         time = time - int((obj[5]-period) / 2)
 
-        if time>=a and time<=b:
+        if a <= time <= b:
             x = rect[0] + int( (time - a) * (rect[4] / period) )
 
             #print 'rect:',rect,'x range:',a,b,b-a,' val=',time,(time - a),' x=',x
