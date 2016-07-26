@@ -353,10 +353,10 @@ class HTMLDialog(wx.Dialog):
             if self.m_html.FindWindowById(wx.ID_CANCEL):
                 self.m_html.FindWindowById(wx.ID_CANCEL).ProcessEvent(wx.CommandEvent(wx.wxEVT_COMMAND_BUTTON_CLICKED,wx.ID_CANCEL))
             else:
-                if self.IsModal() == False:
-                    self.Show(False)
-                else:
+                if self.IsModal():
                     self.EndModal(wx.ID_CANCEL)
+                else:
+                    self.Show(False)
         else:
             event.Skip()
 
