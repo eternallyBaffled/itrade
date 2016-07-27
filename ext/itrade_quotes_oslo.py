@@ -125,9 +125,9 @@ def Import_ListOfQuotes_OSLO(quotes,market='OSLO EXCHANGE',dlg=None,x=0):
 
                 #ok to proceed
 
-                quotes.addQuote(isin=isin,name=name, \
-                             ticker=ticker,market='OSLO EXCHANGE', \
-                            currency='NOK',place='OSL',country='NO')
+                quotes.addQuote(isin=isin, name=name,
+                            ticker=ticker, market='OSLO EXCHANGE',
+                            currency='NOK', place='OSL', country='NO')
 
                 nlines = nlines + 1
     if itrade_config.verbose:

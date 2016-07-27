@@ -172,8 +172,8 @@ def Import_ListOfQuotes_KRX(quotes,market='KOREA STOCK EXCHANGE',dlg=None,x=0):
             
         # ok to proceed
         n = n + 1        
-        quotes.addQuote(isin = isin,name = name,ticker = ticker,\
-        market = market,currency = 'KRW',place = place, country = 'KR')
+        quotes.addQuote(isin=isin, name=name, ticker=ticker,
+                        market=market, currency='KRW', place=place, country='KR')
     if itrade_config.verbose:            
         print 'Imported %d lines from %s data.' % (n,market)
 

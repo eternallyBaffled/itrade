@@ -125,8 +125,8 @@ def Import_ListOfQuotes_BSE(quotes,market='BOMBAY EXCHANGE',dlg=None,x=0):
                     #Partial activation of the Progressbar
                     dlg.Update(x,'B S E : %s /~3800' %n)
 
-                    quotes.addQuote(isin=isin,name=name, \
-                        ticker=ticker,market='BOMBAY EXCHANGE',currency='INR',place='BSE',country='IN')
+                    quotes.addQuote(isin=isin, name=name,
+                        ticker=ticker, market='BOMBAY EXCHANGE', currency='INR', place='BSE', country='IN')
 
                     
     if itrade_config.verbose:

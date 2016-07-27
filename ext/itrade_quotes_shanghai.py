@@ -137,9 +137,9 @@ def Import_ListOfQuotes_SHG(quotes,market='SHANGHAI EXCHANGE',dlg=None,x=0):
                 
                 dlg.Update(x,'SSE A SHARE: %s / ~1000'%cursor)
                 
-                quotes.addQuote(isin='',name=name, \
-                ticker=ticker,market='SHANGHAI EXCHANGE', \
-                currency='CNY',place='SHG',country='CN')
+                quotes.addQuote(isin='',name=name,
+                        ticker=ticker,market='SHANGHAI EXCHANGE',
+                        currency='CNY',place='SHG',country='CN')
                 
     # Download SSE B SHARE
   
@@ -196,9 +196,9 @@ def Import_ListOfQuotes_SHG(quotes,market='SHANGHAI EXCHANGE',dlg=None,x=0):
 
                     count = count + 1
 
-                    quotes.addQuote(isin='',name=name, \
-                    ticker=ticker,market='SHANGHAI EXCHANGE', \
-                    currency='CNY',place='SHG',country='CN')
+                    quotes.addQuote(isin='',name=name,
+                            ticker=ticker,market='SHANGHAI EXCHANGE',
+                            currency='CNY',place='SHG',country='CN')
                     
             elif i == 3:
                 name = name +' '+ line.strip()

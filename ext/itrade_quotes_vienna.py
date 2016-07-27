@@ -133,9 +133,9 @@ def Import_ListOfQuotes_WBO(quotes,market='WIENER BORSE',dlg=None,x=0):
                             
                     # ok to proceed
                             
-                    quotes.addQuote(isin = isin,name = name, \
-                    ticker = ticker,market= market,currency = 'EUR', \
-                    place = 'WBO',country = 'AT')
+                    quotes.addQuote(isin = isin,name = name,
+                            ticker = ticker,market= market,currency = 'EUR',
+                            place = 'WBO',country = 'AT')
                     
                     count = count + 1
 

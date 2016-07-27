@@ -131,9 +131,9 @@ def Import_ListOfQuotes_MADRID(quotes,market='MADRID EXCHANGE',dlg=None,x=0):
 
                     #print isin,name,ticker,market
                            
-                    quotes.addQuote(isin=isin,name=name, \
-                                ticker=ticker,market=market,\
-                                currency='EUR',place='MAD',country='ES')
+                    quotes.addQuote(isin=isin, name=name,
+                                ticker=ticker, market=market,
+                                currency='EUR', place='MAD', country='ES')
                     n = n + 1
     if itrade_config.verbose:
         print 'Imported %d lines from %s' % (n,market)

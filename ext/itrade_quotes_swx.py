@@ -108,8 +108,8 @@ def Import_ListOfQuotes_SWX(quotes,market='SWISS EXCHANGE',dlg=None,x=0):
         currency = data[4].strip()
         exchange = data[5].strip()
 
-        quotes.addQuote(isin=isin,name=name, ticker=ticker,market='SWISS EXCHANGE',\
-            currency=currency,place=exchange,country=country)
+        quotes.addQuote(isin=isin,name=name, ticker=ticker,market='SWISS EXCHANGE',
+                    currency=currency,place=exchange,country=country)
         n = n + 1
     if itrade_config.verbose:
         print 'Imported %d lines from %s' % (n,market)

@@ -129,8 +129,8 @@ def Import_ListOfQuotes_IE(quotes,market='IRISH EXCHANGE',dlg=None,x=0):
                     name = name.replace(',',' ')
 
                     if inst[0:3]=='ORD':  # only want ordinary shares
-                        quotes.addQuote(isin=isin,name=name, \
-                        ticker=tick,market='IRISH EXCHANGE',currency='EUR',place='DUB',country='IE')
+                        quotes.addQuote(isin=isin, name=name,
+                        ticker=tick, market='IRISH EXCHANGE', currency='EUR', place='DUB', country='IE')
                         count = count + 1
 
                     # reset for next value

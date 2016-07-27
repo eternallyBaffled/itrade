@@ -133,7 +133,7 @@ def Import_ListOfQuotes_NSE(quotes,market='NATIONAL EXCHANGE OF INDIA',dlg=None,
                 ticker = ticker[:9]
             isin = data[6]
             if isin != 'INE195A01028':
-                quotes.addQuote(isin=isin,name=name,ticker=ticker,\
+                quotes.addQuote(isin=isin,name=name,ticker=ticker,
                 market='NATIONAL EXCHANGE OF INDIA',currency='INR',place='NSE',country='IN')
                 nlines = nlines + 1
     if itrade_config.verbose:

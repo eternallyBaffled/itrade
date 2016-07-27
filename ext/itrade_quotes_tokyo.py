@@ -136,9 +136,9 @@ def Import_ListOfQuotes_TKS(quotes,market='TOKYO EXCHANGE',dlg=None,x=0):
                 
                 dlg.Update(x,'TSE : %s /~2370'%cursor)
                 
-                quotes.addQuote(isin = '',name = name, \
-                ticker = ticker,market= 'TOKYO EXCHANGE',currency = 'JPY', \
-                place = 'TKS',country = 'JP')
+                quotes.addQuote(isin = '',name = name,
+                        ticker = ticker,market= 'TOKYO EXCHANGE',currency = 'JPY',
+                        place = 'TKS',country = 'JP')
         if q == 0:
             break
     if itrade_config.verbose:

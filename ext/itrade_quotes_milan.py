@@ -126,9 +126,9 @@ def Import_ListOfQuotes_MIL(quotes,market='MILAN EXCHANGE',dlg=None,x=0):
                     n =  n + 1
                     dlg.Update(x,'BORSA ITALIANA : %d /~350'%n)
                     
-                    quotes.addQuote(isin=isin,name=name, \
-                        ticker=ticker,market=market,\
-                        currency='EUR',place='MIL',country='IT')
+                    quotes.addQuote(isin=isin, name=name,
+                        ticker=ticker, market=market,
+                        currency='EUR', place='MIL', country='IT')
     if itrade_config.verbose:       
         print 'Imported %d lines from %s data.' % (n,market)
 

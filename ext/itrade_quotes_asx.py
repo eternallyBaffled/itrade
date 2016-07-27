@@ -96,8 +96,8 @@ def Import_ListOfQuotes_ASX(quotes,market='ASX',dlg=None,x=0):
         data = string.split (line, ',')
         name=data[0]
         ticker=data[1]
-        quotes.addQuote(isin = isin,name = name, \
-                ticker = ticker,market='ASX',currency='AUD',place='SYD',country='AU')
+        quotes.addQuote(isin=isin, name=name,
+                ticker=ticker, market='ASX', currency='AUD', place='SYD', country='AU')
 
         n = n + 1
 

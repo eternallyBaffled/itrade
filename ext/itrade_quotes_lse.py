@@ -135,9 +135,9 @@ def Import_ListOfQuotes_LSE(quotes,market='LSE SETS',dlg=None,x=0):
                 name = name.encode('cp1252')
                 name = name.replace('£',' ')
                 name = name.replace('  ','')
-                quotes.addQuote(isin=sh.cell_value(line,iISIN),name=name, \
-                    ticker=ticker,market=market,\
-                    currency=sh.cell_value(line,iCurrency),place='LON',\
+                quotes.addQuote(isin=sh.cell_value(line,iISIN),name=name,
+                    ticker=ticker,market=market,
+                    currency=sh.cell_value(line,iCurrency),place='LON',
                     country=sh.cell_value(line,iCountry))
                 n = n + 1
     if itrade_config.verbose:
