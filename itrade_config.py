@@ -89,9 +89,6 @@ softwareStatus = __status__
 
 print '%s(%s) - %s %s' % (softwareName,softwareStatus,softwareVersion,softwareVersionName)
 
-# connection to network
-gbDisconnected = False
-
 # support
 bugTrackerURL = 'http://sourceforge.net/tracker/?group_id=128261&atid=711187'
 donorsTrackerURL = 'http://sourceforge.net/donate/index.php?group_id=128261'
@@ -159,6 +156,8 @@ if not os.path.exists(dirIndData):
     raise DirNotFoundError(dirIndData)
 fileIndData = 'indicators.txt'
 
+# FIXME: Dynamically creating folders should not be done on module load.
+# consider moving this to install time
 # directory for user data
 dirUserData = os.path.join(dirRoot, 'usrdata')
 if not os.path.exists(dirUserData):
@@ -600,6 +599,9 @@ def readThenEvalFile(filename):
 # disconnected
 # ============================================================================
 
+# connection to network
+gbDisconnected = False
+
 def setDisconnected(status=True):
     global gbDisconnected
 
@@ -610,8 +612,6 @@ def setDisconnected(status=True):
         print 'Network : Ready'
 
 def isConnected():
-    global gbDisconnected
-
     #print 'isConnected(): %s' % (not gbDisconnected)
     return not gbDisconnected
 
