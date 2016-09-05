@@ -167,18 +167,18 @@ class iTradePortfolioSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterM
 
         # but since we want images on the column header we have to do it the hard way:
         info = wx.ListItem()
-        info.m_mask = wx.LIST_MASK_TEXT | wx.LIST_MASK_IMAGE | wx.LIST_MASK_FORMAT
-        info.m_image = -1
-        info.m_format = wx.LIST_FORMAT_LEFT
-        info.m_text = message('portfolio_list_filename')
+        info.Mask = wx.LIST_MASK_TEXT | wx.LIST_MASK_IMAGE | wx.LIST_MASK_FORMAT
+        info.Image = -1
+        info.Align = wx.LIST_FORMAT_LEFT
+        info.Text = message('portfolio_list_filename')
         self.m_list.InsertColumnInfo(0, info)
 
-        info.m_format = wx.LIST_FORMAT_LEFT
-        info.m_text = message('portfolio_list_name')
+        info.Align = wx.LIST_FORMAT_LEFT
+        info.Text = message('portfolio_list_name')
         self.m_list.InsertColumnInfo(1, info)
 
-        info.m_format = wx.LIST_FORMAT_LEFT
-        info.m_text = message('portfolio_list_accountref')
+        info.Align = wx.LIST_FORMAT_LEFT
+        info.Text = message('portfolio_list_accountref')
         self.m_list.InsertColumnInfo(2, info)
 
         x = 0
