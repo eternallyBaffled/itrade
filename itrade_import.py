@@ -261,7 +261,7 @@ if __name__=='__main__':
     q = quotes.lookupTicker('OSI','EURONEXT')
     print 'Country: %s, Market: %s' % (q.country(),q.market())
     print "Get 15/03/2005 - 25/03/2005"
-    q.update(date(2005,03,15),date(2005,03,25))
+    q.update(date(2005,3,15),date(2005,3,25))
     print "Get Live %s " % date.today()
     q.update()
 
@@ -269,7 +269,7 @@ if __name__=='__main__':
     q = quotes.lookupTicker('AAPL','NASDAQ')
     print 'Country: %s, Market: %s' % (q.country(),q.market())
     print "Get 15/03/2005 - 25/03/2005"
-    q.update(date(2005,03,15),date(2005,03,25))
+    q.update(date(2005,3,15),date(2005,3,25))
     print "Get Live %s " % date.today()
     q.update()
 

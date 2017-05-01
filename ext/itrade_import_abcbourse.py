@@ -227,7 +227,7 @@ if __name__=='__main__':
 
     # never failed - fixed date
     print "15/03/2005"
-    test('OSI',date(2005,03,15))
+    test('OSI',date(2005,3,15))
 
     # never failed except week-end
     print "yesterday-today :-("

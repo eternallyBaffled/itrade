@@ -1586,7 +1586,7 @@ if __name__=='__main__':
 
     quote = quotes.lookupTicker('OSI','EURONEXT')
     quote.loadTrades('import/Cortal-2005-01-07.txt')
-    info('test6 %s' % quote.trades().trade(date(2005,01,04)))
+    info('test6 %s' % quote.trades().trade(date(2005,1,4)))
 
     quote = quotes.lookupTicker('EADT','EURONEXT')
     quote.loadTrades('import/Cortal-2005-01-07.txt')

@@ -674,7 +674,7 @@ if __name__=='__main__':
     trades.load('import/Cortal-2005-01-14.txt')
     trades.load('import/Cortal-2005-01-21.txt')
 
-    info('test3 %s' % trades.trade(date(2005,01,04)))
+    info('test3 %s' % trades.trade(date(2005,1,4)))
 
 # ============================================================================
 # That's all folks !
