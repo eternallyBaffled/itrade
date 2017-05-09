@@ -170,7 +170,7 @@ def _tupn(tup,n):
         else:
             return None
 
-DefaultButtonString = '''\
+DefaultButtonString = '''
 <wxp class="%s" module="%s">
     <param name="label" value="%s">
     <param name="id"    value="%s">
@@ -239,10 +239,10 @@ def HTMLforButtons (buttons,betweenbuttons=""):
 #
 #    e.g.,
 #        HTMLDialog(.......,
-#                   buttons=OKButton(makedefault=1) + \
-#                           CancelButton () +\
-#                           ApplyButton () +\
-#                           [" or be <i>brave</i> and "] +\
+#                   buttons=OKButton(makedefault=1) +
+#                           CancelButton () +
+#                           ApplyButton () +
+#                           [" or be <i>brave</i> and "] +
 #                           Button("Exit now",`exitID`),
 #                   .........)
 #    [this is equivalent to
@@ -360,7 +360,7 @@ class HTMLDialog(wx.Dialog):
         else:
             event.Skip()
 
-    DefaultHTML = '''\
+    DefaultHTML = '''
             <html>
             <body %s %s>
             <center>
@@ -377,7 +377,7 @@ class HTMLDialog(wx.Dialog):
             </html>
             '''
 
-    ImageHTML='''\
+    ImageHTML='''
           <a href="%s"><img src="%s" align=top alt="%s" border=0></a>&nbsp;
             '''
 

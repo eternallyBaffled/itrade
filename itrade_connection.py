@@ -201,8 +201,8 @@ class ITradeConnection(object):
                 self.m_duration = time.time()-start
 
                 if self.getStatus() != 200:
-                    msg="Receive bad answer from server (code %s) while requesting : %s" % \
-                                                                      (self.getStatus(), url)
+                    msg=("Receive bad answer from server (code %s) while requesting : %s" %
+                                                                      (self.getStatus(), url))
                     #info(msg)
                     self.m_responseData=""
                     self.clearConnection(protocole, host)

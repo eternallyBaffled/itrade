@@ -271,10 +271,10 @@ class LiveUpdate_RealTime(object):
         # extract all datas
 
         try:
-            if '1rT' in symbol or \
-               '1RT' in symbol or \
-               '1z' in symbol or \
-               '1g' in symbol:
+            if ('1rT' in symbol or
+               '1RT' in symbol or
+               '1z' in symbol or
+               '1g' in symbol):
                 req = urllib2.Request('http://www.boursorama.com/bourse/trackers/etf.phtml?symbole=' + symbol)
             else:
                 req = urllib2.Request('http://www.boursorama.com/cours.phtml?symbole=' + symbol)
@@ -299,11 +299,11 @@ class LiveUpdate_RealTime(object):
                     stat = value[value.find('(')+1:value.find(')')]
                 else :
                     stat = ''
-                if 'USD' in value or\
-                   'GBX' in value or\
-                   'GBP' in value or\
-                   'CAD' in value or\
-                   'CHF' in value:
+                if ('USD' in value or
+                   'GBX' in value or
+                   'GBP' in value or
+                   'CAD' in value or
+                   'CHF' in value):
                     pass
                 else:
                     last = value.replace(' ','').replace('EUR','').replace('Pts','').replace('(s)','').replace('(c)','').replace('(h)','').replace('(u)','')

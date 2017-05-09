@@ -180,8 +180,8 @@ def Import_ListOfQuotes_SHG(quotes,market='SHANGHAI EXCHANGE',dlg=None,x=0):
     for line in lines:
         if '<td class="table_title2" bgcolor="#337fb2"  >Post Code</td>' in line : n = 0
         if n == 0 :
-            if '<td class="table3" bgcolor="#dbedf8"  > ' in line or \
-               '<td class="table3" bgcolor="white"  > ' in line:
+            if ('<td class="table3" bgcolor="#dbedf8"  > ' in line or
+               '<td class="table3" bgcolor="white"  > ' in line):
                 i = i + 1
                 ch = line[(line.find('>')+2):(line.find ('</td>'))]
                 if i == 2 :
