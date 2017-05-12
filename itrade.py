@@ -92,7 +92,7 @@ def main():
     output = None
     quote = None
     file = None
-    wx = True
+    use_wx = True
     nopsyco = False
     nowxversion = False
 
@@ -114,7 +114,7 @@ def main():
 
         if o == "-e":
             itrade_portfolio.cmdline_evaluatePortfolio()
-            wx = False
+            use_wx = False
 
         if o == "-i":
             if quote:
@@ -128,7 +128,7 @@ def main():
                     itrade_import.cmdline_importMatrixFromFile(matrix,file)
                 else:
                     itrade_import.cmdline_importMatrixFromInternet(matrix)
-            wx = False
+            use_wx = False
 
         if o == "-h" or o == "--help":
             usage()
@@ -203,7 +203,7 @@ def main():
             print 'quote %s not found ! format is : <ISINorTICKER>.<EXCHANGE>.<PLACE>' % vquote
             sys.exit()
 
-    if wx:
+    if use_wx:
         import itrade_wxmain
         itrade_wxmain.start_iTradeWindow()
 
