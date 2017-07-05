@@ -252,18 +252,18 @@ _lom = {
     'TAIWAN STOCK EXCHANGE': False,
     }
 
-def set_market_loaded(market,set=True):
-    if _lom.has_key(market):
+def set_market_loaded(market, set=True):
+    if market in _lom:
         _lom[market] = set
     if itrade_config.verbose:
         print 'Load market %s' % market
 
 def unload_markets():
-    for market in _lom.keys():
+    for market in _lom:
         _lom[market] = False
 
 def is_market_loaded(market):
-    if _lom.has_key(market):
+    if market in _lom:
         return _lom[market]
     else:
         return False
@@ -495,7 +495,7 @@ market_place = {
     }
 
 def market2place(market):
-    if market_place.has_key(market):
+    if market in market_place:
         return market_place[market]
     else:
         # default to PARIS
@@ -729,24 +729,6 @@ if infile:
         if item:
             yahoo_map_tickers[item[0]] = item[1].strip().upper()
 
-
-# ============================================================================
-# euronext_place2mep
-# ============================================================================
-
-euronext_place = {
-    'PAR' : 1,
-    'AMS' : 2,
-    'BRU' : 3,
-    'LIS' : 5
-    }
-
-def euronext_place2mep(place):
-    if euronext_place.has_key(place):
-        return euronext_place[place]
-    else:
-        # default to PARIS
-        return 1
 
 # ============================================================================
 # yahooUrl

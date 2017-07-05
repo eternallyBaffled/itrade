@@ -49,7 +49,7 @@ from itrade_quotes import *
 from itrade_datation import Datation,jjmmaa2yyyymmdd
 from itrade_defs import *
 from itrade_ext import *
-from itrade_market import euronextmic,euronext_place2mep
+from itrade_market import euronextmic
 from itrade_connection import ITradeConnection
 import itrade_config
 
