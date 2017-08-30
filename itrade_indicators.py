@@ -31,25 +31,9 @@
 # 2007-01-23    dgil  Wrote it from scratch
 # ============================================================================
 
-# ============================================================================
-# Imports
-# ============================================================================
-
-# python system
-import logging
-
-# iTrade system
-from itrade_logging import *
-import itrade_config
-from itrade_ext import loadExtensions
-
-# ============================================================================
-# BasicIndicator
-# ============================================================================
 
 class BasicIndicator:
-
-    def __init__(self,name):
+    def __init__(self, name):
         self.m_name = name
 
     def name(self):
@@ -60,9 +44,14 @@ class BasicIndicator:
 # ============================================================================
 
 if __name__=='__main__':
-    setLevel(logging.INFO)
+    import logging
+    import itrade_logging
+    import itrade_config
+    import itrade_ext
 
-    loadExtensions(itrade_config.fileIndData,itrade_config.dirIndData)
+    itrade_logging.setLevel(logging.INFO)
+
+    itrade_ext.loadExtensions(itrade_config.fileIndData, itrade_config.dirIndData)
 
 # ============================================================================
 # That's all folks !
