@@ -36,13 +36,7 @@
 # ============================================================================
 
 # python system
-import os
-import sys
-import types
-import logging
-
-# iTrade system
-from itrade_logging import *
+#import logging
 
 # ============================================================================
 # CSV
@@ -73,13 +67,13 @@ class CSV(object):
         return infile
 
     def parse(self,line,maxn):
-        #debug('CSV::parse() before :%s' % line);
+        #logging.debug('CSV::parse() before :%s' % line);
         line = line.strip()
         if line == '':
             # skip blank lines
             return None
         line = line.split(';')
-        #debug('CSV::parse() after :%s' % line);
+        #logging.debug('CSV::parse() after :%s' % line);
         return line
 
     def write(self,fn,fd,lines):
