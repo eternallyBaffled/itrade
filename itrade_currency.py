@@ -39,11 +39,12 @@
 # python system
 import logging
 import string
+import os
 
 # iTrade system
-from itrade_logging import *
+import itrade_logging
 import itrade_csv
-from itrade_local import message
+#from itrade_local import message
 from itrade_connection import ITradeConnection
 import itrade_config
 
@@ -79,7 +80,7 @@ currencies_CUR = {
     }
 
 def currency2symbol(cur):
-    if currencies_CUR.has_key(cur):
+    if cur in currencies_CUR:
         return currencies_CUR[cur]
     else:
         return cur
@@ -93,8 +94,8 @@ def list_of_currencies():
 
 def buildListOfSupportedCurrencies():
     lst = []
-    for eachCur1 in currencies_CUR.keys():
-        for eachCur2 in currencies_CUR.keys():
+    for eachCur1 in currencies_CUR:
+        for eachCur2 in currencies_CUR:
             lst.append((eachCur1,eachCur2))
     return lst
 
@@ -130,7 +131,7 @@ class Currencies(object):
             return rate
         if curTo != curFrom:
             key = self.key(curTo, curFrom)
-            if self.m_currencies.has_key(key):
+            if key in self.m_currencies:
                 used,oldrate = self.m_currencies[key]
             else:
                 used = False
@@ -145,7 +146,7 @@ class Currencies(object):
             for eachLine in infile:
                 item = itrade_csv.parse(eachLine,3)
                 if item:
-                    # debug('%s ::: %s' % (eachLine,item))
+                    # logging.debug('%s ::: %s' % (eachLine,item))
                     self.update(item[0],item[1],float(item[2]))
 
     def save(self,fn=None):
@@ -169,7 +170,7 @@ class Currencies(object):
         if curTo == curFrom:
             return 1.0
         key = self.key(curTo,curFrom)
-        if self.m_currencies.has_key(key):
+        if key in self.m_currencies:
             used,rate = self.m_currencies[key]
             return rate
         else:
@@ -188,7 +189,7 @@ class Currencies(object):
         if curTo == curFrom:
             return True
         key = self.key(curTo,curFrom)
-        if self.m_currencies.has_key(key):
+        if key in self.m_currencies:
             used,rate = self.m_currencies[key]
             #print 'used >>> currency : ',key,' inUse: ',used,' rate: ',rate
             return used
@@ -201,14 +202,14 @@ class Currencies(object):
         if curTo == curFrom:
             return
         key = self.key(curTo,curFrom)
-        if self.m_currencies.has_key(key):
+        if key in self.m_currencies:
             used,rate = self.m_currencies[key]
             self.m_currencies[key] = (bInUse,rate)
             #print 'inuse >>> currency : ',key,' inUse: ',bInUse,' rate: ',rate
 
     def reset(self):
         #print '>>> currency reset'
-        for key in self.m_currencies.keys():
+        for key in self.m_currencies:
             used,rate = self.m_currencies[key]
             self.m_currencies[key] = (False,rate)
 
@@ -224,7 +225,7 @@ class Currencies(object):
         if curFrom == 'N/A' or curTo == 'N/A':
             return None
 
-        if self.m_connection==None:
+        if self.m_connection is None:
             self.m_connection = ITradeConnection(cookies = None,
                                proxy = itrade_config.proxyHostname,
                                proxyAuth = itrade_config.proxyAuthentication,
@@ -291,7 +292,7 @@ convert = currencies.convert
 # ============================================================================
 
 if __name__=='__main__':
-    setLevel(logging.INFO)
+    itrade_logging.setLevel(logging.INFO)
 
     print 'From cache file : '
     print '1 EUR = %.2f EUR' % convert('EUR','EUR',1)
