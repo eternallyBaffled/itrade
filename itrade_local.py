@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: iso-8859-1 -*-
+# -*- coding: utf-8 -*-
 # ============================================================================
 # Project Name : iTrade
 # Module Name  : itrade_local.py
@@ -51,7 +51,7 @@ import itrade_csv
 # ============================================================================
 
 nl_supported = {
-    'fr': "Français",
+    'fr': "FranÃ§ais",
     'pt': "Portuguese",
     'de': "Deutch",
     'it': "Italian",
@@ -96,7 +96,7 @@ nl_groupsep = {
 
 def getGroupChar():
     ll = getLang()
-    if nl_groupsep.has_key(ll):
+    if ll in nl_groupsep:
         return nl_groupsep[ll]
     else:
         return ' '
@@ -355,7 +355,7 @@ if __name__=='__main__':
     print
     import datetime
     setLang('fr')
-    print '6 décembre 2005 en francais (%s) : ' % getLocale(),datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x ')
+    print '6 dÃ©cembre 2005 en francais (%s) : ' % getLocale(),datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x ')
     setLang('en')
     print '6th december 2005 in english (%s) : ' % getLocale(),datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x ')
     setLang('pt')
