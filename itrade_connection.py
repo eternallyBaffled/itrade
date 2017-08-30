@@ -50,7 +50,7 @@ from threading import Lock, currentThread
 from urllib import urlencode
 
 # iTrade system
-from itrade_logging import *
+import logging
 
 # ============================================================================
 # ITradeConnection()
@@ -216,11 +216,11 @@ class ITradeConnection(object):
                             cookieString=cookieString.split(";")[0]
                             self.m_cookies.set(cookieString)
                         else:
-                            info("Strange cookie header (%s). Ignoring." % cookieHeader)
+                            logging.info("Strange cookie header (%s). Ignoring." % cookieHeader)
 
             except socket.timeout, e:
                 msg="Connexion timeout while requesting the remote server : %s" % url
-                error(msg)
+                logging.error(msg)
                 self.m_responseData=""
                 self.clearConnection(protocole, host)
                 raise msg
@@ -230,20 +230,20 @@ class ITradeConnection(object):
                 if not self.m_retrying:
                     # Retry one time because this kind of error can be "normal"
                     # Eg. after a connection keep-alive timeout
-                    #debug("An error occured while requesting the remote server : %s. Retrying" % e)
+                    #logging.debug("An error occured while requesting the remote server : %s. Retrying" % e)
                     self.m_retrying=True
                     self.put(url, header, data) # Retrying one time
                     self.m_retrying=False
                 else:
                     msg="An error occured while requesting the remote server : %s (retry fail)" % e
-                    error(msg)
+                    logging.error(msg)
                     self.m_retrying=False
                     raise msg
 
         except Exception, e:
             self.clearConnections() # Clean all connection
             msg = "Unhandled exception on ITrade_Connexion (%s)" % e
-            error(msg)
+            logging.error(msg)
             raise msg
 
     def getData(self):
@@ -272,7 +272,7 @@ class ITradeConnection(object):
 
     def clearConnections(self):
         """Clear all http and https connexion to start up on clean base"""
-        debug("Cleaning up http(s) connections")
+        logging.debug("Cleaning up http(s) connections")
         self.m_httpConnection={}
         self.m_httpsConnection={}
 
@@ -317,7 +317,7 @@ class ITradeCookies:
             else:
                 self.m_cookie=cookieString
         finally:
-            debug("now cookie is %s" % self.m_cookie)
+            logging.debug("now cookie is %s" % self.m_cookie)
             self.m_locker.release()
 
     def get(self):
