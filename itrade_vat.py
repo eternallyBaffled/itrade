@@ -35,11 +35,6 @@
 # Imports
 # ============================================================================
 
-# python system
-import logging
-
-# iTrade system
-from itrade_logging import *
 
 # ============================================================================
 # COUNTRY -> default VAT
@@ -55,8 +50,9 @@ cp_vat = {
     'us': 1.0
     }
 
+
 def country2vat(cp):
-    if cp_vat.has_key(cp):
+    if cp in cp_vat:
         return cp_vat[cp]
     else:
         # don't know !
