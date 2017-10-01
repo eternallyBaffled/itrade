@@ -2,23 +2,23 @@ main_file;&Fichier
 main_open;&Ouvre ...
 main_desc_open; Ouvre un compte
 main_new;&Nouveau
-main_desc_new; Crée un nouveau compte
+main_desc_new; CrÃ©e un nouveau compte
 main_delete;&Supprime
 main_desc_delete; Supprime un compte
 main_save;&Sauvegarde
-main_desc_save; Sauvegarde les données du compte courant
+main_desc_save; Sauvegarde les donnÃ©es du compte courant
 main_saveas;&Sauvegarde sous ...
 main_desc_saveas; Sauvegarde le compte sous un autre nom
-main_edit;&Propriétés
-main_desc_edit; Edite les propriétés du compte courant
+main_edit;&PropriÃ©tÃ©s
+main_desc_edit; Edite les propriÃ©tÃ©s du compte courant
 main_exit;Sorti&e
 main_desc_exit; Quitte l'application iTrade
 main_close;&Ferme
-main_desc_close; Ferme cette fenêtre
+main_desc_close; Ferme cette fenÃªtre
 main_managelist;&Gestion des Symboles
-main_desc_managelist; Gère la liste des valeurs (mise à jour par téléchargement, edition, etc.)
+main_desc_managelist; GÃ¨re la liste des valeurs (mise Ã  jour par tÃ©lÃ©chargement, edition, etc.)
 
-main_window;&Fenêtre
+main_window;&FenÃªtre
 
 main_view;&Suivi
 main_quote;&Valeur
@@ -33,8 +33,8 @@ main_view_desc_stops; Affichage de la vue des Stops
 main_view_indicators;&Indicateurs
 main_view_desc_indicators; Affichage de la vue des Indicateurs
 
-main_view_operations;&Opérations
-main_view_desc_operations; Gère les opérations du Portefeuille
+main_view_operations;&OpÃ©rations
+main_view_desc_operations; GÃ¨re les opÃ©rations du Portefeuille
 main_view_money;&Money Management
 main_view_desc_money; Money Management
 main_view_alerts;&Information et Alertes
@@ -44,22 +44,22 @@ main_view_desc_currencies; Devises
 main_view_evaluation;&Performance
 main_view_desc_evaluation; Evaluation de la performance du portefeuille
 main_view_trading;&Trading
-main_view_desc_trading; Affiche les informations générales de Trading du portefeuille
+main_view_desc_trading; Affiche les informations gÃ©nÃ©rales de Trading du portefeuille
 
 main_view_compute;&Calculette
 main_view_desc_compute; Calculette
 main_view_convert;Con&version
 main_view_desc_convert; Conversion entre deux devises
 
-main_view_refresh;&Tout mettre à jour
-main_view_desc_refresh; Mettre à jour toutes les informations de la vue courante maintenant
-main_view_autorefresh;Mise à jour automatique
-main_view_desc_autorefresh; Mettre à jour toutes les informations de la vue courante automatiquement
+main_view_refresh;&Tout mettre Ã  jour
+main_view_desc_refresh; Mettre Ã  jour toutes les informations de la vue courante maintenant
+main_view_autorefresh;Mise Ã  jour automatique
+main_view_desc_autorefresh; Mettre Ã  jour toutes les informations de la vue courante automatiquement
 main_view_autosize;Ajuster la largeur des colonnes
-main_view_desc_autosize; Ajuster automatiquement la largeur des colonnes en fonction des données et du titre
+main_view_desc_autosize; Ajuster automatiquement la largeur des colonnes en fonction des donnÃ©es et du titre
 
-main_view_small;Texte rétréci
-main_view_desc_small; Utilise une taille rétrécie de texte pour l'affichage de la matrice
+main_view_small;Texte rÃ©trÃ©ci
+main_view_desc_small; Utilise une taille rÃ©trÃ©cie de texte pour l'affichage de la matrice
 main_view_normal;Texte normal
 main_view_desc_normal; Utilise une taille normale de texte pour l'affichage de la matrice
 main_view_big;Texte enlargi
@@ -68,51 +68,51 @@ main_view_desc_big; Utilise une taille enlargi de texte pour l'affichage de la m
 main_quote_add;Ajouter ...
 main_quote_desc_add; Ajouter une valeur dans la liste
 main_quote_remove;Supprimer
-main_quote_desc_remove; Supprimer la valeur sélectionnée de la liste
+main_quote_desc_remove; Supprimer la valeur sÃ©lectionnÃ©e de la liste
 main_quote_graph;Courbes Historiques
-main_quote_desc_graph; Visualise les courbes historiques de la valeur sélectionnée
+main_quote_desc_graph; Visualise les courbes historiques de la valeur sÃ©lectionnÃ©e
 main_quote_live;Live
-main_quote_desc_live; Visualise le carnet d'ordre de la valeur sélectionnée
+main_quote_desc_live; Visualise le carnet d'ordre de la valeur sÃ©lectionnÃ©e
 main_quote_intraday;Intraday
-main_quote_desc_intraday; Visualise les données de la journée de la valeur sélectionnée
+main_quote_desc_intraday; Visualise les donnÃ©es de la journÃ©e de la valeur sÃ©lectionnÃ©e
 main_quote_news;Informations
-main_quote_desc_news; Visualise les informations de la valeur sélectionnée
-main_quote_table;Données Brutes
-main_quote_desc_table; Visualise les données brutes de la valeur sélectionnée
+main_quote_desc_news; Visualise les informations de la valeur sÃ©lectionnÃ©e
+main_quote_table;DonnÃ©es Brutes
+main_quote_desc_table; Visualise les donnÃ©es brutes de la valeur sÃ©lectionnÃ©e
 main_quote_analysis;Analyses
-main_quote_desc_analysis; Visualise les analyses techniques sur la valeur sélectionnée
+main_quote_desc_analysis; Visualise les analyses techniques sur la valeur sÃ©lectionnÃ©e
 main_quote_buy;Achat
-main_quote_desc_buy; Opération d'achat sur la valeur sélectionnée
+main_quote_desc_buy; OpÃ©ration d'achat sur la valeur sÃ©lectionnÃ©e
 main_quote_sell;Vente
-main_quote_desc_sell; Opération de vente sur la valeur sélectionnée
-main_quote_property;Propriétés
-main_quote_desc_property; Visualise les propriétés de la valeur sélectionnée
+main_quote_desc_sell; OpÃ©ration de vente sur la valeur sÃ©lectionnÃ©e
+main_quote_property;PropriÃ©tÃ©s
+main_quote_desc_property; Visualise les propriÃ©tÃ©s de la valeur sÃ©lectionnÃ©e
 
 main_options;&Options
 
-main_options_access;&Accès
-main_options_desc_access; Paramètres d'accès à certains connecteurs
+main_options_access;&AccÃ¨s
+main_options_desc_access; ParamÃ¨tres d'accÃ¨s Ã  certains connecteurs
 
 main_options_lang;&Langue
-main_options_desc_lang; Choix de la langue utilisée par le logiciel
-main_options_lang_default;Langue système
+main_options_desc_lang; Choix de la langue utilisÃ©e par le logiciel
+main_options_lang_default;Langue systÃ¨me
 main_options_lang_english;Anglais
-main_options_lang_french;Français
+main_options_lang_french;FranÃ§ais
 main_options_lang_portuguese;Portugais
 main_options_lang_deutch;Allemand
 main_options_lang_italian;Italien
 
 main_options_cache;&Cache
-main_options_desc_cache; Gestion des données cachées
+main_options_desc_cache; Gestion des donnÃ©es cachÃ©es
 main_cache_erase_data;Efface &Historiques
-main_cache_desc_erase_data; Efface toutes les données historiques du cache
+main_cache_desc_erase_data; Efface toutes les donnÃ©es historiques du cache
 main_cache_erase_news;Efface &Informations
 main_cache_desc_erase_news; Efface toutes les informations du cache
 main_cache_erase_all;Efface &Tout
-main_cache_desc_erase_all; Efface toutes les données (infos,historiques,...) du cache
+main_cache_desc_erase_all; Efface toutes les donnÃ©es (infos,historiques,...) du cache
 
 main_options_connexion;&Connexion
-main_options_desc_connexion; Paramètres de Connexion (Proxy)
+main_options_desc_connexion; ParamÃ¨tres de Connexion (Proxy)
 
 main_help;&Aide
 main_help_contents;&Contenu
@@ -120,22 +120,22 @@ main_help_desc_contents; Contenu de l'aide
 main_help_support;&Support Technique ...
 main_help_desc_support; Comment obtenir du Support Technique ?
 main_help_bugs;&Anomalie ...
-main_help_desc_bugs; Créer un rapport d'anomalie dans la base de l'application
+main_help_desc_bugs; CrÃ©er un rapport d'anomalie dans la base de l'application
 main_help_forum;&Forum utilisateur
-main_help_desc_forum; Participer à la communauté iTrade sur son Forum (Français / Anglais)
+main_help_desc_forum; Participer Ã  la communautÃ© iTrade sur son Forum (FranÃ§ais / Anglais)
 main_help_donors;&Faire une donation ...
 main_help_desc_donors; Comment faire une donation pour supporter ce projet
-main_help_checksoftware;&Vérification mise à jour
-main_help_desc_checksoftware; Vérifie si une nouvelle version du logiciel est disponible au téléchargement
+main_help_checksoftware;&VÃ©rification mise Ã  jour
+main_help_desc_checksoftware; VÃ©rifie si une nouvelle version du logiciel est disponible au tÃ©lÃ©chargement
 
-checksoftware_needupdate;Ce logiciel doit être mis à jour ! Voulez-vous télécharger la nouvelle version ?
-checksoftware_uptodate;Vous avez la dernière version officielle connue.
-checksoftware_title;Mise à jour du logiciel
-checksoftware_development;Vous avez une version en cours de développement.
-checksoftware_error;Impossible d'obtenir l'information de version pour le logiciel (erreur réseau ?)
+checksoftware_needupdate;Ce logiciel doit Ãªtre mis Ã  jour ! Voulez-vous tÃ©lÃ©charger la nouvelle version ?
+checksoftware_uptodate;Vous avez la derniÃ¨re version officielle connue.
+checksoftware_title;Mise Ã  jour du logiciel
+checksoftware_development;Vous avez une version en cours de dÃ©veloppement.
+checksoftware_error;Impossible d'obtenir l'information de version pour le logiciel (erreur rÃ©seau ?)
 
 main_about;&A propos de ...
-main_desc_about; Informations à propos de l'application iTrade
+main_desc_about; Informations Ã  propos de l'application iTrade
 
 main_title_portfolio;iTrade - Portefeuille %s:%s
 main_title_quotes;iTrade - Matrice %s:%s
@@ -144,16 +144,16 @@ main_title_indicators;iTrade - Indicateurs %s:%s
 main_title_evaluation;iTrade - Performance %s:%s
 main_title_trading;iTrade - Trading %s:%s
 
-main_refreshing;Mise à jour des données
+main_refreshing;Mise Ã  jour des donnÃ©es
 
-main_popup_refreshall;Tout mettre à jour
+main_popup_refreshall;Tout mettre Ã  jour
 main_popup_buy;Achat
 main_popup_sell;Vente
 main_popup_remove;Supprimer
 main_popup_add;Ajouter ...
 main_popup_view;Visualiser
 main_popup_live;Live
-main_popup_properties;Propriétés
+main_popup_properties;PropriÃ©tÃ©s
 main_popup_edit;Modifier
 main_popup_add_stops;Ajouter Stops ...
 main_popup_edit_stops;Modifier Stops ...
@@ -171,7 +171,7 @@ valid_desc;Ce bouton valide la boite de dialogue
 cancel;Abandon
 cancel_desc;Le bouton Abandon abandonne la boite de dialogue (Duh!)
 close;Ferme
-close_desc;Ferme cette fenêtre
+close_desc;Ferme cette fenÃªtre
 yes;Oui
 no;Non
 
@@ -180,21 +180,21 @@ ticker;Titre
 quote;Valeur
 variation;Var.
 date;Date
-time;à
+time;Ã 
 name;Nom
 volume;Volume
 last;Dernier
 open;Ouv.
 low;Bas
 high;Haut
-prev;Préc.
+prev;PrÃ©c.
 pivots;Pivots
 status;Statut
 reopen;Reprise
 high_threshold;Seuil H
 low_threshold;Seuil B
 cmp;CMP
-qty;Qté
+qty;QtÃ©
 perfday;Jour %
 perfper;Perf %
 profit;Gain
@@ -202,43 +202,43 @@ sell;Vente
 buy;Achat
 UPP;PRU
 USP;PVU
-market;Marché
+market;MarchÃ©
 place;Place
-all_markets;Tous les marchés
+all_markets;Tous les marchÃ©s
 invalid_isin;Le code ISIN %s est invalide
-symbol_not_found;Le symbole de code ISIN %s ou de nom %s n'a pas été trouvé
+symbol_not_found;Le symbole de code ISIN %s ou de nom %s n'a pas Ã©tÃ© trouvÃ©
 risk;Risque
 stop_plus;Stop+
 stop_minus;Stop-
 clive;Live
 cimport;Import
 
-download_symbols_onelist;Téléchargement Liste
-download_symbols_onedesc;Mise à jour de la liste des valeurs par téléchargement du réseau
-download_symbols_alllists;Téléchargement Listes
-download_symbols_alldesc;Mise à jour des listes de valeurs par téléchargement du réseau
+download_symbols_onelist;TÃ©lÃ©chargement Liste
+download_symbols_onedesc;Mise Ã  jour de la liste des valeurs par tÃ©lÃ©chargement du rÃ©seau
+download_symbols_alllists;TÃ©lÃ©chargement Listes
+download_symbols_alldesc;Mise Ã  jour des listes de valeurs par tÃ©lÃ©chargement du rÃ©seau
 clear_symbols_onelist;Effacer Liste
 clear_symbols_onedesc;Efface toutes les valeurs de cette liste
 clear_symbols_alllists;Effacer Listes
 clear_symbols_alldesc;Efface toutes les valeurs de toutes les listes
-listquote_clear_confirm_title;Opération irreversible
-listquote_clear_confirm;Pour %s, confirmez-vous l'opération (%s) ?
+listquote_clear_confirm_title;OpÃ©ration irreversible
+listquote_clear_confirm;Pour %s, confirmez-vous l'opÃ©ration (%s) ?
 listquote_new;Nouveau
 listquote_edit;Modifie
 listquote_delete;Supprime
-listquote_new_desc;Crée un nouveau symbole
-listquote_edit_desc;Modifie le symbole sélectionné dans la liste
-listquote_delete_desc;Supprime le symbole sélectionné dans la liste
-listquote_duplicate_ref;Le symbole %s existe déjà !
+listquote_new_desc;CrÃ©e un nouveau symbole
+listquote_edit_desc;Modifie le symbole sÃ©lectionnÃ© dans la liste
+listquote_delete_desc;Supprime le symbole sÃ©lectionnÃ© dans la liste
+listquote_duplicate_ref;Le symbole %s existe dÃ©jÃ  !
 listquote_save;Sauve
 listquote_save_desc;Sauve la liste des symboles
-listquote_saved;La liste des symboles a été sauvegardée
-listquote_dirty_save;Voulez-vous sauvegarder les modifications apportées à la liste des symboles ?
-listquote_nodirty_save;Vos modifications ne sont pas sauvés et ne persisteront pas après la session en cours
+listquote_saved;La liste des symboles a Ã©tÃ© sauvegardÃ©e
+listquote_dirty_save;Voulez-vous sauvegarder les modifications apportÃ©es Ã  la liste des symboles ?
+listquote_nodirty_save;Vos modifications ne sont pas sauvÃ©s et ne persisteront pas aprÃ¨s la session en cours
 
-listquote_items_zero;Aucune valeur trouvée
-listquote_items_one;Une seule valeur trouvée
-listquote_items_n;%s valeurs trouvées
+listquote_items_zero;Aucune valeur trouvÃ©e
+listquote_items_one;Une seule valeur trouvÃ©e
+listquote_items_n;%s valeurs trouvÃ©es
 
 listquote_modify_title;Modification Symbole %s
 listquote_new_title;Nouveau Symbole
@@ -250,7 +250,7 @@ quote_list_title;Gestion des Symboles
 
 quote_select_isin;ISIN :
 quote_select_ticker;Ticker / Nom :
-quote_select_market;Marché :
+quote_select_market;MarchÃ© :
 quote_select_list;Liste :
 quote_select_alllist;Aucun filtre
 quote_select_syslist;Actions
@@ -258,7 +258,7 @@ quote_select_usrlist;Personnel
 quote_select_indiceslist;Indices
 quote_select_trackerslist;Trackers
 quote_select_bondslist;Obligations
-quote_select_filterfield;Seulement les valeurs tradées
+quote_select_filterfield;Seulement les valeurs tradÃ©es
 
 quote_graphdaily;Journalier
 quote_live;Live
@@ -266,8 +266,8 @@ quote_graphweekly;Hebdomadaire
 quote_news;Infos
 quote_analysis;Analyses
 quote_table;Table
-quote_intraday;Journée
-quote_properties;Propriétés
+quote_intraday;JournÃ©e
+quote_properties;PropriÃ©tÃ©s
 
 alerts_title;iTrade - Information et Alertes
 alerts_alerts;Alertes
@@ -279,25 +279,25 @@ money_compute;Calculette
 money_evaluationchart;Graphique
 money_money;Gestion Risque
 
-portfolio_title;iTrade - Opération
+portfolio_title;iTrade - OpÃ©ration
 portfolio_select_title;Choix d'un Compte
 portfolio_delete_title;Suppression d'un Compte
-portfolio_properties_edit;Propriétés du Compte
-portfolio_properties_create;Création d'un nouveau Compte
+portfolio_properties_edit;PropriÃ©tÃ©s du Compte
+portfolio_properties_create;CrÃ©ation d'un nouveau Compte
 portfolio_properties_delete;Suppression de Compte
 portfolio_properties_rename;Renommage de Compte
 
 portfolio_delete_confirm;Confirmez-vous la suppression du compte '%s' ?
 portfolio_delete_confirm_title;Suppression de Compte
-portfolio_exist_info;Le compte de référence '%s' existe déjà !
-portfolio_exist_info_title;Création de Compte
-portfolio_rename_confirm;Confirmez-vous le référencement du compte sous '%s' ?
+portfolio_exist_info;Le compte de rÃ©fÃ©rence '%s' existe dÃ©jÃ  !
+portfolio_exist_info_title;CrÃ©ation de Compte
+portfolio_rename_confirm;Confirmez-vous le rÃ©fÃ©rencement du compte sous '%s' ?
 portfolio_rename_confirm_title;Renommage de Compte
 
-portfolio_properties_btncreate;Crée
-portfolio_properties_btncreatedesc;Crée le nouveau compte
+portfolio_properties_btncreate;CrÃ©e
+portfolio_properties_btncreatedesc;CrÃ©e le nouveau compte
 portfolio_properties_btndelete;Supprime
-portfolio_properties_btndeletedesc;Supprime ce compte (irréversible)
+portfolio_properties_btndeletedesc;Supprime ce compte (irrÃ©versible)
 portfolio_properties_btnedit;Modifie
 portfolio_properties_btneditdesc;Valide les informations du compte
 portfolio_properties_btnrename;Renomme
@@ -305,33 +305,33 @@ portfolio_properties_btnrenamedesc;Renomme le compte
 portfolio_properties_btnselect;Ouvre
 portfolio_properties_btnselectdesc;Ouvre ce compte
 
-portfolio_filename;Référence :
+portfolio_filename;RÃ©fÃ©rence :
 portfolio_name;Description :
-portfolio_accountref;Numéro de Compte :
-portfolio_market;Marché Principal :
-portfolio_select_textfield;Référence :
+portfolio_accountref;NumÃ©ro de Compte :
+portfolio_market;MarchÃ© Principal :
+portfolio_select_textfield;RÃ©fÃ©rence :
 portfolio_currency;Devise :
 portfolio_indicator;Indicateur Principal :
 portfolio_vat;TVA (en %) :
-portfolio_list_filename;Référence
+portfolio_list_filename;RÃ©fÃ©rence
 portfolio_list_name;Description
-portfolio_list_accountref;Numéro de Compte
+portfolio_list_accountref;NumÃ©ro de Compte
 
 portfolio_modify;Modifie
 portfolio_new;Nouveau
 portfolio_delete;Supprime
-portfolio_date;Date d'opération:
-portfolio_time;Heure d'opération:
-portfolio_operation;Opération :
+portfolio_date;Date d'opÃ©ration:
+portfolio_time;Heure d'opÃ©ration:
+portfolio_operation;OpÃ©ration :
 portfolio_description;Description :
 portfolio_quote;Valeur :
 portfolio_pre_expenses1;dont
 portfolio_pre_expenses2;et
 portfolio_post_expenses; de Frais
-portfolio_quantity;Quantité :
+portfolio_quantity;QuantitÃ© :
 
-portfolio_field_credit;net crédit :
-portfolio_field_debit;net débit :
+portfolio_field_credit;net crÃ©dit :
+portfolio_field_debit;net dÃ©bit :
 portfolio_field_freeofcharges;aucun Frais
 portfolio_field_valorization;Valorisation :
 
@@ -340,21 +340,21 @@ portfolio_ctrl_sell_srd;Vente SRD
 portfolio_ctrl_buy;Achat au Comptant
 portfolio_ctrl_buy_srd;Achat SRD
 portfolio_ctrl_debit;Retrait
-portfolio_ctrl_credit;Dépôt
-portfolio_ctrl_fee;Taxes et Impôts
-portfolio_ctrl_interest;Intérêts
-portfolio_ctrl_detachment;Prime d'émission (non imposable)
+portfolio_ctrl_credit;DÃ©pÃ´t
+portfolio_ctrl_fee;Taxes et ImpÃ´ts
+portfolio_ctrl_interest;IntÃ©rÃªts
+portfolio_ctrl_detachment;Prime d'Ã©mission (non imposable)
 portfolio_ctrl_dividend;Dividende (imposable)
 portfolio_ctrl_liquidation;Liquidation SRD
-portfolio_ctrl_quote;Prime d'émission en titres
+portfolio_ctrl_quote;Prime d'Ã©mission en titres
 portfolio_ctrl_register;Enregistrement Public
 
 portfolio_list_date;Date & Heure
-portfolio_list_operation;Opération
+portfolio_list_operation;OpÃ©ration
 portfolio_list_description;Description
-portfolio_list_number; Quantité
-portfolio_list_debit;   Débit
-portfolio_list_credit;  Crédit
+portfolio_list_number; QuantitÃ©
+portfolio_list_debit;   DÃ©bit
+portfolio_list_credit;  CrÃ©dit
 portfolio_list_expense; Frais
 portfolio_list_balance; Balance
 portfolio_list_srd;    SRD
@@ -363,10 +363,10 @@ Portfolio_sell;vente
 Portfolio_sell_srd;vente SRD
 Portfolio_buy;achat
 Portfolio_buy_srd;achat SRD
-Portfolio_credit;dépôt
+Portfolio_credit;dÃ©pÃ´t
 Portfolio_debit;retrait
 Portfolio_fee;taxe
-Portfolio_interest;intérêts
+Portfolio_interest;intÃ©rÃªts
 Portfolio_split;split
 Portfolio_detachment;prime
 Portfolio_dividend;dividende
@@ -375,44 +375,44 @@ Portfolio_quote;prime
 Portfolio_register;public registration
 
 portfolio_dispall;&Tous
-portfolio_desc_dispall; Affiche toutes les opérations
+portfolio_desc_dispall; Affiche toutes les opÃ©rations
 portfolio_dispquotes;&Titres
-portfolio_desc_dispquotes; Affiche les opérations sur titres
+portfolio_desc_dispquotes; Affiche les opÃ©rations sur titres
 portfolio_dispcash;&Cash
-portfolio_desc_dispcash; Affiche les opérations en cash
+portfolio_desc_dispcash; Affiche les opÃ©rations en cash
 portfolio_dispvalues;&Gains
-portfolio_desc_dispvalues; Affiche les opérations de + ou - values
+portfolio_desc_dispvalues; Affiche les opÃ©rations de + ou - values
 portfolio_dispsrd;&SRD
-portfolio_desc_dispsrd; Affiche les opérations SRD
+portfolio_desc_dispsrd; Affiche les opÃ©rations SRD
 
 portfolio_opadd;&Ajouter ...
-portfolio_desc_opadd; Ajoute une nouvelle opération
+portfolio_desc_opadd; Ajoute une nouvelle opÃ©ration
 portfolio_opdelete;&Supprimer
-portfolio_desc_opdelete; Supprime l'opération courante
+portfolio_desc_opdelete; Supprime l'opÃ©ration courante
 portfolio_opmodify;&Modifier
-portfolio_desc_opmodify; Modifie l'opération courante
+portfolio_desc_opmodify; Modifie l'opÃ©ration courante
 
 portfolio_text;Taille du texte
-portfolio_desc_text;Choix de la taille du texte pour l'affichage des opérations
-portfolio_view_small;Texte rétréci
-portfolio_view_desc_small; Utilise une taille rétrécie de texte pour l'affichage des opérations
+portfolio_desc_text;Choix de la taille du texte pour l'affichage des opÃ©rations
+portfolio_view_small;Texte rÃ©trÃ©ci
+portfolio_view_desc_small; Utilise une taille rÃ©trÃ©cie de texte pour l'affichage des opÃ©rations
 portfolio_view_normal;Texte normal
-portfolio_view_desc_normal; Utilise une taille normale de texte pour l'affichage des opérations
+portfolio_view_desc_normal; Utilise une taille normale de texte pour l'affichage des opÃ©rations
 portfolio_view_big;Texte enlargi
-portfolio_view_desc_big; Utilise une taille enlargi de texte pour l'affichage des opérations
+portfolio_view_desc_big; Utilise une taille enlargi de texte pour l'affichage des opÃ©rations
 
 portfolio_per30days;&30 jours
-portfolio_desc_per30days; Affiche les 30 derniers jours d'opérations
+portfolio_desc_per30days; Affiche les 30 derniers jours d'opÃ©rations
 portfolio_per90days;&90 jours
-portfolio_desc_per90days; Affiche les 90 derniers jours d'opérations
-portfolio_peryear;&Année en cours
-portfolio_desc_peryear; Affiche l'année en cours
+portfolio_desc_per90days; Affiche les 90 derniers jours d'opÃ©rations
+portfolio_peryear;&AnnÃ©e en cours
+portfolio_desc_peryear; Affiche l'annÃ©e en cours
 portfolio_perall;&Tous
-portfolio_desc_perall; Affiche toutes les opérations depuis l'origine
+portfolio_desc_perall; Affiche toutes les opÃ©rations depuis l'origine
 
 portfolio_menu_file;&Fichier
 portfolio_menu_disp;&Affichage
-portfolio_menu_op;&Opérations
+portfolio_menu_op;&OpÃ©rations
 portfolio_menu_per;&Filtres
 
 graph_price;Prix
@@ -420,7 +420,7 @@ graph_volume;Volume
 graph_period;Periode :
 graph_days;jours
 
-backtolist;Retour à la liste
+backtolist;Retour Ã  la liste
 
 popup_open;Ouverture
 popup_high;Plus Haut
@@ -433,19 +433,19 @@ popup_notrade;pas de cotation
 save_to_file;Sauver vers fichier
 export_to_file;Exporter vers fichier
 import_from_file;Importer depuis fichier
-exported_to_file;Le fichier %s a été exporté
-imported_from_file;Le fichier %s a été importé
+exported_to_file;Le fichier %s a Ã©tÃ© exportÃ©
+imported_from_file;Le fichier %s a Ã©tÃ© importÃ©
 
-tb_pan_left;Déplace vers la gauche
-tb_pan_right;Déplace vers la droite
+tb_pan_left;DÃ©place vers la gauche
+tb_pan_right;DÃ©place vers la droite
 tb_save_file;Sauvegarde du graphique vers un fichier
-tb_config;Paramètrage des graphiques
-tb_home;Restaure la position par défaut
+tb_config;ParamÃ¨trage des graphiques
+tb_home;Restaure la position par dÃ©faut
 tb_zoom_out;period Zoom out
 tb_zoom_in;period Zoom in
 tb_setup;Configuration Impression
 tb_print;Impression
-tb_preview;Prévisualisation
+tb_preview;PrÃ©visualisation
 
 tb_tool_ind;Affichage des Popups
 tb_tool_hline;Dessine ligne Horizontale
@@ -454,23 +454,23 @@ tb_tool_oline;Dessine ligne Oblique
 tb_tool_trash;Supprime un objet
 tb_tool_fibo;Dessine un objet Fibonacci
 tb_tool_text;Dessine un Texte
-tb_tool_prop;Propriétés d'un objet
+tb_tool_prop;PropriÃ©tÃ©s d'un objet
 
 quote_popup_dispMA150;Moyenne Mobile 150 jours
 quote_popup_dispSto;Stochastique
 quote_popup_dispRSI14;RSI 14 jours
 quote_popup_dispBollinger;Bandes de Bollinger
 quote_popup_dispOverlaidVolume;Volumes en incrustation
-quote_popup_dispLegend;Légendes
+quote_popup_dispLegend;LÃ©gendes
 quote_popup_dispGrid;Quadrillage
 quote_popup_dispChart1Candlestick;Chandeliers
 quote_popup_dispChart1OHLC;Barres
 quote_popup_dispChart1Line;Lignes
 
-prop_reference;Référence
-prop_marketandconnector;Marché et Connecteur
+prop_reference;RÃ©fÃ©rence
+prop_marketandconnector;MarchÃ© et Connecteur
 prop_tradingstyle;Informations de Trading
-prop_ref;Référence :
+prop_ref;RÃ©fÃ©rence :
 prop_isin;ISIN :
 prop_name;Nom :
 prop_ticker;Ticker :
@@ -479,33 +479,33 @@ prop_desc_reload;Recharge toutes les cotations
 prop_rename;Renomme
 prop_desc_rename;Renomme le ticker de cette valeur
 prop_import;Importe
-prop_desc_importe;Importe les données pour cette valeur
+prop_desc_importe;Importe les donnÃ©es pour cette valeur
 prop_export;Exporte
-prop_desc_exporte;Exporte les données de cette valeur
-prop_restore;Réinit
+prop_desc_exporte;Exporte les donnÃ©es de cette valeur
+prop_restore;RÃ©init
 prop_desc_restore;Restaure les valeurs initiales
-prop_market;Marché :
+prop_market;MarchÃ© :
 prop_country;Pays :
 prop_place;Place :
 prop_currency;Devise :
-prop_typeofclock;Délai :
-prop_liveconnector;Connecteur temps réel :
-prop_islive;Temps réel
+prop_typeofclock;DÃ©lai :
+prop_liveconnector;Connecteur temps rÃ©el :
+prop_islive;Temps rÃ©el
 prop_isslive;Live
-prop_isdiffered;Différé
-prop_isnotlive;Temps différé (%d minutes)
+prop_isdiffered;DiffÃ©rÃ©
+prop_isnotlive;Temps diffÃ©rÃ© (%d minutes)
 prop_impconnector;Connecteur d'importation :
 prop_set;Valide
-prop_desc_set;Valide les nouvelles informations de marché et de connection
-prop_term;Période d'investissement moyenne (en mois) :
+prop_desc_set;Valide les nouvelles informations de marchÃ© et de connection
+prop_term;PÃ©riode d'investissement moyenne (en mois) :
 prop_risk;Niveau de risque acceptable par ligne (en %) :
-prop_connhelp;Pensez à forcer le rafraîchissement de la valeur pour la prise en compte du changement de connecteur.
+prop_connhelp;Pensez Ã  forcer le rafraÃ®chissement de la valeur pour la prise en compte du changement de connecteur.
 
-live_busy;Patientez s.v.p., la connexion live doit être arrêtée ...
+live_busy;Patientez s.v.p., la connexion live doit Ãªtre arrÃªtÃ©e ...
 live_notebook;Carnet d'Ordres
-live_lasttrades;Dernières Transactions
+live_lasttrades;DerniÃ¨res Transactions
 live_hours;Heures
-live_qty;Qté
+live_qty;QtÃ©
 live_price;Prix
 live_buy;Achat
 live_sell;Vente
@@ -514,21 +514,21 @@ live_CMP;CMP
 live_FMP;FMP
 
 wxversion_title;Erreur de version wxPython
-wxversion_msg;La version requise de wxPython n'est pas installée. Merci d'installer la version %d.%d UNICODE
+wxversion_msg;La version requise de wxPython n'est pas installÃ©e. Merci d'installer la version %d.%d UNICODE
 
-money_fiscal_year;Année Fiscale
-money_amount_of_taxes;Impots à payer
+money_fiscal_year;AnnÃ©e Fiscale
+money_amount_of_taxes;Impots Ã  payer
 money_taxable_amounts;Montants Imposables
 money_financial_appreciation;Plus values
 money_total_of_transfers;Total des Transferts
 money_expenses_vat;Frais (Courtages, TVA, ...)
 money_portfolio;Portefeuille
 money_description;Description
-money_account_number;Numéro du compte
+money_account_number;NumÃ©ro du compte
 money_percent_of_portfolio;% du portefeuille
 money_quote;Titres
 money_srd;SRD
-money_cash;Liquidité
+money_cash;LiquiditÃ©
 money_initial_investment;Investissement initial
 money_value;Valeur
 money_performance;Performance
@@ -541,28 +541,28 @@ currency_menu_view;&Vue
 currency_to;En
 currency_from;Convertir
 currency_rate;Taux
-currency_refreshing;Mise à jour des devises
+currency_refreshing;Mise Ã  jour des devises
 
-cache_erase_confirm_title; Effacement de données du cache
-cache_erase_confirm_data; Confirmez-vous l'effacement de toutes les données historiques du cache ? (ces données seront regénérées)
-cache_erase_confirm_news; Confirmez-vous l'effacement de toutes les informations du cache ? (ces données seront regénérées)
-cache_erase_confirm_all; Confirmez-vous l'effacement de toutes les données (historiques,infos,...) du cache ? (ces données seront regénérées)
+cache_erase_confirm_title; Effacement de donnÃ©es du cache
+cache_erase_confirm_data; Confirmez-vous l'effacement de toutes les donnÃ©es historiques du cache ? (ces donnÃ©es seront regÃ©nÃ©rÃ©es)
+cache_erase_confirm_news; Confirmez-vous l'effacement de toutes les informations du cache ? (ces donnÃ©es seront regÃ©nÃ©rÃ©es)
+cache_erase_confirm_all; Confirmez-vous l'effacement de toutes les donnÃ©es (historiques,infos,...) du cache ? (ces donnÃ©es seront regÃ©nÃ©rÃ©es)
 
-indicator_autorefresh;Rafraîchissement Automatique
-indicator_noautorefresh;Rafraîchissement Manuel
-indicator_disconnected;Déconnecté
+indicator_autorefresh;RafraÃ®chissement Automatique
+indicator_noautorefresh;RafraÃ®chissement Manuel
+indicator_disconnected;DÃ©connectÃ©
 
-login_title;Accès Client
-login_fortuneo_desc;Entrez votre identifiant Fortuneo (compte réel ou de démonstration)
+login_title;AccÃ¨s Client
+login_fortuneo_desc;Entrez votre identifiant Fortuneo (compte rÃ©el ou de dÃ©monstration)
 login_boursorama_desc;Entrez votre identifiant Boursorama (compte client ou pseudo)
 login_set;Valide
-login_setdesc; Valide les informations d'accès saisies
+login_setdesc; Valide les informations d'accÃ¨s saisies
 login_username;Identifiant :
 login_password;Mot de passe :
 login_test;Essaye
-login_testdesc; Essaye l'accès au service avec les informations fournies
-login_test_ok;L'accès au service fonctionne avec ces informations
-login_test_nok;L'accès au service ne fonctionne pas avec ces informations
+login_testdesc; Essaye l'accÃ¨s au service avec les informations fournies
+login_test_ok;L'accÃ¨s au service fonctionne avec ces informations
+login_test_nok;L'accÃ¨s au service ne fonctionne pas avec ces informations
 
 page_portfolio;Portefeuille
 page_quotes;Titres
@@ -571,9 +571,9 @@ page_indicators;Indicateurs
 page_evaluation;Performance
 page_trading;Trading
 
-print_preview;Prévisualisation de l'impression
+print_preview;PrÃ©visualisation de l'impression
 print_printing;Impression
-print_errprinting;Il y a eu un problème d'impression.\nPeut être que votre imprimante n'est pas configuré correctement ?
+print_errprinting;Il y a eu un problÃ¨me d'impression.\nPeut Ãªtre que votre imprimante n'est pas configurÃ© correctement ?
 print_page;Page: %d
 
 about_url;Lancez votre navigateur vers le lien : %s
@@ -585,9 +585,9 @@ alert_caption;iTrade - Erreur
 stops_remove_caption;Suppression des Stops
 stops_remove_text;Confirmez-vous la suppression des informaitons de Stops pour la valeur %s ?
 stops_edit_caption;%s - Modifie les Stops
-stops_add_caption;%s - Crée les Stops
-stops_last;Dernière cotation :
-stops_portfolio;%s actions détenues pour un montant de %s
+stops_add_caption;%s - CrÃ©e les Stops
+stops_last;DerniÃ¨re cotation :
+stops_portfolio;%s actions dÃ©tenues pour un montant de %s
 stops_shares_loss;Seuil de vente pour couper les pertes :
 stops_shares_win;Seuil de vente pour prendre les gains :
 stops_noshares_loss;Fourchette d'achat - Seuil bas :
@@ -605,20 +605,20 @@ decision_upp;Prix de revient unitaire :
 decision_pp;Prix de revient total :
 decision_profit;+- value latente en %s :
 decision_profitpercent;+- value latente en % :
-decision_availablecash;Liquidités disponbiles en %s :
+decision_availablecash;LiquiditÃ©s disponbiles en %s :
 decision_committedcredit;Engagement SRD en %s :
 decision_availablecredit;Disponible en %s au SRD :
 
-connection_title;Paramètres de Connexion
+connection_title;ParamÃ¨tres de Connexion
 proxy_server_ip;Adresse IP du Proxy (vide si aucun) :
 proxy_server_port;Port du Proxy (vide si aucun) :
 proxy_auth_user;Nom d'Authentification (vide si aucune) :
 proxy_auth_pwd;Mot de passe d'Authentication (vide si aucune) :
-connection_timeout;Délai d'attente avant erreur (en secondes, typ. 25) :
+connection_timeout;DÃ©lai d'attente avant erreur (en secondes, typ. 25) :
 
 rss_clear;Efface
 rss_scan;Scan
-rss_freshness;Dernière mise à jour :
+rss_freshness;DerniÃ¨re mise Ã  jour :
 
 remove_quote_title;Supprimer une valeur
 remove_quote_info;Confirmez-vous la suppression de la matrice de la valeur %s ?

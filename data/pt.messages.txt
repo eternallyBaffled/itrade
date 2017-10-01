@@ -12,40 +12,40 @@ main_desc_saveas; Guardar conta sob um nome novo
 main_edit;&Propriedades
 main_desc_edit; Editar as propriedades da conta actual
 main_exit;S&air
-main_desc_exit; Terminar a aplicaÁ„o iTrade
+main_desc_exit; Terminar a aplica√ß√£o iTrade
 main_close;&Fechar
 main_desc_close; Fechar a janela
-main_managelist;&Controlar sÌmbolos
-main_desc_managelist; Controlar a lista dos sÌmbolos (update por download, de ediÁ„o, etc.)
+main_managelist;&Controlar s√≠mbolos
+main_desc_managelist; Controlar a lista dos s√≠mbolos (update por download, de edi√ß√£o, etc.)
 
 main_window;&Janela
 
 main_view;&Vistas
-main_quote;&CotaÁ„o
+main_quote;&Cota√ß√£o
 main_matrix;&Matriz
 
 main_view_portfolio;&Conta
 main_view_desc_portfolio; Mudar a vista actual para a vista da conta
-main_view_quotes;&CotaÁıes
-main_view_desc_quotes; Mudar a vista actual para a vista das acÁıes
+main_view_quotes;&Cota√ß√µes
+main_view_desc_quotes; Mudar a vista actual para a vista das ac√ß√µes
 main_view_stops;&Stops
 main_view_desc_stops; Mudar a vista actual para a vista dos Stops
 main_view_indicators;&Indicadores
 main_view_desc_indicators; Mudar a vista actual para a vista dos indicadores
 
-main_view_operations;&TransacÁıes
-main_view_desc_operations; Gerir as transacÁıes na conta actual
-main_view_money;&Gest„o de dinheiro
-main_view_desc_money; Gest„o de dinheiro
+main_view_operations;&Transac√ß√µes
+main_view_desc_operations; Gerir as transac√ß√µes na conta actual
+main_view_money;&Gest√£o de dinheiro
+main_view_desc_money; Gest√£o de dinheiro
 main_view_evaluation; &Desempenho
-main_view_desc_evaluation; AvaliaÁ„o do desempenho da carteira
+main_view_desc_evaluation; Avalia√ß√£o do desempenho da carteira
 main_view_trading;&Trading
-main_view_desc_trading;InformaÁıes gerais de Trading da conta
+main_view_desc_trading;Informa√ß√µes gerais de Trading da conta
 
 main_view_compute;&Computador
 main_view_desc_compute; Computador
-main_view_convert;Con&vers„o
-main_view_desc_convert; Convers„o entre dois Divisas
+main_view_convert;Con&vers√£o
+main_view_desc_convert; Convers√£o entre dois Divisas
 
 main_view_refresh;&Actualizar agora
 main_view_desc_refresh; Actualizar agora a vista actual
@@ -62,76 +62,76 @@ main_view_big;Texto grande
 main_view_desc_big; Usar o tamanho de texto grande para visualizar a matriz
 
 main_quote_add;Adicionar ...
-main_quote_desc_add; Adicionar uma acÁ„o na lista
+main_quote_desc_add; Adicionar uma ac√ß√£o na lista
 main_quote_remove;Apagar
-main_quote_desc_remove; Apagar a presente selecÁ„o de acÁıes da lista
-main_quote_graph;Gr·ficos histÛricos
-main_quote_desc_graph; Visualizar os gr·ficos histÛricos para as acÁıes actualmente seleccionadas
+main_quote_desc_remove; Apagar a presente selec√ß√£o de ac√ß√µes da lista
+main_quote_graph;Gr√°ficos hist√≥ricos
+main_quote_desc_graph; Visualizar os gr√°ficos hist√≥ricos para as ac√ß√µes actualmente seleccionadas
 main_quote_live;Live
-main_quote_desc_live; Visualizar o bloco de notas para as acÁıes actualmente seleccionadas
+main_quote_desc_live; Visualizar o bloco de notas para as ac√ß√µes actualmente seleccionadas
 main_quote_intraday;Intraday
-main_quote_desc_intraday; Visualizar intraday para as acÁıes actualmente seleccionadas
-main_quote_news;InformaÁıes
-main_quote_desc_news; Visualizar as notÌcias para as acÁıes actualmente seleccionadas
-main_quote_table;Dado n„o Corrigido
-main_quote_desc_table; Visualizar os dados n„o corrigidos para as acÁıes actualmente seleccionadas
-main_quote_analysis;An·lises
-main_quote_desc_analysis; Visualizar a an·lise tÈcnica para as acÁıes actualmente seleccionadas
+main_quote_desc_intraday; Visualizar intraday para as ac√ß√µes actualmente seleccionadas
+main_quote_news;Informa√ß√µes
+main_quote_desc_news; Visualizar as not√≠cias para as ac√ß√µes actualmente seleccionadas
+main_quote_table;Dado n√£o Corrigido
+main_quote_desc_table; Visualizar os dados n√£o corrigidos para as ac√ß√µes actualmente seleccionadas
+main_quote_analysis;An√°lises
+main_quote_desc_analysis; Visualizar a an√°lise t√©cnica para as ac√ß√µes actualmente seleccionadas
 main_quote_buy;Comprar
-main_quote_desc_buy; OperaÁ„o de compra para as acÁıes actualmente seleccionadas
+main_quote_desc_buy; Opera√ß√£o de compra para as ac√ß√µes actualmente seleccionadas
 main_quote_sell;Vender
-main_quote_desc_sell; OperaÁ„o de venda para as acÁıes actualmente seleccionadas
+main_quote_desc_sell; Opera√ß√£o de venda para as ac√ß√µes actualmente seleccionadas
 main_quote_property;Propriedades
-main_quote_desc_property; Visualizar as propriedades para as acÁıes actualmente seleccionadas
+main_quote_desc_property; Visualizar as propriedades para as ac√ß√µes actualmente seleccionadas
 
-main_options;&OpÁıes
+main_options;&Op√ß√µes
 
 main_options_access;&acesso
-main_options_desc_access; Par‚metros de acesso por alguns conectores
+main_options_desc_access; Par√¢metros de acesso por alguns conectores
 
-main_options_lang;&LÌngua
-main_options_desc_lang; Seleccionar a lÌngua usada por este software
-main_options_lang_default;LÌngua do sistema
-main_options_lang_english;InglÍs
-main_options_lang_french;FrancÍs
+main_options_lang;&L√≠ngua
+main_options_desc_lang; Seleccionar a l√≠ngua usada por este software
+main_options_lang_default;L√≠ngua do sistema
+main_options_lang_english;Ingl√™s
+main_options_lang_french;Franc√™s
 main_options_lang_portuguese;Portuguese
 main_options_lang_deutch;Deutch
 main_options_lang_italian;Italian
 
 main_options_cache;&"cache"
-main_options_desc_cache; Gest„o do "cache"
-main_cache_erase_data; Apagar os Dados &HistÛricos
-main_cache_desc_erase_data; Apagar todos os dados histÛricos do "cache"
-main_cache_erase_news; Apagar as &InformaÁıes
-main_cache_desc_erase_news; Apagar todas as informaÁıes do "cache"
+main_options_desc_cache; Gest√£o do "cache"
+main_cache_erase_data; Apagar os Dados &Hist√≥ricos
+main_cache_desc_erase_data; Apagar todos os dados hist√≥ricos do "cache"
+main_cache_erase_news; Apagar as &Informa√ß√µes
+main_cache_desc_erase_news; Apagar todas as informa√ß√µes do "cache"
 main_cache_erase_all; Apagar &Tudo
 main_cache_desc_erase_all; Apagar todos os dados (noticia, historiais...) do "cache"
 
-main_options_connexion;&Conex„o
-main_options_desc_connexion; Par‚metros de Conex„o (Proxy)
+main_options_connexion;&Conex√£o
+main_options_desc_connexion; Par√¢metros de Conex√£o (Proxy)
 
 main_help;&Ajuda
-main_help_contents;&Õndices
-main_help_desc_contents; Õndices de ajuda
-main_help_support;&Suporte TÈcnico ...
-main_help_desc_support; Como obter o suporte tÈcnico?
-main_help_bugs;Criar o relatÛrio do &Bug ...
-main_help_desc_bugs; Criar o relatÛrio de erro tracker do projecto
-main_help_forum;&FÛrum de Usu·rio
-main_help_desc_forum;Participar na comunidade iTrade sobre o seu FÛrum (FrancÍs-inglÍs)
-main_help_donors;&Doar o DinheiroÖ
+main_help_contents;&√çndices
+main_help_desc_contents; √çndices de ajuda
+main_help_support;&Suporte T√©cnico ...
+main_help_desc_support; Como obter o suporte t√©cnico?
+main_help_bugs;Criar o relat√≥rio do &Bug ...
+main_help_desc_bugs; Criar o relat√≥rio de erro tracker do projecto
+main_help_forum;&F√≥rum de Usu√°rio
+main_help_desc_forum;Participar na comunidade iTrade sobre o seu F√≥rum (Franc√™s-ingl√™s)
+main_help_donors;&Doar o Dinheiro¬Ö
 main_help_desc_donors; Como doar o dinheiro para suportar este projecto
-main_help_checksoftware;&VerificaÁ„o das actualizaÁıes
-main_help_desc_checksoftware;VerificaÁ„o se uma nova vers„o de software est· disponÌvel
+main_help_checksoftware;&Verifica√ß√£o das actualiza√ß√µes
+main_help_desc_checksoftware;Verifica√ß√£o se uma nova vers√£o de software est√° dispon√≠vel
 
-checksoftware_needupdate;O programa deve ser actualizado! Querem descarregar da nova vers„o?
-checksoftware_uptodate;Tem a ˙ltima vers„o oficial conhecida
-checksoftware_title;ActualizaÁ„o do Programa
-checksoftware_development;Tem uma vers„o em cursos de desenvolvimento
-checksoftware_error;ImpossÌvel obter a informaÁ„o de vers„o do programa (network issue ?)
+checksoftware_needupdate;O programa deve ser actualizado! Querem descarregar da nova vers√£o?
+checksoftware_uptodate;Tem a √∫ltima vers√£o oficial conhecida
+checksoftware_title;Actualiza√ß√£o do Programa
+checksoftware_development;Tem uma vers√£o em cursos de desenvolvimento
+checksoftware_error;Imposs√≠vel obter a informa√ß√£o de vers√£o do programa (network issue ?)
 
 main_about;&Sobre ...
-main_desc_about; InformaÁ„o sobre o iTrade
+main_desc_about; Informa√ß√£o sobre o iTrade
 
 main_title_portfolio;iTrade - Conta %s: %s
 main_title_quotes;iTrade - Matriz %s: %s
@@ -155,36 +155,36 @@ main_popup_add_stops;Adicionar Stops ...
 main_popup_edit_stops;Modificar Stops ...
 main_popup_remove_stops;Suprimir Stops
 
-main_valuation;AvaliaÁ„o
+main_valuation;Avalia√ß√£o
 
 html_connecting;Conectando ...
-html_noconnect;Nenhuma conex„o
+html_noconnect;Nenhuma conex√£o
 
 ok;OK
-ok_desc;Este bot„o valida e depois termina o di·logo
+ok_desc;Este bot√£o valida e depois termina o di√°logo
 valid;Validar
-valid_desc;Este bot„o valida e depois termina o di·logo
+valid_desc;Este bot√£o valida e depois termina o di√°logo
 cancel;Cancelar
-cancel_desc;O bot„o de cancelamento cancela o di·logo (Sim!)
+cancel_desc;O bot√£o de cancelamento cancela o di√°logo (Sim!)
 close;Fechar
-close_desc;O bot„o de fecho encerra o di·logo
+close_desc;O bot√£o de fecho encerra o di√°logo
 yes;Sim
-no;N„o
+no;N√£o
 
 isin;ISIN
 ticker;Simbolo
-quote;CotaÁıes
+quote;Cota√ß√µes
 variation;Var.
 date;Data
 time;em
 name;Nome
 volume;Volume
-last;⁄ltimo
+last;√öltimo
 open;Aberto
 low;Baixo
 high;Elevado
 prev;Prev.
-pivots;PivÙs
+pivots;Piv√¥s
 status;Status
 reopen;Reabrir
 high_threshold;Thres H
@@ -201,48 +201,48 @@ USP;USP
 market;Mercado
 place;Lugar
 all_markets;Todos os mercados
-invalid_isin;O cÛdigo de ISIN %s È inv·lido
-symbol_not_found;O CÛdigo de ISIN %s ou nome %s n„o encontrado
+invalid_isin;O c√≥digo de ISIN %s √© inv√°lido
+symbol_not_found;O C√≥digo de ISIN %s ou nome %s n√£o encontrado
 risk;Risco
 stop_plus;Stop+
 stop_minus;Stop-
 clive;Live
 cimport;Importar
 
-download_symbols_onelist;ActualizaÁ„o da lista
-download_symbols_onedesc;Actualizar a lista dos sÌmbolos por download dos dados da rede
+download_symbols_onelist;Actualiza√ß√£o da lista
+download_symbols_onedesc;Actualizar a lista dos s√≠mbolos por download dos dados da rede
 download_symbols_alllists;Actualizar todas as listas
-download_symbols_alldesc;Actualizar todas as listas dos sÌmbolos por download dos dados da rede
+download_symbols_alldesc;Actualizar todas as listas dos s√≠mbolos por download dos dados da rede
 clear_symbols_onelist;Limpar a lista
-clear_symbols_onedesc;Limpar todos os sÌmbolos para esta lista
+clear_symbols_onedesc;Limpar todos os s√≠mbolos para esta lista
 clear_symbols_alllists;Limpar todas as listas
-clear_symbols_alldesc;Limpar todos os sÌmbolos para todas as listas
-listquote_clear_confirm_title;OperaÁ„o irreversÌvel
-listquote_clear_confirm;Para %s, confirmar a operaÁ„o (%s)?
+clear_symbols_alldesc;Limpar todos os s√≠mbolos para todas as listas
+listquote_clear_confirm_title;Opera√ß√£o irrevers√≠vel
+listquote_clear_confirm;Para %s, confirmar a opera√ß√£o (%s)?
 listquote_new;Novo
 listquote_edit;Editar
 listquote_delete;Eliminar
-listquote_new_desc;Criar um sÌmbolo novo
-listquote_edit_desc;Editar o sÌmbolo actual na lista
-listquote_delete_desc;Eliminar o sÌmbolo actual na lista
-listquote_duplicate_ref;O sÌmbolo %s j· existe!
+listquote_new_desc;Criar um s√≠mbolo novo
+listquote_edit_desc;Editar o s√≠mbolo actual na lista
+listquote_delete_desc;Eliminar o s√≠mbolo actual na lista
+listquote_duplicate_ref;O s√≠mbolo %s j√° existe!
 listquote_save;Guardar
-listquote_save_desc;Guardar a lista dos sÌmbolos
-listquote_saved;A lista dos sÌmbolos foi guardada
-listquote_dirty_save;VocÍ quer guardar a modificaÁ„o que vocÍ fez ‡ lista dos sÌmbolos?
-listquote_nodirty_save;As suas modificaÁıes n„o foram guardadas e n„o persistir„o na sess„o actual
+listquote_save_desc;Guardar a lista dos s√≠mbolos
+listquote_saved;A lista dos s√≠mbolos foi guardada
+listquote_dirty_save;Voc√™ quer guardar a modifica√ß√£o que voc√™ fez √† lista dos s√≠mbolos?
+listquote_nodirty_save;As suas modifica√ß√µes n√£o foram guardadas e n√£o persistir√£o na sess√£o actual
 
-listquote_items_zero;Valor n„o encontrado
-listquote_items_one;SÛ um valor encontrado
+listquote_items_zero;Valor n√£o encontrado
+listquote_items_one;S√≥ um valor encontrado
 listquote_items_n;%s valores encontrados
 
-listquote_modify_title;Editar o sÌmbolo %s
-listquote_new_title;Novo sÌmbolo
-listquote_delete_title;Eliminar o sÌmbolo %s
+listquote_modify_title;Editar o s√≠mbolo %s
+listquote_new_title;Novo s√≠mbolo
+listquote_delete_title;Eliminar o s√≠mbolo %s
 
-quote_title;iTrade - AcÁ„o
-quote_select_title;Seleccionar um sÌmbolo
-quote_list_title;Gest„o dos sÌmbolos
+quote_title;iTrade - Ac√ß√£o
+quote_select_title;Seleccionar um s√≠mbolo
+quote_list_title;Gest√£o dos s√≠mbolos
 
 quote_select_isin; ISIN:
 quote_select_ticker;Simbolo/nome:
@@ -251,36 +251,36 @@ quote_select_list;Lista :
 quote_select_alllist;Nenhum filtro
 quote_select_syslist;Stocks
 quote_select_usrlist;Utilizador editado
-quote_select_indiceslist;Õndices
+quote_select_indiceslist;√çndices
 quote_select_trackerslist;Trackers
-quote_select_bondslist;ObrigaÁıes
-quote_select_filterfield;Somente acÁıes negociadas
+quote_select_bondslist;Obriga√ß√µes
+quote_select_filterfield;Somente ac√ß√µes negociadas
 
-quote_graphdaily; Di·rio
+quote_graphdaily; Di√°rio
 quote_live;Live
 quote_graphweekly;Semanal
-quote_news;NotÌcias
-quote_analysis;An·lises
+quote_news;Not√≠cias
+quote_analysis;An√°lises
 quote_table;Tabela
 quote_intraday;Jornada
 quote_properties;Propriedades
 
-alerts_title; iTrade - NotÌcias e alertas
+alerts_title; iTrade - Not√≠cias e alertas
 alerts_alerts;Alertas
-alerts_news;NotÌcias
+alerts_news;Not√≠cias
 
-money_title;iTrade - gerÍncia de dinheiro
+money_title;iTrade - ger√™ncia de dinheiro
 
 money_evaluation;Desempenho
-money_compute;C·lculo
-money_evaluationchart;Gr·fico
-money_money;GerÍncia de risco
-main_view_alerts;&NotÌcias e alertas
-main_view_desc_alerts; NotÌcias e alertas
+money_compute;C√°lculo
+money_evaluationchart;Gr√°fico
+money_money;Ger√™ncia de risco
+main_view_alerts;&Not√≠cias e alertas
+main_view_desc_alerts; Not√≠cias e alertas
 main_view_currencies;&Moedas correntes
 main_view_desc_currencies; Moedas correntes
 
-portfolio_title;iTrade - transacÁ„o
+portfolio_title;iTrade - transac√ß√£o
 portfolio_select_title;Selecionar uma conta
 portfolio_delete_title;Eliminar uma conta
 portfolio_properties_edit;Editar propriedades da conta
@@ -288,17 +288,17 @@ portfolio_properties_create;Criar uma nova conta
 portfolio_properties_delete;Eliminar a conta
 portfolio_properties_rename;Renomear a conta
 
-portfolio_delete_confirm;VocÍ quer realmente a eliminaÁ„o da conta ì%sî?
+portfolio_delete_confirm;Voc√™ quer realmente a elimina√ß√£o da conta ¬ì%s¬î?
 portfolio_delete_confirm_title;Eliminar a conta
-portfolio_exist_info;O ficheiro de referÍncia ‡ conta ì%sî j· existe!
+portfolio_exist_info;O ficheiro de refer√™ncia √† conta ¬ì%s¬î j√° existe!
 portfolio_exist_info_title;Criar uma conta
-portfolio_rename_confirm;VocÍ confirma a nova referÍncia ì%sî?
+portfolio_rename_confirm;Voc√™ confirma a nova refer√™ncia ¬ì%s¬î?
 portfolio_rename_confirm_title;Renomear a conta
 
 portfolio_properties_btncreate;Criar
 portfolio_properties_btncreatedesc;Criar uma conta nova
 portfolio_properties_btndelete;Eliminar
-portfolio_properties_btndeletedesc;Eliminar esta conta (irreversÌvel)
+portfolio_properties_btndeletedesc;Eliminar esta conta (irrevers√≠vel)
 portfolio_properties_btnedit;Modificar
 portfolio_properties_btneditdesc;Validar as propriedades novas desta conta
 portfolio_properties_btnrename;Renomear
@@ -306,119 +306,119 @@ portfolio_properties_btnrenamedesc;Renomear o nome desta conta
 portfolio_properties_btnselect;Abrir
 portfolio_properties_btnselectdesc;Abrir esta conta
 
-portfolio_filename;ReferÍncia :
-portfolio_name;DescriÁ„o :
-portfolio_accountref;N˙mero da conta :
+portfolio_filename;Refer√™ncia :
+portfolio_name;Descri√ß√£o :
+portfolio_accountref;N√∫mero da conta :
 portfolio_market;Mercado principal :
-portfolio_select_textfield;ReferÍncia :
+portfolio_select_textfield;Refer√™ncia :
 portfolio_currency;Moeda corrente :
 portfolio_indicator;Indicador principal :
 portfolio_vat;IVA (in %) :
-portfolio_list_filename;ReferÍncia
-portfolio_list_name;DescriÁ„o
-portfolio_list_accountref;N˙mero da conta
+portfolio_list_filename;Refer√™ncia
+portfolio_list_name;Descri√ß√£o
+portfolio_list_accountref;N√∫mero da conta
 
 portfolio_modify;Modificar
 portfolio_new;Novo
 portfolio_delete;Eliminar
-portfolio_date;Data da transacÁ„o:
-portfolio_time;Tempo da transacÁ„o :
-portfolio_operation;TransacÁ„o :
-portfolio_description;DescriÁ„o :
-portfolio_quote;AcÁıes :
+portfolio_date;Data da transac√ß√£o:
+portfolio_time;Tempo da transac√ß√£o :
+portfolio_operation;Transac√ß√£o :
+portfolio_description;Descri√ß√£o :
+portfolio_quote;Ac√ß√µes :
 portfolio_pre_expenses1;incl.
 portfolio_pre_expenses2;e
 portfolio_post_expenses; das despesas
 portfolio_quantity;Quantidade :
 
-portfolio_field_credit;CrÈdito :
-portfolio_field_debit;DÈbito :
+portfolio_field_credit;Cr√©dito :
+portfolio_field_debit;D√©bito :
 portfolio_field_freeofcharges;Livre de despesas
-portfolio_field_valorization;ValorizaÁ„o :
+portfolio_field_valorization;Valoriza√ß√£o :
 
 portfolio_ctrl_sell;Vender
 portfolio_ctrl_sell_srd;Vender SRD
 portfolio_ctrl_buy;Comprar
 portfolio_ctrl_buy_srd;Comprar SRD
 portfolio_ctrl_debit;Levantamento
-portfolio_ctrl_credit;DepÛsito
+portfolio_ctrl_credit;Dep√≥sito
 portfolio_ctrl_fee;Taxa
 portfolio_ctrl_interest;Interessses
 portfolio_ctrl_detachment;Destacamento (non taxable)
 portfolio_ctrl_dividend;Dividendo (taxable)
-portfolio_ctrl_liquidation;LiquidaÁ„o SRD
+portfolio_ctrl_liquidation;Liquida√ß√£o SRD
 portfolio_ctrl_quote;Dividendo com partes
-portfolio_ctrl_register;Registo p˙blico
+portfolio_ctrl_register;Registo p√∫blico
 
 portfolio_list_date;Data e Hora
-portfolio_list_operation;transacÁ„o
-portfolio_list_description;DescriÁ„o
+portfolio_list_operation;transac√ß√£o
+portfolio_list_description;Descri√ß√£o
 portfolio_list_number; Quantidade
-portfolio_list_debit;  DÈbito
-portfolio_list_credit; CrÈdito
+portfolio_list_debit;  D√©bito
+portfolio_list_credit; Cr√©dito
 portfolio_list_expense; Despesas
-portfolio_list_balance; BalanÁo
+portfolio_list_balance; Balan√ßo
 portfolio_list_srd;    SRD
 
 Portfolio_sell;Vender
 Portfolio_sell_srd;Vender SRD
 Portfolio_buy;Comprar
 Portfolio_buy_srd;comprar SRD
-Portfolio_credit;depÛsito
+Portfolio_credit;dep√≥sito
 Portfolio_debit;levantamento
 Portfolio_fee;taxa
 Portfolio_interest;interesses
 Portfolio_split;split
 Portfolio_detachment;destacamento
 Portfolio_dividend;dividendo
-Portfolio_liquidation;liquidaÁ„o
+Portfolio_liquidation;liquida√ß√£o
 Portfolio_quote;dividendo nas partes
-Portfolio_register;Registo p˙blico
+Portfolio_register;Registo p√∫blico
 
 portfolio_dispall;&Todos
-portfolio_desc_dispall; Visualizar a lista de todas as transacÁıes
-portfolio_dispquotes;&CotaÁıes
-portfolio_desc_dispquotes; Visualizar a lista de transacÁıes relacionadas com as acÁıes
+portfolio_desc_dispall; Visualizar a lista de todas as transac√ß√µes
+portfolio_dispquotes;&Cota√ß√µes
+portfolio_desc_dispquotes; Visualizar a lista de transac√ß√µes relacionadas com as ac√ß√µes
 portfolio_dispcash;&Dinheiro
-portfolio_desc_dispcash; Visualizar a lista de transacÁıes relacionadas com o dinheiro
+portfolio_desc_dispcash; Visualizar a lista de transac√ß√µes relacionadas com o dinheiro
 portfolio_dispvalues;&Valores
-portfolio_desc_dispvalues; Visualizar a lista de transacÁıes relacionadas com os +/- valores
+portfolio_desc_dispvalues; Visualizar a lista de transac√ß√µes relacionadas com os +/- valores
 portfolio_dispsrd;&SRD
-portfolio_desc_dispsrd; Visualizar a lista de transacÁıes relacionadas com SRD
+portfolio_desc_dispsrd; Visualizar a lista de transac√ß√µes relacionadas com SRD
 
 portfolio_opadd;&Adicionar ...
-portfolio_desc_opadd; Adicionar uma transacÁ„o nova
+portfolio_desc_opadd; Adicionar uma transac√ß√£o nova
 portfolio_opdelete;&Eliminar
-portfolio_desc_opdelete; Eliminar a transacÁ„o actual
+portfolio_desc_opdelete; Eliminar a transac√ß√£o actual
 portfolio_opmodify;&Modificar
-portfolio_desc_opmodify; Modificar a transacÁ„o actual
+portfolio_desc_opmodify; Modificar a transac√ß√£o actual
 
 portfolio_text;Zoom do texto
-portfolio_desc_text; Seleccionar zoom de texto para visualizar as transacÁıes
+portfolio_desc_text; Seleccionar zoom de texto para visualizar as transac√ß√µes
 portfolio_view_small;Mais pequeno
-portfolio_view_desc_small; Usar o tamanho pequeno de texto para visualizar as transacÁıes
+portfolio_view_desc_small; Usar o tamanho pequeno de texto para visualizar as transac√ß√µes
 portfolio_view_normal;Normal
-portfolio_view_desc_normal; Usar o tamanho normal de texto para visualizar as transacÁıes
+portfolio_view_desc_normal; Usar o tamanho normal de texto para visualizar as transac√ß√µes
 portfolio_view_big;Maior
-portfolio_view_desc_big; Usar o tamanho grande de texto para visualizar as transacÁıes
+portfolio_view_desc_big; Usar o tamanho grande de texto para visualizar as transac√ß√µes
 
 portfolio_per30days;&30 dias
-portfolio_desc_per30days; Visualizar os ˙ltimos 30 dias
+portfolio_desc_per30days; Visualizar os √∫ltimos 30 dias
 portfolio_per90days;&90 dias
-portfolio_desc_per90days; Visualizar os ˙ltimos 90 dias
+portfolio_desc_per90days; Visualizar os √∫ltimos 90 dias
 portfolio_peryear;&Ano
 portfolio_desc_peryear; Visualizar o presente ano
 portfolio_perall;&Todos
-portfolio_desc_perall; Visualizar todas as transacÁıes desde o comeÁo
+portfolio_desc_perall; Visualizar todas as transac√ß√µes desde o come√ßo
 
 portfolio_menu_file;&Ficheiro
 portfolio_menu_disp;&Visualizar
-portfolio_menu_op;&TransaÁıes
+portfolio_menu_op;&Transa√ß√µes
 portfolio_menu_per;&Filtro
 
-graph_price;PreÁo
+graph_price;Pre√ßo
 graph_volume;Volume
-graph_period;PerÌodo:
+graph_period;Per√≠odo:
 graph_days;dias
 
 backtolist;Retroceder para a lista
@@ -426,10 +426,10 @@ backtolist;Retroceder para a lista
 popup_open;Aberto
 popup_high;Elevado
 popup_low;Baixo
-popup_close;⁄ltimo
+popup_close;√öltimo
 popup_percent;Var. (%s)
 popup_volume;Volume
-popup_notrade;nenhum comÈrcio
+popup_notrade;nenhum com√©rcio
 
 save_to_file;Guardar para o ficheiro
 export_to_file;Exportar para o ficheiro
@@ -437,28 +437,28 @@ import_from_file;Importar do ficheiro
 exported_to_file;O ficheiro %s foi exportado
 imported_from_file;O ficheiro %s foi importado
 
-tb_pan_left;Bandeja ‡ esquerda
-tb_pan_right;Bandeja ‡ direita
-tb_save_file;Guardar o gr·fico no ficheiro
-tb_config;ConfiguraÁ„o do gr·fico
-tb_home;Restaurar a posiÁ„o original
-tb_zoom_out;Aumentar o perÌodo
-tb_zoom_in;Diminuir o perÌodo
-tb_setup;Configuar p·gina...
+tb_pan_left;Bandeja √† esquerda
+tb_pan_right;Bandeja √† direita
+tb_save_file;Guardar o gr√°fico no ficheiro
+tb_config;Configura√ß√£o do gr√°fico
+tb_home;Restaurar a posi√ß√£o original
+tb_zoom_out;Aumentar o per√≠odo
+tb_zoom_in;Diminuir o per√≠odo
+tb_setup;Configuar p√°gina...
 tb_print;Imprimir...
-tb_preview;Visualizar impress„o
+tb_preview;Visualizar impress√£o
 
-tb_tool_ind;AfixaÁ„o dos Popups
+tb_tool_ind;Afixa√ß√£o dos Popups
 tb_tool_hline;Desenhar uma linha Horizontal
 tb_tool_vline;Desenhar uma linha Vertical
-tb_tool_oline;Desenhar uma linha OblÌqua
+tb_tool_oline;Desenhar uma linha Obl√≠qua
 tb_tool_trash;Suprimir um objecto
 tb_tool_fibo;Desenhar um objecto Fibonacci
 tb_tool_text;Escrever um Texto
 tb_tool_prop;Propriedades do objeto
 
-quote_popup_dispMA150;MÈdia movimentada 150 dias
-quote_popup_dispSto;Estoc·stico
+quote_popup_dispMA150;M√©dia movimentada 150 dias
+quote_popup_dispSto;Estoc√°stico
 quote_popup_dispRSI14;RSI 14 dias
 quote_popup_dispBollinger;Faixas de Bollinger
 quote_popup_dispOverlaidVolume;Volumes de Overlaid
@@ -468,25 +468,25 @@ quote_popup_dispChart1Candlestick;Candlesticks
 quote_popup_dispChart1OHLC; Barras de OHLC
 quote_popup_dispChart1Line; Linhas
 
-prop_reference;ReferÍncia
+prop_reference;Refer√™ncia
 prop_marketandconnector;Mercado e conector
-prop_tradingstyle;InformaÁ„o de negÛcio
-prop_ref;ReferÍncia :
+prop_tradingstyle;Informa√ß√£o de neg√≥cio
+prop_ref;Refer√™ncia :
 prop_isin;ISIN :
 prop_name;Nome :
 prop_ticker;Simbolo :
 prop_reload;Recarregar
 prop_desc_reload;Recarregar todos os dados
 prop_rename;Renomear
-prop_desc_rename;Renomear o Simbolo desta acÁ„o
+prop_desc_rename;Renomear o Simbolo desta ac√ß√£o
 prop_import;Importar
-prop_desc_importe;ImportaÁ„o dos dados da acÁ„o
-prop_export;ExportaÁ„o
-prop_desc_exporte;ExportaÁ„o dos dados da acÁ„o
+prop_desc_importe;Importa√ß√£o dos dados da ac√ß√£o
+prop_export;Exporta√ß√£o
+prop_desc_exporte;Exporta√ß√£o dos dados da ac√ß√£o
 prop_restore;Reiniciar
 prop_desc_restore;Restaurar os valores de origem
 prop_market;Troca :
-prop_country;PaÌs :
+prop_country;Pa√≠s :
 prop_place;Lugar :
 prop_currency;Moeda corrente :
 prop_typeofclock;Atraso :
@@ -495,45 +495,45 @@ prop_isslive;Live
 prop_isdiffered;Diferido
 prop_isnotlive;Tempo diferido (%d minuts)
 prop_liveconnector;Conector Live :
-prop_impconnector;Conector da importaÁ„o:
+prop_impconnector;Conector da importa√ß√£o:
 prop_set;Validar
-prop_desc_set;Validar a informaÁ„o do mercado novo e do conector
-prop_term;PerÌodo de investimento (no mÍs) :
-prop_risk;NÌvel de risco (em %):
-prop_connhelp;Pensar a efectuar uma regeneraÁ„o de modo que a modificaÁ„o seja efectiva
+prop_desc_set;Validar a informa√ß√£o do mercado novo e do conector
+prop_term;Per√≠odo de investimento (no m√™s) :
+prop_risk;N√≠vel de risco (em %):
+prop_connhelp;Pensar a efectuar uma regenera√ß√£o de modo que a modifica√ß√£o seja efectiva
 
-live_busy;Aguarde um momento por favor, a conex„o live est· a encerrarÖ
+live_busy;Aguarde um momento por favor, a conex√£o live est√° a encerrar¬Ö
 live_notebook;Bloco de notas
-live_lasttrades;⁄ltimas transacÁıes
+live_lasttrades;√öltimas transac√ß√µes
 live_hours;Horas
 live_qty;Qty
-live_price;PreÁo
+live_price;Pre√ßo
 live_buy;Compra
 live_sell;Vende
 live_number;Nb
 live_CMP;PMP
 live_FMP;PMR
 
-wxversion_title;Erro da vers„o do wxPython
-wxversion_msg;A vers„o requerida do wxPython n„o est· instalada. Instalar por favor a vers„o %d%d UNICODE
+wxversion_title;Erro da vers√£o do wxPython
+wxversion_msg;A vers√£o requerida do wxPython n√£o est√° instalada. Instalar por favor a vers√£o %d%d UNICODE
 
 money_fiscal_year;Ano fiscal
 money_amount_of_taxes;Quantidade de impostos
-money_taxable_amounts;Quantidades Tax·veis
-money_financial_appreciation;ApreciaÁ„o financeira
-money_total_of_transfers;Total de transferÍncias
+money_taxable_amounts;Quantidades Tax√°veis
+money_financial_appreciation;Aprecia√ß√£o financeira
+money_total_of_transfers;Total de transfer√™ncias
 money_expenses_vat;Despesas (Corretagem, IVA, ...)
 money_portfolio;Conta
-money_description;DescriÁ„o
-money_account_number;N˙mero de conta
+money_description;Descri√ß√£o
+money_account_number;N√∫mero de conta
 money_percent_of_portfolio;% da conta
-money_quote;CotaÁıes
+money_quote;Cota√ß√µes
 money_srd;SRD
 money_cash;Dinheiro
 money_initial_investment;Investimento inicial
 money_value;Valor
 money_performance;Desempenho
-money_investment_evaluation;AvaliaÁ„o
+money_investment_evaluation;Avalia√ß√£o
 
 currencies_title;Moedas correntes
 currency_menu_file;&Ficheiro
@@ -545,25 +545,25 @@ currency_rate;Taxa
 currency_refreshing;Actualizar os dados actuais
 
 cache_erase_confirm_title; Apagar dados do "cache"
-cache_erase_confirm_data; Apagar todos os dados histÛricos do "cache" ?(os dados ser„o regenerados)
-cache_erase_confirm_news; Apagar toda a notÌcia do "cache" ? (os dados ser„o regenerados)
-cache_erase_confirm_all; Apagar todos os dados (historiais, notÌcia...) do "cache"? (os dados ser„o regenerados)
+cache_erase_confirm_data; Apagar todos os dados hist√≥ricos do "cache" ?(os dados ser√£o regenerados)
+cache_erase_confirm_news; Apagar toda a not√≠cia do "cache" ? (os dados ser√£o regenerados)
+cache_erase_confirm_all; Apagar todos os dados (historiais, not√≠cia...) do "cache"? (os dados ser√£o regenerados)
 
-indicator_autorefresh;RegeneraÁ„o autom·tica
-indicator_noautorefresh;RegeneraÁ„o manual
+indicator_autorefresh;Regenera√ß√£o autom√°tica
+indicator_noautorefresh;Regenera√ß√£o manual
 indicator_disconnected;Desconectado
 
 login_title;Acesso Cliente
-login_fortuneo_desc;Entrar o vosso identificador Fortuneo (conta real ou da demonstraÁ„o)
-login_boursorama_desc;Entrar o vosso identificador Boursorama (conta cliente ou pseudÛnimo)
+login_fortuneo_desc;Entrar o vosso identificador Fortuneo (conta real ou da demonstra√ß√£o)
+login_boursorama_desc;Entrar o vosso identificador Boursorama (conta cliente ou pseud√≥nimo)
 login_set; Validar
-login_setdesc;Validar as informaÁıes de acesso apreendidas
+login_setdesc;Validar as informa√ß√µes de acesso apreendidas
 login_username;Identificador :
 login_password;Senha :
 login_test;Testar
-login_testdesc; Tentar o acesso ao serviÁo com as informaÁıes fornecidas
-login_test_ok;O acesso ao serviÁo funciona com estas informaÁıes
-login_test_nok;O acesso ao serviÁo n„o funciona com estas informaÁıes
+login_testdesc; Tentar o acesso ao servi√ßo com as informa√ß√µes fornecidas
+login_test_ok;O acesso ao servi√ßo funciona com estas informa√ß√µes
+login_test_nok;O acesso ao servi√ßo n√£o funciona com estas informa√ß√µes
 
 page_portfolio;Conta
 page_quotes;Matriz
@@ -572,45 +572,45 @@ page_indicators;Indicadores
 page_evaluation;Desempenho
 page_trading;Trading
 
-print_preview;Visualizar impress„o
+print_preview;Visualizar impress√£o
 print_printing;Imprimir...
-print_errprinting;Erro de impress„o. Verificar a configuraÁ„o corrente
-print_page;P·gina: %d
+print_errprinting;Erro de impress√£o. Verificar a configura√ß√£o corrente
+print_page;P√°gina: %d
 
-about_url;LanÁar o navegador para a ligaÁ„o: %s
+about_url;Lan√ßar o navegador para a liga√ß√£o: %s
 about_title;Sobre o iTrade
 
-info_caption;iTrade - InformaÁ„o
+info_caption;iTrade - Informa√ß√£o
 alert_caption;iTrade - Erro
 
 stops_remove_caption;Suprimir os stops
-stops_remove_text;Suprimir realmente os stops da acÁ„o %s ?
+stops_remove_text;Suprimir realmente os stops da ac√ß√£o %s ?
 stops_edit_caption;%s - Alterar os Stops
 stops_add_caption;%s - Criar os Stops
-stops_last;⁄ltima cotaÁ„o :
-stops_portfolio;%s acÁıes em conta para um valor de %s
+stops_last;√öltima cota√ß√£o :
+stops_portfolio;%s ac√ß√µes em conta para um valor de %s
 stops_shares_loss;Ponto inicial de venda para cortar as perdas :
 stops_shares_win;Ponto inicial de venda para tomar os lucros :
 stops_noshares_loss;Escala de compra - Ponto inicial baixo :
 stops_noshares_win;Escala de compra - Ponto inicial elevado :
 stops_add;Adicionar
 stops_edit;Modificar
-stops_add_desc;Adicionar as informaÁıes de Stops
-stops_edit_desc;Modificar as informaÁıes de Stops
+stops_add_desc;Adicionar as informa√ß√µes de Stops
+stops_edit_desc;Modificar as informa√ß√µes de Stops
 
 decision_positiononquote_cash;Cash Position
 decision_positiononquote_credit;Marging Position
 decision_purchasingpower;Poder de Compra
-decision_numofshares;Quantidade de AcÁıes :
-decision_upp;PreÁo de custo unit·rio :
-decision_pp;PreÁo de custo total :
+decision_numofshares;Quantidade de Ac√ß√µes :
+decision_upp;Pre√ßo de custo unit√°rio :
+decision_pp;Pre√ßo de custo total :
 decision_profit;Latent Profit in %s :
 decision_profitpercent;Latent Profit in % :
 decision_availablecash;Available Cash in %s :
 decision_committedcredit;Committed Margin in %s :
 decision_availablecredit;Available for Margin in %s :
 
-connection_title;Par‚metros de Conex„o
+connection_title;Par√¢metros de Conex√£o
 proxy_server_ip;__xProxy IP address (esvazie se nenhum) :
 proxy_server_port;__xProxy Port (esvazie se nenhum) :
 proxy_auth_user;__xProxy User Authentication (esvazie se nenhum) :
@@ -619,11 +619,11 @@ connection_timeout;Atraso antes do erro (em segundos, typ. 25) :
 
 rss_clear;Apagar
 rss_scan;Scan
-rss_freshness;⁄ltimo scan:
+rss_freshness;√öltimo scan:
 
-remove_quote_title;Apagar a CotaÁ„o
-remove_quote_info;Suprimir realmente a acÁ„o %s ?
+remove_quote_title;Apagar a Cota√ß√£o
+remove_quote_info;Suprimir realmente a ac√ß√£o %s ?
 
-converter_title;Convers„o de Divisas
+converter_title;Convers√£o de Divisas
 
 test;Mensagem de teste

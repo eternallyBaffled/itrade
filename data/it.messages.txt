@@ -9,8 +9,8 @@ main_save;&Opzioni
 main_desc_save; Salva dati in questo Portafoglio
 main_saveas;&Salva come ...
 main_desc_saveas; Salva Portafoglio con nuovo nome
-main_edit;&Propriet‡
-main_desc_edit; Modifica propriet‡ di questo Portafoglio
+main_edit;&Propriet√†
+main_desc_edit; Modifica propriet√† di questo Portafoglio
 main_exit;E&sci
 main_desc_exit; Termina iTrade
 main_close;&Chiudi
@@ -81,8 +81,8 @@ main_quote_buy;Acquista
 main_quote_desc_buy; Operazione di Acquisto del titolo selezionato
 main_quote_sell;Vendi
 main_quote_desc_sell; Operazione di Vendita del titolo selezionato
-main_quote_property;Propriet‡
-main_quote_desc_property; Visualizza propriet‡ del titolo selezionato
+main_quote_property;Propriet√†
+main_quote_desc_property; Visualizza propriet√† del titolo selezionato
 
 main_options;&Opzioni
 
@@ -118,16 +118,16 @@ main_help_desc_support; Ti serve Supporto Tecnico ?
 main_help_bugs;&Segnala Bug ...
 main_help_desc_bugs; Segnala un bug al team di sviluppo
 main_help_forum;Vai al &Forum
-main_help_desc_forum; Partecipa al forum della comunit‡ di iTrade (inglese / francese)
+main_help_desc_forum; Partecipa al forum della comunit√† di iTrade (inglese / francese)
 main_help_donors;&Fai una Donazione ...
 main_help_desc_donors; Come effettuare donazioni per supportare questo progetto
 main_help_checksoftware;&Controlla aggiornamenti ...
-main_help_desc_checksoftware; Controlla la disponibilit‡ di nuove versioni
+main_help_desc_checksoftware; Controlla la disponibilit√† di nuove versioni
 
 checksoftware_needupdate;Il software deve essere aggiornato ! Vuoi scaricare la nuova versione ?
-checksoftware_uptodate;Il software Ë aggiornato all'ultima versione disponibile.
-checksoftware_title;Controlla disponibilit‡ aggiornamenti
-checksoftware_development;La tua versione Ë in corso di sviluppo.
+checksoftware_uptodate;Il software √® aggiornato all'ultima versione disponibile.
+checksoftware_title;Controlla disponibilit√† aggiornamenti
+checksoftware_development;La tua versione √® in corso di sviluppo.
 checksoftware_error;Non riesco a ricevere informazioni sul software (problemi di rete ?)
 
 main_about;&Informazioni ...
@@ -149,7 +149,7 @@ main_popup_remove;Elimina
 main_popup_add;Aggiungi ...
 main_popup_view;Analizza
 main_popup_live;Real Time
-main_popup_properties;Propriet‡
+main_popup_properties;Propriet√†
 main_popup_edit;Modifica
 main_popup_add_stops;Aggiungi Stop ...
 main_popup_edit_stops;Modifica Stop ...
@@ -190,7 +190,7 @@ reopen;Riapri
 high_threshold;Resistenza 
 low_threshold;Supporto
 cmp;WAQ
-qty;Qt‡
+qty;Qt√†
 perfday;Giorno %
 perfper;Rend %
 profit;Profitto
@@ -225,12 +225,12 @@ listquote_delete;Elimina
 listquote_new_desc;Crea nuovo simbolo
 listquote_edit_desc;Modifica simbolo selezionato
 listquote_delete_desc;Elimina simbolo selezionato
-listquote_duplicate_ref;Il simbolo %s Ë gi‡ presente !
+listquote_duplicate_ref;Il simbolo %s √® gi√† presente !
 listquote_save;Salva
 listquote_save_desc;Salva lista simboli
-listquote_saved;La lista simboli Ë stata salvata
+listquote_saved;La lista simboli √® stata salvata
 listquote_dirty_save;Vuoi salvare le modifiche apportate alla lista simboli ?
-listquote_nodirty_save;Le tue modifiche non sono state salvate e non saranno pi˘ visualizzate
+listquote_nodirty_save;Le tue modifiche non sono state salvate e non saranno pi√π visualizzate
 
 listquote_items_zero;Non ho trovato nessuna quotazione
 listquote_items_one;Ho trovato una quotazione
@@ -263,7 +263,7 @@ quote_news;News
 quote_analysis;Analisi
 quote_table;Tabella Dati
 quote_intraday;Intraday
-quote_properties;Propriet‡
+quote_properties;Propriet√†
 
 alerts_title;iTrade - News e Allarmi
 alerts_alerts;Allarmi
@@ -283,14 +283,14 @@ main_view_desc_currencies; Valute
 portfolio_title;iTrade - Operazione
 portfolio_select_title;Seleziona Portafoglio
 portfolio_delete_title;Elimina Portafoglio
-portfolio_properties_edit;Modifica Propriet‡ Portafoglio
+portfolio_properties_edit;Modifica Propriet√† Portafoglio
 portfolio_properties_create;Crea Nuovo Portafoglio
 portfolio_properties_delete;Elimina Portafoglio
 portfolio_properties_rename;Rinomina Portafoglio
 
 portfolio_delete_confirm;Confermi eliminazione del portafoglio '%s'  ?
 portfolio_delete_confirm_title;Elimina Portafoglio
-portfolio_exist_info;Il Portafoglio '%s' gi‡ esiste !
+portfolio_exist_info;Il Portafoglio '%s' gi√† esiste !
 portfolio_exist_info_title;Crea Portafoglio
 portfolio_rename_confirm;Confermi nuovo riferimento '%s' ?
 portfolio_rename_confirm_title;Rinomina Portafoglio
@@ -300,7 +300,7 @@ portfolio_properties_btncreatedesc; Crea nuovo Portafoglio
 portfolio_properties_btndelete; Elimina
 portfolio_properties_btndeletedesc; Elimina questo Portafoglio (non annullabile)
 portfolio_properties_btnedit; Modifica
-portfolio_properties_btneditdesc; Convalida la nuova propriet‡ di questo Portafoglio
+portfolio_properties_btneditdesc; Convalida la nuova propriet√† di questo Portafoglio
 portfolio_properties_btnrename; Rinomina
 portfolio_properties_btnrenamedesc; Rinomina questo Portafoglio
 portfolio_properties_btnselect; Apri
@@ -329,7 +329,7 @@ portfolio_quote;Quotazione :
 portfolio_pre_expenses1;incl.
 portfolio_pre_expenses2;e
 portfolio_post_expenses; di Spese
-portfolio_quantity;Quantit‡ :
+portfolio_quantity;Quantit√† :
 
 portfolio_field_credit;Credito :
 portfolio_field_debit;Debito :
@@ -353,7 +353,7 @@ portfolio_ctrl_register;Registrazione Pubblica
 portfolio_list_date;Data e Ora
 portfolio_list_operation;Operazione
 portfolio_list_description;Descrizione
-portfolio_list_number;Qt‡
+portfolio_list_number;Qt√†
 portfolio_list_debit;Debito
 portfolio_list_credit;Credito
 portfolio_list_expense;Spesa
@@ -434,8 +434,8 @@ popup_notrade;Nessuna Operazione
 save_to_file;Salva su file
 export_to_file;Esporta verso file
 import_from_file;Importa da file
-exported_to_file;Il file %s Ë stato esportato
-imported_from_file;Il file %s Ë stato esportato
+exported_to_file;Il file %s √® stato esportato
+imported_from_file;Il file %s √® stato esportato
 
 tb_pan_left;Sposta a sinistra
 tb_pan_right;Sposta a destra
@@ -455,7 +455,7 @@ tb_tool_oline;Disegna linea obliqua
 tb_tool_trash;Elimina Oggetto
 tb_tool_fibo;Disegna Rintracciamenti di Fibonacci
 tb_tool_text;Inserisci Testo
-tb_tool_prop;Propriet‡ oggetto
+tb_tool_prop;Propriet√† oggetto
 
 quote_popup_dispMA150;Media Mobile 150 giorni
 quote_popup_dispSto;Stocastico
@@ -506,7 +506,7 @@ live_busy;Attendi prego, sto terminando la connessione in tempo reale ...
 live_notebook;Book
 live_lasttrades;Times and Sales
 live_hours;Ora
-live_qty;Qt‡
+live_qty;Qt√†
 live_price;Prezzo
 live_buy;Denaro
 live_sell;Lettera
@@ -515,7 +515,7 @@ live_CMP;CMP
 live_FMP;FMP
 
 wxversion_title;Errore nella versione di wxPython
-wxversion_msg;La versione di wxPython richiesta non Ë installata. Installare la versione %d.%d UNICODE
+wxversion_msg;La versione di wxPython richiesta non √® installata. Installare la versione %d.%d UNICODE
 
 money_fiscal_year;Anno Fiscale
 money_amount_of_taxes;Percentuale Di Tasse
@@ -574,7 +574,7 @@ page_trading;Trading
 
 print_preview;Anteprima di Stampa
 print_printing;Imposta Pagina Per Stampa
-print_errprinting;Problema in fase di stampa.\nC'Ë mica un problema nelle impostazioni della stampante ?
+print_errprinting;Problema in fase di stampa.\nC'√® mica un problema nelle impostazioni della stampante ?
 print_page;Pagina: %d
 
 about_url;Per piacere visita : %s
@@ -601,7 +601,7 @@ stops_edit_desc;Modifica informazioni stop
 decision_positiononquote_cash;Posizione di Cassa
 decision_positiononquote_credit;Posizione Con Marginazione
 decision_purchasingpower;Potere di Acquisto
-decision_numofshares;Quantit‡ di titoli :
+decision_numofshares;Quantit√† di titoli :
 decision_upp;Prezzo Unitario :
 decision_pp;Prezzo Totale Pagato :
 decision_profit;Profitto Latente in %s :

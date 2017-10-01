@@ -41,9 +41,10 @@ import logging
 import locale
 import sys
 import time
+import os
 
 # iTrade system
-from itrade_logging import *
+import itrade_config
 import itrade_csv
 
 # ============================================================================
@@ -53,7 +54,7 @@ import itrade_csv
 nl_supported = {
     'fr': "Français",
     'pt': "Portuguese",
-    'de': "Deutch",
+    'de': "Deutsch",
     'it': "Italian",
     'en': 'English',
     'us': 'English'
@@ -86,12 +87,12 @@ nl_convert = {
 # ============================================================================
 
 nl_groupsep = {
-    'fr' : ' ',
-    'pt' : ' ',
-    'de' : ' ',
-    'it' : ' ',
-    'en' : ',',
-    'us' : ','
+    'fr': ' ',
+    'pt': ' ',
+    'de': ' ',
+    'it': ' ',
+    'en': ',',
+    'us': ','
     }
 
 def getGroupChar():
@@ -106,17 +107,17 @@ def getGroupChar():
 # ============================================================================
 
 nl_decsep = {
-    'fr' : ',',
-    'pt' : ',',
-    'de' : ',',
-    'it' : ',',
-    'en' : '.',
-    'us' : '.'
+    'fr': ',',
+    'pt': ',',
+    'de': ',',
+    'it': ',',
+    'en': '.',
+    'us': '.'
     }
 
 def getDecimalChar():
     ll = getLang()
-    if nl_decsep.has_key(ll):
+    if ll in nl_decsep:
         return nl_decsep[ll]
     else:
         return '.'
@@ -126,17 +127,17 @@ def getDecimalChar():
 # ============================================================================
 
 nl_shortdatefmt = {
-    'fr' : '%d.%m',
-    'pt' : '%d.%m',
-    'de' : '%d.%m',
-    'it' : '%d.%m',
-    'en' : '%m.%d',
-    'us' : '%m.%d'
+    'fr': '%d.%m',
+    'pt': '%d.%m',
+    'de': '%d.%m',
+    'it': '%d.%m',
+    'en': '%m.%d',
+    'us': '%m.%d'
     }
 
 def getShortDateFmt():
     ll = getLang()
-    if nl_shortdatefmt.has_key(ll):
+    if ll in nl_shortdatefmt:
         return nl_shortdatefmt[ll]
     else:
         return '%d.%m'
@@ -156,22 +157,21 @@ class LocalMessages(object):
         self.m_llang = {}
         self.m_lang = None
 
-    def load(self,fn=None):
-        if self.m_llang.has_key(self.m_lang):
-            warning('lang %s already loaded !' % self.m_lang)
+    def load(self, fn=None):
+        if self.m_lang in self.m_llang:
+            logging.warning('lang %s already loaded !' % self.m_lang)
             return
 
-        infile = itrade_csv.read(fn,os.path.join(itrade_config.dirSysData,'%s.messages.txt'%self.m_lang))
+        if fn is None:
+            fn = os.path.join(itrade_config.dir_sys_data(), '%s.messages.txt'%self.m_lang)
+        infile = itrade_csv.read(fn)
         if infile:
             # store filename used for messaging
-            if fn:
-                self.m_llang[self.m_lang] = fn
-            else:
-                self.m_llang[self.m_lang] = os.path.join(itrade_config.dirSysData,'%s.messages.txt'%self.m_lang)
+            self.m_llang[self.m_lang] = fn
 
             # scan each line to read each trade
             for eachLine in infile:
-                item = itrade_csv.parse(eachLine,2)
+                item = itrade_csv.parse(eachLine.decode("utf-8"),2)
                 if item:
                     self.addMsg(item)
 
@@ -183,11 +183,11 @@ class LocalMessages(object):
 
     def setLocale(self,lang=None):
         # try to setup the C runtime (_locale)
-        if lang==None:
+        if lang is None:
             lang = self.m_lang
-            debug('setLocale(): default to %s' % lang)
+            logging.debug('setLocale(): default to %s' % lang)
         else:
-            debug('setLocale(): set to %s' % lang)
+            logging.debug('setLocale(): set to %s' % lang)
 
         if sys.platform == 'darwin':
             # do nothing :-( (locale support on MacOSX is minimal)
@@ -227,14 +227,14 @@ class LocalMessages(object):
         return self.m_lang
 
     def getLangFile(self):
-        if self.m_llang.has_key(self.m_lang):
+        if self.m_lang in self.m_llang:
             return self.m_llang[self.m_lang]
         else:
             return None
 
     def langSupported(self,l):
-        if nl_supported.has_key(l):
-            if nl_convert.has_key(l):
+        if l in nl_supported:
+            if l in nl_convert:
                 return nl_convert[l]
             else:
                 return l
@@ -248,14 +248,14 @@ class LocalMessages(object):
         else:
             return '? %s' % self.m_lang
 
-    def addMsg(self,m):
+    def addMsg(self, m):
         if len(m) != 2:
             # well formed ?
             return
-        key = '%s%s' % (self.m_lang,m[0])
-        if self.m_msg.has_key(key):
+        key = u'%s%s' % (self.m_lang, m[0])
+        if key in self.m_msg:
             raise('addMsg:: key %s already exist' % key)
-        self.m_msg[key] = unicode(m[1],encoding='iso-8859-1')
+        self.m_msg[key] = m[1]
 
     def getMsg(self,ref):
         if not self.m_lang:
@@ -268,7 +268,7 @@ class LocalMessages(object):
             gMessage.load()
 
         key = '%s%s' % (self.m_lang,ref)
-        if self.m_msg.has_key(key):
+        if key in self.m_msg:
             return self.m_msg[key]
         else:
             return '?%s:%s?' % (self.m_lang,ref)
@@ -280,7 +280,7 @@ class LocalMessages(object):
         enc,cp = locale.getlocale()
 
         # check if encoding known
-        if nl_autodetect.has_key(enc):
+        if enc in nl_autodetect:
             return nl_autodetect[enc]
         else:
             # return the default lang provided by the caller
@@ -308,9 +308,11 @@ getLocale = gMessage.getLocale
 # ============================================================================
 
 if __name__=='__main__':
-    setLevel(logging.INFO)
+    import itrade_logging
 
-    print 'default (detection): ',gMessage.getAutoDetectedLang()
+    itrade_logging.setLevel(logging.INFO)
+
+    print 'default (detection): ', gMessage.getAutoDetectedLang()
 
     setLang('us')
     gMessage.load()
