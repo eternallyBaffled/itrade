@@ -36,30 +36,31 @@ class LoginRegistry(object):
     def __init__(self):
         self.m_log = []
 
-    def register(self,name,connector):
-        self.m_log.append((name,connector))
+    def register(self, name, connector):
+        self.m_log.append((name, connector))
         return True
 
-    def get(self,name):
-        for aname,aconnector in self.m_log:
-            if name==aname:
+    def get(self, name):
+        for aname, aconnector in self.m_log:
+            if name == aname:
                 return aconnector
         return None
 
-    def list(self,name=None):
+    def list(self, name=None):
         lst = []
-        for aname,aconnector in self.m_log:
-            if name==None or (name==aname):
-                lst.append((aconnector.name(),aconnector))
+        for aname, aconnector in self.m_log:
+            if name == None or (name == aname):
+                lst.append((aconnector.name(), aconnector))
         return lst
 
-    def logged(self,name):
+    def logged(self, name):
         con = self.get(name)
         if con:
             return con.logged()
         else:
             # connector not found : no need to log !
             return True
+
 
 # ============================================================================
 # Export Login Registry
