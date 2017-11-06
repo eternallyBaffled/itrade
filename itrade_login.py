@@ -64,11 +64,7 @@ class LoginRegistry(object):
 # ============================================================================
 # Export Login Registry
 # ============================================================================
-
-try:
-    ignore(gLoginRegistry)
-except NameError:
-    gLoginRegistry = LoginRegistry()
+gLoginRegistry = LoginRegistry()
 
 registerLoginConnector = gLoginRegistry.register
 getLoginConnector = gLoginRegistry.get
