@@ -31,19 +31,6 @@
 # 2006-12-31    dgil  Wrote it from scratch
 # ============================================================================
 
-# ============================================================================
-# Imports
-# ============================================================================
-
-# python system
-import logging
-
-# iTrade system
-from itrade_logging import *
-
-# ============================================================================
-# LoginRegistry
-# ============================================================================
 
 class LoginRegistry(object):
     def __init__(self):
@@ -87,13 +74,6 @@ registerLoginConnector = gLoginRegistry.register
 getLoginConnector = gLoginRegistry.get
 listLoginConnector = gLoginRegistry.list
 loggedLoginConnector = gLoginRegistry.logged
-
-# ============================================================================
-# Test ME
-# ============================================================================
-
-if __name__=='__main__':
-    setLevel(logging.INFO)
 
 # ============================================================================
 # That's all folks !
