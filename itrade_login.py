@@ -49,7 +49,7 @@ class LoginRegistry(object):
     def list(self, name=None):
         lst = []
         for aname, aconnector in self.m_log:
-            if name == None or (name == aname):
+            if name is None or (name == aname):
                 lst.append((aconnector.name(), aconnector))
         return lst
 
