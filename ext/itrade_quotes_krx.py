@@ -92,13 +92,13 @@ def Import_ListOfQuotes_KRX(quotes,market='KOREA STOCK EXCHANGE',dlg=None,x=0):
     url = 'http://eng.krx.co.kr'
 
     info('Import_ListOfQuotes_KRX_%s:connect to %s' % (market,url))
-    
+
     try:
         data = connection.getDataFromUrl(url)
     except:
         info('Import_ListOfQuotes_KRX_%s:unable to connect :-(' % market)
         return False
-    
+
     cj = None
 
     urlopen = urllib2.urlopen
@@ -112,11 +112,11 @@ def Import_ListOfQuotes_KRX(quotes,market='KOREA STOCK EXCHANGE',dlg=None,x=0):
 
     cj = str(cj)
     cookie = cj[cj.find('JSESSIONID'):cj.find(' for eng.krx.co.kr/>]>')]
-    
+
     host = 'eng.krx.co.kr'
 
     url = "/por_eng/corelogic/process/ldr/lst_s_001.xhtml?data-only=true"
-    
+
     headers = { "Host": host
                     , "User-Agent": "Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3 (.NET CLR 3.5.30729)"
                     , "Accept": "text/javascript, text/html, application/xml, text/xml, */*"
@@ -148,11 +148,11 @@ def Import_ListOfQuotes_KRX(quotes,market='KOREA STOCK EXCHANGE',dlg=None,x=0):
     if response.status != 200:
         debug('Import_ListOfQuotes_KRX:status!=200')
         return False
-            
+
     data = response.read()
-    
+
     # returns the data
-   
+
     lines = splitLines(data)
     n = 0
     isin = ''
@@ -169,12 +169,12 @@ def Import_ListOfQuotes_KRX(quotes,market='KOREA STOCK EXCHANGE',dlg=None,x=0):
             name = 'G'+'||'+'R'
         if ticker == '060380':
             name = 'DY S'+'-'+'TEC'
-            
+
         # ok to proceed
-        n = n + 1        
+        n = n + 1
         quotes.addQuote(isin=isin, name=name, ticker=ticker,
                         market=market, currency='KRW', place=place, country='KR')
-    if itrade_config.verbose:            
+    if itrade_config.verbose:
         print 'Imported %d lines from %s data.' % (n,market)
 
     return True
@@ -195,9 +195,9 @@ if __name__=='__main__':
     setLevel(logging.INFO)
 
     from itrade_quotes import quotes
-    
-    Import_ListOfQuotes_LSE(quotes,'KOREA STOCK EXCHANGE')
-    Import_ListOfQuotes_LSE(quotes,'KOREA KOSDAQ EXCHANGE')
+
+    Import_ListOfQuotes_KRX(quotes,'KOREA STOCK EXCHANGE')
+    Import_ListOfQuotes_KRX(quotes,'KOREA KOSDAQ EXCHANGE')
     quotes.saveListOfQuotes()
 
 # ============================================================================

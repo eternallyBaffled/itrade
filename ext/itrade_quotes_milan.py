@@ -75,7 +75,7 @@ def Import_ListOfQuotes_MIL(quotes,market='MILAN EXCHANGE',dlg=None,x=0):
                 return s
         lines = [removeCarriage(l) for l in lines]
         return lines
-    
+
 
     if market=='MILAN EXCHANGE':
         url = "http://www.borsaitaliana.it/bitApp/listino?main_list=1&sub_list=1&service=Results&search=nome&lang=it&target=null&nome="
@@ -83,10 +83,10 @@ def Import_ListOfQuotes_MIL(quotes,market='MILAN EXCHANGE',dlg=None,x=0):
         return False
 
     info('Import_ListOfQuotes_%s:connect to %s' % (market,url))
-    
+
     req = urllib2.Request(url)
     req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
-    
+
     try:
         f = urllib2.urlopen(req)
         data = f.read()
@@ -94,16 +94,16 @@ def Import_ListOfQuotes_MIL(quotes,market='MILAN EXCHANGE',dlg=None,x=0):
     except:
         info('Import_ListOfQuotes_%s:unable to connect :-(' % market)
         return False
-    
+
     # returns the data
     lines = splitLines(data)
-    
+
     n = 0
 
     for line in lines:
         if line.find('a href="/bitApp/listino?target=null&lang=it&service=Detail&from=search&main_list=1&') != -1:
             finalurl = 'http://www.borsaitaliana.it'+line[line.index('/'):line.index('" class="table">')]
-            
+
             req = urllib2.Request(finalurl)
             req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
             try:
@@ -122,14 +122,14 @@ def Import_ListOfQuotes_MIL(quotes,market='MILAN EXCHANGE',dlg=None,x=0):
                     isin = nline[nline.index('"right">')+8:nline.index('</td></tr>')]
                 if nline.find('<b>Codice Alfanumerico<b>') != -1:
                     ticker = nline[nline.index('"right">')+8:nline.index('</td></tr>')]
-                    
+
                     n =  n + 1
                     dlg.Update(x,'BORSA ITALIANA : %d /~350'%n)
-                    
+
                     quotes.addQuote(isin=isin, name=name,
                         ticker=ticker, market=market,
                         currency='EUR', place='MIL', country='IT')
-    if itrade_config.verbose:       
+    if itrade_config.verbose:
         print 'Imported %d lines from %s data.' % (n,market)
 
     return True
@@ -147,7 +147,7 @@ if __name__=='__main__':
     setLevel(logging.INFO)
 
     from itrade_quotes import quotes
-    Import_ListOfQuotes_LSE(quotes,'MILAN EXCHANGE')
+    Import_ListOfQuotes_MIL(quotes,'MILAN EXCHANGE')
     quotes.saveListOfQuotes()
 
 # ============================================================================
