@@ -37,6 +37,10 @@
 
 # python system
 import logging
+import os
+
+import itrade_config
+import itrade_csv
 
 # ============================================================================
 # FeeRule
@@ -45,7 +49,7 @@ import logging
 
 class FeeRule(object):
     def __init__(self,vfee,vmin,vmax,ref,bPercent=False):
-        debug('FeeRule::__init__(): vfee=%.2f vmin=%.2f vmax=%.2f bPercent=%s' %(vfee,vmin,vmax,bPercent))
+        logging.debug('FeeRule::__init__(): vfee=%.2f vmin=%.2f vmax=%.2f bPercent=%s' %(vfee,vmin,vmax,bPercent))
         self.m_fee = vfee
         self.m_min = vmin
         self.m_max = vmax
@@ -86,7 +90,7 @@ class FeeRule(object):
 
 class Fees(object):
     def __init__(self,portfolio):
-        debug('Fees:__init__(%s)' % portfolio)
+        logging.debug('Fees:__init__(%s)' % portfolio)
         self.m_fees = []
         self.m_portfolio = portfolio
         self.m_ref = 0
@@ -110,7 +114,7 @@ class Fees(object):
         itrade_csv.write(outfile,os.path.join(itrade_config.dirUserData,'default.fees.txt'),self.m_operations.values())
 
     def addRule(self,sfee,smin,smax):
-        debug('Fees::add() before: 0:%s , 1:%s , 2:%s' % (sfee,smin,smax))
+        logging.debug('Fees::add() before: 0:%s , 1:%s , 2:%s' % (sfee,smin,smax))
         #info('Fees::add() before: %s' % item)
         if sfee[-1:]=='%':
             bPercent = True
@@ -123,7 +127,7 @@ class Fees(object):
         fee = FeeRule(vfee,vmin,vmax,self.m_ref,bPercent)
         self.m_fees.append(fee)
         self.m_ref = self.m_ref + 1
-        debug('Fees::add() ref=%d after: %s' % (self.m_ref,self.m_fees))
+        logging.debug('Fees::add() ref=%d after: %s' % (self.m_ref,self.m_fees))
         return self.m_ref
 
     def removeRule(self,ref):
@@ -138,7 +142,7 @@ class Fees(object):
 # ============================================================================
 
 if __name__=='__main__':
-    setLevel(logging.INFO)
+    logging.setLevel(logging.INFO)
 
 
 # ============================================================================

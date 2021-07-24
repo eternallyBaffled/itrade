@@ -242,12 +242,6 @@ class LocalMessages(object):
             print "setlocale '%s' : unsupported language - default to french" % l
             return 'fr'
 
-    def getLangDesc(self):
-        if self.isLangSupported(l):
-            return nl_supported[l]
-        else:
-            return '? %s' % self.m_lang
-
     def addMsg(self, m):
         if len(m) != 2:
             # well formed ?
@@ -299,7 +293,6 @@ message = gMessage.getMsg
 msg = gMessage.getMsg
 setLang = gMessage.setLang
 getLang = gMessage.getLang
-getLangDesc = gMessage.getLangDesc
 setLocale = gMessage.setLocale
 getLocale = gMessage.getLocale
 

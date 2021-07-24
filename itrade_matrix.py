@@ -193,6 +193,8 @@ def createMatrix(fn='default',dp=None):
 # ============================================================================
 
 if __name__=='__main__':
+    from itrade_portfolio import loadPortfolio
+
     setLevel(logging.INFO)
 
     print '--- load current portfolio ---'

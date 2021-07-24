@@ -116,10 +116,12 @@ registerListSymbolConnector('ASX','SYD',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_
 # ============================================================================
 
 if __name__=='__main__':
+    import itrade_excel
+
     setLevel(logging.INFO)
 
     from itrade_quotes import quotes
-    
+
     if itrade_excel.canReadExcel:
         Import_ListOfQuotes_ASX(quotes,'ASX')
 

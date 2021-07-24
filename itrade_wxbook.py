@@ -68,7 +68,7 @@ from itrade_wxcurrency import open_iTradeCurrencies
 from itrade_wxabout import iTradeAboutBox
 from itrade_wxhtml import iTradeLaunchBrowser
 from itrade_wxlistquote import list_iTradeQuote
-#from itrade_wxlogin import login_UI
+from itrade_wxlogin import login_UI
 from itrade_wxconnection import connection_UI
 from itrade_wxstops import addOrEditStops_iTradeQuote,removeStops_iTradeQuote
 from itrade_wxmixin import iTrade_wxFrame
