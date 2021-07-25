@@ -186,8 +186,8 @@ itrade_logger.addHandler(_stdoutHandler)
 
 if __name__=='__main__':
     setLevel(logging.INFO)
-    info('information:' + __author__)
-    warning('warning:' + __revision__)
+    info('information:' + itrade_config.__author__)
+    warning('warning:' + itrade_config.__revision__)
     error('error:' + itrade_config.version)
     try:
         a = 0 / 0
