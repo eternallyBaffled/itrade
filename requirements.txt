@@ -1,4 +1,4 @@
-wxpython==3.0.2.0
+# wxpython==3.0.2.0
 feedparser==5.2.1
 matplotlib==2.2.5
 numpy==1.16.6
