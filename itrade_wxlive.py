@@ -67,46 +67,45 @@ import wx.lib.newevent
 # UpdateLiveThread
 # ============================================================================
 
-class UpdateLiveThread:
-
-    def __init__(self,win,quote,sleeptime,param=None):
+class UpdateLiveThread(object):
+    def __init__(self, win, quote, sleeptime, param=None):
         self.m_win = win
         self.m_quote = quote
         self.m_keepGoing = False
         self.m_running = False
         self.m_sleeptime = sleeptime
         self.m_param = param
-        #if itrade_config.verbose:
+        # if itrade_config.verbose:
         #    print 'UpdateLiveThread::__init__(): %s %f %s' % (quote,sleeptime,param)
 
     def Start(self):
         self.m_keepGoing = True
         self.m_running = True
-        thread.start_new_thread(self.Run,(self.m_param,))
-        #if itrade_config.verbose:
+        thread.start_new_thread(self.Run, (self.m_param,))
+        # if itrade_config.verbose:
         #    print 'UpdateLiveThread::Start(): %s %f %s' % (self.m_quote,self.m_sleeptime,self.m_param)
 
     def Stop(self):
         self.m_keepGoing = False
-        #if itrade_config.verbose:
+        # if itrade_config.verbose:
         #    print 'UpdateLiveThread::Stop(): %s %f %s' % (self.m_quote,self.m_sleeptime,self.m_param)
 
     def IsRunning(self):
         return self.m_running
 
-    def Run(self,p):
+    def Run(self, p):
         # initial delay is random
-        time.sleep(random.randint(0,self.m_sleeptime))
+        time.sleep(random.randint(0, self.m_sleeptime))
 
         while (self.m_keepGoing):
-            #if itrade_config.verbose:
+            # if itrade_config.verbose:
             #    print 'UpdateLiveThread::Run(): %s %f %s' % (self.m_quote,self.m_sleeptime,self.m_param)
 
             # update live information
             itrade_import.liveupdate_from_internet(self.m_quote)
             if self.m_keepGoing:
-                evt = UpdateLiveEvent(quote=self.m_quote,param=p)
-                if self.m_win: wx.PostEvent(self.m_win,evt)
+                evt = UpdateLiveEvent(quote=self.m_quote, param=p)
+                if self.m_win: wx.PostEvent(self.m_win, evt)
 
             if self.m_keepGoing:
                 time.sleep(self.m_sleeptime)
@@ -117,14 +116,14 @@ class UpdateLiveThread:
 # iTrade_wxLiveMixin
 # ============================================================================
 
-class iTrade_wxLiveMixin:
+class iTrade_wxLiveMixin(object):
     def __init__(self):
         self.m_threads = {}
 
-    def registerLive(self,quote,sleeptime,param=None):
-        self.m_threads[quote.key()] = UpdateLiveThread(self,quote,sleeptime,param)
+    def registerLive(self, quote, sleeptime, param=None):
+        self.m_threads[quote.key()] = UpdateLiveThread(self, quote, sleeptime, param)
 
-    def unregisterLive(self,quote=None):
+    def unregisterLive(self, quote=None):
         if quote:
             key = quote.key()
             if self.m_threads.has_key(key):
@@ -132,49 +131,51 @@ class iTrade_wxLiveMixin:
         else:
             self.m_threads = {}
 
-    def startLive(self,quote=None):
+    def startLive(self, quote=None):
         if quote:
             # start live only for one quote
             key = quote.key()
             if self.m_threads.has_key(key):
-                #if itrade_config.verbose:
+                # if itrade_config.verbose:
                 #    print 'wxLiveMixin::startLive : %s' % key
                 t = self.m_threads[key]
                 if not t.IsRunning():
                     t.Start()
             else:
                 if itrade_config.verbose:
-                    print 'wxLiveMixin::startLive : %s UNKNOWN KEY' % key
+                    print
+                    'wxLiveMixin::startLive : %s UNKNOWN KEY' % key
         else:
-            #if itrade_config.verbose:
+            # if itrade_config.verbose:
             #    print 'wxLiveMixin::startLive : %d threads' % len(self.m_threads.values())
             # start live for all registered quotes
             for t in self.m_threads.values():
                 if not t.IsRunning():
                     t.Start()
 
-    def isRunning(self,quote):
+    def isRunning(self, quote):
         key = quote.key()
         if self.m_threads.has_key(key):
             return self.m_threads[key].IsRunning()
         else:
             return False
 
-    def stopLive(self,quote=None,bBusy=False):
+    def stopLive(self, quote=None, bBusy=False):
         if quote:
             # stop live only for one quote
             key = quote.key()
             if self.m_threads.has_key(key):
-                #if itrade_config.verbose:
+                # if itrade_config.verbose:
                 #    print 'wxLiveMixin::stopLive : %s' % key
                 t = self.m_threads[key]
                 if t.IsRunning():
                     t.Stop()
             else:
                 if itrade_config.verbose:
-                    print 'wxLiveMixin::stopLive : %s UNKNOWN KEY' % key
+                    print
+                    'wxLiveMixin::stopLive : %s UNKNOWN KEY' % key
         else:
-            #if itrade_config.verbose:
+            # if itrade_config.verbose:
             #    print 'wxLiveMixin::stopLive : %d threads ---[' % len(self.m_threads.values())
             if len(self.m_threads.values()):
                 # stop live for all registered quotes
@@ -195,16 +196,15 @@ class iTrade_wxLiveMixin:
                             running = running + t.IsRunning()
 
                         time.sleep(0.1)
-            #if itrade_config.verbose:
+            # if itrade_config.verbose:
             #    print '] --- stopLive'
 
 # ============================================================================
 # UpdateLiveCurrencyThread
 # ============================================================================
 
-class UpdateLiveCurrencyThread:
-
-    def __init__(self,win,key,sleeptime,param=None):
+class UpdateLiveCurrencyThread(object):
+    def __init__(self, win, key, sleeptime, param=None):
         self.m_win = win
         self.m_key = key
         self.m_curTo = key[:3]
@@ -213,37 +213,37 @@ class UpdateLiveCurrencyThread:
         self.m_running = False
         self.m_sleeptime = sleeptime
         self.m_param = param
-        #if itrade_config.verbose:
+        # if itrade_config.verbose:
         #    print 'UpdateLiveCurrencyThread::__init__(): %s %f %s' % (key,sleeptime,param)
 
     def Start(self):
         self.m_keepGoing = True
         self.m_running = True
-        thread.start_new_thread(self.Run,(self.m_param,))
-        #if itrade_config.verbose:
+        thread.start_new_thread(self.Run, (self.m_param,))
+        # if itrade_config.verbose:
         #    print 'UpdateLiveCurrencyThread::Start(): %s %f %s' % (self.m_key,self.m_sleeptime,self.m_param)
 
     def Stop(self):
         self.m_keepGoing = False
-        #if itrade_config.verbose:
+        # if itrade_config.verbose:
         #    print 'UpdateLiveCurrencyThread::Stop(): %s %f %s' % (self.m_key,self.m_sleeptime,self.m_param)
 
     def IsRunning(self):
         return self.m_running
 
-    def Run(self,p):
+    def Run(self, p):
         # initial delay is random
-        time.sleep(random.randint(0,self.m_sleeptime))
+        time.sleep(random.randint(0, self.m_sleeptime))
 
         while (self.m_keepGoing):
-            #if itrade_config.verbose:
+            # if itrade_config.verbose:
             #    print 'UpdateLiveCurrencyThread::Run(): %s %f %s' % (self.m_key,self.m_sleeptime,self.m_param)
 
             # update live information
-            itrade_currency.currencies.get(self.m_curTo,self.m_curFrom)
+            itrade_currency.currencies.get(self.m_curTo, self.m_curFrom)
             if self.m_keepGoing:
-                evt = UpdateLiveCurrencyEvent(key=self.m_key,param=p)
-                if self.m_win: wx.PostEvent(self.m_win,evt)
+                evt = UpdateLiveCurrencyEvent(key=self.m_key, param=p)
+                if self.m_win: wx.PostEvent(self.m_win, evt)
 
             if self.m_keepGoing:
                 time.sleep(self.m_sleeptime)
@@ -254,34 +254,35 @@ class UpdateLiveCurrencyThread:
 # iTrade_wxLiveCurrencyMixin
 # ============================================================================
 
-class iTrade_wxLiveCurrencyMixin:
+class iTrade_wxLiveCurrencyMixin(object):
     def __init__(self):
         self.m_threads = {}
 
-    def registerLiveCurrency(self,key,sleeptime,param=None):
-        self.m_threads[key] = UpdateLiveCurrencyThread(self,key,sleeptime,param)
+    def registerLiveCurrency(self, key, sleeptime, param=None):
+        self.m_threads[key] = UpdateLiveCurrencyThread(self, key, sleeptime, param)
 
-    def unregisterLiveCurrency(self,key=None):
+    def unregisterLiveCurrency(self, key=None):
         if key:
             if self.m_threads.has_key(key):
                 del self.m_threads[key]
         else:
             self.m_threads = {}
 
-    def startLiveCurrency(self,key=None):
+    def startLiveCurrency(self, key=None):
         if key:
             # start live only for one currency
             if self.m_threads.has_key(key):
-                #if itrade_config.verbose:
+                # if itrade_config.verbose:
                 #    print 'startLive Currency : %s' % key
                 t = self.m_threads[key]
                 if not t.IsRunning():
                     t.Start()
             else:
                 if itrade_config.verbose:
-                    print 'startLive Currency : %s UNKNOWN KEY' % key
+                    print
+                    'startLive Currency : %s UNKNOWN KEY' % key
         else:
-            #if itrade_config.verbose:
+            # if itrade_config.verbose:
             #    print 'startLive Currency : %d threads' % len(self.m_threads.values())
 
             # start live for all registered currencies
@@ -289,26 +290,27 @@ class iTrade_wxLiveCurrencyMixin:
                 if not t.IsRunning():
                     t.Start()
 
-    def isRunningCurrency(self,key):
+    def isRunningCurrency(self, key):
         if self.m_threads.has_key(key):
             return self.m_threads[key].IsRunning()
         else:
             return False
 
-    def stopLiveCurrency(self,key=None,bBusy=False):
+    def stopLiveCurrency(self, key=None, bBusy=False):
         if key:
             # stop live only for one currency
             if self.m_threads.has_key(key):
-                #if itrade_config.verbose:
+                # if itrade_config.verbose:
                 #    print 'stopLive Currency : %s' % key
                 t = self.m_threads[key]
                 if t.IsRunning():
                     t.Stop()
             else:
                 if itrade_config.verbose:
-                    print 'stopLive Currency : %s UNKNOWN KEY' % key
+                    print
+                    'stopLive Currency : %s UNKNOWN KEY' % key
         else:
-            #if itrade_config.verbose:
+            # if itrade_config.verbose:
             #    print 'stopLive Currency : %d threads ---[' % len(self.m_threads.values())
 
             if len(self.m_threads.values()):
@@ -330,7 +332,7 @@ class iTrade_wxLiveCurrencyMixin:
                             running = running + t.IsRunning()
 
                         time.sleep(0.1)
-            #if itrade_config.verbose:
+            # if itrade_config.verbose:
             #    print '] --- stopLive Currency'
 
 # ============================================================================

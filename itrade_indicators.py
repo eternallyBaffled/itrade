@@ -32,7 +32,7 @@
 # ============================================================================
 
 
-class BasicIndicator:
+class BasicIndicator(object):
     def __init__(self, name):
         self.m_name = name
 

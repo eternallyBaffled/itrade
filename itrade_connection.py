@@ -301,21 +301,21 @@ class ITradeConnection(object):
 # ITradeCookies
 # ============================================================================
 
-class ITradeCookies:
+class ITradeCookies(object):
     """Simple cookie repository"""
 
     def __init__(self):
-        self.m_locker=Lock()
-        self.m_cookie=""
+        self.m_locker = Lock()
+        self.m_cookie = ""
 
     def set(self, cookieString):
         """Set a new Cookie"""
         self.m_locker.acquire()
         try:
             if self.m_cookie:
-                self.m_cookie='%s;%s' % (self.m_cookie, cookieString)
+                self.m_cookie = '%s;%s' % (self.m_cookie, cookieString)
             else:
-                self.m_cookie=cookieString
+                self.m_cookie = cookieString
         finally:
             logging.debug("now cookie is %s" % self.m_cookie)
             self.m_locker.release()
