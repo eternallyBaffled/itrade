@@ -3,6 +3,7 @@ A collection of modules for collecting, analyzing and plotting
 financial data.   User contributions welcome!
 
 """
+# flake8: noqa
 #from __future__ import division
 import os, time, warnings
 from urllib import urlopen

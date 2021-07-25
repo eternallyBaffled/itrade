@@ -15,7 +15,8 @@ Modified:       Dec 8, 2000 (added file i/o)
 Uses some syntax conventions unique to Python 2.0 but
 these are easily removed for older versions of Python
 """
- 
+# flake8: noqa
+
 import string,os
 from binascii import hexlify, unhexlify
 
@@ -26,7 +27,7 @@ def testbf():
     Test this implementation of the Blowfish algorithm against
     a set of test vectors (key, plaintext, ciphertext listings)
     """
-    
+
     # change or remove path to testvectors file if necessary
     testvectors = open(r"ocn/bftstdata.txt",'r')
     for testdata in testvectors.readlines():
@@ -45,25 +46,25 @@ def testbf():
             testresult = "BAD"
 
         # Print outcomes, stripping L off long hex integers
-        
+
         print "Plaintext: %s          Target: %s" % (
               plaintext,ciphertext)
         print "Decrypted: %s      Ciphertext: %s  %s\n" % (
               decrypted, computext, testresult)
 
     testvectors.close()
-    
+
 def bfencrypt(x):
     """
     Main encryption algorithm -- depends on subkeys
     having already been generated from key using
     initialize()
     """
-    
+
     # Divide 64-bit chunk into left and right halves
     xL = x>>32
     xR = x & 0xFFFFFFFFL
-    
+
     # 16-round Feistel network
     for i in range(16):
        xL = xL ^ parray[i]  # XOR with P-box
@@ -83,8 +84,8 @@ def bfdecrypt(x):
     Main decryption algorithm -- same algorithm
     as encrypt, but in reverse order
     """
-    
-    # Divide 64-bit chunk into left and right halves    
+
+    # Divide 64-bit chunk into left and right halves
     xL = x>>32
     xR = x & 0xFFFFFFFFL
 
@@ -97,9 +98,9 @@ def bfdecrypt(x):
     # Reverse most recent swap
     xR,xL = xL,xR
 
-    # XOR using first two P-boxes       
+    # XOR using first two P-boxes
     xR = xR ^ parray[1]
-    xL = xL ^ parray[0]   
+    xL = xL ^ parray[0]
     return (xL<<32) | xR
 
 def F(xL):
@@ -120,19 +121,19 @@ def initialize(key):
     to set p and s boxes.  key is a hex number corresponding
     to a string of 32 up to 448 1s and 0s -- keylen says
     how long
-    """    
+    """
     loadhexpi()
-    
+
     hexkey = hex(key)[2:]
     if hexkey[-1]=='L':
        hexkey = hexkey[:-1]
 
     if len(hexkey)%2==1:
         hexkey = '0'+hexkey
-        
-    lenkey = len(hexkey)/8    
+
+    lenkey = len(hexkey)/8
     if lenkey==0:  pos=0
-        
+
     # XOR key segments with P-boxes
     for i in range(18):
         if lenkey>0:
@@ -146,7 +147,7 @@ def initialize(key):
         output = bfencrypt(output)
         parray[i], parray[i+1] = output>>32, output & 0xFFFFFFFFL
 
-    # re-encrypt and reassign through all the S-boxes        
+    # re-encrypt and reassign through all the S-boxes
     for i in range(4):
         for j in range(0,255,2):
             output = bfencrypt(output)
@@ -162,53 +163,53 @@ def encrypt(filename,key=5333772633003566340333184962382L):
     For testing purposes, key = 'CRYPTONOMICON' in hex
     (set above as long decimal integer) -- 13 bytes = 104 bits
     """
-    
+
     encfile = filename[:string.rfind(filename,".")]+".cpt"
     keyfile = filename[:string.rfind(filename,".")]+".key"
-    
+
     encfilesize = os.stat(filename)[6]
     print "File size: %s bytes" % encfilesize
-    
-    plnfileobj = open(filename,'rb')    
+
+    plnfileobj = open(filename,'rb')
     encfileobj = open(encfile,'wb')
-    keyfileobj = open(keyfile,'w')    
+    keyfileobj = open(keyfile,'w')
 
     initialize(key)
-    
+
     instring = plnfileobj.read()
     blocks = len(instring)/8
     padding = (blocks + 1)*8 - encfilesize
     instring = instring + padding * chr(padding)
     print "Padding with %s bytes" % padding
     print "New file size: %s" % len(instring)
-    
+
     outstring = ""
 
-    print "Encrypting..."    
+    print "Encrypting..."
     for i in range(blocks+1):
         inbytes   = mkchunk(instring[i*8:i*8+8]) # 8-byte string as hex no.
         cipher    = bfencrypt(inbytes)     # ...encrypted
         outbytes  = mkbytes(cipher)
         outstring = outstring + outbytes   # and appended
 
-    print "Writing to file: %s bytes" % len(outstring)            
+    print "Writing to file: %s bytes" % len(outstring)
     encfileobj.write(outstring)
     keyfileobj.write(hex(key)+","+str(keylen))
 
     plnfileobj.close()
     encfileobj.close()
     keyfileobj.close()
-    
+
 def decrypt(filename):
     """
     Use a codekey to decrypt a file (see encrypt)
     """
 
-    plnfile  = filename[:string.rfind(filename,".")]+".dcp"    
+    plnfile  = filename[:string.rfind(filename,".")]+".dcp"
     keyfile  = filename[:string.rfind(filename,".")]+".key"
-    
+
     encfileobj = open(filename,'rb')
-    plnfileobj = open(plnfile,'wb')    
+    plnfileobj = open(plnfile,'wb')
     keyfileobj = open(keyfile,'r')
 
     encfilesize = os.stat(filename)[6]
@@ -216,7 +217,7 @@ def decrypt(filename):
     print "Reading from " + filename
     print "Writing to " + plnfile
     print "Using key " + keyfile
-        
+
     line = keyfileobj.readline()  # this file is a one-liner
     values = string.split(line,",")
     key = eval(values[0])
@@ -225,12 +226,12 @@ def decrypt(filename):
     initialize(key)
 
     outstring = ""
-    
+
     instring = encfileobj.read(encfilesize)
 
     print "Decrypting..."
     for i in range(encfilesize/8):
-        inbytes   = mkchunk(instring[i*8:i*8+8]) # 8-byte string as hex no.        
+        inbytes   = mkchunk(instring[i*8:i*8+8]) # 8-byte string as hex no.
         plain     = bfdecrypt(inbytes)           # ...decrypted
         outbytes  = mkbytes(plain)
         outstring = outstring+outbytes           # and appended
@@ -241,7 +242,7 @@ def decrypt(filename):
 
     plnfileobj.write(outstring)
     print "Writing file: %s bytes" % len(outstring)
-    
+
     encfileobj.close()
     plnfileobj.close()
     keyfileobj.close()
@@ -261,7 +262,7 @@ def mkbytes(input):
     outstr=""
     instr = (('0'*16)+hex(input)[2:-1])[-16:]
     return unhexlify(instr)
-        
+
 """
    =============================================================
    The hex digits of pi, arranged as four s_boxes & one p_array,
@@ -269,12 +270,12 @@ def mkbytes(input):
    Young's set of test vectors. Enjoy.  -Mike Schaudies
    =============================================================
 
-   Format modified for use in pure Python by K. Urner, Nov 2000.   
+   Format modified for use in pure Python by K. Urner, Nov 2000.
 """
 
 def loadhexpi():
     global sbox, parray
-    
+
     sbox[0] = [
       0xd1310ba6L, 0x98dfb5acL, 0x2ffd72dbL, 0xd01adfb7L, 0xb8e1afedL, 0x6a267e96L,
       0xba7c9045L, 0xf12c7f99L, 0x24a19947L, 0xb3916cf7L, 0x0801f2e2L, 0x858efc16L,
@@ -454,7 +455,7 @@ def loadhexpi():
       0x85cbfe4eL, 0x8ae88dd8L, 0x7aaaf9b0L, 0x4cf9aa7eL, 0x1948c25cL, 0x02fb8a8cL,
       0x01c36ae4L, 0xd6ebe1f9L, 0x90d4f869L, 0xa65cdea0L, 0x3f09252dL, 0xc208e69fL,
       0xb74e6132L, 0xce77e25bL, 0x578fdfe3L, 0x3ac372e6L]
- 
+
     parray = [
       0x243f6a88L, 0x85a308d3L, 0x13198a2eL, 0x03707344L, 0xa4093822L, 0x299f31d0L,
       0x082efa98L, 0xec4e6c89L, 0x452821e6L, 0x38d01377L, 0xbe5466cfL, 0x34e90c6cL,
