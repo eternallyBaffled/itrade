@@ -983,7 +983,6 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
         self.m_curpage = page
         page = self.init(quote,page,fromInit=True)
         wx.EVT_NOTEBOOK_PAGE_CHANGED(self, self.GetId(), self.OnPageChanged)
-        wx.EVT_NOTEBOOK_PAGE_CHANGING(self, self.GetId(), self.OnPageChanging)
         self.SetSelection(page)
 
     def portfolio(self):
@@ -1002,16 +1001,6 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
             if new >= 0:
                 self.m_curpage = new
                 self.win[new].InitPage()
-        event.Skip()
-
-    def OnPageChanging(self, event):
-        # not used - only for traces
-        if 0:
-            old = event.GetOldSelection()
-            new = event.GetSelection()
-            sel = self.GetSelection()
-            if itrade_config.verbose:
-                print 'QuoteNotebookWindow::OnPageChanging: old=%d new=%d sel=%d' % (old, new, sel)
         event.Skip()
 
     def init(self,nquote=None,page=0,fromInit=False):

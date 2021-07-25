@@ -92,8 +92,7 @@ class Import_ABCBourse(object):
     def getstate(self):
         # check we have a connection
         if not self.m_conn:
-            raise('Import_ABCBourse:no connection')
-            return None
+            raise Exception('Import_ABCBourse:no connection')
 
         # init headers
         headers = { "Keep-Alive":300, "Accept-Charset:":"ISO-8859-1", "Accept-Language": "en-us,en", "Accept": "text/html,text/plain", "Connection": "keep-alive", "Host": self.m_host }
@@ -127,12 +126,10 @@ class Import_ABCBourse(object):
     def getdata(self,quote,datedebut=None,datefin=None):
         # check we have a connection
         if not self.m_conn:
-            raise('Import_ABCBourse:no connection / missing connect() call !')
-            return None
+            raise Exception('Import_ABCBourse:no connection / missing connect() call !')
         # check we have a viewstate
         if not self.m_viewstate:
-            raise('Import_ABCBourse:no viewstate / missing getstate() call !')
-            return None
+            raise Exception('Import_ABCBourse:no viewstate / missing getstate() call !')
 
         if not datefin:
             datefin = date.today()

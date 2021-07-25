@@ -582,8 +582,7 @@ class LiveUpdate_fortuneo(object):
     def getdata(self,quote):
         # check we have a connection
         if not self.m_conn:
-            raise('LiveUpdate_fortuneo:no connection / missing connect() call !')
-            return None
+            raise Exception('LiveUpdate_fortuneo:no connection / missing connect() call !')
 
         #info("LiveUpdate_fortuneo:getdata quote:%s " % quote)
 
