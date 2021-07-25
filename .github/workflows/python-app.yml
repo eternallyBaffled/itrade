@@ -34,7 +34,7 @@ jobs:
       run: |
         # pinning pip to v20 for now, as v21 will drop suport for py2
         # python -m pip install --upgrade pip
-        python -m pip install
+        python -m pip install pip@20.3
         pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Lint with flake8
