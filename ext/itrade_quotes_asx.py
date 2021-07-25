@@ -122,12 +122,9 @@ if __name__=='__main__':
 
     from itrade_quotes import quotes
 
-    if itrade_excel.canReadExcel:
-        Import_ListOfQuotes_ASX(quotes,'ASX')
+    Import_ListOfQuotes_ASX(quotes,'ASX')
 
-        quotes.saveListOfQuotes()
-    else:
-        print 'XLRD package not installed :-('
+    quotes.saveListOfQuotes()
 
 # ============================================================================
 # That's all folks !
