@@ -17,7 +17,8 @@ jobs:
     strategy:
       matrix:
 #        os: [ubuntu-latest, windows-latest, macOs-latest]
-        os: [ubuntu-latest, macOs-latest]
+        os: [ubuntu-latest]
+        # yes, I'm aware this is old, making this stuff ready for py3 ... eventually
         python-version: [2.7]
 
     steps:
@@ -26,9 +27,14 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
+    - name: Install wxPython
+      run: |
+        sudo apt-get -y install python-wxgtk3.0
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
+        # pinning pip to v20 for now, as v21 will drop suport for py2
+        # python -m pip install --upgrade pip
+        python -m pip@20 install
         pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Lint with flake8
