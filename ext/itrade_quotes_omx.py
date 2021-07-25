@@ -69,7 +69,7 @@ def Import_ListOfQuotes_OMX(quotes,market='STOCKHOLM EXCHANGE',dlg=None,x=0):
     # find url to update list
     ch ='href="/digitalAssets/'
     try:
-        url = connection.getDataFromUrl('http://www.nasdaqomxnordic.com/shares?languadeID=1')
+        url = connection.getDataFromUrl('https://www.nasdaqomxnordic.com/shares?languadeID=1')
     except:
         info('Import_ListOfQuotes_OMX_%s:unable to get XLS file name :-(' % market)
         return False
@@ -82,7 +82,7 @@ def Import_ListOfQuotes_OMX(quotes,market='STOCKHOLM EXCHANGE',dlg=None,x=0):
         return False
 
 
-    url = "http://www.nasdaqomxnordic.com/digitalAssets/" + endurl
+    url = "https://www.nasdaqomxnordic.com/digitalAssets/" + endurl
     if market=='STOCKHOLM EXCHANGE':
         m_place='STO'
         country='SE'
@@ -112,7 +112,7 @@ def Import_ListOfQuotes_OMX(quotes,market='STOCKHOLM EXCHANGE',dlg=None,x=0):
     except:
         info('Import_ListOfQuotes_OMX_%s:unable to connect :-(' % market)
         return False
-    
+
     # returns the data
     book = itrade_excel.open_excel(file=None,content=data)
     sh = book.sheet_by_index(1)
@@ -144,7 +144,7 @@ def Import_ListOfQuotes_OMX(quotes,market='STOCKHOLM EXCHANGE',dlg=None,x=0):
 
                 if place == m_place :
                     if place == 'CPH' : place = 'CSE'
-                    
+
                     isin=sh.cell_value(line,iISIN)
 
                     ticker = sh.cell_value(line,iTicker)
@@ -172,7 +172,7 @@ def Import_ListOfQuotes_OMX(quotes,market='STOCKHOLM EXCHANGE',dlg=None,x=0):
                     name = name.replace('Ö','O')
                     name = name.replace('ü','u')
                     name = name.replace(',',' ')
-                    
+
                     currency=sh.cell_value(line,iCurrency)
                     quotes.addQuote(isin = isin,name = name,ticker = ticker,market = market,currency=currency,place=place,country=country)
 

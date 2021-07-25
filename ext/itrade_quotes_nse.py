@@ -69,8 +69,8 @@ def Import_ListOfQuotes_NSE(quotes,market='NATIONAL EXCHANGE OF INDIA',dlg=None,
                                )
 
     if market=='NATIONAL EXCHANGE OF INDIA':
-        
-        url = "http://www.nseindia.com/content/equities/EQUITY_L.csv"
+
+        url = "https://www.nseindia.com/content/equities/EQUITY_L.csv"
     else:
         return False
 
@@ -87,7 +87,7 @@ def Import_ListOfQuotes_NSE(quotes,market='NATIONAL EXCHANGE OF INDIA',dlg=None,
 
     info('Import_ListOfQuotes_NSE:connect to %s' % url)
 
-    url = 'http://www.nseindia.com/content/equities/EQUITY_L.csv'
+    url = 'https://www.nseindia.com/content/equities/EQUITY_L.csv'
 
     host = 'www.nseindia.com'
 
@@ -100,7 +100,7 @@ def Import_ListOfQuotes_NSE(quotes,market='NATIONAL EXCHANGE OF INDIA',dlg=None,
                 , "Keep-Alive":115
                 , "Connection": "keep-alive"
                 }
-    
+
     try:
         conn = httplib.HTTPConnection(host,80)
         conn.request("GET",url,None,headers)
@@ -113,14 +113,14 @@ def Import_ListOfQuotes_NSE(quotes,market='NATIONAL EXCHANGE OF INDIA',dlg=None,
     if response.status != 200:
         debug('Import_ListOfQuotes_NSE:status!=200')
         return False
-    
+
     data =response.read()
 
     # returns the data
     lines = splitLines(data)
-    
+
     response.close()
-    
+
     nlines = 0
 
     for line in lines[1:]:

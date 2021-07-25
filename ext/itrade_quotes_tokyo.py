@@ -66,7 +66,7 @@ def Import_ListOfQuotes_TKS(quotes,market='TOKYO EXCHANGE',dlg=None,x=0):
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
     if market=='TOKYO EXCHANGE':
-        url = "http://www.tse.or.jp/english/index.html"
+        url = "https://www.tse.or.jp/english/index.html"
     else:
         return False
 
@@ -97,7 +97,7 @@ def Import_ListOfQuotes_TKS(quotes,market='TOKYO EXCHANGE',dlg=None,x=0):
                 , "Accept-Charset": "ISO-8859-1,utf-8;q=0.7,*;q=0.7"
                 , "Keep-Alive":300
                 , "Connection": "keep-alive"
-                , "Referer": "http://quote.tse.or.jp/tse/quote.cgi?F=listing/Ecs00"
+                , "Referer": "https://quote.tse.or.jp/tse/quote.cgi?F=listing/Ecs00"
                    }
 
 
@@ -115,13 +115,13 @@ def Import_ListOfQuotes_TKS(quotes,market='TOKYO EXCHANGE',dlg=None,x=0):
         data = response.read()
         lines = splitLines(data)
         response.close()
-        
+
         #typical lines
 
         #<td valign="top" bgcolor="#FFFFE0"><font size="2"><a href="quote.cgi?F=listing/EDetail1&MKTN=T&QCODE=3086" target="_top" class="lst">J.FRONT RETAILING CO., LTD.</a></font></td>
 
         q = 0
-        
+
         for line in lines:
 
             if ch in line :
@@ -133,9 +133,9 @@ def Import_ListOfQuotes_TKS(quotes,market='TOKYO EXCHANGE',dlg=None,x=0):
                 name = name.replace('  ',' ')
                 name = name.replace('¥',' - ')
                 # ok to proceed
-                
+
                 dlg.Update(x,'TSE : %s /~2370'%cursor)
-                
+
                 quotes.addQuote(isin = '',name = name,
                         ticker = ticker,market= 'TOKYO EXCHANGE',currency = 'JPY',
                         place = 'TKS',country = 'JP')

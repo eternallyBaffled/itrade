@@ -63,7 +63,7 @@ def Import_ListOfQuotes_WBO(quotes,market='WIENER BORSE',dlg=None,x=0):
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
     if market=='WIENER BORSE':
-        url = "http://en.wienerborse.at/marketplace_products/trading/auction/?query=&markets=A_G_D&market=all"
+        url = "https://en.wienerborse.at/marketplace_products/trading/auction/?query=&markets=A_G_D&market=all"
 
     else:
 
@@ -96,7 +96,7 @@ def Import_ListOfQuotes_WBO(quotes,market='WIENER BORSE',dlg=None,x=0):
     i = 0
 
     for line in lines:
-        
+
         #typical lines:
         #<td class="left">AT00000ATEC9</td>
         #<td class="left">ATEC</td>
@@ -104,13 +104,13 @@ def Import_ListOfQuotes_WBO(quotes,market='WIENER BORSE',dlg=None,x=0):
         #<td class="left">08:55</td>
         #<td class="left">12:00</td>
         #<td class="left">17:30</td>
-        
+
         # extract data
 
         if '<th colspan="6"><b>Prime Market.at</b></th>' in line : n = 0
 
         if n == 0 :
-            
+
             if '<td class="left">' in line :
                 i = i + 1
                 ch = line[(line.find('>')+1):(line.find ('</td>'))]
@@ -125,18 +125,18 @@ def Import_ListOfQuotes_WBO(quotes,market='WIENER BORSE',dlg=None,x=0):
                     name = name.replace('Ö','O')#\xd6
                     name = name.replace('ü','u')#\xfc
                     name = name.replace('ß','?')#\xdf
-                    
+
                 elif i == 6 :
                     i = 0
-                    
+
                     #print isin, name, ticker
-                            
+
                     # ok to proceed
-                            
+
                     quotes.addQuote(isin = isin,name = name,
                             ticker = ticker,market= market,currency = 'EUR',
                             place = 'WBO',country = 'AT')
-                    
+
                     count = count + 1
 
     if itrade_config.verbose:

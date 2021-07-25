@@ -106,7 +106,7 @@ class ITradeConnection(object):
     def put(self, url, header=None, data=None):
         """Put a request to url with data parameters (for POST request only).
         No data imply GET request
-        @param url: a complete url like http://www.somehost.com/somepath/somepage
+        @param url: a complete url like https://www.somehost.com/somepath/somepage
         @param header: addon headers for connection (optional, default is None)
         @param data: dictionary of parameters for POST (optional, default is None)"""
 

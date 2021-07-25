@@ -226,13 +226,13 @@ class iTradeAboutBox(wx.Dialog):
         elif clicked == 'Authors':
             self.gotoInternetUrl(itrade_config.softwareWebsite+'contact.htm')
         elif clicked == 'Python':
-            self.gotoInternetUrl('http://www.python.org')
+            self.gotoInternetUrl('https://www.python.org')
         elif clicked == 'wxPython':
-            self.gotoInternetUrl('http://wxpython.org')
+            self.gotoInternetUrl('https://wxpython.org')
         elif clicked == 'NumPy':
-            self.gotoInternetUrl('http://numpy.sourceforge.net')
+            self.gotoInternetUrl('https://numpy.sourceforge.net')
         elif clicked == 'Matplotlib':
-            self.gotoInternetUrl('http://matplotlib.sourceforge.net')
+            self.gotoInternetUrl('https://matplotlib.sourceforge.net')
         elif clicked == 'Mail':
             self.gotoInternetUrl('mailto:dgil@ieee.org')
         elif clicked == 'LICENSE':

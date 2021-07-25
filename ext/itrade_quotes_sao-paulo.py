@@ -66,13 +66,13 @@ def Import_ListOfQuotes_SAO(quotes,market='SAO PAULO EXCHANGE',dlg=None,x=0):
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
 
-    
+
     if market == 'SAO PAULO EXCHANGE':
-        url ='http://www.bmfbovespa.com.br/suplemento/ExecutaAcaoDownload.asp?arquivo=Securities_Traded.zip'
+        url ='https://www.bmfbovespa.com.br/suplemento/ExecutaAcaoDownload.asp?arquivo=Securities_Traded.zip'
         currency = 'BRL'
         place = 'SAO'
         country = 'BR'
-        
+
     else:
         return False
 
@@ -88,7 +88,7 @@ def Import_ListOfQuotes_SAO(quotes,market='SAO PAULO EXCHANGE',dlg=None,x=0):
         return lines
 
     info('Import_ListOfQuotes_BOVESPA_%s:connect to %s' % (market,url))
-    
+
     try:
         urllib.urlretrieve(url,'Securities_Traded.zip')
         zfile = zipfile.ZipFile('Securities_Traded.zip')
@@ -96,9 +96,9 @@ def Import_ListOfQuotes_SAO(quotes,market='SAO PAULO EXCHANGE',dlg=None,x=0):
     except:
         debug('Import_ListOfQuotes_BOVESPA:unable to connect :-(')
         return False
-    
+
     # returns the data
-    
+
     lines = splitLines(data)
 
     n = 0
@@ -121,12 +121,12 @@ def Import_ListOfQuotes_SAO(quotes,market='SAO PAULO EXCHANGE',dlg=None,x=0):
             if bdi_code == '002':
                 n= n + 1
                 quotes.addQuote(isin = isin,name = short_name+'-'+specific_code,ticker = ticker,market = market,currency = currency,place = place,country = country)
-    if itrade_config.verbose:                
+    if itrade_config.verbose:
         print 'Imported %d lines from %s data.' % (n,market)
-    
+
     zfile.close()
     os.remove('Securities_Traded.zip')
-    
+
     return True
 
 # ============================================================================
@@ -134,7 +134,7 @@ def Import_ListOfQuotes_SAO(quotes,market='SAO PAULO EXCHANGE',dlg=None,x=0):
 # ============================================================================
 
 registerListSymbolConnector('SAO PAULO EXCHANGE','SAO',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_SAO)
-    
+
 # ============================================================================
 # Test ME
 # ============================================================================

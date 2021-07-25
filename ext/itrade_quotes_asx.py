@@ -66,7 +66,7 @@ def Import_ListOfQuotes_ASX(quotes,market='ASX',dlg=None,x=0):
                                )
 
     if market=='ASX':
-        url = "http://www.asx.com.au/asx/research/ASXListedCompanies.csv"
+        url = "https://www.asx.com.au/asx/research/ASXListedCompanies.csv"
         n = 0
     else:
         return False

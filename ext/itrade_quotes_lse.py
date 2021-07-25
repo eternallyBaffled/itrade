@@ -68,11 +68,11 @@ def Import_ListOfQuotes_LSE(quotes,market='LSE SETS',dlg=None,x=0):
     import xlrd
 
     if market=='LSE SETS':
-        url = 'http://www.londonstockexchange.com/products-and-services/trading-services/sets/list-sets.xls'
+        url = 'https://www.londonstockexchange.com/products-and-services/trading-services/sets/list-sets.xls'
     elif market=='LSE SETSqx':
-        url = 'http://www.londonstockexchange.com/products-and-services/trading-services/setsqx/ccp-securities.xls'
+        url = 'https://www.londonstockexchange.com/products-and-services/trading-services/setsqx/ccp-securities.xls'
     elif market=='LSE SEAQ':
-        url = 'http://www.londonstockexchange.com/products-and-services/trading-services/seaq/list-seaq.xls'
+        url = 'https://www.londonstockexchange.com/products-and-services/trading-services/seaq/list-seaq.xls'
     else:
         return False
 
@@ -130,7 +130,7 @@ def Import_ListOfQuotes_LSE(quotes,market='LSE SETS',dlg=None,x=0):
                 if type(ticker)==float: ticker='%s' % ticker
                 if ticker[-1:]=='.':
                     ticker = ticker[:-1]
-                    
+
                 name = sh.cell_value(line,iName).replace(',',' ')
                 name = name.encode('cp1252')
                 name = name.replace('£',' ')

@@ -302,7 +302,7 @@ class MyTestPanel(wx.Panel,iTrade_wxPanelPrint):
         self.box = wx.BoxSizer(wx.VERTICAL)
 
         from itrade_wxhtml import iTradeHtmlPanel
-        self.m_canvas = iTradeHtmlPanel(self,wx.NewId(),"http://www.google.fr")
+        self.m_canvas = iTradeHtmlPanel(self,wx.NewId(),"https://www.google.fr")
         self.m_canvas.paint0()
         self.box.Add(self.m_canvas, 1, wx.GROW)
 

@@ -110,7 +110,7 @@ def buildListOfSupportedCurrencies():
 class Currencies(object):
     def __init__(self):
         # url
-        self.m_url = 'http://finance.yahoo.com/d/quotes.csv?s=%s%s=X&f=s4l1t1c1ghov&e=.csv'
+        self.m_url = 'https://finance.yahoo.com/d/quotes.csv?s=%s%s=X&f=s4l1t1c1ghov&e=.csv'
 
         self.m_connection = None
 

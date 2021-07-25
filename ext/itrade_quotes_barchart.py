@@ -70,7 +70,7 @@ def Import_ListOfQuotes_BARCHART(quotes,market='TOTRONTO EXCHANGE',dlg=None,x=0)
                                )
 
     if market=='TORONTO EXCHANGE' or market=='TORONTO VENTURE':
-        url = 'http://www.barchart.com/lookup.php?field=name&string=%s&search=begins&type[]=CAN&_dtp1=0'
+        url = 'https://www.barchart.com/lookup.php?field=name&string=%s&search=begins&type[]=CAN&_dtp1=0'
 
         m_currency = 'CAD'
         m_place = 'TOR'
@@ -112,7 +112,7 @@ def Import_ListOfQuotes_BARCHART(quotes,market='TOTRONTO EXCHANGE',dlg=None,x=0)
             return False
 
             # returns the data
-            
+
         lines = splitLines(data)
 
         count = 0
@@ -123,10 +123,10 @@ def Import_ListOfQuotes_BARCHART(quotes,market='TOTRONTO EXCHANGE',dlg=None,x=0)
                 ticker = line[:line.index('" class="">')]
                 if not '-DB' in ticker:  # ignore DEBit
                     ticker = ticker[:-3]
-                
+
                     name = line[line.index('/quotes/'):line.index('</a>')]
                     name = name[name.index('">')+2:]
-            
+
 
                     quotes.addQuote(isin='',name=name,ticker=ticker,market=market,currency=m_currency,place=m_place,country=m_country)
                     count = count + 1

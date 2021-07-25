@@ -78,7 +78,7 @@ def Import_ListOfQuotes_MIL(quotes,market='MILAN EXCHANGE',dlg=None,x=0):
 
 
     if market=='MILAN EXCHANGE':
-        url = "http://www.borsaitaliana.it/bitApp/listino?main_list=1&sub_list=1&service=Results&search=nome&lang=it&target=null&nome="
+        url = "https://www.borsaitaliana.it/bitApp/listino?main_list=1&sub_list=1&service=Results&search=nome&lang=it&target=null&nome="
     else:
         return False
 
@@ -102,7 +102,7 @@ def Import_ListOfQuotes_MIL(quotes,market='MILAN EXCHANGE',dlg=None,x=0):
 
     for line in lines:
         if line.find('a href="/bitApp/listino?target=null&lang=it&service=Detail&from=search&main_list=1&') != -1:
-            finalurl = 'http://www.borsaitaliana.it'+line[line.index('/'):line.index('" class="table">')]
+            finalurl = 'https://www.borsaitaliana.it'+line[line.index('/'):line.index('" class="table">')]
 
             req = urllib2.Request(finalurl)
             req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')

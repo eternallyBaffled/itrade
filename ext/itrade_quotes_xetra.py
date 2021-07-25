@@ -66,7 +66,7 @@ def Import_ListOfQuotes_Xetra(quotes,market='FRANKFURT EXCHANGE',dlg=None,x=0):
                                )
 
     if market=='FRANKFURT EXCHANGE':
-        url = 'http://deutsche-boerse.com/dbag/dispatch/en/xetraCSV/gdb_navigation/trading/20_tradable_instruments/900_tradable_instruments/100_xetra'
+        url = 'https://deutsche-boerse.com/dbag/dispatch/en/xetraCSV/gdb_navigation/trading/20_tradable_instruments/900_tradable_instruments/100_xetra'
     else:
         return False
 

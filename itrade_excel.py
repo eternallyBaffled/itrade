@@ -31,9 +31,15 @@
 # 2007-05-15    dgil  Wrote it from scratch
 # ============================================================================
 
+
+# TODO: review remarks
+# 1: xlrd is now in requirements.txt, so installation from pypi is automatic
+# 2: canReadExcel requires users of this module to test for the functionality.
+#    Unpythonic, handle it transparently here.
+
 canReadExcel = True
 
-xlrd_url = 'http://www.lexicon.net/sjmachin/xlrd.htm'
+xlrd_url = 'https://pypi.org/project/xlrd/'
 
 try:
     import xlrd

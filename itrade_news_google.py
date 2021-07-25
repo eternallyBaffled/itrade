@@ -72,7 +72,7 @@ class News_Google(object):
         self.m_url = None
         self.m_quote = None
 
-        self.m_baseurl = "http://news.google.fr/news?hl=%s&ie=UTF-8&output=rss&q=%s&scoring=d"
+        self.m_baseurl = "https://news.google.fr/news?hl=%s&ie=UTF-8&output=rss&q=%s&scoring=d"
 
     # ---[ protected interface ] ---
     def getURL(self):

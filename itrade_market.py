@@ -739,27 +739,27 @@ if infile:
 def yahooUrl(market,live):
     if live:
         if market in ['TORONTO VENTURE','TORONTO EXCHANGE']:
-            url = "http://download.finance.yahoo.com/d/quotes.csv"
+            url = "https://download.finance.yahoo.com/d/quotes.csv"
         else:
-            #url = "http://quote.yahoo.com/download/quotes.csv"
-            url = "http://download.finance.yahoo.com/d/quotes.csv"
+            #url = "https://quote.yahoo.com/download/quotes.csv"
+            url = "https://download.finance.yahoo.com/d/quotes.csv"
     else:
         if market in ['TORONTO VENTURE','TORONTO EXCHANGE']:
-            #url = 'http://download.finance.yahoo.com/d/quotes.csv'
-            url = 'http://ichart.finance.yahoo.com/table.csv'
-            #url = 'http://download.finance.yahoo.com/d/quotes.csv'
+            #url = 'https://download.finance.yahoo.com/d/quotes.csv'
+            url = 'https://ichart.finance.yahoo.com/table.csv'
+            #url = 'https://download.finance.yahoo.com/d/quotes.csv'
         else:
-            url = 'http://ichart.finance.yahoo.com/table.csv'
+            url = 'https://ichart.finance.yahoo.com/table.csv'
 
     return url
 
 def yahooUrlJapan(market,live):
     if live:
-        url = "http://quote.yahoo.co.jp/q"
-        #url = 'http://quote.yahoo.co.jp/q?s=%s&d=v2' % (ss)
+        url = "https://quote.yahoo.co.jp/q"
+        #url = 'https://quote.yahoo.co.jp/q?s=%s&d=v2' % (ss)
     else:
-        url = "http://table.yahoo.co.jp/t"
-        #url = 'http://table.yahoo.co.jp/t?c=%s&a=%s&b=%s&f=%s&d=%s&e=%s&g=d&s=%s.t&y=%s&z=%s.t' % (d1[0],d1[1],d1[2],d2[0],d2[1],d2[2],ss,str(cursor),ss)
+        url = "https://table.yahoo.co.jp/t"
+        #url = 'https://table.yahoo.co.jp/t?c=%s&a=%s&b=%s&f=%s&d=%s&e=%s&g=d&s=%s.t&y=%s&z=%s.t' % (d1[0],d1[1],d1[2],d2[0],d2[1],d2[2],ss,str(cursor),ss)
     return url
 
 
@@ -773,9 +773,9 @@ def euronext_InstrumentId(quote):
 
     #
     if quote.list()==QLIST_INDICES:
-        urlid = 'http://www.euronext.com/quicksearch/resultquicksearchindices-7000-EN.html?matchpattern=%s&fromsearchbox=true&path=/quicksearch&searchTarget=quote'
+        urlid = 'https://www.euronext.com/quicksearch/resultquicksearchindices-7000-EN.html?matchpattern=%s&fromsearchbox=true&path=/quicksearch&searchTarget=quote'
     else:
-        urlid = 'http://www.euronext.com/quicksearch/resultquicksearch-2986-EN.html?matchpattern=%s&fromsearchbox=true&path=/quicksearch&searchTarget=quote'
+        urlid = 'https://www.euronext.com/quicksearch/resultquicksearch-2986-EN.html?matchpattern=%s&fromsearchbox=true&path=/quicksearch&searchTarget=quote'
 
     connection = ITradeConnection(cookies = None,
                                proxy = itrade_config.proxyHostname,

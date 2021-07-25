@@ -65,7 +65,7 @@ def Import_ListOfQuotes_OTCBB(quotes,market='OTCBB',dlg=None,x=0):
                                connectionTimeout = itrade_config.connectionTimeout
                                )
     if market=='OTCBB':
-        url = 'http://www.otcbb.com/dynamic/tradingdata/download/allotcbb.txt'
+        url = 'https://www.otcbb.com/dynamic/tradingdata/download/allotcbb.txt'
     else:
         return False
 

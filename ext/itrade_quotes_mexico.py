@@ -62,14 +62,14 @@ def Import_ListOfQuotes_MEX(quotes,market='MEXICO EXCHANGE',dlg=None,x=0):
     connection=ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
-    
+
     if market=='MEXICO EXCHANGE':
-        
-        url = 'http://www.bmv.com.mx/wb3/wb/BMV/BMV_busqueda_de_valores/_rid/222/_mto/3/_url/BMVAPP/componenteSelectorInput.jsf?st=1'
+
+        url = 'https://www.bmv.com.mx/wb3/wb/BMV/BMV_busqueda_de_valores/_rid/222/_mto/3/_url/BMVAPP/componenteSelectorInput.jsf?st=1'
 
     else:
         return False
-    
+
 
     def splitLines(buf):
         lines = string.split(buf, '\n')
@@ -87,7 +87,7 @@ def Import_ListOfQuotes_MEX(quotes,market='MEXICO EXCHANGE',dlg=None,x=0):
     except:
         debug('Import_ListOfQuotes_MEX unable to connect :-(')
         return False
-    
+
 
     cj = None
 
@@ -97,14 +97,14 @@ def Import_ListOfQuotes_MEX(quotes,market='MEXICO EXCHANGE',dlg=None,x=0):
     opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
     urllib2.install_opener(opener)
 
-    url = 'http://www.bmv.com.mx/wb3/wb/BMV/BMV_busqueda_de_valores/_rid/222/_mto/3/_url/BMVAPP/componenteSelectorInput.jsf?st=1'
+    url = 'https://www.bmv.com.mx/wb3/wb/BMV/BMV_busqueda_de_valores/_rid/222/_mto/3/_url/BMVAPP/componenteSelectorInput.jsf?st=1'
 
     req = Request(url)
     handle = urlopen(req)
 
     cj = str(cj)
     cookie = cj[cj.find('JSESSIONID'):cj.find(' for www.bmv.com.mx/>')]
-    
+
     host = 'www.bmv.com.mx'
     url = '/wb3/wb/BMV/BMV_componente_selector_de_valores/_rid/199/_mto/3/_url/BMVAPP/componenteSelectorBusqueda.jsf?st=1'
 
@@ -116,10 +116,10 @@ def Import_ListOfQuotes_MEX(quotes,market='MEXICO EXCHANGE',dlg=None,x=0):
                 , "Accept-Charset": "ISO-8859-1,utf-8;q=0.7,*;q=0.7"
                 , "Keep-Alive":300
                 , "Connection": "keep-alive"
-                , "Referer": "http://www.bmv.com.mx/wb3/wb/BMV/BMV_busqueda_de_valores/_rid/222/_mto/3/_url/BMVAPP/componenteSelectorInput.jsf?st=1"
+                , "Referer": "https://www.bmv.com.mx/wb3/wb/BMV/BMV_busqueda_de_valores/_rid/222/_mto/3/_url/BMVAPP/componenteSelectorInput.jsf?st=1"
                 , "Cookie": cookie
                }
-    
+
     conn = httplib.HTTPConnection(host,80)
     conn.request("GET",url,None,headers)
     response = conn.getresponse()
@@ -134,7 +134,7 @@ def Import_ListOfQuotes_MEX(quotes,market='MEXICO EXCHANGE',dlg=None,x=0):
         indice = str(page)
         previouspage = str(page-1)
         endpage = '27'
-        
+
         if page == 0:
             params='tab1%3AformaListaEmisoras%3AletraActual=&tab1%3AformaListaEmisoras%3AtipoActual=1&tab1%3AformaListaEmisoras%3AsectorActualKey=0%2C0%2C0%2C0&tab1%3AformaListaEmisoras%3AbotonSubmit=Buscar+un+valor&tab1%3AformaListaEmisoras=tab1%3AformaLista'
         else:
@@ -148,12 +148,12 @@ def Import_ListOfQuotes_MEX(quotes,market='MEXICO EXCHANGE',dlg=None,x=0):
                      , "Accept-Charset": "ISO-8859-1,utf-8;q=0.7,*;q=0.7"
                      , "Keep-Alive":300
                      , "Connection": "keep-alive"
-                     , "Referer": "http://www.bmv.com.mx/wb3/wb/BMV/BMV_componente_selector_de_valores/_rid/199/_mto/3/_url/BMVAPP/componenteSelectorBusqueda.jsf?st=1"
+                     , "Referer": "https://www.bmv.com.mx/wb3/wb/BMV/BMV_componente_selector_de_valores/_rid/199/_mto/3/_url/BMVAPP/componenteSelectorBusqueda.jsf?st=1"
                      , "Cookie": cookie
                      , "Content-Type": "application/x-www-form-urlencoded"
                      , "Content-Length": len(params)
                     }
-        
+
         conn = httplib.HTTPConnection(host,80)
         conn.request("POST",url,params,headers)
 
@@ -168,7 +168,7 @@ def Import_ListOfQuotes_MEX(quotes,market='MEXICO EXCHANGE',dlg=None,x=0):
 
             startch = '<tr class="Tabla1_Renglon_'
             endch = '</tr><input type="hidden"'
-        
+
             # returns the data
             data = response.read()
 
@@ -186,7 +186,7 @@ def Import_ListOfQuotes_MEX(quotes,market='MEXICO EXCHANGE',dlg=None,x=0):
             lineticker ='text-align: left;">'
             linename =  'margin-right:5px;">'
             lineserie = 'text-valign:bottom;">'
-            
+
             for line in lines:
 
                 if lineticker in line:
@@ -208,13 +208,13 @@ def Import_ListOfQuotes_MEX(quotes,market='MEXICO EXCHANGE',dlg=None,x=0):
                         if serie == '*' : newticker = ticker
                         newticker = newticker.replace('&amp;','&')
                         countserie = countserie + 1
-                        
+
                         quotes.addQuote(isin='',name=name,ticker=newticker,market='MEXICO EXCHANGE',currency='MXN',place='MEX',country='MX')
 
     print 'Imported %d quotes with %d different tickers from MEXICO EXCHANGE data.' % (countname,countserie)
     response.close()
     handle.close()
-  
+
     return True
 
 # ============================================================================

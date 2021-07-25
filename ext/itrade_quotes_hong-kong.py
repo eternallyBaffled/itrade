@@ -69,9 +69,10 @@ def Import_ListOfQuotes_HKG(quotes,market='HONG KONG EXCHANGE',dlg=None,x=0):
 
     if market=='HONG KONG EXCHANGE':
         # Two urls for download list of HONG KONG EXCHANGE
-        urls = ['http://www.hkex.com.hk/eng/market/sec_tradinfo/isincode/documents/isino.xls','http://www.hkex.com.hk/eng/market/sec_tradinfo/isincode/documents/isinsehk.xls']
-        
-        n = 0        
+        urls = ['https://www.hkex.com.hk/eng/market/sec_tradinfo/isincode/documents/isino.xls',
+                'https://www.hkex.com.hk/eng/market/sec_tradinfo/isincode/documents/isinsehk.xls']
+
+        n = 0
     else:
         return False
 
@@ -109,29 +110,29 @@ def Import_ListOfQuotes_HKG(quotes,market='HONG KONG EXCHANGE',dlg=None,x=0):
                 if sh.cell_value(line,3) in ('ORD SH','PREF SH','TRT','RTS'):
 
                     isin=sh.cell_value(line,1)
-                    
+
                     ticker = sh.cell_value(line,2)
                     if type(ticker)==float: ticker=int(ticker);ticker='%s' % ticker
                     if len(ticker) == 1 : ticker='000'+ticker
                     if len(ticker) == 2 : ticker='00'+ticker
                     if len(ticker) == 3 : ticker='0'+ticker
-                            
+
                     name = sh.cell_value(line,0)
 
                     if ticker == '0657':
                         name = 'G-VISION INTERNATIONAL (HOLDINGS) LTD'
-                        
+
                     name = name.decode().encode('utf8')
                     name = name.replace(',',' ')
 
                     currency='HKD'
                     place='HKG'
                     country='HK'
-               
+
                     quotes.addQuote(isin = isin,name = name,ticker = ticker,market = 'HONG KONG EXCHANGE',currency = currency,place = place,country = country)
 
                     n = n + 1
-                
+
 
     if itrade_config.verbose:
         print 'Imported %d lines from %s ' % (n,market)

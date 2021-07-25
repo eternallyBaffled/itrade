@@ -89,7 +89,7 @@ def Import_ListOfQuotes_KRX(quotes,market='KOREA STOCK EXCHANGE',dlg=None,x=0):
         lines = [removeCarriage(l) for l in lines]
         return lines
 
-    url = 'http://eng.krx.co.kr'
+    url = 'https://eng.krx.co.kr'
 
     info('Import_ListOfQuotes_KRX_%s:connect to %s' % (market,url))
 
@@ -128,7 +128,7 @@ def Import_ListOfQuotes_KRX(quotes,market='KOREA STOCK EXCHANGE',dlg=None,x=0):
                     , "X-Requested-With": "XMLHttpRequest"
                     , "X-Prototype-Version": "1.6.1"
                     , "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
-                    , "Referer": "http://eng.krx.co.kr/m6/m6_1/m6_1_1/JHPENG06001_01.jsp"
+                    , "Referer": "https://eng.krx.co.kr/m6/m6_1/m6_1_1/JHPENG06001_01.jsp"
                     , "Content-Length": len(params)
                     , "Cookie": cookie
                     , "Pragma": "no-cache"

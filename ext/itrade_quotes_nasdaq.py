@@ -67,11 +67,11 @@ def Import_ListOfQuotes_NASDAQ(quotes,market='NASDAQ',dlg=None,x=0):
                                connectionTimeout = itrade_config.connectionTimeout
                                )
     if market=='NYSE':
-        url = 'http://www.nasdaq.com/screening/companies-by-industry.aspx?&exchange=nyse&render=download'
+        url = 'https://www.nasdaq.com/screening/companies-by-industry.aspx?&exchange=nyse&render=download'
     elif market == 'NASDAQ':
-        url = 'http://www.nasdaq.com/screening/companies-by-industry.aspx?&exchange=nasdaq&render=download'
+        url = 'https://www.nasdaq.com/screening/companies-by-industry.aspx?&exchange=nasdaq&render=download'
     elif market == 'AMEX':
-        url = 'http://www.nasdaq.com/screening/companies-by-name.aspx?&exchange=amex&render=download'
+        url = 'https://www.nasdaq.com/screening/companies-by-name.aspx?&exchange=amex&render=download'
     else:
         return False
 
@@ -87,7 +87,7 @@ def Import_ListOfQuotes_NASDAQ(quotes,market='NASDAQ',dlg=None,x=0):
     reader = csv.reader(data, delimiter=',')
     count = -1
     isin = ''
-    
+
     # returns the data
 
     for line in reader:

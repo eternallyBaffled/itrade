@@ -65,7 +65,7 @@ def Import_ListOfQuotes_SWX(quotes,market='SWISS EXCHANGE',dlg=None,x=0):
                                connectionTimeout = itrade_config.connectionTimeout
                                )
     if market=='SWISS EXCHANGE':
-        url = 'http://www.six-swiss-exchange.com/shares/companies/download/issuers_all_fr.csv'
+        url = 'https://www.six-swiss-exchange.com/shares/companies/download/issuers_all_fr.csv'
         try:
             data = connection.getDataFromUrl(url)
         except:
@@ -100,7 +100,7 @@ def Import_ListOfQuotes_SWX(quotes,market='SWISS EXCHANGE',dlg=None,x=0):
         line = line.replace('é','e')
         line = line.replace('è','e')
         line = line.replace('+',' ')
-        
+
         data = string.split(line,';') # csv line
         name = data[0].strip()
         ticker = data[1].strip()

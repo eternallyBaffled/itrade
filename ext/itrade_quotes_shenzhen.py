@@ -67,7 +67,7 @@ def Import_ListOfQuotes_SHE(quotes,market='SHENZHEN EXCHANGE',dlg=None,x=0):
 
     if market=='SHENZHEN EXCHANGE':
 
-        url = 'http://www.szse.cn/szseWeb/FrontController.szse?ACTIONID=8&CATALOGID=1693&TABKEY=tab1&ENCODE=1'
+        url = 'https://www.szse.cn/szseWeb/FrontController.szse?ACTIONID=8&CATALOGID=1693&TABKEY=tab1&ENCODE=1'
     else:
         return False
 
@@ -104,17 +104,17 @@ def Import_ListOfQuotes_SHE(quotes,market='SHENZHEN EXCHANGE',dlg=None,x=0):
 
         if line.find("</td><td  class='cls-data-td'  align='left' >"):
             ticker = line[:line.index('<')]
-            
+
             name = line[51:line.index('<',51)]
             name = name.replace(',',' ')
 
             if name[-2:] == '-B':
                 currency = 'HKD'
                 name = name[:-2]
-                
+
             else:
                 currency = 'CNY'
-               
+
             if ticker=='000517': name = 'RONGAN PROPERTY CO'
             if ticker=='000529': name = 'GUANGDONG MEIYA'
             if ticker=='000650': name = 'RHENE PHARMACY CO'

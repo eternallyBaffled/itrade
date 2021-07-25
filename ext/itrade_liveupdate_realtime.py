@@ -65,7 +65,7 @@ class LiveUpdate_RealTime(object):
     def __init__(self,market = 'EURONEXT'):
         debug('LiveUpdate_RealTime:__init__')
         self.m_connected = False
-        self.m_livelock = thread.allocate_lock()        
+        self.m_livelock = thread.allocate_lock()
         self.m_conn = None
         self.m_clock = {}
         self.m_dateindice = {}
@@ -78,12 +78,12 @@ class LiveUpdate_RealTime(object):
                                            proxyAuth = itrade_config.proxyAuthentication,
                                            connectionTimeout = itrade_config.connectionTimeout
                                            )
-        
+
         try:
             select_isin = []
             self.m_isinsymbol = {}
             symbol = ''
-        
+
             # try to open dictionnary of ticker_bourso.txt
             f = open(os.path.join(itrade_config.dirUserData,'ticker_bourso.txt'),'r')
             self.m_isinsymbol = cPickle.load(f)
@@ -106,7 +106,7 @@ class LiveUpdate_RealTime(object):
 
                 # extract pre_symbol
                 for isin in select_isin:
-                    req = urllib2.Request('http://www.boursorama.com/recherche/index.phtml?search%5Bquery%5D=' + isin)
+                    req = urllib2.Request('https://www.boursorama.com/recherche/index.phtml?search%5Bquery%5D=' + isin)
                     req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
                     try:
                         f = urllib2.urlopen(req)
@@ -165,7 +165,7 @@ class LiveUpdate_RealTime(object):
             self.m_conn.close()
         self.m_conn = None
         self.m_connected = False
-    
+
     def alive(self):
         return self.m_connected
 
@@ -176,7 +176,7 @@ class LiveUpdate_RealTime(object):
         return True
 
     # ---[ code to get data ] ---
-    
+
     def splitLines(self,data):
         lines = string.split(data, '\n')
         lines = filter(lambda x:x, lines)
@@ -197,9 +197,9 @@ class LiveUpdate_RealTime(object):
         if len(sp)==1:
             return sdate,"00:00"
         return sdate,sp[1]
-    
-    
-   
+
+
+
     def convertClock(self,place,clock,date):
         min = clock[3:5]
         hour = clock[:2]
@@ -214,9 +214,9 @@ class LiveUpdate_RealTime(object):
         mdatetime = convertConnectorTimeToPlaceTime(mdatetime,self.timezone(),place)
 
         return "%d:%02d" % (mdatetime.hour,mdatetime.minute)
-    
 
-    
+
+
     def getdata(self,quote):
         self.m_connected = False
         debug("LiveUpdate_Bousorama:getdata quote:%s market:%s" % (quote,self.m_market))
@@ -229,14 +229,14 @@ class LiveUpdate_RealTime(object):
         if isin != '' :
             if  not isin in self.m_isinsymbol:
 
-                req = urllib2.Request('http://www.boursorama.com/recherche/index.phtml?search%5Bquery%5D=' + isin)
+                req = urllib2.Request('https://www.boursorama.com/recherche/index.phtml?search%5Bquery%5D=' + isin)
                 req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
-                
-                try: 
+
+                try:
                     f = urllib2.urlopen(req)
                     data = f.read()
                     f.close()
-                        
+
                     ch = 'class="bourse fit block" >'
 
                     if data.find(ch)!= -1:
@@ -275,9 +275,9 @@ class LiveUpdate_RealTime(object):
                '1RT' in symbol or
                '1z' in symbol or
                '1g' in symbol):
-                req = urllib2.Request('http://www.boursorama.com/bourse/trackers/etf.phtml?symbole=' + symbol)
+                req = urllib2.Request('https://www.boursorama.com/bourse/trackers/etf.phtml?symbole=' + symbol)
             else:
-                req = urllib2.Request('http://www.boursorama.com/cours.phtml?symbole=' + symbol)
+                req = urllib2.Request('https://www.boursorama.com/cours.phtml?symbole=' + symbol)
             req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
 
             f = urllib2.urlopen(req)

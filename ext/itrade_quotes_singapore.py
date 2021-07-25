@@ -73,18 +73,18 @@ def Import_ListOfQuotes_SGX(quotes,market='SINGAPORE EXCHANGE',dlg=None,x=0):
                 return s
         lines = [removeCarriage(l) for l in lines]
         return lines
-    
+
     # find date to update list
-  
+
     try:
-        data = connection.getDataFromUrl('http://info.sgx.com/webstocks.nsf/isincodedownload/')
+        data = connection.getDataFromUrl('https://info.sgx.com/webstocks.nsf/isincodedownload/')
     except:
         info('Import_ListOfQuotes_SGX_%s:unable to get file name :-(' % market)
         return False
 
 
     date = data[data.find('/ISINCODEDOWNLOAD/')+18:data.find('/$File/ISINCODE.txt')]
-    url = 'http://info.sgx.com/webstocks.nsf/ISINCODEDOWNLOAD/'+date+'/%24File/ISINCODE.txt'
+    url = 'https://info.sgx.com/webstocks.nsf/ISINCODEDOWNLOAD/'+date+'/%24File/ISINCODE.txt'
     #info('Import_ListOfQuotes_SGX_%s:connect to %s' % (market,url))
 
     if market == 'SINGAPORE EXCHANGE':
@@ -101,7 +101,7 @@ def Import_ListOfQuotes_SGX(quotes,market='SINGAPORE EXCHANGE',dlg=None,x=0):
         return False
 
     # returns the data
-    
+
     lines = splitLines(data)
 
     n = 0
@@ -111,7 +111,7 @@ def Import_ListOfQuotes_SGX(quotes,market='SINGAPORE EXCHANGE',dlg=None,x=0):
         name = line[:50]
         isin = line[60:72]
         ticker = line[80:89]
-        
+
         name = name.strip()
         isin = isin.strip()
         ticker = ticker.strip()
@@ -128,7 +128,7 @@ def Import_ListOfQuotes_SGX(quotes,market='SINGAPORE EXCHANGE',dlg=None,x=0):
 # ============================================================================
 
 registerListSymbolConnector('SINGAPORE EXCHANGE','SGX',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_SGX)
-    
+
 # ============================================================================
 # Test ME
 # ============================================================================

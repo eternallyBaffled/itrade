@@ -64,9 +64,9 @@ def Import_ListOfQuotes_NZE(quotes,market='NEW ZEALAND EXCHANGE',dlg=None,x=0):
     connection=ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
-    
+
     if market=='NEW ZEALAND EXCHANGE':
-        url = 'http://www.findata.co.nz/Markets/NZX/%s.htm'
+        url = 'https://www.findata.co.nz/Markets/NZX/%s.htm'
     else:
         return False
 
@@ -80,17 +80,17 @@ def Import_ListOfQuotes_NZE(quotes,market='NEW ZEALAND EXCHANGE',dlg=None,x=0):
                 return s
         lines = [removeCarriage(l) for l in lines]
         return lines
-    
+
     select_alpha = map(chr,range(65,91)) # A to Z
-    
+
     count = 0
     isin = ''
-    
+
     for letter in select_alpha:
 
         if dlg:
             dlg.Update(x,"    NZX   :  %s  to  Z"%letter)
-     
+
         try:
             data=connection.getDataFromUrl(url%letter)
         except:
@@ -101,7 +101,7 @@ def Import_ListOfQuotes_NZE(quotes,market='NEW ZEALAND EXCHANGE',dlg=None,x=0):
         lines = splitLines(data)
 
         for line in lines:
-        
+
             if '"hideInfo();">' in line:
                 tickername = line[line.find('"hideInfo();">')+14:line.find('</td><td align=right>')]
                 if not 'Index' in tickername:

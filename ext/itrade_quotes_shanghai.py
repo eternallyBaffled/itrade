@@ -63,12 +63,12 @@ def Import_ListOfQuotes_SHG(quotes,market='SHANGHAI EXCHANGE',dlg=None,x=0):
     connection=ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
-    
+
 
     def splitLines(buf):
         lines = string.split(buf, '\n')
         lines = filter(lambda x:x, lines)
-            
+
         def removeCarriage(s):
             if s[-1]=='\r':
                 return s[:-1]
@@ -79,34 +79,34 @@ def Import_ListOfQuotes_SHG(quotes,market='SHANGHAI EXCHANGE',dlg=None,x=0):
 
     # Download SSE A SHARE
 
-    urlA = 'http://www.sse.com.cn/sseportal/webapp/datapresent/queryindexcnpe?indexCode=000002&CURSOR='
+    urlA = 'https://www.sse.com.cn/sseportal/webapp/datapresent/queryindexcnpe?indexCode=000002&CURSOR='
     ch = '<TD class=content bgColor=white><a href="/sseportal/webapp/datapresent/SSEQueryListCmpAct?reportName=QueryListCmpRpt&REPORTTYPE=GSZC&COMPANY_CODE='
     cursor = 1
     count = 0
-    
+
     for cursor in range(1,921,20):
-            
+
         url = urlA+str(cursor)
 
         info('Import_ListOfQuotes_SSE A SHARE:connect to %s' %url)
         req = urllib2.Request(url)
         req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
-    
+
         try:
             f = urllib2.urlopen(req)
             data = f.read()
             f.close()
-            
+
             #data=connection.getDataFromUrl(url)
         except:
             print 'Import_ListOfQuotes_SSE A SHARE:unable to connect to',url
             return False
 
         lines = splitLines(data)
-        
+
         for line in lines:
             if ch in line:
-                
+
                 ticker = line[(line.find(ch)+len(ch)): line.find('&PRODUCTID=')]
                 name = line[(line.find('">')+2): line.find('</a>&nbsp;</TD>')]
                 if ticker == '600717': name = 'TIANJIN PORT CO. LTD.'
@@ -132,31 +132,31 @@ def Import_ListOfQuotes_SHG(quotes,market='SHANGHAI EXCHANGE',dlg=None,x=0):
                 name = name.replace('LIMITED','LTD')
                 name = name.replace('CORPORATION','CORP.')
                 name = name.replace('DEVELOPMENT','DEV.')
-                
+
                 count = count + 1
-                
+
                 dlg.Update(x,'SSE A SHARE: %s / ~1000'%cursor)
-                
+
                 quotes.addQuote(isin='',name=name,
                         ticker=ticker,market='SHANGHAI EXCHANGE',
                         currency='CNY',place='SHG',country='CN')
-                
+
     # Download SSE B SHARE
-  
-    url = 'http://www.sse.com.cn/sseportal/en_us/ps/bshare/lccl.shtml'
+
+    url = 'https://www.sse.com.cn/sseportal/en_us/ps/bshare/lccl.shtml'
 
     info('Import_ListOfQuotes_SSE B SHARE:connect to %s' %url)
-          
+
     try:
         data=connection.getDataFromUrl(url)
     except:
         debug('Import_ListOfQuotes_SSE B SHARE:unable to connect :-(')
         return False
-    
+
     lines = splitLines(data)
 
     #typical lines
-    
+
     #    <td class="table3" bgcolor="#dbedf8"  > SRB</td>
     #    <td class="table3" bgcolor="#dbedf8"  > 900907</td>
 
@@ -164,18 +164,18 @@ def Import_ListOfQuotes_SHG(quotes,market='SHANGHAI EXCHANGE',dlg=None,x=0):
     #    <td class="table3" bgcolor="#dbedf8"  > 19th Floor, 1600 Shiji Avenue, Shanghai</td>
     #    <td class="table3" bgcolor="#dbedf8"  > 200122</td>
     #  </tr>
-    #  <tr> 
+    #  <tr>
     #   <td class="table3" bgcolor="white"  > SCAC B</td>
 
     #    <td class="table3" bgcolor="white"  > 900908</td>
-    #    <td class="table3" bgcolor="white"  > Shanghai Chlor Alkali Chemical&nbsp; 
+    #    <td class="table3" bgcolor="white"  > Shanghai Chlor Alkali Chemical&nbsp;
     #      Co., Ltd.</td>
     #    <td class="table3" bgcolor="white"  > 17th Floor, 1271 Pudong Nan Road, Shanghai</td>
     #    <td class="table3" bgcolor="white"  > 200122</td>
 
     n = 1
     i = 0
-    
+
     dlg.Update(x,'SHANGHAI B SHARE')
     for line in lines:
         if '<td class="table_title2" bgcolor="#337fb2"  >Post Code</td>' in line : n = 0
@@ -199,18 +199,18 @@ def Import_ListOfQuotes_SHG(quotes,market='SHANGHAI EXCHANGE',dlg=None,x=0):
                     quotes.addQuote(isin='',name=name,
                             ticker=ticker,market='SHANGHAI EXCHANGE',
                             currency='CNY',place='SHG',country='CN')
-                    
+
             elif i == 3:
                 name = name +' '+ line.strip()
                 if name.find('</td>'):
                     name = name[:-5]
 
-                
-    if itrade_config.verbose:                                    
+
+    if itrade_config.verbose:
         print 'Imported %d lines from SHANGHAI EXCHANGE' %count
 
 
-        
+
     return True
 
 
@@ -233,7 +233,7 @@ if __name__=='__main__':
 
     Import_ListOfQuotes_SHG(quotes,'SHANGHAI EXCHANGE')
     quotes.saveListOfQuotes()
-                
+
 # ============================================================================
 # That's all folks !
 # ============================================================================

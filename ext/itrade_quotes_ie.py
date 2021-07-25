@@ -65,8 +65,8 @@ def Import_ListOfQuotes_IE(quotes,market='IRISH EXCHANGE',dlg=None,x=0):
                                connectionTimeout = itrade_config.connectionTimeout
                                )
 
-    if market=='IRISH EXCHANGE':      
-        url = "http://www.ise.ie/Prices,-Indices-Stats/Equity-Market-Data/Instrument-Identifiers/?list=full&type=SEDOL&exportTo=text"
+    if market=='IRISH EXCHANGE':
+        url = "https://www.ise.ie/Prices,-Indices-Stats/Equity-Market-Data/Instrument-Identifiers/?list=full&type=SEDOL&exportTo=text"
     else:
         return False
 

@@ -69,7 +69,7 @@ def Import_ListOfQuotes_MADRID(quotes,market='MADRID EXCHANGE',dlg=None,x=0):
                                )
 
     if market=='MADRID EXCHANGE':
-        url = 'http://www.bolsamadrid.es/docs/SBolsas/InformesSB/listadodevalores.pdf'
+        url = 'https://www.bolsamadrid.es/docs/SBolsas/InformesSB/listadodevalores.pdf'
     else:
         return False
 
@@ -101,12 +101,12 @@ def Import_ListOfQuotes_MADRID(quotes,market='MADRID EXCHANGE',dlg=None,x=0):
     pdf = pyPdf.PdfFileReader(source)
 
     for page in pdf.pages:
-        
+
         data = page.extractText()
         data = data[data.find('DecimalsFixing')+15:]
         cr = data[:8]
         lines =splitLines(data)
-        
+
         for line in lines:
             if 'Sociedad de Bolsas' in line:
                 pass
@@ -119,7 +119,7 @@ def Import_ListOfQuotes_MADRID(quotes,market='MADRID EXCHANGE',dlg=None,x=0):
                 else:
                     ticker = ticker.replace('.','-')
 
-                
+
                 isin = line[8:21]
                 name = line[21:].strip()
                 if not 'LYX' in name and not 'TRACKERS' in name:
@@ -130,14 +130,14 @@ def Import_ListOfQuotes_MADRID(quotes,market='MADRID EXCHANGE',dlg=None,x=0):
                     name = name.replace('Ç','C')
 
                     #print isin,name,ticker,market
-                           
+
                     quotes.addQuote(isin=isin, name=name,
                                 ticker=ticker, market=market,
                                 currency='EUR', place='MAD', country='ES')
                     n = n + 1
     if itrade_config.verbose:
         print 'Imported %d lines from %s' % (n,market)
-    source.close()   
+    source.close()
     os.remove(f)
     return True
 
@@ -158,7 +158,7 @@ if __name__=='__main__':
     from itrade_quotes import quotes
 
     Import_ListOfQuotes_MADRID(quotes,'MADRID EXCHANGE')
-        
+
     quotes.saveListOfQuotes()
 
 # ============================================================================

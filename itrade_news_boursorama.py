@@ -76,11 +76,11 @@ class News_Boursorama(object):
         self.m_host = "www.boursorama.com"
         self.m_conn = None
 
-        self.m_baseurl[0] = "http://www.boursorama.com/infos/actualites/actu_societes_code.phtml?symbole=1rP%s"
-        self.m_baseurl[1] = "http://www.boursorama.com/communique/communique_code.phtml?symbole=1rP%s"
-        self.m_baseurl[2] = "http://www.boursorama.com/infos/calendrier_code.phtml?symbole=1rP%s"
-        self.m_baseurl[3] = "http://www.boursorama.com/conseils/conseils_index_code.phtml?symbole=1rP%s"
-        self.m_baselink = "http://www.boursorama.com/infos/imprimer_news.phtml?news=%s"
+        self.m_baseurl[0] = "https://www.boursorama.com/infos/actualites/actu_societes_code.phtml?symbole=1rP%s"
+        self.m_baseurl[1] = "https://www.boursorama.com/communique/communique_code.phtml?symbole=1rP%s"
+        self.m_baseurl[2] = "https://www.boursorama.com/infos/calendrier_code.phtml?symbole=1rP%s"
+        self.m_baseurl[3] = "https://www.boursorama.com/conseils/conseils_index_code.phtml?symbole=1rP%s"
+        self.m_baselink = "https://www.boursorama.com/infos/imprimer_news.phtml?news=%s"
 
         self.m_connection = ITradeConnection(cookies = None,
                                proxy = itrade_config.proxyHostname,
@@ -215,7 +215,7 @@ if __name__=='__main__':
     quote = quotes.lookupTicker('RIB')
     print gNewsBoursorama.feedQuote(quote)
 
-    gNewsBoursorama.goto(None,"http://www.boursorama.com/infos/imprimer_news.phtml?news=3020909")
+    gNewsBoursorama.goto(None,"https://www.boursorama.com/infos/imprimer_news.phtml?news=3020909")
 
 # ============================================================================
 # That's all folks !

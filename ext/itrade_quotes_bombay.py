@@ -64,9 +64,9 @@ def Import_ListOfQuotes_BSE(quotes,market='BOMBAY EXCHANGE',dlg=None,x=0):
     connection=ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
-    
+
     if market=='BOMBAY EXCHANGE':
-        starturl = 'http://test.bseindia.com/scripsearch/scrips.aspx?myScrip='
+        starturl = 'https://test.bseindia.com/scripsearch/scrips.aspx?myScrip='
         #endurl = '&flag=sr'
     else:
 
@@ -82,14 +82,14 @@ def Import_ListOfQuotes_BSE(quotes,market='BOMBAY EXCHANGE',dlg=None,x=0):
                 return s
         lines = [removeCarriage(l) for l in lines]
         return lines
-    
+
     select_alpha = ['20MICRONS','3IINFOTECH','3MINDIA','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
     n = 0
     isin = ''
 
 
     for letter in select_alpha:
-        
+
         url = starturl+letter
 
         try:
@@ -102,15 +102,15 @@ def Import_ListOfQuotes_BSE(quotes,market='BOMBAY EXCHANGE',dlg=None,x=0):
 
 
         for line in lines:
-            
+
             if '<td align="center"><font color="#0089CF">' in line:
             #if '<td align="center" style="color:#0089CF;">' in line:
                 #scrip_cd = line[(line.find('"#0089CF">')+10):(line.find ('</font></td><td'))]
                 name = line[(line.find('#">')+3):(line.find ('</a></td><td'))]
                 name = name.upper()
                 ticker = line[(line.find('<u>')+3):(line.find ('</u>'))]
-                
-                
+
+
                 if 'FUND' in name or 'MATURITY' in name :
                     pass
                 if '>#<' in line or '>@</' in line :
@@ -118,7 +118,7 @@ def Import_ListOfQuotes_BSE(quotes,market='BOMBAY EXCHANGE',dlg=None,x=0):
                     #Suspended due to procedural reasons
                     pass
 
-                    
+
                 else :
                     #print name,ticker
                     n = n + 1
@@ -128,7 +128,7 @@ def Import_ListOfQuotes_BSE(quotes,market='BOMBAY EXCHANGE',dlg=None,x=0):
                     quotes.addQuote(isin=isin, name=name,
                         ticker=ticker, market='BOMBAY EXCHANGE', currency='INR', place='BSE', country='IN')
 
-                    
+
     if itrade_config.verbose:
         print 'Imported %d lines from BOMBAY EXCHANGE' %n
 
