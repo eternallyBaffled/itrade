@@ -36,6 +36,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import logging
 import re
 import thread
@@ -290,18 +291,18 @@ def test(ticker):
                 else:
                     debug("nodata")
             else:
-                print "getdata() failure :-("
+                print("getdata() failure :-(")
         else:
-            print "getstate() failure :-("
+            print("getstate() failure :-(")
 
         gLiveABC.disconnect()
     else:
-        print "connect() failure :-("
+        print("connect() failure :-(")
 
 if __name__=='__main__':
     setLevel(logging.INFO)
 
-    print 'live %s' % date.today()
+    print('live %s' % date.today())
     test('OSI')
     test('EADT')
     gLiveABC.cacheddatanotfresh()

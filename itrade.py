@@ -36,6 +36,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import logging
 import getopt
 import sys
@@ -56,25 +57,25 @@ import itrade_matrix
 # ============================================================================
 
 def usage():
-    print "%s %s - %s version - %s" % (itrade_config.softwareName,itrade_config.softwareVersion,itrade_config.softwareLicense,itrade_config.softwareCopyright)
-    print
-    print "-h / --help  this help                                       "
-    print "-e           connect live and display portfolio evaluation   "
-    print "-i           connect and import a ticker (or isin)           "
-    print "-d           disconnected (no live update / no network)      "
-    print
-    print "--file=<f>   import or export using a file (EBP file format) "
-    print "--quote=<n>  select a quote by its isin                      "
-    print "--ticker=<n> select a quote by its ticker                    "
-    print
-    print "--lang=<l>   select the language to be used (fr,us,...)      "
-    print
-    print "--user=<p>   select userdata/ specific folder                "
-    print
-    print "--nopsyco    do not use psyco                                "
-    print "-x           activate experimental features                  "
-    print "--verbose    verbose mode (usefull for debugging)            "
-    print "--nowxversion    do not use wxversion                        "
+    print("%s %s - %s version - %s" % (itrade_config.softwareName,itrade_config.softwareVersion,itrade_config.softwareLicense,itrade_config.softwareCopyright))
+    print()
+    print("-h / --help  this help                                       ")
+    print("-e           connect live and display portfolio evaluation   ")
+    print("-i           connect and import a ticker (or isin)           ")
+    print("-d           disconnected (no live update / no network)      ")
+    print()
+    print("--file=<f>   import or export using a file (EBP file format) ")
+    print("--quote=<n>  select a quote by its isin                      ")
+    print("--ticker=<n> select a quote by its ticker                    ")
+    print()
+    print("--lang=<l>   select the language to be used (fr,us,...)      ")
+    print()
+    print("--user=<p>   select userdata/ specific folder                ")
+    print()
+    print("--nopsyco    do not use psyco                                ")
+    print("-x           activate experimental features                  ")
+    print("--verbose    verbose mode (usefull for debugging)            ")
+    print("--nowxversion    do not use wxversion                        ")
 
 # ============================================================================
 # Main / Command line analysing
@@ -107,7 +108,7 @@ def main():
 
         if o == "-v" or o == "--verbose":
             itrade_config.verbose = True
-            print 'Verbose mode : ON'
+            print('Verbose mode : ON')
 
         if o == "-x":
             itrade_config.experimental = True
@@ -140,7 +141,7 @@ def main():
         if o == "-u" or o == "--user":
             itrade_config.dirUserData = a
             if not os.path.exists(itrade_config.dirUserData):
-                print 'userdata folder %s not found !' % a
+                print('userdata folder %s not found !' % a)
                 sys.exit()
 
         if o  == "--nopsyco":
@@ -167,16 +168,16 @@ def main():
         try:
             import psyco
             psyco.full()
-            print 'Psyco is running'
+            print('Psyco is running')
         except ImportError:
-            print 'Psyco is not running (library not found)'
+            print('Psyco is not running (library not found)')
     else:
-        print 'Psyco is not running (forced by command line)'
+        print('Psyco is not running (forced by command line)')
 
     # load configuration
     itrade_config.loadConfig("itrade.py")
     if itrade_config.verbose:
-        print "*** Proxy server:",itrade_config.proxyHostname, "- Proxy auth:",itrade_config.proxyAuthentication,"- Connection timeout:",itrade_config.connectionTimeout
+        print("*** Proxy server:",itrade_config.proxyHostname, "- Proxy auth:",itrade_config.proxyAuthentication,"- Connection timeout:",itrade_config.connectionTimeout)
 
     # load extensions
     itrade_ext.loadExtensions(itrade_config.fileExtData,itrade_config.dirExtData)
@@ -194,13 +195,13 @@ def main():
     if vticker:
         quote = itrade_quotes.quotes.lookupTicker(vticker)
         if not quote:
-            print 'ticker %s not found !' % vticker
+            print('ticker %s not found !' % vticker)
             sys.exit()
 
     if vquote:
         quote = itrade_quotes.quotes.lookupKey(vquote)
         if not quote:
-            print 'quote %s not found ! format is : <ISINorTICKER>.<EXCHANGE>.<PLACE>' % vquote
+            print('quote %s not found ! format is : <ISINorTICKER>.<EXCHANGE>.<PLACE>' % vquote)
             sys.exit()
 
     if use_wx:

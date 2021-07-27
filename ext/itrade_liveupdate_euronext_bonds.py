@@ -38,6 +38,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import logging
 import re
 import string
@@ -192,12 +193,12 @@ class LiveUpdate_Euronext_bonds(object):
             ('isin', quote.isin()),
             ('mic', mic),
         )
-        query = map(lambda (var, val): '%s=%s' % (var, str(val)), query)
+        query = map(lambda var_val: '%s=%s' % (var_val[0], str(var_val[1])), query)
         query = string.join(query, '&')
 
 
         url = self.m_url + query
-        print 'url_liveupdate:',url
+        print('url_liveupdate:',url)
         debug("LiveUpdate_Euronext_bonds:getdata: url=%s ",url)
 
         try:
@@ -321,7 +322,7 @@ class LiveUpdate_Euronext_bonds(object):
     def currentStatus(self,quote):
         #
         key = quote.key()
-        if not self.m_dcmpd.has_key(key):
+        if key not in self.m_dcmpd:
             # no data for this quote !
             return "UNKNOWN","::","0.00","0.00","::"
 
@@ -345,7 +346,7 @@ class LiveUpdate_Euronext_bonds(object):
             return "%d:%02d" % (self.m_lastclock/60,self.m_lastclock%60)
         #
         key = quote.key()
-        if not self.m_clock.has_key(key):
+        if key not in self.m_clock:
             # no data for this quote !
             return "::"
         else:
@@ -353,7 +354,7 @@ class LiveUpdate_Euronext_bonds(object):
 
     def currentDate(self,quote=None):
         key = quote.key()
-        if not self.m_dateindice.has_key(key):
+        if key not in self.m_dateindice:
             # no date for this quote !
             return "----"
         else:
@@ -401,20 +402,20 @@ def test(ticker):
                     else:
                         debug("nodata")
                 else:
-                    print "getdata() failure :-("
+                    print("getdata() failure :-(")
             else:
-                print "Unknown ticker %s on EURONEXT" % (ticker)
+                print("Unknown ticker %s on EURONEXT" % (ticker))
         else:
-            print "getstate() failure :-("
+            print("getstate() failure :-(")
 
         gLiveEuronext.disconnect()
     else:
-        print "connect() failure :-("
+        print("connect() failure :-(")
 
 if __name__=='__main__':
     setLevel(logging.DEBUG)
 
-    print 'live %s' % date.today()
+    print('live %s' % date.today())
 
    # load euronext import extension
     import itrade_ext

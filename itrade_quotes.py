@@ -37,6 +37,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 from datetime import *
 import logging
 
@@ -45,7 +46,7 @@ from itrade_logging import *
 from itrade_local import message,getGroupChar
 import itrade_csv
 import itrade_trades
-from itrade_import import *
+from itrade_import import cmdline_importQuoteFromInternet, import_from_internet, liveupdate_from_internet
 from itrade_defs import *
 from itrade_ext import *
 from itrade_datation import *
@@ -151,7 +152,7 @@ class Quote(object):
         self.m_defaultimportconnector = getImportConnector(self.m_market,self.m_list,QTAG_IMPORT,self.m_place)
         if self.m_defaultimportconnector == None:
             if itrade_config.verbose:
-                print 'no default import connector for %s (list:%d)' % (self,self.m_list)
+                print('no default import connector for %s (list:%d)' % (self,self.m_list))
 
         if self.m_list != QLIST_INDICES:
             if not currency:
@@ -381,18 +382,18 @@ class Quote(object):
     def liveconnector(self,bForceLive=False,bDebug=False):
         if bForceLive:
             ret = getLiveConnector(self.m_market,self.m_list,QTAG_LIVE,self.m_place)
-            if bDebug: print 'liveconnector: for live connector %s' % ret
+            if bDebug: print('liveconnector: for live connector %s' % ret)
             if ret: return ret
 
         if self.m_userliveconnector:
             # priority to connector selected by the user
-            if bDebug: print 'liveconnector: retuns userliveconnector %s' % self.m_userliveconnector
+            if bDebug: print('liveconnector: retuns userliveconnector %s' % self.m_userliveconnector)
             return self.m_userliveconnector
 
         if not self.m_liveconnector:
             self.m_liveconnector = getDefaultLiveConnector(self.m_market,self.m_list,self.m_place)
-            if bDebug: print 'liveconnector: get liveconnector %s' % self.m_liveconnector
-        if bDebug: print 'liveconnector: retuns liveconnector %s' % self.m_liveconnector
+            if bDebug: print('liveconnector: get liveconnector %s' % self.m_liveconnector)
+        if bDebug: print('liveconnector: retuns liveconnector %s' % self.m_liveconnector)
         return self.m_liveconnector
 
     def importconnector(self):
@@ -414,7 +415,7 @@ class Quote(object):
 
     def set_liveconnector(self,name):
         if itrade_config.verbose:
-            print 'set_liveconnector %s/%s for ' % (self.key(),self.name()),self.m_market,self.m_list,QTAG_ANY,self.m_place,name
+            print('set_liveconnector %s/%s for ' % (self.key(),self.name()),self.m_market,self.m_list,QTAG_ANY,self.m_place,name)
         conn = getLiveConnector(self.m_market,self.m_list,QTAG_ANY,self.m_place,name)
         #if itrade_config.verbose:
             #print ' returns',conn
@@ -666,29 +667,29 @@ class Quote(object):
             tr = self.m_daytrades.lastimport()
             if tr==None:
                 if itrade_config.verbose:
-                    print '%s *** no trade at all ! : need to import ...' % self.key()
+                    print('%s *** no trade at all ! : need to import ...' % self.key())
                 if not cmdline_importQuoteFromInternet(self):
-                    print 'error importing full data ...'
+                    print('error importing full data ...')
                     return False
             elif tr.date() != ajd:
                 if itrade_config.verbose:
-                    print '%s *** from = %s today = %s : need to import ...' % (self.key(),tr.date(),ajd)
+                    print('%s *** from = %s today = %s : need to import ...' % (self.key(),tr.date(),ajd))
                 if not import_from_internet(self,tr.date(),ajd):
-                    print 'error importing partial data ...'
+                    print('error importing partial data ...')
                     return False
                 self.saveTrades()
 
             # live update today
             if self.isOpen():
                 if itrade_config.verbose:
-                    print '%s / %s *** liveupdate today = %s ...' % (self.key(),self.market(),date.today())
+                    print('%s / %s *** liveupdate today = %s ...' % (self.key(),self.market(),date.today()))
                 return liveupdate_from_internet(self)
             else:
                 return True
         else:
             # history importation
             if itrade_config.verbose:
-                print 'history importation for %s ' %self.key()
+                print('history importation for %s ' %self.key())
             if import_from_internet(self,fromdate,todate):
                 #self.saveTrades()
                 return True
@@ -1064,14 +1065,14 @@ class Quote(object):
                     return QUOTE_INVALID
             else:
                 return QUOTE_INVALID
-            
+
         if self.m_percent > 0:
             return QUOTE_GREEN
         elif self.m_percent < 0:
             return QUOTE_RED
         else:
             return QUOTE_NOCHANGE
-    
+
 
     def colorTrend(self,d=None):
         if self.m_daytrades:
@@ -1081,20 +1082,20 @@ class Quote(object):
             else:
                 tc = self.m_daytrades.trade(d)
                 #print 'colorTrend: specific close : %.2f date : %s ' % (tc.nv_close(),tc.date())
-                
+
             tp = self.m_daytrades.prevtrade(d)
             if not tp:
                 return QUOTE_INVALID
-            
+
             if tc.nv_close()==tp.nv_close():
                 return self.colorLine()
-                
+
             elif tc.nv_close()<tp.nv_close():
                 return self.colorLine()
-                
+
             elif tc.nv_close()>tp.nv_close():
                 return self.colorLine()
-                
+
             else:
                 return QUOTE_INVALID
         return QUOTE_INVALID
@@ -1223,15 +1224,15 @@ class Quote(object):
     # ---[ Command line ] ---
 
     def printInfo(self):
-        print '%s - %s - %s (market=%s)' % (self.key(),self.ticker(),self.name(),self.market())
-        print 'PRU DIR/SRD = %f / %f' % (self.m_DIR_pru,self.m_SRD_pru)
-        print 'Cours = %f' % self.nv_close()
-        print 'Nbre DIR/SRD/total = %d/%d/%d' % (self.nv_number(QUOTE_CASH),self.nv_number(QUOTE_CREDIT),self.nv_number(QUOTE_BOTH))
-        print 'Gain DIR = %f' % ((self.nv_close()-self.m_DIR_pru)*self.nv_number(QUOTE_CASH))
-        print 'Gain SRD = %f' % ((self.nv_close()-self.m_SRD_pru)*self.nv_number(QUOTE_CREDIT))
-        print 'Candle = %s' % self.ov_candle()
-        print 'StopLoss = %s' % self.sv_stoploss()
-        print 'StopWin = %s' % self.sv_stopwin()
+        print('%s - %s - %s (market=%s)' % (self.key(),self.ticker(),self.name(),self.market()))
+        print('PRU DIR/SRD = %f / %f' % (self.m_DIR_pru,self.m_SRD_pru))
+        print('Cours = %f' % self.nv_close())
+        print('Nbre DIR/SRD/total = %d/%d/%d' % (self.nv_number(QUOTE_CASH),self.nv_number(QUOTE_CREDIT),self.nv_number(QUOTE_BOTH)))
+        print('Gain DIR = %f' % ((self.nv_close()-self.m_DIR_pru)*self.nv_number(QUOTE_CASH)))
+        print('Gain SRD = %f' % ((self.nv_close()-self.m_SRD_pru)*self.nv_number(QUOTE_CREDIT)))
+        print('Candle = %s' % self.ov_candle())
+        print('StopLoss = %s' % self.sv_stoploss())
+        print('StopWin = %s' % self.sv_stopwin())
 
     # ---[ flush and reload ] ---
 
@@ -1373,9 +1374,9 @@ class Quotes(object):
 
         # get a key and check strict duplicate (i.e. same key)
         key = quote_reference(isin,ticker,market,place)
-        if self.m_quotes.has_key(key):
+        if key in self.m_quotes:
             if debug:
-                print '%r/%s already exists - keep it (ignore %s)' % (self.m_quotes[key],self.m_quotes[key].ticker(),ticker)
+                print('%r/%s already exists - keep it (ignore %s)' % (self.m_quotes[key],self.m_quotes[key].ticker(),ticker))
             return True
 
         # depending on isin
@@ -1384,21 +1385,21 @@ class Quotes(object):
             quote = None # __perf: self.lookupTicker(ticker,market)
             if quote:
                 if debug:
-                    print '%r already exists - ignore' % self.m_quotes[key]
+                    print('%r already exists - ignore' % self.m_quotes[key])
                 return True
         else:
             # isin : check if we can replace the same quote without isin
             key2 = quote_reference(None,ticker,market,place)
-            if self.m_quotes.has_key(key2):
+            if key2 in self.m_quotes:
                 if debug:
-                    print '%r already exists but without ISIN - replace' % self.m_quotes[key2]
+                    print('%r already exists but without ISIN - replace' % self.m_quotes[key2])
                 del self.m_quotes[key2]
 
         # new quote
         self.m_quotes[key] = Quote(key,isin,name.upper(),ticker.upper(),market,currency.upper(),place,country,list)
 
         if debug:
-            print 'Add %s in quotes list' % self.m_quotes[key]
+            print('Add %s in quotes list' % self.m_quotes[key])
 
         return True
 
@@ -1448,7 +1449,7 @@ class Quotes(object):
             #
             # open and write the file with these quotes information
             itrade_csv.write(None,os.path.join(itrade_config.dirSymbData,'quotes.%s.txt' % eachMarket),props)
-            print 'System List of symbols %s saved.' % eachMarket
+            print('System List of symbols %s saved.' % eachMarket)
 
     def saveListOfQuotes(self):
         # System list
@@ -1462,12 +1463,12 @@ class Quotes(object):
         #
         # open and write the file with these quotes information
         itrade_csv.write(None,os.path.join(itrade_config.dirUserData,'usrquotes.txt'),props)
-        print 'User List of symbols saved.'
+        print('User List of symbols saved.')
 
     # ---[ removeQuotes from the list ] ---
 
     def removeQuote(self,key):
-        if self.m_quotes.has_key(key):
+        if key in self.m_quotes:
             del self.m_quotes[key]
             return True
         return False
@@ -1484,7 +1485,7 @@ class Quotes(object):
         if key==None:
             return None
 
-        if self.m_quotes.has_key(key):
+        if key in self.m_quotes:
             return self.m_quotes[key]
 
         # key not found
@@ -1494,7 +1495,7 @@ class Quotes(object):
             market = skey[1]
             if not is_market_loaded(market):
                 self.loadMarket(market)
-                if self.m_quotes.has_key(key):
+                if key in self.m_quotes:
                     return self.m_quotes[key]
 
         # key really not found
@@ -1597,14 +1598,14 @@ if __name__=='__main__':
 #    quotes.saveTrades()
     quotes.saveListOfQuotes()
 
-    print fmtVolume(1)
-    print fmtVolume(12)
-    print fmtVolume(130)
-    print fmtVolume(1400)
-    print fmtVolume(15000)
-    print fmtVolume(160000)
-    print fmtVolume(1700000)
-    print fmtVolume(18000000)
+    print(fmtVolume(1))
+    print(fmtVolume(12))
+    print(fmtVolume(130))
+    print(fmtVolume(1400))
+    print(fmtVolume(15000))
+    print(fmtVolume(160000))
+    print(fmtVolume(1700000))
+    print(fmtVolume(18000000))
 
 # ============================================================================
 # That's all folks !

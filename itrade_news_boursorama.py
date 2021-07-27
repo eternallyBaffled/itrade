@@ -37,6 +37,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import logging
 import re
 import string
@@ -161,7 +162,7 @@ class News_Boursorama(object):
             if html:
                 html.paint_NC()
             else:
-                print 'unable to connect'
+                print('unable to connect')
             return
 
         title = re.search(r'<tr>[ \t\n\r]+<td.*</font></td>[ \t\n\r]+</tr>', buf, re.IGNORECASE|re.MULTILINE|re.DOTALL)
@@ -181,12 +182,12 @@ class News_Boursorama(object):
             if html:
                 html.SetPageWithoutCache(page)
             else:
-                print page
+                print(page)
         else:
             if html:
                 html.paint_NC()
             else:
-                print 'empty'
+                print('empty')
 
     # ---[ public interface ] ---
     def feedQuote(self,quote,lang=None,page=0):
@@ -213,7 +214,7 @@ if __name__=='__main__':
 
     from itrade_quotes import quotes
     quote = quotes.lookupTicker('RIB')
-    print gNewsBoursorama.feedQuote(quote)
+    print(gNewsBoursorama.feedQuote(quote))
 
     gNewsBoursorama.goto(None,"https://www.boursorama.com/infos/imprimer_news.phtml?news=3020909")
 

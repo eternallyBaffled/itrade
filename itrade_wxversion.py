@@ -34,6 +34,7 @@
 # ============================================================================
 
 # wxPython system
+from __future__ import print_function
 import wxversion
 
 # iTrade system
@@ -42,7 +43,7 @@ import itrade_config
 
 def resolve_wxversion():
     if itrade_config.verbose:
-        print 'wxPython Installed :', wxversion.getInstalled()
+        print('wxPython Installed :', wxversion.getInstalled())
 
     # unicode is default after 2.8
     wxversion.select(["2.8-unicode","2.9","3.0"], optionsRequired=True)

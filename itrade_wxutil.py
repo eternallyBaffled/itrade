@@ -140,19 +140,19 @@ def Button(label,id,makedefault=0):
     return [(label,id,makedefault)]
 
 def OKButton(makedefault=1):
-    return Button(message('ok'),`wx.ID_OK`,makedefault)
+    return Button(message('ok'),repr(wx.ID_OK),makedefault)
 
 def CancelButton(makedefault=0):
-    return Button(message('cancel'),`wx.ID_CANCEL`,makedefault)
+    return Button(message('cancel'),repr(wx.ID_CANCEL),makedefault)
 
 def ApplyButton(makedefault=0):
-    return Button(message('valid'),`wx.ID_APPLY`,makedefault)
+    return Button(message('valid'),repr(wx.ID_APPLY),makedefault)
 
 def YesButton(makedefault=1):
-    return Button(message('yes'),`wx.ID_YES`,makedefault)
+    return Button(message('yes'),repr(wx.ID_YES),makedefault)
 
 def NoButton(makedefault=0):
-    return Button(message('no'),`wx.ID_NO`,makedefault)
+    return Button(message('no'),repr(wx.ID_NO),makedefault)
 
 # ============================================================================
 # generate HTML for buttons
@@ -178,7 +178,7 @@ DefaultButtonString = '''
 
 class Default_wxButton(wx.Button):
     def __init__(self,*args,**kwargs):
-        apply(wx.Button.__init__, (self,) + args,kwargs)
+        wx.Button.__init__(*(self,) + args, **kwargs)
         self.SetDefault()
 
 def HTMLforSingleButton(label,id=None,makedefault=0):
@@ -301,7 +301,7 @@ class HTMLDialog(wx.Dialog):
         EVT_HTML_URL_CLICK(self.m_html, self.OnLinkClick)
 
         # set the content
-        apply(self.SetContents,(),kwargs)
+        self.SetContents(*(), **kwargs)
 
         # layout the content
         self.SetAutoLayout(True)

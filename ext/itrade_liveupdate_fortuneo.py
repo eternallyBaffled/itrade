@@ -43,6 +43,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import logging
 import re
 import string
@@ -136,7 +137,7 @@ flux_place = {
 }
 
 def flux2place(flux):
-    if flux_place.has_key(flux):
+    if flux in flux_place:
         return flux_place[flux]
     else:
         # default
@@ -373,7 +374,7 @@ place_code = {
 }
 
 def place2code(place):
-    if place_code.has_key(place):
+    if place in place_code:
         return place_code[place]
     else:
         # default : PARIS
@@ -431,11 +432,11 @@ def encode_topic(topic,key):
     blocks = len(instring)/8
     padding = (blocks + 1)*8 - len(instring)
     instring = instring + padding * chr(padding)
-    print "Padding with %s bytes" % padding
+    print("Padding with %s bytes" % padding)
 
     outstring = ""
 
-    print "Encrypting..."
+    print("Encrypting...")
     for i in range(blocks+1):
         inbytes   = blowfish.mkchunk(instring[i*8:i*8+8])   # 8-byte string as hex no.
         cipher    = blowfish.bfencrypt(inbytes)             # ...encrypted
@@ -443,8 +444,8 @@ def encode_topic(topic,key):
         outstring = outstring + outbytes                    # and appended
 
     topic = ""
-    print "Size: %s / %s" % (len(instring),len(outstring))
-    print '"%s"' % outstring
+    print("Size: %s / %s" % (len(instring),len(outstring)))
+    print('"%s"' % outstring)
     for i in range(0,len(outstring),2):
         if i>0: topic = topic + "%3B"
         topic = topic + '%d' % hex2num(outstring[i:i+2])
@@ -496,7 +497,7 @@ class LiveUpdate_fortuneo(object):
                 txt = infile[0].strip()
                 f.close()
                 self.m_cookie,self.m_blowfish = txt.split('-')
-                print 'cookie,blowfish:',self.m_cookie,self.m_blowfish
+                print('cookie,blowfish:',self.m_cookie,self.m_blowfish)
             except IOError:
                 self.m_cookie = ''
 
@@ -524,7 +525,7 @@ class LiveUpdate_fortuneo(object):
     def connect(self):
         self.m_conn = httplib.HTTPConnection(self.m_default_host,80)
         if self.m_conn == None:
-            print 'live: not connected on %s:80' % self.m_default_host
+            print('live: not connected on %s:80' % self.m_default_host)
             return False
 
         self.readCookie()
@@ -563,7 +564,7 @@ class LiveUpdate_fortuneo(object):
                         self.m_places[item[0]] = place2code(item[1].strip().upper())
 
     def place(self,isin):
-        if self.m_places.has_key(isin) : return self.m_places[isin]
+        if isin in self.m_places : return self.m_places[isin]
         return "025"
 
     # ---[ code to get data ] ---
@@ -607,7 +608,7 @@ class LiveUpdate_fortuneo(object):
         topics = encode_topics(topics,self.m_blowfish)
 
         params = "subscriptions%%3D%%7B%s%%7D%%26userinfo%%3D%s\r\n" % (topics,self.m_cookie)
-        print 'params:',params
+        print('params:',params)
 
         # POST quote request
         try:
@@ -699,7 +700,7 @@ class LiveUpdate_fortuneo(object):
         flux.close()
 
         # usefull information ?
-        if not dcmpd.has_key('CSA_IND_ETAT'):
+        if 'CSA_IND_ETAT' not in dcmpd:
             info("LiveUpdate_fortuneo:getdata quote:%s UNKNOWN QUOTE? or WRONG PLACE?" % quote)
             return None
 
@@ -707,7 +708,7 @@ class LiveUpdate_fortuneo(object):
         self.m_dcmpd[isin] = dcmpd
 
         # extrack date
-        if not dcmpd.has_key('CSA_HD_COURS') or not dcmpd.has_key('CSA_CRS_PREMIER'):
+        if 'CSA_HD_COURS' not in dcmpd or 'CSA_CRS_PREMIER' not in dcmpd:
             info("LiveUpdate_fortuneo:getdata quote:%s CLOSED" % quote)
             return None
 
@@ -729,7 +730,7 @@ class LiveUpdate_fortuneo(object):
           dcmpd['CSA_CRS_DERNIER'],
           dcmpd['CSA_VOL_JOUR']
         )
-        data = map(lambda (val): '%s' % str(val), data)
+        data = map(lambda val: '%s' % str(val), data)
         data = string.join(data, ';')
         return data
 
@@ -755,7 +756,7 @@ class LiveUpdate_fortuneo(object):
     def currentNotebook(self,quote):
         #
         isin = quote.isin()
-        if not self.m_dcmpd.has_key(isin):
+        if isin not in self.m_dcmpd:
             # no data for this quote !
             return [],[]
         d = self.m_dcmpd[isin]
@@ -795,7 +796,7 @@ class LiveUpdate_fortuneo(object):
             return "%d:%02d" % (self.m_lastclock/60,self.m_lastclock%60)
         #
         isin = quote.isin()
-        if not self.m_clock.has_key(isin):
+        if isin not in self.m_clock:
             # no data for this quote !
             return "::"
         else:
@@ -804,13 +805,13 @@ class LiveUpdate_fortuneo(object):
     def currentTrades(self,quote):
         #
         isin = quote.isin()
-        if not self.m_dcmpd.has_key(isin):
+        if isin not in self.m_dcmpd:
             # no data for this quote !
             return None
         d = self.m_dcmpd[isin]
 
         # clock,volume,value
-        if not d.has_key('CSA_HD_COURS'):
+        if 'CSA_HD_COURS' not in d:
             return None
 
         last = []
@@ -831,7 +832,7 @@ class LiveUpdate_fortuneo(object):
     def currentMeans(self,quote):
         #
         isin = quote.isin()
-        if not self.m_dcmpd.has_key(isin):
+        if isin not in self.m_dcmpd:
             # no data for this quote !
             return "-","-","-"
         d = self.m_dcmpd[isin]
@@ -856,7 +857,7 @@ class LiveUpdate_fortuneo(object):
     def currentStatus(self,quote):
         #
         isin = quote.isin()
-        if not self.m_dcmpd.has_key(isin):
+        if isin not in self.m_dcmpd:
             # no data for this quote !
             return "UNKNOWN","::","0.00","0.00","::"
         d = self.m_dcmpd[isin]
@@ -877,17 +878,17 @@ class LiveUpdate_fortuneo(object):
         if cl=='':
             cl = "::"
 
-        if d.has_key('CSA_RESERV_BAS'):
+        if 'CSA_RESERV_BAS' in d:
             bas = d['CSA_RESERV_BAS']
         else:
             bas = "-"
 
-        if d.has_key('CSA_RESERV_HAUT'):
+        if 'CSA_RESERV_HAUT' in d:
             haut = d['CSA_RESERV_HAUT']
         else:
             haut = "-"
 
-        if self.m_clock.has_key(isin):
+        if isin in self.m_clock:
             clo = self.m_clock[isin]
         else:
             clo = "::"
@@ -936,7 +937,7 @@ def test(ticker):
             if data:
                 info(data)
             else:
-                print "getdata() failure :-("
+                print("getdata() failure :-(")
                 debug("nodata")
             info(gLiveFortuneo.currentClock(quote))
             if data:
@@ -945,11 +946,11 @@ def test(ticker):
                 info(gLiveFortuneo.currentMeans(quote))
             info(gLiveFortuneo.currentStatus(quote))
         else:
-            print "getstate() failure :-("
+            print("getstate() failure :-(")
 
         gLiveFortuneo.disconnect()
     else:
-        print "connect() failure :-("
+        print("connect() failure :-(")
 
 if __name__=='__main__':
     setLevel(logging.INFO)

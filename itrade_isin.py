@@ -171,7 +171,7 @@ def extractCUSIP(ref):
     issuer = ref[:6]
     issue  = ref[6:-1]
     country = issuer[0]
-    if cusip_country.has_key(country):
+    if country in cusip_country:
         country = cusip_country[country]
     else:
         country = 'US'

@@ -36,6 +36,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import os
 import logging
 import pprint
@@ -124,7 +125,7 @@ class iTrade_wxFrame(object):
 
     def loadConfig(self):
         if self.m_name:
-            if itrade_config.verbose: print 'iTrade_wxFrame::loadConfig',self.m_name
+            if itrade_config.verbose: print('iTrade_wxFrame::loadConfig',self.m_name)
             try:
                 self._config = itrade_config.readThenEvalFile(os.path.join(itrade_config.dirCacheData,'%s.win'%self.m_name))
                 if self._config != {}:
@@ -137,7 +138,7 @@ class iTrade_wxFrame(object):
 
     def saveConfig(self):
         if self.m_name and not self.IsMaximized():
-            if itrade_config.verbose: print 'iTrade_wxFrame::saveConfig',self.m_name
+            if itrade_config.verbose: print('iTrade_wxFrame::saveConfig',self.m_name)
             self._config['position'] = self.GetRestoredPosition()
             self._config['size'] = self.GetRestoredSize()
             try:
@@ -148,7 +149,7 @@ class iTrade_wxFrame(object):
                 f.close()
             except:
                 # argh
-                print 'saveConfig: argh'
+                print('saveConfig: argh')
                 pass
 
 # ============================================================================

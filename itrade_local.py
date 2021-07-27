@@ -37,6 +37,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import logging
 import locale
 import sys
@@ -163,8 +164,8 @@ class LocalMessages(object):
             return
 
         if fn is None:
-            fn = os.path.join(itrade_config.dir_sys_data(), '%s.messages.txt'%self.m_lang)
-        infile = itrade_csv.read(fn)
+            fn = os.path.join(itrade_config.dirSysData, '%s.messages.txt'%self.m_lang)
+        infile = itrade_csv.read(fn, fn)
         if infile:
             # store filename used for messaging
             self.m_llang[self.m_lang] = fn
@@ -176,9 +177,9 @@ class LocalMessages(object):
                     self.addMsg(item)
 
             # info
-            print 'Language Pack %s : %s' % (self.m_lang,self.m_llang[self.m_lang])
+            print('Language Pack %s : %s' % (self.m_lang,self.m_llang[self.m_lang]))
         else:
-            print 'No Language Pack for %s !' % self.m_lang
+            print('No Language Pack for %s !' % self.m_lang)
             #raise('lang %s not found !' % self.m_lang)
 
     def setLocale(self,lang=None):
@@ -196,12 +197,12 @@ class LocalMessages(object):
             try:
                 locale.setlocale(locale.LC_ALL, lang)
             except locale.Error:
-                print 'setlocale %s : %s' % (lang,'locale unknown in this windows configuration ?')
+                print('setlocale %s : %s' % (lang,'locale unknown in this windows configuration ?'))
         else:
             try:
                 locale.setlocale(locale.LC_ALL, nl_posix[lang])
             except locale.Error:
-                print 'setlocale %s : %s' % (nl_posix[lang],'locale unknown in this configuration ?')
+                print('setlocale %s : %s' % (nl_posix[lang],'locale unknown in this configuration ?'))
 
         # strptime is bugged :
         # first call will reset the TimeRE cache but continue using the previous TimeRE (bad lang) :-( !
@@ -239,7 +240,7 @@ class LocalMessages(object):
             else:
                 return l
         else:
-            print "setlocale '%s' : unsupported language - default to french" % l
+            print("setlocale '%s' : unsupported language - default to french" % l)
             return 'fr'
 
     def addMsg(self, m):
@@ -248,7 +249,7 @@ class LocalMessages(object):
             return
         key = u'%s%s' % (self.m_lang, m[0])
         if key in self.m_msg:
-            raise('addMsg:: key %s already exist' % key)
+            raise Exception('addMsg:: key %s already exist')
         self.m_msg[key] = m[1]
 
     def getMsg(self,ref):
@@ -305,62 +306,62 @@ if __name__=='__main__':
 
     itrade_logging.setLevel(logging.INFO)
 
-    print 'default (detection): ', gMessage.getAutoDetectedLang()
+    print('default (detection): ', gMessage.getAutoDetectedLang())
 
     setLang('us')
     gMessage.load()
-    print 'pack us: %s' % gMessage.getLangFile()
+    print('pack us: %s' % gMessage.getLangFile())
     setLang('fr')
     gMessage.load()
-    print 'pack fr: %s' % gMessage.getLangFile()
+    print('pack fr: %s' % gMessage.getLangFile())
     setLang('en')
     gMessage.load()
-    print 'pack en: %s' % gMessage.getLangFile()
+    print('pack en: %s' % gMessage.getLangFile())
     setLang('pt')
     gMessage.load()
-    print 'pack pt: %s' % gMessage.getLangFile()
+    print('pack pt: %s' % gMessage.getLangFile())
     setLang('de')
     gMessage.load()
-    print 'pack de: %s' % gMessage.getLangFile()
+    print('pack de: %s' % gMessage.getLangFile())
     setLang('it')
     gMessage.load()
-    print 'pack it: %s' % gMessage.getLangFile()
-    print
+    print('pack it: %s' % gMessage.getLangFile())
+    print()
 
     setLang('fr')
-    print 'fr:', message('test')
+    print('fr:', message('test'))
     setLang('en')
-    print 'en:', message('test')
+    print('en:', message('test'))
     setLang('us')
-    print 'us:', message('test')
+    print('us:', message('test'))
     setLang('pt')
-    print 'pt:', message('test')
+    print('pt:', message('test'))
     setLang('de')
-    print 'de:', message('test')
+    print('de:', message('test'))
     setLang('it')
-    print 'it:', message('test')
+    print('it:', message('test'))
     setLang('ar')
-    print 'ar:', message('test')
+    print('ar:', message('test'))
 
-    print
+    print()
     setLang('fr')
-    print 'fr (unknown message):', message('toto')
-    print 'fr (accents message):', message('portfolio_exist_info')
+    print('fr (unknown message):', message('toto'))
+    print('fr (accents message):', message('portfolio_exist_info'))
 
-    print
+    print()
     import datetime
     setLang('fr')
-    print '6 décembre 2005 en francais (%s) : ' % getLocale(),datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x ')
+    print('6 décembre 2005 en francais (%s) : ' % getLocale(),datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x '))
     setLang('en')
-    print '6th december 2005 in english (%s) : ' % getLocale(),datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x ')
+    print('6th december 2005 in english (%s) : ' % getLocale(),datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x '))
     setLang('pt')
-    print '6th december 2005 in portuguese (%s) : ' % getLocale(),datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x ')
+    print('6th december 2005 in portuguese (%s) : ' % getLocale(),datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x '))
     setLang('de')
-    print '6th december 2005 in deutch (%s) : ' % getLocale(),datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x ')
+    print('6th december 2005 in deutch (%s) : ' % getLocale(),datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x '))
     setLang('it')
-    print '6 dicembre 2005 in italian (%s) : ' % getLocale(),datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x ')
+    print('6 dicembre 2005 in italian (%s) : ' % getLocale(),datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x '))
     setLang()
-    print '6th december 2005 in default lang (%s) : ' % getLocale(),datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x ')
+    print('6th december 2005 in default lang (%s) : ' % getLocale(),datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x '))
 
 # ============================================================================
 # That's all folks !

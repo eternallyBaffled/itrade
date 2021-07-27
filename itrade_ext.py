@@ -36,6 +36,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import logging
 import glob
 import os
@@ -113,7 +114,7 @@ def getDefaultLiveConnector(market,list,place=None):
     # no live connector or not logged : fall-back to differed connector
     ret = getLiveConnector(market,list,QTAG_DIFFERED,place)
     if ret==None:
-        print 'No default connector %s for market :' % market,' qlist:',list
+        print('No default connector %s for market :' % market,' qlist:',list)
     return ret
 
 try:
@@ -152,13 +153,13 @@ def loadExtensions(file,folder):
     # file to manage list of extensions
     extFile = os.path.join(folder,file)
     if not os.path.exists(extFile):
-        print 'Load (%s) : %s file not found !' % (folder,file)
+        print('Load (%s) : %s file not found !' % (folder,file))
         return False
 
     # list of potential files to load
     files = glob.glob(os.path.join(folder,"*.py"))
     if not files:
-        print 'Load (%s) : no extension file found !' % folder
+        print('Load (%s) : no extension file found !' % folder)
         return False
 
     # list of enabled / disabled Files
@@ -170,7 +171,7 @@ def loadExtensions(file,folder):
         lines = ext.readlines()
         ext.close()
     except IOError:
-        print "Load (%s) : can't open %s file !" % (folder,extFile)
+        print("Load (%s) : can't open %s file !" % (folder,extFile))
 
     for s in lines:
         #print s
@@ -211,7 +212,7 @@ def loadOneExtension(ext,folder):
     # check module not loaded
     if isLoaded(moduleName):
         module = loadedModules.get(moduleName)
-        print 'Extension (%s) %s already loaded' % (folder,moduleName)
+        print('Extension (%s) %s already loaded' % (folder,moduleName))
         return module
 
     # import the module
@@ -219,10 +220,10 @@ def loadOneExtension(ext,folder):
 
     # return the moduler reference
     if not module:
-        print "Can't load (%s) %s" % (folder,moduleName)
+        print("Can't load (%s) %s" % (folder,moduleName))
     else:
         if itrade_config.verbose:
-            print 'Load (%s) %s' % (folder,moduleName)
+            print('Load (%s) %s' % (folder,moduleName))
 
     return module
 

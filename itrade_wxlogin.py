@@ -37,6 +37,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import logging
 
 # iTrade system
@@ -199,7 +200,7 @@ if __name__=='__main__':
     from itrade_login_fortuneo import gLoginFortuneo
 
     u,p = login_UI(None,u,p,gLoginFortuneo)
-    print u,p
+    print(u,p)
 
 # ============================================================================
 # That's all folks !

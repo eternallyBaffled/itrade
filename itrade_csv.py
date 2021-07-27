@@ -42,6 +42,7 @@
 # CSV
 # ============================================================================
 
+from __future__ import print_function
 class CSV(object):
     def __init__(self):
         pass
@@ -85,7 +86,7 @@ class CSV(object):
                 f = open(fd,'w')
         except IOError:
             # can't open the file (existing ?)
-            print "can't open the file %s/%s (existing ?) for writing !" % (fn,fd)
+            print("can't open the file %s/%s (existing ?) for writing !" % (fn,fd))
             return None
 
         # write each lines

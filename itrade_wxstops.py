@@ -36,6 +36,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import os
 import logging
 #import webbrowser
@@ -201,7 +202,7 @@ class iTradeStopsDialog(wx.Dialog):
 def addOrEditStops_iTradeQuote(win,quote,market,bAdd=True):
     # no quote : select one
     if not quote:
-        print 'addOrEditStops_iTradeQuote() : need to select a quote'
+        print('addOrEditStops_iTradeQuote() : need to select a quote')
 
         # select one quote from the matrix list
         quote = select_iTradeQuote(win,quote,filter=True,market=market,filterEnabled=True)
@@ -221,7 +222,7 @@ def addOrEditStops_iTradeQuote(win,quote,market,bAdd=True):
 
     # still a quote, open the dialog to manage the Stops
     if quote:
-        print 'addOrEditStops_iTradeQuote() : Add?(%d) quote : %s' % (bAdd,quote)
+        print('addOrEditStops_iTradeQuote() : Add?(%d) quote : %s' % (bAdd,quote))
 
         dlg = iTradeStopsDialog(win,quote,bAdd=bAdd)
         idRet = dlg.CentreOnParent()
@@ -269,7 +270,7 @@ if __name__=='__main__':
     if q:
         addOrEditStops_iTradeQuote(None,q,bAdd= not q.hasStops())
     else:
-        print 'quote not found'
+        print('quote not found')
 
 # ============================================================================
 # That's all folks !

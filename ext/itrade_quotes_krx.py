@@ -38,6 +38,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import logging
 import re
 import thread
@@ -61,7 +62,7 @@ from itrade_connection import ITradeConnection
 
 def Import_ListOfQuotes_KRX(quotes,market='KOREA STOCK EXCHANGE',dlg=None,x=0):
     if itrade_config.verbose:
-        print 'Update %s list of symbols' % market
+        print('Update %s list of symbols' % market)
     connection = ITradeConnection(cookies = None,
                                proxy = itrade_config.proxyHostname,
                                proxyAuth = itrade_config.proxyAuthentication,
@@ -156,7 +157,7 @@ def Import_ListOfQuotes_KRX(quotes,market='KOREA STOCK EXCHANGE',dlg=None,x=0):
     lines = splitLines(data)
     n = 0
     isin = ''
-    print 'Import_ListOfQuotes_KRX_%s:' % market
+    print('Import_ListOfQuotes_KRX_%s:' % market)
 
     for line in lines:
         ticker = line[8:line.index('</td><td>')]
@@ -175,7 +176,7 @@ def Import_ListOfQuotes_KRX(quotes,market='KOREA STOCK EXCHANGE',dlg=None,x=0):
         quotes.addQuote(isin=isin, name=name, ticker=ticker,
                         market=market, currency='KRW', place=place, country='KR')
     if itrade_config.verbose:
-        print 'Imported %d lines from %s data.' % (n,market)
+        print('Imported %d lines from %s data.' % (n,market))
 
     return True
 

@@ -38,6 +38,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import logging
 import re
 import thread
@@ -59,7 +60,7 @@ from itrade_connection import ITradeConnection
 
 def Import_ListOfQuotes_SHG(quotes,market='SHANGHAI EXCHANGE',dlg=None,x=0):
     if itrade_config.verbose:
-        print 'Update %s list of symbols' % market
+        print('Update %s list of symbols' % market)
     connection=ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
@@ -99,7 +100,7 @@ def Import_ListOfQuotes_SHG(quotes,market='SHANGHAI EXCHANGE',dlg=None,x=0):
 
             #data=connection.getDataFromUrl(url)
         except:
-            print 'Import_ListOfQuotes_SSE A SHARE:unable to connect to',url
+            print('Import_ListOfQuotes_SSE A SHARE:unable to connect to',url)
             return False
 
         lines = splitLines(data)
@@ -207,7 +208,7 @@ def Import_ListOfQuotes_SHG(quotes,market='SHANGHAI EXCHANGE',dlg=None,x=0):
 
 
     if itrade_config.verbose:
-        print 'Imported %d lines from SHANGHAI EXCHANGE' %count
+        print('Imported %d lines from SHANGHAI EXCHANGE' %count)
 
 
 

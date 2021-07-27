@@ -37,6 +37,7 @@
 # 2: canReadExcel requires users of this module to test for the functionality.
 #    Unpythonic, handle it transparently here.
 
+from __future__ import print_function
 canReadExcel = True
 
 xlrd_url = 'https://pypi.org/project/xlrd/'
@@ -45,7 +46,7 @@ try:
     import xlrd
 except:
     canReadExcel = False
-    print 'XLRD package (%s) not installed.' % xlrd_url
+    print('XLRD package (%s) not installed.' % xlrd_url)
 
 def open_excel(file,content):
     book = xlrd.open_workbook(filename=file,file_contents=content)

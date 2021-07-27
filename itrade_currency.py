@@ -37,6 +37,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import logging
 import string
 import os
@@ -294,25 +295,25 @@ convert = currencies.convert
 if __name__=='__main__':
     itrade_logging.setLevel(logging.INFO)
 
-    print 'From cache file : '
-    print '1 EUR = %.2f EUR' % convert('EUR','EUR',1)
-    print '1 EUR = %.2f USD' % convert('USD','EUR',1)
-    print '1 USD = %.2f EUR' % convert('EUR','USD',1)
+    print('From cache file : ')
+    print('1 EUR = %.2f EUR' % convert('EUR','EUR',1))
+    print('1 EUR = %.2f USD' % convert('USD','EUR',1))
+    print('1 USD = %.2f EUR' % convert('EUR','USD',1))
 
-    print 'Currencies get last trade ...'
+    print('Currencies get last trade ...')
     currencies.inuse('USD','EUR',True)
     currencies.inuse('GBX','EUR',True)
     currencies.inuse('GBP','EUR',True)
     currencies.inuse('USD','AUD',True)
     currencies.getlasttrade()
 
-    print 'From updated cache file : '
-    print '1 EUR = %.2f EUR' % convert('EUR','EUR',1)
-    print '1 EUR = %.2f USD' % convert('USD','EUR',1)
-    print '1 EUR = %.2f GBP' % convert('GBP','EUR',1)
-    print '1 EUR = %.2f GBX' % convert('GBX','EUR',1)
-    print '1 USD = %.2f EUR' % convert('EUR','USD',1)
-    print '1 USD = %.2f AUD' % convert('AUD','USD',1)
+    print('From updated cache file : ')
+    print('1 EUR = %.2f EUR' % convert('EUR','EUR',1))
+    print('1 EUR = %.2f USD' % convert('USD','EUR',1))
+    print('1 EUR = %.2f GBP' % convert('GBP','EUR',1))
+    print('1 EUR = %.2f GBX' % convert('GBX','EUR',1))
+    print('1 USD = %.2f EUR' % convert('EUR','USD',1))
+    print('1 USD = %.2f AUD' % convert('AUD','USD',1))
 
     #print 'EUR = %s',currency2symbol('EUR')
 

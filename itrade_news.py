@@ -36,6 +36,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import logging
 import re
 import webbrowser
@@ -74,7 +75,7 @@ class News(object):
     def feedQuote(self,quote,lang=None):
         if lang==None:
             lang = quote.country()
-        print 'feedQuote: lang=%s' % lang
+        print('feedQuote: lang=%s' % lang)
 
         # __x very temporary : need to aggregate news from various sources
         #                      using callback to notify the progress
@@ -120,7 +121,7 @@ if __name__=='__main__':
 
     from itrade_quotes import quotes
     quote = quotes.lookupTicker('RIB')
-    print gNews.feedQuote(quote,'fr')
+    print(gNews.feedQuote(quote,'fr'))
 
 # ============================================================================
 # That's all folks !

@@ -166,7 +166,7 @@ def quotes_historical_yahoo(ticker, date1, date2, asobject=False, adjusted=True,
     fh = fetch_historical_yahoo(ticker, date1, date2, cachename)
 
     try: ret = parse_yahoo_historical(fh, asobject, adjusted)
-    except IOError, exc:
+    except IOError as exc:
         warnings.warn('urlopen() failure\n' + url + '\n' + exc.strerror[1])
         return None
 

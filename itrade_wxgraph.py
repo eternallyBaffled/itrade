@@ -36,6 +36,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import logging
 
 # iTrade system
@@ -747,7 +748,7 @@ class iTrade_wxPanelGraph(GObject, PanelPrint):
         dc.ResetBoundingBox()
         dc.BeginDrawing()
 
-        x, y, left, right, bottom, top = [int(val) for val in newx, y, left, right, bottom, top]
+        x, y, left, right, bottom, top = [int(val) for val in (newx, y, left, right, bottom, top)]
 
         self.erase_cursor()
         line1 = (x, bottom, x, top)
@@ -813,7 +814,7 @@ class iTrade_wxPanelGraph(GObject, PanelPrint):
 
     def chartUPL(self,strval):
         if itrade_config.verbose:
-            print 'chartUPL with xval=',strval
+            print('chartUPL with xval=',strval)
 
         # create the object
         obj = (GToolUPL(self,self.m_canvas),1,0,strval)

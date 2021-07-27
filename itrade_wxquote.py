@@ -38,6 +38,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import os
 import logging
 import webbrowser
@@ -313,7 +314,7 @@ class iTradeQuoteInfoWindow(sc.SizedPanel):
         fit = False
         if nquote and nquote != self.m_quote:
             if itrade_config.verbose:
-                print 'QuoteInfoWinfow::refresh New Quote %s - live=%s' % (nquote.ticker(),live)
+                print('QuoteInfoWinfow::refresh New Quote %s - live=%s' % (nquote.ticker(),live))
             self.m_quote = nquote
             self.m_logo = None
             fit = True
@@ -326,7 +327,7 @@ class iTradeQuoteInfoWindow(sc.SizedPanel):
 
         # paint the content
         if itrade_config.verbose:
-            print 'QuoteInfoWinfow::refresh Paint Quote %s - live=%s' % (self.m_quote.ticker(),live)
+            print('QuoteInfoWinfow::refresh Paint Quote %s - live=%s' % (self.m_quote.ticker(),live))
         self.paint()
 
         # fit but stay on the space given by the parent
@@ -585,15 +586,15 @@ class iTradeQuoteGraphPanel(wx.Panel, iTrade_wxPanelGraph):
         self.m_hasLegend = self.m_dispLegend
 
     def InitPage(self):
-        print '$$$InitPage'
+        print('$$$InitPage')
         self.RedrawAll(redraw=False)
 
     def DonePage(self):
-        print '$$$DonePage'
+        print('$$$DonePage')
         pass
 
     def RedrawAll(self,redraw=True):
-        print '$$$RedrawAll redraw=%s' % redraw
+        print('$$$RedrawAll redraw=%s' % redraw)
         self.ChartRealize()
         if redraw:
             self.m_canvas.draw()
@@ -601,12 +602,12 @@ class iTradeQuoteGraphPanel(wx.Panel, iTrade_wxPanelGraph):
 
     def OnPaint(self,event):
         size = self.GetClientSize()
-        print "OnPaint:", size
+        print("OnPaint:", size)
         self.erase_cursor()
         event.Skip()
 
     def refresh(self):
-        print '$$$refresh'
+        print('$$$refresh')
         self.RedrawAll()
 
     def OnHome(self,event):
@@ -993,8 +994,8 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
         new = event.GetSelection()
         sel = self.GetSelection()
         if itrade_config.verbose:
-            print
-            print 'QuoteNotebookWindow::OnPageChanged: old=%d new=%d sel=%d' % (old, new, sel)
+            print()
+            print('QuoteNotebookWindow::OnPageChanged: old=%d new=%d sel=%d' % (old, new, sel))
         if old != new:
             if old >= 0:
                 self.win[old].DonePage()
@@ -1063,23 +1064,23 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
         if nquote:
             # refresh the new quote
             if itrade_config.verbose:
-                print 'QuoteNotebookWindow::refresh Init New Quote : %s - page: %s' % (nquote.ticker(),self.m_curpage)
+                print('QuoteNotebookWindow::refresh Init New Quote : %s - page: %s' % (nquote.ticker(),self.m_curpage))
             page = self.init(nquote,self.m_curpage)
             if itrade_config.verbose:
-                print 'QuoteNotebookWindow::refresh Internal Page : %s - page: %s' % (nquote.ticker(),page)
+                print('QuoteNotebookWindow::refresh Internal Page : %s - page: %s' % (nquote.ticker(),page))
             self.SetSelection(page)
         else:
             # refresh current page
             if (self.m_curpage==self.ID_PAGE_LIVE) or (not live):
                 if itrade_config.verbose:
-                    print 'QuoteNotebookWindow::refresh Current Quote %s live=%s page: %s' % (self.m_quote.ticker(),live,self.m_curpage)
+                    print('QuoteNotebookWindow::refresh Current Quote %s live=%s page: %s' % (self.m_quote.ticker(),live,self.m_curpage))
                 self.win[self.m_curpage].refresh()
 
     def OnRefresh(self,event=None):
         # called by a child to refresh the book on the current quote (after importing for example)
         if itrade_config.verbose:
-            print
-            print 'QuoteNotebookWindow::OnRefresh'
+            print()
+            print('QuoteNotebookWindow::OnRefresh')
 
         # tp force the refresh
         nquote = self.m_quote
@@ -1145,8 +1146,8 @@ class iTradeQuoteWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin):
             nquote = select_iTradeQuote(self,self.m_quote,filter=True,market=None)
         if nquote and nquote != self.m_quote:
             if itrade_config.verbose:
-                print
-                print 'QuoteWindow::SelectQuote: %s -> %s %s' % (self.m_quote.ticker(),nquote.ticker(),nquote.key())
+                print()
+                print('QuoteWindow::SelectQuote: %s -> %s %s' % (self.m_quote.ticker(),nquote.ticker(),nquote.key()))
             self.stopLive(self.m_quote)
             self.unregisterLive(self.m_quote)
             self.m_notewindow.Hide()
@@ -1160,7 +1161,7 @@ class iTradeQuoteWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin):
 
     def refresh(self,nquote=None,live=False):
         if itrade_config.verbose:
-            print'QuoteWindow::refresh %s %s: live=%s' % (self.m_quote.ticker(),self.m_quote.key(),live)
+            print('QuoteWindow::refresh %s %s: live=%s' % (self.m_quote.ticker(),self.m_quote.key(),live))
         self.m_infowindow.refresh(nquote,live)
         self.m_notewindow.refresh(nquote,live)
 
@@ -1168,11 +1169,11 @@ class iTradeQuoteWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin):
         # be sure this quote is still under population
         if evt.quote == self.m_quote and self.isRunning(evt.quote):
             if itrade_config.verbose:
-                print 'QuoteWindow::OnLive %s %s: %s' % (evt.quote.ticker(),evt.quote.key(),evt.param)
+                print('QuoteWindow::OnLive %s %s: %s' % (evt.quote.ticker(),evt.quote.key(),evt.param))
             self.refresh(live=True)
         else:
             if itrade_config.verbose:
-                print 'QuoteWindow::OnLive %s %s: %s - NOT RUNNING' % (evt.quote.ticker(),evt.quote.key(),evt.param)
+                print('QuoteWindow::OnLive %s %s: %s - NOT RUNNING' % (evt.quote.ticker(),evt.quote.key(),evt.param))
 
     # ---[ Default Windows handlers ] -----------------------------------------
 

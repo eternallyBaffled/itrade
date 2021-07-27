@@ -37,6 +37,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import logging
 import re
 import thread
@@ -58,7 +59,7 @@ from itrade_connection import ITradeConnection
 
 def Import_ListOfQuotes_IE(quotes,market='IRISH EXCHANGE',dlg=None,x=0):
     if itrade_config.verbose:
-        print 'Update %s list of symbols' % market
+        print('Update %s list of symbols' % market)
     connection = ITradeConnection(cookies = None,
                                proxy = itrade_config.proxyHostname,
                                proxyAuth = itrade_config.proxyAuthentication,
@@ -141,7 +142,7 @@ def Import_ListOfQuotes_IE(quotes,market='IRISH EXCHANGE',dlg=None,x=0):
                     tick = ''
                     nlines = nlines + 1
     if itrade_config.verbose:
-        print 'Imported %d/%d lines from IRISH EXCHANGE data.' % (count,nlines)
+        print('Imported %d/%d lines from IRISH EXCHANGE data.' % (count,nlines))
 
     return True
 

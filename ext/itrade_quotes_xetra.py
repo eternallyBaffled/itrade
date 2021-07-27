@@ -38,6 +38,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import logging
 import re
 import thread
@@ -58,7 +59,7 @@ from itrade_connection import ITradeConnection
 
 def Import_ListOfQuotes_Xetra(quotes,market='FRANKFURT EXCHANGE',dlg=None,x=0):
     if itrade_config.verbose:
-        print 'Update %s list of symbols' % market
+        print('Update %s list of symbols' % market)
     connection = ITradeConnection(cookies = None,
                                proxy = itrade_config.proxyHostname,
                                proxyAuth = itrade_config.proxyAuthentication,
@@ -101,7 +102,7 @@ def Import_ListOfQuotes_Xetra(quotes,market='FRANKFURT EXCHANGE',dlg=None,x=0):
                     quotes.addQuote(isin=data[2],name=name,ticker=data[5],market='FRANKFURT EXCHANGE',currency=data[73],place='FRA',country='DE')
                     n = n + 1
     if itrade_config.verbose:
-        print 'Imported %d/%d lines from %s' % (n,len(lines),market)
+        print('Imported %d/%d lines from %s' % (n,len(lines),market))
 
     return True
 

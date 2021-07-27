@@ -37,6 +37,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import os
 import logging
 import webbrowser
@@ -225,7 +226,7 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
         quotes.loadMarket(self.m_market)
         self.PopulateList(bDuringInit=True)
         self.wxTickerCtrl.SetFocus()
-        print 'OnPostInit : market=',self.m_market
+        print('OnPostInit : market=',self.m_market)
 
     def resetFields(self):
         self.m_isin = ''
@@ -253,7 +254,7 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
         self.Fit()
         self.SetMinSize(self.GetSize())
 
-        print 'OnFilter : market=',self.m_market
+        print('OnFilter : market=',self.m_market)
 
     def OnMarket(self,evt):
         idx = self.wxMarketCtrl.GetSelection()
@@ -489,7 +490,7 @@ if __name__=='__main__':
 
     q = select_iTradeQuote(None,None,filter=False,market='EURONEXT')
     if q:
-        print q.name()
+        print(q.name())
 
 # ============================================================================
 # That's all folks !

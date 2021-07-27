@@ -39,6 +39,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import logging
 
 # wxPython system
@@ -137,7 +138,7 @@ if __name__=='__main__':
     setLevel(logging.INFO)
 
     app = wx.App(False)
-    print itrade_datePicker(None,"Datepicker",date.today())
+    print(itrade_datePicker(None,"Datepicker",date.today()))
 
 # ============================================================================
 # That's all folks !

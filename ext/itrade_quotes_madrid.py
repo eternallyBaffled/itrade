@@ -37,6 +37,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import os
 import logging
 import re
@@ -61,7 +62,7 @@ from itrade_connection import ITradeConnection
 
 def Import_ListOfQuotes_MADRID(quotes,market='MADRID EXCHANGE',dlg=None,x=0):
     if itrade_config.verbose:
-        print 'Update %s list of symbols' % market
+        print('Update %s list of symbols' % market)
     connection = ITradeConnection(cookies = None,
                                proxy = itrade_config.proxyHostname,
                                proxyAuth = itrade_config.proxyAuthentication,
@@ -136,7 +137,7 @@ def Import_ListOfQuotes_MADRID(quotes,market='MADRID EXCHANGE',dlg=None,x=0):
                                 currency='EUR', place='MAD', country='ES')
                     n = n + 1
     if itrade_config.verbose:
-        print 'Imported %d lines from %s' % (n,market)
+        print('Imported %d lines from %s' % (n,market))
     source.close()
     os.remove(f)
     return True

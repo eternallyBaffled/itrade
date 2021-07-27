@@ -36,6 +36,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import logging
 import re
 import thread
@@ -58,7 +59,7 @@ from itrade_connection import ITradeConnection
 
 def Import_ListOfQuotes_LSE(quotes,market='LSE SETS',dlg=None,x=0):
     if itrade_config.verbose:
-        print 'Update %s list of symbols' % market
+        print('Update %s list of symbols' % market)
     connection = ITradeConnection(cookies = None,
                                proxy = itrade_config.proxyHostname,
                                proxyAuth = itrade_config.proxyAuthentication,
@@ -141,7 +142,7 @@ def Import_ListOfQuotes_LSE(quotes,market='LSE SETS',dlg=None,x=0):
                     country=sh.cell_value(line,iCountry))
                 n = n + 1
     if itrade_config.verbose:
-        print 'Imported %d/%d lines from %s' % (n,sh.nrows,market)
+        print('Imported %d/%d lines from %s' % (n,sh.nrows,market))
 
     return True
 
@@ -171,7 +172,7 @@ if __name__=='__main__':
 
         quotes.saveListOfQuotes()
     else:
-        print 'XLRD package not installed :-('
+        print('XLRD package not installed :-(')
 
 # ============================================================================
 # That's all folks !

@@ -35,6 +35,7 @@
 # Version management
 # ============================================================================
 
+from __future__ import print_function
 __author__ = "Gilles Dumortier (dgil@ieee.org)"
 __version__ = "0.4.8"
 __status__ = "alpha"
@@ -87,7 +88,7 @@ softwareVersion = __version__
 softwareVersionName = 'Druuna - (unstable) (%s)' % __svnversion__
 softwareStatus = __status__
 
-print '%s(%s) - %s %s' % (softwareName,softwareStatus,softwareVersion,softwareVersionName)
+print('%s(%s) - %s %s' % (softwareName,softwareStatus,softwareVersion,softwareVersionName))
 
 # support
 bugTrackerURL = 'https://sourceforge.net/tracker/?group_id=128261&atid=711187'
@@ -347,7 +348,7 @@ lang = 0
 if __svnversion__[0] != 'x':
     verbose = False
 else:
-    print 'Verbose mode : forced ON (under development release)'
+    print('Verbose mode : forced ON (under development release)')
     verbose = True
 
 # experimental features
@@ -386,7 +387,7 @@ def checkNewRelease(ping=False):
     # development release : do not test
     if not ping and __svnversion__[0] == 'x':
         if verbose:
-            print 'checkNewRelease(): development release'
+            print('checkNewRelease(): development release')
         return 'dev'
 
     from itrade_connection import ITradeConnection
@@ -400,18 +401,18 @@ def checkNewRelease(ping=False):
     try:
         latest=connection.getDataFromUrl(softwareLatest)
     except IOError:
-        print 'checkNewRelease(): exception getting OFFICIAL file'
+        print('checkNewRelease(): exception getting OFFICIAL file')
         return 'err'
 
     if latest[0]!='r':
         if verbose:
-            print 'checkNewRelease(): OFFICIAL file malformed'
+            print('checkNewRelease(): OFFICIAL file malformed')
         return 'err'
 
     # development release : do not test
     if __svnversion__[0] == 'x':
         if verbose:
-            print 'checkNewRelease(): development release (ping)'
+            print('checkNewRelease(): development release (ping)')
         return 'dev'
 
     current = int(__svnversion__[1:])
@@ -420,10 +421,10 @@ def checkNewRelease(ping=False):
     #print current,latest
 
     if current<latest:
-        print 'checkNewRelease(): please update (%d vs %d) : %s' % (current,latest,downloadURL)
+        print('checkNewRelease(): please update (%d vs %d) : %s' % (current,latest,downloadURL))
         return downloadURL
     else:
-        print 'checkNewRelease(): up to date'
+        print('checkNewRelease(): up to date')
         return 'ok'
 
 # ============================================================================
@@ -432,7 +433,7 @@ def checkNewRelease(ping=False):
 
 def loadConfig(frm=""):
     if verbose:
-        print "loadConfig called from",frm
+        print("loadConfig called from",frm)
 
     # access global var
     global bAutoRefreshMatrixView
@@ -450,7 +451,7 @@ def loadConfig(frm=""):
 
     # read the user configuration file
     fn = user_configuration_file()
-    print 'User Configuration :',fn
+    print('User Configuration :',fn)
     config.read(fn)
 
     # try to read informations
@@ -607,9 +608,9 @@ def setDisconnected(status=True):
 
     gbDisconnected = status
     if gbDisconnected:
-        print 'Network : No connexion'
+        print('Network : No connexion')
     else:
-        print 'Network : Ready'
+        print('Network : Ready')
 
 def isConnected():
     #print 'isConnected(): %s' % (not gbDisconnected)
@@ -627,11 +628,11 @@ if __name__=='__main__':
     loadConfig()
     saveConfig()
 
-    print __svnversion__
+    print(__svnversion__)
 
-    print os.path.expanduser('~')
+    print(os.path.expanduser('~'))
 
-    print checkNewRelease()
+    print(checkNewRelease())
 
 # ============================================================================
 # That's all folks !

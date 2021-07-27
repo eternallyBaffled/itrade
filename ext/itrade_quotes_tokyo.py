@@ -38,6 +38,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import logging
 import re
 import thread
@@ -61,7 +62,7 @@ from itrade_connection import ITradeConnection
 
 def Import_ListOfQuotes_TKS(quotes,market='TOKYO EXCHANGE',dlg=None,x=0):
     if itrade_config.verbose:
-        print 'Update %s list of symbols' % market
+        print('Update %s list of symbols' % market)
     connection=ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
@@ -142,7 +143,7 @@ def Import_ListOfQuotes_TKS(quotes,market='TOKYO EXCHANGE',dlg=None,x=0):
         if q == 0:
             break
     if itrade_config.verbose:
-        print 'Imported %d lines from TOKYO EXCHANGE' % (count)
+        print('Imported %d lines from TOKYO EXCHANGE' % (count))
 
     return True
 

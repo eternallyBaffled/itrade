@@ -38,6 +38,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import logging
 import re
 import string
@@ -247,7 +248,7 @@ class Import_yahoojp(object):
                     value,
                     volume
                 )
-                line = map(lambda (val): '%s' % str(val), line)
+                line = map(lambda val: '%s' % str(val), line)
                 line = string.join(line, ';')
 
                 # append
@@ -287,27 +288,27 @@ def test(ticker,d):
                 else:
                     debug("nodata")
             else:
-                print "getdata() failure :-("
+                print("getdata() failure :-(")
         else:
-            print "getstate() failure :-("
+            print("getstate() failure :-(")
 
         gImportYahoo.disconnect()
     else:
-        print "connect() failure :-("
+        print("connect() failure :-(")
 
 if __name__=='__main__':
     setLevel(logging.INFO)
 
     # never failed - fixed date
-    print "15/03/2005"
+    print("15/03/2005")
     test('AAPL',date(2005,3,15))
 
     # never failed except week-end
-    print "yesterday-today :-("
+    print("yesterday-today :-(")
     test('AAPL',date.today()-timedelta(1))
 
     # always failed
-    print "tomorrow :-)"
+    print("tomorrow :-)")
     test('AAPL',date.today()+timedelta(1))
 
 # ============================================================================

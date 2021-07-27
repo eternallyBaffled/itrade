@@ -36,6 +36,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import datetime
 import logging
 
@@ -89,10 +90,10 @@ class TradingMatrix(object):
                             ref = quote_reference(isin=item[0],ticker=item[2],market=item[3],place=item[5])
 
                         if not self.addKey(ref):
-                            print 'load (new format): %s/%s : quote not found in quotes list ! (ref=%s)' % (item[0],item[2],ref)
+                            print('load (new format): %s/%s : quote not found in quotes list ! (ref=%s)' % (item[0],item[2],ref))
 
                     elif len(item)<=4:
-                        print 'old matrix format : not supported anymore'
+                        print('old matrix format : not supported anymore')
 
     # save 'matrix.txt'
     def save(self,fn):
@@ -131,7 +132,7 @@ class TradingMatrix(object):
                 self.m_quotes[eachQuote.key()] = eachQuote
                 debug('matrix:build: add %s',eachQuote.ticker())
             else:
-                if self.m_quotes.has_key(eachQuote.key()):
+                if eachQuote.key() in self.m_quotes:
                     del self.m_quotes[eachQuote.key()]
                     debug('matrix:build: remove %s',eachQuote.ticker())
 
@@ -197,17 +198,17 @@ if __name__=='__main__':
 
     setLevel(logging.INFO)
 
-    print '--- load current portfolio ---'
+    print('--- load current portfolio ---')
     p = loadPortfolio()
-    print '... %s:%s:%s ' % (p.filename(),p.name(),p.accountref())
+    print('... %s:%s:%s ' % (p.filename(),p.name(),p.accountref()))
 
-    print '--- build a matrix -----------'
+    print('--- build a matrix -----------')
     m = createMatrix(p.filename())
 
-    print '--- liveupdate this matrix ---'
+    print('--- liveupdate this matrix ---')
     m.update()
 
-    print '--- save the matrix ----------'
+    print('--- save the matrix ----------')
     m.save(p.filename())
 
     eval = p.computeOperations()

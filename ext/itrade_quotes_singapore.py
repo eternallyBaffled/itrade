@@ -38,6 +38,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import logging
 import re
 import thread
@@ -58,7 +59,7 @@ from itrade_connection import ITradeConnection
 
 def Import_ListOfQuotes_SGX(quotes,market='SINGAPORE EXCHANGE',dlg=None,x=0):
     if itrade_config.verbose:
-        print 'Update %s list of symbols' % market
+        print('Update %s list of symbols' % market)
     connection=ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
@@ -119,7 +120,7 @@ def Import_ListOfQuotes_SGX(quotes,market='SINGAPORE EXCHANGE',dlg=None,x=0):
 
         quotes.addQuote(isin = isin,name = name,ticker = ticker,market = market,currency = currency,place = place,country = country)
     if itrade_config.verbose:
-        print 'Imported %d lines from %s' % (n,market)
+        print('Imported %d lines from %s' % (n,market))
 
     return True
 

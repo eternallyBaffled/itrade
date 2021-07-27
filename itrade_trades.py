@@ -36,6 +36,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 from datetime import *
 from math import pow,sqrt
 import logging
@@ -210,7 +211,7 @@ class Trades(object):
         if self.m_trades.keys():
             # do not save today trade
             ajd = date.today()
-            if self.m_trades.has_key(ajd):
+            if ajd in self.m_trades:
                 tr = self.m_trades[ajd]
                 del self.m_trades[ajd]
                 if itrade_config.verbose:
@@ -279,7 +280,7 @@ class Trades(object):
         if d==None:
             tc = self.m_lasttrade
         else:
-            if self.m_trades.has_key(d):
+            if d in self.m_trades:
                 tc = self.m_trades[d]
             else:
                 return None
@@ -295,7 +296,7 @@ class Trades(object):
         return self.m_firsttrade
 
     def trade(self,d):
-        if self.m_trades.has_key(d):
+        if d in self.m_trades:
             return self.m_trades[d]
         else:
             info('trades:trade() not found: %s' % d)
@@ -415,24 +416,24 @@ class Trades(object):
         return self.m_inClose[idx]
 
     def candle(self,d):
-        if self.m_candles.has_key(d):
+        if d in self.m_candles:
             return self.m_candles[d]
         else:
-            print 'trades:candle() not found: %s' % d
+            print('trades:candle() not found: %s' % d)
             return None
 
     def compute(self,d=None):
         # default date == last trade
         if d==None:
             if not self.m_lasttrade:
-                print '%s : no trade' % self.m_quote.key()
+                print('%s : no trade' % self.m_quote.key())
                 return
             d = self.m_lasttrade.date()
 
         # trade
         tr = self.trade(d)
         if tr==None:
-            print 'bug bug'
+            print('bug bug')
             return False
 
         # create candle

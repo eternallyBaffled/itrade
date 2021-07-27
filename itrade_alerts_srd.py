@@ -37,6 +37,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 from datetime import *
 import logging
 import time
@@ -55,14 +56,14 @@ class Alerts_SRD(object):
         pass
 
     def scan(self,dlg,x):
-        print 'SRD::scan(): dlg,x = %s,%d' % (dlg,x)
+        print('SRD::scan(): dlg,x = %s,%d' % (dlg,x))
 
         ajd = date.today()
         nb = 0
         while nb<21:
             if gCal.issrd(ajd):
                 dummy,desc = gCal.srd(ajd)
-                print "%s" % ajd,': SRD :',desc
+                print("%s" % ajd,': SRD :',desc)
                 newAlert(ALERT_TYPE_INFO_SRD,'SRD',"%s" % ajd,desc,None,None,'')
 
             # next open day ...

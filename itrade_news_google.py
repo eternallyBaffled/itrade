@@ -37,6 +37,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import logging
 import re
 import time
@@ -110,7 +111,7 @@ class News_Google(object):
 
             # convert datetime in the right locale
             entry.date = time.strptime(eachEntry.date, "%a, %d %b %Y %H:%M:%S %Z")
-            print '%s: %s -> %s' % (entry.link,eachEntry.date,entry.date)
+            print('%s: %s -> %s' % (entry.link,eachEntry.date,entry.date))
 
             entry.summary = eachEntry.summary
             entry.source = "google"
@@ -157,14 +158,14 @@ if __name__=='__main__':
 
     from itrade_quotes import quotes
     quote = quotes.lookupTicker('AAPL')
-    print gNewsGoogle.feedQuote(quote)
+    print(gNewsGoogle.feedQuote(quote))
 
     quote = quotes.lookupTicker('AXL')
-    print gNewsGoogle.feedQuote(quote)
-    print gNewsGoogle.feedQuote(quote,'fr')
+    print(gNewsGoogle.feedQuote(quote))
+    print(gNewsGoogle.feedQuote(quote,'fr'))
 
     quote = quotes.lookupTicker('SAF')
-    print gNewsGoogle.feedQuote(quote)
+    print(gNewsGoogle.feedQuote(quote))
 
 # ============================================================================
 # That's all folks !

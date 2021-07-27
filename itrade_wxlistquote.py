@@ -38,6 +38,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import os
 import logging
 import webbrowser
@@ -759,7 +760,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
                     if fn:
                         fn(quotes,market,dlg,x)
                     else:
-                        print 'ListSymbolConnector for %s not found !' % market
+                        print('ListSymbolConnector for %s not found !' % market)
                     x = x + 1
         else:
             x = 0
@@ -769,7 +770,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
             if fn:
                 fn(quotes,self.m_market,dlg,x)
             else:
-                print 'ListSymbolConnector for %s not found !' % self.m_market
+                print('ListSymbolConnector for %s not found !' % self.m_market)
 
         dlg.Update(x,message('save'))
         self.m_dirty = True

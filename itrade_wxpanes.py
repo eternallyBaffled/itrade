@@ -36,6 +36,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import logging
 
 # iTrade system
@@ -225,7 +226,7 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
 
         #
         if itrade_config.verbose:
-            print 'Load sorting',self.name(),'- column:',self.m_sort_colnum,'ascending:',self.m_sort_colasc
+            print('Load sorting',self.name(),'- column:',self.m_sort_colnum,'ascending:',self.m_sort_colasc)
 
     def SaveSortColumn(self):
         # update from current column
@@ -237,7 +238,7 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
 
         #
         if itrade_config.verbose:
-            print 'Save sorting',self.name(),'- column:',self.m_sort_colnum,'ascending:',self.m_sort_colasc
+            print('Save sorting',self.name(),'- column:',self.m_sort_colnum,'ascending:',self.m_sort_colasc)
 
         # format for saving
         itrade_config.column[self.name()] = '%s;%s' % (self.m_sort_colnum,self.m_sort_colasc)
@@ -246,7 +247,7 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
         # sort the default column
         if self.m_sort_colnum!=-1:
             if itrade_config.verbose:
-                print 'Sorting',self.name(),'- column:',self.m_sort_colnum,'ascending:',self.m_sort_colasc
+                print('Sorting',self.name(),'- column:',self.m_sort_colnum,'ascending:',self.m_sort_colasc)
             self.SortListItems(self.m_sort_colnum,ascending=self.m_sort_colasc)
 
     def needDynamicSortColumn(self):
@@ -514,12 +515,12 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
                         if ref and self.needDynamicSortColumn(): self.SortColumn()
                     else:
                         if itrade_config.verbose:
-                            print 'pane::OnLive %s: %s - bad : other view' % (evt.quote.key(),evt.param)
+                            print('pane::OnLive %s: %s - bad : other view' % (evt.quote.key(),evt.param))
                         pass
             self.m_parent.refreshConnexion()
         else:
             if itrade_config.verbose:
-                print 'pane::OnLive %s: %s - bad : not running' % (evt.quote.key(),evt.param)
+                print('pane::OnLive %s: %s - bad : not running' % (evt.quote.key(),evt.param))
             pass
 
     # refresh list
@@ -533,10 +534,10 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
         if op1:
             quote,item = self.getQuoteAndItemOnTheLine(self.m_currentItem)
             if not quote:
-                if itrade_config.verbose: print 'updateQuoteItems:',self.m_currentItem
+                if itrade_config.verbose: print('updateQuoteItems:',self.m_currentItem)
                 op1 = False
             else:
-                if itrade_config.verbose: print 'updateQuoteItems:',self.m_currentItem,quote.name()
+                if itrade_config.verbose: print('updateQuoteItems:',self.m_currentItem,quote.name())
         else:
             quote = None
 
@@ -555,7 +556,7 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
         return "portfolio"
 
     def map(self,quote,key,xtype):
-        if self.itemDataMap.has_key(key):
+        if key in self.itemDataMap:
             old = self.itemDataMap[key]
         else:
             old = None
@@ -787,7 +788,7 @@ class iTrade_MatrixQuotesPanel(iTrade_MatrixPanel):
         return "quotes"
 
     def map(self,quote,key,xtype):
-        if self.itemDataMap.has_key(key):
+        if key in self.itemDataMap:
             old = self.itemDataMap[key]
         else:
             old = None
@@ -981,7 +982,7 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
         return "stops"
 
     def map(self,quote,key,xtype):
-        if self.itemDataMap.has_key(key):
+        if key in self.itemDataMap:
             old = self.itemDataMap[key]
         else:
             old = None
@@ -1185,7 +1186,7 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
         return True
 
     def map(self,quote,key,xtype):
-        if self.itemDataMap.has_key(key):
+        if key in self.itemDataMap:
             old = self.itemDataMap[key]
         else:
             old = None

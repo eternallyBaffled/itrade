@@ -38,6 +38,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 from datetime import *
 import time
 import logging
@@ -72,9 +73,9 @@ Y2KCUTOFF = 60
 def yy2yyyy(yy):
     yy = int(yy) % 100
     if yy<Y2KCUTOFF:
-        return `yy+2000`
+        return repr(yy+2000)
     else:
-        return `yy+1900`
+        return repr(yy+1900)
 
 def dd_mmm_yy2yyyymmdd(d):
     d = string.split(d, '-')
@@ -145,7 +146,7 @@ class Calendar(object):
         debug('isopen %s k=%s: ? ' % (d,k))
 
         # is it a special day ?
-        if self.m_closed.has_key(k):
+        if k in self.m_closed:
             return False
 
         # market should be opened !
@@ -168,7 +169,7 @@ class Calendar(object):
         debug('issrd %s k=%s: ? ' % (d,k))
 
         # is it a SRD day ?
-        if self.m_srd.has_key(k):
+        if k in self.m_srd:
             return True
 
         # normal day
@@ -184,7 +185,7 @@ class Calendar(object):
         k = self.key(d,market)
 
         # is it a SRD day ?
-        if self.m_srd.has_key(k):
+        if k in self.m_srd:
             return self.m_srd[k]
         return None
 
@@ -211,7 +212,7 @@ class Calendar(object):
         # key
         k = self.key(d,market)
 
-        if self.m_closed.has_key(k):
+        if k in self.m_closed:
             debug('Calendar::addClosed(): %s k=%s: %s - already !' % (d,k,self.m_closed[k]))
             return False
         else:
@@ -231,7 +232,7 @@ class Calendar(object):
         # key
         k = self.key(d,market)
 
-        if self.m_srd.has_key(k):
+        if k in self.m_srd:
             debug('Calendar::addSRD(): %s k=%s: %s - already !' % (d,k,self.m_srd[k]))
             return False
         else:
@@ -299,13 +300,13 @@ class Calendar(object):
             year = year + 1
 
     def index(self,_date):
-        if self.m_index.has_key(_date):
+        if _date in self.m_index:
             return self.m_index[_date]
         else:
             return -1
 
     def date(self,_index):
-        if self.m_date.has_key(_index):
+        if _index in self.m_date:
             return self.m_date[_index]
         else:
             return None
@@ -430,15 +431,15 @@ if __name__=='__main__':
     info('test11 20110102 index is %d == -1' % (Datation('20110102').index()))
     info('test11 20110103 index is %d != -1' % (Datation('20110103').index()))
 
-    print 'lastindex = %d, lastdate = %s' % (gCal.lastindex(), gCal.lastdate())
+    print('lastindex = %d, lastdate = %s' % (gCal.lastindex(), gCal.lastdate()))
 
     ts = '20050816'
     dt = datetime(*time.strptime(ts.strip('"'), '%Y%m%d')[:6])
-    print '%s = %s' % (ts,dt)
+    print('%s = %s' % (ts,dt))
 
     ts = '2005-08-16'
     dt = datetime(*time.strptime(ts.strip('"'), '%Y-%m-%d')[:6])
-    print '%s = %s' % (ts,dt)
+    print('%s = %s' % (ts,dt))
 
 # ============================================================================
 # That's all folks !

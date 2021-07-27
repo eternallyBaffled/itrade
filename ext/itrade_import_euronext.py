@@ -36,6 +36,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import logging
 import re
 import string
@@ -164,7 +165,7 @@ class Import_euronext(object):
             ('base', '0'),
         )
 
-        query = map(lambda (var, val): '%s=%s' % (var, str(val)), query)
+        query = map(lambda var_val: '%s=%s' % (var_val[0], str(var_val[1])), query)
         query = string.join(query, '&')
         url = self.m_url + '?' + query
         
@@ -216,7 +217,7 @@ class Import_euronext(object):
                     value,
                     volume
                     )
-                line = map(lambda (val): '%s' % str(val), line)
+                line = map(lambda val: '%s' % str(val), line)
                 line = string.join(line, ';')
                 #print line
 
@@ -289,13 +290,13 @@ def test(ticker,d):
                 else:
                     debug("nodata")
             else:
-                print "getdata() failure :-("
+                print("getdata() failure :-(")
         else:
-            print "getstate() failure :-("
+            print("getstate() failure :-(")
 
         gImportEuronext.disconnect()
     else:
-        print "connect() failure :-("
+        print("connect() failure :-(")
 
 if __name__=='__main__':
     setLevel(logging.INFO)
@@ -303,15 +304,15 @@ if __name__=='__main__':
     quotes.loadMarket('EURONEXT')
 
     # never failed - fixed date
-    print "15/03/2005"
+    print("15/03/2005")
     test('OSI',date(2005,3,15))
 
     # never failed except week-end
-    print "yesterday-today :-("
+    print("yesterday-today :-(")
     test('OSI',date.today()-timedelta(1))
 
     # always failed
-    print "tomorrow :-)"
+    print("tomorrow :-)")
     test('OSI',date.today()+timedelta(1))
 
 

@@ -37,6 +37,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import logging
 import re
 import string
@@ -97,7 +98,7 @@ isin_market = {
 def isin2market(isin):
     if isin:
         cp = isin[0:2].lower()
-        if isin_market.has_key(cp):
+        if cp in isin_market:
             return isin_market[cp]
         else:
             # don't know !
@@ -151,7 +152,7 @@ market_indice = {
     }
 
 def getDefaultIndice(market):
-    if market_indice.has_key(market):
+    if market in market_indice:
         return market_indice[market]
     else:
         # default to CAC
@@ -202,7 +203,7 @@ market_currency = {
     }
 
 def market2currency(market):
-    if market_currency.has_key(market):
+    if market in market_currency:
         return market_currency[market]
     else:
         # default to EURO
@@ -256,7 +257,7 @@ def set_market_loaded(market, set=True):
     if market in _lom:
         _lom[market] = set
     if itrade_config.verbose:
-        print 'Load market %s' % market
+        print('Load market %s' % market)
 
 def unload_markets():
     for market in _lom:
@@ -576,7 +577,7 @@ euronext_mic = {
 
 def euronextmic(market,place):
     key = market + '.' + place
-    if euronext_mic.has_key(key):
+    if key in euronext_mic:
         mic = euronext_mic[key]
         return mic
 
@@ -673,7 +674,7 @@ yahoo_suffix = {
 
 def yahoosuffix(market,place):
     key = market + '.' + place
-    if yahoo_suffix.has_key(key):
+    if key in yahoo_suffix:
         return yahoo_suffix[key]
     else:
         return None
@@ -710,13 +711,13 @@ def yahooTicker(ticker,market,place):
 
     # build the ticker using the suffix
     key = market + '.' + place
-    if yahoo_suffix.has_key(key):
+    if key in yahoo_suffix:
         sticker = ticker + yahoo_suffix[key]
     else:
         sticker = ticker
 
     # check if we need to translate to something different !
-    if yahoo_map_tickers.has_key(sticker):
+    if sticker in yahoo_map_tickers:
         return yahoo_map_tickers[sticker]
 
     return sticker
@@ -800,12 +801,12 @@ def euronext_InstrumentId(quote):
             url = urlid % quote.isin()
 
             if itrade_config.verbose:
-                print "euronext_InstrumentId: urlID=%s " % url
+                print("euronext_InstrumentId: urlID=%s " % url)
 
             try:
                 buf=connection.getDataFromUrl(url)
             except:
-                print 'euronext_InstrumentId: %s exception error' % url
+                print('euronext_InstrumentId: %s exception error' % url)
                 return None
             sid = re.search(r"selectedMep=%d&amp;idInstrument=\d*&amp;isinCode=%s" % (euronext_place2mep(quote.place()),quote.isin()), buf, re.IGNORECASE|re.MULTILINE)
             if sid:
@@ -816,18 +817,18 @@ def euronext_InstrumentId(quote):
                     IdInstrument = sid[31:sexch.start()]
                     #print 'seq-2 found:',IdInstrument
                 else:
-                    print 'euronext_InstrumentId: seq-2 not found : &amp;isinCode'
+                    print('euronext_InstrumentId: seq-2 not found : &amp;isinCode')
             else:
-                print 'euronext_InstrumentId: seq-1 not found : selectedMep=%d&amp;idInstrument=\d*&amp;isinCode=%s' % (euronext_place2mep(quote.place()),quote.isin())
+                print('euronext_InstrumentId: seq-1 not found : selectedMep=%d&amp;idInstrument=\d*&amp;isinCode=%s' % (euronext_place2mep(quote.place()),quote.isin()))
                 #print buf
                 #exit(0)
 
         if IdInstrument == None:
-            print "euronext_InstrumentId:can't get IdInstrument for %s " % quote.isin()
+            print("euronext_InstrumentId:can't get IdInstrument for %s " % quote.isin())
             return None
         else:
             if itrade_config.verbose:
-                print "euronext_InstrumentId: IdInstrument for %s is %s" % (quote.isin(),IdInstrument)
+                print("euronext_InstrumentId: IdInstrument for %s is %s" % (quote.isin(),IdInstrument))
             quote.set_pluginID(IdInstrument)
             try:
                 f = open(os.path.join(itrade_config.dirCacheData,'%s.id' % quote.key()),'w')

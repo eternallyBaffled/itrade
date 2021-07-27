@@ -38,6 +38,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import logging
 import string
 import httplib
@@ -58,7 +59,7 @@ from itrade_connection import ITradeConnection
 
 
 def Import_ListOfQuotes_MEX(quotes,market='MEXICO EXCHANGE',dlg=None,x=0):
-    print 'Update %s list of symbols' % market
+    print('Update %s list of symbols' % market)
     connection=ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
@@ -211,7 +212,7 @@ def Import_ListOfQuotes_MEX(quotes,market='MEXICO EXCHANGE',dlg=None,x=0):
 
                         quotes.addQuote(isin='',name=name,ticker=newticker,market='MEXICO EXCHANGE',currency='MXN',place='MEX',country='MX')
 
-    print 'Imported %d quotes with %d different tickers from MEXICO EXCHANGE data.' % (countname,countserie)
+    print('Imported %d quotes with %d different tickers from MEXICO EXCHANGE data.' % (countname,countserie))
     response.close()
     handle.close()
 

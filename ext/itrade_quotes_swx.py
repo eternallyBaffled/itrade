@@ -37,6 +37,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import logging
 import re
 import thread
@@ -58,7 +59,7 @@ from itrade_connection import ITradeConnection
 
 def Import_ListOfQuotes_SWX(quotes,market='SWISS EXCHANGE',dlg=None,x=0):
     if itrade_config.verbose:
-        print 'Update %s list of symbols' % market
+        print('Update %s list of symbols' % market)
     connection = ITradeConnection(cookies = None,
                                proxy = itrade_config.proxyHostname,
                                proxyAuth = itrade_config.proxyAuthentication,
@@ -112,7 +113,7 @@ def Import_ListOfQuotes_SWX(quotes,market='SWISS EXCHANGE',dlg=None,x=0):
                     currency=currency,place=exchange,country=country)
         n = n + 1
     if itrade_config.verbose:
-        print 'Imported %d lines from %s' % (n,market)
+        print('Imported %d lines from %s' % (n,market))
 
     return True
 

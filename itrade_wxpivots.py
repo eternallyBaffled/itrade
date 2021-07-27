@@ -36,6 +36,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import os
 import logging
 import time
@@ -95,7 +96,7 @@ class iTrade_wxPivots(wx.Panel):
         if pivot:
             s2,s1,pivot,r1,r2 = pivot
             self.s_r2.SetLabel('%.2f'%r2)
-            print 'pivots:',s2,s1,pivot,r1,r2
+            print('pivots:',s2,s1,pivot,r1,r2)
         pass
 
 # ============================================================================

@@ -53,8 +53,9 @@ import itrade_config
 deadExceptions = [KeyboardInterrupt, SystemExit]
 
 class Formatter(logging.Formatter):
-    def formatException(self, (E, e, tb)):
+    def formatException(self, xxx_todo_changeme):
         # dead exceptions shall be raised, not logged
+        (E, e, tb) = xxx_todo_changeme
         for exn in deadExceptions:
             if issubclass(e.__class__, exn):
                 raise
@@ -98,7 +99,7 @@ class myFileHandler(logging.FileHandler):
 
 class myStdoutStreamHandler(myStreamHandler):
     def disable(self):
-        self.setLevel(sys.maxint)
+        self.setLevel(sys.maxsize)
         itrade_logger.removeHandler(self)
         logging._acquireLock()
         try:
@@ -109,7 +110,7 @@ class myStdoutStreamHandler(myStreamHandler):
     def emit(self, record):
         try:
             myStreamHandler.emit(self, record)
-        except ValueError, e:
+        except ValueError as e:
             # disable this handler because sys.stdout is closed
             self.disable()
             error('Error logging to stdout : shall remove the stdout handler !')
@@ -120,7 +121,8 @@ class myStdoutStreamHandler(myStreamHandler):
 # ============================================================================
 
 class myColorFormatter(Formatter):
-    def formatException(self, (E, e, tb)):
+    def formatException(self, xxx_todo_changeme1):
+        (E, e, tb) = xxx_todo_changeme1
         if itrade_config.useColors:
             return ''.join([itrade_ansicolors.BOLD, itrade_ansicolors.RED,Formatter.formatException(self, (E, e, tb)),itrade_ansicolors.RESET])
         else:

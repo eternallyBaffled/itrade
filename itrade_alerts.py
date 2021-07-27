@@ -37,6 +37,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 from datetime import *
 import logging
 import time
@@ -150,7 +151,7 @@ class Alerts(object):
         return self.m_alerts.values()
 
     def existAlert(self,ref):
-        if self.m_alerts.has_key(ref):
+        if ref in self.m_alerts:
             return self.m_alerts[ref]
         else:
             return None
@@ -250,7 +251,7 @@ class Alerts(object):
         return self.m_plugins.values()
 
     def register(self,name,plugin):
-        if self.m_plugins.has_key(name):
+        if name in self.m_plugins:
             warning("Alerts: can't register %s:%s : already registered !" % (name,plugin))
             return False
         self.m_plugins[name] = plugin
@@ -264,10 +265,10 @@ class Alerts(object):
 
     def scan(self,dlg=None):
         x = 0
-        print 'Alerts: scan %d:%s' % (self.numOfPlugins(),self.listPlugins())
+        print('Alerts: scan %d:%s' % (self.numOfPlugins(),self.listPlugins()))
 
         for eachPlugin in self.listPlugins():
-            print 'Alerts: scan %d' % x
+            print('Alerts: scan %d' % x)
             eachPlugin.scan(dlg,x)
             x = x + 1
 

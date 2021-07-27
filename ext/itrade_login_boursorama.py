@@ -39,6 +39,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import logging
 import re
 import os
@@ -112,7 +113,7 @@ class Login_boursorama(object):
         if u==None or p==None:
             u,p = self.loadUserInfo()
             if u==None or p==None:
-                print 'login: userinfo are invalid - please reenter Access Information'
+                print('login: userinfo are invalid - please reenter Access Information')
                 return False
 
         try:
@@ -123,11 +124,11 @@ class Login_boursorama(object):
                    "memo" : "oui",
                    "submit2" : "Valider"}
             buf=self.m_connection.getDataFromUrl(self.m_login_url, data=param)
-        except IOError,e:
-            print "Exception occured while requesting Boursorama login page : %s" % e
+        except IOError as e:
+            print("Exception occured while requesting Boursorama login page : %s" % e)
             return False
 
-        print "bourso login response :saved to bourso.html"
+        print("bourso login response :saved to bourso.html")
         file("bourso.html", "w").write(buf)
 
         return True
@@ -157,9 +158,9 @@ registerLoginConnector(gLoginBoursorama.name(),gLoginBoursorama)
 if __name__=='__main__':
     setLevel(logging.INFO)
 
-    print 'use usrdata/boursorama_userinfo.txt to get login/password'
-    print ' format is one line with <login>,<password>'
-    print
+    print('use usrdata/boursorama_userinfo.txt to get login/password')
+    print(' format is one line with <login>,<password>')
+    print()
     gLoginBoursorama.login(None,None)
     gLoginBoursorama.logout()
 

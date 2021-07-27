@@ -38,6 +38,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import logging
 import re
 import thread
@@ -90,7 +91,7 @@ class LiveUpdate_RealTime(object):
             f.close()
 
         except:
-            print 'Missing or invalid file: ticker_bourso.txt'
+            print('Missing or invalid file: ticker_bourso.txt')
 
             # read isin codes of properties.txt file in directory usrdata
             try:
@@ -374,7 +375,7 @@ class LiveUpdate_RealTime(object):
 
     def currentNotebook(self,quote):
         key = quote.key()
-        if not self.m_dcmpd.has_key(key):
+        if key not in self.m_dcmpd:
             # no data for this quote !
             return [],[]
         d = self.m_dcmpd[key]
@@ -396,7 +397,7 @@ class LiveUpdate_RealTime(object):
 
         key = quote.key()
 
-        if not self.m_dcmpd.has_key(key):
+        if key not in self.m_dcmpd:
             # no data for this quote !
             return "UNKNOWN","::","0.00","0.00","::"
         d = self.m_dcmpd[key]
@@ -412,7 +413,7 @@ class LiveUpdate_RealTime(object):
             return "%d:%02d" % (self.m_lastclock/60,self.m_lastclock%60)
         #
         key = quote.key()
-        if not self.m_clock.has_key(key):
+        if key not in self.m_clock:
             # no data for this quote !
             return "::"
         else:
@@ -420,7 +421,7 @@ class LiveUpdate_RealTime(object):
 
     def currentDate(self,quote=None):
         key = quote.key()
-        if not self.m_dateindice.has_key(key):
+        if key not in self.m_dateindice:
             # no date for this quote !
             return "----"
         else:
@@ -489,18 +490,18 @@ def test(ticker):
                     else:
                         debug("nodata")
                 else:
-                    print "getdata() failure :-("
+                    print("getdata() failure :-(")
             else:
-                print "Unknown ticker %s on EURONEXT" % (ticker)
+                print("Unknown ticker %s on EURONEXT" % (ticker))
         else:
-            print "getstate() failure :-("
+            print("getstate() failure :-(")
 
         gLiveRealTime.disconnect()
     else:
-        print "connect() failure :-("
+        print("connect() failure :-(")
 
 if __name__=='__main__':
-    print 'live %s' % date.today()
+    print('live %s' % date.today())
    # load euronext import extension
     import itrade_ext
     itrade_ext.loadOneExtension('itrade_import_euronext.py',itrade_config.dirExtData)

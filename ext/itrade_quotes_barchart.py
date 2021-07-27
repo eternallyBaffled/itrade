@@ -38,6 +38,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import logging
 import re
 import thread
@@ -62,7 +63,7 @@ from itrade_connection import ITradeConnection
 def Import_ListOfQuotes_BARCHART(quotes,market='TOTRONTO EXCHANGE',dlg=None,x=0):
 
     if itrade_config.verbose:
-        print 'Update %s list of symbols' % market
+        print('Update %s list of symbols' % market)
     connection = ITradeConnection(cookies = None,
                                proxy = itrade_config.proxyHostname,
                                proxyAuth = itrade_config.proxyAuthentication,
@@ -108,7 +109,7 @@ def Import_ListOfQuotes_BARCHART(quotes,market='TOTRONTO EXCHANGE',dlg=None,x=0)
             f.close()
 
         except:
-            print 'Import_ListOfQuotes_BARCHART:unable to connect to',url%letter
+            print('Import_ListOfQuotes_BARCHART:unable to connect to',url%letter)
             return False
 
             # returns the data
@@ -132,7 +133,7 @@ def Import_ListOfQuotes_BARCHART(quotes,market='TOTRONTO EXCHANGE',dlg=None,x=0)
                     count = count + 1
 
         if itrade_config.verbose:
-            print 'Imported %d lines from BARCHART(letter=%s)' % (count,letter)
+            print('Imported %d lines from BARCHART(letter=%s)' % (count,letter))
 
     #import_letter('1',dlg,x-1)
     #import_letter('2',dlg,x)

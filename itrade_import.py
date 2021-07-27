@@ -37,6 +37,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import logging
 from datetime import *
 
@@ -75,20 +76,20 @@ def import_from_internet(quote,fromdate=None,todate=None):
                     bRet = True
                 else:
                     if itrade_config.verbose:
-                        print "import_from_internet(%s): nodata [%s,%s)" % (quote.ticker(),fromdate,todate)
+                        print("import_from_internet(%s): nodata [%s,%s)" % (quote.ticker(),fromdate,todate))
                     bRet = False
             else:
                 if itrade_config.verbose:
-                    print "import_from_internet(%s): nodata [%s,%s)" % (quote.ticker(),fromdate,todate)
+                    print("import_from_internet(%s): nodata [%s,%s)" % (quote.ticker(),fromdate,todate))
                 bRet = False
         else:
-            print "import_from_internet(%s): getstate() failure :-(" % quote.ticker()
+            print("import_from_internet(%s): getstate() failure :-(" % quote.ticker())
             bRet = False
 
         abc.disconnect()
         return bRet
     else:
-        print "import_from_internet(%s): connect() failure :-(" % quote.ticker()
+        print("import_from_internet(%s): connect() failure :-(" % quote.ticker())
         return bRet
 
 # ============================================================================
@@ -138,13 +139,13 @@ def liveupdate_from_internet(quote):
             else:
                 if abc.alive():
                     if itrade_config.verbose:
-                        print "liveupdate_from_internet(%s): alive but no trade yet" % quote.ticker()
+                        print("liveupdate_from_internet(%s): alive but no trade yet" % quote.ticker())
                 else:
                     if itrade_config.verbose:
-                        print "liveupdate_from_internet(%s): not alive yet" % quote.ticker()
+                        print("liveupdate_from_internet(%s): not alive yet" % quote.ticker())
                 bRet = False
         else:
-            print "liveupdate_from_internet(%s): getstate() failure :-(" % quote.ticker()
+            print("liveupdate_from_internet(%s): getstate() failure :-(" % quote.ticker())
             bRet = False
 
         abc.disconnect()
@@ -154,7 +155,7 @@ def liveupdate_from_internet(quote):
 
     else:
 
-        print "liveupdate_from_internet(%s): connect() failure :-(" % quote.ticker()
+        print("liveupdate_from_internet(%s): connect() failure :-(" % quote.ticker())
 
         abc.release()
         return bRet
@@ -178,7 +179,7 @@ def cmdline_importQuoteFromInternet(quote,dlg=None):
     bStop = False
     while (not bStop) and (nyear < itrade_config.numTradeYears):
         if itrade_config.verbose:
-            print '--- update the quote -- %d to %d ---' % (year-step+1,year)
+            print('--- update the quote -- %d to %d ---' % (year-step+1,year))
         if spl:
             if not import_from_internet(quote,date(year-step+1,1,1),date(year,6,30)):
                 bStop = True
@@ -196,21 +197,21 @@ def cmdline_importQuoteFromInternet(quote,dlg=None):
         nyear = nyear + step
         year = year - step
     if itrade_config.verbose:
-        print '--- save the quote data ------'
+        print('--- save the quote data ------')
     quote.saveTrades()
     return True
 
 def cmdline_importQuoteFromFile(quote,file):
     if itrade_config.verbose:
-        print '--- load data from file ------'
+        print('--- load data from file ------')
     if not os.access(file,os.R_OK):
         file = os.path.join(itrade_config.dirImport,file)
         if not os.access(file,os.R_OK):
-            print 'file not found %s!' % file
+            print('file not found %s!' % file)
             return False
     quote.loadTrades(file)
     if itrade_config.verbose:
-        print '--- save the quote data ------'
+        print('--- save the quote data ------')
     quote.saveTrades()
     return True
 
@@ -223,28 +224,28 @@ def cmdline_importMatrixFromInternet(matrix,dlg=None):
     nyear = 0
     while nyear < itrade_config.numTradeYears:
         if itrade_config.verbose:
-            print '--- update the matrix --%d--' % year
+            print('--- update the matrix --%d--' % year)
         matrix.update(date(year,1,1),date(year,12,31))
         if dlg:
             dlg.Update(nyear)
         nyear = nyear + 1
         year = year -1
     if itrade_config.verbose:
-        print '--- save the matrix data -----'
+        print('--- save the matrix data -----')
     matrix.saveTrades()
     return True
 
 def cmdline_importMatrixFromFile(matrix,file):
     if itrade_config.verbose:
-        print '--- load data from file ------ %s' % file
+        print('--- load data from file ------ %s' % file)
     if not os.access(file,os.R_OK):
         file = os.path.join(itrade_config.dirImport,file)
         if not os.access(file,os.R_OK):
-            print 'file not found %s !' % file
+            print('file not found %s !' % file)
             return False
     matrix.loadTrades(file)
     if itrade_config.verbose:
-        print '--- save the matrix data -----'
+        print('--- save the matrix data -----')
     matrix.saveTrades()
     return True
 
@@ -257,20 +258,20 @@ if __name__=='__main__':
 
     from itrade_quotes import *
 
-    print 'AUSY (Euronext market):'
+    print('AUSY (Euronext market):')
     q = quotes.lookupTicker('OSI','EURONEXT')
-    print 'Country: %s, Market: %s' % (q.country(),q.market())
-    print "Get 15/03/2005 - 25/03/2005"
+    print('Country: %s, Market: %s' % (q.country(),q.market()))
+    print("Get 15/03/2005 - 25/03/2005")
     q.update(date(2005,3,15),date(2005,3,25))
-    print "Get Live %s " % date.today()
+    print("Get Live %s " % date.today())
     q.update()
 
-    print 'APPLE (US market):'
+    print('APPLE (US market):')
     q = quotes.lookupTicker('AAPL','NASDAQ')
-    print 'Country: %s, Market: %s' % (q.country(),q.market())
-    print "Get 15/03/2005 - 25/03/2005"
+    print('Country: %s, Market: %s' % (q.country(),q.market()))
+    print("Get 15/03/2005 - 25/03/2005")
     q.update(date(2005,3,15),date(2005,3,25))
-    print "Get Live %s " % date.today()
+    print("Get Live %s " % date.today())
     q.update()
 
 # ============================================================================

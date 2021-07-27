@@ -36,6 +36,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import logging
 
 # iTrade system
@@ -277,11 +278,11 @@ if __name__=='__main__':
 
     # open,high,low,close
     c = Candle(10.0,11.0,9.0,10.0)
-    print 'candle: %s - %s = doji' % (c,c.type())
+    print('candle: %s - %s = doji' % (c,c.type()))
     c = Candle(11.0,11.0,9.0,11.0)
-    print 'candle: %s - %s = dragonfly doji' % (c,c.type())
+    print('candle: %s - %s = dragonfly doji' % (c,c.type()))
     c = Candle(9.0,11.0,9.0,9.0)
-    print 'candle: %s - %s = gravestone doji' % (c,c.type())
+    print('candle: %s - %s = gravestone doji' % (c,c.type()))
 
 # ============================================================================
 # That's all folks !

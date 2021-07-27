@@ -36,6 +36,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import logging
 import re
 import string
@@ -142,7 +143,7 @@ class News_Balo(object):
             if html:
                 html.paint_NC()
             else:
-                print 'unable to connect'
+                print('unable to connect')
             return
 
         #print buf
@@ -161,12 +162,12 @@ class News_Balo(object):
             if html:
                 html.SetPageWithoutCache(page)
             else:
-                print page
+                print(page)
         else:
             if html:
                 html.paint_NC()
             else:
-                print 'empty'
+                print('empty')
 
     # ---[ public interface ] ---
     def feedQuote(self,quote,lang=None,page=0):

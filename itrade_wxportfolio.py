@@ -38,6 +38,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import logging
 
 # iTrade system
@@ -367,7 +368,7 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
                 try:
                     self.wxIndicatorCtrl.Append(eachCtrl.name(),eachCtrl.isin())
                 except:
-                    print 'eachCtrl:',eachCtrl
+                    print('eachCtrl:',eachCtrl)
                 if eachCtrl.isin()==self.m_indice:
                     idx = count
                 count = count + 1

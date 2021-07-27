@@ -36,6 +36,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import os
 import logging
 import datetime
@@ -272,7 +273,7 @@ class iTradeQuotePropertiesPanel(wx.Panel):
             file = os.path.join(dirname,filename)
 
             if itrade_config.verbose:
-                print 'Import file %s for quote %s' % (file,self.m_quote.key())
+                print('Import file %s for quote %s' % (file,self.m_quote.key()))
 
             # clear everything
             self.m_quote.flushTrades()
@@ -302,7 +303,7 @@ class iTradeQuotePropertiesPanel(wx.Panel):
             filename = dlg.GetFilename()
             file = os.path.join(dirname,filename)
             if itrade_config.verbose:
-                print 'Export file %s for quote %s' % (file,self.m_quote.key())
+                print('Export file %s for quote %s' % (file,self.m_quote.key()))
 
             self.m_quote.saveTrades(file)
 

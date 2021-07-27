@@ -38,6 +38,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import os
 import logging
 
@@ -91,7 +92,7 @@ class iTradeApp(wx.App):
         portfolio = loadPortfolio()
         #print 'Portfolio : %s:%s:%s:%s:%f ' % (portfolio.filename(), portfolio.name(), portfolio.accountref(), portfolio.market(), portfolio.vat())
 
-        print '--- build a matrix -----------'
+        print('--- build a matrix -----------')
         matrix = createMatrix(portfolio.filename(), portfolio)
 
         frame = iTradeMainWindow(None, portfolio, matrix)

@@ -37,6 +37,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import logging
 import re
 import thread
@@ -58,7 +59,7 @@ from itrade_connection import ITradeConnection
 
 def Import_ListOfQuotes_OTCBB(quotes,market='OTCBB',dlg=None,x=0):
     if itrade_config.verbose:
-        print 'Update %s list of symbols' % market
+        print('Update %s list of symbols' % market)
     connection = ITradeConnection(cookies = None,
                                proxy = itrade_config.proxyHostname,
                                proxyAuth = itrade_config.proxyAuthentication,
@@ -101,7 +102,7 @@ def Import_ListOfQuotes_OTCBB(quotes,market='OTCBB',dlg=None,x=0):
                 ticker = data[0]
                 quotes.addQuote(isin=isin,name=name,ticker=ticker,market='OTCBB',currency='USD',place='NYC',country='US')
     if itrade_config.verbose:
-        print 'Imported %d lines from OTCBB data.' % count
+        print('Imported %d lines from OTCBB data.' % count)
 
     return True
 

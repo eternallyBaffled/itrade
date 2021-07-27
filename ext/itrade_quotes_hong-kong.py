@@ -37,6 +37,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import logging
 import re
 import thread
@@ -60,7 +61,7 @@ from itrade_connection import ITradeConnection
 
 def Import_ListOfQuotes_HKG(quotes,market='HONG KONG EXCHANGE',dlg=None,x=0):
     if itrade_config.verbose:
-        print 'Update %s list of symbols' % market
+        print('Update %s list of symbols' % market)
     connection=ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
@@ -135,7 +136,7 @@ def Import_ListOfQuotes_HKG(quotes,market='HONG KONG EXCHANGE',dlg=None,x=0):
 
 
     if itrade_config.verbose:
-        print 'Imported %d lines from %s ' % (n,market)
+        print('Imported %d lines from %s ' % (n,market))
 
     return True
 
@@ -161,7 +162,7 @@ if __name__=='__main__':
 
         quotes.saveListOfQuotes()
     else:
-        print 'XLRD package not installed :-('
+        print('XLRD package not installed :-(')
 
 # ============================================================================
 # That's all folks !

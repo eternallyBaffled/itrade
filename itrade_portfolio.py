@@ -36,6 +36,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import datetime
 import logging
 
@@ -43,7 +44,7 @@ import logging
 from itrade_logging import *
 import itrade_datation
 from itrade_quotes import quotes,QUOTE_CASH,QUOTE_CREDIT,QUOTE_BOTH
-from itrade_matrix import *
+from itrade_matrix import createMatrix
 from itrade_local import message,getLang
 import itrade_csv
 from itrade_currency import currency2symbol,currencies,convert
@@ -297,7 +298,7 @@ class Operation(object):
         return '%.2f' % self.nv_vat()
 
     def nv_number(self):
-        if operation_number.has_key(self.m_type) and operation_number[self.m_type]:
+        if self.m_type in operation_number and operation_number[self.m_type]:
             return self.m_number
         else:
             return 0
@@ -309,7 +310,7 @@ class Operation(object):
         return self.m_type
 
     def isSRD(self):
-        if operation_srd.has_key(self.m_type):
+        if self.m_type in operation_srd:
             return operation_srd[self.m_type]
         else:
             return False
@@ -341,24 +342,24 @@ class Operation(object):
             raise TypeError("quote(): operation::type() shall be S or B or Y or Z")
 
     def operation(self):
-        if operation_desc.has_key(self.m_type):
+        if self.m_type in operation_desc:
             return message(operation_desc[self.m_type])
         else:
             return '? (%s)' % self.m_type
 
     def isCash(self):
-        if operation_cash.has_key(self.m_type):
+        if self.m_type in operation_cash:
             return operation_cash[self.m_type]
         return self.isQuote()
 
     def isQuote(self):
-        if operation_quote.has_key(self.m_type):
+        if self.m_type in operation_quote:
             return operation_quote[self.m_type]
         else:
             return False
 
     def sign(self):
-        if operation_sign.has_key(self.m_type):
+        if self.m_type in operation_sign:
             return operation_sign[self.m_type]
         else:
             return '?'
@@ -458,25 +459,25 @@ class Operation(object):
         return '%.2f' % self.nv_pvalue()
 
 def isOperationTypeAQuote(type):
-    if operation_quote.has_key(type):
+    if type in operation_quote:
         return operation_quote[type]
     else:
         return False
 
 def isOperationTypeIncludeTaxes(type):
-    if operation_incl_taxes.has_key(type):
+    if type in operation_incl_taxes:
         return operation_incl_taxes[type]
     else:
         return True
 
 def isOperationTypeHasShareNumber(type):
-    if operation_number.has_key(type):
+    if type in operation_number:
         return operation_number[type]
     else:
         return False
 
 def signOfOperationType(type):
-    if operation_sign.has_key(type):
+    if type in operation_sign:
         return operation_sign[type]
     else:
         return ' '
@@ -791,7 +792,7 @@ class Portfolio(object):
             debug('applyOperations: %s' % eachOp)
             if d==None or d>=eachOp.date():
                 typ = eachOp.type()
-                if operation_apply.has_key(typ) and operation_apply[typ]:
+                if typ in operation_apply and operation_apply[typ]:
                     eachOp.apply(d)
             else:
                 info('ignore %s' % (eachOp.name()))
@@ -803,11 +804,11 @@ class Portfolio(object):
         def login(quote):
             name = quote.liveconnector(bForceLive=True).name()
             #print 'loginToServices:',quote.ticker(),name
-            if not maperr.has_key(name):
+            if name not in maperr:
                 con = getLoginConnector(name)
                 if con:
                     if not con.logged():
-                        print 'login to service :',name
+                        print('login to service :',name)
                         maperr[name] = con.login()
 
         if itrade_config.isConnected():
@@ -831,11 +832,11 @@ class Portfolio(object):
             for eachQuote in quotes.list():
                 if eachQuote.isMatrix():
                     name = eachQuote.liveconnector().name()
-                    if not maperr.has_key(name):
+                    if name not in maperr:
                         con = getLoginConnector(name)
                         if con:
                             if con.logged():
-                                print 'logout from service :',name
+                                print('logout from service :',name)
                                 maperr[name] = con.logout()
 
     # --- [ manage multi-currency on the portfolio ] --------------------------
@@ -1225,10 +1226,10 @@ class Portfolios(object):
         return items
 
     def existPortfolio(self,fn):
-        return self.m_portfolios.has_key(fn)
+        return fn in self.m_portfolios
 
     def delPortfolio(self,filename):
-        if not self.m_portfolios.has_key(filename):
+        if filename not in self.m_portfolios:
             return False
         else:
             debug('Portfolios::delPortfolio(): %s' % self.m_portfolios[filename])
@@ -1237,7 +1238,7 @@ class Portfolios(object):
             return True
 
     def addPortfolio(self,filename,name,accountref,market,currency,vat,term,risk,indice):
-        if self.m_portfolios.has_key(filename):
+        if filename in self.m_portfolios:
             return None
         else:
             self.m_portfolios[filename] = Portfolio(filename,name,accountref,market,currency,vat,term,risk,indice)
@@ -1245,7 +1246,7 @@ class Portfolios(object):
             return self.m_portfolios[filename]
 
     def editPortfolio(self,filename,name,accountref,market,currency,vat,term,risk,indice):
-        if not self.m_portfolios.has_key(filename):
+        if filename not in self.m_portfolios:
             return None
         else:
             del self.m_portfolios[filename]
@@ -1254,7 +1255,7 @@ class Portfolios(object):
             return self.m_portfolios[filename]
 
     def renamePortfolio(self,filename,newfilename):
-        if not self.m_portfolios.has_key(filename):
+        if filename not in self.m_portfolios:
             return None
         else:
             self.m_portfolios[filename].rename(newfilename)
@@ -1264,7 +1265,7 @@ class Portfolios(object):
             return self.m_portfolios[newfilename]
 
     def portfolio(self,fn):
-        if self.m_portfolios.has_key(fn):
+        if fn in self.m_portfolios:
             return self.m_portfolios[fn]
         else:
             return None
@@ -1336,7 +1337,7 @@ def loadPortfolio(fn=None):
     p = portfolios.portfolio(fn)
     if p==None:
         # portfolio does not exist !
-        print "Portfolio '%s' does not exist ... create it" % fn
+        print("Portfolio '%s' does not exist ... create it" % fn)
         p = portfolios.addPortfolio(fn,fn,'noref','EURONEXT','EUR',country2vat('fr'), 3, 5,getDefaultIndice('EURONEXT'))
         portfolios.save()
 
@@ -1391,40 +1392,40 @@ def newPortfolio(fn=None):
 
 def cmdline_evaluatePortfolio(year=2006):
 
-    print '--- load current portfolio ---'
+    print('--- load current portfolio ---')
     p = loadPortfolio()
-    print '... %s:%s:%s ' % (p.filename(),p.name(),p.accountref())
+    print('... %s:%s:%s ' % (p.filename(),p.name(),p.accountref()))
 
-    print '--- build a matrix -----------'
+    print('--- build a matrix -----------')
 #    m = createMatrix(p.filename(),p)
     m = createMatrix(p.filename())
 
-    print '--- liveupdate this matrix ---'
+    print('--- liveupdate this matrix ---')
     m.update()
     m.saveTrades()
 
-    print '--- evaluation ---------------'
+    print('--- evaluation ---------------')
     p.computeOperations(year)
-    print ' cumul. investment  : %.2f' % p.nv_invest()
-    print
-    print ' total buy          : %.2f' % p.nv_buy(QUOTE_CASH)
-    print ' evaluation quotes  : %.2f (%2.2f%% of portfolio)' % (p.nv_value(QUOTE_CASH),p.nv_percentQuotes(QUOTE_CASH))
-    print ' evaluation cash    : %.2f (%2.2f%% of portfolio)' % (p.nv_cash(),p.nv_percentCash(QUOTE_CASH))
-    print ' performance        : %.2f (%2.2f%%)' % (p.nv_perf(QUOTE_CASH),p.nv_perfPercent(QUOTE_CASH))
-    print
-    print ' total credit (SRD) : %.2f (==%.2f)' % (p.nv_credit(),p.nv_buy(QUOTE_CREDIT))
-    print ' evaluation quotes  : %.2f (%2.2f%% of portfolio)' % (p.nv_value(QUOTE_CREDIT),p.nv_percentQuotes(QUOTE_CREDIT))
-    print ' evaluation cash    : %.2f (%2.2f%% of portfolio)' % (p.nv_cash(),p.nv_percentCash(QUOTE_CREDIT))
-    print ' performance        : %.2f (%2.2f%%)' % (p.nv_perf(QUOTE_CREDIT),p.nv_perfPercent(QUOTE_CREDIT))
-    print
-    print ' expenses (VAT, ...): %.2f' % p.nv_expenses()
-    print ' total of transfers : %.2f' % p.nv_transfer()
-    print ' appreciation       : %.2f' % p.nv_appreciation()
-    print ' taxable amount     : %.2f' % p.nv_taxable()
-    print ' amount of taxes    : %.2f' % p.nv_taxes()
-    print
-    print ' evaluation total   : %.2f ' % p.nv_totalValue()
-    print ' global performance : %.2f (%2.2f%%)' % (p.nv_perfTotal(),p.nv_perfTotalPercent())
+    print(' cumul. investment  : %.2f' % p.nv_invest())
+    print()
+    print(' total buy          : %.2f' % p.nv_buy(QUOTE_CASH))
+    print(' evaluation quotes  : %.2f (%2.2f%% of portfolio)' % (p.nv_value(QUOTE_CASH),p.nv_percentQuotes(QUOTE_CASH)))
+    print(' evaluation cash    : %.2f (%2.2f%% of portfolio)' % (p.nv_cash(),p.nv_percentCash(QUOTE_CASH)))
+    print(' performance        : %.2f (%2.2f%%)' % (p.nv_perf(QUOTE_CASH),p.nv_perfPercent(QUOTE_CASH)))
+    print()
+    print(' total credit (SRD) : %.2f (==%.2f)' % (p.nv_credit(),p.nv_buy(QUOTE_CREDIT)))
+    print(' evaluation quotes  : %.2f (%2.2f%% of portfolio)' % (p.nv_value(QUOTE_CREDIT),p.nv_percentQuotes(QUOTE_CREDIT)))
+    print(' evaluation cash    : %.2f (%2.2f%% of portfolio)' % (p.nv_cash(),p.nv_percentCash(QUOTE_CREDIT)))
+    print(' performance        : %.2f (%2.2f%%)' % (p.nv_perf(QUOTE_CREDIT),p.nv_perfPercent(QUOTE_CREDIT)))
+    print()
+    print(' expenses (VAT, ...): %.2f' % p.nv_expenses())
+    print(' total of transfers : %.2f' % p.nv_transfer())
+    print(' appreciation       : %.2f' % p.nv_appreciation())
+    print(' taxable amount     : %.2f' % p.nv_taxable())
+    print(' amount of taxes    : %.2f' % p.nv_taxes())
+    print()
+    print(' evaluation total   : %.2f ' % p.nv_totalValue())
+    print(' global performance : %.2f (%2.2f%%)' % (p.nv_perfTotal(),p.nv_perfTotalPercent()))
 
     return (p,m)
 

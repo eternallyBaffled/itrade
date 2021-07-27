@@ -134,7 +134,7 @@ class ITradeConnection(object):
                 request = "%s?%s" % (page, query)
 
             if protocole.lower()=="http":
-                if self.m_httpConnection.has_key(host):
+                if host in self.m_httpConnection:
                     # Reuse already opened connection
                     connection = self.m_httpConnection[host]
                 else:
@@ -142,7 +142,7 @@ class ITradeConnection(object):
                     connection = httplib.HTTPConnection(host)
                     self.m_httpConnection[host] = connection
             else:
-                if self.m_httpsConnection.has_key(host):
+                if host in self.m_httpsConnection:
                     # Reuse already opened connection
                     connection = self.m_httpsConnection[host]
                 else:
@@ -201,7 +201,7 @@ class ITradeConnection(object):
                 self.m_duration = time.time()-start
 
                 if self.getStatus() != 200:
-                    msg=("Receive bad answer from server (code %s) while requesting : %s" %
+                    msg= Exception("Receive bad answer from server (code %s) while requesting : %s" %
                                                                       (self.getStatus(), url))
                     #info(msg)
                     self.m_responseData=""
@@ -218,14 +218,14 @@ class ITradeConnection(object):
                         else:
                             logging.info("Strange cookie header (%s). Ignoring." % cookieHeader)
 
-            except socket.timeout, e:
-                msg="Connexion timeout while requesting the remote server : %s" % url
+            except socket.timeout as e:
+                msg=Exception("Connexion timeout while requesting the remote server : %s" % url)
                 logging.error(msg)
                 self.m_responseData=""
                 self.clearConnection(protocole, host)
                 raise msg
 
-            except (socket.gaierror, httplib.CannotSendRequest, httplib.BadStatusLine) , e:
+            except (socket.gaierror, httplib.CannotSendRequest, httplib.BadStatusLine) as e:
                 self.clearConnection(protocole, host)
                 if not self.m_retrying:
                     # Retry one time because this kind of error can be "normal"
@@ -235,14 +235,14 @@ class ITradeConnection(object):
                     self.put(url, header, data) # Retrying one time
                     self.m_retrying=False
                 else:
-                    msg="An error occured while requesting the remote server : %s (retry fail)" % e
+                    msg=Exception("An error occurred while requesting the remote server : %s (retry fail)" % e)
                     logging.error(msg)
                     self.m_retrying=False
                     raise msg
 
-        except Exception, e:
+        except Exception as e:
             self.clearConnections() # Clean all connection
-            msg = "Unhandled exception on ITrade_Connexion (%s)" % e
+            msg = Exception("Unhandled exception on ITrade_Connexion (%s)" % e)
             logging.error(msg)
             raise msg
 

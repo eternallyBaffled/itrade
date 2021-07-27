@@ -40,6 +40,7 @@
 #import logging
 
 # wxPython system
+from __future__ import print_function
 import wx
 #import wx.lib.mixins.listctrl as wxl
 
@@ -437,7 +438,7 @@ class iTradeMainNotebookWindow(wx.Notebook):
 
     def ResetPages(self):
         # reset all pages
-        print 'Reset All Pages'
+        print('Reset All Pages')
         self.win[ID_PAGE_QUOTES].m_mustInit = True
         self.win[ID_PAGE_PORTFOLIO].m_mustInit = True
         self.win[ID_PAGE_STOPS].m_mustInit = True
@@ -697,8 +698,8 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
     def OnRefresh(self,event=None):
         # called by a child (toolbar button, property window, ...)
         if itrade_config.verbose:
-            print
-            print 'MainWindow::OnRefresh event=%s' % event
+            print()
+            print('MainWindow::OnRefresh event=%s' % event)
 
         # to force a refresh of the book
         self.m_book.OnRefresh(event)
@@ -797,7 +798,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
 
     def OnSupport(self,e):
         id = getLang()
-        if itrade_config.supportURL.has_key(id):
+        if id in itrade_config.supportURL:
             url = itrade_config.supportURL[id]
         else:
             url = itrade_config.supportURL['en']
@@ -805,7 +806,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
 
     def OnContent(self,e):
         id = getLang()
-        if itrade_config.manualURL.has_key(id):
+        if id in itrade_config.manualURL:
             url = itrade_config.manualURL[id]
         else:
             url = itrade_config.manualURL['en']
@@ -816,7 +817,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
 
     def OnForum(self,e):
         id = getLang()
-        if itrade_config.forumURL.has_key(id):
+        if id in itrade_config.forumURL:
             url = itrade_config.forumURL[id]
         else:
             url = itrade_config.forumURL['en']
@@ -1205,7 +1206,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
     def AddAndRefresh(self,quote=None):
         quote = addInMatrix_iTradeQuote(self,self.m_matrix,self.m_portfolio,quote)
         if quote:
-            print 'AddAndRefresh:',quote
+            print('AddAndRefresh:',quote)
             self.m_portfolio.setupCurrencies()
             self.m_portfolio.loginToServices(quote)
             self.RebuildList()
@@ -1219,7 +1220,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         idRet = iTradeYesNo(self, message('remove_quote_info') % quote.name(), message('remove_quote_title'))
         if idRet == wx.ID_YES:
             if removeFromMatrix_iTradeQuote(self,self.m_matrix,quote):
-                print 'OnRemoveCurrentQuote:',quote
+                print('OnRemoveCurrentQuote:',quote)
                 self.m_portfolio.setupCurrencies()
                 self.RebuildList()
 
@@ -1259,14 +1260,14 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
                     #    print 'initIndice: indice %s use connector %s' % (indice,self.m_connector)
                 else:
                     if itrade_config.verbose:
-                        print 'initIndice: indice %s not found' % indice
+                        print('initIndice: indice %s not found' % indice)
             else:
                 if itrade_config.verbose:
-                    print 'initIndice: indice %s not found' % indice
+                    print('initIndice: indice %s not found' % indice)
                 self.m_indice = None
         else:
             if itrade_config.verbose:
-                print 'initIndice: no indice sets up for this portfolio'
+                print('initIndice: no indice sets up for this portfolio')
             self.m_indice = None
 
 # ============================================================================

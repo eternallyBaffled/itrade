@@ -37,6 +37,7 @@
 # ============================================================================
 
 # python system
+from __future__ import print_function
 import logging
 
 # iTrade system
@@ -164,7 +165,7 @@ class iTradeConnectionDialog(iTradeSizedDialog):
         self.m_timeout = self.wxTimeoutCtrl.GetValue()
 
         if itrade_config.verbose:
-            print "*** Proxy server:",self.m_server, "- Proxy auth:",self.m_auth,"- Connection timeout:",self.m_timeout
+            print("*** Proxy server:",self.m_server, "- Proxy auth:",self.m_auth,"- Connection timeout:",self.m_timeout)
         self.EndModal(wx.ID_OK)
 
 # ============================================================================
@@ -207,7 +208,7 @@ if __name__=='__main__':
     a = 'auth'
 
     s,a,t = connection_UI(None,s,a)
-    print s,a,t
+    print(s,a,t)
 
 # ============================================================================
 # That's all folks !
