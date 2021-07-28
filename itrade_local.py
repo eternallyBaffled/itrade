@@ -180,7 +180,7 @@ class LocalMessages(object):
             print('Language Pack %s : %s' % (self.m_lang,self.m_llang[self.m_lang]))
         else:
             print('No Language Pack for %s !' % self.m_lang)
-            #raise('lang %s not found !' % self.m_lang)
+            #raise Exception('lang %s not found !' % self.m_lang)
 
     def setLocale(self,lang=None):
         # try to setup the C runtime (_locale)
