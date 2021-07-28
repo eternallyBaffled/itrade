@@ -202,7 +202,7 @@ def test(ticker,d):
 
         state = gImportABC.getstate()
         if state:
-            debug("state=%s" % (state))
+            debug("state=%s" % state)
 
             quote = quotes.lookupTicker(ticker,'EURONEXT')
             data = gImportABC.getdata(quote,d)

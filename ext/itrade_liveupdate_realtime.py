@@ -479,10 +479,10 @@ def test(ticker):
 
         state = gLiveRealTime.getstate()
         if state:
-            debug("state=%s" % (state))
+            debug("state=%s" % state)
 
             quote = quotes.lookupTicker(ticker,'EURONEXT')
-            if (quote):
+            if quote:
                 data = gLiveRealTime.getdata(quote)
                 if data!=None:
                     if data:
@@ -492,7 +492,7 @@ def test(ticker):
                 else:
                     print("getdata() failure :-(")
             else:
-                print("Unknown ticker %s on EURONEXT" % (ticker))
+                print("Unknown ticker %s on EURONEXT" % ticker)
         else:
             print("getstate() failure :-(")
 

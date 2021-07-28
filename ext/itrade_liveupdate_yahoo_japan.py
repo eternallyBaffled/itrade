@@ -81,7 +81,7 @@ class LiveUpdate_yahoojp(object):
     def splitLines(self,buf):
         lines = string.split(buf, '\n')
         lines = filter(lambda x:x, lines)
-            
+
         def removeCarriage(s):
             if s[-1]=='\r':
                 return s[:-1]
@@ -159,39 +159,39 @@ class LiveUpdate_yahoojp(object):
 
         sname = yahooTicker(quote.ticker(),quote.market(),quote.place())
         ss = sname
-        url = yahooUrlJapan(quote.market(),live=True) + '?' +'s=%s&d=v2' % (ss)
+        url = yahooUrlJapan(quote.market(),live=True) + '?' +'s=%s&d=v2' % ss
 
         debug("LiveUpdate_yahoojp:getdata: url=%s",url)
-        
+
         try:
-            
+
             data=self.m_connection.getDataFromUrl(url)
             data = data.replace('</td>','\n')
             lines = self.splitLines(data)
 
             # returns the data
-            
+
             for line in lines:
                 if 'uncompressed' in line:
                     year = line[line.find('JST ')+4:line.find(' -->')]
                 else : year = '0000'
 
-                   
-                
-            
+
+
+
             #sdata =[]
             ch = '<td nowrap align=center>'
             i = 0
             n = 0
                 #typical lines
-                #1 datetime  <td nowrap align=center>1/21       
-                #2 last  <td nowrap><b>226</b>     
+                #1 datetime  <td nowrap align=center>1/21
+                #2 last  <td nowrap><b>226</b>
                 #3 changetoday  <td nowrap><font color=ff0020>-4</font>
                                 #<td nowrap>---
                 #4 change_percent  <td nowrap><font color=ff0020>-1.74%</font>
                                    #<td nowrap>
                 #5 volume   <td nowrap>1,705,200
-                #6 open  <td nowrap>221      
+                #6 open  <td nowrap>221
                 #7 high  <td nowrap>230
                 #8 low   <td nowrap>221
 
@@ -207,7 +207,7 @@ class LiveUpdate_yahoojp(object):
                     day = local_date[1]
                     if len(day)== 1 : day = '0' + day
                     local_date = '"'+month+'/'+day+'/'+year+'"'
-                    
+
                 if ch in line:
                     n = 1
                 if n == 1:
@@ -265,7 +265,7 @@ class LiveUpdate_yahoojp(object):
 
                         n = 0
                         i = 0
-                        
+
                         colors = ['red', 'blue', 'green', 'yellow']
                         result = ''.join(colors)
 
@@ -287,7 +287,7 @@ class LiveUpdate_yahoojp(object):
             self.m_connected = True
 
             # store for later use
-            key = quote.key() 
+            key = quote.key()
 
             sclock = sdata[3][1:-1]
             if sclock=="N/A" or sdata[2]=='"N/A"' or len(sclock)<5:
@@ -317,25 +317,25 @@ class LiveUpdate_yahoojp(object):
             # decode data
             value = string.atof (sdata[1])
 
-            if (sdata[4]=='N/A'):
+            if sdata[4]=='N/A':
                 debug('invalid change : N/A')
                 change = 0.0
                 return None
             else:
                 change = string.atof (sdata[4])
-            if (sdata[5]=='N/A'):
+            if sdata[5]=='N/A':
                 debug('invalid open : N/A')
                 open = 0.0
                 return None
             else:
                 open = string.atof (sdata[5])
-            if (sdata[6]=='N/A'):
+            if sdata[6]=='N/A':
                 debug('invalid high : N/A')
                 high = 0.0
                 return None
             else:
                 high = string.atof (sdata[6])
-            if (sdata[7]=='N/A'):
+            if sdata[7]=='N/A':
                 debug('invalid low : N/A')
                 low = 0.0
                 return None
@@ -375,7 +375,7 @@ class LiveUpdate_yahoojp(object):
                 #print data
 
             return data
-        
+
         except:
             debug('LiveUpdate_yahoojapan:unable to connect :-(')
             return None
@@ -488,7 +488,7 @@ def test(ticker):
 
         state = gLiveYahoojp.getstate()
         if state:
-            debug("state=%s" % (state))
+            debug("state=%s" % state)
 
             quote = quotes.lookupTicker(ticker,'TOKYO EXCHANGE')
             data = gLiveYahoojp.getdata(Quote)

@@ -76,7 +76,7 @@ class Alert(object):
     def __init__(self,type,source,datation,title,desc,link,isin):
         self.m_type = type
         self.m_source = source
-        self.m_datation = date(long(datation[0:4]),long(datation[5:7]),long(datation[8:10]))
+        self.m_datation = date(int(datation[0:4]),int(datation[5:7]),int(datation[8:10]))
         self.m_title = title
         self.m_desc = desc
         self.m_link = link
@@ -194,13 +194,13 @@ class Alerts(object):
     def addAlert(self,ref,state):
         if self.existAlert(ref):
             # known :-(
-            info('Alerts::addAlert(): ref=%s already exists !' % (ref))
+            info('Alerts::addAlert(): ref=%s already exists !' % ref)
             return False
         else:
             # parse ref
             item = ref.split('.')
             if len(item)!=5:
-                info('Alerts::addAlert(): ref=%s already exists !' % (ref))
+                info('Alerts::addAlert(): ref=%s already exists !' % ref)
                 return False
 
             type,source,datation,isin,title = item

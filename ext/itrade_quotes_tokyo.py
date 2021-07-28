@@ -143,7 +143,7 @@ def Import_ListOfQuotes_TKS(quotes,market='TOKYO EXCHANGE',dlg=None,x=0):
         if q == 0:
             break
     if itrade_config.verbose:
-        print('Imported %d lines from TOKYO EXCHANGE' % (count))
+        print('Imported %d lines from TOKYO EXCHANGE' % count)
 
     return True
 

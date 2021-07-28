@@ -98,7 +98,7 @@ class UpdateLiveThread(object):
         # initial delay is random
         time.sleep(random.randint(0, self.m_sleeptime))
 
-        while (self.m_keepGoing):
+        while self.m_keepGoing:
             # if itrade_config.verbose:
             #    print 'UpdateLiveThread::Run(): %s %f %s' % (self.m_quote,self.m_sleeptime,self.m_param)
 
@@ -234,7 +234,7 @@ class UpdateLiveCurrencyThread(object):
         # initial delay is random
         time.sleep(random.randint(0, self.m_sleeptime))
 
-        while (self.m_keepGoing):
+        while self.m_keepGoing:
             # if itrade_config.verbose:
             #    print 'UpdateLiveCurrencyThread::Run(): %s %f %s' % (self.m_key,self.m_sleeptime,self.m_param)
 

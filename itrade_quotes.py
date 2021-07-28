@@ -720,13 +720,13 @@ class Quote(object):
         #info('sell: %s %d' % (self.ticker(),n))
         if box==QUOTE_CASH:
             if self.m_DIR_number < n:
-                raise("negative number of shares is not possible ...")
+                raise Exception("negative number of shares is not possible ...")
             self.m_DIR_number = self.m_DIR_number - n
             if self.m_DIR_number <=0 :
                 self.m_wasTraded = True
         elif box==QUOTE_CREDIT:
             if self.m_SRD_number < n:
-                raise("short unsupported yet ...")
+                raise Exception("short unsupported yet ...")
             self.m_SRD_number = self.m_SRD_number - n
             if self.m_SRD_number <=0 :
                 self.m_wasTraded = True
@@ -736,7 +736,7 @@ class Quote(object):
         #info('transfert: %s %d' % (self.ticker(),n))
         if box==QUOTE_CASH:
             if self.m_SRD_number < n:
-                raise("negative number of shares is not possible ...")
+                raise Exception("negative number of shares is not possible ...")
             price = (n * self.m_SRD_pru)
             if self.m_SRD_accnum > 0:
                 #print 'n=',n,'get accnum = ',self.m_SRD_accnum
@@ -749,7 +749,7 @@ class Quote(object):
             #print 'n=',n,'reinit accnum = ',self.m_SRD_accnum
         elif box==QUOTE_CREDIT:
             if self.m_DIR_number < n:
-                raise("negative number of shares is not possible ...")
+                raise Exception("negative number of shares is not possible ...")
             price = (n * self.m_DIR_pru)
             if self.m_SRD_prevacc > 0:
                 price = price - (expenses*n/self.m_SRD_prevacc)

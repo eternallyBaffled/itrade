@@ -141,7 +141,7 @@ def Import_ListOfQuotes_WBO(quotes,market='WIENER BORSE',dlg=None,x=0):
                     count = count + 1
 
     if itrade_config.verbose:
-        print('Imported %d lines from WIENER BORSE' % (count))
+        print('Imported %d lines from WIENER BORSE' % count)
 
     return True
 

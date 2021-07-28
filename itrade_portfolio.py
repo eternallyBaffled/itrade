@@ -1319,7 +1319,7 @@ class currentCell(object):
         self.f = f
 
     def __repr__(self):
-        return '%s' % (self.f)
+        return '%s' % self.f
 
 def loadPortfolio(fn=None):
     # default portfolio reference

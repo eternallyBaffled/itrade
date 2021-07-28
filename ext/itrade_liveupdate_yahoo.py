@@ -148,7 +148,7 @@ class LiveUpdate_yahoo(object):
             val = val-60
             if val <= 0:
                 val = (12*60)-60
-                
+
         #print clock,clo,hour,min,val,per,date
 
         if val>self.m_lastclock and date>=self.m_lastdate:
@@ -171,7 +171,7 @@ class LiveUpdate_yahoo(object):
         else:
             ss = sname
 
-            
+
         query = (
             ('s', ss),
             ('f', 'sl1d1t1c1ohgv'),
@@ -238,25 +238,25 @@ class LiveUpdate_yahoo(object):
         # decode data
         value = string.atof (sdata[1])
 
-        if (sdata[4]=='N/A'):
+        if sdata[4]=='N/A':
             debug('invalid change : N/A')
             change = 0.0
             return None
         else:
             change = string.atof (sdata[4])
-        if (sdata[5]=='N/A'):
+        if sdata[5]=='N/A':
             debug('invalid open : N/A')
             open = 0.0
             return None
         else:
             open = string.atof (sdata[5])
-        if (sdata[6]=='N/A'):
+        if sdata[6]=='N/A':
             debug('invalid high : N/A')
             high = 0.0
             return None
         else:
             high = string.atof (sdata[6])
-        if (sdata[7]=='N/A'):
+        if sdata[7]=='N/A':
             debug('invalid low : N/A')
             low = 0.0
             return None
@@ -488,7 +488,7 @@ def test(ticker):
 
         state = gLiveYahoo.getstate()
         if state:
-            debug("state=%s" % (state))
+            debug("state=%s" % state)
 
             quote = quotes.lookupTicker(ticker,'NASDAQ')
             data = gLiveYahoo.getdata(Quote)

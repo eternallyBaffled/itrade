@@ -209,7 +209,7 @@ class LiveUpdate_Euronext_bonds(object):
             f = urllib2.urlopen(req)
             buf = f.read()
             f.close()
-            
+
             #buf=self.m_connection.getDataFromUrl(url)
         except:
             debug('LiveUpdate_Euronext_bonds:unable to connect :-(')
@@ -228,7 +228,7 @@ class LiveUpdate_Euronext_bonds(object):
             if '"datetimeLastvalue">' in eachLine:
                 iDate = eachLine[eachLine.find('"datetimeLastvalue">')+20:eachLine.find(' CET</span>')]
                 i = i +1
-                                         
+
             if '"lastPriceint">' in eachLine:
                 lastPriceint = eachLine[eachLine.find('"lastPriceint">')+15:eachLine.find('</span>')].replace(',','.')
                 lastPriceint = lastPriceint.replace(',','.')
@@ -237,7 +237,7 @@ class LiveUpdate_Euronext_bonds(object):
                 lastPricefract = eachLine[eachLine.find('"lastPricefract">')+17:eachLine.find('</sup>')]
                 i = i +1
                 iLast = lastPriceint + lastPricefract
-                
+
             if '"cnDiffRelvalue">(' in eachLine:
                 iPercent = eachLine[eachLine.find('"cnDiffRelvalue">(')+18:eachLine.find(')</span>')]
                 iPercent = iPercent.replace('%','').replace(',','.').replace('+','')
@@ -256,9 +256,9 @@ class LiveUpdate_Euronext_bonds(object):
                 elif '$' in iOpen:
                     iOpen = iOpen[iOpen.find('$')+1:]
                 elif '&euro;'  in iOpen :
-                    iOpen = iOpen[iOpen.find('&euro;')+6:]   
+                    iOpen = iOpen[iOpen.find('&euro;')+6:]
                 elif '&pound;'  in iOpen :
-                    iOpen = iOpen[iOpen.find('&pound;')+7:]   
+                    iOpen = iOpen[iOpen.find('&pound;')+7:]
 
                 i = i + 1
 
@@ -282,7 +282,7 @@ class LiveUpdate_Euronext_bonds(object):
                 sdate,sclock = self.euronextDate(iDate)
 
                 # be sure we have volume (or indices)
-                if (quote.list() == QLIST_INDICES or iVolume != ''):
+                if quote.list() == QLIST_INDICES or iVolume != '':
 
                     # be sure not an oldest day !
                     if (c_date==sdate) or (quote.list() == QLIST_INDICES):
@@ -366,7 +366,7 @@ class LiveUpdate_Euronext_bonds(object):
 
 try:
     ignore(gLiveEuronext)
-    
+
 except NameError:
     gLiveEuronext = LiveUpdate_Euronext_bonds()
 registerLiveConnector('EURONEXT','PAR',QLIST_BONDS,QTAG_LIVE,gLiveEuronext,bDefault=True)
@@ -391,10 +391,10 @@ def test(ticker):
 
         state = gLiveEuronext.getstate()
         if state:
-            debug("state=%s" % (state))
+            debug("state=%s" % state)
 
             quote = quotes.lookupTicker(ticker,'EURONEXT')
-            if (quote):
+            if quote:
                 data = gLiveEuronext.getdata(quote)
                 if data!=None:
                     if data:
@@ -404,7 +404,7 @@ def test(ticker):
                 else:
                     print("getdata() failure :-(")
             else:
-                print("Unknown ticker %s on EURONEXT" % (ticker))
+                print("Unknown ticker %s on EURONEXT" % ticker)
         else:
             print("getstate() failure :-(")
 

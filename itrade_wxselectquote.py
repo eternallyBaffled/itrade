@@ -165,7 +165,7 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
         self.wxQListCtrl = wx.ComboBox(pane,-1, "", style=wx.CB_DROPDOWN|wx.CB_READONLY)
         self.wxQListCtrl.SetSizerProps(expand=True)
         wx.EVT_COMBOBOX(self,self.wxQListCtrl.GetId(),self.OnQuoteList)
-        
+
         self.wxQListCtrl.Append(message('quote_select_alllist'),QLIST_ALL)
         self.wxQListCtrl.Append(message('quote_select_syslist'),QLIST_SYSTEM)
         self.wxQListCtrl.Append(message('quote_select_usrlist'),QLIST_USER)
@@ -266,11 +266,11 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
         idx = self.wxQListCtrl.GetSelection()
         self.m_qlist = idx
         self.resetFields()
-                          
+
     def isFiltered(self,quote,bDuringInit):
         if (self.m_qlist == QLIST_ALL) or (self.m_qlist == quote.list() or self.m_filter):
             # good list
-            if (not self.m_qlist_tradableOnly or quote.list() != QLIST_INDICES):
+            if not self.m_qlist_tradableOnly or quote.list() != QLIST_INDICES:
                 # tradable
                 if (self.m_market==None) or (self.m_market == quote.market() or self.m_filter):
                     # good market

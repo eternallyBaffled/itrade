@@ -129,7 +129,7 @@ def Import_ListOfQuotes_BUE(quotes,market='BUENOS AIRES EXCHANGE',dlg=None,x=0):
                     ticker=ticker, market='BUENOS AIRES EXCHANGE',currency='ARS',place='BUE',country='AR')
                     nlines = nlines + 1
     if itrade_config.verbose:
-        print('Imported %d lines from BUENOS AIRES EXCHANGE data.' % (nlines))
+        print('Imported %d lines from BUENOS AIRES EXCHANGE data.' % nlines)
     data.close()
     return True
 

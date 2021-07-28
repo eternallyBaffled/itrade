@@ -101,7 +101,7 @@ class Import_yahoojp(object):
     def getdata(self,quote,datedebut=None,datefin=None):
         # specific numTradeYears
         itrade_config.numTradeYears = 2
-        
+
         if not datefin:
             datefin = date.today()
         if not datedebut:
@@ -118,15 +118,15 @@ class Import_yahoojp(object):
         sname = yahooTicker(quote.ticker(),quote.market(),quote.place())
 
         ss = sname
-            
+
         ch = '<tr align=right bgcolor="#ffffff">'
         lines = []
-        
+
         for cursor in range(0,4650,50):
-            
+
             url = yahooUrlJapan(quote.market(),live=False) + '?' +'c=%s&a=%s&b=%s&f=%s&d=%s&e=%s&g=d&s=%s&y=%s&z=%s' % (d1[0],d1[1],d1[2],d2[0],d2[1],d2[2],ss,str(cursor),ss)
             #url = 'http://table.yahoo.co.jp/t?s=%s&a=1&b=1&c=2000&d=%s&e=%s&f=%s&g=d&q=t&y=%s&z=/b?p=tjfzqcvy4.ewcf7pt&x=.csv' % (ss,d2[1],d2[2],d2[0],str(cursor))
-            
+
             debug("Import_yahoojp:getdata: url=%s ",url)
             try:
                 buf=self.m_connection.getDataFromUrl(url)
@@ -138,19 +138,19 @@ class Import_yahoojp(object):
             if len(linesjp)<=0:
                 # empty content
                 return None
-            
+
             #typical lines indices
-            
+
             #<tr align=right bgcolor="#ffffff">
             #<td><small>2009126</small></td>      (DATE)
             #<td><small>772.59</small></td>            (OPEN)
             #<td><small>777.91</small></td>            (HIGH)
             #<td><small>767.82</small></td>            (LOW)
             #<td><small><b>768.28</b></small></td>     (LAST)
-            
+
             #typical lines quotes
 
-            #<tr align=right bgcolor="#ffffff">        
+            #<tr align=right bgcolor="#ffffff">
             #<td><small>2009119</small></td>           (DATE)
             #<td><small>198</small></td>               (OPEN)
             #<td><small>200</small></td>               (HIGH)
@@ -164,9 +164,9 @@ class Import_yahoojp(object):
             #<td><small>197</small></td>
             #<td><small>200</small></td>
 
-            
+
             n = 0
-            i = 0   
+            i = 0
             q = 0
             #header = 'Date,Open,High,Low,Close,Volume,Adj Close'
             #filedata.write(header+'\n')
@@ -199,7 +199,7 @@ class Import_yahoojp(object):
                         elif i == 5 :
                             close = data[3:]
                             close = close.replace(',','')
-                            
+
                             if ss == '998405' or ss == '998407' or ss =='23337' :
                                 volume = '0'
                                 open = open.replace(',','')
@@ -212,7 +212,7 @@ class Import_yahoojp(object):
                                 ligne = ','.join([date,open,high,low,close,volume,adjustclose])
                                 #print ligne
                                 lines.append(ligne)
-                                
+
                         elif i == 6 :
                             volume = data
                             volume = volume.replace(',','')
@@ -225,7 +225,7 @@ class Import_yahoojp(object):
                             #print ligne
                             lines.append(ligne)
             if q == 0:
-                break   
+                break
         data = ""
         for eachLine in lines:
             sdata = string.split (eachLine, ',')
@@ -278,7 +278,7 @@ def test(ticker,d):
 
         state = gImportYahoo.getstate()
         if state:
-            debug("state=%s" % (state))
+            debug("state=%s" % state)
 
             quote = quotes.lookupTicker(ticker,'TOKYO EXCHANGE')
             data = gImportYahoo.getdata(quote,d)

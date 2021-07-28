@@ -930,7 +930,7 @@ def test(ticker):
 
         state = gLiveFortuneo.getstate()
         if state:
-            debug("state=%s" % (state))
+            debug("state=%s" % state)
 
             quote = quotes.lookupTicker(ticker,'EURONEXT')
             data = gLiveFortuneo.getdata(quote)

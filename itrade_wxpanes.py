@@ -819,7 +819,7 @@ class iTrade_MatrixQuotesPanel(iTrade_MatrixPanel):
 
         x = 0
         for eachQuote in self.m_matrix.list():
-            if (eachQuote.isTraded() or eachQuote.isMonitored()):
+            if eachQuote.isTraded() or eachQuote.isMonitored():
                 self.m_list.InsertImageStringItem(x, eachQuote.isin(), self.idx_tbref)
                 self.m_list.SetStringItem(x,IDC_TICKER,eachQuote.ticker())
                 if eachQuote.isTraded():
@@ -1222,7 +1222,7 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
 
         x = 0
         for eachQuote in self.m_matrix.list():
-            if (eachQuote.isTraded() or eachQuote.isMonitored()):
+            if eachQuote.isTraded() or eachQuote.isMonitored():
                 self.m_list.InsertImageStringItem(x, eachQuote.isin(), self.idx_tbref)
                 self.m_list.SetStringItem(x,IDC_TICKER,eachQuote.ticker())
                 if eachQuote.isTraded():

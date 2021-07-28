@@ -200,7 +200,7 @@ class LiveUpdate_ABCBourse(object):
         for eachLine in self.m_data:
             item = itrade_csv.parse(eachLine,7)
             if item:
-                if (item[0]==quote.isin()):
+                if item[0]==quote.isin():
                     #print item
                     # convert to string format :-(
                     return '%s;%s;%s;%s;%s;%s;%s' % (item[0],item[1],item[2],item[3],item[4],item[5],item[6])
@@ -216,7 +216,7 @@ class LiveUpdate_ABCBourse(object):
             return False
         delta = timedelta(0,itrade_config.cachedDataFreshDelay)
         newtime = self.m_datatime + delta
-        if (datetime.today()>newtime):
+        if datetime.today()>newtime:
             debug('datatime = %s  currentdatatime = %s  newtime = %s delta = %s : False' %(self.m_datatime,datetime.today(),newtime,delta))
             return False
         debug('datatime = %s  currentdatatime = %s  newtime = %s delta = %s : True' %(self.m_datatime,datetime.today(),newtime,delta))
@@ -281,7 +281,7 @@ def test(ticker):
 
         state = gLiveABC.getstate()
         if state:
-            debug("state=%s" % (state))
+            debug("state=%s" % state)
 
             quote = quotes.lookupTicker(ticker,'EURONEXT')
             data = gLiveABC.getdata(quote)

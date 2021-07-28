@@ -116,7 +116,7 @@ def Import_ListOfQuotes_NZE(quotes,market='NEW ZEALAND EXCHANGE',dlg=None,x=0):
                         quotes.addQuote(isin=isin,name=name,
                                 ticker=ticker,market='NEW ZEALAND EXCHANGE',currency='NZD',place='NZE',country='NZ')
     if itrade_config.verbose:
-        print('Imported %d lines from NEW ZEALAND EXCHANGE' % (count))
+        print('Imported %d lines from NEW ZEALAND EXCHANGE' % count)
 
     return True
 

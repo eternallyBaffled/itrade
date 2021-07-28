@@ -137,7 +137,7 @@ class Import_euronext(object):
         d2 = self.parseDate(datefin)
 
         mic = euronextmic(quote.market(),quote.place())
-        
+
         format = '%Y-%m-%d %H:%M:%S'
         #origin = "1970-01-01 00:00:00"
         datefrom = str(datedebut) + " 02:00:00"
@@ -168,7 +168,7 @@ class Import_euronext(object):
         query = map(lambda var_val: '%s=%s' % (var_val[0], str(var_val[1])), query)
         query = string.join(query, '&')
         url = self.m_url + '?' + query
-        
+
         #print url
         debug("Import_euronext:getdata: url=%s ",url)
         try:
@@ -179,7 +179,7 @@ class Import_euronext(object):
             f = urllib2.urlopen(req)
             buf = f.read()
             f.close()
-            
+
             #buf=self.m_connection.getDataFromUrl(url)
         except:
             debug('Import_euronext:unable to connect :-(')
@@ -194,7 +194,7 @@ class Import_euronext(object):
             eachLine = eachLine.replace('","',';')
             eachLine = eachLine.replace('"','')
             sdata = string.split(eachLine,';')
-            
+
             if len(sdata)== 11:
                 #print sdata
                 #if (sdata[0] != "Date") and (quote.list() == QLIST_INDICES):
@@ -280,7 +280,7 @@ def test(ticker,d):
 
         state = gImportEuronext.getstate()
         if state:
-            debug("state=%s" % (state))
+            debug("state=%s" % state)
 
             quote = quotes.lookupTicker(ticker,'EURONEXT')
             data = gImportEuronext.getdata(quote,d)

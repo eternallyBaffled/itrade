@@ -208,7 +208,7 @@ class LiveUpdate_Euronext(object):
             f = urllib2.urlopen(req)
             buf = f.read()
             f.close()
-            
+
         except:
             debug('LiveUpdate_Euronext:unable to connect :-(')
             return None
@@ -227,7 +227,7 @@ class LiveUpdate_Euronext(object):
                 iDate = iDate.rstrip()
                 #print count,'iDate:',iDate
                 i = i +1
-                                         
+
             if '"lastPriceint">' in eachLine:
                 lastPriceint = eachLine[eachLine.find('"lastPriceint">')+15:eachLine.find('</span>')].replace(',','.')
                 lastPriceint = lastPriceint.replace(',','.')
@@ -237,7 +237,7 @@ class LiveUpdate_Euronext(object):
                 i = i +1
                 iLast = lastPriceint + lastPricefract
                 #print count,'iLast:',iLast
-                
+
             if '"cnDiffRelvalue">(' in eachLine:
                 iPercent = eachLine[eachLine.find('"cnDiffRelvalue">(')+18:eachLine.find(')</span>')]
                 iPercent = iPercent.replace('%','').replace(',','.').replace('+','')
@@ -257,9 +257,9 @@ class LiveUpdate_Euronext(object):
                 elif '$' in iOpen:
                     iOpen = iOpen[iOpen.find('$')+1:]
                 elif '&euro;' in iOpen :
-                    iOpen = iOpen[iOpen.find('&euro;')+6:]   
+                    iOpen = iOpen[iOpen.find('&euro;')+6:]
                 elif '&pound;' in iOpen :
-                    iOpen = iOpen[iOpen.find('&pound;')+7:]   
+                    iOpen = iOpen[iOpen.find('&pound;')+7:]
                 elif '-' in iOpen:
                     iOpen = '0'
                     return None
@@ -292,12 +292,12 @@ class LiveUpdate_Euronext(object):
                 c_datetime = datetime.today()
                 c_date = "%04d%02d%02d" % (c_datetime.year,c_datetime.month,c_datetime.day)
                 #print 'Today is :', c_date
-            
+
 
                 sdate,sclock = self.euronextDate(iDate)
 
                 # be sure we have volume (or indices)
-                if (quote.list() == QLIST_INDICES or iVolume != ''):
+                if quote.list() == QLIST_INDICES or iVolume != '':
 
                     # be sure not an oldest day !
                     if (c_date==sdate) or (quote.list() == QLIST_INDICES):
@@ -309,7 +309,7 @@ class LiveUpdate_Euronext(object):
                     # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME;PERCENT
                     data = ';'.join([quote.key(),sdate,iOpen,iHigh,iLow,iLast,iVolume,iPercent])
                     return data
-            
+
         return None
 
     # ---[ cache management on data ] ---
@@ -430,10 +430,10 @@ def test(ticker):
 
         state = gLiveEuronext.getstate()
         if state:
-            debug("state=%s" % (state))
+            debug("state=%s" % state)
 
             quote = quotes.lookupTicker(ticker,'EURONEXT')
-            if (quote):
+            if quote:
                 data = gLiveEuronext.getdata(quote)
                 if data!=None:
                     if data:
@@ -443,7 +443,7 @@ def test(ticker):
                 else:
                     print("getdata() failure :-(")
             else:
-                print("Unknown ticker %s on EURONEXT" % (ticker))
+                print("Unknown ticker %s on EURONEXT" % ticker)
         else:
             print("getstate() failure :-(")
 

@@ -151,14 +151,14 @@ class Import_yahoo(object):
         header = string.split(lines[0],',')
         data = ""
 
-        if (header[0] != "Date"):
+        if header[0] != "Date":
             # no valid content
             return None
 
         for eachLine in lines:
             sdata = string.split (eachLine, ',')
             sdate = sdata[0]
-            if (sdate != "Date"):
+            if sdate != "Date":
                 if re_p3_1.match(sdate):
                     #print 'already good format ! ',sdate,sdata
                     pass
@@ -308,7 +308,7 @@ def test(ticker,d):
 
         state = gImportYahoo.getstate()
         if state:
-            debug("state=%s" % (state))
+            debug("state=%s" % state)
 
             quote = quotes.lookupTicker(ticker,'NASDAQ')
             data = gImportYahoo.getdata(quote,d)

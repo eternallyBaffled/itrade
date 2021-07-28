@@ -132,7 +132,7 @@ def Import_ListOfQuotes_OSLO(quotes,market='OSLO EXCHANGE',dlg=None,x=0):
 
                 nlines = nlines + 1
     if itrade_config.verbose:
-        print('Imported %d lines from OSLO EXCHANGE' % (nlines))
+        print('Imported %d lines from OSLO EXCHANGE' % nlines)
 
     return True
 
