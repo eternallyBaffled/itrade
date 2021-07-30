@@ -117,7 +117,6 @@ class ITradeConnection(object):
 
         try:
             # Prepare new header
-            nextHeader={}
             if header:
                 nextHeader=dict(header)
             else:
@@ -218,7 +217,7 @@ class ITradeConnection(object):
                         else:
                             logging.info("Strange cookie header (%s). Ignoring." % cookieHeader)
 
-            except socket.timeout as e:
+            except socket.timeout:
                 msg=Exception("Connexion timeout while requesting the remote server : %s" % url)
                 logging.error(msg)
                 self.m_responseData=""
