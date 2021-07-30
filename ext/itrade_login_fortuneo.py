@@ -103,16 +103,16 @@ class Login_fortuneo(object):
 
     def login(self,u=None,p=None):
         # load username / password (if required)
-        if u==None or p==None:
+        if u is None or p is None:
             u,p = self.loadUserInfo()
-            if u==None or p==None or u=='' or p=='':
+            if u is None or p is None or u=='' or p=='':
                 print('login: userinfo are invalid - please reenter Access Information')
                 return False
         #print 'log:',u,p
 
         # create the HTTPS connexion
         self.m_conn = httplib.HTTPSConnection(self.m_default_host,443)
-        if self.m_conn == None:
+        if self.m_conn is None:
             print('login: not connected on %s' % self.m_default_host)
             return False
 
@@ -145,7 +145,7 @@ class Login_fortuneo(object):
             #print buf
 
             m = re.search(r"name=\"BV_SessionID\"\s*value=\"\S+\"", buf, re.IGNORECASE|re.MULTILINE)
-            if m==None:
+            if m is None:
                 print('Login_fortuneo: BV_SessionID statement not found :',buf)
                 return False
 
@@ -154,7 +154,7 @@ class Login_fortuneo(object):
             #print 'BV_SessionID = ',BV_SessionID
 
             m = re.search(r"name=\"BV_EngineID\"\s*value=\"\S+\"", buf, re.IGNORECASE|re.MULTILINE)
-            if m==None:
+            if m is None:
                 print('Login_fortuneo: BV_EngineID statement not found :',buf)
                 return False
 
@@ -174,7 +174,7 @@ class Login_fortuneo(object):
                     break
 
             params = None
-            if url==None:
+            if url is None:
                 print("Login_fortuneo: redirection : missing 'location' in headers !")
                 return False
 
@@ -185,7 +185,7 @@ class Login_fortuneo(object):
             #print url
 
             m = re.search(r"\?BV_SessionID=\S+&", url, re.IGNORECASE|re.MULTILINE)
-            if m==None:
+            if m is None:
                 print('Login_fortuneo: BV_SessionID statement not found :',url)
                 return False
 
@@ -194,7 +194,7 @@ class Login_fortuneo(object):
             #print 'BV_SessionID =',BV_SessionID
 
             m = re.search(r"&BV_EngineID=\S+", url, re.IGNORECASE|re.MULTILINE)
-            if m==None:
+            if m is None:
                 print('Login_fortuneo: BV_EngineID statement not found :',url)
                 return False
 
@@ -241,7 +241,7 @@ class Login_fortuneo(object):
 
         # extract cookie
         m = re.search(r'startStreaming\( \"\S+\",', buf, re.IGNORECASE|re.MULTILINE)
-        if m==None:
+        if m is None:
             print('Login_fortuneo: cookie statement not found !')
             return False
 

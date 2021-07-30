@@ -96,7 +96,7 @@ def fmtVolume(x):
 def quote_reference(isin,ticker,market,place):
     #print 'quote_reference: isin=%s ticker=%s market=%s place=%s' % (isin,ticker,market,place)
     if isin and isin!='':
-        if market==None or market=='':
+        if market is None or market=='':
             lst = quotes.lookupISIN(isin)
             if len(lst)>0:
                 quote = lst[0]
@@ -104,7 +104,7 @@ def quote_reference(isin,ticker,market,place):
                 place = quote.place()
                 return '%s.%s.%s' % (isin,market,place)
         else:
-            if place==None or place=='':
+            if place is None or place=='':
                 lst = quotes.lookupISIN(isin,market)
                 if len(lst)>0:
                     quote = lst[0]
@@ -112,7 +112,7 @@ def quote_reference(isin,ticker,market,place):
 
             return '%s.%s.%s' % (isin,market,place)
 
-    if market==None or market=='':
+    if market is None or market=='':
         quote = quotes.lookupTicker(ticker)
         if quote:
             market = quote.market()
@@ -150,7 +150,7 @@ class Quote(object):
         self.m_userliveconnector = None
 
         self.m_defaultimportconnector = getImportConnector(self.m_market,self.m_list,QTAG_IMPORT,self.m_place)
-        if self.m_defaultimportconnector == None:
+        if self.m_defaultimportconnector is None:
             if itrade_config.verbose:
                 print('no default import connector for %s (list:%d)' % (self,self.m_list))
 
@@ -617,13 +617,13 @@ class Quote(object):
 
     def loadTrades(self,fn=None):
         debug('Quote:loadTrades %s' % self.m_ticker)
-        if self.m_daytrades==None:
+        if self.m_daytrades is None:
             self.m_daytrades = itrade_trades.Trades(self)
         self.m_daytrades.load(fn)
 
     def importTrades(self,data,bLive):
         #debug('Quote:importTrades %s %s bLive=%s' % (self.ticker,data,bLive))
-        if self.m_daytrades==None:
+        if self.m_daytrades is None:
             self.m_daytrades = itrade_trades.Trades(self)
 
         data = data.split('\r\n')
@@ -642,7 +642,7 @@ class Quote(object):
     # ---[ save or export trades / date is unique key ] ---
 
     def saveTrades(self,fn=None):
-        if self.m_daytrades==None:
+        if self.m_daytrades is None:
             info('Quote:saveTrades %s - no daytrades !' % self.ticker())
             return
         debug('Quote:saveTrades %s - save now !' % self.ticker())
@@ -652,10 +652,10 @@ class Quote(object):
 
     def update(self,fromdate=None,todate=None):
         #debug('update %s from:%s to:%s' % (self.ticker(),fromdate,todate))
-        if self.m_daytrades==None:
+        if self.m_daytrades is None:
             self.m_daytrades = itrade_trades.Trades(self)
             self.loadTrades()
-        if fromdate==date.today() or fromdate==None:
+        if fromdate==date.today() or fromdate is None:
             # import until 'yesterday' (be sure the day is or will open !)
             ajd = date.today()
             # if market is or will open:
@@ -665,7 +665,7 @@ class Quote(object):
 
             # full importation ?
             tr = self.m_daytrades.lastimport()
-            if tr==None:
+            if tr is None:
                 if itrade_config.verbose:
                     print('%s *** no trade at all ! : need to import ...' % self.key())
                 if not cmdline_importQuoteFromInternet(self):
@@ -761,7 +761,7 @@ class Quote(object):
 
     def index(self,d=None):
         if self.m_daytrades:
-            if d==None:
+            if d is None:
                 tr = self.m_daytrades.lasttrade()
             else:
                 tr = self.m_daytrades.trade(d)
@@ -785,7 +785,7 @@ class Quote(object):
 
     def nv_close(self,d=None):
         if self.m_daytrades:
-            if d==None:
+            if d is None:
                 tr = self.m_daytrades.lasttrade()
             else:
                 tr = self.m_daytrades.trade(d)
@@ -795,7 +795,7 @@ class Quote(object):
 
     def nv_open(self,d=None):
         if self.m_daytrades:
-            if d==None:
+            if d is None:
                 tr = self.m_daytrades.lasttrade()
             else:
                 tr = self.m_daytrades.trade(d)
@@ -805,7 +805,7 @@ class Quote(object):
 
     def nv_low(self,d=None):
         if self.m_daytrades:
-            if d==None:
+            if d is None:
                 tr = self.m_daytrades.lasttrade()
             else:
                 tr = self.m_daytrades.trade(d)
@@ -815,7 +815,7 @@ class Quote(object):
 
     def nv_high(self,d=None):
         if self.m_daytrades:
-            if d==None:
+            if d is None:
                 tr = self.m_daytrades.lasttrade()
             else:
                 tr = self.m_daytrades.trade(d)
@@ -825,7 +825,7 @@ class Quote(object):
 
     def nv_volume(self,d=None):
         if self.m_daytrades:
-            if d==None:
+            if d is None:
                 tr = self.m_daytrades.lasttrade()
             else:
                 tr = self.m_daytrades.trade(d)
@@ -834,7 +834,7 @@ class Quote(object):
         return None
 
     def nv_prevclose(self,d=None):
-        if self.m_prevclose != None:
+        if self.m_prevclose is not None:
             #print '$$ %s nv_prevclose:' % self.ticker(),self.m_prevclose
             return self.m_prevclose
 
@@ -853,7 +853,7 @@ class Quote(object):
         return None
 
     def nv_percent(self,d=None):
-        if self.m_percent != None:
+        if self.m_percent is not None:
             #print '$$ %s nv_percent:' % self.ticker(),self.m_percent
             return self.m_percent
 
@@ -872,7 +872,7 @@ class Quote(object):
         else:
             sc = ''
         x = self.nv_close(d)
-        if x!=None:
+        if x is not None:
             st,re,rb,rh,cl = self.currentStatus()
             if st=='OK':
                 return "%3.3f%s" % (x,sc)
@@ -890,31 +890,31 @@ class Quote(object):
 
     def sv_open(self,d=None):
         x = self.nv_open(d)
-        if x!=None:
+        if x is not None:
             return "%3.3f" % x
         return " ---.--- "
 
     def sv_low(self,d=None):
         x = self.nv_low(d)
-        if x!=None:
+        if x is not None:
             return "%3.3f" % x
         return " ---.--- "
 
     def sv_high(self,d=None):
         x = self.nv_high(d)
-        if x!=None:
+        if x is not None:
             return "%3.3f" % x
         return " ---.--- "
 
     def sv_volume(self,d=None):
         x = self.nv_volume(d)
-        if x!=None:
+        if x is not None:
             return fmtVolume(x)
         return " ---------- "
 
     def sv_prevclose(self,d=None):
         x = self.nv_prevclose(d)
-        if x!=None:
+        if x is not None:
             return "%3.3f" % x
         return " ---.--- "
 
@@ -924,7 +924,7 @@ class Quote(object):
         except:
             return " ---.-- %"
 
-        if x!=None:
+        if x is not None:
             if x>0:
                 return "+%3.2f %%" % x
             else:
@@ -933,7 +933,7 @@ class Quote(object):
 
     def sv_unitvar(self,d=None):
         x = self.nv_unitvar(d)
-        if x!=None:
+        if x is not None:
             return "%3.2f" % x
         return " ---.-- "
 
@@ -941,11 +941,11 @@ class Quote(object):
 
     def ov_candle(self,d=None):
         if self.m_daytrades:
-            if d==None:
+            if d is None:
                 tr = self.m_daytrades.lasttrade()
             else:
                 tr = self.m_daytrades.trade(d)
-            if tr==None:
+            if tr is None:
                 return None
             d = Datation(tr.date()).date()
             tc = self.m_daytrades.candle(d)
@@ -1004,7 +1004,7 @@ class Quote(object):
 
     def date(self,d=None):
         if self.m_daytrades:
-            if d==None:
+            if d is None:
                 tr = self.m_daytrades.lasttrade()
             else:
                 tr = self.m_daytrades.trade(d)
@@ -1055,7 +1055,7 @@ class Quote(object):
     # ---[ Trends ] ---
 
     def colorLine(self,d=None):
-        if self.m_percent == None:
+        if self.m_percent is None:
             if self.m_daytrades:
                 tc = self.nv_close(d)
                 tp = self.nv_prevclose(d)
@@ -1076,7 +1076,7 @@ class Quote(object):
 
     def colorTrend(self,d=None):
         if self.m_daytrades:
-            if d==None:
+            if d is None:
                 tc = self.m_daytrades.lasttrade()
                 #print 'colorTrend: lastrade close : %.2f date : %s ' % (tc.nv_close(),tc.date())
             else:
@@ -1122,7 +1122,7 @@ class Quote(object):
     # ---[ Indicators ] ---
 
     def nv_ma(self,period=20,d=None):
-        if d==None:
+        if d is None:
             d = self.m_daytrades.lasttrade()
             if d:
                 d = d.date()
@@ -1133,12 +1133,12 @@ class Quote(object):
 
     def sv_ma(self,period=20,d=None):
         x = self.nv_ma(period,d)
-        if x!=None:
+        if x is not None:
             return "%3.3f" % x
         return " ---.--- "
 
     def nv_rsi(self,period=14,d=None):
-        if d==None:
+        if d is None:
             d = self.m_daytrades.lasttrade()
             if d:
                 d = d.date()
@@ -1149,12 +1149,12 @@ class Quote(object):
 
     def sv_rsi(self,period=14,d=None):
         x = self.nv_rsi(period,d)
-        if x!=None:
+        if x is not None:
             return "%3.3f" % x
         return " ---.--- "
 
     def nv_stoK(self,d=None):
-        if d==None:
+        if d is None:
             d = self.m_daytrades.lasttrade()
             if d:
                 d = d.date()
@@ -1165,12 +1165,12 @@ class Quote(object):
 
     def sv_stoK(self,d=None):
         x = self.nv_stoK(d)
-        if x!=None:
+        if x is not None:
             return "%3.2f" % x
         return " ---.-- "
 
     def nv_stoD(self,d=None):
-        if d==None:
+        if d is None:
             d = self.m_daytrades.lasttrade()
             if d:
                 d = d.date()
@@ -1181,12 +1181,12 @@ class Quote(object):
 
     def sv_stoD(self,d=None):
         x = self.nv_stoD(d)
-        if x!=None:
+        if x is not None:
             return "%3.2f" % x
         return " ---.-- "
 
     def nv_vma(self,period=15,d=None):
-        if d==None:
+        if d is None:
             if d:
                 d = d.date()
             else:
@@ -1196,12 +1196,12 @@ class Quote(object):
 
     def sv_vma(self,period=15,d=None):
         x = self.nv_vma(period,d)
-        if x!=None:
+        if x is not None:
             return "%d" % x
         return " ---------- "
 
     def nv_ovb(self,d=None):
-        if d==None:
+        if d is None:
             if d:
                 d = d.date()
             else:
@@ -1211,7 +1211,7 @@ class Quote(object):
 
     def sv_ovb(self,d=None):
         x = self.nv_ovb(d)
-        if x!=None:
+        if x is not None:
             return "%d" % x
         return " ---------- "
 
@@ -1380,7 +1380,7 @@ class Quotes(object):
             return True
 
         # depending on isin
-        if isin==None or isin=='':
+        if isin is None or isin=='':
             # no isin : check if we have already this quote
             quote = None # __perf: self.lookupTicker(ticker,market)
             if quote:
@@ -1476,13 +1476,13 @@ class Quotes(object):
     def removeQuotes(self,market,list):
         for eachQuote in self.list():
             if list==eachQuote.list():
-                if market==None or eachQuote.market()==market:
+                if market is None or eachQuote.market()==market:
                     del self.m_quotes[eachQuote.key()]
 
     # ---[ Lookup (optionaly, filter by market) ] ---
 
     def lookupKey(self,key):
-        if key==None:
+        if key is None:
             return None
 
         if key in self.m_quotes:
@@ -1506,14 +1506,14 @@ class Quotes(object):
         ret = []
         for eachVal in self.m_quotes.values():
             if eachVal.isin() == isin:
-                if (market==None or (market==eachVal.market())) and (place==None or (place==eachVal.place())):
+                if (market is None or (market==eachVal.market())) and (place is None or (place==eachVal.place())):
                     ret.append(eachVal)
         return ret
 
     def lookupTicker(self,ticker,market=None,place=None):
         # return first one
         for eachVal in self.m_quotes.values():
-            if (eachVal.ticker() == ticker) and (market==None or (market==eachVal.market())) and (place==None or (place==eachVal.place())):
+            if (eachVal.ticker() == ticker) and (market is None or (market==eachVal.market())) and (place is None or (place==eachVal.place())):
                 return eachVal
         return None
 
@@ -1521,13 +1521,13 @@ class Quotes(object):
         # return list of
         ret = []
         for eachVal in self.m_quotes.values():
-            if (eachVal.ticker().find(ticker,0)==0) and (market==None or (market==eachVal.market())) and (place==None or (place==eachVal.place())):
+            if (eachVal.ticker().find(ticker,0)==0) and (market is None or (market==eachVal.market())) and (place is None or (place==eachVal.place())):
                 ret.append(eachVal)
         return ret
 
     def lookupName(self,name,market,place=None):
         for eachVal in self.m_quotes.values():
-            if (eachVal.name() == name) and (market==None or (market==eachVal.market())) and (place==None or (place==eachVal.place())):
+            if (eachVal.name() == name) and (market is None or (market==eachVal.market())) and (place is None or (place==eachVal.place())):
                 return eachVal
         return None
 

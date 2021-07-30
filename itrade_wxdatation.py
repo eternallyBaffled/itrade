@@ -65,7 +65,7 @@ class iTradeDatePicker(wx.Dialog):
         sizer = wx.BoxSizer(wx.VERTICAL)
         box = wx.BoxSizer(wx.HORIZONTAL)
 
-        if ddate==None:
+        if ddate is None:
             dd = wx.DateTime_Now()
             debug('iTradeDatePicker() today date = %s' % dd.__str__())
         else:

@@ -110,12 +110,11 @@ class Login_boursorama(object):
 
     def login(self,u=None,p=None):
         # load username / password (if required)
-        if u==None or p==None:
+        if u is None or p is None:
             u,p = self.loadUserInfo()
-            if u==None or p==None:
+            if u is None or p is None:
                 print('login: userinfo are invalid - please reenter Access Information')
                 return False
-
         try:
             param={"org" : "/index.phtml?",
                    "redirect" : "",

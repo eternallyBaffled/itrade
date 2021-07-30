@@ -174,9 +174,9 @@ class iTradeConnectionDialog(iTradeSizedDialog):
 # ============================================================================
 
 def connection_UI(win,server,auth,timeout=25):
-    if server == None:
+    if server is None:
         server = ''
-    if auth == None:
+    if auth is None:
         auth = ''
 
     dlg = iTradeConnectionDialog(win,server,auth,timeout)

@@ -490,7 +490,7 @@ class LiveUpdate_fortuneo(object):
 
     # ---[ read cookie ] ---
     def readCookie(self):
-        if self.m_cookie==None:
+        if self.m_cookie is None:
             try:
                 f = open(os.path.join(itrade_config.dirUserData,'fortuneo_live.txt'),'r')
                 infile = f.readlines()
@@ -524,7 +524,7 @@ class LiveUpdate_fortuneo(object):
 
     def connect(self):
         self.m_conn = httplib.HTTPConnection(self.m_default_host,80)
-        if self.m_conn == None:
+        if self.m_conn is None:
             print('live: not connected on %s:80' % self.m_default_host)
             return False
 
@@ -553,7 +553,7 @@ class LiveUpdate_fortuneo(object):
     # ---[ specific code to manage place ] ---
 
     def loadPlaces(self):
-        if self.m_places == None:
+        if self.m_places is None:
             self.m_places = {}
             infile = itrade_csv.read(None,os.path.join(itrade_config.dirSysData,'places.txt'))
             if infile:
@@ -789,7 +789,7 @@ class LiveUpdate_fortuneo(object):
         return buy,sell
 
     def currentClock(self,quote=None):
-        if quote==None:
+        if quote is None:
             if self.m_lastclock==0:
                 return "::"
             # hh:mm

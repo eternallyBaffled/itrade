@@ -172,7 +172,7 @@ class News_Balo(object):
     # ---[ public interface ] ---
     def feedQuote(self,quote,lang=None,page=0):
         self.m_quote = quote
-        if lang==None:
+        if lang is None:
             lang = self.m_quote.country()
 
         return self.feed(self.m_baseurl)

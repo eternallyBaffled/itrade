@@ -656,7 +656,7 @@ class iTrade_wxPanelGraph(GObject, PanelPrint):
     def on_click(self,event):
         if self.cursorState(event.inaxes):
             chart = self.axe2chart(event.inaxes)
-            if chart>0 and event.xdata!=None:
+            if chart>0 and event.xdata is not None:
                 self.erase_cursor()
                 self.m_tool.on_click(event.x, event.y, int(event.xdata), event.ydata, chart)
                 self.draw_cursor(event)

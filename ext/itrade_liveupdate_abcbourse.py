@@ -109,7 +109,7 @@ class LiveUpdate_ABCBourse(object):
         self.m_conn = None
 
     def alive(self):
-        return self.m_data != None
+        return self.m_data is not None
 
     # ---[ state ] ---
 
@@ -137,7 +137,7 @@ class LiveUpdate_ABCBourse(object):
         # search for the ___VIEWSTATE variable
         data = response.read()
         m = re.search(r'name=\"__VIEWSTATE\"\s*value=\"\S+\"', data)
-        if m==None:
+        if m is None:
             debug('LiveUpdate_ABCBourse:viewstate statement not found !')
             return None
 
@@ -207,7 +207,7 @@ class LiveUpdate_ABCBourse(object):
         return ""
 
     def iscacheddataenoughfreshq(self):
-        if self.m_data==None:
+        if self.m_data is None:
             #print
             debug('iscacheddataenoughfreshq : no cache !')
             return False
@@ -285,7 +285,7 @@ def test(ticker):
 
             quote = quotes.lookupTicker(ticker,'EURONEXT')
             data = gLiveABC.getdata(quote)
-            if data!=None:
+            if data is not None:
                 if data:
                     info(data)
                 else:

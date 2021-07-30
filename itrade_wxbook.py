@@ -903,7 +903,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
 
     def updateTitle(self,page=None):
         # get current page
-        if page == None:
+        if page is None:
             page = self.m_book.GetSelection()
 
         if page == ID_PAGE_PORTFOLIO:

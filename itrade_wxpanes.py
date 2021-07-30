@@ -666,7 +666,7 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
     def refreshPortfolioLine(self,x,disp):
         key = self.m_list.GetItemData(x)
         quote = self.itemQuoteMap[key]
-        if quote==None: return False
+        if quote is None: return False
 
         xtype = self.itemTypeMap[key]
         item  = self.m_list.GetItem(x)
@@ -765,7 +765,7 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
         menu.Append(self.m_popupID_View, message('main_popup_view'))
         menu.Enable(self.m_popupID_View,inList)
         menu.Append(self.m_popupID_Live, message('main_popup_live'))
-        menu.Enable(self.m_popupID_Live,inList and quote!=None and quote.liveconnector().hasNotebook())
+        menu.Enable(self.m_popupID_Live,inList and quote is not None and quote.liveconnector().hasNotebook())
         menu.Append(self.m_popupID_Properties, message('main_popup_properties'))
         menu.Enable(self.m_popupID_Properties,inList)
         menu.AppendSeparator()

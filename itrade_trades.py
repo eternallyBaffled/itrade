@@ -252,7 +252,7 @@ class Trades(object):
         #    print 'lasttrade: %s   new trade : %s' %(self.m_lasttrade.date(),tr.date())
 
         # update firt and last trade
-        if self.m_firsttrade==None:
+        if self.m_firsttrade is None:
             self.m_firsttrade = tr
             self.m_lasttrade = tr
         if tr.date()<=self.m_firsttrade.date():
@@ -262,7 +262,7 @@ class Trades(object):
 
         # update last import
         if bImporting:
-            if self.m_lastimport==None:
+            if self.m_lastimport is None:
                 self.m_lastimport = tr
             if tr.date()>=self.m_lastimport.date():
                 self.m_lastimport = tr
@@ -277,7 +277,7 @@ class Trades(object):
         return self.m_lasttrade
 
     def prevtrade(self,d=None):
-        if d==None:
+        if d is None:
             tc = self.m_lasttrade
         else:
             if d in self.m_trades:
@@ -424,7 +424,7 @@ class Trades(object):
 
     def compute(self,d=None):
         # default date == last trade
-        if d==None:
+        if d is None:
             if not self.m_lasttrade:
                 print('%s : no trade' % self.m_quote.key())
                 return
@@ -432,7 +432,7 @@ class Trades(object):
 
         # trade
         tr = self.trade(d)
-        if tr==None:
+        if tr is None:
             print('bug bug')
             return False
 

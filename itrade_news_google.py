@@ -129,7 +129,7 @@ class News_Google(object):
     # ---[ public interface ] ---
     def feedQuote(self,quote,lang=None,page=0):
         self.m_quote = quote
-        if lang==None:
+        if lang is None:
             lang = self.m_quote.country()
 
         param = self.m_quote.name()+' '+self.m_quote.ticker()

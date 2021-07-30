@@ -193,7 +193,7 @@ class Calendar(object):
 
     def key(self,d,market=None):
         # default Market Entry Place
-        if market==None:
+        if market is None:
             market = 'EURONEXT'
 
         # key : date + market
@@ -203,7 +203,7 @@ class Calendar(object):
 
     def addClosed(self,d,market=None,title=None):
         # default Market Entry Place
-        if market==None:
+        if market is None:
             market = 'EURONEXT'
 
         # normalize the date notation !
@@ -223,7 +223,7 @@ class Calendar(object):
 
     def addSRD(self,d,market=None,title=None):
         # default Market Entry Place
-        if market==None:
+        if market is None:
             market = 'EURONEXT'
 
         # normalize the date notation !
@@ -273,24 +273,24 @@ class Calendar(object):
         year = date.today().year - itrade_config.numTradeYears + 1
         num = (itrade_config.numTradeYears * (12*31)) + 5
         while num > 0:
-            #print '--- index datation --%d--' % year
+            # print('--- index datation --%d--' % year)
             month = 1
             while month <= 12 and num>0:
-                #print '--- index datation --%d--' % month
+                # print('--- index datation --%d--' % month)
                 day = 1
                 while day <= 31 and num>0:
-                    #print '--- index datation --%d--' % day
+                    # print('--- index datation --%d--' % day)
                     try:
                         d = date(year,month,day)
                         #d = Datation(d)
                         if d.weekday()<SATURDAY:
                         #if self.isopen(d):
-                            #print 'num=%d - index %s = %d' % (num,d,self.m_maxidx)
+                            # print('num=%d - index %s = %d' % (num,d,self.m_maxidx))
                             self.m_index[d] = self.m_maxidx
                             self.m_date[self.m_maxidx] = d
                             self.m_maxidx = self.m_maxidx + 1
                         else:
-                            #print 'num=%d - index %s = closed' % (num,d)
+                            # print('num=%d - index %s = closed' % (num,d))
                             pass
                     except ValueError:
                         pass

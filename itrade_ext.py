@@ -70,7 +70,7 @@ class ConnectorRegistry(object):
         return True
 
     def get(self,market,qlist,qtag,place=None,name=None):
-        if place==None:
+        if place is None:
             place = market2place(market)
         if name:
             for amarket,aplace,adefault,aconnector,aqlist,aqtag in self.m_conn:
@@ -113,7 +113,7 @@ def getDefaultLiveConnector(market,list,place=None):
 
     # no live connector or not logged : fall-back to differed connector
     ret = getLiveConnector(market,list,QTAG_DIFFERED,place)
-    if ret==None:
+    if ret is None:
         print('No default connector %s for market :' % market,' qlist:',list)
     return ret
 

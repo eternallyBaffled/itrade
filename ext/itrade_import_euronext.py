@@ -284,7 +284,7 @@ def test(ticker,d):
 
             quote = quotes.lookupTicker(ticker,'EURONEXT')
             data = gImportEuronext.getdata(quote,d)
-            if data!=None:
+            if data is not None:
                 if data:
                     debug(data)
                 else:

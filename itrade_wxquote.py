@@ -246,8 +246,7 @@ class iTradeQuoteInfoWindow(sc.SizedPanel):
         return '%s-%s.%s' % (self.m_quote.ticker().lower(),self.m_quote.market().lower(),ext)
 
     def paintLogo(self):
-        if self.m_logo == None:
-
+        if self.m_logo is None:
             fn = os.path.join(itrade_config.dirImageData,self.suffixLogo('gif'))
             if not exists(fn):
                 fn = os.path.join(itrade_config.dirImageData,self.suffixLogo('png'))
@@ -774,7 +773,7 @@ class iTradeQuoteGraphPanel(wx.Panel, iTrade_wxPanelGraph):
 
     def ChartRealize(self):
         # special case __x
-        if self.m_quote.m_daytrades == None:
+        if self.m_quote.m_daytrades is None:
             return
 
         if self.m_dispRSI14 or self.m_dispSto:

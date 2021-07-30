@@ -790,7 +790,7 @@ class Portfolio(object):
         debug('applyOperations date<=%s' % d)
         for eachOp in self.m_operations.list():
             debug('applyOperations: %s' % eachOp)
-            if d==None or d>=eachOp.date():
+            if d is None or d>=eachOp.date():
                 typ = eachOp.type()
                 if typ in operation_apply and operation_apply[typ]:
                     eachOp.apply(d)
@@ -857,7 +857,7 @@ class Portfolio(object):
     # --- [ compute the operations ] ------------------------------------------
 
     def sameyear(self,op,cd=None):
-        if cd==None:
+        if cd is None:
             cd = datetime.date.today().year
         if cd == op.date().year:
             return True
@@ -1323,7 +1323,7 @@ class currentCell(object):
 
 def loadPortfolio(fn=None):
     # default portfolio reference
-    if fn==None:
+    if fn is None:
         defref = itrade_csv.read(None,os.path.join(itrade_config.dirUserData,'default.txt'))
         if defref:
             item = itrade_csv.parse(defref[0],1)
@@ -1335,7 +1335,7 @@ def loadPortfolio(fn=None):
     # create the porfolio
     portfolios.reinit()
     p = portfolios.portfolio(fn)
-    if p==None:
+    if p is None:
         # portfolio does not exist !
         print("Portfolio '%s' does not exist ... create it" % fn)
         p = portfolios.addPortfolio(fn,fn,'noref','EURONEXT','EUR',country2vat('fr'), 3, 5,getDefaultIndice('EURONEXT'))
@@ -1374,9 +1374,6 @@ def newPortfolio(fn=None):
     # create the portfolio
     portfolios.reinit()
     p = portfolios.portfolio(fn)
-    if p==None:
-        # portfolio does not exist !
-        pass
 
     # save current file
     scf = {}

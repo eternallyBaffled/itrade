@@ -272,7 +272,7 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
             # good list
             if not self.m_qlist_tradableOnly or quote.list() != QLIST_INDICES:
                 # tradable
-                if (self.m_market==None) or (self.m_market == quote.market() or self.m_filter):
+                if (self.m_market is None) or (self.m_market == quote.market() or self.m_filter):
                     # good market
                     if bDuringInit or ( quote.ticker().find(self.m_ticker,0)==0 and quote.isin().find(self.m_isin,0)==0 ):
                         # begin the same

@@ -73,7 +73,7 @@ class News(object):
         self.m_cb = callback
 
     def feedQuote(self,quote,lang=None):
-        if lang==None:
+        if lang is None:
             lang = quote.country()
         print('feedQuote: lang=%s' % lang)
 

@@ -392,7 +392,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
 
         self.m_market = market
         self.m_qlist = QLIST_SYSTEM
-        
+
         tID = wx.NewId()
         self.m_imagelist = wx.ImageList(16,16)
         self.sm_q = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'quote.png')))
@@ -581,7 +581,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
             else:
                 self.wxCLEAR.Enable(True)
 
-        if self.m_market==None:
+        if self.m_market is None:
             self.wxOK.SetLabel(message('download_symbols_alllists'))
             self.wxOK.SetHelpText(message('download_symbols_alldesc'))
 
@@ -629,7 +629,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         curline = -1
         for x in range(len(items)):
             key, data = items[x]
-            if self.m_market==None or (self.m_market==data[4]):
+            if self.m_market is None or (self.m_market==data[4]):
                 if data[0]!='':
                     self.m_list.InsertImageStringItem(line, data[0], self.sm_q)
                 else:
@@ -746,7 +746,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         event.Skip()
 
     def OnDownload(self,event):
-        if self.m_market==None:
+        if self.m_market is None:
             lst = list_of_markets()
             max = len(lst)+1
             keepGoing = True
@@ -787,7 +787,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         iTradeInformation(self, message('listquote_saved'), message('listquote_save_desc'))
 
     def OnClear(self,event):
-        if self.m_market==None:
+        if self.m_market is None:
             market = message('all_markets')
             txt = message('clear_symbols_alldesc')
         else:
@@ -803,7 +803,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
             self.m_dirty = True
             self.PopulateList()
         else: return
-        
+
     def OnCancel(self,event):
         if self.m_dirty:
             #__dlg = wx.MessageDialog(self, message('listquote_dirty_save'), message('listquote_save_desc'), wx.CANCEL | wx.YES_NO | wx.YES_DEFAULT | wx.ICON_QUESTION)

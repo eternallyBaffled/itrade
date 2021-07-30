@@ -312,7 +312,7 @@ def test(ticker,d):
 
             quote = quotes.lookupTicker(ticker,'NASDAQ')
             data = gImportYahoo.getdata(quote,d)
-            if data!=None:
+            if data is not None:
                 if data:
                     debug(data)
                 else:

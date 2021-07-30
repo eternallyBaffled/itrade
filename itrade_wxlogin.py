@@ -166,9 +166,9 @@ class iTradeLoginDialog(wx.Dialog):
 # ============================================================================
 
 def login_UI(win,username,password,connector):
-    if username == None:
+    if username is None:
         username = ''
-    if password == None:
+    if password is None:
         password = ''
 
     dlg = iTradeLoginDialog(win,username,password,connector)

@@ -786,18 +786,17 @@ def euronext_InstrumentId(quote):
 
     # get instrument ID
     IdInstrument = quote.get_pluginID()
-    if IdInstrument == None:
-
+    if IdInstrument is None:
         try:
             f = open(os.path.join(itrade_config.dirCacheData,'%s.id' % quote.key()),'r')
             IdInstrument = f.read().strip()
             f.close()
-            #print "euronext_InstrumentId: get id from file for %s " % quote.isin()
+            #print("euronext_InstrumentId: get id from file for %s " % quote.isin())
         except IOError:
-            #print "euronext_InstrumentId: can't get id file for %s " % quote.isin()
+            #print("euronext_InstrumentId: can't get id file for %s " % quote.isin())
             pass
 
-        if IdInstrument == None:
+        if IdInstrument is None:
             url = urlid % quote.isin()
 
             if itrade_config.verbose:
@@ -811,11 +810,11 @@ def euronext_InstrumentId(quote):
             sid = re.search(r"selectedMep=%d&amp;idInstrument=\d*&amp;isinCode=%s" % (euronext_place2mep(quote.place()),quote.isin()), buf, re.IGNORECASE|re.MULTILINE)
             if sid:
                 sid = buf[sid.start():sid.end()]
-                #print'seq-1 found:',sid
+                #print('seq-1 found:',sid)
                 sexch = re.search(r"&amp;isinCode", sid, re.IGNORECASE|re.MULTILINE)
                 if sexch:
                     IdInstrument = sid[31:sexch.start()]
-                    #print 'seq-2 found:',IdInstrument
+                    #print('seq-2 found:',IdInstrument)
                 else:
                     print('euronext_InstrumentId: seq-2 not found : &amp;isinCode')
             else:
@@ -823,7 +822,7 @@ def euronext_InstrumentId(quote):
                 #print buf
                 #exit(0)
 
-        if IdInstrument == None:
+        if IdInstrument is None:
             print("euronext_InstrumentId:can't get IdInstrument for %s " % quote.isin())
             return None
         else:
@@ -835,7 +834,7 @@ def euronext_InstrumentId(quote):
                 f.write('%s' % IdInstrument)
                 f.close()
             except IOError:
-                #print "euronext_InstrumentId: can't write id file for %s " % quote.isin()
+                #print("euronext_InstrumentId: can't write id file for %s " % quote.isin())
                 pass
 
     return IdInstrument

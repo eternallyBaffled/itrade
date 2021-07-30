@@ -406,7 +406,7 @@ class LiveUpdate_RealTime(object):
         return st,cl,"-","-",self.m_clock[key]
 
     def currentClock(self,quote=None):
-        if quote==None:
+        if quote is None:
             if self.m_lastclock==0:
                 return "::"
             # hh:mm
@@ -484,7 +484,7 @@ def test(ticker):
             quote = quotes.lookupTicker(ticker,'EURONEXT')
             if quote:
                 data = gLiveRealTime.getdata(quote)
-                if data!=None:
+                if data is not None:
                     if data:
                         info(data)
                     else:

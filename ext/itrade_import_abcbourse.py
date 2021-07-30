@@ -114,7 +114,7 @@ class Import_ABCBourse(object):
         # search for the ___VIEWSTATE variable
         data = response.read()
         m = re.search(r'name=\"__VIEWSTATE\"\s*value=\"\S+\"', data)
-        if m==None:
+        if m is None:
             debug('Import_ABCBourse:viewstate statement not found !')
             return None
 
@@ -206,7 +206,7 @@ def test(ticker,d):
 
             quote = quotes.lookupTicker(ticker,'EURONEXT')
             data = gImportABC.getdata(quote,d)
-            if data!=None:
+            if data is not None:
                 if data:
                     debug(data)
                 else:
