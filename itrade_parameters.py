@@ -40,23 +40,6 @@
 # iTrade system
 
 # ============================================================================
-# Threshold : Default parameters
-#
-# by design, threshold are compared with strict comparator operators
-#
-# threshold unity is the percent (%)
-# ============================================================================
-
-threshold_volume_week_lowlow = 70/100
-threshold_volume_week_low = 50/100
-threshold_volume_week_high = 70/100
-threshold_volume_week_highhigh = 150/100
-
-threshold_doji = 0.003
-threshold_tombo = 0.003
-threshold_tohba = 0.003
-
-# ============================================================================
 # period : Default parameters
 #
 # period used to detect trend on specific data
