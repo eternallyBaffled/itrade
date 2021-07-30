@@ -40,8 +40,7 @@ from __future__ import print_function
 import logging
 
 # iTrade system
-from itrade_logging import *
-from itrade_local import message
+from itrade_logging import setLevel
 from itrade_parameters import *
 
 # ============================================================================
