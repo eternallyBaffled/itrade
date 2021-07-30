@@ -66,7 +66,7 @@ alert_type_desc = {
 
 ALERT_STATE_UNREAD = 0
 ALERT_STATE_READ = 1
-ALERT_STATE_ACKNOLEDGE = 2
+ALERT_STATE_ACKNOWLEDGE = 2
 ALERT_STATE_ARCHIVE = 3
 
 # ============================================================================
@@ -283,9 +283,6 @@ try:
     ignore(alerts)
 except NameError:
     alerts = Alerts()
-
-registerAlertPlugin = alerts.register
-newAlert = alerts.newAlert
 
 # ============================================================================
 # Test me

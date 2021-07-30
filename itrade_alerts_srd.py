@@ -43,8 +43,8 @@ import logging
 
 # iTrade system
 from itrade_logging import setLevel
-from itrade_alerts import registerAlertPlugin,newAlert,ALERT_TYPE_INFO_SRD
-from itrade_datation import gCal,Datation
+from itrade_alerts import alerts, ALERT_TYPE_INFO_SRD
+from itrade_datation import gCal, Datation
 
 # ============================================================================
 # Alerts_SRD
@@ -63,7 +63,7 @@ class Alerts_SRD(object):
             if gCal.issrd(ajd):
                 dummy,desc = gCal.srd(ajd)
                 print("%s" % ajd,': SRD :',desc)
-                newAlert(ALERT_TYPE_INFO_SRD,'SRD',"%s" % ajd,desc,None,None,'')
+                alerts.newAlert(ALERT_TYPE_INFO_SRD,'SRD',"%s" % ajd,desc,None,None,'')
 
             # next open day ...
             nb = nb + 1
@@ -78,7 +78,7 @@ try:
 except NameError:
     gAlertsSRD = Alerts_SRD()
 
-registerAlertPlugin('SRD',gAlertsSRD)
+alerts.register('SRD', gAlertsSRD)
 
 # ============================================================================
 # Test me
