@@ -652,7 +652,7 @@ class Trades(object):
 # Test
 # ============================================================================
 
-if __name__=='__main__':
+if __name__ == '__main__':
     setLevel(logging.INFO)
 
    # load extensions

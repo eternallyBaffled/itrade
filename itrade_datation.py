@@ -388,7 +388,7 @@ class Datation(object):
 # Install the Calendar system
 # ============================================================================
 
-if __name__=='__main__':
+if __name__ == '__main__':
     setLevel(logging.INFO)
 
 try:
@@ -400,46 +400,41 @@ except NameError:
 # Test
 # ============================================================================
 
-if __name__=='__main__':
+def main():
     setLevel(logging.INFO)
-
     info('test0 1==%s' % gCal.addClosed('2010-12-31'))
     info('test0 0==%s' % gCal.addClosed('20101231'))
-
     info('test1 0==%s' % gCal.isopen('2011-01-01'))
     info('test2 0==%s' % gCal.isopen('20110101'))
     info('test3 1==%s' % gCal.isopen('20110104'))
-
-    info('test4 0==%s' % gCal.isopen('20101231'))      # closed in default market (PAR)
-    info('test4 1==%s' % gCal.isopen('20101231','TOK'))# but open in other market
-
+    info('test4 0==%s' % gCal.isopen('20101231'))  # closed in default market (PAR)
+    info('test4 1==%s' % gCal.isopen('20101231', 'TOK'))  # but open in other market
     info('test5 20110104==%s' % Datation('20110104'))
     info('test6 20110105==%s' % Datation('20110104').nextopen())
     info('test7 20110103==%s' % Datation('20110104').prevopen())
     info('test8 20101230==%s' % Datation('20110103').prevopen())
     info('test9 20101230==%s' % Datation('20101231').prevopen())
-
-    info('test10 20100130>20100101 == %s' % (Datation('20100130')>Datation('20100101')))
-    info('test10 20100101>20100130 == %s' % (Datation('20100101')>Datation('20100130')))
-    info('test10 20100227>20100101 == %s' % (Datation('20100227')>Datation('20100101')))
-    info('test10 20100101>20100227 == %s' % (Datation('20100101')>Datation('20100227')))
-
+    info('test10 20100130>20100101 == %s' % (Datation('20100130') > Datation('20100101')))
+    info('test10 20100101>20100130 == %s' % (Datation('20100101') > Datation('20100130')))
+    info('test10 20100227>20100101 == %s' % (Datation('20100227') > Datation('20100101')))
+    info('test10 20100101>20100227 == %s' % (Datation('20100101') > Datation('20100227')))
     info('test11 20110814 index is %d == -1' % (Datation('20110814').index()))
     info('test11 20110815 index is %d != -1' % (Datation('20110815').index()))
     info('test11 20110816 index is %d != -1' % (Datation('20110816').index()))
     info('test11 20111231 index is %d == -1' % (Datation('20111231').index()))
     info('test11 20110102 index is %d == -1' % (Datation('20110102').index()))
     info('test11 20110103 index is %d != -1' % (Datation('20110103').index()))
-
     print('lastindex = %d, lastdate = %s' % (gCal.lastindex(), gCal.lastdate()))
-
     ts = '20050816'
     dt = datetime(*time.strptime(ts.strip('"'), '%Y%m%d')[:6])
-    print('%s = %s' % (ts,dt))
-
+    print('%s = %s' % (ts, dt))
     ts = '2005-08-16'
     dt = datetime(*time.strptime(ts.strip('"'), '%Y-%m-%d')[:6])
-    print('%s = %s' % (ts,dt))
+    print('%s = %s' % (ts, dt))
+
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

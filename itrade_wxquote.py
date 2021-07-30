@@ -1266,7 +1266,7 @@ def removeFromMatrix_iTradeQuote(win,matrix,quote):
 # Test me
 # ============================================================================
 
-if __name__=='__main__':
+if __name__ == '__main__':
     setLevel(logging.INFO)
 
     app = wx.App(False)

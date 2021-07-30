@@ -301,13 +301,10 @@ getLocale = gMessage.getLocale
 # Test me
 # ============================================================================
 
-if __name__=='__main__':
+def main():
     import itrade_logging
-
     itrade_logging.setLevel(logging.INFO)
-
     print('default (detection): ', gMessage.getAutoDetectedLang())
-
     setLang('us')
     gMessage.load()
     print('pack us: %s' % gMessage.getLangFile())
@@ -327,7 +324,6 @@ if __name__=='__main__':
     gMessage.load()
     print('pack it: %s' % gMessage.getLangFile())
     print()
-
     setLang('fr')
     print('fr:', message('test'))
     setLang('en')
@@ -342,26 +338,34 @@ if __name__=='__main__':
     print('it:', message('test'))
     setLang('ar')
     print('ar:', message('test'))
-
     print()
     setLang('fr')
     print('fr (unknown message):', message('toto'))
     print('fr (accents message):', message('portfolio_exist_info'))
-
     print()
     import datetime
     setLang('fr')
-    print('6 décembre 2005 en francais (%s) : ' % getLocale(),datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x '))
+    print('6 décembre 2005 en francais (%s) : ' % getLocale(),
+          datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x '))
     setLang('en')
-    print('6th december 2005 in english (%s) : ' % getLocale(),datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x '))
+    print('6th december 2005 in english (%s) : ' % getLocale(),
+          datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x '))
     setLang('pt')
-    print('6th december 2005 in portuguese (%s) : ' % getLocale(),datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x '))
+    print('6th december 2005 in portuguese (%s) : ' % getLocale(),
+          datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x '))
     setLang('de')
-    print('6th december 2005 in deutch (%s) : ' % getLocale(),datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x '))
+    print('6th december 2005 in deutch (%s) : ' % getLocale(),
+          datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x '))
     setLang('it')
-    print('6 dicembre 2005 in italian (%s) : ' % getLocale(),datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x '))
+    print('6 dicembre 2005 in italian (%s) : ' % getLocale(),
+          datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x '))
     setLang()
-    print('6th december 2005 in default lang (%s) : ' % getLocale(),datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x '))
+    print('6th december 2005 in default lang (%s) : ' % getLocale(),
+          datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x '))
+
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

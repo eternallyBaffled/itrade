@@ -85,10 +85,13 @@ registerAlertPlugin('SRD',gAlertsSRD)
 # Test me
 # ============================================================================
 
-if __name__=='__main__':
+def main():
     setLevel(logging.INFO)
+    gAlertsSRD.scan(None, 0)
 
-    gAlertsSRD.scan(None,0)
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

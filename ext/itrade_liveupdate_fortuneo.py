@@ -952,7 +952,7 @@ def test(ticker):
     else:
         print("connect() failure :-(")
 
-if __name__=='__main__':
+if __name__ == '__main__':
     setLevel(logging.INFO)
 
     test('SAF')

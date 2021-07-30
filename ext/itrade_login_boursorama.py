@@ -154,7 +154,7 @@ registerLoginConnector(gLoginBoursorama.name(),gLoginBoursorama)
 # Test me
 # ============================================================================
 
-if __name__=='__main__':
+if __name__ == '__main__':
     setLevel(logging.INFO)
 
     print('use usrdata/boursorama_userinfo.txt to get login/password')

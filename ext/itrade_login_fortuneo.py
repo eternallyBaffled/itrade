@@ -284,7 +284,7 @@ registerLoginConnector(gLoginFortuneo.name(),gLoginFortuneo)
 # Test me
 # ============================================================================
 
-if __name__=='__main__':
+if __name__ == '__main__':
     setLevel(logging.INFO)
 
     gLoginFortuneo.login('DEMO6C23NH6','e109')

@@ -624,15 +624,16 @@ def isConnected():
 # Test
 # ============================================================================
 
-if __name__=='__main__':
+def main():
     loadConfig()
     saveConfig()
-
     print(__svnversion__)
-
     print(os.path.expanduser('~'))
-
     print(checkNewRelease())
+
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

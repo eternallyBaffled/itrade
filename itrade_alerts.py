@@ -290,12 +290,15 @@ newAlert = alerts.newAlert
 # Test me
 # ============================================================================
 
-if __name__=='__main__':
+def main():
     setLevel(logging.INFO)
-
     alerts.load()
-    alerts.newAlert(ALERT_TYPE_INFO_QUOTE,"boursorama","2006-02-12","Info sur FR0000044380","","","FR0000044380")
+    alerts.newAlert(ALERT_TYPE_INFO_QUOTE, "boursorama", "2006-02-12", "Info sur FR0000044380", "", "", "FR0000044380")
     alerts.save()
+
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

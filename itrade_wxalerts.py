@@ -256,7 +256,7 @@ def open_iTradeAlerts(win,port=None):
 # Test me
 # ============================================================================
 
-if __name__=='__main__':
+if __name__ == '__main__':
     setLevel(logging.INFO)
 
     alerts.load()

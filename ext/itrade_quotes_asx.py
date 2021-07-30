@@ -116,7 +116,7 @@ registerListSymbolConnector('ASX','SYD',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_
 # Test ME
 # ============================================================================
 
-if __name__=='__main__':
+if __name__ == '__main__':
     import itrade_excel
 
     setLevel(logging.INFO)

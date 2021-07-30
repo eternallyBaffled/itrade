@@ -157,7 +157,7 @@ registerListSymbolConnector('TOKYO EXCHANGE','TKS',QLIST_ANY,QTAG_LIST,Import_Li
 # Test ME
 # ============================================================================
 
-if __name__=='__main__':
+if __name__ == '__main__':
     setLevel(logging.INFO)
 
     from itrade_quotes import quotes

@@ -150,7 +150,7 @@ except NameError:
 # Test me
 # ============================================================================
 
-if __name__=='__main__':
+if __name__ == '__main__':
     setLevel(logging.INFO)
 
     from itrade_local import setLang

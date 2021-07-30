@@ -104,7 +104,7 @@ class iTrade_wxPivots(wx.Panel):
 #
 # ============================================================================
 
-if __name__=='__main__':
+if __name__ == '__main__':
 
     class WndTest(wx.Frame):
         def __init__(self, parent,quote):
@@ -116,7 +116,7 @@ if __name__=='__main__':
 # Test me
 # ============================================================================
 
-if __name__=='__main__':
+if __name__ == '__main__':
     setLevel(logging.INFO)
 
     from itrade_local import *

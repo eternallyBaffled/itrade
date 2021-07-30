@@ -145,7 +145,7 @@ registerListSymbolConnector('BOMBAY EXCHANGE','BSE',QLIST_ANY,QTAG_LIST,Import_L
 # Test ME
 # ============================================================================
 
-if __name__=='__main__':
+if __name__ == '__main__':
     setLevel(logging.INFO)
 
     from itrade_quotes import quotes

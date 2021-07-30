@@ -254,11 +254,14 @@ def importFromPath(moduleName,path):
 # Test Extensions
 # ============================================================================
 
-if __name__=='__main__':
+def main():
     setLevel(logging.INFO)
+    loadExtensions(itrade_config.fileExtData, itrade_config.dirExtData)
+    loadExtensions(itrade_config.fileIndData, itrade_config.dirIndData)
 
-    loadExtensions(itrade_config.fileExtData,itrade_config.dirExtData)
-    loadExtensions(itrade_config.fileIndData,itrade_config.dirIndData)
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

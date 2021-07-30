@@ -195,7 +195,7 @@ if itrade_excel.canReadExcel:
 # Test ME
 # ============================================================================
 
-if __name__=='__main__':
+if __name__ == '__main__':
 
     setLevel(logging.INFO)
 

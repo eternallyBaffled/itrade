@@ -311,7 +311,7 @@ class iTrade_wxDecision(sc.SizedPanel):
 #
 # ============================================================================
 
-if __name__=='__main__':
+if __name__ == '__main__':
 
     class WndTest(wx.Frame):
         def __init__(self, parent,quote,portfolio):
@@ -325,7 +325,7 @@ if __name__=='__main__':
 # Test me
 # ============================================================================
 
-if __name__=='__main__':
+if __name__ == '__main__':
     setLevel(logging.INFO)
 
     # load configuration

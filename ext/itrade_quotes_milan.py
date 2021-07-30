@@ -143,7 +143,7 @@ registerListSymbolConnector('MILAN EXCHANGE','MIL',QLIST_ANY,QTAG_LIST,Import_Li
 # Test ME
 # ============================================================================
 
-if __name__=='__main__':
+if __name__ == '__main__':
 
     setLevel(logging.INFO)
 

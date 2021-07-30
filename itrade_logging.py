@@ -186,7 +186,7 @@ itrade_logger.addHandler(_stdoutHandler)
 # Test me
 # ============================================================================
 
-if __name__=='__main__':
+def main():
     setLevel(logging.INFO)
     info('information:' + itrade_config.__author__)
     warning('warning:' + itrade_config.__revision__)
@@ -197,7 +197,11 @@ if __name__=='__main__':
         exception('Uncaught divide by 0 exception')
     critical('critical')
     debug('debug: __main__')
-    log(30,'info')
+    log(30, 'info')
+
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

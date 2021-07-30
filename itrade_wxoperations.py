@@ -1228,7 +1228,7 @@ def add_iTradeOperation(win,portfolio,quote,type):
 # Test me
 # ============================================================================
 
-if __name__=='__main__':
+if __name__ == '__main__':
     setLevel(logging.INFO)
 
     app = wx.App(False)

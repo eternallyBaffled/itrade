@@ -43,15 +43,18 @@ class BasicIndicator(object):
 # Test Indicators
 # ============================================================================
 
-if __name__=='__main__':
+def main():
     import logging
     import itrade_logging
     import itrade_config
     import itrade_ext
 
     itrade_logging.setLevel(logging.INFO)
-
     itrade_ext.loadExtensions(itrade_config.fileIndData, itrade_config.dirIndData)
+
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

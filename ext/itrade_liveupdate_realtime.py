@@ -440,7 +440,7 @@ class LiveUpdate_RealTime(object):
 # Export me
 # ============================================================================
 
-if __name__=='__main__':
+if __name__ == '__main__':
     setLevel(logging.DEBUG)
 gLiveRealTime = LiveUpdate_RealTime()
 gLiveAlternext = LiveUpdate_RealTime()
@@ -500,7 +500,7 @@ def test(ticker):
     else:
         print("connect() failure :-(")
 
-if __name__=='__main__':
+if __name__ == '__main__':
     print('live %s' % date.today())
    # load euronext import extension
     import itrade_ext

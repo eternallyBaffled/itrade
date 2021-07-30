@@ -152,7 +152,7 @@ registerListSymbolConnector('NATIONAL EXCHANGE OF INDIA','NSE',QLIST_ANY,QTAG_LI
 # Test ME
 # ============================================================================
 
-if __name__=='__main__':
+if __name__ == '__main__':
 
     setLevel(logging.INFO)
 

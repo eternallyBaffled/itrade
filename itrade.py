@@ -82,6 +82,8 @@ def usage():
 # ============================================================================
 
 def main():
+    setLevel(logging.INFO)
+
     try:
         opts, args = getopt.getopt(sys.argv[1:], "xeho:vt:iq:f:l:du:", ["verbose","help", "output=", "ticker=", "quote=","file=","lang=","user=","nopsyco","nowxversion"])
     except getopt.GetoptError:
@@ -222,8 +224,6 @@ def main():
 # ============================================================================
 
 if __name__ == "__main__":
-    setLevel(logging.INFO)
-
     main()
 
 # ============================================================================

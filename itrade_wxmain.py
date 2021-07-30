@@ -110,7 +110,7 @@ def start_iTradeWindow():
 # Test me
 # ============================================================================
 
-if __name__=='__main__':
+if __name__ == '__main__':
     itrade_logging.setLevel(logging.INFO)
     start_iTradeWindow()
 

@@ -273,16 +273,19 @@ class Candle(object):
 # Test
 # ============================================================================
 
-if __name__=='__main__':
+def main():
     setLevel(logging.INFO)
-
     # open,high,low,close
-    c = Candle(10.0,11.0,9.0,10.0)
-    print('candle: %s - %s = doji' % (c,c.type()))
-    c = Candle(11.0,11.0,9.0,11.0)
-    print('candle: %s - %s = dragonfly doji' % (c,c.type()))
-    c = Candle(9.0,11.0,9.0,9.0)
-    print('candle: %s - %s = gravestone doji' % (c,c.type()))
+    c = Candle(10.0, 11.0, 9.0, 10.0)
+    print('candle: %s - %s = doji' % (c, c.type()))
+    c = Candle(11.0, 11.0, 9.0, 11.0)
+    print('candle: %s - %s = dragonfly doji' % (c, c.type()))
+    c = Candle(9.0, 11.0, 9.0, 9.0)
+    print('candle: %s - %s = gravestone doji' % (c, c.type()))
+
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

@@ -181,19 +181,22 @@ def extractCUSIP(ref):
 # Test
 # ============================================================================
 
-if __name__=='__main__':
+def main():
     setLevel(logging.INFO)
-
     info('test1 FR0000072621 : %s' % checkISIN('FR0000072621'))
-    info('test1 FR0000072621 : %s' % buildISIN('FR','07262'))
+    info('test1 FR0000072621 : %s' % buildISIN('FR', '07262'))
     info('test2 FR0010209809 : %s' % checkISIN('FR0010209809'))
-    info('test2 FR0010209809 : %s' % buildISIN('FR','1020980'))
+    info('test2 FR0010209809 : %s' % buildISIN('FR', '1020980'))
     info('test3 FR0004154060 : %s' % checkISIN('FR0004154060'))
-    info('test3 FR0004154060 : %s' % buildISIN('FR','000415406'))
+    info('test3 FR0004154060 : %s' % buildISIN('FR', '000415406'))
     info('test4 ES0178430E18 : %s' % checkISIN('ES0178430E18'))
-    info('test4 ES0178430E18 : %s' % buildISIN('ES','0178430E1'))
+    info('test4 ES0178430E18 : %s' % buildISIN('ES', '0178430E1'))
     info('test5 NSCFR0000TF6 : %s' % checkISIN('NSCFR0000TF6'))
-    info('test4 NSCFR0000TF6 : %s' % buildISIN('NSCFR','TF'))
+    info('test4 NSCFR0000TF6 : %s' % buildISIN('NSCFR', 'TF'))
+
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

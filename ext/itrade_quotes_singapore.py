@@ -134,7 +134,7 @@ registerListSymbolConnector('SINGAPORE EXCHANGE','SGX',QLIST_ANY,QTAG_LIST,Impor
 # Test ME
 # ============================================================================
 
-if __name__=='__main__':
+if __name__ == '__main__':
 
     setLevel(logging.INFO)
 
