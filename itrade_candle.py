@@ -37,6 +37,7 @@
 
 # python system
 from __future__ import print_function
+from enum import Enum
 import logging
 
 # iTrade system
@@ -78,37 +79,21 @@ CANDLE_VOLUME_TREND_xx = 2
 # ============================================================================
 # Basic Candle Type
 # ============================================================================
+class CandleType(Enum):
+    unknown = "unknown"
+    notype = "no type"
+    doji = "doji"
+    juji = "long-legged doji"
+    tombo = "dragonfly doji"
+    tohba = "gravestone doji"
+    flatfix = "flat fix"
+    marubozu_white = "white marubozu"
+    marubozu_black = "black marubozu"
+    marubozu_white_close = "closing white marubozu"
+    marubozu_black_open = "opening black marubozu"
+    marubozu_white_open = "opening white marubozu"
+    marubozu_black_close = "closing black marubozu"
 
-CANDLE_TYPE_UNKNOWN = 0
-CANDLE_TYPE_NOTYPE  = 1
-CANDLE_TYPE_DOJI    = 2
-CANDLE_TYPE_JUJI    = 3
-CANDLE_TYPE_TOMBO   = 4
-CANDLE_TYPE_TOHBA   = 5
-CANDLE_TYPE_FLATFIX = 6
-CANDLE_TYPE_MARUBOZU_WHITE = 7
-CANDLE_TYPE_MARUBOZU_BLACK = 8
-CANDLE_TYPE_MARUBOZU_WHITE_CLOSE = 9
-CANDLE_TYPE_MARUBOZU_BLACK_OPEN = 10
-CANDLE_TYPE_MARUBOZU_WHITE_OPEN = 11
-CANDLE_TYPE_MARUBOZU_BLACK_CLOSE = 12
-
-
-candle_type = {
-    CANDLE_TYPE_UNKNOWN: "unknown",
-    CANDLE_TYPE_NOTYPE:  "no type",
-    CANDLE_TYPE_DOJI:    "doji",
-    CANDLE_TYPE_JUJI:    "long-legged doji",
-    CANDLE_TYPE_TOMBO:   "dragonfly doji",
-    CANDLE_TYPE_TOHBA:   "gravestone doji",
-    CANDLE_TYPE_FLATFIX: "flat fix",
-    CANDLE_TYPE_MARUBOZU_WHITE: "white marubozu",
-    CANDLE_TYPE_MARUBOZU_BLACK: "black marubozu",
-    CANDLE_TYPE_MARUBOZU_WHITE_CLOSE: "closing white marubozu",
-    CANDLE_TYPE_MARUBOZU_BLACK_OPEN: "opening black marubozu",
-    CANDLE_TYPE_MARUBOZU_WHITE_OPEN: "opening white marubozu",
-    CANDLE_TYPE_MARUBOZU_BLACK_CLOSE: "closing black marubozu"
-    }
 
 # ============================================================================
 # Candle color()
@@ -219,14 +204,14 @@ class Candle(object):
         self.cl = close
         self.vi = volind
         self.vt = voltrend
-        self.m_type = CANDLE_TYPE_UNKNOWN
+        self.m_type = CandleType.unknown
         self.computeType()
 
     def type(self):
         return self.m_type
 
     def __str__(self):
-        return candle_type[self.m_type]
+        return self.m_type.value
 
     def color(self):
         if self.cl >= self.op:
@@ -268,21 +253,21 @@ class Candle(object):
 
     def computeType(self):
         if self.hi == self.lo:
-            self.m_type = CANDLE_TYPE_FLATFIX
+            self.m_type = CandleType.flatfix
         elif (self.hi == self.cl) and (self.lo == self.op): # closing = high and opening = low
-            self.m_type = CANDLE_TYPE_MARUBOZU_WHITE
+            self.m_type = CandleType.marubozu_white
         elif (self.lo == self.cl) and (self.hi == self.op): # closing = low and opening = high
-            self.m_type = CANDLE_TYPE_MARUBOZU_BLACK
+            self.m_type = CandleType.marubozu_black
         elif abs(1-(self.op/self.cl))<threshold_doji:  # closing == opening
-            self.m_type = CANDLE_TYPE_DOJI
+            self.m_type = CandleType.doji
             #print 'dragon ? %f/%f=%f %f %f' %(self.hi,self.cl,self.hi/self.cl,abs(1-(self.hi/self.cl)),threshold_tombo)
             #print 'gravestone ? %f/%f=%f %f %f' %(self.cl,self.lo,self.cl/self.lo,abs(1-(self.cl/self.lo)),threshold_tohba)
             if abs(1-(self.hi/self.cl))<threshold_tombo:  # closing == opening == high
-                self.m_type = CANDLE_TYPE_TOMBO
+                self.m_type = CandleType.tombo
             elif abs(1-(self.cl/self.lo))<threshold_tohba:  # closing == opening == low
-                self.m_type = CANDLE_TYPE_TOHBA
+                self.m_type = CandleType.tohba
         else:
-            self.m_type = CANDLE_TYPE_NOTYPE
+            self.m_type = CandleType.notype
 
 # ============================================================================
 # Test
