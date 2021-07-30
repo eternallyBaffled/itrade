@@ -38,13 +38,12 @@
 
 # python system
 from __future__ import print_function
-from datetime import *
+from datetime import date
 import logging
-import time
 
 # iTrade system
-from itrade_logging import *
-from itrade_alerts import registerAlertPlugin,newAlert,ALERT_TYPE_INFO_SRD,ALERT_STATE_UNREAD
+from itrade_logging import setLevel
+from itrade_alerts import registerAlertPlugin,newAlert,ALERT_TYPE_INFO_SRD
 from itrade_datation import gCal,Datation
 
 # ============================================================================

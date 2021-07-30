@@ -38,12 +38,13 @@
 
 # python system
 from __future__ import print_function
-from datetime import *
+from datetime import date
 import logging
-import time
+import os
 
 # iTrade system
-from itrade_logging import *
+import itrade_config
+from itrade_logging import setLevel, warning, debug, info
 from itrade_local import message
 import itrade_csv
 
@@ -289,6 +290,7 @@ newAlert = alerts.newAlert
 # ============================================================================
 # Test me
 # ============================================================================
+
 
 def main():
     setLevel(logging.INFO)
