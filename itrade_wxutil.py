@@ -383,7 +383,7 @@ class HTMLDialog(wx.Dialog):
 
     def SetContents(self,
                     name="",
-                    buttons=OKButton(makedefault=1),
+                    buttons=None,
                     text="",
                     namefmt="<h1>%s</h1>",
                     betweenbuttons="&nbsp;",
@@ -399,7 +399,7 @@ class HTMLDialog(wx.Dialog):
 
         # always one button : OK
         if buttons is None:
-            buttons = OKButton()
+            buttons = OKButton(makedefault=1)
 
         # dialog name with format
         name = namefmt % name
