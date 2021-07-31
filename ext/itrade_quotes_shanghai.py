@@ -40,23 +40,33 @@
 # python system
 from __future__ import print_function
 import logging
-import re
-import thread
-import time
 import string
-import urllib
 import urllib2
+
 # iTrade system
 import itrade_config
-from itrade_logging import *
-from itrade_defs import *
-from itrade_ext import *
+from itrade_logging import setLevel, debug, info
+from itrade_defs import QLIST_ANY, QTAG_LIST
+from itrade_ext import registerListSymbolConnector
 from itrade_connection import ITradeConnection
 
 # ============================================================================
 # Import_ListOfQuotes_SHG()
-#
 # ============================================================================
+def removeCarriage(s):
+    if s[-1] == '\r':
+        return s[:-1]
+    else:
+        return s
+
+
+def splitLines(buf):
+    lines = string.split(buf, '\n')
+    lines = filter(lambda x: x, lines)
+
+    lines = [removeCarriage(l) for l in lines]
+    return lines
+
 
 def Import_ListOfQuotes_SHG(quotes,market='SHANGHAI EXCHANGE',dlg=None,x=0):
     if itrade_config.verbose:
@@ -64,19 +74,6 @@ def Import_ListOfQuotes_SHG(quotes,market='SHANGHAI EXCHANGE',dlg=None,x=0):
     connection=ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
-
-
-    def splitLines(buf):
-        lines = string.split(buf, '\n')
-        lines = filter(lambda x:x, lines)
-
-        def removeCarriage(s):
-            if s[-1]=='\r':
-                return s[:-1]
-            else:
-                return s
-        lines = [removeCarriage(l) for l in lines]
-        return lines
 
     # Download SSE A SHARE
 
@@ -86,7 +83,6 @@ def Import_ListOfQuotes_SHG(quotes,market='SHANGHAI EXCHANGE',dlg=None,x=0):
     count = 0
 
     for cursor in range(1,921,20):
-
         url = urlA+str(cursor)
 
         info('Import_ListOfQuotes_SSE A SHARE:connect to %s' %url)
@@ -107,7 +103,6 @@ def Import_ListOfQuotes_SHG(quotes,market='SHANGHAI EXCHANGE',dlg=None,x=0):
 
         for line in lines:
             if ch in line:
-
                 ticker = line[(line.find(ch)+len(ch)): line.find('&PRODUCTID=')]
                 name = line[(line.find('">')+2): line.find('</a>&nbsp;</TD>')]
                 if ticker == '600717': name = 'TIANJIN PORT CO. LTD.'
@@ -200,21 +195,15 @@ def Import_ListOfQuotes_SHG(quotes,market='SHANGHAI EXCHANGE',dlg=None,x=0):
                     quotes.addQuote(isin='',name=name,
                             ticker=ticker,market='SHANGHAI EXCHANGE',
                             currency='CNY',place='SHG',country='CN')
-
             elif i == 3:
                 name = name +' '+ line.strip()
                 if name.find('</td>'):
                     name = name[:-5]
 
-
     if itrade_config.verbose:
         print('Imported %d lines from SHANGHAI EXCHANGE' %count)
 
-
-
     return True
-
-
 
 
 # ============================================================================

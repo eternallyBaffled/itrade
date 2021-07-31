@@ -40,33 +40,32 @@
 # python system
 from __future__ import print_function
 import logging
-import re
 import string
-from datetime import *
+from datetime import date, timedelta
 
 # iTrade system
-from itrade_logging import *
-from itrade_quotes import *
-from itrade_datation import Datation,dd_mmm_yy2yyyymmdd,re_p3_1
-from itrade_defs import *
-from itrade_ext import *
-from itrade_market import yahooTicker,yahooUrlJapan
+from itrade_logging import setLevel, debug
+from itrade_quotes import quotes
+from itrade_datation import Datation
+from itrade_defs import QLIST_ANY, QTAG_IMPORT
+from itrade_ext import registerImportConnector
+from itrade_market import yahooTicker, yahooUrlJapan
 from itrade_connection import ITradeConnection
 import itrade_config
 
 # ============================================================================
-# Import_yahoojp()
+# ImportYahoojp()
 #
 # ============================================================================
 
-class Import_yahoojp(object):
+class ImportYahoojp(object):
     def __init__(self):
-        debug('Import_yahoojp:__init__')
+        debug('ImportYahoojp:__init__')
 
-        self.m_connection = ITradeConnection(cookies = None,
-                                           proxy = itrade_config.proxyHostname,
-                                           proxyAuth = itrade_config.proxyAuthentication,
-                                           connectionTimeout = itrade_config.connectionTimeout
+        self.m_connection = ITradeConnection(cookies=None,
+                                           proxy=itrade_config.proxyHostname,
+                                           proxyAuth=itrade_config.proxyAuthentication,
+                                           connectionTimeout=itrade_config.connectionTimeout
                                            )
 
     def name(self):
@@ -84,10 +83,10 @@ class Import_yahoojp(object):
     def getstate(self):
         return True
 
-    def parseDate(self,d):
+    def parseDate(self, d):
         return (d.year, d.month, d.day)
 
-    def splitLines(self,buf):
+    def splitLines(self, buf):
         lines = string.split(buf, '\n')
         lines = filter(lambda x:x, lines)
         def removeCarriage(s):
@@ -113,7 +112,7 @@ class Import_yahoojp(object):
         d1 = self.parseDate(datedebut)
         d2 = self.parseDate(datefin)
 
-        debug("Import_yahoojp:getdata quote:%s begin:%s end:%s" % (quote,d1,d2))
+        debug("ImportYahoojp:getdata quote:%s begin:%s end:%s" % (quote,d1,d2))
 
         sname = yahooTicker(quote.ticker(),quote.market(),quote.place())
 
@@ -123,15 +122,14 @@ class Import_yahoojp(object):
         lines = []
 
         for cursor in range(0,4650,50):
-
             url = yahooUrlJapan(quote.market(),live=False) + '?' +'c=%s&a=%s&b=%s&f=%s&d=%s&e=%s&g=d&s=%s&y=%s&z=%s' % (d1[0],d1[1],d1[2],d2[0],d2[1],d2[2],ss,str(cursor),ss)
             #url = 'http://table.yahoo.co.jp/t?s=%s&a=1&b=1&c=2000&d=%s&e=%s&f=%s&g=d&q=t&y=%s&z=/b?p=tjfzqcvy4.ewcf7pt&x=.csv' % (ss,d2[1],d2[2],d2[0],str(cursor))
 
-            debug("Import_yahoojp:getdata: url=%s ",url)
+            debug("ImportYahoojp:getdata: url=%s ",url)
             try:
                 buf=self.m_connection.getDataFromUrl(url)
             except:
-                debug('Import_yahoojp:unable to connect :-(')
+                debug('ImportYahoojp:unable to connect :-(')
                 return None
             # pull data
             linesjp = self.splitLines(buf)
@@ -164,16 +162,14 @@ class Import_yahoojp(object):
             #<td><small>197</small></td>
             #<td><small>200</small></td>
 
-
             n = 0
             i = 0
             q = 0
             #header = 'Date,Open,High,Low,Close,Volume,Adj Close'
             #filedata.write(header+'\n')
             for line in linesjp:
-
-                if ch in line : n = 1
-                if n == 1 :
+                if ch in line: n = 1
+                if n == 1:
                     q = 1
                     if '<td><small>' in line:
                         i = i + 1
@@ -210,7 +206,7 @@ class Import_yahoojp(object):
                                 i = 0
                                 n = 0
                                 ligne = ','.join([date,open,high,low,close,volume,adjustclose])
-                                #print ligne
+                                # print(ligne)
                                 lines.append(ligne)
 
                         elif i == 6 :
@@ -262,10 +258,9 @@ class Import_yahoojp(object):
 try:
     ignore(gImportYahoojp)
 except NameError:
-    gImportYahoojp = Import_yahoojp()
+    gImportYahoojp = ImportYahoojp()
 
-registerImportConnector('TOKYO EXCHANGE','TKS',QLIST_ANY,QTAG_IMPORT,gImportYahoojp,bDefault=True)
-
+registerImportConnector('TOKYO EXCHANGE', 'TKS', QLIST_ANY, QTAG_IMPORT, gImportYahoojp, bDefault=True)
 
 
 # ============================================================================
@@ -274,14 +269,14 @@ registerImportConnector('TOKYO EXCHANGE','TKS',QLIST_ANY,QTAG_IMPORT,gImportYaho
 # ============================================================================
 
 def test(ticker,d):
-    if gImportYahoo.connect():
+    if gImportYahoojp.connect():
 
-        state = gImportYahoo.getstate()
+        state = gImportYahoojp.getstate()
         if state:
             debug("state=%s" % state)
 
             quote = quotes.lookupTicker(ticker,'TOKYO EXCHANGE')
-            data = gImportYahoo.getdata(quote,d)
+            data = gImportYahoojp.getdata(quote,d)
             if data is not None:
                 if data:
                     debug(data)
@@ -292,7 +287,7 @@ def test(ticker,d):
         else:
             print("getstate() failure :-(")
 
-        gImportYahoo.disconnect()
+        gImportYahoojp.disconnect()
     else:
         print("connect() failure :-(")
 
@@ -301,15 +296,15 @@ if __name__ == '__main__':
 
     # never failed - fixed date
     print("15/03/2005")
-    test('AAPL',date(2005,3,15))
+    test('AAPL', date(2005,3,15))
 
     # never failed except week-end
     print("yesterday-today :-(")
-    test('AAPL',date.today()-timedelta(1))
+    test('AAPL', date.today()-timedelta(1))
 
     # always failed
     print("tomorrow :-)")
-    test('AAPL',date.today()+timedelta(1))
+    test('AAPL', date.today()+timedelta(1))
 
 # ============================================================================
 # That's all folks !

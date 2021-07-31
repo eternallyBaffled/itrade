@@ -43,15 +43,15 @@ import re
 import string
 import thread
 import urllib2
-from datetime import *
+from datetime import date, datetime
 
 # iTrade system
-from itrade_logging import *
-from itrade_quotes import *
-from itrade_datation import Datation,jjmmaa2yyyymmdd
-from itrade_defs import *
-from itrade_ext import *
-from itrade_market import euronextmic,convertConnectorTimeToPlaceTime
+from itrade_logging import setLevel, debug, info
+from itrade_quotes import quotes
+from itrade_datation import jjmmaa2yyyymmdd
+from itrade_defs import QLIST_ANY, QTAG_DIFFERED, QLIST_INDICES, QLIST_BONDS
+from itrade_ext import registerLiveConnector
+from itrade_market import euronextmic, convertConnectorTimeToPlaceTime
 from itrade_connection import ITradeConnection
 import itrade_config
 

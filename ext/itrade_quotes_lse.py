@@ -38,24 +38,34 @@
 # python system
 from __future__ import print_function
 import logging
-import re
-import thread
-import time
 import string
 import urllib2
 
 # iTrade system
 import itrade_config
 import itrade_excel
-from itrade_logging import *
-from itrade_defs import *
-from itrade_ext import *
+from itrade_logging import setLevel, info
+from itrade_defs import QLIST_ANY, QTAG_LIST
+from itrade_ext import registerListSymbolConnector
 from itrade_connection import ITradeConnection
 
 # ============================================================================
 # Import_ListOfQuotes_LSE()
-#
 # ============================================================================
+def removeCarriage(s):
+    if s[-1] == '\r':
+        return s[:-1]
+    else:
+        return s
+
+
+def splitLines(buf):
+    lines = string.split(buf, '\n')
+    lines = filter(lambda x: x, lines)
+
+    lines = [removeCarriage(l) for l in lines]
+    return lines
+
 
 def Import_ListOfQuotes_LSE(quotes,market='LSE SETS',dlg=None,x=0):
     if itrade_config.verbose:
@@ -76,17 +86,6 @@ def Import_ListOfQuotes_LSE(quotes,market='LSE SETS',dlg=None,x=0):
         url = 'https://www.londonstockexchange.com/products-and-services/trading-services/seaq/list-seaq.xls'
     else:
         return False
-
-    def splitLines(buf):
-        lines = string.split(buf, '\n')
-        lines = filter(lambda x:x, lines)
-        def removeCarriage(s):
-            if s[-1]=='\r':
-                return s[:-1]
-            else:
-                return s
-        lines = [removeCarriage(l) for l in lines]
-        return lines
 
     info('Import_ListOfQuotes_LSE_%s:connect to %s' % (market,url))
     req = urllib2.Request(url)
@@ -125,7 +124,6 @@ def Import_ListOfQuotes_LSE(quotes,market='LSE SETS',dlg=None,x=0):
                     iCurrency = indice['Currency']
                     iCountry = indice['Country of Register']
                     iTicker = indice['Mnemonic']
-
             else:
                 ticker = sh.cell_value(line,iTicker)
                 if type(ticker)==float: ticker='%s' % ticker
@@ -160,7 +158,6 @@ if itrade_excel.canReadExcel:
 # ============================================================================
 
 if __name__ == '__main__':
-
     setLevel(logging.INFO)
 
     from itrade_quotes import quotes

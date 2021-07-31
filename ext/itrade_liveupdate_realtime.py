@@ -39,23 +39,23 @@
 
 # python system
 from __future__ import print_function
+from datetime import date, datetime
 import logging
-import re
 import thread
+import os
 import string
-import time
 import urllib2
 import cPickle
 
 # iTrade system
 import itrade_config
-from itrade_logging import *
-from itrade_quotes import *
-from itrade_defs import *
-from itrade_ext import *
-from itrade_market import yahooTicker,convertConnectorTimeToPlaceTime
+from itrade_logging import setLevel, debug, info
+from itrade_datation import jjmmaa2yyyymmdd
+from itrade_quotes import quotes
+from itrade_defs import QLIST_ANY, QTAG_LIVE, QLIST_INDICES
+from itrade_ext import registerLiveConnector
+from itrade_market import convertConnectorTimeToPlaceTime
 from itrade_connection import ITradeConnection
-from datetime import *
 
 # ============================================================================
 # LiveUpdate_RealTime()

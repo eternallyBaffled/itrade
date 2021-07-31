@@ -41,22 +41,17 @@
 # python system
 from __future__ import print_function
 import logging
-import re
-import thread
-import time
-import string
 import urllib
 
 # iTrade system
 import itrade_config
-from itrade_logging import *
-from itrade_defs import *
-from itrade_ext import *
+from itrade_logging import setLevel, debug
+from itrade_defs import QLIST_ANY, QTAG_LIST
+from itrade_ext import registerListSymbolConnector
 from itrade_connection import ITradeConnection
 
 # ============================================================================
 # Import_ListOfQuotes_BUE()
-#
 # ============================================================================
 
 
@@ -74,7 +69,6 @@ def Import_ListOfQuotes_BUE(quotes,market='BUENOS AIRES EXCHANGE',dlg=None,x=0):
 
     try:
         data=urllib.urlopen(url)
-
     except:
         debug('Import_ListOfQuotes_BUE unable to connect :-(')
         return False
@@ -148,7 +142,7 @@ if __name__ == '__main__':
 
     from itrade_quotes import quotes
 
-    Import_ListOfQuotes_BUE(quotes,'BUENOS AIRES EXCHANGE')
+    Import_ListOfQuotes_BUE(quotes, 'BUENOS AIRES EXCHANGE')
     quotes.saveListOfQuotes()
 
 # ============================================================================

@@ -38,23 +38,21 @@
 # python system
 from __future__ import print_function
 import logging
-import re
 import string
-from datetime import *
+from datetime import date, timedelta
 
 # iTrade system
-from itrade_logging import *
-from itrade_quotes import *
-from itrade_datation import Datation,dd_mmm_yy2yyyymmdd,re_p3_1
-from itrade_defs import *
-from itrade_ext import *
-from itrade_market import yahooTicker,yahooUrl
+from itrade_logging import setLevel, debug
+from itrade_quotes import quotes
+from itrade_datation import Datation, dd_mmm_yy2yyyymmdd, re_p3_1
+from itrade_defs import QLIST_ANY, QTAG_IMPORT, QLIST_SYSTEM, QLIST_INDICES, QLIST_USER
+from itrade_ext import registerImportConnector
+from itrade_market import yahooTicker, yahooUrl
 from itrade_connection import ITradeConnection
 import itrade_config
 
 # ============================================================================
 # Import_yahoo()
-#
 # ============================================================================
 
 class Import_yahoo(object):

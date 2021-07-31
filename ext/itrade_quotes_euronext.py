@@ -47,10 +47,9 @@ import cookielib
 
 # iTrade system
 import itrade_config
-from itrade_logging import *
-from itrade_isin import checkISIN,filterName
-from itrade_defs import *
-from itrade_ext import *
+from itrade_logging import setLevel, debug
+from itrade_defs import QLIST_ANY, QTAG_LIST
+from itrade_ext import registerListSymbolConnector
 from itrade_connection import ITradeConnection
 
 # ============================================================================
@@ -65,7 +64,6 @@ def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT',dlg=None,x=0):
                                proxy = itrade_config.proxyHostname,
                                proxyAuth = itrade_config.proxyAuthentication,
                                connectionTimeout = max(45,itrade_config.connectionTimeout)
-
                                )
 
     nyse_euronext_market = {
@@ -110,7 +108,6 @@ def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT',dlg=None,x=0):
         return lines
 
     try:
-
         host = "europeanequities.nyx.com"
         cj = None
         urlopen = urllib2.urlopen
@@ -122,7 +119,6 @@ def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT',dlg=None,x=0):
         handle = urlopen(req)
         cj = str(cj)
         cookie = cj[cj.find('ZDEDebuggerPresent='):cj.find(' for europeanequities.nyx.com/>')]
-
     except:
         debug('Import_ListOfQuotes_Euronext:unable to connect :-(')
         return False
@@ -172,16 +168,14 @@ def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT',dlg=None,x=0):
                 ticker = data[2]
                 currency = data[4]
                 place = nyse_euronext_market[nysemarket][1]
-                
+
                 count = count + 1
                 quotes.addQuote(isin=isin,name=name,ticker=ticker,market=market,currency=currency,place=place,country=None)
-                        
         else:
             pass
 
     if itrade_config.verbose:
         print('Imported %d/%d lines from %s' % (count,len(lines),market))
-            
 
     return True
 

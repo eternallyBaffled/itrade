@@ -39,16 +39,16 @@
 from __future__ import print_function
 import logging
 import re
-from datetime import *
-from urllib import *
-from httplib import *
+from datetime import date, timedelta
+from urllib import urlencode
+from httplib import HTTPConnection
 
 # iTrade system
-from itrade_logging import *
-from itrade_quotes import *
+from itrade_logging import setLevel, debug
+from itrade_quotes import quotes
 from itrade_datation import Datation
-from itrade_defs import *
-from itrade_ext import *
+#from itrade_defs import QLIST_ANY, QTAG_IMPORT
+#from itrade_ext import registerImportConnector
 
 # ============================================================================
 # Import_ABCBourse()
@@ -220,20 +220,22 @@ def test(ticker,d):
     else:
         print("connect() failure :-(")
 
-if __name__ == '__main__':
-    setLevel(logging.INFO)
 
+def main():
+    setLevel(logging.INFO)
     # never failed - fixed date
     print("15/03/2005")
-    test('OSI',date(2005,3,15))
-
+    test('OSI', date(2005, 3, 15))
     # never failed except week-end
     print("yesterday-today :-(")
-    test('OSI',date.today()-timedelta(1))
-
+    test('OSI', date.today() - timedelta(1))
     # always failed
     print("tomorrow :-)")
-    test('OSI',date.today()+timedelta(1))
+    test('OSI', date.today() + timedelta(1))
+
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

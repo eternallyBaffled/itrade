@@ -37,19 +37,18 @@
 
 # python system
 from __future__ import print_function
+from datetime import date, timedelta
 import logging
-import re
 import string
 import time
 import urllib2
-from datetime import *
 
 # iTrade system
-from itrade_logging import *
-from itrade_quotes import *
-from itrade_datation import Datation,jjmmaa2yyyymmdd
-from itrade_defs import *
-from itrade_ext import *
+from itrade_logging import setLevel, debug
+from itrade_quotes import quotes
+from itrade_datation import Datation, jjmmaa2yyyymmdd
+from itrade_defs import QLIST_ANY, QTAG_IMPORT, QLIST_INDICES, QLIST_TRACKERS, QLIST_BONDS, QLIST_SYSTEM
+from itrade_ext import registerImportConnector
 from itrade_market import euronextmic
 from itrade_connection import ITradeConnection
 import itrade_config
@@ -277,7 +276,6 @@ registerImportConnector('BRUXELLES MARCHE LIBRE','BRU',QLIST_ANY,QTAG_IMPORT,gIm
 
 def test(ticker,d):
     if gImportEuronext.connect():
-
         state = gImportEuronext.getstate()
         if state:
             debug("state=%s" % state)
@@ -298,23 +296,23 @@ def test(ticker,d):
     else:
         print("connect() failure :-(")
 
-if __name__ == '__main__':
+
+def main():
     setLevel(logging.INFO)
-
     quotes.loadMarket('EURONEXT')
-
     # never failed - fixed date
     print("15/03/2005")
-    test('OSI',date(2005,3,15))
-
+    test('OSI', date(2005, 3, 15))
     # never failed except week-end
     print("yesterday-today :-(")
-    test('OSI',date.today()-timedelta(1))
-
+    test('OSI', date.today() - timedelta(1))
     # always failed
     print("tomorrow :-)")
-    test('OSI',date.today()+timedelta(1))
+    test('OSI', date.today() + timedelta(1))
 
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

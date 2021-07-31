@@ -40,19 +40,18 @@
 # python system
 from __future__ import print_function
 import logging
-import re
 import string
 import thread
 import urllib2
-from datetime import *
+from datetime import date, datetime
 
 # iTrade system
-from itrade_logging import *
-from itrade_quotes import *
-from itrade_datation import Datation,jjmmaa2yyyymmdd
-from itrade_defs import *
-from itrade_ext import *
-from itrade_market import euronextmic,convertConnectorTimeToPlaceTime
+from itrade_logging import setLevel, debug, info
+from itrade_quotes import quotes
+from itrade_datation import jjmmaa2yyyymmdd
+from itrade_defs import QLIST_BONDS, QTAG_LIVE, QLIST_INDICES
+from itrade_ext import registerLiveConnector
+from itrade_market import euronextmic, convertConnectorTimeToPlaceTime
 from itrade_connection import ITradeConnection
 import itrade_config
 
@@ -87,7 +86,6 @@ class LiveUpdate_Euronext_bonds(object):
                                            connectionTimeout = itrade_config.connectionTimeout
                                            )
 
-
     # ---[ reentrant ] ---
     def acquire(self):
         # not reentrant because of global states : m_viewstate/m_data
@@ -97,7 +95,6 @@ class LiveUpdate_Euronext_bonds(object):
         self.m_livelock.release()
 
     # ---[ properties ] ---
-
     def name(self):
         return 'euronext_bonds'
 
@@ -109,7 +106,6 @@ class LiveUpdate_Euronext_bonds(object):
         return "CET"
 
     # ---[ connexion ] ---
-
     def connect(self):
         return True
 
@@ -120,13 +116,11 @@ class LiveUpdate_Euronext_bonds(object):
         return self.m_connected
 
     # ---[ state ] ---
-
     def getstate(self):
         # no state
         return True
 
     # ---[ code to get data ] ---
-
     def splitLines(self,buf):
         lines = string.split(buf, '\n')
         lines = filter(lambda x:x, lines)
@@ -196,13 +190,11 @@ class LiveUpdate_Euronext_bonds(object):
         query = map(lambda var_val: '%s=%s' % (var_val[0], str(var_val[1])), query)
         query = string.join(query, '&')
 
-
         url = self.m_url + query
         print('url_liveupdate:',url)
         debug("LiveUpdate_Euronext_bonds:getdata: url=%s ",url)
 
         try:
-
             req = urllib2.Request(url)
             req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
 
@@ -222,8 +214,6 @@ class LiveUpdate_Euronext_bonds(object):
         count = 0
         for eachLine in lines:
             count = count + 1
-
-
 
             if '"datetimeLastvalue">' in eachLine:
                 iDate = eachLine[eachLine.find('"datetimeLastvalue">')+20:eachLine.find(' CET</span>')]
@@ -294,11 +284,9 @@ class LiveUpdate_Euronext_bonds(object):
                     # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME;PERCENT
                     data = ';'.join([quote.key(),sdate,iOpen,iHigh,iLow,iLast,iVolume,iPercent])
                     return data
-
         return None
 
     # ---[ cache management on data ] ---
-
     def getcacheddata(self,quote):
         return None
 
@@ -310,12 +298,10 @@ class LiveUpdate_Euronext_bonds(object):
         pass
 
     # ---[ notebook of order ] ---
-
     def hasNotebook(self):
         return False
 
     # ---[ status of quote ] ---
-
     def hasStatus(self):
         return itrade_config.isConnected()
 
@@ -388,7 +374,6 @@ def test(ticker):
             debug("nodata")
 
     elif gLiveEuronext.connect():
-
         state = gLiveEuronext.getstate()
         if state:
             debug("state=%s" % state)

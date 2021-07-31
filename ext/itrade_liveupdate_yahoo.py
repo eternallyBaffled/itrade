@@ -38,21 +38,21 @@
 # python system
 from __future__ import print_function
 import logging
+from datetime import date, datetime
 import re
 import thread
 import string
 import time
-import pytz
 from pytz import timezone
+
 # iTrade system
 import itrade_config
-from itrade_logging import *
-from itrade_quotes import *
-from itrade_defs import *
-from itrade_ext import *
-from itrade_market import yahooTicker,yahooUrl,convertConnectorTimeToPlaceTime
+from itrade_logging import setLevel, debug, info
+from itrade_quotes import quotes, Quote
+from itrade_defs import QLIST_INDICES, QLIST_ANY, QTAG_DIFFERED
+from itrade_ext import registerLiveConnector
+from itrade_market import yahooTicker, yahooUrl, convertConnectorTimeToPlaceTime
 from itrade_connection import ITradeConnection
-import itrade_config
 
 # ============================================================================
 # LiveUpdate_yahoo()
@@ -85,7 +85,6 @@ class LiveUpdate_yahoo(object):
         self.m_livelock.release()
 
     # ---[ properties ] ---
-
     def name(self):
         # name of the connector
         return 'yahoo'
@@ -100,7 +99,6 @@ class LiveUpdate_yahoo(object):
         return "EST"
 
     # ---[ connexion ] ---
-
     def connect(self):
         return True
 
@@ -111,13 +109,11 @@ class LiveUpdate_yahoo(object):
         return self.m_connected
 
     # ---[ state ] ---
-
     def getstate(self):
         # no state
         return True
 
     # ---[ code to get data ] ---
-
     def yahooDate (self,date):
         # Date part is easy.
         sdate = string.split (date[1:-1], '/')
@@ -335,7 +331,6 @@ class LiveUpdate_yahoo(object):
         return [],[]
 
     # ---[ status of quote ] ---
-
     def hasStatus(self):
         return itrade_config.isConnected()
 
@@ -485,7 +480,6 @@ def test(ticker):
             debug("nodata")
 
     elif gLiveYahoo.connect():
-
         state = gLiveYahoo.getstate()
         if state:
             debug("state=%s" % state)

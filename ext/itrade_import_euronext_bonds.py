@@ -39,18 +39,17 @@
 # python system
 from __future__ import print_function
 import logging
-import re
 import string
 import time
 import urllib2
-from datetime import *
+from datetime import date, timedelta
 
 # iTrade system
-from itrade_logging import *
-from itrade_quotes import *
-from itrade_datation import Datation,jjmmaa2yyyymmdd
-from itrade_defs import *
-from itrade_ext import *
+from itrade_logging import setLevel, debug
+from itrade_quotes import quotes
+from itrade_datation import Datation, jjmmaa2yyyymmdd
+from itrade_defs import QLIST_BONDS, QTAG_IMPORT
+from itrade_ext import registerImportConnector
 from itrade_market import euronextmic
 from itrade_connection import ITradeConnection
 import itrade_config

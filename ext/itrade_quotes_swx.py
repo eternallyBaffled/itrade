@@ -39,23 +39,32 @@
 # python system
 from __future__ import print_function
 import logging
-import re
-import thread
-import time
 import string
 
 # iTrade system
 import itrade_config
-import itrade_csv
-from itrade_logging import *
-from itrade_defs import *
-from itrade_ext import *
+from itrade_logging import setLevel, info
+from itrade_defs import QLIST_ANY, QTAG_LIST
+from itrade_ext import registerListSymbolConnector
 from itrade_connection import ITradeConnection
 
 # ============================================================================
 # Import_ListOfQuotes_SWX()
-#
 # ============================================================================
+def removeCarriage(s):
+    if s[-1] == '\r':
+        return s[:-1]
+    else:
+        return s
+
+
+def splitLines(buf):
+    lines = string.split(buf, '\n')
+    lines = filter(lambda x: x, lines)
+
+    lines = [removeCarriage(l) for l in lines]
+    return lines
+
 
 def Import_ListOfQuotes_SWX(quotes,market='SWISS EXCHANGE',dlg=None,x=0):
     if itrade_config.verbose:
@@ -74,17 +83,6 @@ def Import_ListOfQuotes_SWX(quotes,market='SWISS EXCHANGE',dlg=None,x=0):
             return False
     else:
         return False
-
-    def splitLines(buf):
-        lines = string.split(buf, '\n')
-        lines = filter(lambda x:x, lines)
-        def removeCarriage(s):
-            if s[-1]=='\r':
-                return s[:-1]
-            else:
-                return s
-        lines = [removeCarriage(l) for l in lines]
-        return lines
 
     # returns the data
     lines = splitLines(data)
@@ -129,7 +127,6 @@ registerListSymbolConnector('SWISS EXCHANGE','XVTX',QLIST_ANY,QTAG_LIST,Import_L
 # ============================================================================
 
 if __name__ == '__main__':
-
     setLevel(logging.INFO)
 
     from itrade_quotes import quotes

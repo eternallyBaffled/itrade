@@ -40,9 +40,6 @@
 # python system
 from __future__ import print_function
 import logging
-import re
-import thread
-import time
 import string
 import urllib
 import zipfile
@@ -50,15 +47,28 @@ import os
 
 # iTrade system
 import itrade_config
-from itrade_logging import *
-from itrade_defs import *
-from itrade_ext import *
+from itrade_logging import setLevel, debug, info
+from itrade_defs import QLIST_ANY, QTAG_LIST
+from itrade_ext import registerListSymbolConnector
 from itrade_connection import ITradeConnection
 
 # ============================================================================
 # Import_ListOfQuotes_SAO()
-#
 # ============================================================================
+def removeCarriage(s):
+    if s[-1] == '\r':
+        return s[:-1]
+    else:
+        return s
+
+
+def splitLines(buf):
+    lines = string.split(buf, '\n')
+    lines = filter(lambda x: x, lines)
+
+    lines = [removeCarriage(l) for l in lines]
+    return lines
+
 
 def Import_ListOfQuotes_SAO(quotes,market='SAO PAULO EXCHANGE',dlg=None,x=0):
     if itrade_config.verbose:
@@ -67,26 +77,13 @@ def Import_ListOfQuotes_SAO(quotes,market='SAO PAULO EXCHANGE',dlg=None,x=0):
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
 
-
     if market == 'SAO PAULO EXCHANGE':
         url ='https://www.bmfbovespa.com.br/suplemento/ExecutaAcaoDownload.asp?arquivo=Securities_Traded.zip'
         currency = 'BRL'
         place = 'SAO'
         country = 'BR'
-
     else:
         return False
-
-    def splitLines(buf):
-        lines = string.split(buf, '\n')
-        lines = filter(lambda x:x, lines)
-        def removeCarriage(s):
-            if s[-1]=='\r':
-                return s[:-1]
-            else:
-                return s
-        lines = [removeCarriage(l) for l in lines]
-        return lines
 
     info('Import_ListOfQuotes_BOVESPA_%s:connect to %s' % (market,url))
 
@@ -141,7 +138,6 @@ registerListSymbolConnector('SAO PAULO EXCHANGE','SAO',QLIST_ANY,QTAG_LIST,Impor
 # ============================================================================
 
 if __name__ == '__main__':
-
     setLevel(logging.INFO)
 
     from itrade_quotes import quotes

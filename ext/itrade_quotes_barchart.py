@@ -40,28 +40,22 @@
 # python system
 from __future__ import print_function
 import logging
-import re
-import thread
-import time
 import string
 import urllib2
 
 # iTrade system
 import itrade_config
-from itrade_logging import *
-from itrade_isin import filterName
-from itrade_defs import *
-from itrade_ext import *
+from itrade_logging import setLevel
+from itrade_defs import QLIST_ANY, QTAG_LIST
+from itrade_ext import registerListSymbolConnector
 from itrade_connection import ITradeConnection
 
 # ============================================================================
 # Import_ListOfQuotes_BARCHART()
-#
 # ============================================================================
 
 
 def Import_ListOfQuotes_BARCHART(quotes,market='TOTRONTO EXCHANGE',dlg=None,x=0):
-
     if itrade_config.verbose:
         print('Update %s list of symbols' % market)
     connection = ITradeConnection(cookies = None,
@@ -95,7 +89,6 @@ def Import_ListOfQuotes_BARCHART(quotes,market='TOTRONTO EXCHANGE',dlg=None,x=0)
         return lines
 
     def import_letter(letter,dlg,x):
-
         if dlg:
             dlg.Update(x,"%s:'%s'"%(market,letter))
             #print x,"%s:'%s'"%(market,letter)
@@ -107,7 +100,6 @@ def Import_ListOfQuotes_BARCHART(quotes,market='TOTRONTO EXCHANGE',dlg=None,x=0)
             f = urllib2.urlopen(req)
             data = f.read()
             f.close()
-
         except:
             print('Import_ListOfQuotes_BARCHART:unable to connect to',url%letter)
             return False
@@ -119,7 +111,6 @@ def Import_ListOfQuotes_BARCHART(quotes,market='TOTRONTO EXCHANGE',dlg=None,x=0)
         count = 0
 
         for line in lines:
-
             if exchange in line and 'nowrap' in line:
                 ticker = line[:line.index('" class="">')]
                 if not '-DB' in ticker:  # ignore DEBit

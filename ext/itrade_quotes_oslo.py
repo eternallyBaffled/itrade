@@ -40,22 +40,32 @@
 # python system
 from __future__ import print_function
 import logging
-import re
-import thread
-import time
 import string
 
 # iTrade system
 import itrade_config
-from itrade_logging import *
-from itrade_defs import *
-from itrade_ext import *
+from itrade_logging import setLevel, debug
+from itrade_defs import QLIST_ANY, QTAG_LIST
+from itrade_ext import registerListSymbolConnector
 from itrade_connection import ITradeConnection
 
 # ============================================================================
 # Import_ListOfQuotes_OSLO()
-#
 # ============================================================================
+def removeCarriage(s):
+    if s[-1] == '\r':
+        return s[:-1]
+    else:
+        return s
+
+
+def splitLines(buf):
+    lines = string.split(buf, 'Overview?')
+    lines = filter(lambda x: x, lines)
+
+    lines = [removeCarriage(l) for l in lines]
+    return lines
+
 
 def Import_ListOfQuotes_OSLO(quotes,market='OSLO EXCHANGE',dlg=None,x=0):
     if itrade_config.verbose:
@@ -67,20 +77,8 @@ def Import_ListOfQuotes_OSLO(quotes,market='OSLO EXCHANGE',dlg=None,x=0):
     if market=='OSLO EXCHANGE':
         starturl = 'https://www.oslobors.no/markedsaktivitet/stockIsinList?newt_isinList-stock_exch=ose&newt_isinList-stock_sort=aLONG_NAME&newt_isinList-stock_page='
         endurl = '&newt__menuCtx=1.12'
-
     else:
         return False
-
-    def splitLines(buf):
-        lines = string.split(buf, 'Overview?')
-        lines = filter(lambda x:x, lines)
-        def removeCarriage(s):
-            if s[-1]=='\r':
-                return s[:-1]
-            else:
-                return s
-        lines = [removeCarriage(l) for l in lines]
-        return lines
 
     nlines = 0
     endpage = 8
@@ -88,7 +86,6 @@ def Import_ListOfQuotes_OSLO(quotes,market='OSLO EXCHANGE',dlg=None,x=0):
     select_page = ['1','2','3','4','5','6','7','8']
 
     for page in select_page:
-
         url = starturl + page + endurl
 
         try:
@@ -104,9 +101,7 @@ def Import_ListOfQuotes_OSLO(quotes,market='OSLO EXCHANGE',dlg=None,x=0):
         #newt__ticker=TFSO" title="">24Seven Technology Group</a></td><td class="c2">NO0010279474</td><td class="c3 o l">TFSO</td></tr><tr id="manamind_isinList__stock_table_table_r2" class="r2"><td class="c0 f"><div title="Aksjer på Oslo Børs"><img src="http://ose.asp.manamind.com/ob/images/markedssymbol-XOSL-tiny.png" width="8" height="8" /></div></td><td class="c1 o"><a href=
 
         for line in lines:
-
             if line.find('newt__ticker=') != -1:
-
                 #partial activation of Progressbar
                 dlg.Update(x,'%s : %s / %s'%(market,page,endpage))
 
@@ -122,7 +117,6 @@ def Import_ListOfQuotes_OSLO(quotes,market='OSLO EXCHANGE',dlg=None,x=0):
                 name = name.replace('ø','o')
 
                 isin = line[line.index('class="c2">')+11:line.index('</td><td class="c3 o l">')]
-
 
                 #ok to proceed
 

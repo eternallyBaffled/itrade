@@ -41,14 +41,12 @@
 # python system
 from __future__ import print_function
 import logging
-import re
 import os
-import mimetypes
 
 # iTrade system
 import itrade_config
-from itrade_logging import *
-from itrade_login import *
+from itrade_logging import setLevel, debug
+from itrade_login import registerLoginConnector
 from itrade_local import message
 from itrade_connection import ITradeConnection, ITradeCookies
 

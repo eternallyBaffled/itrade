@@ -40,17 +40,18 @@ from __future__ import print_function
 import logging
 import re
 import thread
-import datetime
+from datetime import date, datetime, timedelta
 
-from urllib import *
-from httplib import *
+from urllib import urlencode
+from httplib import HTTPConnection
 
 # iTrade system
 import itrade_config
-from itrade_logging import *
-from itrade_quotes import *
-from itrade_defs import *
-from itrade_ext import *
+import itrade_csv
+from itrade_logging import setLevel, debug, info
+from itrade_quotes import quotes
+#from itrade_defs import *
+#from itrade_ext import *
 
 # ============================================================================
 # LiveUpdate_ABCBourse()
@@ -278,7 +279,6 @@ def test(ticker):
             debug("nodata")
 
     elif gLiveABC.connect():
-
         state = gLiveABC.getstate()
         if state:
             debug("state=%s" % state)

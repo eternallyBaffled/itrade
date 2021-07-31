@@ -45,21 +45,18 @@
 # python system
 from __future__ import print_function
 import logging
-import re
 import string
 import thread
-import datetime
 import os
-import socket
 import httplib
-import datetime
 
 # iTrade system
 import itrade_config
-from itrade_logging import *
-from itrade_quotes import *
-from itrade_defs import *
-from itrade_ext import *
+from itrade_logging import setLevel, debug, info
+import itrade_csv
+from itrade_defs import QLIST_ANY, QTAG_LIVE
+from itrade_ext import registerLiveConnector
+from itrade_quotes import quotes
 
 import blowfish
 
@@ -303,7 +300,6 @@ index2field = {
     '01L' : 57,
     '01M' : 58,
     '01N' : 59
-
 }
 
 # ============================================================================
@@ -370,7 +366,6 @@ place_code = {
 
     "046" : "046",
     "220" : "220",
-
 }
 
 def place2code(place):
@@ -509,7 +504,6 @@ class LiveUpdate_fortuneo(object):
         self.m_livelock.release()
 
     # ---[ properties ] ---
-
     def name(self):
         return 'fortuneo'
 

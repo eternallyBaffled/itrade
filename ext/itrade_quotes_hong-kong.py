@@ -39,23 +39,18 @@
 # python system
 from __future__ import print_function
 import logging
-import re
-import thread
-import time
 import string
-
 
 # iTrade system
 import itrade_config
 import itrade_excel
-from itrade_logging import *
-from itrade_defs import *
-from itrade_ext import *
+from itrade_logging import setLevel, info
+from itrade_defs import QLIST_ANY, QTAG_LIST
+from itrade_ext import registerListSymbolConnector
 from itrade_connection import ITradeConnection
 
 # ============================================================================
 # Import_ListOfQuotes_HKG()
-#
 # ============================================================================
 
 
@@ -72,7 +67,6 @@ def Import_ListOfQuotes_HKG(quotes,market='HONG KONG EXCHANGE',dlg=None,x=0):
         # Two urls for download list of HONG KONG EXCHANGE
         urls = ['https://www.hkex.com.hk/eng/market/sec_tradinfo/isincode/documents/isino.xls',
                 'https://www.hkex.com.hk/eng/market/sec_tradinfo/isincode/documents/isinsehk.xls']
-
         n = 0
     else:
         return False
@@ -89,7 +83,6 @@ def Import_ListOfQuotes_HKG(quotes,market='HONG KONG EXCHANGE',dlg=None,x=0):
         return lines
 
     for url in urls:
-
         info('Import_ListOfQuotes_HKG_%s:connect to %s' % (market,url))
 
         try:
@@ -98,18 +91,15 @@ def Import_ListOfQuotes_HKG(quotes,market='HONG KONG EXCHANGE',dlg=None,x=0):
             info('Import_ListOfQuotes_HKG_%s:unable to connect :-(' % market)
             return False
 
-
         # returns the data
         book = itrade_excel.open_excel(file=None,content=data)
         sh = book.sheet_by_index(0)
 
         #print 'Import_ListOfQuotes_HKG_%s:' % market,'book',book,'sheet',sh,'nrows=',sh.nrows
 
-
         for line in range(sh.nrows):
             if sh.cell_type(line,1) != xlrd.XL_CELL_EMPTY:
                 if sh.cell_value(line,3) in ('ORD SH','PREF SH','TRT','RTS'):
-
                     isin=sh.cell_value(line,1)
 
                     ticker = sh.cell_value(line,2)
@@ -134,7 +124,6 @@ def Import_ListOfQuotes_HKG(quotes,market='HONG KONG EXCHANGE',dlg=None,x=0):
 
                     n = n + 1
 
-
     if itrade_config.verbose:
         print('Imported %d lines from %s ' % (n,market))
 
@@ -152,7 +141,6 @@ if itrade_excel.canReadExcel:
 # ============================================================================
 
 if __name__ == '__main__':
-
     setLevel(logging.INFO)
 
     from itrade_quotes import quotes

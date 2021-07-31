@@ -40,22 +40,32 @@
 # python system
 from __future__ import print_function
 import logging
-import re
-import thread
-import time
 import string
 
 # iTrade system
 import itrade_config
-from itrade_logging import *
-from itrade_defs import *
-from itrade_ext import *
+from itrade_logging import setLevel, debug
+from itrade_defs import QLIST_ANY, QTAG_LIST
+from itrade_ext import registerListSymbolConnector
 from itrade_connection import ITradeConnection
 
 # ============================================================================
 # Import_ListOfQuotes_Xetra()
-#
 # ============================================================================
+def removeCarriage(s):
+    if s[-1] == '\r':
+        return s[:-1]
+    else:
+        return s
+
+
+def splitLines(buf):
+    lines = string.split(buf, '\n')
+    lines = filter(lambda x: x, lines)
+
+    lines = [removeCarriage(l) for l in lines]
+    return lines
+
 
 def Import_ListOfQuotes_Xetra(quotes,market='FRANKFURT EXCHANGE',dlg=None,x=0):
     if itrade_config.verbose:
@@ -70,17 +80,6 @@ def Import_ListOfQuotes_Xetra(quotes,market='FRANKFURT EXCHANGE',dlg=None,x=0):
         url = 'https://deutsche-boerse.com/dbag/dispatch/en/xetraCSV/gdb_navigation/trading/20_tradable_instruments/900_tradable_instruments/100_xetra'
     else:
         return False
-
-    def splitLines(buf):
-        lines = string.split(buf, '\n')
-        lines = filter(lambda x:x, lines)
-        def removeCarriage(s):
-            if s[-1]=='\r':
-                return s[:-1]
-            else:
-                return s
-        lines = [removeCarriage(l) for l in lines]
-        return lines
 
     try:
         data=connection.getDataFromUrl(url)

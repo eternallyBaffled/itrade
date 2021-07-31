@@ -39,23 +39,33 @@
 # python system
 from __future__ import print_function
 import logging
-import re
-import thread
-import time
 import string
 import urllib2
 
 # iTrade system
 import itrade_config
-from itrade_logging import *
-from itrade_defs import *
-from itrade_ext import *
+from itrade_logging import setLevel, info
+from itrade_defs import QLIST_ANY, QTAG_LIST
+from itrade_ext import registerListSymbolConnector
 from itrade_connection import ITradeConnection
 
 # ============================================================================
 # Import_ListOfQuotes_MIL()
-#
 # ============================================================================
+def removeCarriage(s):
+    if s[-1] == '\r':
+        return s[:-1]
+    else:
+        return s
+
+
+def splitLines(buf):
+    lines = string.split(buf, '\n')
+    lines = filter(lambda x: x, lines)
+
+    lines = [removeCarriage(l) for l in lines]
+    return lines
+
 
 def Import_ListOfQuotes_MIL(quotes,market='MILAN EXCHANGE',dlg=None,x=0):
     if itrade_config.verbose:
@@ -65,18 +75,6 @@ def Import_ListOfQuotes_MIL(quotes,market='MILAN EXCHANGE',dlg=None,x=0):
                                proxyAuth = itrade_config.proxyAuthentication,
                                connectionTimeout = itrade_config.connectionTimeout
                                )
-
-    def splitLines(buf):
-        lines = string.split(buf, '\n')
-        lines = filter(lambda x:x, lines)
-        def removeCarriage(s):
-            if s[-1]=='\r':
-                return s[:-1]
-            else:
-                return s
-        lines = [removeCarriage(l) for l in lines]
-        return lines
-
 
     if market=='MILAN EXCHANGE':
         url = "https://www.borsaitaliana.it/bitApp/listino?main_list=1&sub_list=1&service=Results&search=nome&lang=it&target=null&nome="
@@ -144,7 +142,6 @@ registerListSymbolConnector('MILAN EXCHANGE','MIL',QLIST_ANY,QTAG_LIST,Import_Li
 # ============================================================================
 
 if __name__ == '__main__':
-
     setLevel(logging.INFO)
 
     from itrade_quotes import quotes

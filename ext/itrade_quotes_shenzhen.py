@@ -39,23 +39,31 @@
 # python system
 from __future__ import print_function
 import logging
-import re
-import thread
-import time
 import string
 
 # iTrade system
 import itrade_config
-import itrade_excel
-from itrade_logging import *
-from itrade_defs import *
-from itrade_ext import *
+from itrade_logging import setLevel, info
+from itrade_defs import QLIST_ANY, QTAG_LIST
+from itrade_ext import registerListSymbolConnector
 from itrade_connection import ITradeConnection
 
 # ============================================================================
 # Import_ListOfQuotes_SHE()
-#
 # ============================================================================
+def removeCarriage(s):
+    if s[-1] == '\r':
+        return s[:-1]
+    else:
+        return s
+
+
+def splitLines(buf):
+    lines = string.split(buf, '\n')
+    lines = filter(lambda x: x, lines)
+
+    lines = [removeCarriage(l) for l in lines]
+    return lines
 
 
 def Import_ListOfQuotes_SHE(quotes,market='SHENZHEN EXCHANGE',dlg=None,x=0):
@@ -65,24 +73,10 @@ def Import_ListOfQuotes_SHE(quotes,market='SHENZHEN EXCHANGE',dlg=None,x=0):
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
 
-
     if market=='SHENZHEN EXCHANGE':
-
         url = 'https://www.szse.cn/szseWeb/FrontController.szse?ACTIONID=8&CATALOGID=1693&TABKEY=tab1&ENCODE=1'
     else:
         return False
-
-    def splitLines(buf):
-        lines = string.split(buf, '\n')
-        lines = filter(lambda x:x, lines)
-
-        def removeCarriage(s):
-            if s[-1]=='\r':
-                return s[:-1]
-            else:
-                return s
-        lines = [removeCarriage(l) for l in lines]
-        return lines
 
     info('Import_ListOfQuotes_SHE_%s:connect to %s' % (market,url))
 
@@ -102,7 +96,6 @@ def Import_ListOfQuotes_SHE(quotes,market='SHENZHEN EXCHANGE',dlg=None,x=0):
     #print 'Import_ListOfQuotes_SHE_%s:' % market,'book',book,'sheet',sh,'nrows=',sh.nrows
 
     for line in lines[2:]:
-
         if line.find("</td><td  class='cls-data-td'  align='left' >"):
             ticker = line[:line.index('<')]
 
@@ -112,7 +105,6 @@ def Import_ListOfQuotes_SHE(quotes,market='SHENZHEN EXCHANGE',dlg=None,x=0):
             if name[-2:] == '-B':
                 currency = 'HKD'
                 name = name[:-2]
-
             else:
                 currency = 'CNY'
 
@@ -131,7 +123,6 @@ def Import_ListOfQuotes_SHE(quotes,market='SHENZHEN EXCHANGE',dlg=None,x=0):
 # Export me
 # ============================================================================
 
-
 registerListSymbolConnector('SHENZHEN EXCHANGE','SHE',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_SHE)
 
 # ============================================================================
@@ -139,7 +130,6 @@ registerListSymbolConnector('SHENZHEN EXCHANGE','SHE',QLIST_ANY,QTAG_LIST,Import
 # ============================================================================
 
 if __name__ == '__main__':
-
     setLevel(logging.INFO)
 
     from itrade_quotes import quotes

@@ -40,23 +40,31 @@
 # python system
 from __future__ import print_function
 import logging
-import re
-import thread
-import time
 import string
-import urllib
 
 # iTrade system
 import itrade_config
-from itrade_logging import *
-from itrade_defs import *
-from itrade_ext import *
+from itrade_logging import setLevel, debug
+from itrade_defs import QLIST_ANY, QTAG_LIST
+from itrade_ext import registerListSymbolConnector
 from itrade_connection import ITradeConnection
 
 # ============================================================================
 # Import_ListOfQuotes_NZE()
-#
 # ============================================================================
+def removeCarriage(s):
+    if s[-1] == '\r':
+        return s[:-1]
+    else:
+        return s
+
+
+def splitLines(buf):
+    lines = string.split(buf, '\n')
+    lines = filter(lambda x: x, lines)
+
+    lines = [removeCarriage(l) for l in lines]
+    return lines
 
 
 def Import_ListOfQuotes_NZE(quotes,market='NEW ZEALAND EXCHANGE',dlg=None,x=0):
@@ -70,17 +78,6 @@ def Import_ListOfQuotes_NZE(quotes,market='NEW ZEALAND EXCHANGE',dlg=None,x=0):
         url = 'https://www.findata.co.nz/Markets/NZX/%s.htm'
     else:
         return False
-
-    def splitLines(buf):
-        lines = string.split(buf, '\n')
-        lines = filter(lambda x:x, lines)
-        def removeCarriage(s):
-            if s[-1]=='\r':
-                return s[:-1]
-            else:
-                return s
-        lines = [removeCarriage(l) for l in lines]
-        return lines
 
     select_alpha = map(chr,range(65,91)) # A to Z
 

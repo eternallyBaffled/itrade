@@ -40,24 +40,19 @@
 from __future__ import print_function
 import os
 import logging
-import re
-import thread
-import time
 import string
 import urllib
 import pyPdf
 
 # iTrade system
 import itrade_config
-import itrade_excel
-from itrade_logging import *
-from itrade_defs import *
-from itrade_ext import *
+from itrade_logging import setLevel, info
+from itrade_defs import QLIST_ANY, QTAG_LIST
+from itrade_ext import registerListSymbolConnector
 from itrade_connection import ITradeConnection
 
 # ============================================================================
 # Import_ListOfQuotes_MADRID()
-#
 # ============================================================================
 
 def Import_ListOfQuotes_MADRID(quotes,market='MADRID EXCHANGE',dlg=None,x=0):
@@ -102,7 +97,6 @@ def Import_ListOfQuotes_MADRID(quotes,market='MADRID EXCHANGE',dlg=None,x=0):
     pdf = pyPdf.PdfFileReader(source)
 
     for page in pdf.pages:
-
         data = page.extractText()
         data = data[data.find('DecimalsFixing')+15:]
         cr = data[:8]
@@ -119,7 +113,6 @@ def Import_ListOfQuotes_MADRID(quotes,market='MADRID EXCHANGE',dlg=None,x=0):
                     pass
                 else:
                     ticker = ticker.replace('.','-')
-
 
                 isin = line[8:21]
                 name = line[21:].strip()
@@ -153,7 +146,6 @@ registerListSymbolConnector('MADRID EXCHANGE','MAD',QLIST_ANY,QTAG_LIST,Import_L
 # ============================================================================
 
 if __name__ == '__main__':
-
     setLevel(logging.INFO)
 
     from itrade_quotes import quotes

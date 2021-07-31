@@ -40,23 +40,30 @@
 # python system
 from __future__ import print_function
 import logging
-import re
-import thread
-import time
 import string
-import urllib
 
 # iTrade system
 import itrade_config
-from itrade_logging import *
-from itrade_defs import *
-from itrade_ext import *
+from itrade_logging import setLevel, debug
+from itrade_defs import QLIST_ANY, QTAG_LIST
+from itrade_ext import registerListSymbolConnector
 from itrade_connection import ITradeConnection
 
 # ============================================================================
 # Import_ListOfQuotes_BOMBAY()
-#
 # ============================================================================
+def removeCarriage(s):
+    if s[-1] == '\r':
+        return s[:-1]
+    else:
+        return s
+
+def splitLines(buf):
+    lines = string.split(buf, '\r\n')
+    lines = filter(lambda x: x, lines)
+
+    lines = [removeCarriage(l) for l in lines]
+    return lines
 
 
 def Import_ListOfQuotes_BSE(quotes,market='BOMBAY EXCHANGE',dlg=None,x=0):
@@ -70,27 +77,13 @@ def Import_ListOfQuotes_BSE(quotes,market='BOMBAY EXCHANGE',dlg=None,x=0):
         starturl = 'https://test.bseindia.com/scripsearch/scrips.aspx?myScrip='
         #endurl = '&flag=sr'
     else:
-
         return False
-
-    def splitLines(buf):
-        lines = string.split(buf, '\r\n')
-        lines = filter(lambda x:x, lines)
-        def removeCarriage(s):
-            if s[-1]=='\r':
-                return s[:-1]
-            else:
-                return s
-        lines = [removeCarriage(l) for l in lines]
-        return lines
 
     select_alpha = ['20MICRONS','3IINFOTECH','3MINDIA','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
     n = 0
     isin = ''
 
-
     for letter in select_alpha:
-
         url = starturl+letter
 
         try:
@@ -101,9 +94,7 @@ def Import_ListOfQuotes_BSE(quotes,market='BOMBAY EXCHANGE',dlg=None,x=0):
         # returns the data
         lines = splitLines(data)
 
-
         for line in lines:
-
             if '<td align="center"><font color="#0089CF">' in line:
             #if '<td align="center" style="color:#0089CF;">' in line:
                 #scrip_cd = line[(line.find('"#0089CF">')+10):(line.find ('</font></td><td'))]
@@ -111,15 +102,12 @@ def Import_ListOfQuotes_BSE(quotes,market='BOMBAY EXCHANGE',dlg=None,x=0):
                 name = name.upper()
                 ticker = line[(line.find('<u>')+3):(line.find ('</u>'))]
 
-
                 if 'FUND' in name or 'MATURITY' in name :
                     pass
                 if '>#<' in line or '>@</' in line :
                     #Suspended due to penal reasons
                     #Suspended due to procedural reasons
                     pass
-
-
                 else :
                     #print name,ticker
                     n = n + 1
@@ -128,7 +116,6 @@ def Import_ListOfQuotes_BSE(quotes,market='BOMBAY EXCHANGE',dlg=None,x=0):
 
                     quotes.addQuote(isin=isin, name=name,
                         ticker=ticker, market='BOMBAY EXCHANGE', currency='INR', place='BSE', country='IN')
-
 
     if itrade_config.verbose:
         print('Imported %d lines from BOMBAY EXCHANGE' %n)

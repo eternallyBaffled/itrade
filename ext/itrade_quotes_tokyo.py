@@ -40,25 +40,33 @@
 # python system
 from __future__ import print_function
 import logging
-import re
-import thread
-import time
 import string
-import urllib
-import urllib2
 import httplib
 
 # iTrade system
 import itrade_config
-from itrade_logging import *
-from itrade_defs import *
-from itrade_ext import *
+from itrade_logging import setLevel, info
+from itrade_defs import QLIST_ANY, QTAG_LIST
+from itrade_ext import registerListSymbolConnector
 from itrade_connection import ITradeConnection
 
 # ============================================================================
 # Import_ListOfQuotes_TKS()
-#
 # ============================================================================
+def removeCarriage(s):
+    if s[-1] == '\r':
+        return s[:-1]
+    else:
+        return s
+
+
+def splitLines(buf):
+    lines = string.split(buf, '</td>')
+    lines = filter(lambda x: x, lines)
+
+    lines = [removeCarriage(l) for l in lines]
+    return lines
+
 
 def Import_ListOfQuotes_TKS(quotes,market='TOKYO EXCHANGE',dlg=None,x=0):
     if itrade_config.verbose:
@@ -70,17 +78,6 @@ def Import_ListOfQuotes_TKS(quotes,market='TOKYO EXCHANGE',dlg=None,x=0):
         url = "https://www.tse.or.jp/english/index.html"
     else:
         return False
-
-    def splitLines(buf):
-        lines = string.split(buf, '</td>')
-        lines = filter(lambda x:x, lines)
-        def removeCarriage(s):
-            if s[-1]=='\r':
-                return s[:-1]
-            else:
-                return s
-        lines = [removeCarriage(l) for l in lines]
-        return lines
 
     info('Import_ListOfQuotes_tks_%s:connect to %s' % (market,url))
 
@@ -101,10 +98,7 @@ def Import_ListOfQuotes_TKS(quotes,market='TOKYO EXCHANGE',dlg=None,x=0):
                 , "Referer": "https://quote.tse.or.jp/tse/quote.cgi?F=listing/Ecs00"
                    }
 
-
-
     for cursor in range(0,2400,100):
-
         if cursor == 0:
             url ='/tse/qsearch.exe?F=listing%2Fecslist&KEY1=&KEY5=&shijyo0=1stSec&shijyo1=2ndSec&shijyo2=Mothers&KEY3=&kind=TTCODE&sort=%2B&MAXDISP=100&KEY2=1stSec%2C2ndSec%2CMothers&REFINDEX=%2BTTCODE'
         else:
@@ -124,7 +118,6 @@ def Import_ListOfQuotes_TKS(quotes,market='TOKYO EXCHANGE',dlg=None,x=0):
         q = 0
 
         for line in lines:
-
             if ch in line :
                 q = 1
                 count = count +1

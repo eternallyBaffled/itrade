@@ -40,9 +40,6 @@
 # python system
 from __future__ import print_function
 import logging
-import re
-import thread
-import time
 import string
 import httplib
 import urllib2
@@ -50,15 +47,29 @@ import cookielib
 
 # iTrade system
 import itrade_config
-from itrade_logging import *
-from itrade_defs import *
-from itrade_ext import *
+from itrade_logging import setLevel, debug, info
+from itrade_defs import QLIST_ANY, QTAG_LIST
+from itrade_ext import registerListSymbolConnector
 from itrade_connection import ITradeConnection
 
 # ============================================================================
 # Import_ListOfQuotes_KRX()
-#
 # ============================================================================
+
+def removeCarriage(s):
+    if s[-1] == '\r':
+        return s[:-1]
+    else:
+        return s
+
+
+def splitLines(buf):
+    lines = string.split(buf, '</td></tr>')
+    lines = filter(lambda x: x, lines)
+
+    lines = [removeCarriage(l) for l in lines]
+    return lines
+
 
 def Import_ListOfQuotes_KRX(quotes,market='KOREA STOCK EXCHANGE',dlg=None,x=0):
     if itrade_config.verbose:
@@ -69,7 +80,6 @@ def Import_ListOfQuotes_KRX(quotes,market='KOREA STOCK EXCHANGE',dlg=None,x=0):
                                connectionTimeout = itrade_config.connectionTimeout
                                )
 
-
     if market=='KOREA STOCK EXCHANGE':
         params = "isu_cd=&gbn=1&market_gubun=1&isu_nm=&sort=&std_ind_cd=&std_ind_cd1=&par_pr=&cpta_scl=&sttl_trm=&lst_stk_vl=1&in_lst_stk_vl=&in_lst_stk_vl2=&cpt=1&in_cpt=&in_cpt2=&nat_tot_amt=1&in_nat_tot_amt=&in_nat_tot_amt2="
         place = 'KRX'
@@ -78,17 +88,6 @@ def Import_ListOfQuotes_KRX(quotes,market='KOREA STOCK EXCHANGE',dlg=None,x=0):
         place = 'KOS'
     else:
         return False
-
-    def splitLines(buf):
-        lines = string.split(buf, '</td></tr>')
-        lines = filter(lambda x:x, lines)
-        def removeCarriage(s):
-            if s[-1]=='\r':
-                return s[:-1]
-            else:
-                return s
-        lines = [removeCarriage(l) for l in lines]
-        return lines
 
     url = 'https://eng.krx.co.kr'
 
@@ -134,7 +133,6 @@ def Import_ListOfQuotes_KRX(quotes,market='KOREA STOCK EXCHANGE',dlg=None,x=0):
                     , "Cookie": cookie
                     , "Pragma": "no-cache"
                     , "Cache-Control": "no-cache"
-
                 }
 
     try:
@@ -192,7 +190,6 @@ registerListSymbolConnector('KOREA KOSDAQ EXCHANGE','KOS',QLIST_ANY,QTAG_LIST,Im
 # ============================================================================
 
 if __name__ == '__main__':
-
     setLevel(logging.INFO)
 
     from itrade_quotes import quotes

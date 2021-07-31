@@ -39,24 +39,18 @@
 # python system
 from __future__ import print_function
 import logging
-#import re
-#import thread
-#import time
 import urllib
 import csv
-#import string
 
 # iTrade system
 import itrade_config
-from itrade_logging import *
-#from itrade_isin import buildISIN,extractCUSIP,filterName
-#from itrade_defs import *
-from itrade_ext import *
+from itrade_logging import setLevel, debug
+from itrade_defs import QLIST_ANY, QTAG_LIST
+from itrade_ext import registerListSymbolConnector
 from itrade_connection import ITradeConnection
 
 # ============================================================================
 # Import_ListOfQuotes_NASDAQ()
-#
 # ============================================================================
 
 def Import_ListOfQuotes_NASDAQ(quotes,market='NASDAQ',dlg=None,x=0):
@@ -76,14 +70,12 @@ def Import_ListOfQuotes_NASDAQ(quotes,market='NASDAQ',dlg=None,x=0):
     else:
         return False
 
-
     try:
         data = urllib.urlopen(url)
         #data=connection.getDataFromUrl(url)
     except:
         debug('Import_ListOfQuotes_NASDAQ:unable to connect :-(')
         return False
-
 
     reader = csv.reader(data, delimiter=',')
     count = -1

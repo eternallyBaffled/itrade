@@ -47,15 +47,27 @@ import cookielib
 
 # iTrade system
 import itrade_config
-from itrade_logging import *
-from itrade_defs import *
-from itrade_ext import *
+from itrade_logging import setLevel, debug
+from itrade_defs import QLIST_ANY, QTAG_LIST
+from itrade_ext import registerListSymbolConnector
 from itrade_connection import ITradeConnection
 
 # ============================================================================
 # Import_ListOfQuotes_MEX()
-#
 # ============================================================================
+def removeCarriage(s):
+    if s[-1] == '\r':
+        return s[:-1]
+    else:
+        return s
+
+
+def splitLines(buf):
+    lines = string.split(buf, '\n')
+    lines = filter(lambda x: x, lines)
+
+    lines = [removeCarriage(l) for l in lines]
+    return lines
 
 
 def Import_ListOfQuotes_MEX(quotes,market='MEXICO EXCHANGE',dlg=None,x=0):
@@ -65,30 +77,15 @@ def Import_ListOfQuotes_MEX(quotes,market='MEXICO EXCHANGE',dlg=None,x=0):
                                 proxyAuth=itrade_config.proxyAuthentication)
 
     if market=='MEXICO EXCHANGE':
-
         url = 'https://www.bmv.com.mx/wb3/wb/BMV/BMV_busqueda_de_valores/_rid/222/_mto/3/_url/BMVAPP/componenteSelectorInput.jsf?st=1'
-
     else:
         return False
-
-
-    def splitLines(buf):
-        lines = string.split(buf, '\n')
-        lines = filter(lambda x:x, lines)
-        def removeCarriage(s):
-            if s[-1]=='\r':
-                return s[:-1]
-            else:
-                return s
-        lines = [removeCarriage(l) for l in lines]
-        return lines
 
     try:
         data=connection.getDataFromUrl(url)
     except:
         debug('Import_ListOfQuotes_MEX unable to connect :-(')
         return False
-
 
     cj = None
 
@@ -131,7 +128,6 @@ def Import_ListOfQuotes_MEX(quotes,market='MEXICO EXCHANGE',dlg=None,x=0):
     countname = 0
     countserie = 0
     for page in range(28):
-
         indice = str(page)
         previouspage = str(page-1)
         endpage = '27'
@@ -162,7 +158,6 @@ def Import_ListOfQuotes_MEX(quotes,market='MEXICO EXCHANGE',dlg=None,x=0):
         #print response.status, response.reason
 
         if page > 0 :
-
             #Partial activation of the Progressbar
             x=x+0.07
             dlg.Update(x,'%s : %s / %s'%(market,indice,endpage))
@@ -189,7 +184,6 @@ def Import_ListOfQuotes_MEX(quotes,market='MEXICO EXCHANGE',dlg=None,x=0):
             lineserie = 'text-valign:bottom;">'
 
             for line in lines:
-
                 if lineticker in line:
                     ticker = line[line.index(lineticker)+19:line.index('</span>')]
                 if linename in line:

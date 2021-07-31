@@ -41,16 +41,13 @@
 # python system
 from __future__ import print_function
 import logging
-import re
-import thread
-import time
 import string
 
 # iTrade system
 import itrade_config
-from itrade_logging import *
-from itrade_defs import *
-from itrade_ext import *
+from itrade_logging import setLevel, debug
+from itrade_defs import QLIST_ANY, QTAG_LIST
+from itrade_ext import registerListSymbolConnector
 from itrade_connection import ITradeConnection
 
 # ============================================================================
@@ -117,13 +114,11 @@ registerListSymbolConnector('ASX','SYD',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_
 # ============================================================================
 
 if __name__ == '__main__':
-    import itrade_excel
-
     setLevel(logging.INFO)
 
     from itrade_quotes import quotes
 
-    Import_ListOfQuotes_ASX(quotes,'ASX')
+    Import_ListOfQuotes_ASX(quotes, 'ASX')
 
     quotes.saveListOfQuotes()
 

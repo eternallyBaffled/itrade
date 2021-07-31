@@ -40,22 +40,32 @@
 # python system
 from __future__ import print_function
 import logging
-import re
-import thread
-import time
 import string
 
 # iTrade system
 import itrade_config
-from itrade_logging import *
-from itrade_defs import *
-from itrade_ext import *
+from itrade_logging import setLevel, debug, info
+from itrade_defs import QLIST_ANY, QTAG_LIST
+from itrade_ext import registerListSymbolConnector
 from itrade_connection import ITradeConnection
 
 # ============================================================================
 # Import_ListOfQuotes_WBO()
-#
 # ============================================================================
+def removeCarriage(s):
+    if s[-1] == '\r':
+        return s[:-1]
+    else:
+        return s
+
+
+def splitLines(buf):
+    lines = string.split(buf, '\n')
+    lines = filter(lambda x: x, lines)
+
+    lines = [removeCarriage(l) for l in lines]
+    return lines
+
 
 def Import_ListOfQuotes_WBO(quotes,market='WIENER BORSE',dlg=None,x=0):
     if itrade_config.verbose:
@@ -65,21 +75,8 @@ def Import_ListOfQuotes_WBO(quotes,market='WIENER BORSE',dlg=None,x=0):
                                 proxyAuth=itrade_config.proxyAuthentication)
     if market=='WIENER BORSE':
         url = "https://en.wienerborse.at/marketplace_products/trading/auction/?query=&markets=A_G_D&market=all"
-
     else:
-
         return False
-
-    def splitLines(buf):
-        lines = string.split(buf, '\n')
-        lines = filter(lambda x:x, lines)
-        def removeCarriage(s):
-            if s[-1]=='\r':
-                return s[:-1]
-            else:
-                return s
-        lines = [removeCarriage(l) for l in lines]
-        return lines
 
     info('Import_ListOfQuotes_WBO_%s:connect to %s' % (market,url))
 
@@ -97,7 +94,6 @@ def Import_ListOfQuotes_WBO(quotes,market='WIENER BORSE',dlg=None,x=0):
     i = 0
 
     for line in lines:
-
         #typical lines:
         #<td class="left">AT00000ATEC9</td>
         #<td class="left">ATEC</td>
@@ -111,7 +107,6 @@ def Import_ListOfQuotes_WBO(quotes,market='WIENER BORSE',dlg=None,x=0):
         if '<th colspan="6"><b>Prime Market.at</b></th>' in line : n = 0
 
         if n == 0 :
-
             if '<td class="left">' in line :
                 i = i + 1
                 ch = line[(line.find('>')+1):(line.find ('</td>'))]
@@ -126,7 +121,6 @@ def Import_ListOfQuotes_WBO(quotes,market='WIENER BORSE',dlg=None,x=0):
                     name = name.replace('Ö','O')#\xd6
                     name = name.replace('ü','u')#\xfc
                     name = name.replace('ß','?')#\xdf
-
                 elif i == 6 :
                     i = 0
 

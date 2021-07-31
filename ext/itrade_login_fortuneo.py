@@ -42,12 +42,11 @@ import logging
 import re
 import os
 import httplib
-import mimetypes
 
 # iTrade system
 import itrade_config
-from itrade_logging import *
-from itrade_login import *
+from itrade_logging import setLevel, debug
+from itrade_login import registerLoginConnector
 from itrade_local import message
 
 # ============================================================================
