@@ -36,86 +36,62 @@
 # ============================================================================
 
 # python system
-#import logging
-
-# ============================================================================
-# CSV
-# ============================================================================
-
 from __future__ import print_function
-class CSV(object):
-    def __init__(self):
-        pass
 
-    def read(self,fn,fd):
-        # open the file
-        try:
-            if fn:
-                f = open(fn,'r')
-            else:
-                f = open(fd,'r')
-        except IOError:
-            # can't open the file (existing ?)
-            return None
 
-        # convert lines to list
-        infile = f.readlines()
+def read_b(fn):
+    with open(fn, 'r') as f:
+        lines = f.readlines()
+    return lines
 
-        # close the file
-        f.close()
 
-        # return the lines
-        return infile
+def read(fn, fd):
+    try:
+        if fn:
+            return read_b(fn)
+        else:
+            return read_b(fd)
+    except IOError:
+        return None
 
-    def parse(self,line,maxn):
-        #logging.debug('CSV::parse() before :%s' % line);
-        line = line.strip()
-        if line == '':
-            # skip blank lines
-            return None
-        line = line.split(';')
-        #logging.debug('CSV::parse() after :%s' % line);
-        return line
 
-    def write(self,fn,fd,lines):
-        # open the file
-        try:
-            if fn:
-                f = open(fn,'w')
-            else:
-                f = open(fd,'w')
-        except IOError:
-            # can't open the file (existing ?)
-            print("can't open the file %s/%s (existing ?) for writing !" % (fn,fd))
-            return None
+def parser(line, separator=';'):
+    # logging.debug('CSV::parse() before :%s' % line);
+    line = line.strip()
+    if line == '':
+        return None
+    line = line.split(separator)
+    # logging.debug('CSV::parse() after :%s' % line);
+    return line
 
-        # write each lines
+
+def parse(line, maxn):
+    return parser(line, ';')
+
+
+def write_b(fn, lines):
+    with open(fn, 'w') as f:
         for eachItem in lines:
             txt = eachItem.__repr__()
-            #print txt[0],txt[-1],'>>>',txt
+            # print txt[0],txt[-1],'>>>',txt
             if txt[:2] in ('u"', "u'"):
                 txt = txt[1:]
-            if txt[0]=="'" and txt[-1]=="'":
+            if txt[0] == "'" and txt[-1] == "'":
                 txt = txt[1:-1]
-            if txt[0]=='"' and txt[-1]=='"':
+            if txt[0] == '"' and txt[-1] == '"':
                 txt = txt[1:-1]
-            f.write( txt + '\n')
+            f.write(txt + '\n')
 
-        # close the file
-        f.close()
 
-# ============================================================================
-# Install the CSV system
-# ============================================================================
-
-try:
-    ignore(csv)
-except NameError:
-    csv = CSV()
-
-read = csv.read
-parse = csv.parse
-write = csv.write
+def write(fn, fd, lines):
+    try:
+        if fn:
+            write_b(fn, lines)
+        else:
+            write_b(fd, lines)
+    except IOError:
+        print("Can't open the file %s/%s for writing!" % (fn, fd))
+        return None
 
 # ============================================================================
 # That's all folks !

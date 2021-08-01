@@ -182,8 +182,8 @@ class Trades(object):
         except OSError:
             pass
 
-    def load(self,infile=None):
-        infile = itrade_csv.read(infile,os.path.join(itrade_config.dirCacheData,'%s.txt' % self.m_quote.key()))
+    def load(self, infile=None):
+        infile = itrade_csv.read(infile, os.path.join(itrade_config.dirCacheData, '%s.txt' % self.m_quote.key()))
         #print 'Trades:load::',infile
         if infile:
             # scan each line to read each trade
