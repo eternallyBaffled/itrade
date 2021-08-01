@@ -37,18 +37,20 @@
 
 # python system
 from __future__ import print_function
-from datetime import *
-from math import pow,sqrt
+from datetime import date
+from math import pow, sqrt
 import logging
+import os
 
 # numpy
 from numpy import array
 
 # iTrade system
-from itrade_logging import *
+import itrade_config
+from itrade_logging import setLevel, info, debug
 import itrade_csv
-from itrade_datation import gCal,Datation
-from itrade_candle import *
+from itrade_datation import gCal, Datation
+from itrade_candle import Candle, CANDLE_VOLUME_AVERAGE, CANDLE_VOLUME_TREND_NOTREND
 
 # ============================================================================
 # Trade

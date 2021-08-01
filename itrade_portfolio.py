@@ -39,15 +39,17 @@
 from __future__ import print_function
 import datetime
 import logging
+import os
 
 # iTrade system
-from itrade_logging import *
+import itrade_config
+from itrade_logging import setLevel, debug, info
 import itrade_datation
 from itrade_quotes import quotes,QUOTE_CASH,QUOTE_CREDIT,QUOTE_BOTH
 from itrade_matrix import createMatrix
-from itrade_local import message,getLang
+from itrade_local import message, getLang
 import itrade_csv
-from itrade_currency import currency2symbol,currencies,convert
+from itrade_currency import currency2symbol, currencies,convert
 from itrade_vat import country2vat
 from itrade_login import getLoginConnector
 from itrade_market import getDefaultIndice
@@ -1388,7 +1390,6 @@ def newPortfolio(fn=None):
 # ============================================================================
 
 def cmdline_evaluatePortfolio(year=2006):
-
     print('--- load current portfolio ---')
     p = loadPortfolio()
     print('... %s:%s:%s ' % (p.filename(),p.name(),p.accountref()))

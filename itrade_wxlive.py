@@ -37,7 +37,6 @@
 
 # python system
 from __future__ import print_function
-import os
 import logging
 import time
 import thread
@@ -45,9 +44,8 @@ import random
 
 # iTrade system
 import itrade_config
-from itrade_logging import *
+from itrade_logging import setLevel, info
 from itrade_local import message
-import itrade_quotes
 import itrade_import
 import itrade_currency
 
@@ -619,7 +617,7 @@ if __name__ == '__main__':
     import itrade_config
     itrade_config.loadConfig()
 
-    from itrade_local import *
+    from itrade_local import setLang, gMessage
     setLang('us')
     gMessage.load()
 
@@ -628,7 +626,7 @@ if __name__ == '__main__':
     itrade_ext.loadExtensions(itrade_config.fileExtData,itrade_config.dirExtData)
 
     # init modules
-    from itrade_quotes import *
+    from itrade_quotes import initQuotesModule, quotes
     initQuotesModule()
 
     ticker = 'GTO'

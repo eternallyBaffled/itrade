@@ -37,11 +37,10 @@
 
 # python system
 import logging
-import locale
 
 # iTrade system
-from itrade_logging import *
-from itrade_quotes import *
+from itrade_logging import setLevel, info
+from itrade_quotes import quotes, initQuotesModule, QUOTE_CASH, QUOTE_CREDIT
 from itrade_local import message
 import itrade_config
 
@@ -332,7 +331,7 @@ if __name__ == '__main__':
     import itrade_config
     itrade_config.loadConfig()
 
-    from itrade_local import *
+    from itrade_local import setLang, gMessage
     setLang('us')
     gMessage.load()
 
@@ -348,7 +347,7 @@ if __name__ == '__main__':
     quote = quotes.lookupTicker(ticker)
     info('%s: %s' % (ticker,quote))
 
-    from itrade_portfolio import *
+    from itrade_portfolio import initPortfolioModule, loadPortfolio
     initPortfolioModule()
 
     port = loadPortfolio('default')

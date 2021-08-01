@@ -38,6 +38,7 @@
 
 # python system
 import logging
+import os
 
 # iTrade system
 import itrade_config
@@ -50,7 +51,7 @@ import wx.html
 import wx.lib.wxpTag
 
 # iTrade system
-from itrade_logging import *
+from itrade_logging import setLevel
 from itrade_local import message
 from itrade_wxhtml import wxUrlClickHtmlWindow,EVT_HTML_URL_CLICK
 

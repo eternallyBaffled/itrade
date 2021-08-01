@@ -37,13 +37,13 @@
 
 # python system
 from __future__ import print_function
-import datetime
 import logging
+import os
 
 # iTrade system
-from itrade_logging import *
-from itrade_quotes import quotes,quote_reference
-from itrade_portfolio import *
+import itrade_config
+from itrade_logging import setLevel, info, debug
+from itrade_quotes import quotes, quote_reference
 import itrade_csv
 
 # ============================================================================
@@ -173,7 +173,6 @@ class TradingMatrix(object):
 
 # ============================================================================
 # createMatrix
-#
 # ============================================================================
 
 def createMatrix(fn='default',dp=None):

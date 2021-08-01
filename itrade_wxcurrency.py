@@ -38,8 +38,6 @@
 # python system
 import os
 import logging
-import time
-import thread
 
 # iTrade system
 import itrade_config
@@ -52,13 +50,13 @@ import wx.lib.mixins.listctrl as wxl
 import wx.grid as gridlib
 
 # iTrade system
-from itrade_logging import *
+from itrade_logging import setLevel, debug, info
 from itrade_local import message
 from itrade_currency import currencies, list_of_currencies
 
 # iTrade wxPython system
 from itrade_wxmixin import iTrade_wxFrame
-from itrade_wxlive import iTrade_wxLiveCurrencyMixin,EVT_UPDATE_LIVECURRENCY
+from itrade_wxlive import iTrade_wxLiveCurrencyMixin, EVT_UPDATE_LIVECURRENCY
 from itrade_wxconvert import open_iTradeConverter
 
 # ============================================================================
@@ -358,7 +356,7 @@ def open_iTradeCurrencies(win):
 if __name__ == '__main__':
     setLevel(logging.INFO)
 
-    from itrade_local import *
+    from itrade_local import setLang, gMessage
     setLang('us')
     gMessage.load()
 

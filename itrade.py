@@ -39,12 +39,13 @@
 from __future__ import print_function
 import logging
 import getopt
+import os
 import sys
 
 # iTrade system
 import itrade_config
-from itrade_local import *
-from itrade_logging import *
+from itrade_local import gMessage
+from itrade_logging import setLevel
 setLevel(logging.INFO)
 import itrade_quotes
 import itrade_ext

@@ -40,11 +40,12 @@
 import logging
 import re
 import string
-from types import *
-import operator
+from types import TupleType
+import os
+import sys
 
 # itrade system
-from itrade_logging import *
+from itrade_logging import setLevel
 from itrade_local import message
 import itrade_config
 
@@ -61,7 +62,7 @@ import wx.lib.sized_controls as sc
 from matplotlib.colors import colorConverter
 
 # iTrade wxpython
-from itrade_wxhtml import wxUrlClickHtmlWindow,EVT_HTML_URL_CLICK
+from itrade_wxhtml import wxUrlClickHtmlWindow, EVT_HTML_URL_CLICK
 
 # ============================================================================
 # MatplotColorToRGB()

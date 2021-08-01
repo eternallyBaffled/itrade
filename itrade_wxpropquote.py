@@ -39,15 +39,13 @@
 from __future__ import print_function
 import os
 import logging
-import datetime
-import locale
 
 # iTrade system
-from itrade_logging import *
-from itrade_quotes import *
+from itrade_ext import listLiveConnector, listImportConnector
+from itrade_logging import setLevel, info
+from itrade_quotes import initQuotesModule, quotes, Quote
 from itrade_local import message
-from itrade_config import *
-#from itrade_import import *
+import itrade_config
 from itrade_wxselectquote import select_iTradeQuote
 from itrade_wxutil import iTradeInformation
 
@@ -553,7 +551,7 @@ if __name__ == '__main__':
     import itrade_config
     itrade_config.loadConfig()
 
-    from itrade_local import *
+    from itrade_local import setLang, gMessage
     setLang('us')
     gMessage.load()
 

@@ -40,19 +40,14 @@
 from __future__ import print_function
 import os
 import logging
-import webbrowser
-import datetime
-import locale
 
 # iTrade system
-from itrade_logging import *
-from itrade_quotes import *
+from itrade_logging import setLevel, info
+from itrade_quotes import initQuotesModule, quotes
 from itrade_local import message
-from itrade_config import *
-from itrade_market import list_of_markets,market2place
-from itrade_isin import checkISIN
-from itrade_defs import *
-from itrade_ext import *
+import itrade_config
+from itrade_market import list_of_markets, market2place
+from itrade_defs import QLIST_ALL, QLIST_INDICES, QLIST_BONDS, QLIST_TRACKERS, QLIST_USER, QLIST_SYSTEM
 
 from itrade_wxmixin import iTradeSelectorListCtrl
 from itrade_wxutil import iTradeSizedDialog
@@ -477,7 +472,7 @@ if __name__ == '__main__':
     import itrade_config
     itrade_config.loadConfig()
 
-    from itrade_local import *
+    from itrade_local import setLang, gMessage
     setLang('us')
     gMessage.load()
 

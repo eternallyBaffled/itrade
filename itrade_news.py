@@ -42,13 +42,11 @@ import re
 import webbrowser
 
 # iTrade system
-import itrade_config
-from itrade_logging import *
+from itrade_logging import setLevel, debug
 
 # News feed
 from itrade_news_google import gNewsGoogle
 from itrade_news_boursorama import gNewsBoursorama
-from itrade_news_balo import gNewsBalo
 
 # ============================================================================
 # News()

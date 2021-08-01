@@ -38,7 +38,7 @@
 
 # python system
 import logging
-from datetime import *
+from datetime import date
 
 # iTrade system
 import itrade_config
@@ -49,15 +49,13 @@ if not itrade_config.nowxversion:
 import wx
 
 # iTrade system
-from itrade_logging import *
-import itrade_config
+from itrade_logging import setLevel, debug, info
 from itrade_local import message
-from itrade_quotes import QUOTE_BOTH,QUOTE_CASH,QUOTE_CREDIT
-from itrade_portfolio import *
+from itrade_quotes import QUOTE_CASH, QUOTE_CREDIT
+from itrade_portfolio import cmdline_evaluatePortfolio, Portfolio, loadPortfolio
 
 # iTrade wxPython system
-from itrade_wxhtml import wxUrlClickHtmlWindow,EVT_HTML_URL_CLICK
-import itrade_wxres
+from itrade_wxhtml import wxUrlClickHtmlWindow, EVT_HTML_URL_CLICK
 from itrade_wxmixin import iTrade_wxFrame
 
 # ============================================================================
@@ -377,13 +375,13 @@ if __name__ == '__main__':
 
     app = wx.App(False)
 
-    from itrade_local import *
+    from itrade_local import setLang, gMessage
     setLang('us')
     gMessage.load()
 
     port,matrix = cmdline_evaluatePortfolio()
 
-    open_iTradeMoney(None,port,None)
+    open_iTradeMoney(None, port, None)
     app.MainLoop()
 
 # ============================================================================

@@ -46,7 +46,7 @@ import time
 import string
 from gzip import GzipFile
 from StringIO import StringIO
-from threading import Lock, currentThread
+from threading import Lock
 from urllib import urlencode
 
 # iTrade system

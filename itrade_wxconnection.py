@@ -52,14 +52,12 @@ from wx.lib import masked
 import wx.lib.sized_controls as sc
 
 # iTrade system
-from itrade_logging import *
 from itrade_local import message
-
+from itrade_logging import setLevel
 from itrade_wxutil import iTradeSizedDialog
 
 # ============================================================================
 # iTradeConnectionDialog
-#
 # ============================================================================
 
 class iTradeConnectionDialog(iTradeSizedDialog):
@@ -196,7 +194,7 @@ if __name__ == '__main__':
 
     app = wx.App(False)
 
-    from itrade_local import *
+    from itrade_local import setLang, gMessage
     setLang('us')
     gMessage.load()
 

@@ -38,9 +38,14 @@
 
 # python system
 import logging
+import os
 
 # iTrade system
 import itrade_config
+from itrade_alerts import alerts
+from itrade_local import message
+from itrade_logging import setLevel, debug, info
+from itrade_portfolio import loadPortfolio, Portfolio
 
 # wxPython system
 if not itrade_config.nowxversion:
@@ -49,16 +54,7 @@ import wx
 import wx.lib.mixins.listctrl as wxl
 
 # iTrade system
-from itrade_logging import *
-from itrade_local import message
-from itrade_portfolio import *
-
-import itrade_wxres
 from itrade_wxmixin import iTrade_wxFrame
-
-# Alerts subsystem
-from itrade_alerts import alerts
-import itrade_alerts_srd
 
 # ============================================================================
 # column number
@@ -245,7 +241,7 @@ def open_iTradeAlerts(win,port=None):
         # set focus
         win.m_hAlerts.SetFocus()
     else:
-        if not isinstance(port,Portfolio):
+        if not isinstance(port, Portfolio):
             port = loadPortfolio()
         frame = iTradeAlertsWindow(win, -1, "%s - %s" %(message('alerts_title'),port.name()),port)
         if win:
@@ -263,7 +259,7 @@ if __name__ == '__main__':
 
     app = wx.App(False)
 
-    from itrade_local import *
+    from itrade_local import setLang, gMessage
     setLang('us')
     gMessage.load()
 

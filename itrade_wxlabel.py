@@ -40,7 +40,7 @@ import logging
 import string
 
 # itrade system
-from itrade_logging import *
+from itrade_logging import setLevel, debug
 import itrade_config
 
 # wxPython system
@@ -179,7 +179,6 @@ class iTrade_wxLabelPopup(object):
 # ============================================================================
 
 def DrawRectLabel(dc,label,x,y,w,h,colorpen,colorbg,font,vert='top',horz='center'):
-
     memDC = wx.MemoryDC()
     bmp = wx.EmptyBitmap(w,h)
 

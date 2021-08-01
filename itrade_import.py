@@ -38,12 +38,13 @@
 
 # python system
 from __future__ import print_function
+from datetime import date
 import logging
-from datetime import *
+import os
 
 # iTrade system
-from itrade_logging import *
 import itrade_config
+from itrade_logging import setLevel, info, debug
 
 # ============================================================================
 # Importation from internet : HISTORIC
@@ -63,7 +64,6 @@ def import_from_internet(quote,fromdate=None,todate=None):
 
     abc = quote.importconnector()
     if abc and abc.connect():
-
         state = abc.getstate()
         if state:
             #debug("state=%s" % (state))
@@ -122,7 +122,6 @@ def liveupdate_from_internet(quote):
         return bRet
 
     elif abc.connect():
-
         state = abc.getstate()
         if state:
             #debug("state=%s" % (state))
@@ -154,7 +153,6 @@ def liveupdate_from_internet(quote):
         return bRet
 
     else:
-
         print("liveupdate_from_internet(%s): connect() failure :-(" % quote.ticker())
 
         abc.release()
@@ -256,7 +254,7 @@ def cmdline_importMatrixFromFile(matrix,file):
 if __name__ == '__main__':
     setLevel(logging.INFO)
 
-    from itrade_quotes import *
+    from itrade_quotes import quotes
 
     print('AUSY (Euronext market):')
     q = quotes.lookupTicker('OSI','EURONEXT')

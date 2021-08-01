@@ -37,14 +37,13 @@
 
 # python system
 from __future__ import print_function
-import os
 import logging
-#import webbrowser
-#import datetime
-#import locale
 
 # iTrade system
 import itrade_config
+from itrade_logging import setLevel
+from itrade_quotes import quotes, Quote
+from itrade_local import message, getGroupChar, getDecimalChar
 
 # wxPython system
 if not itrade_config.nowxversion:
@@ -52,11 +51,7 @@ if not itrade_config.nowxversion:
 import wx
 from wx.lib import masked
 
-# iTrade system
-from itrade_logging import *
-from itrade_quotes import *
-from itrade_local import message,getGroupChar,getDecimalChar
-
+# iTrade wx system
 from itrade_wxselectquote import select_iTradeQuote
 from itrade_wxutil import iTradeYesNo
 
@@ -259,7 +254,7 @@ if __name__ == '__main__':
 
     app = wx.App(False)
 
-    from itrade_local import *
+    from itrade_local import setLang, gMessage
     setLang('us')
     gMessage.load()
 

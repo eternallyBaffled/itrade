@@ -39,16 +39,13 @@
 from __future__ import print_function
 import os
 import logging
-import time
-import thread
 
 # wxPython system
 import wx
 
 # iTrade system
 import itrade_config
-from itrade_logging import *
-from itrade_local import message
+from itrade_logging import setLevel, info
 
 # ============================================================================
 # iTrade_wxPivots
@@ -105,27 +102,21 @@ class iTrade_wxPivots(wx.Panel):
 # ============================================================================
 
 if __name__ == '__main__':
-
     class WndTest(wx.Frame):
         def __init__(self, parent,quote):
             wx.Frame.__init__(self,parent,wx.NewId(), 'WndTest', size = (300,300), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE)
             self.m_pivots = iTrade_wxPivots(self,quote)
             self.m_quote = quote
 
-# ============================================================================
-# Test me
-# ============================================================================
-
-if __name__ == '__main__':
     setLevel(logging.INFO)
 
-    from itrade_local import *
+    from itrade_local import setLang, gMessage
     setLang('us')
     gMessage.load()
 
     ticker = 'AXL'
 
-    from itrade_quotes import *
+    from itrade_quotes import quotes
     quote = quotes.lookupTicker(ticker)
     quote.loadTrades()
     info('%s: %s' % (ticker,quote))

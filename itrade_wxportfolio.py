@@ -40,6 +40,7 @@
 # python system
 from __future__ import print_function
 import logging
+import os
 
 # iTrade system
 import itrade_config
@@ -54,16 +55,17 @@ import wx.lib.sized_controls as sc
 from wx.lib import masked
 
 # iTrade system
-from itrade_logging import *
-from itrade_local import message,getGroupChar,getDecimalChar
-from itrade_quotes import *
-from itrade_portfolio import *
-from itrade_market import list_of_markets,getDefaultIndice
+from itrade_defs import QLIST_INDICES
+from itrade_logging import setLevel, info, debug
+from itrade_local import message, getGroupChar, getDecimalChar
+from itrade_quotes import quotes
+from itrade_portfolio import loadPortfolio, initPortfolioModule, portfolios, Portfolio
+from itrade_market import list_of_markets, getDefaultIndice
 from itrade_currency import list_of_currencies
 
 import itrade_wxres
 from itrade_wxmixin import iTradeSelectorListCtrl
-from itrade_wxutil import iTradeError,iTradeYesNo,iTradeSizedDialog
+from itrade_wxutil import iTradeError, iTradeYesNo, iTradeSizedDialog
 
 # ============================================================================
 # iTradePortfolioSelector
@@ -582,7 +584,7 @@ if __name__ == '__main__':
 
     initPortfolioModule()
 
-    from itrade_local import *
+    from itrade_local import setLang, gMessage
     setLang('us')
     gMessage.load()
 

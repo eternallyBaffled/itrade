@@ -38,19 +38,22 @@
 
 # python system
 from __future__ import print_function
-from datetime import *
+from datetime import date
 import logging
+import os
+import string
 
 # iTrade system
-from itrade_logging import *
-from itrade_local import message,getGroupChar
+import itrade_config
+from itrade_logging import info, setLevel, debug
+from itrade_local import message, getGroupChar
 import itrade_csv
 import itrade_trades
 from itrade_import import cmdline_importQuoteFromInternet, import_from_internet, liveupdate_from_internet
-from itrade_defs import *
-from itrade_ext import *
-from itrade_datation import *
-from itrade_market import market2currency,compute_country,isin2market,market2place,list_of_markets,set_market_loaded,is_market_loaded
+from itrade_defs import QLIST_SYSTEM, QTAG_IMPORT, QLIST_INDICES, QTAG_ANY, QTAG_LIVE, QLIST_BONDS, QLIST_USER, QLIST_TRACKERS
+from itrade_ext import getImportConnector, getLiveConnector, getDefaultLiveConnector
+from itrade_datation import Datation, gCal, date2str
+from itrade_market import market2currency, compute_country, market2place, list_of_markets, set_market_loaded, is_market_loaded
 import itrade_currency
 
 # ============================================================================
@@ -1564,10 +1567,9 @@ if __name__ == '__main__':
     setLevel(logging.INFO)
 
      # load configuration
-    import itrade_config
     itrade_config.loadConfig()
 
-    from itrade_local import *
+    from itrade_local import setLang, gMessage
     setLang('us')
     gMessage.load()
 

@@ -37,8 +37,9 @@
 # ============================================================================
 
 # python system
-import datetime
+from datetime import timedelta, datetime, date
 import logging
+import os
 
 # iTrade system
 import itrade_config
@@ -53,17 +54,18 @@ from wx.lib import masked
 import wx.lib.sized_controls as sc
 
 # iTrade system
-from itrade_logging import *
-from itrade_local import message,getGroupChar,getDecimalChar
-from itrade_quotes import *
-from itrade_portfolio import *
+from itrade_logging import setLevel, info, debug
+from itrade_local import message, getGroupChar, getDecimalChar
+from itrade_quotes import initQuotesModule, quotes
+from itrade_portfolio import loadPortfolio, initPortfolioModule, Operation, Portfolio, OPERATION_LIQUIDATION,\
+    OPERATION_SELL, isOperationTypeHasShareNumber, signOfOperationType, isOperationTypeIncludeTaxes,\
+    isOperationTypeAQuote, OPERATION_BUY, OPERATION_CREDIT, OPERATION_DEBIT, OPERATION_FEE, OPERATION_DIVIDEND,\
+    OPERATION_DETACHMENT, OPERATION_INTEREST, OPERATION_BUY_SRD, OPERATION_SELL_SRD, OPERATION_QUOTE, OPERATION_REGISTER
 from itrade_currency import currency2symbol
 
-#from itrade_wxdatation import itrade_datePicker
 from itrade_wxselectquote import select_iTradeQuote
-import itrade_wxres
-from itrade_wxmixin import iTrade_wxFrame,iTradeSelectorListCtrl
-from itrade_wxutil import FontFromSize,iTradeSizedDialog
+from itrade_wxmixin import iTrade_wxFrame
+from itrade_wxutil import FontFromSize, iTradeSizedDialog
 
 # ============================================================================
 # menu identifier
@@ -188,7 +190,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
             self.m_expenses = 0.0
             self.m_number = 0
             self.m_name = ""
-            self.m_datetime = datetime.datetime.now()
+            self.m_datetime = datetime.now()
             self.m_ref = -1
 
         self.m_parent = parent
@@ -416,7 +418,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
         dRet = self.wxDateCtrl.GetValue()
         if dRet:
             debug('OnDate: %s\n' % dRet)
-            self.m_datetime = self.m_datetime.combine(datetime.date(dRet.GetYear(),dRet.GetMonth()+1,dRet.GetDay()), self.m_datetime.time())
+            self.m_datetime = self.m_datetime.combine(date(dRet.GetYear(),dRet.GetMonth()+1,dRet.GetDay()), self.m_datetime.time())
             self.refreshPage()
 
     def OnTime(self, evt):
@@ -790,13 +792,13 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
             return True
         elif self.m_period == PERIOD_CURRENTYEAR:
             # year should be the current one
-            return op.date().year==datetime.date.today().year
+            return op.date().year==date.today().year
         elif self.m_period == PERIOD_90DAYS:
             # last 90 days
-            return (datetime.date.today() - op.date()) <= timedelta(90)
+            return (date.today() - op.date()) <= timedelta(90)
         elif self.m_period == PERIOD_30DAYS:
             # last 30 days
-            return (datetime.date.today() - op.date()) <= timedelta(30)
+            return (date.today() - op.date()) <= timedelta(30)
         return False
 
     # --- [ list population ] -------------------------------------
@@ -900,14 +902,14 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
                     else:
                         vsrd = 0.0
                         self.m_list.SetStringItem(x,IDC_SRD,'%d' % eachOp.ref())
-                        
+
                     try:
                         pr = str( '%.2f'%((vcredit + vdebit)/eachOp.nv_number()))
                         if pr == '0.00' : pr =''
                     except ZeroDivisionError:
                         pr = ''
                     self.m_list.SetStringItem(x,IDC_PRU,pr)
-                    
+
                     self.itemDataMap[x] = (eachOp.date().strftime('%Y%m%d'),eachOp.operation(),eachOp.description(),eachOp.nv_number(),pr,vdebit,vcredit,eachOp.nv_expenses(),balance,vsrd)
                     self.itemOpMap[x] = eachOp.ref()
 
@@ -1215,7 +1217,7 @@ def add_iTradeOperation(win,portfolio,quote,type):
         key = quote.key()
     else:
         key = None
-    op = Operation(d=datetime.datetime.now(),t=type,m=key,v='0.0',e='0.0',n='0',vat=portfolio.vat(),ref=-1)
+    op = Operation(d=datetime.now(),t=type,m=key,v='0.0',e='0.0',n='0',vat=portfolio.vat(),ref=-1)
     aRet = edit_iTradeOperation(win,op,OPERATION_ADD,market=portfolio.market(),currency=portfolio.currency())
     if aRet:
         info('add_iTradeOperation: date=%s type=%s name=%s value=%12.2f expenses=%12.2f number=%d ref=%d' %(str(aRet[0]),aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6]))
@@ -1236,7 +1238,7 @@ if __name__ == '__main__':
     # load configuration
     itrade_config.loadConfig()
 
-    from itrade_local import *
+    from itrade_local import setLang, gMessage
     setLang('us')
     gMessage.load()
 

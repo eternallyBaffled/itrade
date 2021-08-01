@@ -37,7 +37,7 @@
 
 # python system
 from __future__ import print_function
-import logging
+import os
 
 # iTrade system
 import itrade_config
@@ -49,17 +49,16 @@ import wx
 import wx.lib.mixins.listctrl as wxl
 
 # iTrade system
-from itrade_logging import *
+from itrade_logging import debug
 from itrade_local import message
-from itrade_matrix import *
-from itrade_quotes import *
+from itrade_quotes import QUOTE_GREEN, QUOTE_RED, QUOTE_INVALID, QUOTE_NOCHANGE, QUOTE_BOTH, QUOTE_CREDIT, QUOTE_CASH
 from itrade_currency import currencies
 
 # iTrade wx system
 from itrade_wxquote import open_iTradeQuote
 from itrade_wxpropquote import open_iTradeQuoteProperty
 from itrade_wxutil import FontFromSize
-from itrade_wxlive import iTrade_wxLiveMixin,EVT_UPDATE_LIVE
+from itrade_wxlive import iTrade_wxLiveMixin, EVT_UPDATE_LIVE
 
 # ============================================================================
 # column number
@@ -1364,7 +1363,6 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
 # ============================================================================
 
 class iTrade_TradingPanel(wx.Panel):
-
     def __init__(self,parent,wm,id,portfolio,matrix):
         wx.Panel.__init__(self, parent, id)
         self.m_parent = parent

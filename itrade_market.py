@@ -38,19 +38,14 @@
 
 # python system
 from __future__ import print_function
-import logging
 import re
-import string
-from datetime import datetime
-import time
-import pytz
+import os
 from pytz import timezone
 
 # iTrade system
-from itrade_logging import *
 from itrade_local import message
 import itrade_csv
-from itrade_defs import *
+from itrade_defs import QLIST_INDICES
 from itrade_connection import ITradeConnection
 import itrade_config
 

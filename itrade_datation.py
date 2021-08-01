@@ -39,14 +39,16 @@
 
 # python system
 from __future__ import print_function
-from datetime import *
+from datetime import datetime, timedelta, date
 import time
 import logging
+import os
 import string
 import re
 
 # iTrade system
-from itrade_logging import *
+import itrade_config
+from itrade_logging import setLevel, info, debug
 from itrade_local import getShortDateFmt
 import itrade_csv
 

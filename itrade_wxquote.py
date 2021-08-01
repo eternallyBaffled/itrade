@@ -41,15 +41,13 @@
 from __future__ import print_function
 import os
 import logging
-import webbrowser
-import datetime
-import locale
 
 # iTrade system
-from itrade_logging import *
-from itrade_quotes import *
-from itrade_local import message,setLocale
-from itrade_config import *
+from itrade_datation import gCal
+from itrade_logging import setLevel, debug
+from itrade_quotes import quotes, initQuotesModule, Quote
+from itrade_local import message
+import itrade_config
 
 # wxPython system
 if not itrade_config.nowxversion:
@@ -62,15 +60,14 @@ import wx.lib.sized_controls as sc
 # matplotlib system
 import matplotlib
 
-from matplotlib.dates import date2num, num2date
-from myfinance import candlestick, plot_day_summary2, candlestick2, volume_overlay, plot_day_summary3
-#from myfinance import index_bar
+from matplotlib.dates import date2num
+from myfinance import plot_day_summary2, candlestick2, volume_overlay, plot_day_summary3
 
 # iTrade wxPython system
-from itrade_wxhtml import *
+from itrade_wxhtml import iTradeHtmlPanel, iTradeRSSPanel
 from itrade_wxmixin import iTrade_wxFrame
-from itrade_wxgraph import iTrade_wxPanelGraph,fmtVolumeFunc,fmtVolumeFunc0
-from itrade_wxlive import iTrade_wxLive,iTrade_wxLiveMixin,EVT_UPDATE_LIVE
+from itrade_wxgraph import iTrade_wxPanelGraph, fmtVolumeFunc
+from itrade_wxlive import iTrade_wxLive, iTrade_wxLiveMixin, EVT_UPDATE_LIVE
 from itrade_wxselectquote import select_iTradeQuote
 from itrade_wxpropquote import iTradeQuotePropertiesPanel
 from itrade_wxdecision import iTrade_wxDecision
@@ -1275,7 +1272,7 @@ if __name__ == '__main__':
     import itrade_config
     itrade_config.loadConfig()
 
-    from itrade_local import *
+    from itrade_local import setLang, gMessage
     setLang('us')
     gMessage.load()
 
@@ -1288,7 +1285,7 @@ if __name__ == '__main__':
 
     itrade_config.verbose = False
 
-    from itrade_portfolio import *
+    from itrade_portfolio import initPortfolioModule, loadPortfolio
     initPortfolioModule()
 
     port = loadPortfolio('default')

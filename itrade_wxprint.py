@@ -40,7 +40,7 @@ import logging
 
 # iTrade system
 import itrade_config
-from itrade_logging import *
+from itrade_logging import setLevel, info
 from itrade_local import message,getLang
 
 # wxPython system
@@ -49,7 +49,6 @@ if not itrade_config.nowxversion:
 import wx
 
 # matplotlib system
-import matplotlib.backends.backend_wxagg
 from matplotlib.backends.backend_wx import RendererWx
 
 # ============================================================================
@@ -336,7 +335,6 @@ class MyTestFrame(wx.Frame):
         self.Destroy()
 
 class MyTestApp(wx.App):
-
     def OnInit(self):
         frame = MyTestFrame(None, -1)
         frame.Show(True)

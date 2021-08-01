@@ -40,15 +40,11 @@
 from __future__ import print_function
 import logging
 import re
-import string
 import time
-import webbrowser
-
-#from urllib import *
-from httplib import *
 
 # iTrade system
-from itrade_logging import *
+import itrade_config
+from itrade_logging import setLevel, info, debug
 from itrade_local import message
 from itrade_connection import ITradeConnection
 

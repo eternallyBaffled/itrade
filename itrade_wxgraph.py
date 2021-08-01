@@ -37,26 +37,21 @@
 
 # python system
 from __future__ import print_function
-import logging
+import os
 
 # iTrade system
-from itrade_logging import *
+from itrade_logging import debug, info
 from itrade_local import message
 import itrade_config
 
 # matplotlib system
-import matplotlib
-import matplotlib.backends.backend_wxagg
-
-#from matplotlib.backends.backend_wx import FigureCanvasWx as FigureCanvas
 from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as FigureCanvas
 from matplotlib.backends.backend_wx import _load_bitmap
 
 from matplotlib.figure import Figure
-from matplotlib.axes import Subplot
-from matplotlib.ticker import  IndexLocator, FuncFormatter, NullFormatter, MultipleLocator
+from matplotlib.ticker import FuncFormatter, MultipleLocator
 
-from pylab import *
+from pylab import setp, IndexDateFormatter
 
 # wxPython system
 if not itrade_config.nowxversion:
@@ -64,8 +59,8 @@ if not itrade_config.nowxversion:
 import wx
 
 # iTrade wxPython system
-from itrade_wxlabel import iTrade_wxLabelPopup,DrawRectLabel
-from itrade_wxprint import iTrade_wxPanelPrint as PanelPrint,CanvasPrintout
+from itrade_wxlabel import iTrade_wxLabelPopup, DrawRectLabel
+from itrade_wxprint import iTrade_wxPanelPrint as PanelPrint, CanvasPrintout
 
 # ============================================================================
 # GTool

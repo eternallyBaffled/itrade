@@ -45,7 +45,6 @@ import os
 # iTrade system
 import itrade_logging
 import itrade_csv
-#from itrade_local import message
 from itrade_connection import ITradeConnection
 import itrade_config
 

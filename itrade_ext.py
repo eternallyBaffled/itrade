@@ -39,16 +39,16 @@
 from __future__ import print_function
 import logging
 import glob
-import os
-import re
 import imp
+import os
+import sys
 
 # iTrade system
-from itrade_logging import *
+from itrade_logging import setLevel
 import itrade_config
 from itrade_market import market2place
 from itrade_login import loggedLoginConnector
-from itrade_defs import *
+from itrade_defs import QTAG_DIFFERED, QTAG_LIVE, QLIST_ANY, QTAG_ANY
 
 # ============================================================================
 # globals
@@ -149,7 +149,6 @@ listListSymbolConnector = gListSymbolRegistry.list
 # ============================================================================
 
 def loadExtensions(file,folder):
-
     # file to manage list of extensions
     extFile = os.path.join(folder,file)
     if not os.path.exists(extFile):
@@ -199,7 +198,6 @@ def loadExtensions(file,folder):
     return True
 
 def loadOneExtension(ext,folder):
-
     global loadedModules
 
     # extract module name

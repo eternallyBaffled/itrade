@@ -41,9 +41,6 @@
 from __future__ import print_function
 import os
 import logging
-import webbrowser
-import datetime
-import locale
 
 # iTrade system
 import itrade_config
@@ -55,19 +52,19 @@ import wx
 import wx.lib.mixins.listctrl as wxl
 
 # iTrade system
-from itrade_logging import *
-from itrade_quotes import *
+from itrade_logging import setLevel, debug
+from itrade_quotes import quotes, quote_reference
 from itrade_local import message
-from itrade_market import list_of_markets,compute_country,market2place,list_of_places,market2currency
+from itrade_market import list_of_markets, compute_country, market2place, list_of_places, market2currency, isin2market
 from itrade_currency import list_of_currencies
 from itrade_isin import checkISIN
-from itrade_defs import *
-import itrade_ext
+from itrade_defs import QLIST_ALL, QLIST_SYSTEM, QLIST_USER, QLIST_BONDS, QLIST_ANY, QLIST_TRACKERS, QTAG_LIST, QLIST_INDICES
+from itrade_ext import getListSymbolConnector
 
 from itrade_wxmixin import iTradeSelectorListCtrl
 from itrade_wxpropquote import open_iTradeQuoteProperty
 
-from itrade_wxutil import iTradeInformation,iTradeError,iTradeYesNo
+from itrade_wxutil import iTradeInformation, iTradeError, iTradeYesNo
 
 # ============================================================================
 # iTradeQuoteListDialog
@@ -863,7 +860,7 @@ if __name__ == '__main__':
 
     app = wx.App(False)
 
-    #from itrade_local import *
+    #from itrade_local import setLang, gMessage
     #setLang('us')
     #gMessage.load()
 

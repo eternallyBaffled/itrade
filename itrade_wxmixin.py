@@ -38,13 +38,10 @@
 # python system
 from __future__ import print_function
 import os
-import logging
 import pprint
 
 # iTrade system
 import itrade_config
-from itrade_logging import *
-from itrade_local import message
 
 # wxPython system
 if not itrade_config.nowxversion:
@@ -53,7 +50,6 @@ import wx
 import wx.lib.mixins.listctrl as wxl
 
 # iTrade wxPython  system
-from itrade_wxutil import iTradeYesNo
 
 # ============================================================================
 # iTrade_wxFrame

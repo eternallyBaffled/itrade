@@ -42,7 +42,7 @@ import logging
 import string
 
 # iTrade system
-from itrade_logging import *
+from itrade_logging import setLevel, info
 
 # ============================================================================
 # isnum

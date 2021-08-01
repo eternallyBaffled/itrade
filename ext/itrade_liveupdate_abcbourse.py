@@ -50,8 +50,6 @@ import itrade_config
 import itrade_csv
 from itrade_logging import setLevel, debug, info
 from itrade_quotes import quotes
-#from itrade_defs import *
-#from itrade_ext import *
 
 # ============================================================================
 # LiveUpdate_ABCBourse()

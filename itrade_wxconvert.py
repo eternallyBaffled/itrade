@@ -36,6 +36,7 @@
 # ============================================================================
 
 # python system
+import logging
 
 # iTrade system
 import itrade_config
@@ -50,7 +51,7 @@ import wx.lib.sized_controls as sc
 import wx.lib.newevent
 
 # iTrade system
-from itrade_logging import *
+from itrade_logging import setLevel
 from itrade_local import message,getGroupChar,getDecimalChar
 from itrade_currency import list_of_currencies,convert,currencies
 
@@ -194,7 +195,7 @@ if __name__ == '__main__':
     import itrade_config
     itrade_config.loadConfig()
 
-    from itrade_local import *
+    from itrade_local import setLang, gMessage
     setLang('us')
     gMessage.load()
 

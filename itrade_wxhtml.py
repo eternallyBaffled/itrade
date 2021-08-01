@@ -39,7 +39,6 @@
 
 # python system
 import os
-import logging
 import webbrowser
 import time
 
@@ -53,7 +52,7 @@ import wx
 import wx.html as wxhtml
 
 # iTrade system
-from itrade_logging import *
+from itrade_logging import info
 from itrade_local import message
 from itrade_news import gNews
 

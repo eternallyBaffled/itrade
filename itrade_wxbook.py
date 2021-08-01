@@ -37,32 +37,32 @@
 # ============================================================================
 
 # python system
-#import logging
+from __future__ import print_function
+import time
+import os
 
 # wxPython system
-from __future__ import print_function
 import wx
 #import wx.lib.mixins.listctrl as wxl
 
 # iTrade system
 import itrade_config
-import time
-from itrade_logging import *
-from itrade_local import message,gMessage,getLang
-from itrade_portfolio import loadPortfolio,OPERATION_BUY,OPERATION_SELL
-from itrade_matrix import *
-from itrade_quotes import *
-from itrade_defs import *
-from itrade_ext import *
-from itrade_login import *
+from itrade_logging import debug, info
+from itrade_local import message, gMessage, getLang
+from itrade_portfolio import loadPortfolio, OPERATION_BUY, OPERATION_SELL
+from itrade_matrix import createMatrix
+from itrade_quotes import quotes
+from itrade_defs import QLIST_INDICES
+from itrade_ext import getDefaultLiveConnector
+from itrade_login import getLoginConnector, listLoginConnector
 
 # iTrade wx system
 if not itrade_config.nowxversion:
     import itrade_wxversion
-from itrade_wxquote import open_iTradeQuote,addInMatrix_iTradeQuote,removeFromMatrix_iTradeQuote
+from itrade_wxquote import open_iTradeQuote, addInMatrix_iTradeQuote, removeFromMatrix_iTradeQuote
 from itrade_wxpropquote import open_iTradeQuoteProperty
-from itrade_wxportfolio import select_iTradePortfolio,properties_iTradePortfolio
-from itrade_wxoperations import open_iTradeOperations,add_iTradeOperation
+from itrade_wxportfolio import select_iTradePortfolio, properties_iTradePortfolio
+from itrade_wxoperations import open_iTradeOperations, add_iTradeOperation
 from itrade_wxmoney import open_iTradeMoney
 from itrade_wxalerts import open_iTradeAlerts
 from itrade_wxcurrency import open_iTradeCurrencies
@@ -71,13 +71,13 @@ from itrade_wxhtml import iTradeLaunchBrowser
 from itrade_wxlistquote import list_iTradeQuote
 from itrade_wxlogin import login_UI
 from itrade_wxconnection import connection_UI
-from itrade_wxstops import addOrEditStops_iTradeQuote,removeStops_iTradeQuote
+from itrade_wxstops import addOrEditStops_iTradeQuote, removeStops_iTradeQuote
 from itrade_wxmixin import iTrade_wxFrame
 from itrade_wxconvert import open_iTradeConverter
 
-from itrade_wxpanes import iTrade_MatrixPortfolioPanel,iTrade_MatrixQuotesPanel,iTrade_MatrixStopsPanel,iTrade_MatrixIndicatorsPanel,iTrade_TradingPanel
+from itrade_wxpanes import iTrade_MatrixPortfolioPanel, iTrade_MatrixQuotesPanel, iTrade_MatrixStopsPanel, iTrade_MatrixIndicatorsPanel, iTrade_TradingPanel
 from itrade_wxmoney import iTradeEvaluationPanel
-from itrade_wxutil import iTradeYesNo,iTradeInformation,iTradeError,FontFromSize
+from itrade_wxutil import iTradeYesNo, iTradeInformation, iTradeError, FontFromSize
 from itrade_market import date_format
 
 # ============================================================================

@@ -40,6 +40,7 @@
 
 # python system
 from __future__ import print_function
+from datetime import date
 import logging
 
 # wxPython system
@@ -47,10 +48,8 @@ import wx
 import wx.calendar as wxcal
 
 # iTrade system
-from itrade_logging import *
-from itrade_datation import *
+from itrade_logging import setLevel, debug
 from itrade_local import message
-#import itrade_wxres
 
 # ============================================================================
 # iTradeDatePicker

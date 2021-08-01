@@ -39,14 +39,13 @@
 # python system
 from __future__ import print_function
 import logging
-import re
 import time
 import webbrowser
 import string
 
 # iTrade system
-from itrade_logging import *
-from itrade_local import setLocale,getLocale
+from itrade_logging import setLevel, info, debug
+from itrade_local import setLocale
 
 # feedparser
 import feedparser

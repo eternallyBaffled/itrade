@@ -50,11 +50,11 @@ import wx
 import wx.lib.mixins.listctrl as wxl
 
 # iTrade system
-from itrade_logging import *
+from itrade_logging import setLevel
 from itrade_local import message
 
 # iTrade wxPython system
-from itrade_wxutil import iTradeInformation,iTradeError
+from itrade_wxutil import iTradeInformation, iTradeError
 
 # ============================================================================
 # iTradeLoginDialog
@@ -187,7 +187,7 @@ if __name__ == '__main__':
 
     app = wx.App(False)
 
-    from itrade_local import *
+    from itrade_local import setLang, gMessage
     setLang('us')
     gMessage.load()
 
