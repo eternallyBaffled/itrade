@@ -49,7 +49,7 @@ from datetime import date, datetime
 from itrade_logging import setLevel, debug, info
 from itrade_quotes import quotes
 from itrade_datation import jjmmaa2yyyymmdd
-from itrade_defs import QLIST_BONDS, QTAG_LIVE, QLIST_INDICES
+from itrade_defs import QTAG_LIVE, QList
 from itrade_ext import registerLiveConnector
 from itrade_market import euronextmic, convertConnectorTimeToPlaceTime
 from itrade_connection import ITradeConnection
@@ -272,10 +272,10 @@ class LiveUpdate_Euronext_bonds(object):
                 sdate,sclock = self.euronextDate(iDate)
 
                 # be sure we have volume (or indices)
-                if quote.list() == QLIST_INDICES or iVolume != '':
+                if quote.list() == QList.indices or iVolume != '':
 
                     # be sure not an oldest day !
-                    if (c_date==sdate) or (quote.list() == QLIST_INDICES):
+                    if (c_date==sdate) or (quote.list() == QList.indices):
                         key = quote.key()
                         self.m_dcmpd[key] = sdate
                         self.m_dateindice[key] = str(sdate[6:8]) + '/' + str(sdate[4:6]) + '/' +str(sdate[0:4])
@@ -355,10 +355,10 @@ try:
 
 except NameError:
     gLiveEuronext = LiveUpdate_Euronext_bonds()
-registerLiveConnector('EURONEXT','PAR',QLIST_BONDS,QTAG_LIVE,gLiveEuronext,bDefault=True)
-registerLiveConnector('EURONEXT','BRU',QLIST_BONDS,QTAG_LIVE,gLiveEuronext,bDefault=True)
-registerLiveConnector('EURONEXT','AMS',QLIST_BONDS,QTAG_LIVE,gLiveEuronext,bDefault=True)
-registerLiveConnector('EURONEXT','LIS',QLIST_BONDS,QTAG_LIVE,gLiveEuronext,bDefault=True)
+registerLiveConnector('EURONEXT','PAR',QList.bonds,QTAG_LIVE,gLiveEuronext,bDefault=True)
+registerLiveConnector('EURONEXT','BRU',QList.bonds,QTAG_LIVE,gLiveEuronext,bDefault=True)
+registerLiveConnector('EURONEXT','AMS',QList.bonds,QTAG_LIVE,gLiveEuronext,bDefault=True)
+registerLiveConnector('EURONEXT','LIS',QList.bonds,QTAG_LIVE,gLiveEuronext,bDefault=True)
 
 # ============================================================================
 # Test ME

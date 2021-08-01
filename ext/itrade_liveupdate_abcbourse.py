@@ -259,9 +259,9 @@ try:
 except NameError:
     gLiveABC = LiveUpdate_ABCBourse()
 
-#registerLiveConnector('EURONEXT','PAR',QLIST_ANY,QTAG_DIFFERED,gLiveABC,bDefault=False)
-#registerLiveConnector('ALTERNEXT','PAR',QLIST_ANY,QTAG_DIFFERED,gLiveABC,bDefault=False)
-#registerLiveConnector('PARIS MARCHE LIBRE','PAR',QLIST_ANY,QTAG_DIFFERED,gLiveABC,bDefault=False)
+#registerLiveConnector('EURONEXT','PAR',QList.any,QTAG_DIFFERED,gLiveABC,bDefault=False)
+#registerLiveConnector('ALTERNEXT','PAR',QList.any,QTAG_DIFFERED,gLiveABC,bDefault=False)
+#registerLiveConnector('PARIS MARCHE LIBRE','PAR',QList.any,QTAG_DIFFERED,gLiveABC,bDefault=False)
 
 # ============================================================================
 # Test ME

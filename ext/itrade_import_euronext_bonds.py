@@ -48,7 +48,7 @@ from datetime import date, timedelta
 from itrade_logging import setLevel, debug
 from itrade_quotes import quotes
 from itrade_datation import Datation, jjmmaa2yyyymmdd
-from itrade_defs import QLIST_BONDS, QTAG_IMPORT
+from itrade_defs import QList, QTAG_IMPORT
 from itrade_ext import registerImportConnector
 from itrade_market import euronextmic
 from itrade_connection import ITradeConnection
@@ -199,7 +199,7 @@ class Import_euronext_bonds(object):
 
             if len(sdata)== 11:
                 #print sdata
-                #if (sdata[0] != "Date") and (quote.list() == QLIST_INDICES):
+                #if (sdata[0] != "Date") and (quote.list() == QList.indices):
                 sdate = jjmmaa2yyyymmdd(sdata[2])
                 open = self.parseFValue(sdata[3].replace(',','.'))
                 print('open:',open)
@@ -235,10 +235,10 @@ try:
     ignore(gImportEuronext)
 except NameError:
     gImportEuronext = Import_euronext_bonds()
-registerImportConnector('EURONEXT','PAR',QLIST_BONDS,QTAG_IMPORT,gImportEuronext,bDefault=True)
-registerImportConnector('EURONEXT','BRU',QLIST_BONDS,QTAG_IMPORT,gImportEuronext,bDefault=True)
-registerImportConnector('EURONEXT','AMS',QLIST_BONDS,QTAG_IMPORT,gImportEuronext,bDefault=True)
-registerImportConnector('EURONEXT','LIS',QLIST_BONDS,QTAG_IMPORT,gImportEuronext,bDefault=True)
+registerImportConnector('EURONEXT','PAR',QList.bonds,QTAG_IMPORT,gImportEuronext,bDefault=True)
+registerImportConnector('EURONEXT','BRU',QList.bonds,QTAG_IMPORT,gImportEuronext,bDefault=True)
+registerImportConnector('EURONEXT','AMS',QList.bonds,QTAG_IMPORT,gImportEuronext,bDefault=True)
+registerImportConnector('EURONEXT','LIS',QList.bonds,QTAG_IMPORT,gImportEuronext,bDefault=True)
 
 
 # ============================================================================

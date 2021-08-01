@@ -48,7 +48,7 @@ from itrade_logging import setLevel
 import itrade_config
 from itrade_market import market2place
 from itrade_login import loggedLoginConnector
-from itrade_defs import QTAG_DIFFERED, QTAG_LIVE, QLIST_ANY, QTAG_ANY
+from itrade_defs import QTAG_DIFFERED, QTAG_LIVE, QList, QTAG_ANY
 
 # ============================================================================
 # globals
@@ -75,18 +75,18 @@ class ConnectorRegistry(object):
         if name:
             for amarket,aplace,adefault,aconnector,aqlist,aqtag in self.m_conn:
                 #print amarket,aqlist,aqtag,aplace,aconnector.name(),adefault
-                if market==amarket and place==aplace and aconnector.name()==name and (aqlist==QLIST_ANY or aqlist==qlist) and (qtag==QTAG_ANY or aqtag==qtag):
+                if market==amarket and place==aplace and aconnector.name()==name and (aqlist==QList.any or aqlist==qlist) and (qtag==QTAG_ANY or aqtag==qtag):
                     return aconnector
         else:
             for amarket,aplace,adefault,aconnector,aqlist,aqtag in self.m_conn:
-                if market==amarket and place==aplace and (aqlist==QLIST_ANY or qlist==aqlist) and adefault and (qtag==QTAG_ANY or aqtag==qtag):
+                if market==amarket and place==aplace and (aqlist==QList.any or qlist==aqlist) and adefault and (qtag==QTAG_ANY or aqtag==qtag):
                     return aconnector
         return None
 
     def list(self,market,qlist,place):
         lst = []
         for amarket,aplace,adefault,aconnector,aqlist,aqtag in self.m_conn:
-            if amarket==market and aplace==place and (aqlist==QLIST_ANY or aqlist==qlist):
+            if amarket==market and aplace==place and (aqlist==QList.any or aqlist==qlist):
                 lst.append((aconnector.name(),amarket,aplace,adefault,aconnector,aqlist,aqtag))
         return lst
 

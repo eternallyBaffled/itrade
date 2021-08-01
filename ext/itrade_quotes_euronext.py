@@ -48,7 +48,7 @@ import cookielib
 # iTrade system
 import itrade_config
 from itrade_logging import setLevel, debug
-from itrade_defs import QLIST_ANY, QTAG_LIST
+from itrade_defs import QList, QTAG_LIST
 from itrade_ext import registerListSymbolConnector
 from itrade_connection import ITradeConnection
 
@@ -183,18 +183,18 @@ def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT',dlg=None,x=0):
 # Export me
 # ============================================================================
 
-registerListSymbolConnector('EURONEXT','PAR',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_Euronext)
-registerListSymbolConnector('EURONEXT','AMS',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_Euronext)
-registerListSymbolConnector('EURONEXT','BRU',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_Euronext)
-registerListSymbolConnector('EURONEXT','LIS',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_Euronext)
+registerListSymbolConnector('EURONEXT','PAR',QList.any,QTAG_LIST,Import_ListOfQuotes_Euronext)
+registerListSymbolConnector('EURONEXT','AMS',QList.any,QTAG_LIST,Import_ListOfQuotes_Euronext)
+registerListSymbolConnector('EURONEXT','BRU',QList.any,QTAG_LIST,Import_ListOfQuotes_Euronext)
+registerListSymbolConnector('EURONEXT','LIS',QList.any,QTAG_LIST,Import_ListOfQuotes_Euronext)
 
-registerListSymbolConnector('ALTERNEXT','PAR',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_Euronext)
-registerListSymbolConnector('ALTERNEXT','AMS',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_Euronext)
-registerListSymbolConnector('ALTERNEXT','BRU',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_Euronext)
-registerListSymbolConnector('ALTERNEXT','LIS',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_Euronext)
+registerListSymbolConnector('ALTERNEXT','PAR',QList.any,QTAG_LIST,Import_ListOfQuotes_Euronext)
+registerListSymbolConnector('ALTERNEXT','AMS',QList.any,QTAG_LIST,Import_ListOfQuotes_Euronext)
+registerListSymbolConnector('ALTERNEXT','BRU',QList.any,QTAG_LIST,Import_ListOfQuotes_Euronext)
+registerListSymbolConnector('ALTERNEXT','LIS',QList.any,QTAG_LIST,Import_ListOfQuotes_Euronext)
 
-registerListSymbolConnector('PARIS MARCHE LIBRE','PAR',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_Euronext)
-registerListSymbolConnector('BRUXELLES MARCHE LIBRE','BRU',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_Euronext)
+registerListSymbolConnector('PARIS MARCHE LIBRE','PAR',QList.any,QTAG_LIST,Import_ListOfQuotes_Euronext)
+registerListSymbolConnector('BRUXELLES MARCHE LIBRE','BRU',QList.any,QTAG_LIST,Import_ListOfQuotes_Euronext)
 
 # ============================================================================
 # Test ME

@@ -45,7 +45,7 @@ import urllib2
 import itrade_config
 import itrade_excel
 from itrade_logging import setLevel, info
-from itrade_defs import QLIST_ANY, QTAG_LIST
+from itrade_defs import QList, QTAG_LIST
 from itrade_ext import registerListSymbolConnector
 from itrade_connection import ITradeConnection
 
@@ -149,9 +149,9 @@ def Import_ListOfQuotes_LSE(quotes,market='LSE SETS',dlg=None,x=0):
 # ============================================================================
 
 if itrade_excel.canReadExcel:
-    registerListSymbolConnector('LSE SETS','LON',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_LSE)
-    registerListSymbolConnector('LSE SETSqx','LON',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_LSE)
-    registerListSymbolConnector('LSE SEAQ','LON',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_LSE)
+    registerListSymbolConnector('LSE SETS','LON',QList.any,QTAG_LIST,Import_ListOfQuotes_LSE)
+    registerListSymbolConnector('LSE SETSqx','LON',QList.any,QTAG_LIST,Import_ListOfQuotes_LSE)
+    registerListSymbolConnector('LSE SEAQ','LON',QList.any,QTAG_LIST,Import_ListOfQuotes_LSE)
 
 # ============================================================================
 # Test ME

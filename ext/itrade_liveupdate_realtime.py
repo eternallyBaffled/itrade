@@ -52,7 +52,7 @@ import itrade_config
 from itrade_logging import setLevel, debug, info
 from itrade_datation import jjmmaa2yyyymmdd
 from itrade_quotes import quotes
-from itrade_defs import QLIST_ANY, QTAG_LIVE, QLIST_INDICES
+from itrade_defs import QList, QTAG_LIVE
 from itrade_ext import registerLiveConnector
 from itrade_market import convertConnectorTimeToPlaceTime
 from itrade_connection import ITradeConnection
@@ -319,7 +319,7 @@ class LiveUpdate_RealTime(object):
                     line = lines[n+19]
                     volume = line[line.rfind('">')+2:line.find('</td>')].replace(' ','').replace('<td>','').replace('td>','')
                     if 'M' in line : volume  = '0'
-                    if volume == '0' and quote.list()!=QLIST_INDICES:
+                    if volume == '0' and quote.list()!=QList.indices:
                         #info('volume : no trade to day %s' % symbol)
                         return None
                     line = lines[n+23]
@@ -340,7 +340,7 @@ class LiveUpdate_RealTime(object):
                     sdate,sclock = self.BoursoDate(date_time)
 
                     # be sure not an oldest day !
-                    if (c_date==sdate) or (quote.list() == QLIST_INDICES):
+                    if (c_date==sdate) or (quote.list() == QList.indices):
                         key = quote.key()
                         self.m_dcmpd[key] = sdate
                         self.m_dateindice[key] = str(sdate[6:8]) + '/' + str(sdate[4:6]) + '/' +str(sdate[0:4])
@@ -445,22 +445,22 @@ if __name__ == '__main__':
 gLiveRealTime = LiveUpdate_RealTime()
 gLiveAlternext = LiveUpdate_RealTime()
 
-registerLiveConnector('EURONEXT','PAR',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
-#registerLiveConnector('EURONEXT','BRU',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
-#registerLiveConnector('EURONEXT','AMS',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
-#registerLiveConnector('EURONEXT','LIS',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
-registerLiveConnector('EURONEXT','PAR',QLIST_INDICES,QTAG_LIVE,gLiveRealTime,bDefault=False)
-registerLiveConnector('EURONEXT','BRU',QLIST_INDICES,QTAG_LIVE,gLiveRealTime,bDefault=False)
-registerLiveConnector('EURONEXT','AMS',QLIST_INDICES,QTAG_LIVE,gLiveRealTime,bDefault=False)
-registerLiveConnector('EURONEXT','LIS',QLIST_INDICES,QTAG_LIVE,gLiveRealTime,bDefault=False)
-registerLiveConnector('ALTERNEXT','PAR',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
+registerLiveConnector('EURONEXT','PAR',QList.any,QTAG_LIVE,gLiveRealTime,bDefault=False)
+#registerLiveConnector('EURONEXT','BRU',QList.any,QTAG_LIVE,gLiveRealTime,bDefault=False)
+#registerLiveConnector('EURONEXT','AMS',QList.any,QTAG_LIVE,gLiveRealTime,bDefault=False)
+#registerLiveConnector('EURONEXT','LIS',QList.any,QTAG_LIVE,gLiveRealTime,bDefault=False)
+registerLiveConnector('EURONEXT','PAR',QList.indices,QTAG_LIVE,gLiveRealTime,bDefault=False)
+registerLiveConnector('EURONEXT','BRU',QList.indices,QTAG_LIVE,gLiveRealTime,bDefault=False)
+registerLiveConnector('EURONEXT','AMS',QList.indices,QTAG_LIVE,gLiveRealTime,bDefault=False)
+registerLiveConnector('EURONEXT','LIS',QList.indices,QTAG_LIVE,gLiveRealTime,bDefault=False)
+registerLiveConnector('ALTERNEXT','PAR',QList.any,QTAG_LIVE,gLiveRealTime,bDefault=False)
 
-#registerLiveConnector('ALTERNEXT','AMS',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
-#registerLiveConnector('ALTERNEXT','BRU',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
-#registerLiveConnector('ALTERNEXT','LIS',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
+#registerLiveConnector('ALTERNEXT','AMS',QList.any,QTAG_LIVE,gLiveRealTime,bDefault=False)
+#registerLiveConnector('ALTERNEXT','BRU',QList.any,QTAG_LIVE,gLiveRealTime,bDefault=False)
+#registerLiveConnector('ALTERNEXT','LIS',QList.any,QTAG_LIVE,gLiveRealTime,bDefault=False)
 
-registerLiveConnector('PARIS MARCHE LIBRE','PAR',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
-#registerLiveConnector('BRUXELLES MARCHE LIBRE','BRU',QLIST_ANY,QTAG_LIVE,gLiveRealTime,bDefault=False)
+registerLiveConnector('PARIS MARCHE LIBRE','PAR',QList.any,QTAG_LIVE,gLiveRealTime,bDefault=False)
+#registerLiveConnector('BRUXELLES MARCHE LIBRE','BRU',QList.any,QTAG_LIVE,gLiveRealTime,bDefault=False)
 
 # ============================================================================
 # Test ME

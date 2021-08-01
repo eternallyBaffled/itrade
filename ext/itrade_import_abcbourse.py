@@ -47,7 +47,7 @@ from httplib import HTTPConnection
 from itrade_logging import setLevel, debug
 from itrade_quotes import quotes
 from itrade_datation import Datation
-#from itrade_defs import QLIST_ANY, QTAG_IMPORT
+#from itrade_defs import QList, QTAG_IMPORT
 #from itrade_ext import registerImportConnector
 
 # ============================================================================
@@ -181,9 +181,9 @@ try:
 except NameError:
     gImportABC = Import_ABCBourse()
 
-#registerImportConnector('EURONEXT','PAR',QLIST_ANY,QTAG_IMPORT,gImportABC,bDefault=False)
-#registerImportConnector('ALTERNEXT','PAR',QLIST_ANY,QTAG_IMPORT,gImportABC,bDefault=False)
-#registerImportConnector('PARIS MARCHE LIBRE','PAR',QLIST_ANY,QTAG_IMPORT,gImportABC,bDefault=False)
+#registerImportConnector('EURONEXT','PAR',QList.any,QTAG_IMPORT,gImportABC,bDefault=False)
+#registerImportConnector('ALTERNEXT','PAR',QList.any,QTAG_IMPORT,gImportABC,bDefault=False)
+#registerImportConnector('PARIS MARCHE LIBRE','PAR',QList.any,QTAG_IMPORT,gImportABC,bDefault=False)
 
 # ============================================================================
 # Test ME

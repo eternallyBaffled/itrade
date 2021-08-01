@@ -47,7 +47,7 @@ import httplib
 # iTrade system
 import itrade_config
 from itrade_logging import setLevel, debug, info
-from itrade_defs import QLIST_ANY, QTAG_LIST
+from itrade_defs import QList, QTAG_LIST
 from itrade_ext import registerListSymbolConnector
 from itrade_connection import ITradeConnection
 
@@ -143,7 +143,7 @@ def Import_ListOfQuotes_NSE(quotes,market='NATIONAL EXCHANGE OF INDIA',dlg=None,
 # Export me
 # ============================================================================
 
-registerListSymbolConnector('NATIONAL EXCHANGE OF INDIA','NSE',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_NSE)
+registerListSymbolConnector('NATIONAL EXCHANGE OF INDIA','NSE',QList.any,QTAG_LIST,Import_ListOfQuotes_NSE)
 
 # ============================================================================
 # Test ME

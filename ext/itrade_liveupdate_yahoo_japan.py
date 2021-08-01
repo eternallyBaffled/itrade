@@ -48,7 +48,7 @@ import string
 import itrade_config
 from itrade_logging import setLevel, debug, info
 from itrade_quotes import quotes, Quote
-from itrade_defs import QLIST_INDICES, QLIST_ANY, QTAG_DIFFERED
+from itrade_defs import QList, QTAG_DIFFERED
 from itrade_ext import registerLiveConnector
 from itrade_market import yahooTicker,yahooUrlJapan,convertConnectorTimeToPlaceTime
 from itrade_connection import ITradeConnection
@@ -344,7 +344,7 @@ class LiveUpdate_yahoojp(object):
             if volume<0:
                 debug('volume : invalid negative %d' % volume)
                 return None
-            if volume==0 and quote.list()!=QLIST_INDICES:
+            if volume==0 and quote.list()!=QList.indices:
                 debug('volume : invalid zero value %d' % volume)
                 return None
             else:
@@ -467,7 +467,7 @@ try:
 except NameError:
     gLiveYahoojp = LiveUpdate_yahoojp()
 
-registerLiveConnector('TOKYO EXCHANGE','TKS',QLIST_ANY,QTAG_DIFFERED,gLiveYahoojp,bDefault=True)
+registerLiveConnector('TOKYO EXCHANGE','TKS',QList.any,QTAG_DIFFERED,gLiveYahoojp,bDefault=True)
 
 # ============================================================================
 # Test ME

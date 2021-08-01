@@ -58,7 +58,7 @@ from itrade_local import message
 from itrade_market import list_of_markets, compute_country, market2place, list_of_places, market2currency, isin2market
 from itrade_currency import list_of_currencies
 from itrade_isin import checkISIN
-from itrade_defs import QLIST_ALL, QLIST_SYSTEM, QLIST_USER, QLIST_BONDS, QLIST_ANY, QLIST_TRACKERS, QTAG_LIST, QLIST_INDICES
+from itrade_defs import QList, QTAG_LIST
 from itrade_ext import getListSymbolConnector
 
 from itrade_wxmixin import iTradeSelectorListCtrl
@@ -388,7 +388,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         self.m_dirty = False
 
         self.m_market = market
-        self.m_qlist = QLIST_SYSTEM
+        self.m_qlist = QList.system
 
         tID = wx.NewId()
         self.m_imagelist = wx.ImageList(16,16)
@@ -443,12 +443,12 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         box.Add(self.wxQListCtrl, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_COMBOBOX(self,self.wxQListCtrl.GetId(),self.OnQuoteList)
 
-        self.wxQListCtrl.Append(message('quote_select_alllist'),QLIST_ALL)
-        self.wxQListCtrl.Append(message('quote_select_syslist'),QLIST_SYSTEM)
-        self.wxQListCtrl.Append(message('quote_select_usrlist'),QLIST_USER)
-        self.wxQListCtrl.Append(message('quote_select_indiceslist'),QLIST_INDICES)
-        self.wxQListCtrl.Append(message('quote_select_trackerslist'),QLIST_TRACKERS)
-        self.wxQListCtrl.Append(message('quote_select_bondslist'),QLIST_BONDS)
+        self.wxQListCtrl.Append(message('quote_select_alllist'),QList.all)
+        self.wxQListCtrl.Append(message('quote_select_syslist'),QList.system)
+        self.wxQListCtrl.Append(message('quote_select_usrlist'),QList.user)
+        self.wxQListCtrl.Append(message('quote_select_indiceslist'),QList.indices)
+        self.wxQListCtrl.Append(message('quote_select_trackerslist'),QList.trackers)
+        self.wxQListCtrl.Append(message('quote_select_bondslist'),QList.bonds)
         self.wxQListCtrl.SetSelection(self.m_qlist)
 
         self.wxCount = wx.StaticText(self, -1, '--')
@@ -553,7 +553,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         self.m_list.SetFocus()
 
     def checkEnablity(self):
-        if self.m_qlist == QLIST_INDICES or self.m_qlist == QLIST_TRACKERS or self.m_qlist == QLIST_BONDS:
+        if self.m_qlist == QList.indices or self.m_qlist == QList.trackers or self.m_qlist == QList.bonds:
             self.wxOK.Enable(False)
             self.wxNEW.Enable(False)
             #self.wxPROP.Enable(False)
@@ -562,7 +562,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
             self.wxSAVE.Enable(False)
         else:
 
-            if self.m_qlist == QLIST_USER:
+            if self.m_qlist == QList.user:
                 self.wxOK.Enable(False)
                 self.wxNEW.Enable(True)
                 #self.wxPROP.Enable(True)
@@ -573,7 +573,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
                 #self.wxPROP.Enable(False)
                 self.wxDELETE.Enable(False)
 
-            if self.m_qlist == QLIST_ALL:
+            if self.m_qlist == QList.all:
                 self.wxCLEAR.Enable(False)
             else:
                 self.wxCLEAR.Enable(True)
@@ -615,7 +615,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         self.itemLineMap = {}
 
         for eachQuote in quotes.list():
-            if  self.m_qlist==QLIST_ALL or self.m_qlist==eachQuote.list():
+            if  self.m_qlist==QList.all or self.m_qlist==eachQuote.list():
                 self.itemDataMap[count] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.name(),eachQuote.place(),eachQuote.market(),eachQuote.liveconnector().name(),eachQuote.importconnector().name())
 
                 self.itemQuoteMap[count] = eachQuote
@@ -701,7 +701,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         aRet = edit_iTradeQuoteList(self,None,QLIST_ADD)
         if aRet:
             debug('OnNewQuote: %s' % aRet[0])
-            quotes.addQuote(aRet[0],aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6],list=QLIST_USER,debug=True)
+            quotes.addQuote(aRet[0],aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6],list=QList.user,debug=True)
             self.m_dirty = True
             self.PopulateList()
 
@@ -726,7 +726,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
             if aRet:
             #    debug('OnEditQuote: %s' % aRet[0])
             #    quotes.removeQuote(quote.key())
-            #    quotes.addQuote(aRet[0],aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6],list=QLIST_USER,debug=True)
+            #    quotes.addQuote(aRet[0],aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6],list=QList.user,debug=True)
             #    self.m_dirty = True
                 self.PopulateList(quote)
 
@@ -753,7 +753,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
             for market in lst:
                 if keepGoing:
                     keepGoing = dlg.Update(x,market)
-                    fn = getListSymbolConnector(market,QLIST_ANY,QTAG_LIST)
+                    fn = getListSymbolConnector(market,QList.any,QTAG_LIST)
                     if fn:
                         fn(quotes,market,dlg,x)
                     else:
@@ -763,7 +763,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
             x = 0
             dlg = wx.ProgressDialog(message('download_symbols_onelist'),"",2,self,wx.PD_CAN_ABORT | wx.PD_APP_MODAL)
             dlg.Update(0,self.m_market)
-            fn = getListSymbolConnector(self.m_market,QLIST_ANY,QTAG_LIST)
+            fn = getListSymbolConnector(self.m_market,QList.any,QTAG_LIST)
             if fn:
                 fn(quotes,self.m_market,dlg,x)
             else:

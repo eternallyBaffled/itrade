@@ -47,7 +47,7 @@ from itrade_quotes import initQuotesModule, quotes
 from itrade_local import message
 import itrade_config
 from itrade_market import list_of_markets, market2place
-from itrade_defs import QLIST_ALL, QLIST_INDICES, QLIST_BONDS, QLIST_TRACKERS, QLIST_USER, QLIST_SYSTEM
+from itrade_defs import QList
 
 from itrade_wxmixin import iTradeSelectorListCtrl
 from itrade_wxutil import iTradeSizedDialog
@@ -93,7 +93,7 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
             self.m_place = market2place(market)
 
         self.m_filter = filter
-        self.m_qlist = QLIST_SYSTEM
+        self.m_qlist = QList.system
         self.m_qlist_tradableOnly = tradableOnly
 
         self.m_editing = True
@@ -161,13 +161,13 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
         self.wxQListCtrl.SetSizerProps(expand=True)
         wx.EVT_COMBOBOX(self,self.wxQListCtrl.GetId(),self.OnQuoteList)
 
-        self.wxQListCtrl.Append(message('quote_select_alllist'),QLIST_ALL)
-        self.wxQListCtrl.Append(message('quote_select_syslist'),QLIST_SYSTEM)
-        self.wxQListCtrl.Append(message('quote_select_usrlist'),QLIST_USER)
+        self.wxQListCtrl.Append(message('quote_select_alllist'),QList.all)
+        self.wxQListCtrl.Append(message('quote_select_syslist'),QList.system)
+        self.wxQListCtrl.Append(message('quote_select_usrlist'),QList.user)
         if not self.m_qlist_tradableOnly:
-            self.wxQListCtrl.Append(message('quote_select_indiceslist'),QLIST_INDICES)
-        self.wxQListCtrl.Append(message('quote_select_trackerslist'),QLIST_TRACKERS)
-        self.wxQListCtrl.Append(message('quote_select_bondslist'),QLIST_BONDS)
+            self.wxQListCtrl.Append(message('quote_select_indiceslist'),QList.indices)
+        self.wxQListCtrl.Append(message('quote_select_trackerslist'),QList.trackers)
+        self.wxQListCtrl.Append(message('quote_select_bondslist'),QList.bonds)
         self.wxQListCtrl.SetSelection(self.m_qlist)
 
         # select traded or not
@@ -263,9 +263,9 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
         self.resetFields()
 
     def isFiltered(self,quote,bDuringInit):
-        if (self.m_qlist == QLIST_ALL) or (self.m_qlist == quote.list() or self.m_filter):
+        if (self.m_qlist == QList.all) or (self.m_qlist == quote.list() or self.m_filter):
             # good list
-            if not self.m_qlist_tradableOnly or quote.list() != QLIST_INDICES:
+            if not self.m_qlist_tradableOnly or quote.list() != QList.indices:
                 # tradable
                 if (self.m_market is None) or (self.m_market == quote.market() or self.m_filter):
                     # good market

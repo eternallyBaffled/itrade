@@ -55,7 +55,7 @@ import wx.lib.sized_controls as sc
 from wx.lib import masked
 
 # iTrade system
-from itrade_defs import QLIST_INDICES
+from itrade_defs import QList
 from itrade_logging import setLevel, info, debug
 from itrade_local import message, getGroupChar, getDecimalChar
 from itrade_quotes import quotes
@@ -365,7 +365,7 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
 
         count = 0
         for eachCtrl in quotes.list():
-            if eachCtrl.list()==QLIST_INDICES:
+            if eachCtrl.list()==QList.indices:
                 #self.wxIndicatorCtrl.Append(eachCtrl.name(),eachCtrl.isin())
                 try:
                     self.wxIndicatorCtrl.Append(eachCtrl.name(),eachCtrl.isin())

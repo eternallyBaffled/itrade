@@ -52,7 +52,7 @@ from itrade_local import message, gMessage, getLang
 from itrade_portfolio import loadPortfolio, OPERATION_BUY, OPERATION_SELL
 from itrade_matrix import createMatrix
 from itrade_quotes import quotes
-from itrade_defs import QLIST_INDICES
+from itrade_defs import QList
 from itrade_ext import getDefaultLiveConnector
 from itrade_login import getLoginConnector, listLoginConnector
 
@@ -1007,7 +1007,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
 
     def OnBuyQuote(self,e):
         quote = self.currentQuote()
-        if quote and quote.list()==QLIST_INDICES: quote=None
+        if quote and quote.list()==QList.indices: quote=None
         if add_iTradeOperation(self,self.m_portfolio,quote,OPERATION_BUY):
             if self.m_hOperation:
                 self.m_hOperation.RebuildList()
@@ -1017,7 +1017,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
 
     def OnSellQuote(self,e):
         quote = self.currentQuote()
-        if quote and quote.list()==QLIST_INDICES: quote=None
+        if quote and quote.list()==QList.indices: quote=None
         if add_iTradeOperation(self,self.m_portfolio,quote,OPERATION_SELL):
             if self.m_hOperation:
                 self.m_hOperation.RebuildList()
@@ -1246,7 +1246,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         return self.m_indice
 
     def initIndice(self):
-        self.m_connector = getDefaultLiveConnector(self.m_market,QLIST_INDICES)
+        self.m_connector = getDefaultLiveConnector(self.m_market,QList.indices)
         indice = self.m_portfolio.indice()
         #if itrade_config.verbose:
         #    print 'initIndice: indice %s use connector %s' % (indice,self.m_connector)

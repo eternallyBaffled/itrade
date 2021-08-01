@@ -45,7 +45,7 @@ import string
 # iTrade system
 import itrade_config
 from itrade_logging import setLevel, debug
-from itrade_defs import QLIST_ANY, QTAG_LIST
+from itrade_defs import QList, QTAG_LIST
 from itrade_ext import registerListSymbolConnector
 from itrade_connection import ITradeConnection
 
@@ -149,7 +149,7 @@ def Import_ListOfQuotes_IE(quotes,market='IRISH EXCHANGE',dlg=None,x=0):
 # Export me
 # ============================================================================
 
-registerListSymbolConnector('IRISH EXCHANGE','DUB',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_IE)
+registerListSymbolConnector('IRISH EXCHANGE','DUB',QList.any,QTAG_LIST,Import_ListOfQuotes_IE)
 
 # ============================================================================
 # Test ME

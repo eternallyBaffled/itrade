@@ -48,7 +48,7 @@ import os
 # iTrade system
 import itrade_config
 from itrade_logging import setLevel, debug, info
-from itrade_defs import QLIST_ANY, QTAG_LIST
+from itrade_defs import QList, QTAG_LIST
 from itrade_ext import registerListSymbolConnector
 from itrade_connection import ITradeConnection
 
@@ -131,7 +131,7 @@ def Import_ListOfQuotes_SAO(quotes,market='SAO PAULO EXCHANGE',dlg=None,x=0):
 # Export me
 # ============================================================================
 
-registerListSymbolConnector('SAO PAULO EXCHANGE','SAO',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_SAO)
+registerListSymbolConnector('SAO PAULO EXCHANGE','SAO',QList.any,QTAG_LIST,Import_ListOfQuotes_SAO)
 
 # ============================================================================
 # Test ME

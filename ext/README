@@ -39,7 +39,7 @@ Import historical data from a source :
 	registerImportConnector(
 		market,		# name of the market (itrade_market.py)
 		place,		# place within the market (itrade_market.py)
-		qlist,          # kind of list (itrade_import.py) : QLIST_xxx
+		qlist,          # kind of list (itrade_import.py) : QList
 		qtag,		# kind of service (itrade_ext.py) : QTAG_IMPORT
 		connector,	# global var of the connector
 		bDefault=True	# default connector for <market,place,qlist>
@@ -52,7 +52,7 @@ Import live data from a source :
 	registerLiveConnector(
 		market,		# name of the market (itrade_market.py)
 		place,		# place within the market (itrade_market.py)
-		qlist,          # kind of list (itrade_import.py) : QLIST_xxx
+		qlist,          # kind of list (itrade_import.py) : QList
 		qtag,		# kind of service (itrade_ext.py) : QTAG_xxx
 		connector,	# global var of the connector
 		bDefault=True	# default connector for <market,place,qlist>
@@ -69,7 +69,7 @@ Import list of quotes from a source :
 	registerListSymbolConnector(
 		market,		# name of the market (itrade_market.py)
 		place,		# place within the market (itrade_market.py)
-		qlist,          # kind of list (itrade_import.py) : QLIST_xxx
+		qlist,          # kind of list (itrade_import.py) : QList
 		qtag,		# kind of service (itrade_ext.py) : QTAG_LIST
 		connector,	# global var of the connector
 		bDefault=True	# default connector for <market,place,qlist>

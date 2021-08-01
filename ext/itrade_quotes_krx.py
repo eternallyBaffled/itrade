@@ -48,7 +48,7 @@ import cookielib
 # iTrade system
 import itrade_config
 from itrade_logging import setLevel, debug, info
-from itrade_defs import QLIST_ANY, QTAG_LIST
+from itrade_defs import QList, QTAG_LIST
 from itrade_ext import registerListSymbolConnector
 from itrade_connection import ITradeConnection
 
@@ -182,8 +182,8 @@ def Import_ListOfQuotes_KRX(quotes,market='KOREA STOCK EXCHANGE',dlg=None,x=0):
 # Export me
 # ============================================================================
 
-registerListSymbolConnector('KOREA STOCK EXCHANGE','KRX',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_KRX)
-registerListSymbolConnector('KOREA KOSDAQ EXCHANGE','KOS',QLIST_ANY,QTAG_LIST,Import_ListOfQuotes_KRX)
+registerListSymbolConnector('KOREA STOCK EXCHANGE','KRX',QList.any,QTAG_LIST,Import_ListOfQuotes_KRX)
+registerListSymbolConnector('KOREA KOSDAQ EXCHANGE','KOS',QList.any,QTAG_LIST,Import_ListOfQuotes_KRX)
 
 # ============================================================================
 # Test ME

@@ -50,7 +50,7 @@ from itrade_local import message, getGroupChar
 import itrade_csv
 import itrade_trades
 from itrade_import import cmdline_importQuoteFromInternet, import_from_internet, liveupdate_from_internet
-from itrade_defs import QLIST_SYSTEM, QTAG_IMPORT, QLIST_INDICES, QTAG_ANY, QTAG_LIVE, QLIST_BONDS, QLIST_USER, QLIST_TRACKERS
+from itrade_defs import QList, QTAG_IMPORT, QTAG_ANY, QTAG_LIVE
 from itrade_ext import getImportConnector, getLiveConnector, getDefaultLiveConnector
 from itrade_datation import Datation, gCal, date2str
 from itrade_market import market2currency, compute_country, market2place, list_of_markets, set_market_loaded, is_market_loaded
@@ -131,7 +131,7 @@ def quote_reference(isin,ticker,market,place):
 # ============================================================================
 
 class Quote(object):
-    def __init__(self,key,isin,name,ticker,market,currency,place,country,list=QLIST_SYSTEM):
+    def __init__(self,key,isin,name,ticker,market,currency,place,country,list=QList.system):
         self.m_key = key
         self.m_isin = isin
         self.m_defaultname = name
@@ -157,7 +157,7 @@ class Quote(object):
             if itrade_config.verbose:
                 print('no default import connector for %s (list:%d)' % (self,self.m_list))
 
-        if self.m_list != QLIST_INDICES:
+        if self.m_list != QList.indices:
             if not currency:
                 self.m_currency = market2currency(self.m_market)
             else:
@@ -633,7 +633,7 @@ class Quote(object):
         self.m_daytrades.imp(data,bLive)
 
         # only one line
-        if bLive and len(data)>=1: # and self.list()==QLIST_INDICES:
+        if bLive and len(data)>=1: # and self.list()==QList.indices:
             item = itrade_csv.parse(data[0],9)
             if len(item)>7:
                 # percent is included !
@@ -1367,7 +1367,7 @@ class Quotes(object):
 
     # ---[ Quotes ] ---
 
-    def addQuote(self,isin,name,ticker,market,currency,place,country=None,list=QLIST_SYSTEM,debug=False):
+    def addQuote(self,isin,name,ticker,market,currency,place,country=None,list=QList.system,debug=False):
 
         # right case
         if country:
@@ -1420,26 +1420,26 @@ class Quotes(object):
         if not is_market_loaded(market):
             infile = itrade_csv.read(None,os.path.join(itrade_config.dirSymbData,'quotes.%s.txt' % market))
             if infile:
-                self._addLines(infile,list=QLIST_SYSTEM,debug=False)
+                self._addLines(infile,list=QList.system,debug=False)
             set_market_loaded(market)
 
     def loadListOfQuotes(self):
         infile = itrade_csv.read(None,os.path.join(itrade_config.dirSymbData,'indices.txt'))
         if infile:
-            self._addLines(infile,list=QLIST_INDICES,debug=False)
+            self._addLines(infile,list=QList.indices,debug=False)
 
         infile = itrade_csv.read(None,os.path.join(itrade_config.dirSymbData,'trackers.txt'))
         if infile:
-            self._addLines(infile,list=QLIST_TRACKERS,debug=False)
+            self._addLines(infile,list=QList.trackers,debug=False)
 
         infile = itrade_csv.read(None,os.path.join(itrade_config.dirSymbData,'bonds.txt'))
         if infile:
-            self._addLines(infile,list=QLIST_BONDS,debug=False)
+            self._addLines(infile,list=QList.bonds,debug=False)
 
         # then open and read user file
         infile = itrade_csv.read(None,os.path.join(itrade_config.dirUserData,'usrquotes.txt'))
         if infile:
-            self._addLines(infile,list=QLIST_USER,debug=False)
+            self._addLines(infile,list=QList.user,debug=False)
 
     # ---[ save list of quotes / indices / trackers / ... ] ---------------------------------------------------
 
@@ -1447,7 +1447,7 @@ class Quotes(object):
         for eachMarket in list_of_markets(ifLoaded=True):
             props = []
             for eachQuote in self.list():
-                if eachQuote.list()==QLIST_SYSTEM and eachQuote.market()==eachMarket:
+                if eachQuote.list()==QList.system and eachQuote.market()==eachMarket:
                     props.append(eachQuote.__repr__())
             #
             # open and write the file with these quotes information
@@ -1461,7 +1461,7 @@ class Quotes(object):
         # User list
         props = []
         for eachQuote in self.list():
-            if eachQuote.list()==QLIST_USER:
+            if eachQuote.list()==QList.user:
                 props.append(eachQuote.__repr__())
         #
         # open and write the file with these quotes information
