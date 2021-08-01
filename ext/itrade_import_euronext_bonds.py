@@ -48,7 +48,7 @@ from datetime import date, timedelta
 from itrade_logging import setLevel, debug
 from itrade_quotes import quotes
 from itrade_datation import Datation, jjmmaa2yyyymmdd
-from itrade_defs import QList, QTAG_IMPORT
+from itrade_defs import QList, QTag
 from itrade_ext import registerImportConnector
 from itrade_market import euronextmic
 from itrade_connection import ITradeConnection
@@ -235,10 +235,10 @@ try:
     ignore(gImportEuronext)
 except NameError:
     gImportEuronext = Import_euronext_bonds()
-registerImportConnector('EURONEXT','PAR',QList.bonds,QTAG_IMPORT,gImportEuronext,bDefault=True)
-registerImportConnector('EURONEXT','BRU',QList.bonds,QTAG_IMPORT,gImportEuronext,bDefault=True)
-registerImportConnector('EURONEXT','AMS',QList.bonds,QTAG_IMPORT,gImportEuronext,bDefault=True)
-registerImportConnector('EURONEXT','LIS',QList.bonds,QTAG_IMPORT,gImportEuronext,bDefault=True)
+registerImportConnector('EURONEXT','PAR',QList.bonds,QTag.imported,gImportEuronext,bDefault=True)
+registerImportConnector('EURONEXT','BRU',QList.bonds,QTag.imported,gImportEuronext,bDefault=True)
+registerImportConnector('EURONEXT','AMS',QList.bonds,QTag.imported,gImportEuronext,bDefault=True)
+registerImportConnector('EURONEXT','LIS',QList.bonds,QTag.imported,gImportEuronext,bDefault=True)
 
 
 # ============================================================================

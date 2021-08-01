@@ -48,7 +48,7 @@ from itrade_logging import setLevel
 import itrade_config
 from itrade_market import market2place
 from itrade_login import loggedLoginConnector
-from itrade_defs import QTAG_DIFFERED, QTAG_LIVE, QList, QTAG_ANY
+from itrade_defs import QList, QTag
 
 # ============================================================================
 # globals
@@ -75,11 +75,11 @@ class ConnectorRegistry(object):
         if name:
             for amarket,aplace,adefault,aconnector,aqlist,aqtag in self.m_conn:
                 #print amarket,aqlist,aqtag,aplace,aconnector.name(),adefault
-                if market==amarket and place==aplace and aconnector.name()==name and (aqlist==QList.any or aqlist==qlist) and (qtag==QTAG_ANY or aqtag==qtag):
+                if market==amarket and place==aplace and aconnector.name()==name and (aqlist==QList.any or aqlist==qlist) and (qtag==QTag.any or aqtag==qtag):
                     return aconnector
         else:
             for amarket,aplace,adefault,aconnector,aqlist,aqtag in self.m_conn:
-                if market==amarket and place==aplace and (aqlist==QList.any or qlist==aqlist) and adefault and (qtag==QTAG_ANY or aqtag==qtag):
+                if market==amarket and place==aplace and (aqlist==QList.any or qlist==aqlist) and adefault and (qtag==QTag.any or aqtag==qtag):
                     return aconnector
         return None
 
@@ -105,14 +105,14 @@ listLiveConnector = gLiveRegistry.list
 
 def getDefaultLiveConnector(market,list,place=None):
     # try live connector
-    ret = getLiveConnector(market,list,QTAG_LIVE,place)
+    ret = getLiveConnector(market,list,QTag.live,place)
     if ret:
         # check live connector is logged
         if loggedLoginConnector(ret.name()):
             return ret
 
     # no live connector or not logged : fall-back to differed connector
-    ret = getLiveConnector(market,list,QTAG_DIFFERED,place)
+    ret = getLiveConnector(market,list,QTag.differed,place)
     if ret is None:
         print('No default connector %s for market :' % market,' qlist:',list)
     return ret

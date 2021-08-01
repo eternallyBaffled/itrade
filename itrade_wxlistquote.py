@@ -58,7 +58,7 @@ from itrade_local import message
 from itrade_market import list_of_markets, compute_country, market2place, list_of_places, market2currency, isin2market
 from itrade_currency import list_of_currencies
 from itrade_isin import checkISIN
-from itrade_defs import QList, QTAG_LIST
+from itrade_defs import QList, QTag
 from itrade_ext import getListSymbolConnector
 
 from itrade_wxmixin import iTradeSelectorListCtrl
@@ -753,7 +753,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
             for market in lst:
                 if keepGoing:
                     keepGoing = dlg.Update(x,market)
-                    fn = getListSymbolConnector(market,QList.any,QTAG_LIST)
+                    fn = getListSymbolConnector(market,QList.any,QTag.list)
                     if fn:
                         fn(quotes,market,dlg,x)
                     else:
@@ -763,7 +763,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
             x = 0
             dlg = wx.ProgressDialog(message('download_symbols_onelist'),"",2,self,wx.PD_CAN_ABORT | wx.PD_APP_MODAL)
             dlg.Update(0,self.m_market)
-            fn = getListSymbolConnector(self.m_market,QList.any,QTAG_LIST)
+            fn = getListSymbolConnector(self.m_market,QList.any,QTag.list)
             if fn:
                 fn(quotes,self.m_market,dlg,x)
             else:

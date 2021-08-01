@@ -45,7 +45,7 @@ import string
 # iTrade system
 import itrade_config
 from itrade_logging import setLevel, debug
-from itrade_defs import QList, QTAG_LIST
+from itrade_defs import QList, QTag
 from itrade_ext import registerListSymbolConnector
 from itrade_connection import ITradeConnection
 
@@ -126,7 +126,7 @@ def Import_ListOfQuotes_BSE(quotes,market='BOMBAY EXCHANGE',dlg=None,x=0):
 # Export me
 # ============================================================================
 
-registerListSymbolConnector('BOMBAY EXCHANGE','BSE',QList.any,QTAG_LIST,Import_ListOfQuotes_BSE)
+registerListSymbolConnector('BOMBAY EXCHANGE','BSE',QList.any,QTag.list,Import_ListOfQuotes_BSE)
 
 # ============================================================================
 # Test ME

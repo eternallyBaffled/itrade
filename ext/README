@@ -40,7 +40,7 @@ Import historical data from a source :
 		market,		# name of the market (itrade_market.py)
 		place,		# place within the market (itrade_market.py)
 		qlist,          # kind of list (itrade_import.py) : QList
-		qtag,		# kind of service (itrade_ext.py) : QTAG_IMPORT
+		qtag,		# kind of service (itrade_ext.py) : QTag.imported
 		connector,	# global var of the connector
 		bDefault=True	# default connector for <market,place,qlist>
 		)
@@ -58,8 +58,8 @@ Import live data from a source :
 		bDefault=True	# default connector for <market,place,qlist>
 		)
 
-		QTAG_xxx can be QTAG_DIFFERED or QTAG_LIVE. iTrade will always
-		try to use a QTAG_LIVE service then fallback to a QTAG_DIFFERED
+		QTAG_xxx can be QTag.differed or QTag.live. iTrade will always
+		try to use a QTag.live service then fallback to a QTag.differed
 		service.
 
 	example : itrade_live_yahoo.py
@@ -70,7 +70,7 @@ Import list of quotes from a source :
 		market,		# name of the market (itrade_market.py)
 		place,		# place within the market (itrade_market.py)
 		qlist,          # kind of list (itrade_import.py) : QList
-		qtag,		# kind of service (itrade_ext.py) : QTAG_LIST
+		qtag,		# kind of service (itrade_ext.py) : QTag.list
 		connector,	# global var of the connector
 		bDefault=True	# default connector for <market,place,qlist>
 		)

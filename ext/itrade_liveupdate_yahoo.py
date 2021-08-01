@@ -49,7 +49,7 @@ from pytz import timezone
 import itrade_config
 from itrade_logging import setLevel, debug, info
 from itrade_quotes import quotes, Quote
-from itrade_defs import QList, QTAG_DIFFERED
+from itrade_defs import QList, QTag
 from itrade_ext import registerLiveConnector
 from itrade_market import yahooTicker, yahooUrl, convertConnectorTimeToPlaceTime
 from itrade_connection import ITradeConnection
@@ -387,84 +387,84 @@ try:
 except NameError:
     gLiveYahoo = LiveUpdate_yahoo()
 
-registerLiveConnector('NASDAQ','NYC',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
-registerLiveConnector('NYSE','NYC',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
-registerLiveConnector('AMEX','NYC',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
-registerLiveConnector('OTCBB','NYC',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
-registerLiveConnector('LSE','LON',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('NASDAQ','NYC',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
+registerLiveConnector('NYSE','NYC',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
+registerLiveConnector('AMEX','NYC',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
+registerLiveConnector('OTCBB','NYC',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
+registerLiveConnector('LSE','LON',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
 
-registerLiveConnector('ASX','SYD',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('ASX','SYD',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
 
-registerLiveConnector('TORONTO VENTURE','TOR',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
-registerLiveConnector('TORONTO EXCHANGE','TOR',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('TORONTO VENTURE','TOR',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
+registerLiveConnector('TORONTO EXCHANGE','TOR',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
 
-registerLiveConnector('LSE SETS','LON',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
-registerLiveConnector('LSE SETSqx','LON',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
-registerLiveConnector('LSE SEAQ','LON',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('LSE SETS','LON',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
+registerLiveConnector('LSE SETSqx','LON',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
+registerLiveConnector('LSE SEAQ','LON',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
 
-registerLiveConnector('MILAN EXCHANGE','MIL',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('MILAN EXCHANGE','MIL',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
 
-registerLiveConnector('SWISS EXCHANGE','XSWX',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
-registerLiveConnector('SWISS EXCHANGE','XVTX',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('SWISS EXCHANGE','XSWX',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
+registerLiveConnector('SWISS EXCHANGE','XVTX',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
 
-registerLiveConnector('EURONEXT','PAR',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
-registerLiveConnector('EURONEXT','BRU',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
-registerLiveConnector('EURONEXT','AMS',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
-registerLiveConnector('EURONEXT','LIS',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('EURONEXT','PAR',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
+registerLiveConnector('EURONEXT','BRU',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
+registerLiveConnector('EURONEXT','AMS',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
+registerLiveConnector('EURONEXT','LIS',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
 
-registerLiveConnector('EURONEXT','PAR',QList.indices,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
-registerLiveConnector('EURONEXT','AMS',QList.indices,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
-registerLiveConnector('EURONEXT','BRU',QList.indices,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
-registerLiveConnector('EURONEXT','LIS',QList.indices,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('EURONEXT','PAR',QList.indices,QTag.differed,gLiveYahoo,bDefault=True)
+registerLiveConnector('EURONEXT','AMS',QList.indices,QTag.differed,gLiveYahoo,bDefault=True)
+registerLiveConnector('EURONEXT','BRU',QList.indices,QTag.differed,gLiveYahoo,bDefault=True)
+registerLiveConnector('EURONEXT','LIS',QList.indices,QTag.differed,gLiveYahoo,bDefault=True)
 
-registerLiveConnector('ALTERNEXT','PAR',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
-registerLiveConnector('ALTERNEXT','AMS',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
-registerLiveConnector('ALTERNEXT','BRU',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
-registerLiveConnector('ALTERNEXT','LIS',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('ALTERNEXT','PAR',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
+registerLiveConnector('ALTERNEXT','AMS',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
+registerLiveConnector('ALTERNEXT','BRU',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
+registerLiveConnector('ALTERNEXT','LIS',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
 
-registerLiveConnector('PARIS MARCHE LIBRE','PAR',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
-registerLiveConnector('PARIS MARCHE LIBRE','BRU',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('PARIS MARCHE LIBRE','PAR',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
+registerLiveConnector('PARIS MARCHE LIBRE','BRU',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
 
-registerLiveConnector('BRUXELLES MARCHE LIBRE','BRU',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('BRUXELLES MARCHE LIBRE','BRU',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
 
-registerLiveConnector('IRISH EXCHANGE','DUB',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
-registerLiveConnector('MADRID EXCHANGE','MAD',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('IRISH EXCHANGE','DUB',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
+registerLiveConnector('MADRID EXCHANGE','MAD',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
 
-registerLiveConnector('FRANKFURT EXCHANGE','FRA',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('FRANKFURT EXCHANGE','FRA',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
 
-registerLiveConnector('STOCKHOLM EXCHANGE','STO',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('STOCKHOLM EXCHANGE','STO',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
 
-registerLiveConnector('COPENHAGEN EXCHANGE','CSE',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('COPENHAGEN EXCHANGE','CSE',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
 
-registerLiveConnector('OSLO EXCHANGE','OSL',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('OSLO EXCHANGE','OSL',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
 
-registerLiveConnector('SAO PAULO EXCHANGE','SAO',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('SAO PAULO EXCHANGE','SAO',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
 
-registerLiveConnector('HONG KONG EXCHANGE','HKG',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('HONG KONG EXCHANGE','HKG',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
 
-registerLiveConnector('SHANGHAI EXCHANGE','SHG',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('SHANGHAI EXCHANGE','SHG',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
 
-registerLiveConnector('SHENZHEN EXCHANGE','SHE',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('SHENZHEN EXCHANGE','SHE',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
 
-registerLiveConnector('NATIONAL EXCHANGE OF INDIA','NSE',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('NATIONAL EXCHANGE OF INDIA','NSE',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
 
-registerLiveConnector('BOMBAY EXCHANGE','BSE',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('BOMBAY EXCHANGE','BSE',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
 
-registerLiveConnector('NEW ZEALAND EXCHANGE','NZE',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('NEW ZEALAND EXCHANGE','NZE',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
 
-registerLiveConnector('BUENOS AIRES EXCHANGE','BUE',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('BUENOS AIRES EXCHANGE','BUE',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
 
-registerLiveConnector('MEXICO EXCHANGE','MEX',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('MEXICO EXCHANGE','MEX',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
 
-registerLiveConnector('SINGAPORE EXCHANGE','SGX',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('SINGAPORE EXCHANGE','SGX',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
 
-registerLiveConnector('KOREA STOCK EXCHANGE','KRX',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('KOREA STOCK EXCHANGE','KRX',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
 
-registerLiveConnector('KOREA KOSDAQ EXCHANGE','KOS',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('KOREA KOSDAQ EXCHANGE','KOS',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
 
-registerLiveConnector('WIENER BORSE','WBO',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('WIENER BORSE','WBO',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
 
-registerLiveConnector('TAIWAN STOCK EXCHANGE','TAI',QList.any,QTAG_DIFFERED,gLiveYahoo,bDefault=True)
+registerLiveConnector('TAIWAN STOCK EXCHANGE','TAI',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
 
 # ============================================================================
 # Test ME

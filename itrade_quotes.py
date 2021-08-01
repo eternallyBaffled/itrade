@@ -50,7 +50,7 @@ from itrade_local import message, getGroupChar
 import itrade_csv
 import itrade_trades
 from itrade_import import cmdline_importQuoteFromInternet, import_from_internet, liveupdate_from_internet
-from itrade_defs import QList, QTAG_IMPORT, QTAG_ANY, QTAG_LIVE
+from itrade_defs import QList, QTag
 from itrade_ext import getImportConnector, getLiveConnector, getDefaultLiveConnector
 from itrade_datation import Datation, gCal, date2str
 from itrade_market import market2currency, compute_country, market2place, list_of_markets, set_market_loaded, is_market_loaded
@@ -152,7 +152,7 @@ class Quote(object):
 
         self.m_userliveconnector = None
 
-        self.m_defaultimportconnector = getImportConnector(self.m_market,self.m_list,QTAG_IMPORT,self.m_place)
+        self.m_defaultimportconnector = getImportConnector(self.m_market,self.m_list,QTag.imported,self.m_place)
         if self.m_defaultimportconnector is None:
             if itrade_config.verbose:
                 print('no default import connector for %s (list:%d)' % (self,self.m_list))
@@ -384,7 +384,7 @@ class Quote(object):
 
     def liveconnector(self,bForceLive=False,bDebug=False):
         if bForceLive:
-            ret = getLiveConnector(self.m_market,self.m_list,QTAG_LIVE,self.m_place)
+            ret = getLiveConnector(self.m_market,self.m_list,QTag.live,self.m_place)
             if bDebug: print('liveconnector: for live connector %s' % ret)
             if ret: return ret
 
@@ -413,13 +413,13 @@ class Quote(object):
     def restore_defaultconnectors(self):
         self.m_userliveconnector = None
         #self.m_liveconnector = getDefaultLiveConnector(self.m_market,self.m_list,self.m_place)
-        self.m_importconnector = getImportConnector(self.m_market,self.m_list,QTAG_IMPORT,self.m_place)
+        self.m_importconnector = getImportConnector(self.m_market,self.m_list,QTag.imported,self.m_place)
         self.m_pluginId = None
 
     def set_liveconnector(self,name):
         if itrade_config.verbose:
-            print('set_liveconnector %s/%s for ' % (self.key(),self.name()),self.m_market,self.m_list,QTAG_ANY,self.m_place,name)
-        conn = getLiveConnector(self.m_market,self.m_list,QTAG_ANY,self.m_place,name)
+            print('set_liveconnector %s/%s for ' % (self.key(),self.name()),self.m_market,self.m_list,QTag.any,self.m_place,name)
+        conn = getLiveConnector(self.m_market,self.m_list,QTag.any,self.m_place,name)
         #if itrade_config.verbose:
             #print ' returns',conn
         if conn:
@@ -427,7 +427,7 @@ class Quote(object):
             self.m_pluginId = None
 
     def set_importconnector(self,name):
-        conn = getImportConnector(self.m_market,self.m_list,QTAG_IMPORT,self.m_place,name)
+        conn = getImportConnector(self.m_market,self.m_list,QTag.imported,self.m_place,name)
         if conn:
             self.m_importconnector = conn
             self.m_pluginId = None

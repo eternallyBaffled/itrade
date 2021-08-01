@@ -52,7 +52,7 @@ import itrade_config
 from itrade_logging import setLevel, debug, info
 from itrade_datation import jjmmaa2yyyymmdd
 from itrade_quotes import quotes
-from itrade_defs import QList, QTAG_LIVE
+from itrade_defs import QList, QTag
 from itrade_ext import registerLiveConnector
 from itrade_market import convertConnectorTimeToPlaceTime
 from itrade_connection import ITradeConnection
@@ -445,22 +445,22 @@ if __name__ == '__main__':
 gLiveRealTime = LiveUpdate_RealTime()
 gLiveAlternext = LiveUpdate_RealTime()
 
-registerLiveConnector('EURONEXT','PAR',QList.any,QTAG_LIVE,gLiveRealTime,bDefault=False)
-#registerLiveConnector('EURONEXT','BRU',QList.any,QTAG_LIVE,gLiveRealTime,bDefault=False)
-#registerLiveConnector('EURONEXT','AMS',QList.any,QTAG_LIVE,gLiveRealTime,bDefault=False)
-#registerLiveConnector('EURONEXT','LIS',QList.any,QTAG_LIVE,gLiveRealTime,bDefault=False)
-registerLiveConnector('EURONEXT','PAR',QList.indices,QTAG_LIVE,gLiveRealTime,bDefault=False)
-registerLiveConnector('EURONEXT','BRU',QList.indices,QTAG_LIVE,gLiveRealTime,bDefault=False)
-registerLiveConnector('EURONEXT','AMS',QList.indices,QTAG_LIVE,gLiveRealTime,bDefault=False)
-registerLiveConnector('EURONEXT','LIS',QList.indices,QTAG_LIVE,gLiveRealTime,bDefault=False)
-registerLiveConnector('ALTERNEXT','PAR',QList.any,QTAG_LIVE,gLiveRealTime,bDefault=False)
+registerLiveConnector('EURONEXT','PAR',QList.any,QTag.live,gLiveRealTime,bDefault=False)
+#registerLiveConnector('EURONEXT','BRU',QList.any,QTag.live,gLiveRealTime,bDefault=False)
+#registerLiveConnector('EURONEXT','AMS',QList.any,QTag.live,gLiveRealTime,bDefault=False)
+#registerLiveConnector('EURONEXT','LIS',QList.any,QTag.live,gLiveRealTime,bDefault=False)
+registerLiveConnector('EURONEXT','PAR',QList.indices,QTag.live,gLiveRealTime,bDefault=False)
+registerLiveConnector('EURONEXT','BRU',QList.indices,QTag.live,gLiveRealTime,bDefault=False)
+registerLiveConnector('EURONEXT','AMS',QList.indices,QTag.live,gLiveRealTime,bDefault=False)
+registerLiveConnector('EURONEXT','LIS',QList.indices,QTag.live,gLiveRealTime,bDefault=False)
+registerLiveConnector('ALTERNEXT','PAR',QList.any,QTag.live,gLiveRealTime,bDefault=False)
 
-#registerLiveConnector('ALTERNEXT','AMS',QList.any,QTAG_LIVE,gLiveRealTime,bDefault=False)
-#registerLiveConnector('ALTERNEXT','BRU',QList.any,QTAG_LIVE,gLiveRealTime,bDefault=False)
-#registerLiveConnector('ALTERNEXT','LIS',QList.any,QTAG_LIVE,gLiveRealTime,bDefault=False)
+#registerLiveConnector('ALTERNEXT','AMS',QList.any,QTag.live,gLiveRealTime,bDefault=False)
+#registerLiveConnector('ALTERNEXT','BRU',QList.any,QTag.live,gLiveRealTime,bDefault=False)
+#registerLiveConnector('ALTERNEXT','LIS',QList.any,QTag.live,gLiveRealTime,bDefault=False)
 
-registerLiveConnector('PARIS MARCHE LIBRE','PAR',QList.any,QTAG_LIVE,gLiveRealTime,bDefault=False)
-#registerLiveConnector('BRUXELLES MARCHE LIBRE','BRU',QList.any,QTAG_LIVE,gLiveRealTime,bDefault=False)
+registerLiveConnector('PARIS MARCHE LIBRE','PAR',QList.any,QTag.live,gLiveRealTime,bDefault=False)
+#registerLiveConnector('BRUXELLES MARCHE LIBRE','BRU',QList.any,QTag.live,gLiveRealTime,bDefault=False)
 
 # ============================================================================
 # Test ME

@@ -44,7 +44,7 @@ import string
 # iTrade system
 import itrade_config
 from itrade_logging import setLevel, info
-from itrade_defs import QList, QTAG_LIST
+from itrade_defs import QList, QTag
 from itrade_ext import registerListSymbolConnector
 from itrade_connection import ITradeConnection
 
@@ -123,7 +123,7 @@ def Import_ListOfQuotes_SHE(quotes,market='SHENZHEN EXCHANGE',dlg=None,x=0):
 # Export me
 # ============================================================================
 
-registerListSymbolConnector('SHENZHEN EXCHANGE','SHE',QList.any,QTAG_LIST,Import_ListOfQuotes_SHE)
+registerListSymbolConnector('SHENZHEN EXCHANGE','SHE',QList.any,QTag.list,Import_ListOfQuotes_SHE)
 
 # ============================================================================
 # Test ME

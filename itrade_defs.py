@@ -34,8 +34,8 @@
 from enum import Enum
 
 class QList(Enum):
-    all = 0
     any = 0
+    all = 0
     system = 1
     user = 2
     indices = 3
@@ -45,12 +45,12 @@ class QList(Enum):
 # ============================================================================
 # TAG : Kind Of Service
 # ============================================================================
-
-QTAG_ANY = 0
-QTAG_LIVE = 1
-QTAG_DIFFERED = 2
-QTAG_IMPORT = 3
-QTAG_LIST = 4
+class QTag(Enum):
+    any = 0
+    live = 1
+    differed = 2
+    imported = 3
+    list = 4
 
 # ============================================================================
 # That's all folks !

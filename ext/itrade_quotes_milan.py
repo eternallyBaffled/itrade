@@ -45,7 +45,7 @@ import urllib2
 # iTrade system
 import itrade_config
 from itrade_logging import setLevel, info
-from itrade_defs import QList, QTAG_LIST
+from itrade_defs import QList, QTag
 from itrade_ext import registerListSymbolConnector
 from itrade_connection import ITradeConnection
 
@@ -136,7 +136,7 @@ def Import_ListOfQuotes_MIL(quotes,market='MILAN EXCHANGE',dlg=None,x=0):
 # ============================================================================
 # Export me
 # ============================================================================
-registerListSymbolConnector('MILAN EXCHANGE','MIL',QList.any,QTAG_LIST,Import_ListOfQuotes_MIL)
+registerListSymbolConnector('MILAN EXCHANGE','MIL',QList.any,QTag.list,Import_ListOfQuotes_MIL)
 # ============================================================================
 # Test ME
 # ============================================================================

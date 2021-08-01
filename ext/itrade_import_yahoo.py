@@ -45,7 +45,7 @@ from datetime import date, timedelta
 from itrade_logging import setLevel, debug
 from itrade_quotes import quotes
 from itrade_datation import Datation, dd_mmm_yy2yyyymmdd, re_p3_1
-from itrade_defs import QList, QTAG_IMPORT
+from itrade_defs import QList, QTag
 from itrade_ext import registerImportConnector
 from itrade_market import yahooTicker, yahooUrl
 from itrade_connection import ITradeConnection
@@ -196,105 +196,105 @@ try:
 except NameError:
     gImportYahoo = Import_yahoo()
 
-registerImportConnector('NASDAQ','NYC',QList.any,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('NYSE','NYC',QList.any,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('AMEX','NYC',QList.any,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('OTCBB','NYC',QList.any,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('LSE','LON',QList.any,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('NASDAQ','NYC',QList.any,QTag.imported,gImportYahoo,bDefault=True)
+registerImportConnector('NYSE','NYC',QList.any,QTag.imported,gImportYahoo,bDefault=True)
+registerImportConnector('AMEX','NYC',QList.any,QTag.imported,gImportYahoo,bDefault=True)
+registerImportConnector('OTCBB','NYC',QList.any,QTag.imported,gImportYahoo,bDefault=True)
+registerImportConnector('LSE','LON',QList.any,QTag.imported,gImportYahoo,bDefault=True)
 
-registerImportConnector('ASX','SYD',QList.any,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('ASX','SYD',QList.any,QTag.imported,gImportYahoo,bDefault=True)
 
-registerImportConnector('TORONTO VENTURE','TOR',QList.any,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('TORONTO EXCHANGE','TOR',QList.any,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('TORONTO VENTURE','TOR',QList.any,QTag.imported,gImportYahoo,bDefault=True)
+registerImportConnector('TORONTO EXCHANGE','TOR',QList.any,QTag.imported,gImportYahoo,bDefault=True)
 
-registerImportConnector('LSE SETS','LON',QList.any,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('LSE SETSqx','LON',QList.any,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('LSE SEAQ','LON',QList.any,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('LSE SETS','LON',QList.any,QTag.imported,gImportYahoo,bDefault=True)
+registerImportConnector('LSE SETSqx','LON',QList.any,QTag.imported,gImportYahoo,bDefault=True)
+registerImportConnector('LSE SEAQ','LON',QList.any,QTag.imported,gImportYahoo,bDefault=True)
 
-registerImportConnector('MILAN EXCHANGE','MIL',QList.any,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('MILAN EXCHANGE','MIL',QList.any,QTag.imported,gImportYahoo,bDefault=True)
 
-registerImportConnector('SWISS EXCHANGE','XSWX',QList.any,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('SWISS EXCHANGE','XVTX',QList.any,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('SWISS EXCHANGE','XSWX',QList.any,QTag.imported,gImportYahoo,bDefault=True)
+registerImportConnector('SWISS EXCHANGE','XVTX',QList.any,QTag.imported,gImportYahoo,bDefault=True)
 
-registerImportConnector('EURONEXT','PAR',QList.system,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('EURONEXT','PAR',QList.user,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('EURONEXT','PAR',QList.indices,QTAG_IMPORT,gImportYahoo,bDefault=False)
+registerImportConnector('EURONEXT','PAR',QList.system,QTag.imported,gImportYahoo,bDefault=True)
+registerImportConnector('EURONEXT','PAR',QList.user,QTag.imported,gImportYahoo,bDefault=True)
+registerImportConnector('EURONEXT','PAR',QList.indices,QTag.imported,gImportYahoo,bDefault=False)
 
-registerImportConnector('EURONEXT','AMS',QList.system,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('EURONEXT','AMS',QList.user,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('EURONEXT','AMS',QList.indices,QTAG_IMPORT,gImportYahoo,bDefault=False)
+registerImportConnector('EURONEXT','AMS',QList.system,QTag.imported,gImportYahoo,bDefault=True)
+registerImportConnector('EURONEXT','AMS',QList.user,QTag.imported,gImportYahoo,bDefault=True)
+registerImportConnector('EURONEXT','AMS',QList.indices,QTag.imported,gImportYahoo,bDefault=False)
 
-registerImportConnector('EURONEXT','BRU',QList.system,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('EURONEXT','BRU',QList.user,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('EURONEXT','BRU',QList.indices,QTAG_IMPORT,gImportYahoo,bDefault=False)
+registerImportConnector('EURONEXT','BRU',QList.system,QTag.imported,gImportYahoo,bDefault=True)
+registerImportConnector('EURONEXT','BRU',QList.user,QTag.imported,gImportYahoo,bDefault=True)
+registerImportConnector('EURONEXT','BRU',QList.indices,QTag.imported,gImportYahoo,bDefault=False)
 
-registerImportConnector('EURONEXT','LIS',QList.system,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('EURONEXT','LIS',QList.user,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('EURONEXT','LIS',QList.indices,QTAG_IMPORT,gImportYahoo,bDefault=False)
+registerImportConnector('EURONEXT','LIS',QList.system,QTag.imported,gImportYahoo,bDefault=True)
+registerImportConnector('EURONEXT','LIS',QList.user,QTag.imported,gImportYahoo,bDefault=True)
+registerImportConnector('EURONEXT','LIS',QList.indices,QTag.imported,gImportYahoo,bDefault=False)
 
-registerImportConnector('ALTERNEXT','PAR',QList.system,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('ALTERNEXT','PAR',QList.user,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('ALTERNEXT','PAR',QList.indices,QTAG_IMPORT,gImportYahoo,bDefault=False)
+registerImportConnector('ALTERNEXT','PAR',QList.system,QTag.imported,gImportYahoo,bDefault=True)
+registerImportConnector('ALTERNEXT','PAR',QList.user,QTag.imported,gImportYahoo,bDefault=True)
+registerImportConnector('ALTERNEXT','PAR',QList.indices,QTag.imported,gImportYahoo,bDefault=False)
 
-registerImportConnector('ALTERNEXT','BRU',QList.system,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('ALTERNEXT','BRU',QList.user,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('ALTERNEXT','BRU',QList.indices,QTAG_IMPORT,gImportYahoo,bDefault=False)
+registerImportConnector('ALTERNEXT','BRU',QList.system,QTag.imported,gImportYahoo,bDefault=True)
+registerImportConnector('ALTERNEXT','BRU',QList.user,QTag.imported,gImportYahoo,bDefault=True)
+registerImportConnector('ALTERNEXT','BRU',QList.indices,QTag.imported,gImportYahoo,bDefault=False)
 
-registerImportConnector('ALTERNEXT','AMS',QList.system,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('ALTERNEXT','AMS',QList.user,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('ALTERNEXT','AMS',QList.indices,QTAG_IMPORT,gImportYahoo,bDefault=False)
+registerImportConnector('ALTERNEXT','AMS',QList.system,QTag.imported,gImportYahoo,bDefault=True)
+registerImportConnector('ALTERNEXT','AMS',QList.user,QTag.imported,gImportYahoo,bDefault=True)
+registerImportConnector('ALTERNEXT','AMS',QList.indices,QTag.imported,gImportYahoo,bDefault=False)
 
 
-registerImportConnector('ALTERNEXT','LIS',QList.system,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('ALTERNEXT','LIS',QList.user,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('ALTERNEXT','LIS',QList.indices,QTAG_IMPORT,gImportYahoo,bDefault=False)
+registerImportConnector('ALTERNEXT','LIS',QList.system,QTag.imported,gImportYahoo,bDefault=True)
+registerImportConnector('ALTERNEXT','LIS',QList.user,QTag.imported,gImportYahoo,bDefault=True)
+registerImportConnector('ALTERNEXT','LIS',QList.indices,QTag.imported,gImportYahoo,bDefault=False)
 
-registerImportConnector('PARIS MARCHE LIBRE','PAR',QList.system,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('PARIS MARCHE LIBRE','PAR',QList.user,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('PARIS MARCHE LIBRE','PAR',QList.indices,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('PARIS MARCHE LIBRE','PAR',QList.system,QTag.imported,gImportYahoo,bDefault=True)
+registerImportConnector('PARIS MARCHE LIBRE','PAR',QList.user,QTag.imported,gImportYahoo,bDefault=True)
+registerImportConnector('PARIS MARCHE LIBRE','PAR',QList.indices,QTag.imported,gImportYahoo,bDefault=True)
 
-registerImportConnector('BRUXELLES MARCHE LIBRE','BRU',QList.system,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('BRUXELLES MARCHE LIBRE','BRU',QList.user,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('BRUXELLES MARCHE LIBRE','BRU',QList.indices,QTAG_IMPORT,gImportYahoo,bDefault=False)
+registerImportConnector('BRUXELLES MARCHE LIBRE','BRU',QList.system,QTag.imported,gImportYahoo,bDefault=True)
+registerImportConnector('BRUXELLES MARCHE LIBRE','BRU',QList.user,QTag.imported,gImportYahoo,bDefault=True)
+registerImportConnector('BRUXELLES MARCHE LIBRE','BRU',QList.indices,QTag.imported,gImportYahoo,bDefault=False)
 
-registerImportConnector('IRISH EXCHANGE','DUB',QList.any,QTAG_IMPORT,gImportYahoo,bDefault=True)
-registerImportConnector('MADRID EXCHANGE','MAD',QList.any,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('IRISH EXCHANGE','DUB',QList.any,QTag.imported,gImportYahoo,bDefault=True)
+registerImportConnector('MADRID EXCHANGE','MAD',QList.any,QTag.imported,gImportYahoo,bDefault=True)
 
-registerImportConnector('FRANKFURT EXCHANGE','FRA',QList.any,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('FRANKFURT EXCHANGE','FRA',QList.any,QTag.imported,gImportYahoo,bDefault=True)
 
-registerImportConnector('STOCKHOLM EXCHANGE','STO',QList.any,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('STOCKHOLM EXCHANGE','STO',QList.any,QTag.imported,gImportYahoo,bDefault=True)
 
-registerImportConnector('COPENHAGEN EXCHANGE','CSE',QList.any,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('COPENHAGEN EXCHANGE','CSE',QList.any,QTag.imported,gImportYahoo,bDefault=True)
 
-registerImportConnector('OSLO EXCHANGE','OSL',QList.any,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('OSLO EXCHANGE','OSL',QList.any,QTag.imported,gImportYahoo,bDefault=True)
 
-registerImportConnector('SAO PAULO EXCHANGE','SAO',QList.any,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('SAO PAULO EXCHANGE','SAO',QList.any,QTag.imported,gImportYahoo,bDefault=True)
 
-registerImportConnector('HONG KONG EXCHANGE','HKG',QList.any,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('HONG KONG EXCHANGE','HKG',QList.any,QTag.imported,gImportYahoo,bDefault=True)
 
-registerImportConnector('SHANGHAI EXCHANGE','SHG',QList.any,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('SHANGHAI EXCHANGE','SHG',QList.any,QTag.imported,gImportYahoo,bDefault=True)
 
-registerImportConnector('SHENZHEN EXCHANGE','SHE',QList.any,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('SHENZHEN EXCHANGE','SHE',QList.any,QTag.imported,gImportYahoo,bDefault=True)
 
-registerImportConnector('NATIONAL EXCHANGE OF INDIA','NSE',QList.any,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('NATIONAL EXCHANGE OF INDIA','NSE',QList.any,QTag.imported,gImportYahoo,bDefault=True)
 
-registerImportConnector('BOMBAY EXCHANGE','BSE',QList.any,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('BOMBAY EXCHANGE','BSE',QList.any,QTag.imported,gImportYahoo,bDefault=True)
 
-registerImportConnector('NEW ZEALAND EXCHANGE','NZE',QList.any,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('NEW ZEALAND EXCHANGE','NZE',QList.any,QTag.imported,gImportYahoo,bDefault=True)
 
-registerImportConnector('BUENOS AIRES EXCHANGE','BUE',QList.any,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('BUENOS AIRES EXCHANGE','BUE',QList.any,QTag.imported,gImportYahoo,bDefault=True)
 
-registerImportConnector('MEXICO EXCHANGE','MEX',QList.any,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('MEXICO EXCHANGE','MEX',QList.any,QTag.imported,gImportYahoo,bDefault=True)
 
-registerImportConnector('SINGAPORE EXCHANGE','SGX',QList.any,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('SINGAPORE EXCHANGE','SGX',QList.any,QTag.imported,gImportYahoo,bDefault=True)
 
-registerImportConnector('KOREA STOCK EXCHANGE','KRX',QList.any,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('KOREA STOCK EXCHANGE','KRX',QList.any,QTag.imported,gImportYahoo,bDefault=True)
 
-registerImportConnector('KOREA KOSDAQ EXCHANGE','KOS',QList.any,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('KOREA KOSDAQ EXCHANGE','KOS',QList.any,QTag.imported,gImportYahoo,bDefault=True)
 
-registerImportConnector('WIENER BORSE','WBO',QList.any,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('WIENER BORSE','WBO',QList.any,QTag.imported,gImportYahoo,bDefault=True)
 
-registerImportConnector('TAIWAN STOCK EXCHANGE','TAI',QList.any,QTAG_IMPORT,gImportYahoo,bDefault=True)
+registerImportConnector('TAIWAN STOCK EXCHANGE','TAI',QList.any,QTag.imported,gImportYahoo,bDefault=True)
 
 # ============================================================================
 # Test ME

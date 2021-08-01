@@ -48,7 +48,7 @@ from datetime import date, datetime
 from itrade_logging import setLevel, debug, info
 from itrade_quotes import quotes
 from itrade_datation import jjmmaa2yyyymmdd
-from itrade_defs import QList, QTAG_DIFFERED
+from itrade_defs import QList, QTag
 from itrade_ext import registerLiveConnector
 from itrade_market import euronextmic, convertConnectorTimeToPlaceTime
 from itrade_connection import ITradeConnection
@@ -381,36 +381,36 @@ class LiveUpdate_Euronext(object):
 gLiveEuronext = LiveUpdate_Euronext('euronext')
 gLiveAlternext = LiveUpdate_Euronext('alternext')
 
-registerLiveConnector('EURONEXT','PAR',QList.bonds,QTAG_DIFFERED,gLiveEuronext,bDefault=True)
-registerLiveConnector('EURONEXT','BRU',QList.bonds,QTAG_DIFFERED,gLiveEuronext,bDefault=True)
-registerLiveConnector('EURONEXT','AMS',QList.bonds,QTAG_DIFFERED,gLiveEuronext,bDefault=True)
-registerLiveConnector('EURONEXT','LIS',QList.bonds,QTAG_DIFFERED,gLiveEuronext,bDefault=True)
+registerLiveConnector('EURONEXT','PAR',QList.bonds,QTag.differed,gLiveEuronext,bDefault=True)
+registerLiveConnector('EURONEXT','BRU',QList.bonds,QTag.differed,gLiveEuronext,bDefault=True)
+registerLiveConnector('EURONEXT','AMS',QList.bonds,QTag.differed,gLiveEuronext,bDefault=True)
+registerLiveConnector('EURONEXT','LIS',QList.bonds,QTag.differed,gLiveEuronext,bDefault=True)
 
-registerLiveConnector('EURONEXT','PAR',QList.indices,QTAG_DIFFERED,gLiveEuronext,bDefault=True)
-registerLiveConnector('EURONEXT','AMS',QList.indices,QTAG_DIFFERED,gLiveEuronext,bDefault=True)
-registerLiveConnector('EURONEXT','BRU',QList.indices,QTAG_DIFFERED,gLiveEuronext,bDefault=True)
-registerLiveConnector('EURONEXT','LIS',QList.indices,QTAG_DIFFERED,gLiveEuronext,bDefault=True)
-
-
-registerLiveConnector('EURONEXT','PAR',QList.any,QTAG_DIFFERED,gLiveEuronext,bDefault=False)
-registerLiveConnector('EURONEXT','BRU',QList.any,QTAG_DIFFERED,gLiveEuronext,bDefault=False)
-registerLiveConnector('EURONEXT','AMS',QList.any,QTAG_DIFFERED,gLiveEuronext,bDefault=False)
-registerLiveConnector('EURONEXT','LIS',QList.any,QTAG_DIFFERED,gLiveEuronext,bDefault=False)
+registerLiveConnector('EURONEXT','PAR',QList.indices,QTag.differed,gLiveEuronext,bDefault=True)
+registerLiveConnector('EURONEXT','AMS',QList.indices,QTag.differed,gLiveEuronext,bDefault=True)
+registerLiveConnector('EURONEXT','BRU',QList.indices,QTag.differed,gLiveEuronext,bDefault=True)
+registerLiveConnector('EURONEXT','LIS',QList.indices,QTag.differed,gLiveEuronext,bDefault=True)
 
 
-registerLiveConnector('ALTERNEXT','PAR',QList.any,QTAG_DIFFERED,gLiveAlternext,bDefault=False)
-registerLiveConnector('ALTERNEXT','BRU',QList.any,QTAG_DIFFERED,gLiveAlternext,bDefault=False)
-registerLiveConnector('ALTERNEXT','AMS',QList.any,QTAG_DIFFERED,gLiveAlternext,bDefault=False)
-registerLiveConnector('ALTERNEXT','LIS',QList.any,QTAG_DIFFERED,gLiveAlternext,bDefault=False)
+registerLiveConnector('EURONEXT','PAR',QList.any,QTag.differed,gLiveEuronext,bDefault=False)
+registerLiveConnector('EURONEXT','BRU',QList.any,QTag.differed,gLiveEuronext,bDefault=False)
+registerLiveConnector('EURONEXT','AMS',QList.any,QTag.differed,gLiveEuronext,bDefault=False)
+registerLiveConnector('EURONEXT','LIS',QList.any,QTag.differed,gLiveEuronext,bDefault=False)
 
-registerLiveConnector('ALTERNEXT','PAR',QList.indices,QTAG_DIFFERED,gLiveAlternext,bDefault=True)
-registerLiveConnector('ALTERNEXT','BRU',QList.indices,QTAG_DIFFERED,gLiveAlternext,bDefault=True)
-registerLiveConnector('ALTERNEXT','AMS',QList.indices,QTAG_DIFFERED,gLiveAlternext,bDefault=True)
-registerLiveConnector('ALTERNEXT','LIS',QList.indices,QTAG_DIFFERED,gLiveAlternext,bDefault=True)
 
-registerLiveConnector('PARIS MARCHE LIBRE','PAR',QList.any,QTAG_DIFFERED,gLiveEuronext,bDefault=False)
+registerLiveConnector('ALTERNEXT','PAR',QList.any,QTag.differed,gLiveAlternext,bDefault=False)
+registerLiveConnector('ALTERNEXT','BRU',QList.any,QTag.differed,gLiveAlternext,bDefault=False)
+registerLiveConnector('ALTERNEXT','AMS',QList.any,QTag.differed,gLiveAlternext,bDefault=False)
+registerLiveConnector('ALTERNEXT','LIS',QList.any,QTag.differed,gLiveAlternext,bDefault=False)
 
-registerLiveConnector('BRUXELLES MARCHE LIBRE','BRU',QList.any,QTAG_DIFFERED,gLiveEuronext,bDefault=False)
+registerLiveConnector('ALTERNEXT','PAR',QList.indices,QTag.differed,gLiveAlternext,bDefault=True)
+registerLiveConnector('ALTERNEXT','BRU',QList.indices,QTag.differed,gLiveAlternext,bDefault=True)
+registerLiveConnector('ALTERNEXT','AMS',QList.indices,QTag.differed,gLiveAlternext,bDefault=True)
+registerLiveConnector('ALTERNEXT','LIS',QList.indices,QTag.differed,gLiveAlternext,bDefault=True)
+
+registerLiveConnector('PARIS MARCHE LIBRE','PAR',QList.any,QTag.differed,gLiveEuronext,bDefault=False)
+
+registerLiveConnector('BRUXELLES MARCHE LIBRE','BRU',QList.any,QTag.differed,gLiveEuronext,bDefault=False)
 
 # ============================================================================
 # Test ME
