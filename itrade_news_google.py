@@ -149,22 +149,23 @@ except NameError:
 # Test me
 # ============================================================================
 
-if __name__ == '__main__':
+def main():
+    global quote
     setLevel(logging.INFO)
-
     from itrade_local import setLang
     setLang('fr')
-
     from itrade_quotes import quotes
     quote = quotes.lookupTicker('AAPL')
     print(gNewsGoogle.feedQuote(quote))
-
     quote = quotes.lookupTicker('AXL')
     print(gNewsGoogle.feedQuote(quote))
-    print(gNewsGoogle.feedQuote(quote,'fr'))
-
+    print(gNewsGoogle.feedQuote(quote, 'fr'))
     quote = quotes.lookupTicker('SAF')
     print(gNewsGoogle.feedQuote(quote))
+
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

@@ -205,14 +205,17 @@ except NameError:
 # Test me
 # ============================================================================
 
-if __name__ == '__main__':
+def main():
+    global quote
     setLevel(logging.INFO)
-
     from itrade_quotes import quotes
     quote = quotes.lookupTicker('RIB')
     print(gNewsBoursorama.feedQuote(quote))
+    gNewsBoursorama.goto(None, "https://www.boursorama.com/infos/imprimer_news.phtml?news=3020909")
 
-    gNewsBoursorama.goto(None,"https://www.boursorama.com/infos/imprimer_news.phtml?news=3020909")
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

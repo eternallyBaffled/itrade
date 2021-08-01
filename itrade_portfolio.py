@@ -1443,12 +1443,14 @@ def initPortfolioModule():
 # Test
 # ============================================================================
 
-if __name__ == '__main__':
+def main():
     setLevel(logging.INFO)
-
     initPortfolioModule()
-
     cmdline_evaluatePortfolio(2012)
+
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

@@ -109,17 +109,21 @@ except NameError:
 # Test me
 # ============================================================================
 
-if __name__ == '__main__':
+def main():
+    global quote
     setLevel(logging.INFO)
 
     class cb(object):
         pass
 
     gNews.setCallback(cb)
-
     from itrade_quotes import quotes
     quote = quotes.lookupTicker('RIB')
-    print(gNews.feedQuote(quote,'fr'))
+    print(gNews.feedQuote(quote, 'fr'))
+
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

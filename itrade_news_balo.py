@@ -189,14 +189,17 @@ except NameError:
 # Test me
 # ============================================================================
 
-if __name__ == '__main__':
+def main():
+    global quote
     setLevel(logging.INFO)
-
     from itrade_quotes import quotes
     quote = quotes.lookupTicker('RIB')
     gNewsBalo.feedQuote(quote)
+    # gNewsBalo.goto(None,"http://www.boursorama.com/infos/imprimer_news.phtml?news=3020909")
 
-    #gNewsBalo.goto(None,"http://www.boursorama.com/infos/imprimer_news.phtml?news=3020909")
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

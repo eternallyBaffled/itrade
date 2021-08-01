@@ -654,30 +654,29 @@ class Trades(object):
 # Test
 # ============================================================================
 
-if __name__ == '__main__':
+def main():
+    global quote, trades
     setLevel(logging.INFO)
-
-   # load extensions
+    # load extensions
     import itrade_ext
-    itrade_ext.loadExtensions(itrade_config.fileExtData,itrade_config.dirExtData)
-
+    itrade_ext.loadExtensions(itrade_config.fileExtData, itrade_config.dirExtData)
     from itrade_quotes import quotes, initQuotesModule
     initQuotesModule()
     quotes.loadMarket('EURONEXT')
     quotes.loadMarket('NASDAQ')
-
-    quote = quotes.lookupTicker('AAPL','NASDAQ')
-    info('test1 %s' % quote )
-
-    quote = quotes.lookupTicker('OSI','EURONEXT')
-    info('test2 %s' % quote )
-
+    quote = quotes.lookupTicker('AAPL', 'NASDAQ')
+    info('test1 %s' % quote)
+    quote = quotes.lookupTicker('OSI', 'EURONEXT')
+    info('test2 %s' % quote)
     trades = Trades(quote)
     trades.load('import/Cortal-2005-01-07.txt')
     trades.load('import/Cortal-2005-01-14.txt')
     trades.load('import/Cortal-2005-01-21.txt')
+    info('test3 %s' % trades.trade(date(2005, 1, 4)))
 
-    info('test3 %s' % trades.trade(date(2005,1,4)))
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !
