@@ -97,6 +97,7 @@ class News_Balo(object):
         self.m_feed.entries = []
         self.m_feed.feed = _Feed()
         self.m_feed.feed.title = 'Balo'
+        news_link_url = '' #placeholder, needs research for actual url
 
         info('Balo News refresh %s',self.m_url)
         try:
@@ -121,7 +122,7 @@ class News_Balo(object):
                     stitle = stitle.group()[1:-1]
 
                     entry = _Feed()
-                    entry.link = itrade_config.boursoNewsLinkxxxxxxxxxxxxxxxxUrl%snum
+                    entry.link = news_link_url%snum
                     entry.title = stitle
                     entry.date = sdate
                     entry.summary = ""

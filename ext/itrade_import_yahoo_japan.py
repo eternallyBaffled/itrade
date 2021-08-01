@@ -39,9 +39,9 @@
 
 # python system
 from __future__ import print_function
+from datetime import date, timedelta
 import logging
 import string
-from datetime import date, timedelta
 
 # iTrade system
 from itrade_logging import setLevel, debug
@@ -105,9 +105,9 @@ class ImportYahoojp(object):
             datefin = date.today()
         if not datedebut:
             datedebut = date.today()
-        if isinstance(datedebut,Datation):
+        if isinstance(datedebut, Datation):
             datedebut = datedebut.date()
-        if isinstance(datefin,Datation):
+        if isinstance(datefin, Datation):
             datefin = datefin.date()
         d1 = self.parseDate(datedebut)
         d2 = self.parseDate(datefin)
@@ -175,14 +175,14 @@ class ImportYahoojp(object):
                         i = i + 1
                         data = line[(line.find('small>')+6):(line.find ('</'))]
                         if i == 1 :
-                            date = data
-                            date = date.replace('年',' ')
-                            date = date.replace('月',' ')
-                            date = date.replace('日','')
-                            date = date.split()
-                            if len(date[1]) == 1 : date[1] = '0'+date[1]
-                            if len(date[2]) == 1 : date[2] = '0'+date[2]
-                            date = '-'.join(date)
+                            sdate = data
+                            sdate = sdate.replace('年',' ')
+                            sdate = sdate.replace('月',' ')
+                            sdate = sdate.replace('日','')
+                            sdate = sdate.split()
+                            if len(sdate[1]) == 1 : sdate[1] = '0'+sdate[1]
+                            if len(sdate[2]) == 1 : sdate[2] = '0'+sdate[2]
+                            sdate = '-'.join(sdate)
                         elif i == 2 :
                             open = data
                             open = open.replace(',','')
@@ -205,7 +205,7 @@ class ImportYahoojp(object):
                                 adjustclose = close
                                 i = 0
                                 n = 0
-                                ligne = ','.join([date,open,high,low,close,volume,adjustclose])
+                                ligne = ','.join([sdate,open,high,low,close,volume,adjustclose])
                                 # print(ligne)
                                 lines.append(ligne)
 

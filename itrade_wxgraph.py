@@ -46,7 +46,6 @@ import itrade_config
 
 # matplotlib system
 from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as FigureCanvas
-from matplotlib.backends.backend_wx import _load_bitmap
 
 from matplotlib.figure import Figure
 from matplotlib.ticker import FuncFormatter, MultipleLocator
@@ -383,9 +382,9 @@ class iTrade_wxToolbarGraph(wx.ToolBar):
         self.AddSimpleTool(self._NTB2_PANRIGHT, wx.ArtProvider.GetBitmap(wx.ART_GO_FORWARD, wx.ART_TOOLBAR),
                            message('tb_pan_right'), message('tb_pan_right'))
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
-        self.AddSimpleTool(self._NTB2_ZOOMOUT, _load_bitmap('stock_zoom-out.xpm'),
+        self.AddSimpleTool(self._NTB2_ZOOMOUT, wx.Bitmap(os.path.join(itrade_config.dirRes, 'stock_zoom-out.xpm')),
                            message('tb_zoom_out'), message('tb_zoom_out'))
-        self.AddSimpleTool(self._NTB2_ZOOMIN, _load_bitmap('stock_zoom-in.xpm'),
+        self.AddSimpleTool(self._NTB2_ZOOMIN, wx.Bitmap(os.path.join(itrade_config.dirRes, 'stock_zoom-in.xpm')),
                            message('tb_zoom_in'), message('tb_zoom_in'))
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
         self.AddSimpleTool(self._NTB2_CONFIG, wx.ArtProvider.GetBitmap(wx.ART_TICK_MARK, wx.ART_TOOLBAR),
@@ -484,8 +483,9 @@ class iTrade_wxToolbarGraph(wx.ToolBar):
         self.m_parent.OnPageSetup(event)
 
     def set_cursor(self, cursor):
-        cursor = wx.StockCursor(cursord[cursor])
-        self.m_canvas.SetCursor( cursor )
+        # cursor = wx.StockCursor(cursord[cursor])
+        # self.m_canvas.SetCursor( cursor )
+        pass
 
     def update(self):
         pass

@@ -560,7 +560,6 @@ class Operations(object):
 # ============================================================================
 
 class Portfolio(object):
-
     def __init__(self,filename='default',name='<Portfolio>',accountref='000000000',market='EURONEXT',currency='EUR',vat=1.0,term=3,risk=5,indice='FR0003500008'):
         debug('Portfolio::__init__ fn=%s name=%s account=%s' % (filename,name,accountref))
 

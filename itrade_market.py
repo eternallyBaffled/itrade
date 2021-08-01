@@ -38,15 +38,12 @@
 
 # python system
 from __future__ import print_function
-import re
 import os
 from pytz import timezone
 
 # iTrade system
 from itrade_local import message
 import itrade_csv
-from itrade_defs import QLIST_INDICES
-from itrade_connection import ITradeConnection
 import itrade_config
 
 # ============================================================================
@@ -757,82 +754,6 @@ def yahooUrlJapan(market,live):
         url = "https://table.yahoo.co.jp/t"
         #url = 'https://table.yahoo.co.jp/t?c=%s&a=%s&b=%s&f=%s&d=%s&e=%s&g=d&s=%s.t&y=%s&z=%s.t' % (d1[0],d1[1],d1[2],d2[0],d2[1],d2[2],ss,str(cursor),ss)
     return url
-
-
-# ============================================================================
-# euronext_IntrusmentId()
-# ============================================================================
-
-def euronext_InstrumentId(quote):
-
-    deprecated
-
-    #
-    if quote.list()==QLIST_INDICES:
-        urlid = 'https://www.euronext.com/quicksearch/resultquicksearchindices-7000-EN.html?matchpattern=%s&fromsearchbox=true&path=/quicksearch&searchTarget=quote'
-    else:
-        urlid = 'https://www.euronext.com/quicksearch/resultquicksearch-2986-EN.html?matchpattern=%s&fromsearchbox=true&path=/quicksearch&searchTarget=quote'
-
-    connection = ITradeConnection(cookies = None,
-                               proxy = itrade_config.proxyHostname,
-                               proxyAuth = itrade_config.proxyAuthentication,
-                               connectionTimeout = itrade_config.connectionTimeout
-                               )
-
-    # get instrument ID
-    IdInstrument = quote.get_pluginID()
-    if IdInstrument is None:
-        try:
-            f = open(os.path.join(itrade_config.dirCacheData,'%s.id' % quote.key()),'r')
-            IdInstrument = f.read().strip()
-            f.close()
-            #print("euronext_InstrumentId: get id from file for %s " % quote.isin())
-        except IOError:
-            #print("euronext_InstrumentId: can't get id file for %s " % quote.isin())
-            pass
-
-        if IdInstrument is None:
-            url = urlid % quote.isin()
-
-            if itrade_config.verbose:
-                print("euronext_InstrumentId: urlID=%s " % url)
-
-            try:
-                buf=connection.getDataFromUrl(url)
-            except:
-                print('euronext_InstrumentId: %s exception error' % url)
-                return None
-            sid = re.search(r"selectedMep=%d&amp;idInstrument=\d*&amp;isinCode=%s" % (euronext_place2mep(quote.place()),quote.isin()), buf, re.IGNORECASE|re.MULTILINE)
-            if sid:
-                sid = buf[sid.start():sid.end()]
-                #print('seq-1 found:',sid)
-                sexch = re.search(r"&amp;isinCode", sid, re.IGNORECASE|re.MULTILINE)
-                if sexch:
-                    IdInstrument = sid[31:sexch.start()]
-                    #print('seq-2 found:',IdInstrument)
-                else:
-                    print('euronext_InstrumentId: seq-2 not found : &amp;isinCode')
-            else:
-                print('euronext_InstrumentId: seq-1 not found : selectedMep=%d&amp;idInstrument=\d*&amp;isinCode=%s' % (euronext_place2mep(quote.place()),quote.isin()))
-                #print buf
-                #exit(0)
-
-        if IdInstrument is None:
-            print("euronext_InstrumentId:can't get IdInstrument for %s " % quote.isin())
-            return None
-        else:
-            if itrade_config.verbose:
-                print("euronext_InstrumentId: IdInstrument for %s is %s" % (quote.isin(),IdInstrument))
-            quote.set_pluginID(IdInstrument)
-            try:
-                f = open(os.path.join(itrade_config.dirCacheData,'%s.id' % quote.key()),'w')
-                f.write('%s' % IdInstrument)
-                f.close()
-            except IOError:
-                #print("euronext_InstrumentId: can't write id file for %s " % quote.isin())
-                pass
-
-    return IdInstrument
 
 # ============================================================================
 # That's all folks !
