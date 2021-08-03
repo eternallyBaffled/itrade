@@ -182,25 +182,23 @@ def login_UI(win,username,password,connector):
 # Test me
 # ============================================================================
 
-if __name__ == '__main__':
+def main():
     setLevel(logging.INFO)
-
     app = wx.App(False)
-
     from itrade_local import setLang, gMessage
     setLang('us')
     gMessage.load()
-
     provider = wx.SimpleHelpProvider()
     wx.HelpProvider_Set(provider)
-
     u = 'user'
     p = 'passwd'
-
     from itrade_login_fortuneo import gLoginFortuneo
+    u, p = login_UI(None, u, p, gLoginFortuneo)
+    print(u, p)
 
-    u,p = login_UI(None,u,p,gLoginFortuneo)
-    print(u,p)
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

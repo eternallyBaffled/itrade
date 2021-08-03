@@ -747,10 +747,9 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
             lst = list_of_markets()
             max = len(lst)+1
             keepGoing = True
-            x = 0
 
             dlg = wx.ProgressDialog(message('download_symbols_alllists'),"",max,self,wx.PD_CAN_ABORT | wx.PD_APP_MODAL)
-            for market in lst:
+            for x, market in enumerate(lst):
                 if keepGoing:
                     keepGoing = dlg.Update(x,market)
                     fn = getListSymbolConnector(market,QList.any,QTag.list)
@@ -758,7 +757,6 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
                         fn(quotes,market,dlg,x)
                     else:
                         print('ListSymbolConnector for %s not found !' % market)
-                    x = x + 1
         else:
             x = 0
             dlg = wx.ProgressDialog(message('download_symbols_onelist'),"",2,self,wx.PD_CAN_ABORT | wx.PD_APP_MODAL)
@@ -855,16 +853,17 @@ def edit_iTradeQuoteList(win,quote,qmode):
 # Test me
 # ============================================================================
 
-if __name__ == '__main__':
+def main():
     setLevel(logging.INFO)
-
     app = wx.App(False)
-
-    #from itrade_local import setLang, gMessage
-    #setLang('us')
-    #gMessage.load()
-
+    # from itrade_local import setLang, gMessage
+    # setLang('us')
+    # gMessage.load()
     list_iTradeQuote(None)
+
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

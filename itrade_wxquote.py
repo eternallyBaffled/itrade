@@ -1263,37 +1263,32 @@ def removeFromMatrix_iTradeQuote(win,matrix,quote):
 # Test me
 # ============================================================================
 
-if __name__ == '__main__':
+def main():
     setLevel(logging.INFO)
-
     app = wx.App(False)
-
     # load configuration
     import itrade_config
     itrade_config.loadConfig()
-
     from itrade_local import setLang, gMessage
     setLang('us')
     gMessage.load()
-
     # load extensions
     import itrade_ext
-    itrade_ext.loadExtensions(itrade_config.fileExtData,itrade_config.dirExtData)
-
+    itrade_ext.loadExtensions(itrade_config.fileExtData, itrade_config.dirExtData)
     # init modules
     initQuotesModule()
-
     itrade_config.verbose = False
-
     from itrade_portfolio import initPortfolioModule, loadPortfolio
     initPortfolioModule()
-
     port = loadPortfolio('default')
-
-    q = quotes.lookupTicker('GTO','EURONEXT')
+    q = quotes.lookupTicker('GTO', 'EURONEXT')
     if q:
-        open_iTradeQuote(None,port,q)
+        open_iTradeQuote(None, port, q)
         app.MainLoop()
+
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

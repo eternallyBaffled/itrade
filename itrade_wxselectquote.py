@@ -168,7 +168,7 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
             self.wxQListCtrl.Append(message('quote_select_indiceslist'),QList.indices)
         self.wxQListCtrl.Append(message('quote_select_trackerslist'),QList.trackers)
         self.wxQListCtrl.Append(message('quote_select_bondslist'),QList.bonds)
-        self.wxQListCtrl.SetSelection(self.m_qlist)
+        self.wxQListCtrl.SetSelection(self.m_qlist.value)
 
         # select traded or not
         tID = wx.NewId()
@@ -463,29 +463,27 @@ def select_iTradeQuote(win,dquote=None,filter=False,market=None,filterEnabled=Tr
 # Test me
 # ============================================================================
 
-if __name__ == '__main__':
+def main():
     setLevel(logging.INFO)
-
     app = wx.App(False)
-
     # load configuration
     import itrade_config
     itrade_config.loadConfig()
-
     from itrade_local import setLang, gMessage
     setLang('us')
     gMessage.load()
-
     # load extensions
     import itrade_ext
-    itrade_ext.loadExtensions(itrade_config.fileExtData,itrade_config.dirExtData)
-
+    itrade_ext.loadExtensions(itrade_config.fileExtData, itrade_config.dirExtData)
     # init modules
     initQuotesModule()
-
-    q = select_iTradeQuote(None,None,filter=False,market='EURONEXT')
+    q = select_iTradeQuote(None, None, filter=False, market='EURONEXT')
     if q:
         print(q.name())
+
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

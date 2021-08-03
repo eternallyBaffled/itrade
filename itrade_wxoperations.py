@@ -1230,33 +1230,30 @@ def add_iTradeOperation(win,portfolio,quote,type):
 # Test me
 # ============================================================================
 
-if __name__ == '__main__':
+def main():
     setLevel(logging.INFO)
-
     app = wx.App(False)
-
     # load configuration
     itrade_config.loadConfig()
-
     from itrade_local import setLang, gMessage
     setLang('us')
     gMessage.load()
-
     # load extensions
     import itrade_ext
-    itrade_ext.loadExtensions(itrade_config.fileExtData,itrade_config.dirExtData)
-
+    itrade_ext.loadExtensions(itrade_config.fileExtData, itrade_config.dirExtData)
     # init modules
     initQuotesModule()
     initPortfolioModule()
-
     import itrade_wxportfolio
-
-    port = itrade_wxportfolio.select_iTradePortfolio(None,'default','select')
+    port = itrade_wxportfolio.select_iTradePortfolio(None, 'default', 'select')
     if port:
         port = loadPortfolio(port.filename())
-        open_iTradeOperations(None,port)
+        open_iTradeOperations(None, port)
         app.MainLoop()
+
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

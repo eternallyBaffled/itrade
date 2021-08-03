@@ -255,15 +255,18 @@ class iTradeAboutBox(wx.Dialog):
 # Test me
 # ============================================================================
 
-if __name__ == '__main__':
+def main():
     setLevel(logging.INFO)
-
     app = wx.App(False)
     dlg = iTradeAboutBox(None)
     dlg.CentreOnParent()
     dlg.ShowModal()
     dlg.Destroy()
     app.MainLoop()
+
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

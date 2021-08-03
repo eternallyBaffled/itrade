@@ -133,11 +133,14 @@ def itrade_datePicker(win,title,ddate):
 # Test me
 # ============================================================================
 
-if __name__ == '__main__':
+def main():
     setLevel(logging.INFO)
-
     app = wx.App(False)
-    print(itrade_datePicker(None,"Datepicker",date.today()))
+    print(itrade_datePicker(None, "Datepicker", date.today()))
+
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

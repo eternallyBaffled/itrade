@@ -577,25 +577,24 @@ def properties_iTradePortfolio(win,portfolio,operation='create'):
 # Test me
 # ============================================================================
 
-if __name__ == '__main__':
+def main():
     setLevel(logging.INFO)
-
     app = wx.App(False)
-
     initPortfolioModule()
-
     from itrade_local import setLang, gMessage
     setLang('us')
     gMessage.load()
-
     provider = wx.SimpleHelpProvider()
     wx.HelpProvider_Set(provider)
-
-    port = select_iTradePortfolio(None,'default','select')
+    port = select_iTradePortfolio(None, 'default', 'select')
     if port:
         port = loadPortfolio(port.filename())
-        properties_iTradePortfolio(None,port,'edit')
+        properties_iTradePortfolio(None, port, 'edit')
         app.MainLoop()
+
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

@@ -190,11 +190,11 @@ except NameError:
 # ============================================================================
 
 def main():
-    global quote
     setLevel(logging.INFO)
     from itrade_quotes import quotes
     quote = quotes.lookupTicker('RIB')
-    gNewsBalo.feedQuote(quote)
+    if quote:
+        gNewsBalo.feedQuote(quote)
     # gNewsBalo.goto(None,"http://www.boursorama.com/infos/imprimer_news.phtml?news=3020909")
 
 

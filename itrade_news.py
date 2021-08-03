@@ -110,7 +110,6 @@ except NameError:
 # ============================================================================
 
 def main():
-    global quote
     setLevel(logging.INFO)
 
     class cb(object):

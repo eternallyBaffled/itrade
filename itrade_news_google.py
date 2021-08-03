@@ -127,6 +127,8 @@ class News_Google(object):
 
     # ---[ public interface ] ---
     def feedQuote(self,quote,lang=None,page=0):
+        if quote is None:
+            return
         self.m_quote = quote
         if lang is None:
             lang = self.m_quote.country()
@@ -150,7 +152,6 @@ except NameError:
 # ============================================================================
 
 def main():
-    global quote
     setLevel(logging.INFO)
     from itrade_local import setLang
     setLang('fr')

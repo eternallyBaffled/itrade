@@ -542,30 +542,28 @@ def open_iTradeQuoteProperty(win,quote,bDialog=False):
 # Test me
 # ============================================================================
 
-if __name__ == '__main__':
+def main():
     setLevel(logging.INFO)
-
     app = wx.App(False)
-
     # load configuration
     import itrade_config
     itrade_config.loadConfig()
-
     from itrade_local import setLang, gMessage
     setLang('us')
     gMessage.load()
-
     # load extensions
     import itrade_ext
-    itrade_ext.loadExtensions(itrade_config.fileExtData,itrade_config.dirExtData)
-
+    itrade_ext.loadExtensions(itrade_config.fileExtData, itrade_config.dirExtData)
     # init modules
     initQuotesModule()
-
-    q = select_iTradeQuote(None,None,filter=False)
+    q = select_iTradeQuote(None, None, filter=False)
     if q:
-        open_iTradeQuoteProperty(None,q)
+        open_iTradeQuoteProperty(None, q)
         app.MainLoop()
+
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

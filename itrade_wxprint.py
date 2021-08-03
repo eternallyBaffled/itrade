@@ -341,11 +341,15 @@ class MyTestApp(wx.App):
         self.SetTopWindow(frame)
         return True
 
-if __name__ == '__main__':
-    setLevel(logging.INFO)
 
+def main():
+    setLevel(logging.INFO)
     app = MyTestApp(0)
     app.MainLoop()
+
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

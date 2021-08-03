@@ -607,7 +607,7 @@ class Trades(object):
 
     def compute_ovb(self):
         ovb = long(0)
-        for j in range(0,gCal.lastindex()+1):
+        for j in range(gCal.lastindex()+1):
             if self.m_inClose[j]>=0.0:
                 pc = self.close(j-1)
                 if self.m_inClose[j]>=pc:
@@ -655,7 +655,6 @@ class Trades(object):
 # ============================================================================
 
 def main():
-    global quote, trades
     setLevel(logging.INFO)
     # load extensions
     import itrade_ext

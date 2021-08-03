@@ -249,23 +249,23 @@ def removeStops_iTradeQuote(win,quote):
 # Test me
 # ============================================================================
 
-if __name__ == '__main__':
+def main():
     setLevel(logging.INFO)
-
     app = wx.App(False)
-
     from itrade_local import setLang, gMessage
     setLang('us')
     gMessage.load()
-
     itrade_config.verbose = False
-    quotes.load()
-
-    q = quotes.lookupTicker('SAF','EURONEXT')
+    quotes.loadListOfQuotes()
+    q = quotes.lookupTicker('SAF', 'EURONEXT')
     if q:
-        addOrEditStops_iTradeQuote(None,q,bAdd= not q.hasStops())
+        addOrEditStops_iTradeQuote(None, q, bAdd=(not q.hasStops()))
     else:
         print('quote not found')
+
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

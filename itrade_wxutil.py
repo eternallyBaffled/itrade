@@ -662,22 +662,25 @@ def iTradeYesNo(parent,text,caption,bCanCancel=False,bYesDefault=True):
 # Test me
 # ============================================================================
 
-if __name__ == '__main__':
+def main():
     setLevel(logging.INFO)
-
     app = wx.App(False)
-
-    iRet = iTradeYesNo(None,"message without cancel and default to Yes","caption")
+    iRet = iTradeYesNo(None, "message without cancel and default to Yes", "caption")
     if iRet == wx.ID_YES:
-        iRet = iTradeYesNo(None,"message with cancel and default to No","caption",bCanCancel=True,bYesDefault=False)
+        iRet = iTradeYesNo(None, "message with cancel and default to No", "caption", bCanCancel=True, bYesDefault=False)
         if iRet == wx.ID_YES:
-            iTradeInformation(None,message('portfolio_exist_info')% "message with some accents in French ... איט")
+            iTradeInformation(None, message('portfolio_exist_info') % "message with some accents in French ... איט")
         elif iRet == wx.ID_NO:
-            iTradeInformation(None,"unconfirmation message")
+            iTradeInformation(None, "unconfirmation message")
         else:
-            iTradeInformation(None,"cancellation message .............................. very long ........................... message ........... at least three (3) lines !!!!!!!!!!!")
+            iTradeInformation(None,
+                              "cancellation message .............................. very long ........................... message ........... at least three (3) lines !!!!!!!!!!!")
     else:
-        iTradeError(None,"test aborted message")
+        iTradeError(None, "test aborted message")
+
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

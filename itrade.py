@@ -105,7 +105,6 @@ def main():
 
     lang = gMessage.getAutoDetectedLang('us')
     for o, a in opts:
-
         if o == "-d":
             itrade_config.setDisconnected(True)
 

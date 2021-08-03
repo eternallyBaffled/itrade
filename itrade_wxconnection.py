@@ -42,6 +42,8 @@ import logging
 
 # iTrade system
 import itrade_config
+from itrade_local import message
+from itrade_logging import setLevel
 
 # wxPython system
 if not itrade_config.nowxversion:
@@ -52,8 +54,6 @@ from wx.lib import masked
 import wx.lib.sized_controls as sc
 
 # iTrade system
-from itrade_local import message
-from itrade_logging import setLevel
 from itrade_wxutil import iTradeSizedDialog
 
 # ============================================================================
@@ -64,15 +64,16 @@ class iTradeConnectionDialog(iTradeSizedDialog):
     def __init__(self, parent, server, auth, timeout):
         iTradeSizedDialog.__init__(self,parent,-1,message('connection_title'),size=(420, 420),style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
 
-        if server!="":
-            ip,self.m_port = server.split(':')
+        if server != "":
+            ip, self.m_port = server.split(':')
             a,b,c,d = ip.split('.')
             self.m_ip = '%3i.%3i.%3i.%3i' % (int(a),int(b),int(c),int(d))
             self.m_port = int(self.m_port)
         else:
             self.m_ip = "   .   .   .   "
             self.m_port = 0
-        if auth!="":
+
+        if auth != "":
             self.m_user,self.m_pwd = auth.split(':')
         else:
             self.m_user = ""
@@ -189,24 +190,25 @@ def connection_UI(win,server,auth,timeout=25):
 # Test me
 # ============================================================================
 
-if __name__ == '__main__':
+def main():
     setLevel(logging.INFO)
-
     app = wx.App(False)
-
     from itrade_local import setLang, gMessage
     setLang('us')
     gMessage.load()
-
     provider = wx.SimpleHelpProvider()
     wx.HelpProvider_Set(provider)
-
     # data to test
-    s = 'proxy'
-    a = 'auth'
+    s = 'proxy' # this is actually illegal
+    s = '1.2.3.4:666'
+    a = 'auth' # again illegal
+    a = 'user:pwd'
+    s, a, t = connection_UI(None, s, a)
+    print(s, a, t)
 
-    s,a,t = connection_UI(None,s,a)
-    print(s,a,t)
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

@@ -353,17 +353,18 @@ def open_iTradeCurrencies(win):
 # Test me
 # ============================================================================
 
-if __name__ == '__main__':
+def main():
     setLevel(logging.INFO)
-
     from itrade_local import setLang, gMessage
     setLang('us')
     gMessage.load()
-
     app = wx.App(False)
-
     open_iTradeCurrencies(None)
     app.MainLoop()
+
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

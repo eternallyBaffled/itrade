@@ -265,13 +265,11 @@ class Alerts(object):
     # ---[ scan ] ------------------------------------------
 
     def scan(self,dlg=None):
-        x = 0
         print('Alerts: scan %d:%s' % (self.numOfPlugins(),self.listPlugins()))
 
-        for eachPlugin in self.listPlugins():
+        for x, eachPlugin in enumerate(self.listPlugins()):
             print('Alerts: scan %d' % x)
             eachPlugin.scan(dlg,x)
-            x = x + 1
 
     # ---[ filters ] ---------------------------------------
 

@@ -41,10 +41,6 @@ from __future__ import print_function
 import time
 import os
 
-# wxPython system
-import wx
-#import wx.lib.mixins.listctrl as wxl
-
 # iTrade system
 import itrade_config
 from itrade_logging import debug, info
@@ -59,6 +55,9 @@ from itrade_login import getLoginConnector, listLoginConnector
 # iTrade wx system
 if not itrade_config.nowxversion:
     import itrade_wxversion
+# wxPython system
+import wx
+
 from itrade_wxquote import open_iTradeQuote, addInMatrix_iTradeQuote, removeFromMatrix_iTradeQuote
 from itrade_wxpropquote import open_iTradeQuoteProperty
 from itrade_wxportfolio import select_iTradePortfolio, properties_iTradePortfolio

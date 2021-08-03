@@ -155,7 +155,7 @@ class Quote(object):
         self.m_defaultimportconnector = getImportConnector(self.m_market,self.m_list,QTag.imported,self.m_place)
         if self.m_defaultimportconnector is None:
             if itrade_config.verbose:
-                print('no default import connector for %s (list:%d)' % (self,self.m_list))
+                print('no default import connector for {} (list:{})'.format(self, self.m_list.name))
 
         if self.m_list != QList.indices:
             if not currency:
@@ -199,7 +199,7 @@ class Quote(object):
         self.m_weektrades = None
         self.m_monthtrades = None
 
-        self.m_percent   = None
+        self.m_percent = None
         self.m_prevclose = None
 
     def reinit(self):
@@ -1423,23 +1423,16 @@ class Quotes(object):
                 self._addLines(infile,list=QList.system,debug=False)
             set_market_loaded(market)
 
+    def load_list_from_csv(self, list_type, file_name):
+        infile = itrade_csv.read(None, file_name)
+        if infile:
+            self._addLines(infile, list=list_type, debug=False)
+
     def loadListOfQuotes(self):
-        infile = itrade_csv.read(None,os.path.join(itrade_config.dirSymbData,'indices.txt'))
-        if infile:
-            self._addLines(infile,list=QList.indices,debug=False)
-
-        infile = itrade_csv.read(None,os.path.join(itrade_config.dirSymbData,'trackers.txt'))
-        if infile:
-            self._addLines(infile,list=QList.trackers,debug=False)
-
-        infile = itrade_csv.read(None,os.path.join(itrade_config.dirSymbData,'bonds.txt'))
-        if infile:
-            self._addLines(infile,list=QList.bonds,debug=False)
-
-        # then open and read user file
-        infile = itrade_csv.read(None,os.path.join(itrade_config.dirUserData,'usrquotes.txt'))
-        if infile:
-            self._addLines(infile,list=QList.user,debug=False)
+        self.load_list_from_csv(QList.indices, os.path.join(itrade_config.dirSymbData, 'indices.txt'))
+        self.load_list_from_csv(QList.trackers, os.path.join(itrade_config.dirSymbData, 'trackers.txt'))
+        self.load_list_from_csv(QList.bonds, os.path.join(itrade_config.dirSymbData, 'bonds.txt'))
+        self.load_list_from_csv(QList.user, os.path.join(itrade_config.dirUserData, 'usrquotes.txt'))
 
     # ---[ save list of quotes / indices / trackers / ... ] ---------------------------------------------------
 
@@ -1564,7 +1557,6 @@ def initQuotesModule():
 # ============================================================================
 
 def main():
-    global quote
     setLevel(logging.INFO)
     # load configuration
     itrade_config.loadConfig()

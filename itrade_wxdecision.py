@@ -324,40 +324,35 @@ if __name__ == '__main__':
 # Test me
 # ============================================================================
 
-if __name__ == '__main__':
+def main():
+    global ticker, quote
     setLevel(logging.INFO)
-
     # load configuration
     import itrade_config
     itrade_config.loadConfig()
-
     from itrade_local import setLang, gMessage
     setLang('us')
     gMessage.load()
-
     # load extensions
     import itrade_ext
-    itrade_ext.loadExtensions(itrade_config.fileExtData,itrade_config.dirExtData)
-
+    itrade_ext.loadExtensions(itrade_config.fileExtData, itrade_config.dirExtData)
     # init modules
     initQuotesModule()
-
     ticker = 'GTO'
-
     quote = quotes.lookupTicker(ticker)
-    info('%s: %s' % (ticker,quote))
-
+    info('%s: %s' % (ticker, quote))
     from itrade_portfolio import initPortfolioModule, loadPortfolio
     initPortfolioModule()
-
     port = loadPortfolio('default')
-
     app = wx.App(False)
-
-    frame = WndTest(None,quote,port)
+    frame = WndTest(None, quote, port)
     if frame:
         frame.Show(True)
         app.MainLoop()
+
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

@@ -186,20 +186,20 @@ def open_iTradeConverter(win, curSelected=(0, 1)):
 # Test me
 # ============================================================================
 
-if __name__ == '__main__':
+def main():
     setLevel(logging.INFO)
-
     app = wx.App(False)
-
     # load configuration
     import itrade_config
     itrade_config.loadConfig()
-
     from itrade_local import setLang, gMessage
     setLang('us')
     gMessage.load()
-
     open_iTradeConverter(None)
+
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

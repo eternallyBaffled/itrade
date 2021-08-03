@@ -187,6 +187,8 @@ class News_Boursorama(object):
 
     # ---[ public interface ] ---
     def feedQuote(self,quote,lang=None,page=0):
+        if quote is None:
+            return
         self.m_quote = quote
         if lang is None:
             lang = self.m_quote.country()
@@ -206,7 +208,6 @@ except NameError:
 # ============================================================================
 
 def main():
-    global quote
     setLevel(logging.INFO)
     from itrade_quotes import quotes
     quote = quotes.lookupTicker('RIB')

@@ -71,9 +71,9 @@ IDC_TITLE = 4
 # ============================================================================
 
 class iTradeAlertsListCtrl(wx.ListCtrl, wxl.ListCtrlAutoWidthMixin):
-    def __init__(self, parent, ID, pos=wx.DefaultPosition,
+    def __init__(self, parent, id, pos=wx.DefaultPosition,
                  size=wx.DefaultSize, style=0):
-        wx.ListCtrl.__init__(self, parent, ID, pos, size, style)
+        wx.ListCtrl.__init__(self, parent, id, pos, size, style)
         wxl.ListCtrlAutoWidthMixin.__init__(self)
 
 # ============================================================================
@@ -83,15 +83,14 @@ class iTradeAlertsListCtrl(wx.ListCtrl, wxl.ListCtrlAutoWidthMixin):
 # ============================================================================
 
 class iTradeAlertsPanel(wx.Window):
-
-    def __init__(self,parent,id,port):
+    def __init__(self, parent, id,port):
         wx.Window.__init__(self, parent, id)
         self.m_port = port
 
         wx.EVT_SIZE(self, self.OnSize)
 
         # create an image list
-        self.m_imagelist = wx.ImageList(16,16)
+        self.m_imagelist = wx.ImageList(16, 16)
         self.idx_tbref = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'invalid.png')))
 
         # List
@@ -155,8 +154,7 @@ class iTradeAlertsPanel(wx.Window):
 # ============================================================================
 
 class iTradeNewsPanel(wx.Window):
-
-    def __init__(self,parent,id,port):
+    def __init__(self, parent, id, port):
         wx.Window.__init__(self, parent, id)
         self.m_port = port
 
@@ -168,11 +166,10 @@ class iTradeNewsPanel(wx.Window):
 # ============================================================================
 
 class iTradeAlertsNotebookWindow(wx.Notebook):
-
     ID_PAGE_ALERTS = 0
     ID_PAGE_NEWS = 1
 
-    def __init__(self,parent,id,port):
+    def __init__(self, parent, id, port):
         wx.Notebook.__init__(self,parent,id,wx.DefaultPosition, style=wx.SIMPLE_BORDER|wx.NB_TOP)
         self.m_port = port
         self.init()
@@ -210,12 +207,11 @@ class iTradeAlertsNotebookWindow(wx.Notebook):
 # iTradeAlertsWindow
 # ============================================================================
 
-class iTradeAlertsWindow(wx.Frame,iTrade_wxFrame):
-
-    def __init__(self,parent,id,title,port):
+class iTradeAlertsWindow(wx.Frame, iTrade_wxFrame):
+    def __init__(self, parent, title, port):
         self.m_id = wx.NewId()
-        wx.Frame.__init__(self,None,self.m_id, title, size = (640,480), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE)
-        iTrade_wxFrame.__init__(self,parent,'alerts')
+        wx.Frame.__init__(self, None, self.m_id, title, size=(640, 480), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE)
+        iTrade_wxFrame.__init__(self, parent, 'alerts')
         self.m_port = port
 
         self.m_book = iTradeAlertsNotebookWindow(self, -1, port=self.m_port)
@@ -235,7 +231,7 @@ class iTradeAlertsWindow(wx.Frame,iTrade_wxFrame):
 # open_iTradeAlerts
 # ============================================================================
 
-def open_iTradeAlerts(win,port=None):
+def open_iTradeAlerts(win, port=None):
     debug('open_iTradeAlerts')
     if win and win.m_hAlerts:
         # set focus
@@ -243,7 +239,7 @@ def open_iTradeAlerts(win,port=None):
     else:
         if not isinstance(port, Portfolio):
             port = loadPortfolio()
-        frame = iTradeAlertsWindow(win, -1, "%s - %s" %(message('alerts_title'),port.name()),port)
+        frame = iTradeAlertsWindow(win, "%s - %s" %(message('alerts_title'),port.name()), port)
         if win:
             win.m_hAlerts = frame
         frame.Show()
@@ -252,26 +248,24 @@ def open_iTradeAlerts(win,port=None):
 # Test me
 # ============================================================================
 
-if __name__ == '__main__':
+def main():
     setLevel(logging.INFO)
-
     alerts.load()
-
     app = wx.App(False)
-
     from itrade_local import setLang, gMessage
     setLang('us')
     gMessage.load()
-
     import itrade_wxportfolio
-
-    port = itrade_wxportfolio.select_iTradePortfolio(None,'default','select')
+    port = itrade_wxportfolio.select_iTradePortfolio(None, 'default', 'select')
     if port:
         port = loadPortfolio(port.filename())
-        open_iTradeAlerts(None,port)
+        open_iTradeAlerts(None, port)
         app.MainLoop()
-
     alerts.save()
+
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

@@ -213,11 +213,14 @@ def DrawRectLabel(dc,label,x,y,w,h,colorpen,colorbg,font,vert='top',horz='center
 # Test me
 # ============================================================================
 
-if __name__ == '__main__':
+def main():
     setLevel(logging.INFO)
-
     app = wx.App(False)
     app.MainLoop()
+
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

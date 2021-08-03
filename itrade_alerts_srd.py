@@ -54,19 +54,17 @@ class Alerts_SRD(object):
     def __init__(self):
         pass
 
-    def scan(self,dlg,x):
-        print('SRD::scan(): dlg,x = %s,%d' % (dlg,x))
+    def scan(self, dlg, x):
+        print('SRD::scan(): dlg,x = %s,%d' % (dlg, x))
 
         ajd = date.today()
-        nb = 0
-        while nb<21:
+        for nb in xrange(21):
             if gCal.issrd(ajd):
-                dummy,desc = gCal.srd(ajd)
-                print("%s" % ajd,': SRD :',desc)
-                alerts.newAlert(ALERT_TYPE_INFO_SRD,'SRD',"%s" % ajd,desc,None,None,'')
+                dummy, desc = gCal.srd(ajd)
+                print("%s" % ajd, ': SRD :', desc)
+                alerts.newAlert(ALERT_TYPE_INFO_SRD, 'SRD', "%s" % ajd, desc, None, None, '')
 
             # next open day ...
-            nb = nb + 1
             ajd = Datation(ajd).nextopen('EURONEXT').date()
 
 # ============================================================================
