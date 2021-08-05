@@ -147,26 +147,30 @@ def ensure_folder(folder):
         os.mkdir(folder)
 
 
+def resolve_folder(folder):
+    return os.path.join(application_root_folder(), folder)
+
+
 # directory for system data
-dirSysData = os.path.join(application_root_folder(), 'data')
+dirSysData = resolve_folder('data')
 check_folder(dirSysData)
 
 # directory for brokers data
-dirBrokersData = os.path.join(application_root_folder(), 'brokers')
+dirBrokersData = resolve_folder('brokers')
 check_folder(dirBrokersData)
 
 # directory for symbol lists
-dirSymbData = os.path.join(application_root_folder(), 'symbols')
+dirSymbData = resolve_folder('symbols')
 check_folder(dirSymbData)
 
 # directory for extensions
-dirExtData = os.path.join(application_root_folder(), 'ext')
+dirExtData = resolve_folder('ext')
 check_folder(dirExtData)
 
 fileExtData = 'extensions.txt'
 
 # directory for indicators
-dirIndData = os.path.join(application_root_folder(), 'indicators')
+dirIndData = resolve_folder('indicators')
 check_folder(dirIndData)
 
 fileIndData = 'indicators.txt'
@@ -174,42 +178,42 @@ fileIndData = 'indicators.txt'
 # FIXME: Dynamically creating folders should not be done on module load.
 # consider moving this to install time
 # directory for user data
-dirUserData = os.path.join(application_root_folder(), 'usrdata')
+dirUserData = resolve_folder('usrdata')
 ensure_folder(dirUserData)
 
 # directory for alerts
-dirAlerts = os.path.join(application_root_folder(), 'alerts')
+dirAlerts = resolve_folder('alerts')
 ensure_folder(dirAlerts)
 
 # directory for quotes images
-dirImageData = os.path.join(application_root_folder(), 'images')
+dirImageData = resolve_folder('images')
 ensure_folder(dirImageData)
 
 # directory for cache data (quote, window prop, ...)
-dirCacheData = os.path.join(application_root_folder(), 'cache')
+dirCacheData = resolve_folder('cache')
 ensure_folder(dirCacheData)
 
 # file to get the current portfolio
 fileCurrentPortfolio = 'portfolio.txt'
 
 # directory for importation
-dirImport = os.path.join(application_root_folder(), 'import')
+dirImport = resolve_folder('import')
 ensure_folder(dirImport)
 
 # directory for exportation
-dirExport = os.path.join(application_root_folder(), 'export')
+dirExport = resolve_folder('export')
 ensure_folder(dirExport)
 
 # directory for snapshots
-dirSnapshots = os.path.join(application_root_folder(), 'snapshots')
+dirSnapshots = resolve_folder('snapshots')
 ensure_folder(dirSnapshots)
 
 # directory for trading reports
-dirReports = os.path.join(application_root_folder(), 'reports')
+dirReports = resolve_folder('reports')
 ensure_folder(dirReports)
 
 # directory for image resources
-dirRes = os.path.join(application_root_folder(), 'res')
+dirRes = resolve_folder('res')
 check_folder(dirRes)
 
 
