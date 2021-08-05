@@ -82,10 +82,10 @@ def usage():
 def load_configuration():
     if itrade_config.verbose:
         print("load_config called from itrade.py")
-    itrade_config.application_root_folder(os.path.dirname(sys.argv[0]))
+    itrade_config.set_application_root_folder(os.path.dirname(sys.argv[0]))
     itrade_config.load_config()
     if itrade_config.verbose:
-        proxy_config = "*** Proxy server:{}- Proxy auth:{}- Connection timeout:{}"
+        proxy_config = "*** Proxy server:{} - Proxy auth:{} - Connection timeout:{}"
         print(proxy_config.format(itrade_config.proxyHostname,
                                   itrade_config.proxyAuthentication,
                                   itrade_config.connectionTimeout))

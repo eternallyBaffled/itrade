@@ -124,7 +124,7 @@ class DirNotFoundError(InstallError):
         InstallError.__init__(self, 'Invalid installation: folder "%s" does not exist.'% folder_name)
 
 
-def application_root_folder(folder):
+def set_application_root_folder(folder):
     """Set the home folder of the application from which all other files and folders are derived."""
     global dirRoot
     dirRoot = folder
@@ -136,82 +136,81 @@ dirRoot = ''
 def application_root_folder():
     return dirRoot
 
+
+def check_folder(folder):
+    if not os.path.exists(folder):
+        raise DirNotFoundError(folder)
+
+
+def ensure_folder(folder):
+    if not os.path.exists(folder):
+        os.mkdir(folder)
+
+
 # directory for system data
 dirSysData = os.path.join(application_root_folder(), 'data')
-if not os.path.exists(dirSysData):
-    raise DirNotFoundError(dirSysData)
+check_folder(dirSysData)
 
 # directory for brokers data
 dirBrokersData = os.path.join(application_root_folder(), 'brokers')
-if not os.path.exists(dirBrokersData):
-    raise DirNotFoundError(dirBrokersData)
+check_folder(dirBrokersData)
 
 # directory for symbol lists
 dirSymbData = os.path.join(application_root_folder(), 'symbols')
-if not os.path.exists(dirSymbData):
-    raise DirNotFoundError(dirSymbData)
+check_folder(dirSymbData)
 
 # directory for extensions
 dirExtData = os.path.join(application_root_folder(), 'ext')
-if not os.path.exists(dirExtData):
-    raise DirNotFoundError(dirExtData)
+check_folder(dirExtData)
+
 fileExtData = 'extensions.txt'
 
 # directory for indicators
 dirIndData = os.path.join(application_root_folder(), 'indicators')
-if not os.path.exists(dirIndData):
-    raise DirNotFoundError(dirIndData)
+check_folder(dirIndData)
+
 fileIndData = 'indicators.txt'
 
 # FIXME: Dynamically creating folders should not be done on module load.
 # consider moving this to install time
 # directory for user data
 dirUserData = os.path.join(application_root_folder(), 'usrdata')
-if not os.path.exists(dirUserData):
-    os.mkdir(dirUserData)
+ensure_folder(dirUserData)
 
 # directory for alerts
 dirAlerts = os.path.join(application_root_folder(), 'alerts')
-if not os.path.exists(dirAlerts):
-    os.mkdir(dirAlerts)
+ensure_folder(dirAlerts)
 
 # directory for quotes images
 dirImageData = os.path.join(application_root_folder(), 'images')
-if not os.path.exists(dirImageData):
-    os.mkdir(dirImageData)
+ensure_folder(dirImageData)
 
 # directory for cache data (quote, window prop, ...)
 dirCacheData = os.path.join(application_root_folder(), 'cache')
-if not os.path.exists(dirCacheData):
-    os.mkdir(dirCacheData)
+ensure_folder(dirCacheData)
 
 # file to get the current portfolio
 fileCurrentPortfolio = 'portfolio.txt'
 
 # directory for importation
 dirImport = os.path.join(application_root_folder(), 'import')
-if not os.path.exists(dirImport):
-    os.mkdir(dirImport)
+ensure_folder(dirImport)
 
 # directory for exportation
 dirExport = os.path.join(application_root_folder(), 'export')
-if not os.path.exists(dirExport):
-    os.mkdir(dirExport)
+ensure_folder(dirExport)
 
 # directory for snapshots
 dirSnapshots = os.path.join(application_root_folder(), 'snapshots')
-if not os.path.exists(dirSnapshots):
-    os.mkdir(dirSnapshots)
+ensure_folder(dirSnapshots)
 
 # directory for trading reports
 dirReports = os.path.join(application_root_folder(), 'reports')
-if not os.path.exists(dirReports):
-    os.mkdir(dirReports)
+ensure_folder(dirReports)
 
 # directory for image resources
 dirRes = os.path.join(application_root_folder(), 'res')
-if not os.path.exists(dirRes):
-    raise DirNotFoundError(dirRes)
+check_folder(dirRes)
 
 
 def default_closure_file():
