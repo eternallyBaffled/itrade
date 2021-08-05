@@ -196,7 +196,20 @@ def volume_indicator_2string(nbdays_average,vi):
 #   voltrend    volume trend (CANDLE_VOLUME_TREND_x)
 # ============================================================================
 
+
 class Candle(object):
+    """
+    >>> from itrade_candle import Candle
+    >>> c = Candle(10.0, 11.0, 9.0, 10.0)
+    >>> print('candle: %s - %s = doji' % (c, c.type()))
+    candle: doji - CandleType.doji = doji
+    >>> c = Candle(11.0, 11.0, 9.0, 11.0)
+    >>> print('candle: %s - %s = dragonfly doji' % (c, c.type()))
+    candle: dragonfly doji - CandleType.tombo = dragonfly doji
+    >>> c = Candle(9.0, 11.0, 9.0, 9.0)
+    >>> print('candle: %s - %s = gravestone doji' % (c, c.type()))
+    candle: gravestone doji - CandleType.tohba = gravestone doji
+    """
     def __init__(self,open,high,low,close,volind=CANDLE_VOLUME_AVERAGE,voltrend=CANDLE_VOLUME_TREND_NOTREND):
         self.hi = high
         self.lo = low
@@ -269,23 +282,6 @@ class Candle(object):
         else:
             self.m_type = CandleType.notype
 
-# ============================================================================
-# Test
-# ============================================================================
-
-def main():
-    setLevel(logging.INFO)
-    # open,high,low,close
-    c = Candle(10.0, 11.0, 9.0, 10.0)
-    print('candle: %s - %s = doji' % (c, c.type()))
-    c = Candle(11.0, 11.0, 9.0, 11.0)
-    print('candle: %s - %s = dragonfly doji' % (c, c.type()))
-    c = Candle(9.0, 11.0, 9.0, 9.0)
-    print('candle: %s - %s = gravestone doji' % (c, c.type()))
-
-
-if __name__ == '__main__':
-    main()
 
 # ============================================================================
 # That's all folks !
