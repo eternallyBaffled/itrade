@@ -124,35 +124,41 @@ class DirNotFoundError(InstallError):
         InstallError.__init__(self, 'Invalid installation: folder "%s" does not exist.'% folder_name)
 
 
-# itrade root directory
-# FIXME: Since this will only work when we're called from within the installation folder, this makes unittesting
-# all but impossible as soon as itrade_config is included anywhere. This is probably the only module that should use
-# the global facility idiom and it is the one place where it isn't used. Argh.
-dirRoot=os.path.dirname(sys.argv[0])
+def application_root_folder(folder):
+    """Set the home folder of the application from which all other files and folders are derived."""
+    global dirRoot
+    dirRoot = folder
+
+
+dirRoot = ''
+
+
+def application_root_folder():
+    return dirRoot
 
 # directory for system data
-dirSysData = os.path.join(dirRoot, 'data')
+dirSysData = os.path.join(application_root_folder(), 'data')
 if not os.path.exists(dirSysData):
     raise DirNotFoundError(dirSysData)
 
 # directory for brokers data
-dirBrokersData = os.path.join(dirRoot, 'brokers')
+dirBrokersData = os.path.join(application_root_folder(), 'brokers')
 if not os.path.exists(dirBrokersData):
     raise DirNotFoundError(dirBrokersData)
 
 # directory for symbol lists
-dirSymbData = os.path.join(dirRoot, 'symbols')
+dirSymbData = os.path.join(application_root_folder(), 'symbols')
 if not os.path.exists(dirSymbData):
     raise DirNotFoundError(dirSymbData)
 
 # directory for extensions
-dirExtData = os.path.join(dirRoot, 'ext')
+dirExtData = os.path.join(application_root_folder(), 'ext')
 if not os.path.exists(dirExtData):
     raise DirNotFoundError(dirExtData)
 fileExtData = 'extensions.txt'
 
 # directory for indicators
-dirIndData = os.path.join(dirRoot, 'indicators')
+dirIndData = os.path.join(application_root_folder(), 'indicators')
 if not os.path.exists(dirIndData):
     raise DirNotFoundError(dirIndData)
 fileIndData = 'indicators.txt'
@@ -160,22 +166,22 @@ fileIndData = 'indicators.txt'
 # FIXME: Dynamically creating folders should not be done on module load.
 # consider moving this to install time
 # directory for user data
-dirUserData = os.path.join(dirRoot, 'usrdata')
+dirUserData = os.path.join(application_root_folder(), 'usrdata')
 if not os.path.exists(dirUserData):
     os.mkdir(dirUserData)
 
 # directory for alerts
-dirAlerts = os.path.join(dirRoot, 'alerts')
+dirAlerts = os.path.join(application_root_folder(), 'alerts')
 if not os.path.exists(dirAlerts):
     os.mkdir(dirAlerts)
 
 # directory for quotes images
-dirImageData = os.path.join(dirRoot, 'images')
+dirImageData = os.path.join(application_root_folder(), 'images')
 if not os.path.exists(dirImageData):
     os.mkdir(dirImageData)
 
 # directory for cache data (quote, window prop, ...)
-dirCacheData = os.path.join(dirRoot, 'cache')
+dirCacheData = os.path.join(application_root_folder(), 'cache')
 if not os.path.exists(dirCacheData):
     os.mkdir(dirCacheData)
 
@@ -183,27 +189,27 @@ if not os.path.exists(dirCacheData):
 fileCurrentPortfolio = 'portfolio.txt'
 
 # directory for importation
-dirImport = os.path.join(dirRoot, 'import')
+dirImport = os.path.join(application_root_folder(), 'import')
 if not os.path.exists(dirImport):
     os.mkdir(dirImport)
 
 # directory for exportation
-dirExport = os.path.join(dirRoot, 'export')
+dirExport = os.path.join(application_root_folder(), 'export')
 if not os.path.exists(dirExport):
     os.mkdir(dirExport)
 
 # directory for snapshots
-dirSnapshots = os.path.join(dirRoot, 'snapshots')
+dirSnapshots = os.path.join(application_root_folder(), 'snapshots')
 if not os.path.exists(dirSnapshots):
     os.mkdir(dirSnapshots)
 
 # directory for trading reports
-dirReports = os.path.join(dirRoot, 'reports')
+dirReports = os.path.join(application_root_folder(), 'reports')
 if not os.path.exists(dirReports):
     os.mkdir(dirReports)
 
 # directory for image resources
-dirRes = os.path.join(dirRoot, 'res')
+dirRes = os.path.join(application_root_folder(), 'res')
 if not os.path.exists(dirRes):
     raise DirNotFoundError(dirRes)
 

@@ -78,6 +78,17 @@ def usage():
     print("--verbose    verbose mode (usefull for debugging)            ")
     print("--nowxversion    do not use wxversion                        ")
 
+
+def load_configuration():
+    if itrade_config.verbose:
+        print("load_config called from itrade.py")
+    itrade_config.application_root_folder(os.path.dirname(sys.argv[0]))
+    itrade_config.load_config()
+    if itrade_config.verbose:
+        proxy_config = "*** Proxy server:{}- Proxy auth:{}- Connection timeout:{}"
+        print(proxy_config.format(itrade_config.proxyHostname,
+                                  itrade_config.proxyAuthentication,
+                                  itrade_config.connectionTimeout))
 # ============================================================================
 # Main / Command line analysing
 # ============================================================================
@@ -176,12 +187,7 @@ def main():
     else:
         print('Psyco is not running (forced by command line)')
 
-    # load configuration
-    if itrade_config.verbose:
-        print("load_config called from itrade.py")
-    itrade_config.load_config()
-    if itrade_config.verbose:
-        print("*** Proxy server:",itrade_config.proxyHostname, "- Proxy auth:",itrade_config.proxyAuthentication,"- Connection timeout:",itrade_config.connectionTimeout)
+    load_configuration()
 
     # load extensions
     itrade_ext.loadExtensions(itrade_config.fileExtData,itrade_config.dirExtData)
@@ -220,6 +226,7 @@ def main():
 
     # save the user configuration
     # __x ? itrade_config.saveConfig()
+
 
 # ============================================================================
 # Launch me
