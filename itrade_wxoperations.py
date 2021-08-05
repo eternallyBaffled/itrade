@@ -1234,7 +1234,7 @@ def main():
     setLevel(logging.INFO)
     app = wx.App(False)
     # load configuration
-    itrade_config.loadConfig()
+    itrade_config.load_config()
     from itrade_local import setLang, gMessage
     setLang('us')
     gMessage.load()

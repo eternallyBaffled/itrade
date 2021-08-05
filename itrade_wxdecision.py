@@ -329,7 +329,7 @@ def main():
     setLevel(logging.INFO)
     # load configuration
     import itrade_config
-    itrade_config.loadConfig()
+    itrade_config.load_config()
     from itrade_local import setLang, gMessage
     setLang('us')
     gMessage.load()

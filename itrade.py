@@ -177,7 +177,9 @@ def main():
         print('Psyco is not running (forced by command line)')
 
     # load configuration
-    itrade_config.loadConfig("itrade.py")
+    if itrade_config.verbose:
+        print("load_config called from itrade.py")
+    itrade_config.load_config()
     if itrade_config.verbose:
         print("*** Proxy server:",itrade_config.proxyHostname, "- Proxy auth:",itrade_config.proxyAuthentication,"- Connection timeout:",itrade_config.connectionTimeout)
 

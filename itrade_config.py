@@ -427,14 +427,8 @@ def checkNewRelease(ping=False):
         print('checkNewRelease(): up to date')
         return 'ok'
 
-# ============================================================================
-# loadConfig()
-# ============================================================================
 
-def loadConfig(frm=""):
-    if verbose:
-        print("loadConfig called from",frm)
-
+def load_config():
     # access global var
     global bAutoRefreshMatrixView
     global bAutoRefreshCurrencyView
@@ -625,7 +619,7 @@ def isConnected():
 # ============================================================================
 
 def main():
-    loadConfig()
+    load_config()
     saveConfig()
     print(__svnversion__)
     print(os.path.expanduser('~'))
