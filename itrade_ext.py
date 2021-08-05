@@ -148,15 +148,15 @@ listListSymbolConnector = gListSymbolRegistry.list
 #   folder: path of the folder to load the extension from
 # ============================================================================
 
-def loadExtensions(file,folder):
+def loadExtensions(file, folder):
     # file to manage list of extensions
-    extFile = os.path.join(folder,file)
+    extFile = os.path.join(folder, file)
     if not os.path.exists(extFile):
-        print('Load (%s) : %s file not found !' % (folder,file))
+        print('Load ({}) : {} file not found !'.format(folder, file))
         return False
 
     # list of potential files to load
-    files = glob.glob(os.path.join(folder,"*.py"))
+    files = glob.glob(os.path.join(folder, '*.py'))
     if not files:
         print('Load (%s) : no extension file found !' % folder)
         return False
@@ -191,10 +191,10 @@ def loadExtensions(file,folder):
 
     # load extensions in the order they appear in the enabledFiles list
     if files and enabledFiles:
+        file_set = set(files)
         for f in enabledFiles:
-            if f in files:
-                loadOneExtension(f,folder)
-
+            if f in file_set:
+                loadOneExtension(f, folder)
     return True
 
 def loadOneExtension(ext,folder):
@@ -222,30 +222,28 @@ def loadOneExtension(ext,folder):
     else:
         if itrade_config.verbose:
             print('Load (%s) %s' % (folder,moduleName))
-
     return module
+
 
 def isLoaded (name):
     return name in loadedModules
 
-def importFromPath(moduleName,path):
 
+def importFromPath(moduleName, path):
     module = sys.modules.get(moduleName)
     if not module:
-        #
         f = None
 
         # find the module
         data = imp.find_module(moduleName,[path])
         if data:
             # import the module
-            f,path,desc = data
-            module = imp.load_module(moduleName,f,path,desc)
+            f, path, desc = data
+            module = imp.load_module(moduleName, f, path, desc)
             if module:
                 loadedModules[moduleName] = module
-
-        if f: f.close()
-
+        if f:
+            f.close()
     return module
 
 # ============================================================================
