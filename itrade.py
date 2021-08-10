@@ -46,7 +46,6 @@ import sys
 import itrade_config
 from itrade_local import gMessage
 from itrade_logging import setLevel
-setLevel(logging.INFO)
 import itrade_quotes
 import itrade_ext
 import itrade_import
@@ -58,7 +57,10 @@ import itrade_matrix
 # ============================================================================
 
 def usage():
-    print("%s %s - %s version - %s" % (itrade_config.softwareName,itrade_config.softwareVersion,itrade_config.softwareLicense,itrade_config.softwareCopyright))
+    print("{} {} - {} version - {}".format(itrade_config.softwareName,
+                                           itrade_config.softwareVersion,
+                                           itrade_config.softwareLicense,
+                                           itrade_config.softwareCopyright))
     print()
     print("-h / --help  this help                                       ")
     print("-e           connect live and display portfolio evaluation   ")
@@ -154,7 +156,7 @@ def main():
         if o == "-u" or o == "--user":
             itrade_config.dirUserData = a
             if not os.path.exists(itrade_config.dirUserData):
-                print('userdata folder %s not found !' % a)
+                print('userdata folder {} not found !'.format(a))
                 sys.exit()
 
         if o  == "--nopsyco":
@@ -205,13 +207,13 @@ def main():
     if vticker:
         quote = itrade_quotes.quotes.lookupTicker(vticker)
         if not quote:
-            print('ticker %s not found !' % vticker)
+            print('ticker {} not found !'.format(vticker))
             sys.exit()
 
     if vquote:
         quote = itrade_quotes.quotes.lookupKey(vquote)
         if not quote:
-            print('quote %s not found ! format is : <ISINorTICKER>.<EXCHANGE>.<PLACE>' % vquote)
+            print('quote {} not found ! format is : <ISINorTICKER>.<EXCHANGE>.<PLACE>'.format(vquote))
             sys.exit()
 
     if use_wx:
