@@ -42,6 +42,7 @@ from datetime import date
 import logging
 import os
 import string
+from enum import Enum
 
 # iTrade system
 import itrade_config
@@ -56,23 +57,21 @@ from itrade_datation import Datation, gCal, date2str
 from itrade_market import market2currency, compute_country, market2place, list_of_markets, set_market_loaded, is_market_loaded
 import itrade_currency
 
-# ============================================================================
-# color
-# ============================================================================
 
-QUOTE_RED = 0
-QUOTE_GREEN = 1
-QUOTE_NOCHANGE = 2
-QUOTE_INVALID = 3
+class QuoteColor(Enum):
+    red = 0
+    green = 1
+    nochange = 2
+    invalid = 3
 
-# ============================================================================
-# type of quote : cash, SRD(credit) or both
-# ============================================================================
 
-QUOTE_NOTYPE    = 0
-QUOTE_CASH      = 1
-QUOTE_CREDIT    = 2
-QUOTE_BOTH      = 3
+class QuoteType(Enum):
+    """type of quote : cash, SRD(credit) or both"""
+    no_type = 0
+    cash = 1
+    credit = 2
+    both = 3
+
 
 # ============================================================================
 # volume formatter
@@ -212,11 +211,11 @@ class Quote(object):
         return self.m_key
 
     def type(self):
-        n = QUOTE_NOTYPE
+        n = QuoteType.no_type
         if self.m_DIR_number > 0:
-            n = n + QUOTE_CASH
+            n += QuoteType.cash
         if self.m_SRD_number > 0:
-            n = n + QUOTE_BOTH
+            n += QuoteType.both
         return n
 
     def __str__(self):
@@ -264,34 +263,34 @@ class Quote(object):
     def set_ticker(self,ticker):
         self.m_ticker = ticker
 
-    def nv_number(self,box=QUOTE_BOTH):
-        if box==QUOTE_CASH:
+    def nv_number(self, box=QuoteType.both):
+        if box is QuoteType.cash:
             return self.m_DIR_number
-        if box==QUOTE_CREDIT:
+        if box is QuoteType.credit:
             return self.m_SRD_number
         else:
             return self.m_DIR_number + self.m_SRD_number
 
-    def sv_number(self,box=QUOTE_BOTH):
+    def sv_number(self, box=QuoteType.both):
         return fmtVolume(self.nv_number(box))
 
-    def nv_pru(self,box=QUOTE_BOTH):
+    def nv_pru(self, box=QuoteType.both):
         # return PRU in the default currency (i.e. portfolio currency)
-        if box==QUOTE_CASH:
+        if box is QuoteType.cash:
             return self.m_DIR_pru
-        elif box==QUOTE_CREDIT:
+        elif box is QuoteType.credit:
             return self.m_SRD_pru
         else:
-            n = self.nv_number(QUOTE_BOTH)
+            n = self.nv_number(QuoteType.both)
             if n > 0:
-                return (self.nv_pr(QUOTE_CASH) + self.nv_pr(QUOTE_CREDIT)) / n
+                return (self.nv_pr(QuoteType.cash) + self.nv_pr(QuoteType.credit)) / n
             return 0.0
 
-    def nv_pr(self,box=QUOTE_BOTH):
+    def nv_pr(self, box=QuoteType.both):
         # return PR in the default currency (i.e. portfolio currency)
         return self.nv_pru(box) * self.nv_number(box)
 
-    def sv_pru(self,box=QUOTE_BOTH,fmt="%.3f",bDispCurrency=False):
+    def sv_pru(self, box=QuoteType.both, fmt="%.3f", bDispCurrency=False):
         # return PRU in the default currency (i.e. portfolio currency)
         if bDispCurrency:
             sc = ' '+self.m_symbcurr+' '
@@ -300,7 +299,7 @@ class Quote(object):
         fmt = fmt + "%s"
         return fmt % (self.nv_pru(box),sc)
 
-    def sv_pr(self,box=QUOTE_BOTH,fmt="%.2f",bDispCurrency=False):
+    def sv_pr(self, box=QuoteType.both, fmt="%.2f", bDispCurrency=False):
         # return PR in the default currency (i.e. portfolio currency)
         if bDispCurrency:
             sc = ' '+self.m_symbcurr+' '
@@ -309,14 +308,14 @@ class Quote(object):
         fmt = fmt + "%s"
         return fmt % (self.nv_pr(box),sc)
 
-    def nv_pv(self,currency,box=QUOTE_BOTH):
+    def nv_pv(self, currency, box=QuoteType.both):
         # return PV in the requested currency
         # nv_close() returns value in market currency
         cl = self.nv_close()
         if cl:
-            if box==QUOTE_CASH:
+            if box==QuoteType.cash:
                 retval = cl * self.m_DIR_number
-            elif box==QUOTE_CREDIT:
+            elif box==QuoteType.credit:
                 retval = cl * self.m_SRD_number
             else:
                 retval = cl * (self.m_DIR_number + self.m_SRD_number)
@@ -326,17 +325,17 @@ class Quote(object):
             retval = itrade_currency.convert(currency,self.m_currency,retval)
         return retval
 
-    def sv_pv(self,currency,box=QUOTE_BOTH,fmt="%.2f"):
+    def sv_pv(self, currency, box=QuoteType.both, fmt="%.2f"):
         # return PV in the requested currency
         return fmt % self.nv_pv(currency,box)
 
-    def nv_profit(self,currency,box=QUOTE_BOTH):
+    def nv_profit(self, currency, box=QuoteType.both):
         return self.nv_pv(currency,box)-self.nv_pr(box)
 
-    def sv_profit(self,currency,box=QUOTE_BOTH,fmt="%.2f"):
+    def sv_profit(self, currency, box=QuoteType.both, fmt="%.2f"):
         return fmt % self.nv_profit(currency,box)
 
-    def nv_profitPercent(self,currency,box=QUOTE_BOTH):
+    def nv_profitPercent(self, currency, box=QuoteType.both):
         # profit performance should be calculated after conversion to the portfolio currency !
         pr = self.nv_pr(box)
         if pr>0:
@@ -344,7 +343,7 @@ class Quote(object):
         else:
             return 0.0
 
-    def sv_profitPercent(self,currency,box=QUOTE_BOTH):
+    def sv_profitPercent(self, currency, box=QuoteType.both):
         # profit performance should be calculated after conversion to the portfolio currency !
         if self.nv_pr(box)>0:
             return "%3.2f %%" % self.nv_profitPercent(currency,box)
@@ -703,13 +702,13 @@ class Quote(object):
 
     def buy(self,n,m,box):
         #info('buy: %s %d %f' % (self.ticker(),n,m))
-        if box==QUOTE_CASH:
+        if box==QuoteType.cash:
             if (self.m_DIR_number + n) > 0:
                 self.m_DIR_pru = ((self.m_DIR_pru * self.m_DIR_number) + m) / (self.m_DIR_number + n)
             if self.m_DIR_pru < 0.0:
                 self.m_DIR_pru = 0.0
             self.m_DIR_number = self.m_DIR_number + n
-        elif box==QUOTE_CREDIT:
+        elif box==QuoteType.credit:
             if (self.m_SRD_number + n) > 0:
                 self.m_SRD_pru = ((self.m_SRD_pru * self.m_SRD_number) + m) / (self.m_SRD_number + n)
             if self.m_SRD_pru < 0.0:
@@ -721,13 +720,13 @@ class Quote(object):
 
     def sell(self,n,box):
         #info('sell: %s %d' % (self.ticker(),n))
-        if box==QUOTE_CASH:
+        if box==QuoteType.cash:
             if self.m_DIR_number < n:
                 raise Exception("negative number of shares is not possible ...")
             self.m_DIR_number = self.m_DIR_number - n
             if self.m_DIR_number <=0 :
                 self.m_wasTraded = True
-        elif box==QUOTE_CREDIT:
+        elif box==QuoteType.credit:
             if self.m_SRD_number < n:
                 raise Exception("short unsupported yet ...")
             self.m_SRD_number = self.m_SRD_number - n
@@ -737,7 +736,7 @@ class Quote(object):
 
     def transfertTo(self,n,expenses,box):
         #info('transfert: %s %d' % (self.ticker(),n))
-        if box==QUOTE_CASH:
+        if box==QuoteType.cash:
             if self.m_SRD_number < n:
                 raise Exception("negative number of shares is not possible ...")
             price = (n * self.m_SRD_pru)
@@ -745,19 +744,19 @@ class Quote(object):
                 #print 'n=',n,'get accnum = ',self.m_SRD_accnum
                 price = price + (expenses*n/self.m_SRD_accnum)
             #print 'n=',n,'price = ',price
-            self.sell(n,QUOTE_CREDIT)
-            self.buy(n,price,QUOTE_CASH)
+            self.sell(n,QuoteType.credit)
+            self.buy(n,price, QuoteType.cash)
             self.m_SRD_prevacc = self.m_SRD_accnum
             self.m_SRD_accnum = self.m_SRD_number
             #print 'n=',n,'reinit accnum = ',self.m_SRD_accnum
-        elif box==QUOTE_CREDIT:
+        elif box==QuoteType.credit:
             if self.m_DIR_number < n:
                 raise Exception("negative number of shares is not possible ...")
             price = (n * self.m_DIR_pru)
             if self.m_SRD_prevacc > 0:
                 price = price - (expenses*n/self.m_SRD_prevacc)
-            self.sell(n,QUOTE_CASH)
-            self.buy(n,price,QUOTE_CREDIT)
+            self.sell(n, QuoteType.cash)
+            self.buy(n,price,QuoteType.credit)
             self.m_SRD_accnum = self.m_SRD_prevacc
 
     # ---[ current / live values on the quote ] ---
@@ -1050,14 +1049,14 @@ class Quote(object):
 
     # ---[ compute all the data ] ---
 
-    def compute(self,todate=None):
+    def compute(self, todate=None):
         debug('%s: compute [%s]' % (self.ticker(),todate))
         if self.m_daytrades:
             self.m_daytrades.compute(todate)
 
     # ---[ Trends ] ---
 
-    def colorLine(self,d=None):
+    def colorLine(self, d=None):
         if self.m_percent is None:
             if self.m_daytrades:
                 tc = self.nv_close(d)
@@ -1065,19 +1064,19 @@ class Quote(object):
                 if tc and tp:
                     self.m_percent =((tc/tp)*100)-100
                 else:
-                    return QUOTE_INVALID
+                    return QuoteColor.invalid
             else:
-                return QUOTE_INVALID
+                return QuoteColor.invalid
 
         if self.m_percent > 0:
-            return QUOTE_GREEN
+            return QuoteColor.green
         elif self.m_percent < 0:
-            return QUOTE_RED
+            return QuoteColor.red
         else:
-            return QUOTE_NOCHANGE
+            return QuoteColor.nochange
 
 
-    def colorTrend(self,d=None):
+    def colorTrend(self, d=None):
         if self.m_daytrades:
             if d is None:
                 tc = self.m_daytrades.lasttrade()
@@ -1088,7 +1087,7 @@ class Quote(object):
 
             tp = self.m_daytrades.prevtrade(d)
             if not tp:
-                return QUOTE_INVALID
+                return QuoteColor.invalid
 
             if tc.nv_close()==tp.nv_close():
                 return self.colorLine()
@@ -1100,8 +1099,8 @@ class Quote(object):
                 return self.colorLine()
 
             else:
-                return QUOTE_INVALID
-        return QUOTE_INVALID
+                return QuoteColor.invalid
+        return QuoteColor.invalid
 
     def colorStop(self):
         cl = self.nv_close()
@@ -1109,18 +1108,18 @@ class Quote(object):
             # no share on this quote : inside the target : BUY
             if (cl>=self.nv_stoploss()) and (cl<=self.nv_stopwin()):
                 # must buy
-                return QUOTE_GREEN
+                return QuoteColor.green
             else:
                 # do nothing
-                return QUOTE_NOCHANGE
+                return QuoteColor.nochange
         else:
             # some shares : outside the target : SELL
             if (cl<=self.nv_stoploss()) or (cl>=self.nv_stopwin()):
                 # must sell
-                return QUOTE_RED
+                return QuoteColor.red
             else:
                 # do nothing
-                return QUOTE_NOCHANGE
+                return QuoteColor.nochange
 
     # ---[ Indicators ] ---
 
@@ -1230,9 +1229,9 @@ class Quote(object):
         print('%s - %s - %s (market=%s)' % (self.key(),self.ticker(),self.name(),self.market()))
         print('PRU DIR/SRD = %f / %f' % (self.m_DIR_pru,self.m_SRD_pru))
         print('Cours = %f' % self.nv_close())
-        print('Nbre DIR/SRD/total = %d/%d/%d' % (self.nv_number(QUOTE_CASH),self.nv_number(QUOTE_CREDIT),self.nv_number(QUOTE_BOTH)))
-        print('Gain DIR = %f' % ((self.nv_close()-self.m_DIR_pru)*self.nv_number(QUOTE_CASH)))
-        print('Gain SRD = %f' % ((self.nv_close()-self.m_SRD_pru)*self.nv_number(QUOTE_CREDIT)))
+        print('Nbre DIR/SRD/total = %d/%d/%d' % (self.nv_number(QuoteType.cash),self.nv_number(QuoteType.credit),self.nv_number(QuoteType.both)))
+        print('Gain DIR = %f' % ((self.nv_close()-self.m_DIR_pru)*self.nv_number(QuoteType.cash)))
+        print('Gain SRD = %f' % ((self.nv_close()-self.m_SRD_pru)*self.nv_number(QuoteType.credit)))
         print('Candle = %s' % self.ov_candle())
         print('StopLoss = %s' % self.sv_stoploss())
         print('StopWin = %s' % self.sv_stopwin())

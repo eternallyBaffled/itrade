@@ -51,7 +51,7 @@ import wx
 # iTrade system
 from itrade_logging import setLevel, debug, info
 from itrade_local import message
-from itrade_quotes import QUOTE_CASH, QUOTE_CREDIT
+from itrade_quotes import QuoteType
 from itrade_portfolio import cmdline_evaluatePortfolio, Portfolio, loadPortfolio
 
 # iTrade wxPython system
@@ -204,21 +204,21 @@ class iTradeEvaluationPanel(wx.Window):
         self.m_html.AppendToPage(' <tr align="right" class="L20">')
         self.m_html.AppendToPage('   <td align="left" nowrap>%s</td>' % (message('money_srd')))
         self.m_html.AppendToPage('   <td align="right" nowrap>%s</b></td>' % (self.m_port.sv_credit(bDispCurrency=True)))
-        self.m_html.AppendToPage('   <td align="right" nowrap>%s</b></td>' % (self.m_port.sv_value(QUOTE_CREDIT,bDispCurrency=True)))
-        self.m_html.AppendToPage('   <td align="right" nowrap>%s</b></td>' % (self.m_port.sv_perf(QUOTE_CREDIT,bDispCurrency=True)))
-        self.m_html.AppendToPage('   <td align="center" nowrap>%s</td>'    % (self.m_port.sv_perfPercent(QUOTE_CREDIT)))
+        self.m_html.AppendToPage('   <td align="right" nowrap>%s</b></td>' % (self.m_port.sv_value(QuoteType.credit,bDispCurrency=True)))
+        self.m_html.AppendToPage('   <td align="right" nowrap>%s</b></td>' % (self.m_port.sv_perf(QuoteType.credit,bDispCurrency=True)))
+        self.m_html.AppendToPage('   <td align="center" nowrap>%s</td>'    % (self.m_port.sv_perfPercent(QuoteType.credit)))
         self.m_html.AppendToPage(' </tr>') # __x
         self.m_html.AppendToPage(' <tr align="right" class="L20">')
-        self.m_html.AppendToPage('   <td align="left" nowrap>%s (%2.2f%s)</td>' % (message('money_cash'),self.m_port.nv_percentCash(QUOTE_CASH),message('money_percent_of_portfolio')))
+        self.m_html.AppendToPage('   <td align="left" nowrap>%s (%2.2f%s)</td>' % (message('money_cash'),self.m_port.nv_percentCash(QuoteType.cash),message('money_percent_of_portfolio')))
         self.m_html.AppendToPage('   <td align="right" nowrap></td>')
         self.m_html.AppendToPage('   <td align="right" nowrap>%s</b></td>' % (self.m_port.sv_cash(bDispCurrency=True)))
         self.m_html.AppendToPage(' </tr>')
         self.m_html.AppendToPage(' <tr align="right" class="L20">')
-        self.m_html.AppendToPage('   <td align="left" nowrap>%s (%2.2f%s)</td>' % (message('money_quote'),self.m_port.nv_percentQuotes(QUOTE_CASH),message('money_percent_of_portfolio')))
-        self.m_html.AppendToPage('   <td align="right" nowrap>%s</b></td>' % (self.m_port.sv_buy(QUOTE_CASH,bDispCurrency=True)))
-        self.m_html.AppendToPage('   <td align="right" nowrap>%s</b></td>' % (self.m_port.sv_value(QUOTE_CASH,bDispCurrency=True)))
-        self.m_html.AppendToPage('   <td align="right" nowrap>%s</b></td>' % (self.m_port.sv_perf(QUOTE_CASH,bDispCurrency=True)))
-        self.m_html.AppendToPage('   <td align="center" nowrap>%s</td>'    % (self.m_port.sv_perfPercent(QUOTE_CASH)))
+        self.m_html.AppendToPage('   <td align="left" nowrap>%s (%2.2f%s)</td>' % (message('money_quote'),self.m_port.nv_percentQuotes(QuoteType.cash),message('money_percent_of_portfolio')))
+        self.m_html.AppendToPage('   <td align="right" nowrap>%s</b></td>' % (self.m_port.sv_buy(QuoteType.cash,bDispCurrency=True)))
+        self.m_html.AppendToPage('   <td align="right" nowrap>%s</b></td>' % (self.m_port.sv_value(QuoteType.cash,bDispCurrency=True)))
+        self.m_html.AppendToPage('   <td align="right" nowrap>%s</b></td>' % (self.m_port.sv_perf(QuoteType.cash,bDispCurrency=True)))
+        self.m_html.AppendToPage('   <td align="center" nowrap>%s</td>'    % (self.m_port.sv_perfPercent(QuoteType.cash)))
         self.m_html.AppendToPage(' </tr>')
         self.m_html.AppendToPage('</table>')
         self.m_html.AppendToPage('<br>')

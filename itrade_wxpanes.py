@@ -51,7 +51,7 @@ import wx.lib.mixins.listctrl as wxl
 # iTrade system
 from itrade_logging import debug
 from itrade_local import message
-from itrade_quotes import QUOTE_GREEN, QUOTE_RED, QUOTE_INVALID, QUOTE_NOCHANGE, QUOTE_BOTH, QUOTE_CREDIT, QUOTE_CASH
+from itrade_quotes import QuoteColor, QuoteType
 from itrade_currency import currencies
 
 # iTrade wx system
@@ -435,13 +435,13 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
     def refreshColorLine(self,x,color):
         # update line color and icon
         item = self.m_list.GetItem(x)
-        if color == QUOTE_INVALID:
+        if color == QuoteColor.invalid:
             item.SetTextColour(wx.BLACK)
             item.SetImage(self.idx_tbref)
-        elif color == QUOTE_RED:
+        elif color == QuoteColor.red:
             item.SetTextColour(wx.RED)
             item.SetImage(self.idx_down)
-        elif color == QUOTE_GREEN:
+        elif color == QuoteColor.green:
             item.SetTextColour(wx.BLUE)
             item.SetImage(self.idx_up)
         else:
@@ -593,38 +593,38 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
         for eachQuote in self.m_matrix.list():
             # in portfolio view, display only traded values !
             if eachQuote.isTraded():
-                if eachQuote.nv_number(QUOTE_CASH)>0:
+                if eachQuote.nv_number(QuoteType.cash)>0:
                     self.m_list.InsertImageStringItem(x, eachQuote.isin(), self.idx_tbref)
                     self.m_list.SetStringItem(x,IDC_TICKER,eachQuote.ticker())
-                    self.m_list.SetStringItem(x,IDC_QTY,eachQuote.sv_number(QUOTE_CASH))
+                    self.m_list.SetStringItem(x,IDC_QTY,eachQuote.sv_number(QuoteType.cash))
                     if eachQuote.isTraded():
-                        self.m_list.SetStringItem(x,IDC_PRU,"%s %s" % (eachQuote.sv_pru(QUOTE_CASH,"%.2f"),self.m_portfolio.currency_symbol()))
+                        self.m_list.SetStringItem(x,IDC_PRU,"%s %s" % (eachQuote.sv_pru(QuoteType.cash,"%.2f"),self.m_portfolio.currency_symbol()))
                     else:
                         self.m_list.SetStringItem(x,IDC_PRU,"-")
-                    self.m_list.SetStringItem(x,IDC_PR, eachQuote.sv_pr(QUOTE_CASH,fmt="%.0f",bDispCurrency=True))
+                    self.m_list.SetStringItem(x,IDC_PR, eachQuote.sv_pr(QuoteType.cash,fmt="%.0f",bDispCurrency=True))
                     self.m_list.SetStringItem(x,IDC_NAME,eachQuote.name())
 
-                    self.map(eachQuote,x,QUOTE_CASH)
+                    self.map(eachQuote,x,QuoteType.cash)
                     self.itemQuoteMap[x] = eachQuote
-                    self.itemTypeMap[x] = QUOTE_CASH
+                    self.itemTypeMap[x] = QuoteType.cash
                     self.refreshPortfolioLine(x,False)
 
                     x = x + 1
 
-                if eachQuote.nv_number(QUOTE_CREDIT)>0:
+                if eachQuote.nv_number(QuoteType.credit)>0:
                     self.m_list.InsertImageStringItem(x, eachQuote.isin(), self.idx_tbref)
                     self.m_list.SetStringItem(x,IDC_TICKER,"%s (%s)" % (eachQuote.ticker(),message("money_srd")))
-                    self.m_list.SetStringItem(x,IDC_QTY,eachQuote.sv_number(QUOTE_CREDIT))
+                    self.m_list.SetStringItem(x,IDC_QTY,eachQuote.sv_number(QuoteType.credit))
                     if eachQuote.isTraded():
-                        self.m_list.SetStringItem(x,IDC_PRU,"%s %s" % (eachQuote.sv_pru(QUOTE_CREDIT,"%.2f"),self.m_portfolio.currency_symbol()))
+                        self.m_list.SetStringItem(x,IDC_PRU,"%s %s" % (eachQuote.sv_pru(QuoteType.credit,"%.2f"),self.m_portfolio.currency_symbol()))
                     else:
                         self.m_list.SetStringItem(x,IDC_PRU,"-")
-                    self.m_list.SetStringItem(x,IDC_PR, eachQuote.sv_pr(QUOTE_CREDIT,bDispCurrency=True))
+                    self.m_list.SetStringItem(x,IDC_PR, eachQuote.sv_pr(QuoteType.credit,bDispCurrency=True))
                     self.m_list.SetStringItem(x,IDC_NAME,eachQuote.name())
 
-                    self.map(eachQuote,x,QUOTE_CREDIT)
+                    self.map(eachQuote,x,QuoteType.credit)
                     self.itemQuoteMap[x] = eachQuote
-                    self.itemTypeMap[x] = QUOTE_CREDIT
+                    self.itemTypeMap[x] = QuoteType.credit
 
                     self.refreshPortfolioLine(x,False)
 
@@ -637,12 +637,12 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
         self.m_list.SetStringItem(x,IDC_NAME,'')
         self.itemDataMap[x] = ('ZZZZ1','ZZZZ1','ZZZZ1',9999999998,9999999998,9999999998,9999999998,9999999998,9999999998,9999999998,9999999998,'ZZZZ1')
         self.itemQuoteMap[x] = None
-        self.itemTypeMap[x] = QUOTE_BOTH
+        self.itemTypeMap[x] = QuoteType.both
         self.m_list.InsertImageStringItem(x+1, message('main_valuation'), -1)
         self.m_list.SetStringItem(x+1,IDC_NAME,'')
         self.itemDataMap[x+1] = ('ZZZZ2','ZZZZ2','ZZZZ2',9999999999,9999999999,9999999999,9999999999,9999999999,9999999999,9999999999,9999999999,'ZZZZ2')
         self.itemQuoteMap[x+1] = None
-        self.itemTypeMap[x+1] = QUOTE_BOTH
+        self.itemTypeMap[x+1] = QuoteType.both
 
         self.m_maxlines = x + 2
 
@@ -657,9 +657,9 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
         self.m_list.SetStringItem(x,IDC_PERCENT,self.m_portfolio.sv_perfPercent())
 
         if self.m_portfolio.nv_perf()>=0:
-            self.refreshColorLine(x,QUOTE_GREEN)
+            self.refreshColorLine(x, QuoteColor.green)
         else:
-            self.refreshColorLine(x,QUOTE_RED)
+            self.refreshColorLine(x, QuoteColor.red)
 
     # refresh one portfolio line
     def refreshPortfolioLine(self,x,disp):
@@ -822,14 +822,14 @@ class iTrade_MatrixQuotesPanel(iTrade_MatrixPanel):
                 self.m_list.InsertImageStringItem(x, eachQuote.isin(), self.idx_tbref)
                 self.m_list.SetStringItem(x,IDC_TICKER,eachQuote.ticker())
                 if eachQuote.isTraded():
-                    self.m_list.SetStringItem(x,IDC_PRU,"%s %s" % (eachQuote.sv_pru(QUOTE_BOTH,"%.2f"),self.m_portfolio.currency_symbol()))
+                    self.m_list.SetStringItem(x,IDC_PRU,"%s %s" % (eachQuote.sv_pru(QuoteType.both,"%.2f"),self.m_portfolio.currency_symbol()))
                 else:
                     self.m_list.SetStringItem(x,IDC_PRU,"-")
                 self.m_list.SetStringItem(x,IDC_NAME,eachQuote.name())
 
-                self.map(eachQuote,x,QUOTE_BOTH)
+                self.map(eachQuote, x, QuoteType.both)
                 self.itemQuoteMap[x] = eachQuote
-                self.itemTypeMap[x] = QUOTE_BOTH
+                self.itemTypeMap[x] = QuoteType.both
 
                 self.refreshQuoteLine(x,False)
 
@@ -860,7 +860,7 @@ class iTrade_MatrixQuotesPanel(iTrade_MatrixPanel):
                 color = quote.colorTrend()
 
                 key = self.m_list.GetItemData(x)
-                pp = self.map(quote,key,QUOTE_BOTH)
+                pp = self.map(quote, key, QuoteType.both)
                 bRef = (pp != self.itemDataMap[key])
 
             else:
@@ -870,7 +870,7 @@ class iTrade_MatrixQuotesPanel(iTrade_MatrixPanel):
                 self.m_list.SetStringItem(x,IDC_LOW," ---.-- ")
                 self.m_list.SetStringItem(x,IDC_PIVOTS," ---- (-.--) ")
                 self.m_list.SetStringItem(x,IDC_VOLUME," ---------- ")
-                color = QUOTE_NOCHANGE
+                color = QuoteColor.nochange
         else:
             self.m_list.SetStringItem(x,IDC_PREV," ---.-- ")
             self.m_list.SetStringItem(x,IDC_CLOSE," ----.-- %s " % quote.currency_symbol())
@@ -880,7 +880,7 @@ class iTrade_MatrixQuotesPanel(iTrade_MatrixPanel):
             self.m_list.SetStringItem(x,IDC_PIVOTS," ---- (-.--) ")
             self.m_list.SetStringItem(x,IDC_VOLUME," ---------- ")
             self.m_list.SetStringItem(x,IDC_PERCENT," +---.-- % ")
-            color = QUOTE_INVALID
+            color = QuoteColor.invalid
 
         self.refreshColorLine(x,color)
 
@@ -1022,16 +1022,16 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
                 self.m_list.InsertImageStringItem(x, eachQuote.isin(), self.idx_tbref)
                 self.m_list.SetStringItem(x,IDC_TICKER,eachQuote.ticker())
                 if eachQuote.isTraded():
-                    self.m_list.SetStringItem(x,IDC_PRU,"%s %s" % (eachQuote.sv_pru(QUOTE_BOTH,"%.2f"),self.m_portfolio.currency_symbol()))
+                    self.m_list.SetStringItem(x,IDC_PRU,"%s %s" % (eachQuote.sv_pru(QuoteType.both,"%.2f"),self.m_portfolio.currency_symbol()))
                 else:
                     self.m_list.SetStringItem(x,IDC_PRU,"-")
                 self.m_list.SetStringItem(x,IDC_STOPLOSS,"~ %s " % eachQuote.sv_stoploss())
                 self.m_list.SetStringItem(x,IDC_STOPWIN,"~ %s " % eachQuote.sv_stopwin())
                 self.m_list.SetStringItem(x,IDC_NAME,eachQuote.name())
 
-                self.map(eachQuote,x,QUOTE_BOTH)
+                self.map(eachQuote, x, QuoteType.both)
                 self.itemQuoteMap[x] = eachQuote
-                self.itemTypeMap[x] = QUOTE_BOTH
+                self.itemTypeMap[x] = QuoteType.both
 
                 self.refreshStopLine(x,False)
 
@@ -1052,7 +1052,7 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
         if disp:
             color = quote.colorStop()
             self.m_list.SetStringItem(x,IDC_CURRENT,quote.sv_close(bDispCurrency=True))
-            if color==QUOTE_GREEN:
+            if color==QuoteColor.green:
                 self.m_list.SetStringItem(x,IDC_INVEST, "")
                 self.m_list.SetStringItem(x,IDC_RISKM, "")
                 self.m_list.SetStringItem(x,IDC_PV,"")
@@ -1066,7 +1066,7 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
                 self.m_list.SetStringItem(x,IDC_PERCENT,quote.sv_profitPercent(self.m_portfolio.currency()))
 
                 key = self.m_list.GetItemData(x)
-                pp = self.map(quote,key,QUOTE_BOTH)
+                pp = self.map(quote, key, QuoteType.both)
                 bRef = (pp != self.itemDataMap[key])
         else:
             self.m_list.SetStringItem(x,IDC_INVEST, " ------ %s" % self.m_portfolio.currency_symbol())
@@ -1075,16 +1075,16 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
             self.m_list.SetStringItem(x,IDC_PV," ------ %s" % self.m_portfolio.currency_symbol())
             self.m_list.SetStringItem(x,IDC_PROFIT," ------ %s" % self.m_portfolio.currency_symbol())
             self.m_list.SetStringItem(x,IDC_PERCENT," +---.-- % ")
-            color = QUOTE_INVALID
+            color = QuoteColor.invalid
 
         # update line color and icon
-        if color == QUOTE_INVALID:
+        if color == QuoteColor.invalid:
             item.SetTextColour(wx.BLACK)
             item.SetImage(self.idx_tbref)
-        elif color == QUOTE_RED:
+        elif color == QuoteColor.red:
             item.SetTextColour(wx.RED)
             item.SetImage(self.idx_sell)
-        elif color == QUOTE_GREEN:
+        elif color == QuoteColor.green:
             item.SetTextColour(wx.BLUE)
             item.SetImage(self.idx_buy)
         else:
@@ -1225,13 +1225,13 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
                 self.m_list.InsertImageStringItem(x, eachQuote.isin(), self.idx_tbref)
                 self.m_list.SetStringItem(x,IDC_TICKER,eachQuote.ticker())
                 if eachQuote.isTraded():
-                    self.m_list.SetStringItem(x,IDC_PRU,eachQuote.sv_pru(QUOTE_BOTH,"%.3f",False))
+                    self.m_list.SetStringItem(x,IDC_PRU,eachQuote.sv_pru(QuoteType.both, "%.3f", False))
                 else:
                     self.m_list.SetStringItem(x,IDC_PRU,"-")
 
-                self.map(eachQuote,x,QUOTE_BOTH)
+                self.map(eachQuote, x, QuoteType.both)
                 self.itemQuoteMap[x] = eachQuote
-                self.itemTypeMap[x] = QUOTE_BOTH
+                self.itemTypeMap[x] = QuoteType.both
 
                 self.refreshIndicatorLine(x,False)
 
@@ -1253,7 +1253,7 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
             if quote.hasTraded():
                 color = quote.colorTrend()
             else:
-                color = QUOTE_NOCHANGE
+                color = QuoteColor.nochange
             self.m_list.SetStringItem(x,IDC_MA20,quote.sv_ma(20))
             self.m_list.SetStringItem(x,IDC_MA50,quote.sv_ma(50))
             self.m_list.SetStringItem(x,IDC_MA100,quote.sv_ma(100))
@@ -1262,7 +1262,7 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
 
             key = self.m_list.GetItemData(x)
 
-            pp = self.map(quote,key,QUOTE_BOTH)
+            pp = self.map(quote, key, QuoteType.both)
             bRef = (pp != self.itemDataMap[key])
 
         else:
@@ -1277,17 +1277,17 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
             self.m_list.SetStringItem(x,IDC_EMV," ---.-- ")
             self.m_list.SetStringItem(x,IDC_OVB," ------ ")
             self.m_list.SetStringItem(x,IDC_LAST," ----.-- %s " % quote.currency_symbol())
-            color = QUOTE_NOCHANGE
+            color = QuoteColor.nochange
 
         # update line color and icon
         item = self.m_list.GetItem(x)
-        if color == QUOTE_INVALID:
+        if color == QuoteColor.invalid:
             item.SetTextColour(wx.BLACK)
             item.SetImage(self.idx_tbref)
-        elif color == QUOTE_RED:
+        elif color == QuoteColor.red:
             item.SetTextColour(wx.RED)
             item.SetImage(self.idx_down)
-        elif color == QUOTE_GREEN:
+        elif color == QuoteColor.green:
             item.SetTextColour(wx.BLUE)
             item.SetImage(self.idx_up)
         else:

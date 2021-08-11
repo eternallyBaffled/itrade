@@ -45,11 +45,11 @@ import os
 import itrade_config
 from itrade_logging import setLevel, debug, info
 import itrade_datation
-from itrade_quotes import quotes,QUOTE_CASH,QUOTE_CREDIT,QUOTE_BOTH
+from itrade_quotes import quotes, QuoteType
 from itrade_matrix import createMatrix
 from itrade_local import message, getLang
 import itrade_csv
-from itrade_currency import currency2symbol, currencies,convert
+from itrade_currency import currency2symbol, currencies, convert
 from itrade_vat import country2vat
 from itrade_login import getLoginConnector
 from itrade_market import getDefaultIndice
@@ -379,82 +379,82 @@ class Operation(object):
         if self.m_type == OPERATION_SELL:
             if self.m_quote:
                 debug('sell %s' % self.m_quote)
-                max = self.m_quote.nv_number(QUOTE_CASH)
+                max = self.m_quote.nv_number(QuoteType.cash)
                 if self.m_number>max:
                     self.m_number = max
-                self.m_quote.sell(self.m_number,QUOTE_CASH)
+                self.m_quote.sell(self.m_number,QuoteType.cash)
         elif self.m_type == OPERATION_BUY:
             if self.m_quote:
                 debug('buy %s' % self.m_quote)
-                self.m_quote.buy(self.m_number,self.m_value,QUOTE_CASH)
+                self.m_quote.buy(self.m_number,self.m_value,QuoteType.cash)
         elif self.m_type == OPERATION_SELL_SRD:
             if self.m_quote:
                 debug('sell SRD %s' % self.m_quote)
-                max = self.m_quote.nv_number(QUOTE_CREDIT)
+                max = self.m_quote.nv_number(QuoteType.credit)
                 if self.m_number>max:
                     self.m_number = max
-                self.m_quote.sell(self.m_number,QUOTE_CREDIT)
+                self.m_quote.sell(self.m_number, QuoteType.credit)
         elif self.m_type == OPERATION_BUY_SRD:
             if self.m_quote:
                 debug('buy SRD %s' % self.m_quote)
-                self.m_quote.buy(self.m_number,self.m_value,QUOTE_CREDIT)
+                self.m_quote.buy(self.m_number,self.m_value, QuoteType.credit)
         elif self.m_type == OPERATION_QUOTE:
             if self.m_quote:
                 debug('dividend/shares %s' % self.m_quote)
-                self.m_quote.buy(self.m_number,0.0,QUOTE_CASH)
+                self.m_quote.buy(self.m_number,0.0,QuoteType.cash)
         elif self.m_type == OPERATION_REGISTER:
             if self.m_quote:
                 debug('register/shares %s' % self.m_quote)
-                self.m_quote.buy(self.m_number,self.m_value,QUOTE_CASH)
+                self.m_quote.buy(self.m_number,self.m_value,QuoteType.cash)
         elif self.m_type == OPERATION_DETACHMENT:
             if self.m_quote:
                 debug('detachment %s / %d' % (self.m_quote,self.m_value))
-                self.m_quote.buy(0,-self.m_value,QUOTE_CASH)
+                self.m_quote.buy(0,-self.m_value,QuoteType.cash)
         elif self.m_type == OPERATION_LIQUIDATION:
             if self.m_quote:
                 debug('liquidation %s / %d' % (self.m_quote,self.m_value))
-                self.m_quote.transfertTo(self.m_number,self.m_expenses,QUOTE_CASH)
+                self.m_quote.transfertTo(self.m_number,self.m_expenses,QuoteType.cash)
 
     def undo(self,d=None):
         if self.m_type == OPERATION_SELL:
             if self.m_quote:
                 debug('undo-sell %s' % self.m_quote)
-                self.m_quote.buy(self.m_number,self.m_value,QUOTE_CASH)
+                self.m_quote.buy(self.m_number,self.m_value,QuoteType.cash)
         elif self.m_type == OPERATION_BUY:
             if self.m_quote:
                 debug('undo-buy %s' % self.m_quote)
-                self.m_quote.sell(self.m_number,QUOTE_CASH)
+                self.m_quote.sell(self.m_number,QuoteType.cash)
         elif self.m_type == OPERATION_QUOTE:
             if self.m_quote:
                 debug('undo-dividend/share %s' % self.m_quote)
-                self.m_quote.sell(self.m_number,QUOTE_CASH)
+                self.m_quote.sell(self.m_number,QuoteType.cash)
         elif self.m_type == OPERATION_REGISTER:
             if self.m_quote:
                 debug('undo-register %s' % self.m_quote)
-                self.m_quote.sell(self.m_number,QUOTE_CASH)
+                self.m_quote.sell(self.m_number,QuoteType.cash)
         elif self.m_type == OPERATION_BUY_SRD:
             if self.m_quote:
                 debug('undo-buy SRD %s' % self.m_quote)
-                self.m_quote.sell(self.m_number,QUOTE_CREDIT)
+                self.m_quote.sell(self.m_number, QuoteType.credit)
         elif self.m_type == OPERATION_SELL_SRD:
             if self.m_quote:
                 debug('undo-sell SRD %s' % self.m_quote)
-                self.m_quote.buy(self.m_number,self.m_value,QUOTE_CREDIT)
+                self.m_quote.buy(self.m_number,self.m_value, QuoteType.credit)
         elif self.m_type == OPERATION_DETACHMENT:
             if self.m_quote:
                 debug('undo-detachment %s' % self.m_quote)
-                self.m_quote.buy(0,self.m_value,QUOTE_CASH)
+                self.m_quote.buy(0,self.m_value,QuoteType.cash)
         elif self.m_type == OPERATION_LIQUIDATION:
             if self.m_quote:
                 debug('undo-liquidation %s / %d' % self.m_quote)
-                self.m_quote.transfertTo(self.m_number,self.m_expenses,QUOTE_CREDIT)
+                self.m_quote.transfertTo(self.m_number,self.m_expenses, QuoteType.credit)
 
     def nv_pvalue(self):
         if self.m_quote:
             if self.m_type == OPERATION_SELL:
-                return self.m_value - (self.m_quote.nv_pru(QUOTE_CASH) * self.m_number)
+                return self.m_value - (self.m_quote.nv_pru(QuoteType.cash) * self.m_number)
             if self.m_type == OPERATION_SELL_SRD:
-                return self.m_value - (self.m_quote.nv_pru(QUOTE_CREDIT) * self.m_number)
+                return self.m_value - (self.m_quote.nv_pru(QuoteType.credit) * self.m_number)
         return 0
 
     def sv_pvalue(self):
@@ -919,7 +919,7 @@ class Portfolio(object):
                     self.m_cAppreciation = self.m_cAppreciation + eachOp.nv_value()
                     quote = eachOp.quote()
                     if quote:
-                        pv = eachOp.nv_number() * quote.nv_pru(QUOTE_CREDIT)
+                        pv = eachOp.nv_number() * quote.nv_pru(QuoteType.credit)
                         self.m_cTaxable = self.m_cTaxable + pv
                         self.m_cAppreciation = self.m_cAppreciation + pv
             elif eachOp.type() == OPERATION_INTEREST:
@@ -959,16 +959,16 @@ class Portfolio(object):
         self.m_cSRDValue = 0.0
         for eachQuote in quotes.list():
             if eachQuote.isTraded():
-                self.m_cDIRValue = self.m_cDIRValue + eachQuote.nv_pv(self.m_currency,QUOTE_CASH)
-                self.m_cSRDValue = self.m_cSRDValue + eachQuote.nv_pv(self.m_currency,QUOTE_CREDIT)
+                self.m_cDIRValue = self.m_cDIRValue + eachQuote.nv_pv(self.m_currency,QuoteType.cash)
+                self.m_cSRDValue = self.m_cSRDValue + eachQuote.nv_pv(self.m_currency, QuoteType.credit)
 
     def computeBuy(self):
         self.m_cDIRBuy = 0.0
         self.m_cSRDBuy = 0.0
         for eachQuote in quotes.list():
             if eachQuote.isTraded():
-                self.m_cDIRBuy = self.m_cDIRBuy + eachQuote.nv_pr(QUOTE_CASH)
-                self.m_cSRDBuy = self.m_cSRDBuy + eachQuote.nv_pr(QUOTE_CREDIT)
+                self.m_cDIRBuy = self.m_cDIRBuy + eachQuote.nv_pr(QuoteType.cash)
+                self.m_cSRDBuy = self.m_cSRDBuy + eachQuote.nv_pr(QuoteType.credit)
 
     # --- [ operations API ] --------------------------------------------------
 
@@ -998,22 +998,22 @@ class Portfolio(object):
     def nv_invest(self):
         return self.m_cInvest
 
-    def nv_value(self,box=QUOTE_BOTH):
+    def nv_value(self, box=QuoteType.both):
         # __x compute it !
         self.computeValue()
-        if box==QUOTE_CASH:
+        if box==QuoteType.cash:
             return self.m_cDIRValue
-        if box==QUOTE_CREDIT:
+        if box==QuoteType.credit:
             return self.m_cSRDValue
         else:
             return self.m_cDIRValue + self.m_cSRDValue
 
-    def nv_buy(self,box=QUOTE_BOTH):
+    def nv_buy(self, box=QuoteType.both):
         # __x compute it !
         self.computeBuy()
-        if box==QUOTE_CASH:
+        if box==QuoteType.cash:
             return self.m_cDIRBuy
-        if box==QUOTE_CREDIT:
+        if box==QuoteType.credit:
             return self.m_cSRDBuy
         else:
             return self.m_cDIRBuy + self.m_cSRDBuy
@@ -1038,11 +1038,11 @@ class Portfolio(object):
         else:
             return self.nv_taxable() * itrade_config.taxesPercent
 
-    def nv_perf(self,box=QUOTE_BOTH):
+    def nv_perf(self, box=QuoteType.both):
         #info('nv_perf=%f'% (self.nv_value(box) - self.nv_buy(box)))
         return self.nv_value(box) - self.nv_buy(box)
 
-    def nv_perfPercent(self,box=QUOTE_BOTH):
+    def nv_perfPercent(self, box=QuoteType.both):
         n = self.nv_value(box)
         b = self.nv_buy(box)
         if n==0.0 or b==0.0:
@@ -1050,7 +1050,7 @@ class Portfolio(object):
         return ((n*100.0) / b) - 100
 
     def nv_totalValue(self):
-        return self.nv_value(QUOTE_BOTH) + self.nv_cash() - self.m_cCredit
+        return self.nv_value(QuoteType.both) + self.nv_cash() - self.m_cCredit
 
     def nv_perfTotal(self):
         return self.nv_totalValue() - self.nv_invest()
@@ -1062,14 +1062,14 @@ class Portfolio(object):
             return 0.0
         return ((n*100.0) / i) - 100
 
-    def nv_percentCash(self,box=QUOTE_BOTH):
+    def nv_percentCash(self, box=QuoteType.both):
         total = self.nv_value(box) + self.nv_cash()
         if total==0.0:
             return 0.0
         else:
             return (total-self.nv_value(box))/total*100.0
 
-    def nv_percentQuotes(self,box=QUOTE_BOTH):
+    def nv_percentQuotes(self, box=QuoteType.both):
         total = self.nv_value(box) + self.nv_cash()
         if total==0.0:
             return 0.0
@@ -1142,7 +1142,7 @@ class Portfolio(object):
         fmt = fmt + "%s"
         return fmt % (self.nv_invest(),sc)
 
-    def sv_value(self,box=QUOTE_BOTH,fmt="%.2f",bDispCurrency=False):
+    def sv_value(self, box=QuoteType.both, fmt="%.2f", bDispCurrency=False):
         if bDispCurrency:
             sc = ' '+self.currency_symbol()+' '
         else:
@@ -1150,7 +1150,7 @@ class Portfolio(object):
         fmt = fmt + "%s"
         return fmt % (self.nv_value(box),sc)
 
-    def sv_buy(self,box=QUOTE_BOTH,fmt="%.2f",bDispCurrency=False):
+    def sv_buy(self, box=QuoteType.both, fmt="%.2f", bDispCurrency=False):
         if bDispCurrency:
             sc = ' '+self.currency_symbol()+' '
         else:
@@ -1158,7 +1158,7 @@ class Portfolio(object):
         fmt = fmt + "%s"
         return fmt % (self.nv_buy(box),sc)
 
-    def sv_perf(self,box=QUOTE_BOTH,fmt="%.2f",bDispCurrency=False):
+    def sv_perf(self, box=QuoteType.both, fmt="%.2f", bDispCurrency=False):
         if bDispCurrency:
             sc = ' '+self.currency_symbol()+' '
         else:
@@ -1166,16 +1166,16 @@ class Portfolio(object):
         fmt = fmt + "%s"
         return fmt % (self.nv_perf(box),sc)
 
-    def sv_perfPercent(self,box=QUOTE_BOTH,fmt="%3.2f %%"):
+    def sv_perfPercent(self, box=QuoteType.both, fmt="%3.2f %%"):
         return fmt % self.nv_perfPercent(box)
 
-    def sv_percentCash(self,box=QUOTE_BOTH,fmt="%3.2f %%"):
+    def sv_percentCash(self, box=QuoteType.both, fmt="%3.2f %%"):
         return fmt % self.nv_percentCash(box)
 
-    def sv_percentQuotes(self,box=QUOTE_BOTH,fmt="%3.2f %%"):
+    def sv_percentQuotes(self, box=QuoteType.both, fmt="%3.2f %%"):
         return fmt % self.nv_percentQuotes(box)
 
-    def sv_totalValue(self,fmt="%.2f",bDispCurrency=False):
+    def sv_totalValue(self, fmt="%.2f", bDispCurrency=False):
         if bDispCurrency:
             sc = ' '+self.currency_symbol()+' '
         else:
@@ -1405,15 +1405,15 @@ def cmdline_evaluatePortfolio(year=2006):
     p.computeOperations(year)
     print(' cumul. investment  : %.2f' % p.nv_invest())
     print()
-    print(' total buy          : %.2f' % p.nv_buy(QUOTE_CASH))
-    print(' evaluation quotes  : %.2f (%2.2f%% of portfolio)' % (p.nv_value(QUOTE_CASH),p.nv_percentQuotes(QUOTE_CASH)))
-    print(' evaluation cash    : %.2f (%2.2f%% of portfolio)' % (p.nv_cash(),p.nv_percentCash(QUOTE_CASH)))
-    print(' performance        : %.2f (%2.2f%%)' % (p.nv_perf(QUOTE_CASH),p.nv_perfPercent(QUOTE_CASH)))
+    print(' total buy          : %.2f' % p.nv_buy(QuoteType.cash))
+    print(' evaluation quotes  : %.2f (%2.2f%% of portfolio)' % (p.nv_value(QuoteType.cash),p.nv_percentQuotes(QuoteType.cash)))
+    print(' evaluation cash    : %.2f (%2.2f%% of portfolio)' % (p.nv_cash(),p.nv_percentCash(QuoteType.cash)))
+    print(' performance        : %.2f (%2.2f%%)' % (p.nv_perf(QuoteType.cash),p.nv_perfPercent(QuoteType.cash)))
     print()
-    print(' total credit (SRD) : %.2f (==%.2f)' % (p.nv_credit(),p.nv_buy(QUOTE_CREDIT)))
-    print(' evaluation quotes  : %.2f (%2.2f%% of portfolio)' % (p.nv_value(QUOTE_CREDIT),p.nv_percentQuotes(QUOTE_CREDIT)))
-    print(' evaluation cash    : %.2f (%2.2f%% of portfolio)' % (p.nv_cash(),p.nv_percentCash(QUOTE_CREDIT)))
-    print(' performance        : %.2f (%2.2f%%)' % (p.nv_perf(QUOTE_CREDIT),p.nv_perfPercent(QUOTE_CREDIT)))
+    print(' total credit (SRD) : %.2f (==%.2f)' % (p.nv_credit(),p.nv_buy(QuoteType.credit)))
+    print(' evaluation quotes  : %.2f (%2.2f%% of portfolio)' % (p.nv_value(QuoteType.credit),p.nv_percentQuotes(QuoteType.credit)))
+    print(' evaluation cash    : %.2f (%2.2f%% of portfolio)' % (p.nv_cash(), p.nv_percentCash(QuoteType.credit)))
+    print(' performance        : %.2f (%2.2f%%)' % (p.nv_perf(QuoteType.credit), p.nv_perfPercent(QuoteType.credit)))
     print()
     print(' expenses (VAT, ...): %.2f' % p.nv_expenses())
     print(' total of transfers : %.2f' % p.nv_transfer())

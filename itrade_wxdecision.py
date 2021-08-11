@@ -40,7 +40,7 @@ import logging
 
 # iTrade system
 from itrade_logging import setLevel, info
-from itrade_quotes import quotes, initQuotesModule, QUOTE_CASH, QUOTE_CREDIT
+from itrade_quotes import quotes, initQuotesModule, QuoteType
 from itrade_local import message
 import itrade_config
 
@@ -237,11 +237,11 @@ class iTrade_wxDecision(sc.SizedPanel):
 
     def refresh(self):
         # refresh cash
-        self.wxCashNumOfShares.SetLabel(self.m_quote.sv_number(QUOTE_CASH))
-        self.wxCashPRU.SetLabel(self.m_quote.sv_pru(QUOTE_CASH,fmt="%.2f",bDispCurrency=True))
-        self.wxCashPR.SetLabel(self.m_quote.sv_pr(QUOTE_CASH,bDispCurrency=True))
+        self.wxCashNumOfShares.SetLabel(self.m_quote.sv_number(QuoteType.cash))
+        self.wxCashPRU.SetLabel(self.m_quote.sv_pru(QuoteType.cash,fmt="%.2f",bDispCurrency=True))
+        self.wxCashPR.SetLabel(self.m_quote.sv_pr(QuoteType.cash,bDispCurrency=True))
 
-        profit = self.m_quote.nv_profit(self.m_quote.currency(),QUOTE_CASH)
+        profit = self.m_quote.nv_profit(self.m_quote.currency(),QuoteType.cash)
         if profit==0:
             self.wxCashProfit.SetForegroundColour(wx.BLACK)
             self.wxCashProfitPercent.SetForegroundColour(wx.BLACK)
@@ -252,15 +252,15 @@ class iTrade_wxDecision(sc.SizedPanel):
             self.wxCashProfit.SetForegroundColour(wx.BLUE)
             self.wxCashProfitPercent.SetForegroundColour(wx.BLUE)
 
-        self.wxCashProfit.SetLabel("%s %s" % (self.m_quote.sv_profit(self.m_quote.currency(),QUOTE_CASH,fmt="%.0f"),self.m_quote.currency_symbol()))
-        self.wxCashProfitPercent.SetLabel(self.m_quote.sv_profitPercent(self.m_quote.currency(),QUOTE_CASH))
+        self.wxCashProfit.SetLabel("%s %s" % (self.m_quote.sv_profit(self.m_quote.currency(),QuoteType.cash,fmt="%.0f"),self.m_quote.currency_symbol()))
+        self.wxCashProfitPercent.SetLabel(self.m_quote.sv_profitPercent(self.m_quote.currency(),QuoteType.cash))
 
         # refresh credit
-        self.wxCreditNumOfShares.SetLabel(self.m_quote.sv_number(QUOTE_CREDIT))
-        self.wxCreditPRU.SetLabel(self.m_quote.sv_pru(QUOTE_CREDIT,fmt="%.2f",bDispCurrency=True))
-        self.wxCreditPR.SetLabel(self.m_quote.sv_pr(QUOTE_CREDIT,bDispCurrency=True))
+        self.wxCreditNumOfShares.SetLabel(self.m_quote.sv_number(QuoteType.credit))
+        self.wxCreditPRU.SetLabel(self.m_quote.sv_pru(QuoteType.credit, fmt="%.2f", bDispCurrency=True))
+        self.wxCreditPR.SetLabel(self.m_quote.sv_pr(QuoteType.credit, bDispCurrency=True))
 
-        profit = self.m_quote.nv_profit(self.m_quote.currency(),QUOTE_CREDIT)
+        profit = self.m_quote.nv_profit(self.m_quote.currency(), QuoteType.credit)
         if profit==0:
             self.wxCreditProfit.SetForegroundColour(wx.BLACK)
             self.wxCreditProfitPercent.SetForegroundColour(wx.BLACK)
@@ -271,8 +271,8 @@ class iTrade_wxDecision(sc.SizedPanel):
             self.wxCreditProfit.SetForegroundColour(wx.BLUE)
             self.wxCreditProfitPercent.SetForegroundColour(wx.BLUE)
 
-        self.wxCreditProfit.SetLabel("%s %s" % (self.m_quote.sv_profit(self.m_quote.currency(),QUOTE_CREDIT,fmt="%.0f"),self.m_quote.currency_symbol()))
-        self.wxCreditProfitPercent.SetLabel(self.m_quote.sv_profitPercent(self.m_quote.currency(),QUOTE_CREDIT))
+        self.wxCreditProfit.SetLabel("%s %s" % (self.m_quote.sv_profit(self.m_quote.currency(), QuoteType.credit,fmt="%.0f"),self.m_quote.currency_symbol()))
+        self.wxCreditProfitPercent.SetLabel(self.m_quote.sv_profitPercent(self.m_quote.currency(), QuoteType.credit))
 
         # Purchasing Power
         self.m_portfolio.computeOperations()
