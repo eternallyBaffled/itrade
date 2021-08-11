@@ -116,6 +116,8 @@ def main():
     vticker = None
     vquote  = None
 
+    itrade_config.ensure_setup()
+
     lang = gMessage.getAutoDetectedLang('us')
     for o, a in opts:
         if o == "-d":
@@ -135,13 +137,13 @@ def main():
         if o == "-i":
             if quote:
                 if file:
-                    itrade_import.cmdline_importQuoteFromFile(quote,file)
+                    itrade_import.cmdline_importQuoteFromFile(quote, file)
                 else:
                     itrade_import.cmdline_importQuoteFromInternet(quote)
             else:
                 matrix = itrade_matrix.createMatrix()
                 if file:
-                    itrade_import.cmdline_importMatrixFromFile(matrix,file)
+                    itrade_import.cmdline_importMatrixFromFile(matrix, file)
                 else:
                     itrade_import.cmdline_importMatrixFromInternet(matrix)
             use_wx = False

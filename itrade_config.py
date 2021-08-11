@@ -53,22 +53,23 @@ import sys
 import imp
 import ConfigParser
 
-# ============================================================================
-# Read REVISION
-# ============================================================================
+__svnversion__ = 'x???'
 
-# open the file
-try:
-    f = open('REVISION','r')
-    infile = f.readlines()
-    f.close()
-    if len(infile)>1:
-        revline = infile[1].split(' ')
-        __svnversion__ = revline[0]
-    else:
+
+def read_revision():
+    global __svnversion__
+    try:
+        with open('REVISION', 'r') as f:
+            infile = f.readlines()
+
+        if len(infile) > 1:
+            revline = infile[1].split(' ')
+            __svnversion__ = revline[0]
+        else:
+            __svnversion__ = 'x???'
+    except IOError:
         __svnversion__ = 'x???'
-except IOError:
-    __svnversion__ = 'x???'
+
 
 # ============================================================================
 # Default configuration
@@ -87,8 +88,6 @@ softwareLatest  = 'https://itrade.svn.sourceforge.net/svnroot/itrade/trunk/OFFIC
 softwareVersion = __version__
 softwareVersionName = 'Druuna - (unstable) (%s)' % __svnversion__
 softwareStatus = __status__
-
-print('%s(%s) - %s %s' % (softwareName,softwareStatus,softwareVersion,softwareVersionName))
 
 # support
 bugTrackerURL = 'https://sourceforge.net/tracker/?group_id=128261&atid=711187'
@@ -121,7 +120,7 @@ class InstallError(Exception):
 
 class DirNotFoundError(InstallError):
     def __init__(self, folder_name):
-        InstallError.__init__(self, 'Invalid installation: folder "%s" does not exist.'% folder_name)
+        InstallError.__init__(self, 'Invalid installation: folder "{}" does not exist.'.format(folder_name))
 
 
 def set_application_root_folder(folder):
@@ -150,71 +149,57 @@ def ensure_folder(folder):
 def resolve_folder(folder):
     return os.path.join(application_root_folder(), folder)
 
-
 # directory for system data
 dirSysData = resolve_folder('data')
-check_folder(dirSysData)
-
 # directory for brokers data
 dirBrokersData = resolve_folder('brokers')
-check_folder(dirBrokersData)
-
 # directory for symbol lists
 dirSymbData = resolve_folder('symbols')
-check_folder(dirSymbData)
-
 # directory for extensions
 dirExtData = resolve_folder('ext')
-check_folder(dirExtData)
-
 fileExtData = 'extensions.txt'
-
 # directory for indicators
 dirIndData = resolve_folder('indicators')
-check_folder(dirIndData)
-
 fileIndData = 'indicators.txt'
-
-# FIXME: Dynamically creating folders should not be done on module load.
-# consider moving this to install time
 # directory for user data
 dirUserData = resolve_folder('usrdata')
-ensure_folder(dirUserData)
-
 # directory for alerts
 dirAlerts = resolve_folder('alerts')
-ensure_folder(dirAlerts)
-
 # directory for quotes images
 dirImageData = resolve_folder('images')
-ensure_folder(dirImageData)
-
 # directory for cache data (quote, window prop, ...)
 dirCacheData = resolve_folder('cache')
-ensure_folder(dirCacheData)
-
 # file to get the current portfolio
 fileCurrentPortfolio = 'portfolio.txt'
-
 # directory for importation
 dirImport = resolve_folder('import')
-ensure_folder(dirImport)
-
 # directory for exportation
 dirExport = resolve_folder('export')
-ensure_folder(dirExport)
-
 # directory for snapshots
 dirSnapshots = resolve_folder('snapshots')
-ensure_folder(dirSnapshots)
-
 # directory for trading reports
 dirReports = resolve_folder('reports')
-ensure_folder(dirReports)
-
 # directory for image resources
 dirRes = resolve_folder('res')
-check_folder(dirRes)
+
+
+def ensure_setup():
+    read_revision()
+    print('{}({}) - {} {}'.format(softwareName, softwareStatus, softwareVersion, softwareVersionName))
+    check_folder(dirSysData)
+    check_folder(dirBrokersData)
+    check_folder(dirSymbData)
+    check_folder(dirExtData)
+    check_folder(dirIndData)
+    ensure_folder(dirUserData)
+    ensure_folder(dirAlerts)
+    ensure_folder(dirImageData)
+    ensure_folder(dirCacheData)
+    ensure_folder(dirImport)
+    ensure_folder(dirExport)
+    ensure_folder(dirSnapshots)
+    ensure_folder(dirReports)
+    check_folder(dirRes)
 
 
 def default_closure_file():
@@ -590,13 +575,11 @@ def get_main_dir():
 
 # ============================================================================
 # readAndEvalFile()
-#
 # ============================================================================
 
 def readThenEvalFile(filename):
-    f = open(filename)
-    txt = '\n'.join(f.read().splitlines())
-    f.close()
+    with open(filename) as f:
+        txt = '\n'.join(f.read().splitlines())
     return eval(txt, globals())
 
 # ============================================================================
