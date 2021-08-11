@@ -38,16 +38,18 @@
 
 # python system
 from __future__ import print_function
+
 from datetime import date
 import logging
 import os
 import string
 from enum import Enum
+from decimal import Decimal
 
 # iTrade system
 import itrade_config
 from itrade_logging import info, setLevel, debug
-from itrade_local import message, getGroupChar
+from itrade_local import message
 import itrade_csv
 import itrade_trades
 from itrade_import import cmdline_importQuoteFromInternet, import_from_internet, liveupdate_from_internet
@@ -77,19 +79,30 @@ class QuoteType(Enum):
 # volume formatter
 # ============================================================================
 
-def fmtVolume(x):
-    sep = getGroupChar()
-    val = '%d' % x
-    ret = ''
-    i   = len(val)
-    n   = 0
-    while i>0:
-        n = n + 1
-        i = i - 1
-        ret = val[i] + ret
-        if (n%3 == 0) and (i>0):
-            ret = sep+ret
-    return ret
+def _format_volume(x):
+    """
+    >>> print(_format_volume(1))
+    1
+    >>> print(_format_volume(12))
+    12
+    >>> print(_format_volume(130))
+    130
+    >>> print(_format_volume(1400))
+    1 400
+    >>> print(_format_volume(15000))
+    15 000
+    >>> print(_format_volume(160000))
+    160 000
+    >>> print(_format_volume(1700000))
+    1 700 000
+    >>> print(_format_volume(18000000))
+    18 000 000
+    """
+    return '{0:n}'.format(Decimal(x))
+
+
+class Volume(object):
+    pass
 
 # ============================================================================
 # Quote referencing
@@ -114,7 +127,7 @@ def quote_reference(isin,ticker,market,place):
 
             return '%s.%s.%s' % (isin,market,place)
 
-    if market is None or market=='':
+    if market is None or market == '':
         quote = quotes.lookupTicker(ticker)
         if quote:
             market = quote.market()
@@ -272,7 +285,7 @@ class Quote(object):
             return self.m_DIR_number + self.m_SRD_number
 
     def sv_number(self, box=QuoteType.both):
-        return fmtVolume(self.nv_number(box))
+        return _format_volume(self.nv_number(box))
 
     def nv_pru(self, box=QuoteType.both):
         # return PRU in the default currency (i.e. portfolio currency)
@@ -908,10 +921,10 @@ class Quote(object):
             return "%3.3f" % x
         return " ---.--- "
 
-    def sv_volume(self,d=None):
+    def sv_volume(self, d=None):
         x = self.nv_volume(d)
         if x is not None:
-            return fmtVolume(x)
+            return _format_volume(x)
         return " ---------- "
 
     def sv_prevclose(self,d=None):
@@ -1558,6 +1571,7 @@ def initQuotesModule():
 def main():
     setLevel(logging.INFO)
     # load configuration
+    itrade_config.ensure_setup()
     itrade_config.load_config()
     from itrade_local import setLang, gMessage
     setLang('us')
@@ -1583,14 +1597,6 @@ def main():
     info('test7 %s' % quote.trades().trade(date(2005, 1, 4)))
     #    quotes.saveTrades()
     quotes.saveListOfQuotes()
-    print(fmtVolume(1))
-    print(fmtVolume(12))
-    print(fmtVolume(130))
-    print(fmtVolume(1400))
-    print(fmtVolume(15000))
-    print(fmtVolume(160000))
-    print(fmtVolume(1700000))
-    print(fmtVolume(18000000))
 
 
 if __name__ == '__main__':
