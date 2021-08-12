@@ -58,8 +58,8 @@ from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as FigureCanvas
 
 from matplotlib.figure import Figure
 from matplotlib.ticker import FuncFormatter, MultipleLocator
-
-from pylab import setp, IndexDateFormatter
+from matplotlib.pyplot import setp
+from matplotlib.dates import IndexDateFormatter
 
 # ============================================================================
 # GTool
