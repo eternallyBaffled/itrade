@@ -53,22 +53,22 @@ import sys
 import imp
 import ConfigParser
 
-__svnversion__ = 'x???'
+__revision__ = 'x???'
 
 
 def read_revision():
-    global __svnversion__
+    global __revision__
     try:
         with open('REVISION', 'r') as f:
             infile = f.readlines()
 
         if len(infile) > 1:
             revline = infile[1].split(' ')
-            __svnversion__ = revline[0]
+            __revision__ = revline[0]
         else:
-            __svnversion__ = 'x???'
+            __revision__ = 'x???'
     except IOError:
-        __svnversion__ = 'x???'
+        __revision__ = 'x???'
 
 
 # ============================================================================
@@ -86,7 +86,7 @@ softwareLatest  = 'https://itrade.svn.sourceforge.net/svnroot/itrade/trunk/OFFIC
 
 # iTrade version (major.minor)
 softwareVersion = __version__
-softwareVersionName = 'Druuna - (unstable) (%s)' % __svnversion__
+softwareVersionName = 'Druuna - (unstable) (%s)' % __revision__
 softwareStatus = __status__
 
 # support
@@ -339,7 +339,7 @@ timerForXYPopup = 500
 lang = 0
 
 # verbose mode
-if __svnversion__[0] != 'x':
+if __revision__[0] != 'x':
     verbose = False
 else:
     print('Verbose mode : forced ON (under development release)')
@@ -376,10 +376,10 @@ column = {
 
 def checkNewRelease(ping=False):
     # just to test : remove '#' from the line just below
-    #__svnversion__ = 'r565'
+    #__revision__ = 'r565'
 
     # development release : do not test
-    if not ping and __svnversion__[0] == 'x':
+    if not ping and __revision__[0] == 'x':
         if verbose:
             print('checkNewRelease(): development release')
         return 'dev'
@@ -404,12 +404,12 @@ def checkNewRelease(ping=False):
         return 'err'
 
     # development release : do not test
-    if __svnversion__[0] == 'x':
+    if __revision__[0] == 'x':
         if verbose:
             print('checkNewRelease(): development release (ping)')
         return 'dev'
 
-    current = int(__svnversion__[1:])
+    current = int(__revision__[1:])
     latest = int(latest[1:])
 
     #print current,latest
@@ -613,7 +613,7 @@ def isConnected():
 def main():
     load_config()
     saveConfig()
-    print(__svnversion__)
+    print(__revision__)
     print(os.path.expanduser('~'))
     print(checkNewRelease())
 

@@ -36,7 +36,6 @@
 # ============================================================================
 
 # python system
-import os
 import sys
 import types
 import atexit
@@ -110,7 +109,7 @@ class myStdoutStreamHandler(myStreamHandler):
     def emit(self, record):
         try:
             myStreamHandler.emit(self, record)
-        except ValueError as e:
+        except ValueError:
             # disable this handler because sys.stdout is closed
             self.disable()
             error('Error logging to stdout : shall remove the stdout handler !')
@@ -190,7 +189,7 @@ def main():
     setLevel(logging.INFO)
     info('information:' + itrade_config.__author__)
     warning('warning:' + itrade_config.__revision__)
-    error('error:' + itrade_config.version)
+    error('error:' + itrade_config.__version__)
     try:
         a = 0 / 0
     except:
