@@ -133,12 +133,12 @@ checksoftware_error;Can't get release information for the software (network issu
 main_about;&About ...
 main_desc_about; Information about iTrade
 
-main_title_portfolio;iTrade - Portfolio %s:%s
-main_title_quotes;iTrade - Matrix %s:%s
-main_title_stops;iTrade - Stops %s:%s
-main_title_indicators;iTrade - Indicators %s:%s
-main_title_evaluation;iTrade - Performance %s:%s
-main_title_trading;iTrade - Trading %s:%s
+main_title_portfolio;iTrade - Portfolio {}:{}
+main_title_quotes;iTrade - Matrix {}:{}
+main_title_stops;iTrade - Stops {}:{}
+main_title_indicators;iTrade - Indicators {}:{}
+main_title_evaluation;iTrade - Performance {}:{}
+main_title_trading;iTrade - Trading {}:{}
 
 main_refreshing;Refreshing data
 
@@ -201,8 +201,8 @@ USP;USP
 market;Market
 place;Place
 all_markets;All markets
-invalid_isin;ISIN code %s is invalid
-symbol_not_found;ISIN code %s or name %s not found
+invalid_isin;ISIN code {} is invalid
+symbol_not_found;ISIN code {} or name {} not found
 risk;Risk
 stop_plus;Stop+
 stop_minus;Stop-
@@ -218,14 +218,14 @@ clear_symbols_onedesc;Clear all symbols for this list
 clear_symbols_alllists;Clear All Lists
 clear_symbols_alldesc;Clear all symbols for all the lists
 listquote_clear_confirm_title;Undoable Operation
-listquote_clear_confirm;For %s, do you confirm the operation (%s) ?
+listquote_clear_confirm;For {}, do you confirm the operation ({}) ?
 listquote_new;New
 listquote_edit;Edit
 listquote_delete;Delete
 listquote_new_desc;Create a new symbol
 listquote_edit_desc;Edit current symbol on the list
 listquote_delete_desc;Delete current symbol on the list
-listquote_duplicate_ref;Symbol %s already exists !
+listquote_duplicate_ref;Symbol {} already exists !
 listquote_save;Save
 listquote_save_desc;Save the list of symbols
 listquote_saved;The list of symbols has been saved
@@ -234,11 +234,11 @@ listquote_nodirty_save;Your modifications have not been saved and will not persi
 
 listquote_items_zero;None quote found
 listquote_items_one;One quote found
-listquote_items_n;%s quotes found
+listquote_items_n;{} quotes found
 
-listquote_modify_title;Edit %s Symbol
+listquote_modify_title;Edit {} Symbol
 listquote_new_title;New Symbol
-listquote_delete_title;Delete %s Symbol
+listquote_delete_title;Delete {} Symbol
 
 quote_title;iTrade - Quote
 quote_select_title;Select a Symbol
@@ -288,11 +288,11 @@ portfolio_properties_create;Create a new Portfolio
 portfolio_properties_delete;Delete Portfolio
 portfolio_properties_rename;Rename Portfolio
 
-portfolio_delete_confirm;Do you really want porfolio '%s' deletion ?
+portfolio_delete_confirm;Do you really want porfolio '{}' deletion ?
 portfolio_delete_confirm_title;Delete Portfolio
-portfolio_exist_info;Portfolio file reference '%s' already exists !
+portfolio_exist_info;Portfolio file reference '{}' already exists !
 portfolio_exist_info_title;Create Portfolio
-portfolio_rename_confirm;Do you confirm the new reference '%s' ?
+portfolio_rename_confirm;Do you confirm the new reference '{}' ?
 portfolio_rename_confirm_title;Rename Portfolio
 
 portfolio_properties_btncreate;Create
@@ -427,15 +427,15 @@ popup_open;Open
 popup_high;High
 popup_low;Low
 popup_close;Last
-popup_percent;Var. (%s)
+popup_percent;Var. ({})
 popup_volume;Volume
 popup_notrade;no trade
 
 save_to_file;Save to file
 export_to_file;Export to file
 import_from_file;Import from file
-exported_to_file;File %s has been exported
-imported_from_file;File %s has been imported
+exported_to_file;File {} has been exported
+imported_from_file;File {} has been imported
 
 tb_pan_left;Pan on the left
 tb_pan_right;Pan on the right
@@ -493,7 +493,7 @@ prop_typeofclock;Delay :
 prop_islive;Real time
 prop_isslive;Live
 prop_isdiffered;Differed
-prop_isnotlive;Differed time (%d minutes)
+prop_isnotlive;Differed time ({:d} minutes)
 prop_liveconnector;Live Connector :
 prop_impconnector;Import Connector :
 prop_set;Set
@@ -515,7 +515,7 @@ live_CMP;PMP
 live_FMP;PMR
 
 wxversion_title;wxPython Version Error
-wxversion_msg;The requested version of wxPython is not installed. Please install version %d.%d UNICODE
+wxversion_msg;The requested version of wxPython is not installed. Please install version {:d}.{:d} UNICODE
 
 money_fiscal_year;Fiscal Year
 money_amount_of_taxes;Amount of Taxes
@@ -575,20 +575,20 @@ page_trading;Trading
 print_preview;Print Preview
 print_printing;Printing
 print_errprinting;There was a problem printing.\nPerhaps your current printer is not set correctly ?
-print_page;Page: %d
+print_page;Page: {:d}
 
-about_url;Please point your browser at : %s
+about_url;Please point your browser at : {}
 about_title;About iTrade
 
 info_caption;iTrade - Information
 alert_caption;iTrade - Error
 
 stops_remove_caption;Remove Stops
-stops_remove_text;Do you confirm stops removing for quote %s ?
-stops_edit_caption;%s - Stops modification
-stops_add_caption;%s - Stops creation
+stops_remove_text;Do you confirm stops removing for quote {} ?
+stops_edit_caption;{} - Stops modification
+stops_add_caption;{} - Stops creation
 stops_last;Last trade :
-stops_portfolio;%s owned shares for a value of %s
+stops_portfolio;{} owned shares for a value of {}
 stops_shares_loss;Sales Threshold to cut the losses :
 stops_shares_win;Sales Threshold to take the profits :
 stops_noshares_loss;Purchase range - Low Threshold :
@@ -604,11 +604,11 @@ decision_purchasingpower;Purchasing Power
 decision_numofshares;Number of shares :
 decision_upp;Price Paid per Share :
 decision_pp;Total Price Paid :
-decision_profit;Latent Profit in %s :
+decision_profit;Latent Profit in {} :
 decision_profitpercent;Latent Profit in % :
-decision_availablecash;Available Cash in %s :
-decision_committedcredit;Committed Margin in %s :
-decision_availablecredit;Available for Margin in %s :
+decision_availablecash;Available Cash in {} :
+decision_committedcredit;Committed Margin in {} :
+decision_availablecredit;Available for Margin in {} :
 
 connection_title;Connection Settings
 proxy_server_ip;Proxy IP address (empty if none) :
@@ -622,7 +622,7 @@ rss_scan;Scan
 rss_freshness;Last scan :
 
 remove_quote_title;Remove the Quote
-remove_quote_info;Do you confirm the remove of the quote %s from the matrix ?
+remove_quote_info;Do you confirm the remove of the quote {} from the matrix ?
 
 converter_title;Currencies Converter
 

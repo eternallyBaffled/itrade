@@ -99,7 +99,7 @@ main_options_lang_deutch;Tedesco
 main_options_lang_italian;Italiano
 
 main_options_cache;&Caching
-main_options_desc_cache; Gestione caching 
+main_options_desc_cache; Gestione caching
 main_cache_erase_data;Cancella &Dati storici
 main_cache_desc_erase_data;Cancella dati storici dalla cache
 main_cache_erase_news;Cancella &News
@@ -133,12 +133,12 @@ checksoftware_error;Non riesco a ricevere informazioni sul software (problemi di
 main_about;&Informazioni ...
 main_desc_about; Informazioni su iTrade
 
-main_title_portfolio;iTrade - Portafoglio %s:%s
-main_title_quotes;iTrade - Lista Titoli %s:%s
-main_title_stops;iTrade - Stop %s:%s
-main_title_indicators;iTrade - Indicatori %s:%s
-main_title_evaluation;iTrade - Rendimento %s:%s
-main_title_trading;iTrade - Trading %s:%s
+main_title_portfolio;iTrade - Portafoglio {}:{}
+main_title_quotes;iTrade - Lista Titoli {}:{}
+main_title_stops;iTrade - Stop {}:{}
+main_title_indicators;iTrade - Indicatori {}:{}
+main_title_evaluation;iTrade - Rendimento {}:{}
+main_title_trading;iTrade - Trading {}:{}
 
 main_refreshing;Sto aggiornando i dati
 
@@ -187,7 +187,7 @@ prev;Prec.
 pivots;Pivot
 status;Stato
 reopen;Riapri
-high_threshold;Resistenza 
+high_threshold;Resistenza
 low_threshold;Supporto
 cmp;WAQ
 qty;Qtà
@@ -201,8 +201,8 @@ USP;Pzo Unit Vnd
 market;Mercato
 place;Place
 all_markets;Tutti i mercati
-invalid_isin;Codice ISIN %s invalido
-symbol_not_found;Codice ISIN %s o nome %s non trovati
+invalid_isin;Codice ISIN {} invalido
+symbol_not_found;Codice ISIN {} o nome {} non trovati
 risk;Rischio
 stop_plus;Stop+
 stop_minus;Stop-
@@ -218,14 +218,14 @@ clear_symbols_onedesc;Pulisci liste simboli per questa lista
 clear_symbols_alllists;Pulisci tutte le liste
 clear_symbols_alldesc;Pulisci tutti i simboli di tutte le liste
 listquote_clear_confirm_title;Operazione non annullabile
-listquote_clear_confirm;Per %s, confermi l'operazione (%s) ?
+listquote_clear_confirm;Per {}, confermi l'operazione ({}) ?
 listquote_new;Nuovo
 listquote_edit;Modifica
 listquote_delete;Elimina
 listquote_new_desc;Crea nuovo simbolo
 listquote_edit_desc;Modifica simbolo selezionato
 listquote_delete_desc;Elimina simbolo selezionato
-listquote_duplicate_ref;Il simbolo %s è già presente !
+listquote_duplicate_ref;Il simbolo {} è già presente !
 listquote_save;Salva
 listquote_save_desc;Salva lista simboli
 listquote_saved;La lista simboli è stata salvata
@@ -234,11 +234,11 @@ listquote_nodirty_save;Le tue modifiche non sono state salvate e non saranno pi�
 
 listquote_items_zero;Non ho trovato nessuna quotazione
 listquote_items_one;Ho trovato una quotazione
-listquote_items_n;Ho trovato %s quotazioni
+listquote_items_n;Ho trovato {} quotazioni
 
-listquote_modify_title;Modifica %s Simbolo
+listquote_modify_title;Modifica {} Simbolo
 listquote_new_title;Nuovo Simbolo
-listquote_delete_title;Delete %s Simbolo
+listquote_delete_title;Delete {} Simbolo
 
 quote_title;iTrade - Quote
 quote_select_title;Seleziona Simbolo
@@ -288,11 +288,11 @@ portfolio_properties_create;Crea Nuovo Portafoglio
 portfolio_properties_delete;Elimina Portafoglio
 portfolio_properties_rename;Rinomina Portafoglio
 
-portfolio_delete_confirm;Confermi eliminazione del portafoglio '%s'  ?
+portfolio_delete_confirm;Confermi eliminazione del portafoglio '{}'  ?
 portfolio_delete_confirm_title;Elimina Portafoglio
-portfolio_exist_info;Il Portafoglio '%s' già esiste !
+portfolio_exist_info;Il Portafoglio '{}' già esiste !
 portfolio_exist_info_title;Crea Portafoglio
-portfolio_rename_confirm;Confermi nuovo riferimento '%s' ?
+portfolio_rename_confirm;Confermi nuovo riferimento '{}' ?
 portfolio_rename_confirm_title;Rinomina Portafoglio
 
 portfolio_properties_btncreate; Crea
@@ -304,7 +304,7 @@ portfolio_properties_btneditdesc; Convalida la nuova proprietà di questo Portaf
 portfolio_properties_btnrename; Rinomina
 portfolio_properties_btnrenamedesc; Rinomina questo Portafoglio
 portfolio_properties_btnselect; Apri
-portfolio_properties_btnselectdesc; Apri questo Portafoglio 
+portfolio_properties_btnselectdesc; Apri questo Portafoglio
 
 portfolio_filename;Nome Portafoglio :
 portfolio_name;Descrizione :
@@ -336,7 +336,7 @@ portfolio_field_debit;Debito :
 portfolio_field_freeofcharges;Senza Costi
 portfolio_field_valorization;Valorizzazione :
 
-portfolio_ctrl_sell;Vendi 
+portfolio_ctrl_sell;Vendi
 portfolio_ctrl_sell_srd;Vendi Allo Scoperto
 portfolio_ctrl_buy;Acquista
 portfolio_ctrl_buy_srd;Acquista Allo Scoperto
@@ -427,15 +427,15 @@ popup_open;Open
 popup_high;Max
 popup_low;Min
 popup_close;Last
-popup_percent;Var. (%s)
+popup_percent;Var. ({})
 popup_volume;Volume
 popup_notrade;Nessuna Operazione
 
 save_to_file;Salva su file
 export_to_file;Esporta verso file
 import_from_file;Importa da file
-exported_to_file;Il file %s è stato esportato
-imported_from_file;Il file %s è stato esportato
+exported_to_file;Il file {} è stato esportato
+imported_from_file;Il file {} è stato esportato
 
 tb_pan_left;Sposta a sinistra
 tb_pan_right;Sposta a destra
@@ -493,7 +493,7 @@ prop_typeofclock;Ritardo :
 prop_islive;Real Time
 prop_isslive;Real Time
 prop_isdiffered;Ritardo
-prop_isnotlive;Tempo differimento (%d minuti)
+prop_isnotlive;Tempo differimento ({:d} minuti)
 prop_liveconnector;Scegli Connettore Real-Time:
 prop_impconnector;Scegli Connettore Importazione Dati:
 prop_set;Imposta
@@ -515,7 +515,7 @@ live_CMP;CMP
 live_FMP;FMP
 
 wxversion_title;Errore nella versione di wxPython
-wxversion_msg;La versione di wxPython richiesta non è installata. Installare la versione %d.%d UNICODE
+wxversion_msg;La versione di wxPython richiesta non è installata. Installare la versione {:d}.{:d} UNICODE
 
 money_fiscal_year;Anno Fiscale
 money_amount_of_taxes;Percentuale Di Tasse
@@ -575,20 +575,20 @@ page_trading;Trading
 print_preview;Anteprima di Stampa
 print_printing;Imposta Pagina Per Stampa
 print_errprinting;Problema in fase di stampa.\nC'è mica un problema nelle impostazioni della stampante ?
-print_page;Pagina: %d
+print_page;Pagina: {:d}
 
-about_url;Per piacere visita : %s
+about_url;Per piacere visita : {}
 about_title;Informazioni su iTrade
 
 info_caption;iTrade - Informazione
 alert_caption;iTrade - Errore
 
 stops_remove_caption;Rimuovi Stop
-stops_remove_text;Confermi eliminazione stop per %s ?
-stops_edit_caption;%s - Modifica Stop
-stops_add_caption;%s - Crea Stop
+stops_remove_text;Confermi eliminazione stop per {} ?
+stops_edit_caption;{} - Modifica Stop
+stops_add_caption;{} - Crea Stop
 stops_last;Ultima operazione :
-stops_portfolio;%s valore posseduto per un valore di %s
+stops_portfolio;{} valore posseduto per un valore di {}
 stops_shares_loss;Soglia di Vendita per taglio perdite :
 stops_shares_win;Soglia di Vendita per presa profitti :
 stops_noshares_loss;Intervallo di Acquisto - Soglia Minima :
@@ -604,11 +604,11 @@ decision_purchasingpower;Potere di Acquisto
 decision_numofshares;Quantità di titoli :
 decision_upp;Prezzo Unitario :
 decision_pp;Prezzo Totale Pagato :
-decision_profit;Profitto Latente in %s :
+decision_profit;Profitto Latente in {} :
 decision_profitpercent;Profitto Latente in % :
-decision_availablecash;Saldo Disponibile in %s :
-decision_committedcredit;Margine Impegnato in %s :
-decision_availablecredit;Disponibile per Marginazione in %s :
+decision_availablecash;Saldo Disponibile in {} :
+decision_committedcredit;Margine Impegnato in {} :
+decision_availablecredit;Disponibile per Marginazione in {} :
 
 connection_title;Impostazioni di Connessione
 proxy_server;Hostname del Proxy (vuoto se nessuno) :

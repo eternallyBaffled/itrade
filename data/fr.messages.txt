@@ -137,12 +137,12 @@ checksoftware_error;Impossible d'obtenir l'information de version pour le logici
 main_about;&A propos de ...
 main_desc_about; Informations à propos de l'application iTrade
 
-main_title_portfolio;iTrade - Portefeuille %s:%s
-main_title_quotes;iTrade - Matrice %s:%s
-main_title_stops;iTrade - Stops %s:%s
-main_title_indicators;iTrade - Indicateurs %s:%s
-main_title_evaluation;iTrade - Performance %s:%s
-main_title_trading;iTrade - Trading %s:%s
+main_title_portfolio;iTrade - Portefeuille {}:{}
+main_title_quotes;iTrade - Matrice {}:{}
+main_title_stops;iTrade - Stops {}:{}
+main_title_indicators;iTrade - Indicateurs {}:{}
+main_title_evaluation;iTrade - Performance {}:{}
+main_title_trading;iTrade - Trading {}:{}
 
 main_refreshing;Mise à jour des données
 
@@ -205,8 +205,8 @@ USP;PVU
 market;Marché
 place;Place
 all_markets;Tous les marchés
-invalid_isin;Le code ISIN %s est invalide
-symbol_not_found;Le symbole de code ISIN %s ou de nom %s n'a pas été trouvé
+invalid_isin;Le code ISIN {} est invalide
+symbol_not_found;Le symbole de code ISIN {} ou de nom {} n'a pas été trouvé
 risk;Risque
 stop_plus;Stop+
 stop_minus;Stop-
@@ -222,14 +222,14 @@ clear_symbols_onedesc;Efface toutes les valeurs de cette liste
 clear_symbols_alllists;Effacer Listes
 clear_symbols_alldesc;Efface toutes les valeurs de toutes les listes
 listquote_clear_confirm_title;Opération irreversible
-listquote_clear_confirm;Pour %s, confirmez-vous l'opération (%s) ?
+listquote_clear_confirm;Pour {}, confirmez-vous l'opération ({}) ?
 listquote_new;Nouveau
 listquote_edit;Modifie
 listquote_delete;Supprime
 listquote_new_desc;Crée un nouveau symbole
 listquote_edit_desc;Modifie le symbole sélectionné dans la liste
 listquote_delete_desc;Supprime le symbole sélectionné dans la liste
-listquote_duplicate_ref;Le symbole %s existe déjà !
+listquote_duplicate_ref;Le symbole {} existe déjà !
 listquote_save;Sauve
 listquote_save_desc;Sauve la liste des symboles
 listquote_saved;La liste des symboles a été sauvegardée
@@ -238,11 +238,11 @@ listquote_nodirty_save;Vos modifications ne sont pas sauvés et ne persisteront 
 
 listquote_items_zero;Aucune valeur trouvée
 listquote_items_one;Une seule valeur trouvée
-listquote_items_n;%s valeurs trouvées
+listquote_items_n;{} valeurs trouvées
 
-listquote_modify_title;Modification Symbole %s
+listquote_modify_title;Modification Symbole {}
 listquote_new_title;Nouveau Symbole
-listquote_delete_title;Suppression Symbole %s
+listquote_delete_title;Suppression Symbole {}
 
 quote_title;iTrade - Valeur
 quote_select_title;Choix d'une valeur
@@ -287,11 +287,11 @@ portfolio_properties_create;Création d'un nouveau Compte
 portfolio_properties_delete;Suppression de Compte
 portfolio_properties_rename;Renommage de Compte
 
-portfolio_delete_confirm;Confirmez-vous la suppression du compte '%s' ?
+portfolio_delete_confirm;Confirmez-vous la suppression du compte '{}' ?
 portfolio_delete_confirm_title;Suppression de Compte
-portfolio_exist_info;Le compte de référence '%s' existe déjà !
+portfolio_exist_info;Le compte de référence '{}' existe déjà !
 portfolio_exist_info_title;Création de Compte
-portfolio_rename_confirm;Confirmez-vous le référencement du compte sous '%s' ?
+portfolio_rename_confirm;Confirmez-vous le référencement du compte sous '{}' ?
 portfolio_rename_confirm_title;Renommage de Compte
 
 portfolio_properties_btncreate;Crée
@@ -426,15 +426,15 @@ popup_open;Ouverture
 popup_high;Plus Haut
 popup_low;Plus Bas
 popup_close;Dernier
-popup_percent;Var. (%s)
+popup_percent;Var. ({})
 popup_volume;Volume
 popup_notrade;pas de cotation
 
 save_to_file;Sauver vers fichier
 export_to_file;Exporter vers fichier
 import_from_file;Importer depuis fichier
-exported_to_file;Le fichier %s a été exporté
-imported_from_file;Le fichier %s a été importé
+exported_to_file;Le fichier {} a été exporté
+imported_from_file;Le fichier {} a été importé
 
 tb_pan_left;Déplace vers la gauche
 tb_pan_right;Déplace vers la droite
@@ -493,7 +493,7 @@ prop_liveconnector;Connecteur temps réel :
 prop_islive;Temps réel
 prop_isslive;Live
 prop_isdiffered;Différé
-prop_isnotlive;Temps différé (%d minutes)
+prop_isnotlive;Temps différé ({:d} minutes)
 prop_impconnector;Connecteur d'importation :
 prop_set;Valide
 prop_desc_set;Valide les nouvelles informations de marché et de connection
@@ -514,7 +514,7 @@ live_CMP;CMP
 live_FMP;FMP
 
 wxversion_title;Erreur de version wxPython
-wxversion_msg;La version requise de wxPython n'est pas installée. Merci d'installer la version %d.%d UNICODE
+wxversion_msg;La version requise de wxPython n'est pas installée. Merci d'installer la version {:d}.{:d} UNICODE
 
 money_fiscal_year;Année Fiscale
 money_amount_of_taxes;Impots à payer
@@ -574,20 +574,20 @@ page_trading;Trading
 print_preview;Prévisualisation de l'impression
 print_printing;Impression
 print_errprinting;Il y a eu un problème d'impression.\nPeut être que votre imprimante n'est pas configuré correctement ?
-print_page;Page: %d
+print_page;Page: {:d}
 
-about_url;Lancez votre navigateur vers le lien : %s
+about_url;Lancez votre navigateur vers le lien : {}
 about_title;A propos de iTrade
 
 info_caption;iTrade - Information
 alert_caption;iTrade - Erreur
 
 stops_remove_caption;Suppression des Stops
-stops_remove_text;Confirmez-vous la suppression des informaitons de Stops pour la valeur %s ?
-stops_edit_caption;%s - Modifie les Stops
-stops_add_caption;%s - Crée les Stops
+stops_remove_text;Confirmez-vous la suppression des informaitons de Stops pour la valeur {} ?
+stops_edit_caption;{} - Modifie les Stops
+stops_add_caption;{} - Crée les Stops
 stops_last;Dernière cotation :
-stops_portfolio;%s actions détenues pour un montant de %s
+stops_portfolio;{} actions détenues pour un montant de {}
 stops_shares_loss;Seuil de vente pour couper les pertes :
 stops_shares_win;Seuil de vente pour prendre les gains :
 stops_noshares_loss;Fourchette d'achat - Seuil bas :
@@ -603,11 +603,11 @@ decision_purchasingpower;Pouvoir d'Achat
 decision_numofshares;Nombre de Titres :
 decision_upp;Prix de revient unitaire :
 decision_pp;Prix de revient total :
-decision_profit;+- value latente en %s :
+decision_profit;+- value latente en {} :
 decision_profitpercent;+- value latente en % :
-decision_availablecash;Liquidités disponbiles en %s :
-decision_committedcredit;Engagement SRD en %s :
-decision_availablecredit;Disponible en %s au SRD :
+decision_availablecash;Liquidités disponbiles en {} :
+decision_committedcredit;Engagement SRD en {} :
+decision_availablecredit;Disponible en {} au SRD :
 
 connection_title;Paramètres de Connexion
 proxy_server_ip;Adresse IP du Proxy (vide si aucun) :
@@ -621,7 +621,7 @@ rss_scan;Scan
 rss_freshness;Dernière mise à jour :
 
 remove_quote_title;Supprimer une valeur
-remove_quote_info;Confirmez-vous la suppression de la matrice de la valeur %s ?
+remove_quote_info;Confirmez-vous la suppression de la matrice de la valeur {} ?
 
 converter_title;Conversion de Devises
 

@@ -92,11 +92,11 @@ main_options_desc_access; Access parameters for some connectors
 main_options_lang;&Tall
 main_options_desc_lang; Select language used by this software
 main_options_lang_default;Standardmäßig
-main_options_lang_english;Englische 
-main_options_lang_french;Französisch 
-main_options_lang_portuguese;Portugiesisch 
+main_options_lang_english;Englische
+main_options_lang_french;Französisch
+main_options_lang_portuguese;Portugiesisch
 main_options_lang_deutch;Deutsch
-main_options_lang_italian;Italienisch 
+main_options_lang_italian;Italienisch
 
 main_options_cache;&Cache
 main_options_desc_cache; Caching management
@@ -133,12 +133,12 @@ checksoftware_error;Can't get release information for the software (network issu
 main_about;&Info 
 main_desc_about;iTrade informatie, versienummer en auteursrechten weergeve
 
-main_title_portfolio;iTrade  Portfolio %s:%s
-main_title_quotes;iTrade  Matrix %s:%s
-main_title_stops;iTrade - Stops %s:%s
-main_title_indicators;iTrade  Indikatoren %s:%s
-main_title_evaluation;iTrade  Schatzung %s:%s
-main_title_trading;iTrade - Trading %s:%s
+main_title_portfolio;iTrade - Portfolio {}:{}
+main_title_quotes;iTrade - Matrix {}:{}
+main_title_stops;iTrade - Stops {}:{}
+main_title_indicators;iTrade - Indikatoren {}:{}
+main_title_evaluation;iTrade - Schatzung {}:{}
+main_title_trading;iTrade - Trading {}:{}
 
 main_refreshing;Aktualisieren
 
@@ -149,7 +149,7 @@ main_popup_remove;Loschen
 main_popup_add;Adden ...
 main_popup_view;View
 main_popup_live;Live
-main_popup_properties;Eigenschaften 
+main_popup_properties;Eigenschaften
 main_popup_edit;Modifizieren
 main_popup_add_stops;Adden Stops ...
 main_popup_edit_stops;modifizieren Stops ...
@@ -166,7 +166,7 @@ valid;Bestatigen
 valid_desc;This button validates then completes the dialog
 cancel;kündigen
 cancel_desc;The Cancel button cancels the dialog (Duh!)
-close;Schließen 
+close;Schließen
 close_desc;The Close button close the dialog
 yes;Ja
 no;Nein
@@ -181,8 +181,8 @@ name;Name
 volume;Volumen
 last;Schluss
 open;Erö.
-low;Tief 
-high;Hoch 
+low;Tief
+high;Hoch
 prev;Vortag
 pivots;Pivots
 status;Status
@@ -201,15 +201,15 @@ USP;USP
 market;Borse
 place;Platz
 all_markets;Borsen
-invalid_isin;Die ISIN Codet %s  ist fehlerhaf
-symbol_not_found;ISIN code %s or name %s not found
+invalid_isin;Die ISIN Codet {}  ist fehlerhaf
+symbol_not_found;ISIN code {} or name {} not found
 risk;Risiko
 stop_plus;Stop+
 stop_minus;Stop-
 clive;Live
 cimport;Import
 
-download_symbols_onelist;Downloaden 
+download_symbols_onelist;Downloaden
 download_symbols_onedesc;Update the list of symbols by downloading data from the network
 download_symbols_alllists;Downloaden all
 download_symbols_alldesc;Update all lists of symbols by downloading data from the network
@@ -218,7 +218,7 @@ clear_symbols_onedesc;Clear all symbols for this list
 clear_symbols_alllists;Lijst opruimen
 clear_symbols_alldesc;Clear all symbols for all the lists
 listquote_clear_confirm_title;unmöglich zurück
-listquote_clear_confirm;For %s, do you confirm the operation (%s) ?
+listquote_clear_confirm;For {}, do you confirm the operation ({}) ?
 listquote_new;Neu
 listquote_edit;Andern
 listquote_delete;Loschen
@@ -232,38 +232,38 @@ listquote_saved;The list of symbols has been saved
 listquote_dirty_save;Do you want to save the modification you have done to the list of symbols ?
 listquote_nodirty_save;Your modifications have not been saved and will not persist the current session
 
-listquote_items_zero;nicht gefunden 
-listquote_items_one;ein Symbol gefunden 
-listquote_items_n;%s Symbol gefunden
+listquote_items_zero;nicht gefunden
+listquote_items_one;ein Symbol gefunden
+listquote_items_n;{} Symbol gefunden
 
-listquote_modify_title;Symbol %s  ändern 
-listquote_new_title;Neue Symbol 
-listquote_delete_title;Verwijderen Symbol %s
+listquote_modify_title;Symbol {}  ändern
+listquote_new_title;Neue Symbol
+listquote_delete_title;Verwijderen Symbol {}
 
-quote_title;iTrade  daten
+quote_title;iTrade - daten
 quote_select_title;Stock-picking
-quote_list_title;Verwaltung Symbol 
+quote_list_title;Verwaltung Symbol
 
 quote_select_isin;ISIN :
-quote_select_ticker;Ticker : / Name :
-quote_select_market;Börsenplatz :
-quote_select_list;Aktien notieren :
+quote_select_ticker;Ticker : / Name :
+quote_select_market;Börsenplatz :
+quote_select_list;Aktien notieren :
 quote_select_alllist;No filter
 quote_select_syslist;Aktien
 quote_select_usrlist;User
 quote_select_indiceslist;Indizes
 quote_select_trackerslist;Trackers
 quote_select_bondslist;Anleihen
-quote_select_filterfield;wirklich gehandelt 
+quote_select_filterfield;wirklich gehandelt
 
 quote_graphdaily;Taglich
 quote_live;Live
 quote_graphweekly;Wochentlich
-quote_news;Nachrichten 
+quote_news;Nachrichten
 quote_analysis;Analysen
-quote_table;Hist. Kurse 
+quote_table;Hist. Kurse
 quote_intraday;Heute
-quote_properties;Eigenschaften 
+quote_properties;Eigenschaften
 
 alerts_title;iTrade - Information und alarmsignal
 alerts_alerts;Alarmesignal
@@ -280,87 +280,87 @@ main_view_desc_alerts;Information und alarmsignal
 main_view_currencies;&Devisen
 main_view_desc_currencies;Wahrungen
 
-portfolio_title;iTrade  Transaktionen
+portfolio_title;iTrade - Transaktionen
 portfolio_select_title;Auswählen  account
 portfolio_delete_title;Verwijderen Portfolio
-portfolio_properties_edit;Eigenschaften 
+portfolio_properties_edit;Eigenschaften
 portfolio_properties_create;Schaffen account
 portfolio_properties_delete;Verwijderen account
 portfolio_properties_rename;Naam wijzigen account
 
-portfolio_delete_confirm;Verwijderen account ?
+portfolio_delete_confirm;Verwijderen account ?
 portfolio_delete_confirm_title;Verwijderen account
-portfolio_exist_info; '%s' existiert bereits!
+portfolio_exist_info; '{}' existiert bereits!
 portfolio_exist_info_title;Creëren account
-portfolio_rename_confirm;Do you confirm the new reference '%s' ?
+portfolio_rename_confirm;Do you confirm the new reference '{}' ?
 portfolio_rename_confirm_title;Naam wijzigen account
 
 portfolio_properties_btncreate;Creëren
 portfolio_properties_btncreatedesc;Create the new Portfolio
 portfolio_properties_btndelete;Verwijderen
 portfolio_properties_btndeletedesc;Verwijderen account?
-portfolio_properties_btnedit;Veränderungen 
+portfolio_properties_btnedit;Veränderungen
 portfolio_properties_btneditdesc;Gültig account
 portfolio_properties_btnrename;Naam wijzigen
 portfolio_properties_btnrenamedesc;Naam wijzigen account
 portfolio_properties_btnselect;Openen
 portfolio_properties_btnselectdesc;Openen account
 
-portfolio_filename;Referenz :
-portfolio_name;Beschreibung :
-portfolio_accountref;Kontonummer :
+portfolio_filename;Referenz :
+portfolio_name;Beschreibung :
+portfolio_accountref;Kontonummer :
 portfolio_market;Markte :
-portfolio_select_textfield;Referenz :
-portfolio_currency;Währung :
-portfolio_indicator;Hauptindikator :
+portfolio_select_textfield;Referenz :
+portfolio_currency;Währung :
+portfolio_indicator;Hauptindikator :
 portfolio_vat;MwSt ( %) :
-portfolio_list_filename;Referenz :
-portfolio_list_name;Beschreibung :
+portfolio_list_filename;Referenz :
+portfolio_list_name;Beschreibung :
 portfolio_list_accountref;Kontonummer
 
-portfolio_modify;Veränderungen 
+portfolio_modify;Veränderungen
 portfolio_new;Neue
-portfolio_delete;Löschen 
-portfolio_date;Datum :
-portfolio_time;Zeit :
-portfolio_operation;Transaktion :
-portfolio_description;Beschreibung :
-portfolio_quote;Name :
+portfolio_delete;Löschen
+portfolio_date;Datum :
+portfolio_time;Zeit :
+portfolio_operation;Transaktion :
+portfolio_description;Beschreibung :
+portfolio_quote;Name :
 portfolio_pre_expenses1;***
 portfolio_pre_expenses2;und
 portfolio_post_expenses;Finanzkosten
-portfolio_quantity;Anz :
+portfolio_quantity;Anz :
 
-portfolio_field_credit;Kredit :
-portfolio_field_debit;Debit :
-portfolio_field_freeofcharges;keine Gebühr 
-portfolio_field_valorization;Preis :
+portfolio_field_credit;Kredit :
+portfolio_field_debit;Debit :
+portfolio_field_freeofcharges;keine Gebühr
+portfolio_field_valorization;Preis :
 
-portfolio_ctrl_sell;Cash Selling 
+portfolio_ctrl_sell;Cash Selling
 portfolio_ctrl_sell_srd;Verkauf SRD
 portfolio_ctrl_buy;Bargeld Ankauf
 portfolio_ctrl_buy_srd;Kaufent SRD
 portfolio_ctrl_debit;Debit
 portfolio_ctrl_credit;Anzahlung
 portfolio_ctrl_fee;Steuern
-portfolio_ctrl_interest;Interessen 
+portfolio_ctrl_interest;Interessen
 portfolio_ctrl_detachment;Detachment (non taxable)
 portfolio_ctrl_dividend;Dividende (steuerpflichtig)
 portfolio_ctrl_liquidation;Liquidation SDR
 portfolio_ctrl_quote;Dividend with shares
-portfolio_ctrl_register;Aufnahme 
+portfolio_ctrl_register;Aufnahme
 
-portfolio_list_date;Datum, Zeit 
+portfolio_list_date;Datum, Zeit
 portfolio_list_operation;Transaktion
-portfolio_list_description;Beschreibung :
-portfolio_list_number;Anzahl 
+portfolio_list_description;Beschreibung :
+portfolio_list_number;Anzahl
 portfolio_list_debit;Debit
 portfolio_list_credit;Kredit
 portfolio_list_expense;Finanzkosten
 portfolio_list_balance; Balance
 portfolio_list_srd;    SRD
 
-Portfolio_sell;Verkauf 
+Portfolio_sell;Verkauf
 Portfolio_sell_srd;Verkauf SRD
 Portfolio_buy;Kauf
 Portfolio_buy_srd;Kauf  SRD
@@ -393,7 +393,7 @@ portfolio_desc_opdelete; Delete the current transaction
 portfolio_opmodify;&Modifizieren
 portfolio_desc_opmodify; Modify the current transaction
 
-portfolio_text;Alternativtext 
+portfolio_text;Alternativtext
 portfolio_desc_text;Select text size to display the transactions
 portfolio_view_small;Klein Tekst
 portfolio_view_desc_small; Use small text size to display the transactions
@@ -406,45 +406,45 @@ portfolio_per30days;&30 Dagen
 portfolio_desc_per30days; Display last 30 days
 portfolio_per90days;&90 Dagen
 portfolio_desc_per90days; Display last 90 days
-portfolio_peryear;&laufendes Jahr 
+portfolio_peryear;&laufendes Jahr
 portfolio_desc_peryear; Display current year
 portfolio_perall;&Alle
 portfolio_desc_perall; Display all transactions since the beginning
 
 portfolio_menu_file;&Datei
-portfolio_menu_disp;&Anzeige 
+portfolio_menu_disp;&Anzeige
 portfolio_menu_op;&Borsentransaktion
-portfolio_menu_per;&Filtern 
+portfolio_menu_per;&Filtern
 
 graph_price;Preis
 graph_volume;Volumen
-graph_period;Zeit :
+graph_period;Zeit :
 graph_days;Tage
 
 backtolist;Zurück zur Liste
 
 popup_open;Eröffnung
-popup_high;Hoch 
+popup_high;Hoch
 popup_low;Tief
 popup_close;Schluss
-popup_percent;Var. (%s)
+popup_percent;Var. ({})
 popup_volume;Volumen
 popup_notrade;keine Transaktion
 
-save_to_file;Registrieren 
-export_to_file;exportieren 
-import_from_file;Import aus 
-exported_to_file;Datei %s exportiert wurde 
-imported_from_file;Datei %s importiert wurde 
+save_to_file;Registrieren
+export_to_file;exportieren
+import_from_file;Import aus
+exported_to_file;Datei {} exportiert wurde
+imported_from_file;Datei {} importiert wurde
 
 tb_pan_left;Nach links
-tb_pan_right;nach rechts bewegen 
+tb_pan_right;nach rechts bewegen
 tb_save_file;Save plot contents to file
-tb_config;Setzen Grafiken 
-tb_home;zurücksetzen 
+tb_config;Setzen Grafiken
+tb_home;zurücksetzen
 tb_zoom_out; Zoom +
 tb_zoom_in; Zoom -
-tb_setup;Druck-Konfiguration 
+tb_setup;Druck-Konfiguration
 tb_print;Drucken
 tb_preview;Voorbeeld
 
@@ -455,27 +455,27 @@ tb_tool_oline;Linien
 tb_tool_trash;Delete
 tb_tool_fibo;Draw Fibonacci object
 tb_tool_text;Text
-tb_tool_prop;Eigenschaften 
+tb_tool_prop;Eigenschaften
 
 quote_popup_dispMA150;Durchschnitt 150 tage
-quote_popup_dispSto;stochastisch 
+quote_popup_dispSto;stochastisch
 quote_popup_dispRSI14;RSI 14 tage
 quote_popup_dispBollinger;Bollinger
 quote_popup_dispOverlaidVolume;Histogrammchart
-quote_popup_dispLegend;Beschriftung 
-quote_popup_dispGrid;Gitternetz 
+quote_popup_dispLegend;Beschriftung
+quote_popup_dispGrid;Gitternetz
 quote_popup_dispChart1Candlestick;Kerzenchart
 quote_popup_dispChart1OHLC;Balkenchart
 quote_popup_dispChart1Line;Linienchart
 
-prop_reference;Referenz 
+prop_reference;Referenz
 prop_marketandconnector;Market and Connector
 prop_tradingstyle;Trading Information
-prop_ref;Referenz :
+prop_ref;Referenz :
 prop_isin;ISIN :
 prop_name;Name :
 prop_ticker;Ticker :
-prop_reload;Nachladen 
+prop_reload;Nachladen
 prop_desc_reload;Reload all the data
 prop_rename;Naam wijzigen
 prop_desc_rename;Rename the ticker of this quote
@@ -488,12 +488,12 @@ prop_desc_restore;Restore default value
 prop_market;Borsen :
 prop_country;Land  :
 prop_place;Platz :
-prop_currency;Währung :
+prop_currency;Währung :
 prop_typeofclock;Delay :
 prop_islive;Echtzeit
 prop_isslive;Live
-prop_isdiffered;Zeitlicher Verzögerung 
-prop_isnotlive;Preise sind (%d min) zeitverzögert
+prop_isdiffered;Zeitlicher Verzögerung
+prop_isnotlive;Preise sind ({:d} min) zeitverzögert
 prop_liveconnector;Live Connector :
 prop_impconnector;Import Connector :
 prop_set;Bestatigen
@@ -505,26 +505,26 @@ prop_connhelp;Think to force the refresh of the quote so the connector change wi
 live_busy;One moment please, waiting live connection to die ...
 live_notebook;Orderbuch
 live_lasttrades;Transaktionen
-live_hours;Zeit 
+live_hours;Zeit
 live_qty;Vol
 live_price;Preis
-live_buy;Kauf 
-live_sell;Verkauf 
+live_buy;Kauf
+live_sell;Verkauf
 live_number;Anz
 live_CMP;PMP
 live_FMP;PMR
 
 wxversion_title;wxPython Version Error
-wxversion_msg;The requested version of wxPython is not installed. Please install version %d.%d UNICODE
+wxversion_msg;The requested version of wxPython is not installed. Please install version {:d}.{:d} UNICODE
 
-money_fiscal_year;Geschäftsjahr 
-money_amount_of_taxes;Steuern 
-money_taxable_amounts;Steuerpflichtigen Beträge 
+money_fiscal_year;Geschäftsjahr
+money_amount_of_taxes;Steuern
+money_taxable_amounts;Steuerpflichtigen Beträge
 money_financial_appreciation;Profite
 money_total_of_transfers;die Überweisung
 money_expenses_vat;Finanzkosten,,,
 money_portfolio;Portfolio
-money_description;Beschreibung :
+money_description;Beschreibung :
 money_account_number;Kontonummer
 money_percent_of_portfolio;% Portfolio
 money_quote;Aktien
@@ -536,7 +536,7 @@ money_performance;Schatzung
 money_investment_evaluation;Auswertung
 
 currencies_title;Devisen
-currency_menu_file;&Datei 
+currency_menu_file;&Datei
 currency_menu_view;&View
 
 currency_to;zu
@@ -549,16 +549,16 @@ cache_erase_confirm_data; Erase all historic data from the cache ? (data will be
 cache_erase_confirm_news; Erase all news from the cache ? (data will be regenerated)
 cache_erase_confirm_all; Erase all data (historic, news, ...) from the cache ? (data will be regenerated)
 
-indicator_autorefresh;Automatische Aktualisieren 
-indicator_noautorefresh;Manuelle Aktualisierung 
-indicator_disconnected;Offline 
+indicator_autorefresh;Automatische Aktualisieren
+indicator_noautorefresh;Manuelle Aktualisierung
+indicator_disconnected;Offline
 
 login_title;Kontozugriff
 login_fortuneo_desc;Enter your Fortuneo account number (real or demonstration account)
 login_boursorama_desc;Enter your Boursorama account number (Customer account or nickname)
 login_set;Bestatigen
 login_setdesc; Set the entered access information
-login_username;Login :
+login_username;Login :
 login_password;Passwort :
 login_test;Test
 login_testdesc; Try service's access using the entered information
@@ -572,23 +572,23 @@ page_indicators;Indikatoren
 page_evaluation;Schatzung
 page_trading;Trading
 
-print_preview;Vorschau 
-print_printing;Drucken 
+print_preview;Vorschau
+print_printing;Drucken
 print_errprinting;There was a problem printing.\nPerhaps your current printer is not set correctly ?
-print_page;Pagina: %d
+print_page;Pagina: {:d}
 
-about_url;Please point your browser at : %s
+about_url;Please point your browser at : {}
 about_title;über iTrade
 
-info_caption;iTrade  Informatie 
-alert_caption;iTrade  Fout
+info_caption;iTrade - Informatie
+alert_caption;iTrade - Fout
 
 stops_remove_caption;Loschen Stops
-stops_remove_text;Do you confirm stops removing for quote %s ?
-stops_edit_caption;%s - Modifizieren Stops
-stops_add_caption;%s  Schaffen Stops
-stops_last;Letzter Preis :
-stops_portfolio;%s owned shares for a value of %s
+stops_remove_text;Do you confirm stops removing for quote {} ?
+stops_edit_caption;{} - Modifizieren Stops
+stops_add_caption;{} - Schaffen Stops
+stops_last;Letzter Preis :
+stops_portfolio;{} owned shares for a value of {}
 stops_shares_loss;Sales Threshold to cut the losses :
 stops_shares_win;Sales Threshold to take the profits :
 stops_noshares_loss;Purchase range - Low Threshold :
@@ -604,13 +604,13 @@ decision_purchasingpower;Purchasing Power
 decision_numofshares;Number of shares :
 decision_upp;Price Paid per Share :
 decision_pp;Total Price Paid :
-decision_profit;Profite %s :
+decision_profit;Profite {} :
 decision_profitpercent;Profite % :
-decision_availablecash;Liquidités disponbiles en %s :
-decision_committedcredit;Engagement SRD en %s :
-decision_availablecredit;Disponible en %s au SRD :
+decision_availablecash;Liquidités disponbiles en {} :
+decision_committedcredit;Engagement SRD en {} :
+decision_availablecredit;Disponible en {} au SRD :
 
-connection_title;Verbindungsparameter 
+connection_title;Verbindungsparameter
 proxy_server_ip;Proxy IP address (empty if none) :
 proxy_server_port;Proxy Port (empty if none) :
 proxy_auth_user;Proxy User Authentication (empty if none) :
@@ -618,12 +618,12 @@ proxy_auth_pwd;Proxy Password Authentication (empty if none) :
 connection_timeout;Timeout delay before error (in seconds, typ. 25) :
 
 rss_clear;Verwijderen
-rss_scan;Scannen 
-rss_freshness;Laatste scan 
+rss_scan;Scannen
+rss_freshness;Letste scan
 
 remove_quote_title;Beseitigung einer Wert
-remove_quote_info;Do you confirm the remove of the quote %s from the matrix ?
+remove_quote_info;Do you confirm the remove of the quote {} from the matrix ?
 
-converter_title;Valuta Converter 
+converter_title;Valuta Converter
 
 test;test boodschap
