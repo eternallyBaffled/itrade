@@ -40,19 +40,21 @@ from __future__ import print_function
 
 
 def read_b(fn):
-    with open(fn, 'r') as f:
+    try:
+        f = open(fn, 'r')
+    except IOError:
+        return []
+
+    with f:
         lines = f.readlines()
     return lines
 
 
 def read(fn, fd):
-    try:
-        if fn:
-            return read_b(fn)
-        else:
-            return read_b(fd)
-    except IOError:
-        return None
+    if fn:
+        return read_b(fn)
+    else:
+        return read_b(fd)
 
 
 def parser(line, separator=';'):
