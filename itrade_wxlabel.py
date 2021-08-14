@@ -49,50 +49,50 @@ if not itrade_config.nowxversion:
 import wx
 
 # itrade wxPython system
-from itrade_wxutil import MatplotColorToRGB
+from itrade_wxutil import matplot_color_to_wxcolor
 
 # ============================================================================
 # iTrade_wxLabelPopup()
 # ============================================================================
 
 class iTrade_wxLabelPopup(object):
-    def __init__(self,parent,pos,max=None,label='',multiline=False):
-        dc = self.InitPaint(parent,pos,max)
+    def __init__(self, parent, pos, max=None, label='', multiline=False):
+        dc = self.InitPaint(parent, pos, max)
         if multiline:
-            self.MultiLines(dc,label)
+            self.MultiLines(dc, label)
         else:
-            self.SimpleLine(dc,label)
+            self.SimpleLine(dc, label)
 
-    def SimpleLine(self,dc,label):
+    def SimpleLine(self, dc, label):
         textExtent = self.parent.GetFullTextExtent(label, self.font)
-        self.BeginPaint(dc,textExtent[0], textExtent[1])
+        self.BeginPaint(dc, textExtent[0], textExtent[1])
         dc.DrawText(label, 0, 0)
         self.EndPaint(dc)
 
-    def MultiLines(self,dc,label):
+    def MultiLines(self, dc, label):
         # split the lines
         lines = label.split('\n')
 
         # detect color information for the line
         nlines = []
         for eachLine in lines:
-            idx = string.find(eachLine,',')
-            if idx>=0:
-                debug('idx=%d line=%s color=%s' %(idx,eachLine[idx+1:],eachLine[:idx]))
-                nlines.append((eachLine[idx+1:],MatplotColorToRGB(eachLine[:idx])))
+            idx = string.find(eachLine, ',')
+            if idx >= 0:
+                debug('idx={:d} line={} color={}'.format(idx, eachLine[idx+1:], eachLine[:idx]))
+                nlines.append((eachLine[idx+1:], matplot_color_to_wxcolor(eachLine[:idx])))
             else:
-                nlines.append((eachLine,MatplotColorToRGB('k')))
+                nlines.append((eachLine, matplot_color_to_wxcolor('k')))
 
         # calculate space to display the string
         tx = 0
         ty = 0
         for eachLine in nlines:
             textExtent = self.parent.GetFullTextExtent(eachLine[0], self.font)
-            tx = max(tx,textExtent[0])
+            tx = max(tx, textExtent[0])
             ty = ty + textExtent[1] + 2
 
         # display each line with the right color
-        self.BeginPaint(dc,tx,ty)
+        self.BeginPaint(dc, tx, ty)
         y = 0
         for eachLine in nlines:
             textExtent = self.parent.GetFullTextExtent(eachLine[0], self.font)
@@ -101,7 +101,7 @@ class iTrade_wxLabelPopup(object):
             y = y + textExtent[1] + 2
         self.EndPaint(dc)
 
-    def InitPaint(self,parent,pos,max):
+    def InitPaint(self, parent, pos, max):
         self.pos = wx.Point(*pos)
         if max:
             self.max = wx.Point(*max)
@@ -112,7 +112,7 @@ class iTrade_wxLabelPopup(object):
         self.bg = wx.NamedColour("YELLOW")
         return wx.MemoryDC()
 
-    def BeginPaint(self,dc,w,h):
+    def BeginPaint(self, dc, w, h):
         if self.max:
             if (self.pos.x + w + 16) > self.max.x:
                 self.pos.x = self.pos.x - w - 16
@@ -124,16 +124,16 @@ class iTrade_wxLabelPopup(object):
             else:
                 self.pos.y = self.pos.y + 16
 
-        self.bmp = wx.EmptyBitmap(w,h)
+        self.bmp = wx.EmptyBitmap(w, h)
         dc.SelectObject(self.bmp)
         dc.SetBackground(wx.Brush(self.bg, wx.SOLID))
         dc.Clear()
         dc.SetTextForeground(wx.BLACK)
         dc.SetFont(self.font)
         dc.BeginDrawing()
-        dc.DrawRectangle(0, 0, self.bmp.GetWidth(),self.bmp.GetHeight())
+        dc.DrawRectangle(0, 0, self.bmp.GetWidth(), self.bmp.GetHeight())
 
-    def EndPaint(self,dc):
+    def EndPaint(self, dc):
         dc.SelectObject(wx.NullBitmap)
         dc.EndDrawing()
         mask = wx.Mask(self.bmp, self.bg)
@@ -160,7 +160,7 @@ class iTrade_wxLabelPopup(object):
             dc = wx.ClientDC(self.parent)
             memDC = wx.MemoryDC()
             memDC.SelectObject(self.prevbmp)
-            dc.Blit(self.pos.x, self.pos.y,self.prevbmp.GetWidth(), self.prevbmp.GetHeight(),memDC, 0, 0, wx.COPY, True)
+            dc.Blit(self.pos.x, self.pos.y, self.prevbmp.GetWidth(), self.prevbmp.GetHeight(),memDC, 0, 0, wx.COPY, True)
             del self.prevbmp
         del self.pos
         del self.bmp
@@ -178,9 +178,9 @@ class iTrade_wxLabelPopup(object):
 #   horz        'left','right','center'
 # ============================================================================
 
-def DrawRectLabel(dc,label,x,y,w,h,colorpen,colorbg,font,vert='top',horz='center'):
+def DrawRectLabel(dc, label, x, y, w, h, colorpen, colorbg, font, vert='top', horz='center'):
     memDC = wx.MemoryDC()
-    bmp = wx.EmptyBitmap(w,h)
+    bmp = wx.EmptyBitmap(w, h)
 
     memDC.SelectObject(bmp)
     memDC.SetBackground(wx.Brush(colorbg, wx.SOLID))
@@ -197,14 +197,14 @@ def DrawRectLabel(dc,label,x,y,w,h,colorpen,colorbg,font,vert='top',horz='center
     #bmp.SetMask(mask)
     #memDC.SelectObject(bmp)
 
-    if vert=='top':
+    if vert == 'top':
         y = y - h + 1
-    if vert=='center':
+    if vert == 'center':
         y = y - (h/2) + 1
 
-    if horz=='left':
+    if horz == 'left':
         x = x - w
-    if horz=='center':
+    if horz == 'center':
         x = x - (w/2)
 
     dc.Blit(x, y, bmp.GetWidth(), bmp.GetHeight(),memDC, 0, 0, wx.COPY, True)
