@@ -108,7 +108,7 @@ def main():
     # default values
     output = None
     quote = None
-    file = None
+    storage = None
     use_wx = True
     nopsyco = False
     nowxversion = False
@@ -136,14 +136,14 @@ def main():
 
         if o == "-i":
             if quote:
-                if file:
-                    itrade_import.cmdline_importQuoteFromFile(quote, file)
+                if storage:
+                    itrade_import.cmdline_importQuoteFromFile(quote, storage)
                 else:
                     itrade_import.cmdline_importQuoteFromInternet(quote)
             else:
                 matrix = itrade_matrix.createMatrix()
-                if file:
-                    itrade_import.cmdline_importMatrixFromFile(matrix, file)
+                if storage:
+                    itrade_import.cmdline_importMatrixFromFile(matrix, storage)
                 else:
                     itrade_import.cmdline_importMatrixFromInternet(matrix)
             use_wx = False
@@ -168,7 +168,7 @@ def main():
             itrade_config.nowxversion = True
 
         if o == "-f" or o == "--file":
-            file = a
+            storage = a
 
         if o == "-l" or o == "--lang":
             lang = a
