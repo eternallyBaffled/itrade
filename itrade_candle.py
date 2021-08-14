@@ -38,10 +38,8 @@
 # python system
 from __future__ import print_function
 from enum import Enum
-import logging
 
 # iTrade system
-from itrade_logging import setLevel
 
 # ============================================================================
 # Threshold : Default parameters
