@@ -103,13 +103,13 @@ class iTradeQuoteListDialog(wx.Dialog):
             self.m_country = 'FR'
 
         if qmode == QLIST_MODIFY:
-            self.tt = message('listquote_modify_title') % quote.key()
+            self.tt = message('listquote_modify_title').format(quote.key())
             tb = message('listquote_edit')
         elif qmode == QLIST_ADD:
             self.tt = message('listquote_new_title')
             tb = message('listquote_new')
         elif qmode == QLIST_DELETE:
-            self.tt = message('listquote_delete_title') % quote.key()
+            self.tt = message('listquote_delete_title').format(quote.key())
             tb = message('listquote_delete')
         else:
             self.tt = '??'
@@ -119,7 +119,6 @@ class iTradeQuoteListDialog(wx.Dialog):
         pre.Create(parent, -1, self.tt, size=(420, 420))
         self.PostCreate(pre)
 
-        #
         sizer = wx.BoxSizer(wx.VERTICAL)
 
         # isin
@@ -129,7 +128,7 @@ class iTradeQuoteListDialog(wx.Dialog):
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         tID = wx.NewId()
-        self.editISIN = wx.TextCtrl(self, tID, self.m_isin, size=wx.Size(180,-1), style = wx.TE_LEFT)
+        self.editISIN = wx.TextCtrl(self, tID, self.m_isin, size=wx.Size(180, -1), style=wx.TE_LEFT)
         wx.EVT_TEXT(self, tID, self.OnISINEdited)
         box.Add(self.editISIN, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
@@ -141,13 +140,13 @@ class iTradeQuoteListDialog(wx.Dialog):
         label = wx.StaticText(self, -1, message('prop_ticker'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.editTicker = wx.TextCtrl(self, -1, self.m_ticker, size=wx.Size(60,-1), style = wx.TE_LEFT)
+        self.editTicker = wx.TextCtrl(self, -1, self.m_ticker, size=wx.Size(60, -1), style=wx.TE_LEFT)
         box.Add(self.editTicker, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         label = wx.StaticText(self, -1, message('prop_name'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.editName = wx.TextCtrl(self, -1, self.m_name, size=wx.Size(210,-1), style = wx.TE_LEFT)
+        self.editName = wx.TextCtrl(self, -1, self.m_name, size=wx.Size(210, -1), style=wx.TE_LEFT)
         box.Add(self.editName, 0, wx.ALIGN_CENTRE_VERTICAL|wx.ALL, 5)
 
         sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
@@ -158,16 +157,15 @@ class iTradeQuoteListDialog(wx.Dialog):
         label = wx.StaticText(self, -1, message('prop_market'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.editMarket = wx.ComboBox(self,-1, "", size=wx.Size(200,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
+        self.editMarket = wx.ComboBox(self, -1, "", size=wx.Size(200, -1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
         box.Add(self.editMarket, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
-        wx.EVT_COMBOBOX(self,self.editMarket.GetId(),self.OnMarket)
+        wx.EVT_COMBOBOX(self, self.editMarket.GetId(), self.OnMarket)
 
-        count = 0
-        for eachCtrl in list_of_markets(ifLoaded=True):
-            self.editMarket.Append(eachCtrl,eachCtrl)
-            if eachCtrl==self.m_market:
+        idx = wx.NOT_FOUND
+        for count, eachCtrl in enumerate(list_of_markets(ifLoaded=True)):
+            self.editMarket.Append(eachCtrl, eachCtrl)
+            if eachCtrl == self.m_market:
                 idx = count
-            count = count + 1
 
         self.editMarket.SetSelection(idx)
 
@@ -190,26 +188,25 @@ class iTradeQuoteListDialog(wx.Dialog):
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         tID = wx.NewId()
-        self.editPlace = wx.ComboBox(self,tID, "", size=wx.Size(60,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
+        self.editPlace = wx.ComboBox(self, tID, "", size=wx.Size(60, -1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
         box.Add(self.editPlace, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
-        wx.EVT_COMBOBOX(self,tID,self.OnPlace)
+        wx.EVT_COMBOBOX(self, tID, self.OnPlace)
         self.fillPlaces()
 
         label = wx.StaticText(self, -1, message('prop_currency'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         tID = wx.NewId()
-        self.editCurrency = wx.ComboBox(self,tID, "", size=wx.Size(80,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
+        self.editCurrency = wx.ComboBox(self, tID, "", size=wx.Size(80, -1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
         box.Add(self.editCurrency, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
-        wx.EVT_COMBOBOX(self,tID,self.OnCurrency)
+        wx.EVT_COMBOBOX(self, tID, self.OnCurrency)
 
-        count = 0
-        for eachCtrl in list_of_currencies():
-            #print eachCtrl
-            self.editCurrency.Append(eachCtrl,eachCtrl)
-            if eachCtrl==self.m_currency:
+        idx = wx.NOT_FOUND
+        for count, eachCtrl in enumerate(list_of_currencies()):
+            # print eachCtrl
+            self.editCurrency.Append(eachCtrl, eachCtrl)
+            if eachCtrl == self.m_currency:
                 idx = count
-            count = count + 1
 
         self.editCurrency.SetSelection(idx)
 
@@ -246,13 +243,13 @@ class iTradeQuoteListDialog(wx.Dialog):
         self.Layout()
 
     def OnSize(self, event):
-        w,h = self.GetClientSizeTuple()
+        w, h = self.GetClientSizeTuple()
 
-    def OnCancel(self,event):
+    def OnCancel(self, event):
         self.aRet = None
         self.EndModal(wx.ID_CANCEL)
 
-    def OnValid(self,event):
+    def OnValid(self, event):
         if self.Validate() and self.TransferDataFromWindow():
             # get fields
             self.m_isin = self.editISIN.GetValue()
@@ -266,26 +263,24 @@ class iTradeQuoteListDialog(wx.Dialog):
             # check isin ?
             if self.qmode == QLIST_ADD:
                 # check validity
-                if self.m_isin!='':
+                if self.m_isin != '':
                     if not checkISIN(self.m_isin):
-                        #__xdlg = wx.MessageDialog(self, message('invalid_isin') % self.m_isin, self.tt, wx.OK | wx.ICON_ERROR)
-                        #__xidRet = dlg.ShowModal()
-                        #__xdlg.Destroy()
-                        iTradeError(self, message('invalid_isin') % self.m_isin, self.tt)
+                        # __x with wx.MessageDialog(self, message('invalid_isin').format(self.m_isin), self.tt, wx.OK | wx.ICON_ERROR) as dlg:
+                        # __x   idRet = dlg.ShowModal()
+                        iTradeError(self, message('invalid_isin').format(self.m_isin), self.tt)
                         self.editISIN.SetFocus()
                         return
 
                 # check uniqueness
-                ref = quote_reference(self.m_isin,self.m_ticker,self.m_market,self.m_place)
+                ref = quote_reference(self.m_isin, self.m_ticker, self.m_market, self.m_place)
                 if quotes.lookupKey(ref):
-                    #__xdlg = wx.MessageDialog(self, message('listquote_duplicate_ref') % ref, self.tt, wx.OK | wx.ICON_ERROR)
-                    #__xidRet = dlg.ShowModal()
-                    #__xdlg.Destroy()
-                    iTradeError(self, message('listquote_duplicate_ref') % ref, self.tt)
+                    # __x with wx.MessageDialog(self, message('listquote_duplicate_ref').format(ref), self.tt, wx.OK | wx.ICON_ERROR) as dlg:
+                    # __x   idRet = dlg.ShowModal()
+                    iTradeError(self, message('listquote_duplicate_ref').format(ref), self.tt)
                     return
 
             # isin,name,ticker,market,currency,place,country
-            self.aRet = (self.m_isin,self.m_name,self.m_ticker,self.m_market,self.m_currency,self.m_place,self.m_country)
+            self.aRet = (self.m_isin, self.m_name, self.m_ticker, self.m_market, self.m_currency, self.m_place, self.m_country)
             self.EndModal(wx.ID_OK)
 
     def checkEnability(self):
@@ -311,37 +306,37 @@ class iTradeQuoteListDialog(wx.Dialog):
             self.editPlace.Enable(True)
             self.editCurrency.Enable(True)
 
-    def OnMarket(self,evt):
+    def OnMarket(self, evt):
         t = self.editMarket.GetClientData(self.editMarket.GetSelection())
-        debug("OnMarket %s" % t)
+        debug("OnMarket {}".format(t))
         if self.m_market != t:
             self.m_market = t
             self.m_place = market2place(t)
-            self.m_country = compute_country(self.m_isin,self.m_market,self.m_place)
+            self.m_country = compute_country(self.m_isin, self.m_market, self.m_place)
             self.fillPlaces()
             self.refreshPage(evt)
 
-    def OnCurrency(self,evt):
+    def OnCurrency(self, evt):
         t = self.editCurrency.GetClientData(self.editCurrency.GetSelection())
-        debug("OnCurrency %s" % t)
+        debug("OnCurrency {}".format(t))
         self.m_currency = t
 
-    def OnPlace(self,evt):
+    def OnPlace(self, evt):
         t = self.editPlace.GetClientData(self.editPlace.GetSelection())
-        debug("OnPlace %s" % t)
+        debug("OnPlace {}".format(t))
         self.m_place = t
 
-    def refreshPage(self,evt):
+    def refreshPage(self, evt):
         self.editPlace.SetValue(self.m_place)
         self.editCurrency.SetValue(self.m_currency)
-        self.m_country = compute_country(self.m_isin,self.m_market,self.m_place)
+        self.m_country = compute_country(self.m_isin, self.m_market, self.m_place)
         self.dispCountry.SetValue(self.m_country)
 
-    def OnISINEdited(self,event):
+    def OnISINEdited(self, event):
         self.m_isin = event.GetString()
-        if len(self.m_isin)>1:
+        if len(self.m_isin) > 1:
             market = isin2market(self.m_isin)
-            #print 'market: ',market
+            # print 'market: ',market
             if market:
                 self.m_market = market
                 self.m_place = market2place(market)
@@ -350,13 +345,12 @@ class iTradeQuoteListDialog(wx.Dialog):
 
     def fillPlaces(self):
         self.editPlace.Clear()
-        count = 0
-        for eachCtrl in list_of_places(self.m_market):
-            #print eachCtrl
-            self.editPlace.Append(eachCtrl,eachCtrl)
-            if eachCtrl==self.m_place:
+        idx = wx.NOT_FOUND
+        for count, eachCtrl in enumerate(list_of_places(self.m_market)):
+            # print eachCtrl
+            self.editPlace.Append(eachCtrl, eachCtrl)
+            if eachCtrl == self.m_place:
                 idx = count
-            count = count + 1
 
         self.editPlace.SetSelection(idx)
 
@@ -373,7 +367,7 @@ IDC_LIVE = 5
 IDC_IMPORT = 6
 
 import wx.lib.newevent
-(PostInitEvent,EVT_POSTINIT) = wx.lib.newevent.NewEvent()
+(PostInitEvent, EVT_POSTINIT) = wx.lib.newevent.NewEvent()
 
 class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
     def __init__(self, parent, market):
@@ -391,14 +385,14 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         self.m_qlist = QList.system
 
         tID = wx.NewId()
-        self.m_imagelist = wx.ImageList(16,16)
+        self.m_imagelist = wx.ImageList(16, 16)
         self.sm_q = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'quote.png')))
         self.sm_i = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'invalid.png')))
         self.sm_up = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'sm_up.png')))
         self.sm_dn = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'sm_down.png')))
 
         self.m_list = iTradeSelectorListCtrl(self, tID,
-                                 style = wx.LC_REPORT | wx.SUNKEN_BORDER,
+                                 style=wx.LC_REPORT | wx.SUNKEN_BORDER,
                                  size=(570, 380)
                                  )
         self.m_list.SetImageList(self.m_imagelist, wx.IMAGE_LIST_SMALL)
@@ -420,35 +414,32 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         label = wx.StaticText(self, -1, message('quote_select_market'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.wxMarketCtrl = wx.ComboBox(self,-1, "", size=wx.Size(200,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
+        self.wxMarketCtrl = wx.ComboBox(self, -1, "", size=wx.Size(200, -1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
         box.Add(self.wxMarketCtrl, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
-        wx.EVT_COMBOBOX(self,self.wxMarketCtrl.GetId(),self.OnMarket)
+        wx.EVT_COMBOBOX(self, self.wxMarketCtrl.GetId(), self.OnMarket)
 
-        count = 0
-        idx = 0
-        for eachCtrl in list_of_markets(bFilterMode=True):
-            self.wxMarketCtrl.Append(eachCtrl,eachCtrl)
-            if eachCtrl==self.m_market:
+        idx = wx.NOT_FOUND
+        for count, eachCtrl in enumerate(list_of_markets(bFilterMode=True)):
+            self.wxMarketCtrl.Append(eachCtrl, eachCtrl)
+            if eachCtrl == self.m_market:
                 idx = count
-            count = count + 1
 
         self.wxMarketCtrl.SetSelection(idx)
 
         # list selection
-
         label = wx.StaticText(self, -1, message('quote_select_list'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.wxQListCtrl = wx.ComboBox(self,-1, "", size=wx.Size(140,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
+        self.wxQListCtrl = wx.ComboBox(self, -1, "", size=wx.Size(140, -1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
         box.Add(self.wxQListCtrl, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
-        wx.EVT_COMBOBOX(self,self.wxQListCtrl.GetId(),self.OnQuoteList)
+        wx.EVT_COMBOBOX(self, self.wxQListCtrl.GetId(), self.OnQuoteList)
 
-        self.wxQListCtrl.Append(message('quote_select_alllist'),QList.all)
-        self.wxQListCtrl.Append(message('quote_select_syslist'),QList.system)
-        self.wxQListCtrl.Append(message('quote_select_usrlist'),QList.user)
-        self.wxQListCtrl.Append(message('quote_select_indiceslist'),QList.indices)
-        self.wxQListCtrl.Append(message('quote_select_trackerslist'),QList.trackers)
-        self.wxQListCtrl.Append(message('quote_select_bondslist'),QList.bonds)
+        self.wxQListCtrl.Append(message('quote_select_alllist'), QList.all)
+        self.wxQListCtrl.Append(message('quote_select_syslist'), QList.system)
+        self.wxQListCtrl.Append(message('quote_select_usrlist'), QList.user)
+        self.wxQListCtrl.Append(message('quote_select_indiceslist'), QList.indices)
+        self.wxQListCtrl.Append(message('quote_select_trackerslist'), QList.trackers)
+        self.wxQListCtrl.Append(message('quote_select_bondslist'), QList.bonds)
         self.wxQListCtrl.SetSelection(self.m_qlist)
 
         self.wxCount = wx.StaticText(self, -1, '--')
@@ -518,25 +509,24 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         self.SetSizerAndFit(sizer)
 
         EVT_POSTINIT(self, self.OnPostInit)
-        wx.PostEvent(self,PostInitEvent())
+        wx.PostEvent(self, PostInitEvent())
 
     # --- [ window management ] -------------------------------------
 
-    def OnPostInit(self,event):
+    def OnPostInit(self, event):
         quotes.loadMarket(self.m_market)
         self.checkEnablity()
         # fill the list
         self.PopulateList()
 
-    def OnMarket(self,evt):
+    def OnMarket(self, evt):
         idx = self.wxMarketCtrl.GetSelection()
-        if idx==0:
+        if idx == wx.NOT_FOUND:
             self.m_market = None
 
             # be sure every supported market is loaded !
             for market in list_of_markets():
                 quotes.loadMarket(market)
-
         else:
             self.m_market = self.wxMarketCtrl.GetClientData(idx)
             quotes.loadMarket(self.m_market)
@@ -545,7 +535,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         self.checkEnablity()
         self.m_list.SetFocus()
 
-    def OnQuoteList(self,evt):
+    def OnQuoteList(self, evt):
         idx = self.wxQListCtrl.GetSelection()
         self.m_qlist = idx
         self.PopulateList()
@@ -556,21 +546,20 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         if self.m_qlist == QList.indices or self.m_qlist == QList.trackers or self.m_qlist == QList.bonds:
             self.wxOK.Enable(False)
             self.wxNEW.Enable(False)
-            #self.wxPROP.Enable(False)
+            # self.wxPROP.Enable(False)
             self.wxDELETE.Enable(False)
             self.wxCLEAR.Enable(False)
             self.wxSAVE.Enable(False)
         else:
-
             if self.m_qlist == QList.user:
                 self.wxOK.Enable(False)
                 self.wxNEW.Enable(True)
-                #self.wxPROP.Enable(True)
+                # self.wxPROP.Enable(True)
                 self.wxDELETE.Enable(True)
             else:
                 self.wxOK.Enable(True)
                 self.wxNEW.Enable(False)
-                #self.wxPROP.Enable(False)
+                # self.wxPROP.Enable(False)
                 self.wxDELETE.Enable(False)
 
             if self.m_qlist == QList.all:
@@ -593,7 +582,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
 
         self.Layout()
 
-    def PopulateList(self,curquote=None):
+    def PopulateList(self, curquote=None):
         wx.SetCursor(wx.HOURGLASS_CURSOR)
 
         self.m_list.ClearAll()
@@ -607,27 +596,22 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         self.m_list.InsertColumn(IDC_LIVE, message('clive'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
         self.m_list.InsertColumn(IDC_IMPORT, message('cimport'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
 
-        count = 0
         self.currentItem = -1
 
         self.itemDataMap = {}
         self.itemQuoteMap = {}
         self.itemLineMap = {}
 
-        for eachQuote in quotes.list():
-            if  self.m_qlist==QList.all or self.m_qlist==eachQuote.list():
-                self.itemDataMap[count] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.name(),eachQuote.place(),eachQuote.market(),eachQuote.liveconnector().name(),eachQuote.importconnector().name())
-
+        for count, eachQuote in enumerate(quotes.list()):
+            if self.m_qlist == QList.all or self.m_qlist == eachQuote.list():
+                self.itemDataMap[count] = (eachQuote.isin(), eachQuote.ticker(), eachQuote.name(), eachQuote.place(), eachQuote.market(), eachQuote.liveconnector().name(), eachQuote.importconnector().name())
                 self.itemQuoteMap[count] = eachQuote
-                count = count + 1
 
-        items = self.itemDataMap.items()
         line = 0
         curline = -1
-        for x in range(len(items)):
-            key, data = items[x]
-            if self.m_market is None or (self.m_market==data[4]):
-                if data[0]!='':
+        for key, data in self.itemDataMap.items():
+            if self.m_market is None or (self.m_market == data[4]):
+                if data[0] != '':
                     self.m_list.InsertImageStringItem(line, data[0], self.sm_q)
                 else:
                     self.m_list.InsertImageStringItem(line, data[0], self.sm_i)
@@ -639,7 +623,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
                 self.m_list.SetStringItem(line, IDC_IMPORT, data[6])
                 self.m_list.SetItemData(line, key)
                 self.itemLineMap[data[1]] = line
-                if self.itemQuoteMap[key]==curquote:
+                if self.itemQuoteMap[key] == curquote:
                     curline = line
                 line += 1
 
@@ -651,28 +635,28 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         self.m_list.SetColumnWidth(IDC_LIVE, wx.LIST_AUTOSIZE)
         self.m_list.SetColumnWidth(IDC_IMPORT, wx.LIST_AUTOSIZE)
 
-        if curline!=-1:
+        if curline != -1:
             self.SetCurrentItem(curline)
 
-        if line==0:
+        if line == 0:
             self.wxCount.SetLabel(message('listquote_items_zero'))
-        elif line==1:
+        elif line == 1:
             self.wxCount.SetLabel(message('listquote_items_one'))
         else:
-            self.wxCount.SetLabel(message('listquote_items_n') % line)
+            self.wxCount.SetLabel(message('listquote_items_n').format(line))
 
         wx.SetCursor(wx.STANDARD_CURSOR)
 
     def OnSize(self, event):
-        w,h = self.GetClientSizeTuple()
+        w, h = self.GetClientSizeTuple()
         self.m_list.SetDimensions(0, 0, w, h)
 
-    def SetCurrentItem(self,line=None):
-        if self.currentItem>=0:
+    def SetCurrentItem(self, line=None):
+        if self.currentItem >= 0:
             self.m_list.SetItemState(self.currentItem, 0, wx.LIST_STATE_SELECTED)
         if line:
             self.currentItem = line
-        if self.currentItem>=0:
+        if self.currentItem >= 0:
             self.m_list.SetItemState(self.currentItem, wx.LIST_STATE_SELECTED, wx.LIST_STATE_SELECTED)
             self.m_list.EnsureVisible(self.currentItem)
 
@@ -686,8 +670,8 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
     def GetSortImages(self):
         return (self.sm_dn, self.sm_up)
 
-    def getQuoteOnTheLine(self,x):
-        if x>=0:
+    def getQuoteOnTheLine(self, x):
+        if x >= 0:
             key = self.m_list.GetItemData(x)
             quote = self.itemQuoteMap[key]
             return quote
@@ -696,44 +680,44 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
 
     # --- [ OnQuote handlers management ] --------------------------------
 
-    def OnNewQuote(self,event):
-        debug("OnNewQuote currentItem=%d",self.currentItem)
-        aRet = edit_iTradeQuoteList(self,None,QLIST_ADD)
+    def OnNewQuote(self, event):
+        debug("OnNewQuote currentItem={:d}".format(self.currentItem))
+        aRet = edit_iTradeQuoteList(self, None, QLIST_ADD)
         if aRet:
-            debug('OnNewQuote: %s' % aRet[0])
-            quotes.addQuote(aRet[0],aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6],list=QList.user,debug=True)
+            debug('OnNewQuote: {}'.format(aRet[0]))
+            quotes.addQuote(aRet[0], aRet[1], aRet[2], aRet[3], aRet[4], aRet[5], aRet[6], list=QList.user, debug=True)
             self.m_dirty = True
             self.PopulateList()
 
-    def OnDeleteQuote(self,event):
+    def OnDeleteQuote(self, event):
         quote = self.getQuoteOnTheLine(self.currentItem)
-        debug("OnDeleteQuote currentItem=%d quote=%s",self.currentItem,quote)
+        debug("OnDeleteQuote currentItem={:d} quote={}".format(self.currentItem, quote))
         if quote:
-            aRet = edit_iTradeQuoteList(self,quote,QLIST_DELETE)
+            aRet = edit_iTradeQuoteList(self, quote, QLIST_DELETE)
             if aRet:
-                debug('OnDeleteQuote: %s' % aRet[0])
+                debug('OnDeleteQuote: {}'.format(aRet[0]))
                 quotes.removeQuote(quote.key())
                 self.m_dirty = True
                 self.PopulateList()
 
     def OnEditQuote(self, event):
         quote = self.getQuoteOnTheLine(self.currentItem)
-        debug("OnEditQuote currentItem=%d quote=%s",self.currentItem,quote)
+        debug("OnEditQuote currentItem={:d} quote={}".format(self.currentItem, quote))
         if quote:
-            aRet = open_iTradeQuoteProperty(self,quote,bDialog=True)
+            aRet = open_iTradeQuoteProperty(self, quote, bDialog=True)
 
-            #aRet = edit_iTradeQuoteList(self,quote,QLIST_MODIFY)
+            # aRet = edit_iTradeQuoteList(self,quote,QLIST_MODIFY)
             if aRet:
-            #    debug('OnEditQuote: %s' % aRet[0])
-            #    quotes.removeQuote(quote.key())
-            #    quotes.addQuote(aRet[0],aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6],list=QList.user,debug=True)
-            #    self.m_dirty = True
+                # debug('OnEditQuote: {}'.format(aRet[0]))
+                # quotes.removeQuote(quote.key())
+                # quotes.addQuote(aRet[0],aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6],list=QList.user,debug=True)
+                # self.m_dirty = True
                 self.PopulateList(quote)
 
     # --- [ On handlers management ] -------------------------------------
 
     def OnColClick(self, event):
-        debug("OnColClick: %d\n" % event.GetColumn())
+        debug("OnColClick: {:d}".format(event.GetColumn()))
 
     def OnItemActivated(self, event):
         self.currentItem = event.m_itemIndex
@@ -742,76 +726,73 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         self.currentItem = event.m_itemIndex
         event.Skip()
 
-    def OnDownload(self,event):
+    def OnDownload(self, event):
+        x = 0
         if self.m_market is None:
             lst = list_of_markets()
             max = len(lst)+1
             keepGoing = True
 
-            dlg = wx.ProgressDialog(message('download_symbols_alllists'),"",max,self,wx.PD_CAN_ABORT | wx.PD_APP_MODAL)
+            dlg = wx.ProgressDialog(message('download_symbols_alllists'), "", max, self, wx.PD_CAN_ABORT | wx.PD_APP_MODAL)
             for x, market in enumerate(lst):
                 if keepGoing:
-                    keepGoing = dlg.Update(x,market)
-                    fn = getListSymbolConnector(market,QList.any,QTag.list)
+                    keepGoing = dlg.Update(x, market)
+                    fn = getListSymbolConnector(market, QList.any, QTag.list)
                     if fn:
-                        fn(quotes,market,dlg,x)
+                        fn(quotes, market, dlg, x)
                     else:
-                        print('ListSymbolConnector for %s not found !' % market)
+                        print('ListSymbolConnector for {} not found !'.format(market))
         else:
-            x = 0
-            dlg = wx.ProgressDialog(message('download_symbols_onelist'),"",2,self,wx.PD_CAN_ABORT | wx.PD_APP_MODAL)
-            dlg.Update(0,self.m_market)
-            fn = getListSymbolConnector(self.m_market,QList.any,QTag.list)
+            dlg = wx.ProgressDialog(message('download_symbols_onelist'), "", 2, self, wx.PD_CAN_ABORT | wx.PD_APP_MODAL)
+            dlg.Update(0, self.m_market)
+            fn = getListSymbolConnector(self.m_market, QList.any, QTag.list)
             if fn:
-                fn(quotes,self.m_market,dlg,x)
+                fn(quotes, self.m_market, dlg, x)
             else:
-                print('ListSymbolConnector for %s not found !' % self.m_market)
+                print('ListSymbolConnector for {} not found !'.format(self.m_market))
 
-        dlg.Update(x,message('save'))
+        dlg.Update(x, message('save'))
         self.m_dirty = True
         if dlg:
             dlg.Destroy()
         self.PopulateList()
 
-    def OnSave(self,event):
+    def OnSave(self, event):
         self.m_dirty = False
         quotes.saveListOfQuotes()
-        #__xdlg = wx.MessageDialog(self, message('listquote_saved'), message('listquote_save_desc'), wx.OK | wx.OK | wx.ICON_INFORMATION)
-        #__xdlg.ShowModal()
-        #__xdlg.Destroy()
+        # __x with wx.MessageDialog(self, message('listquote_saved'), message('listquote_save_desc'), wx.OK | wx.OK | wx.ICON_INFORMATION) as dlg:
+        # __x   dlg.ShowModal()
         iTradeInformation(self, message('listquote_saved'), message('listquote_save_desc'))
 
-    def OnClear(self,event):
+    def OnClear(self, event):
         if self.m_market is None:
             market = message('all_markets')
             txt = message('clear_symbols_alldesc')
         else:
             market = self.m_market
             txt = message('clear_symbols_onedesc')
-        #__xdlg = wx.MessageDialog(self, message('listquote_clear_confirm')%(market,txt), message('listquote_clear_confirm_title'), wx.YES_NO | wx.YES_DEFAULT | wx.ICON_QUESTION)
-        #__xidRet = dlg.ShowModal()
-        #__xdlg.Destroy()
-        idRet = iTradeYesNo(self, message('listquote_clear_confirm')%(market,txt), message('listquote_clear_confirm_title'))
+        # __x with wx.MessageDialog(self, message('listquote_clear_confirm').format(market,txt), message('listquote_clear_confirm_title'), wx.YES_NO | wx.YES_DEFAULT | wx.ICON_QUESTION) as dlg:
+        # __x   idRet = dlg.ShowModal()
+        idRet = iTradeYesNo(self, message('listquote_clear_confirm').format(market, txt), message('listquote_clear_confirm_title'))
         if idRet == wx.ID_YES:
             wx.SetCursor(wx.HOURGLASS_CURSOR)
-            quotes.removeQuotes(self.m_market,self.m_qlist)
+            quotes.removeQuotes(self.m_market, self.m_qlist)
             self.m_dirty = True
             self.PopulateList()
-        else: return
+        else:
+            return
 
-    def OnCancel(self,event):
+    def OnCancel(self, event):
         if self.m_dirty:
-            #__dlg = wx.MessageDialog(self, message('listquote_dirty_save'), message('listquote_save_desc'), wx.CANCEL | wx.YES_NO | wx.YES_DEFAULT | wx.ICON_QUESTION)
-            #__idRet = dlg.ShowModal()
-            #__xdlg.Destroy()
-            idRet = iTradeYesNo(self, message('listquote_dirty_save'), message('listquote_save_desc'),bCanCancel=True)
+            # __x with wx.MessageDialog(self, message('listquote_dirty_save'), message('listquote_save_desc'), wx.CANCEL | wx.YES_NO | wx.YES_DEFAULT | wx.ICON_QUESTION) as dlg:
+            # __x   idRet = dlg.ShowModal()
+            idRet = iTradeYesNo(self, message('listquote_dirty_save'), message('listquote_save_desc'), bCanCancel=True)
             if idRet == wx.ID_YES:
                 self.OnSave(None)
                 res = True
             elif idRet == wx.ID_NO:
-                #__xdlg = wx.MessageDialog(self, message('listquote_nodirty_save'), message('listquote_save_desc'), wx.OK | wx.ICON_INFORMATION)
-                #__xdlg.ShowModal()
-                #__xdlg.Destroy()
+                # __x with wx.MessageDialog(self, message('listquote_nodirty_save'), message('listquote_save_desc'), wx.OK | wx.ICON_INFORMATION) as dlg:
+                # __x   dlg.ShowModal()
                 iTradeInformation(self, message('listquote_nodirty_save'), message('listquote_save_desc'))
                 res = True
             else:
@@ -827,8 +808,8 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
 #   win     parent window
 # ============================================================================
 
-def list_iTradeQuote(win,market=None):
-    dlg = iTradeQuoteListCtrlDialog(win,market)
+def list_iTradeQuote(win, market=None):
+    dlg = iTradeQuoteListCtrlDialog(win, market)
     dlg.CentreOnParent()
     dlg.ShowModal()
     dlg.Destroy()
@@ -840,13 +821,12 @@ def list_iTradeQuote(win,market=None):
 #   qmode   quote list mode (modify,add,delete)
 # ============================================================================
 
-def edit_iTradeQuoteList(win,quote,qmode):
-    dlg = iTradeQuoteListDialog(win,quote,qmode)
-    if dlg.ShowModal()==wx.ID_OK:
-        aRet = dlg.aRet
-    else:
-        aRet = None
-    dlg.Destroy()
+def edit_iTradeQuoteList(win, quote, qmode):
+    with iTradeQuoteListDialog(win, quote, qmode) as dlg:
+        if dlg.ShowModal() == wx.ID_OK:
+            aRet = dlg.aRet
+        else:
+            aRet = None
     return aRet
 
 # ============================================================================
