@@ -55,20 +55,15 @@ from wx.lib import masked
 from itrade_wxselectquote import select_iTradeQuote
 from itrade_wxutil import iTradeYesNo
 
-# ============================================================================
-# iTradeStopsDialog
-# ============================================================================
 
 class iTradeStopsDialog(wx.Dialog):
-
-    def __init__(self, parent, quote, bAdd = True):
-        # context help
+    def __init__(self, parent, quote, bAdd=True):
         pre = wx.PreDialog()
         pre.SetExtraStyle(wx.DIALOG_EX_CONTEXTHELP)
         if bAdd:
-            title = message('stops_add_caption') % quote.name()
+            title = message('stops_add_caption').format(quote.name())
         else:
-            title = message('stops_edit_caption') % quote.name()
+            title = message('stops_edit_caption').format(quote.name())
         pre.Create(parent, -1, title, size=(420, 420))
         self.PostCreate(pre)
 
@@ -79,10 +74,9 @@ class iTradeStopsDialog(wx.Dialog):
 
         # sizers
         sizer = wx.BoxSizer(wx.VERTICAL)
-
-        # current quote
         box = wx.BoxSizer(wx.HORIZONTAL)
 
+        # current quote
         label = wx.StaticText(self, -1, quote.name())
         box.Add(label, 0, wx.ALIGN_LEFT|wx.ALL, 5)
 
@@ -95,7 +89,7 @@ class iTradeStopsDialog(wx.Dialog):
         sizer.AddSizer(box, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
         # Thresholds
-        if quote.nv_number()==0:
+        if quote.nv_number() == 0:
             msgb = message('stops_noshares_loss')
             msgh = message('stops_noshares_win')
         else:
@@ -104,11 +98,10 @@ class iTradeStopsDialog(wx.Dialog):
 
             box = wx.BoxSizer(wx.HORIZONTAL)
 
-            label = wx.StaticText(self, -1, message('stops_portfolio') % (quote.nv_number(),quote.sv_pr(bDispCurrency=True)) )
+            label = wx.StaticText(self, -1, message('stops_portfolio').format(quote.nv_number(), quote.sv_pr(bDispCurrency=True)))
             box.Add(label, 0, wx.ALIGN_LEFT|wx.ALL, 5)
 
             sizer.AddSizer(box, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
-
 
         box = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -170,56 +163,59 @@ class iTradeStopsDialog(wx.Dialog):
         self.SetAutoLayout(True)
         self.SetSizerAndFit(sizer)
 
-    def OnValid(self,event):
+    def OnValid(self, event):
         # get values
         loss = self.wxLoss.GetValue()
         win  = self.wxWin.GetValue()
 
         # be sure to be in the right order !
-        if loss>win:
-            temp = win
-            win = loss
-            loss = temp
+        if loss > win:
+            win, loss = loss, win
 
         # add the stops
-        quotes.addStops(self.m_quote.key(),loss,win)
+        quotes.addStops(self.m_quote.key(), loss, win)
 
         # close modal box
         self.EndModal(wx.ID_OK)
 
-# ============================================================================
-# addOrEditStops_iTradeQuote
-#
-#   win         parent window
-#   quote       Quote object or ISIN reference
-# ============================================================================
 
-def addOrEditStops_iTradeQuote(win,quote,market,bAdd=True):
+def addOrEditStops_iTradeQuote(win, quote, market, bAdd=True):
+    """
+
+    :param win: parent window
+    :param quote: Quote object or ISIN reference
+    :param market:
+    :param bAdd: Defaults to True. Indicates Add or Edit
+    :return:
+    """
     # no quote : select one
     if not quote:
         print('addOrEditStops_iTradeQuote() : need to select a quote')
 
         # select one quote from the matrix list
-        quote = select_iTradeQuote(win,quote,filter=True,market=market,filterEnabled=True)
+        quote = select_iTradeQuote(win, quote, filter=True, market=market, filterEnabled=True)
 
         # cancel -> exit
-        if not quote: return False
+        if not quote:
+            return False
 
         # be sure Add or Edit
         if bAdd:
-            if quote.hasStops(): bAdd = False
+            if quote.hasStops():
+                bAdd = False
         else:
-            if not quote.hasStops(): bAdd = True
+            if not quote.hasStops():
+                bAdd = True
 
-    # quote is a key refence : found the quote object
-    if not isinstance(quote,Quote):
+    # quote is a key reference : found the quote object
+    if not isinstance(quote, Quote):
         quote = quotes.lookupKey(quote)
 
     # still a quote, open the dialog to manage the Stops
     if quote:
-        print('addOrEditStops_iTradeQuote() : Add?(%d) quote : %s' % (bAdd,quote))
+        print('addOrEditStops_iTradeQuote() : Add?({%d}) quote : {}'.format(bAdd, quote))
 
-        dlg = iTradeStopsDialog(win,quote,bAdd=bAdd)
+        dlg = iTradeStopsDialog(win, quote, bAdd=bAdd)
         idRet = dlg.CentreOnParent()
         idRet = dlg.ShowModal()
         dlg.Destroy()
@@ -227,20 +223,20 @@ def addOrEditStops_iTradeQuote(win,quote,market,bAdd=True):
             return quote
     return None
 
-# ============================================================================
-# removeStops_iTradeQuote
-#
-#   win     parent window
-#   quote   Quote object or ISIN reference
-# ============================================================================
 
-def removeStops_iTradeQuote(win,quote):
-    if not isinstance(quote,Quote):
+def removeStops_iTradeQuote(win, quote):
+    """
+
+    :param win: parent window
+    :param quote: Quote object or ISIN reference
+    :return:
+    """
+    if not isinstance(quote, Quote):
         quote = quotes.lookupKey(quote)
     if quote:
         if quote.hasStops():
-            iRet = iTradeYesNo(win,message('stops_remove_text')%quote.name(),message('stops_remove_caption'))
-            if iRet==wx.ID_YES:
+            iRet = iTradeYesNo(win, message('stops_remove_text').format(quote.name()), message('stops_remove_caption'))
+            if iRet == wx.ID_YES:
                 quotes.removeStops(quote.key())
                 return True
     return False
@@ -253,8 +249,8 @@ def main():
     setLevel(logging.INFO)
     app = wx.App(False)
     from itrade_local import setLang, gMessage
-    setLang('us')
-    gMessage.load()
+#    setLang('us')
+#    gMessage.load()
     itrade_config.verbose = False
     quotes.loadListOfQuotes()
     q = quotes.lookupTicker('SAF', 'EURONEXT')
