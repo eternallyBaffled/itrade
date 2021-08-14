@@ -164,6 +164,7 @@ def loadExtensions(file, folder):
     # list of enabled / disabled Files
     enabledFiles = []
     disabledFiles = []
+    lines = []
 
     try:
         ext = open(extFile)
