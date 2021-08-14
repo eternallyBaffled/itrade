@@ -200,12 +200,7 @@ def addOrEditStops_iTradeQuote(win, quote, market, bAdd=True):
             return False
 
         # be sure Add or Edit
-        if bAdd:
-            if quote.hasStops():
-                bAdd = False
-        else:
-            if not quote.hasStops():
-                bAdd = True
+        bAdd = not quote.hasStops()
 
     # quote is a key reference : found the quote object
     if not isinstance(quote, Quote):
