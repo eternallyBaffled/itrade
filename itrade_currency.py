@@ -38,6 +38,8 @@
 
 # python system
 from __future__ import print_function
+
+import itertools
 import logging
 import string
 import os
@@ -55,49 +57,44 @@ import itrade_config
 # ============================================================================
 
 currencies_CUR = {
-    'EUR' : u'\u20AC', #" '€',
-    'USD' : u'\u0024', # '$'
-    'CAD' : u'\u0024', # '$'
-    'JPY' : u'\u00A5', # '¥',
-    'GBP' : u'\u00A3', # '£',
-    'GBX' : u'\u0070', # 'p',
-    'AUD' : u'\u0024', # '$'
-    'CHF' : u'\u0046', # 'F'
-    'NOK' : u'\u006B\u0072', #'Kr'
-    'SEK' : u'\u006B\u0072', #'Kr'
-    'DKK' : u'\u006B\u0072', #'Kr'
-    'BRL' : u'\u0052\u0024\u0020', #'R$'
-    'HKD' : u'\u0048\u004B\u0024', #'HK$'
-    'CNY' : u'\uFFE5', #'¥'
-    'INR' : u'\u0930\u0941', #''
-    'NZD' : u'\u0024', # '$'
-    'ARS' : u'\u0024', # '$'
-    'MXN' : u'\u0024', # '$'
-    'SGD' : u'\u0024', # '$'
-    'KRW' : u'\uFFE6', # 'w  u20A9 caracter not accepted'
-    'TWD' : u'\u004E\u0054\u0024', #'NT$'
-    'N/A' : u'\u0020', # ' '
+    'EUR': u'\u20AC',  # " '€',
+    'USD': u'\u0024',  # '$'
+    'CAD': u'\u0024',  # '$'
+    'JPY': u'\u00A5',  # '¥',
+    'GBP': u'\u00A3',  # '£',
+    'GBX': u'\u0070',  # 'p',
+    'AUD': u'\u0024',  # '$'
+    'CHF': u'\u0046',  # 'F'
+    'NOK': u'\u006B\u0072',  # 'Kr'
+    'SEK': u'\u006B\u0072',  # 'Kr'
+    'DKK': u'\u006B\u0072',  # 'Kr'
+    'BRL': u'\u0052\u0024\u0020',  # 'R$'
+    'HKD': u'\u0048\u004B\u0024',  # 'HK$'
+    'CNY': u'\uFFE5',  # '¥'
+    'INR': u'\u0930\u0941',  # ''
+    'NZD': u'\u0024',  # '$'
+    'ARS': u'\u0024',  # '$'
+    'MXN': u'\u0024',  # '$'
+    'SGD': u'\u0024',  # '$'
+    'KRW': u'\uFFE6',  # 'w  u20A9 character not accepted'
+    'TWD': u'\u004E\u0054\u0024',  # 'NT$'
+    'N/A': u'\u0020',  # ' '
     }
 
+
 def currency2symbol(cur):
-    if cur in currencies_CUR:
-        return currencies_CUR[cur]
-    else:
-        return cur
+    return currencies_CUR.get(cur, cur)
+
 
 def list_of_currencies():
-    return ('EUR','USD','JPY','GBP','GBX','AUD','CAD','CHF','NOK','SEK','DKK','BRL','HKD','CNY','INR','NZD','ARS','MXN','SGD','KRW','TWD')
+    return ['EUR', 'USD', 'JPY', 'GBP', 'GBX', 'AUD', 'CAD', 'CHF', 'NOK', 'SEK', 'DKK', 'BRL', 'HKD', 'CNY', 'INR', 'NZD', 'ARS', 'MXN', 'SGD', 'KRW', 'TWD']
 
 # ============================================================================
 # Build list of supported currencies
 # ============================================================================
 
 def buildListOfSupportedCurrencies():
-    lst = []
-    for eachCur1 in currencies_CUR:
-        for eachCur2 in currencies_CUR:
-            lst.append((eachCur1,eachCur2))
-    return lst
+    return itertools.product(currencies_CUR, repeat=2)
 
 # ============================================================================
 # Currencies
@@ -110,115 +107,104 @@ def buildListOfSupportedCurrencies():
 class Currencies(object):
     def __init__(self):
         # url
-        self.m_url = 'https://finance.yahoo.com/d/quotes.csv?s=%s%s=X&f=s4l1t1c1ghov&e=.csv'
+        self.m_url = 'https://finance.yahoo.com/d/quotes.csv?s={}{}=X&f=s4l1t1c1ghov&e=.csv'
 
         self.m_connection = None
 
         # to-from
         self.m_currencies = {}
         self.m_list = buildListOfSupportedCurrencies()
-        for eachCur in self.m_list:
-            curTo,curFrom = eachCur
-            self.update(curTo,curFrom,1.0)
+        for curTo, curFrom in self.m_list:
+            self.update(curTo, curFrom, 1.0)
 
     def list(self):
         return self.m_list
 
     # ---[ Load / Save cache file ] ---
 
-    def update(self,curTo,curFrom,rate):
+    def update(self, curTo, curFrom, rate):
         if curFrom == 'N/A' or curTo == 'N/A':
             return rate
-        if curTo != curFrom:
-            key = self.key(curTo, curFrom)
-            if key in self.m_currencies:
-                used,oldrate = self.m_currencies[key]
-            else:
-                used = False
-            self.m_currencies[key] = (used,rate)
+        if curTo == curFrom:
+            return rate
+        key = self.key(curTo, curFrom)
+        used, _ = self.m_currencies.get(key, (False, rate))
+        self.m_currencies[key] = (used, rate)
         return rate
 
-    def load(self,fn=None):
+    def load(self, fn=None):
         # open and read the file to load these currencies information
-        infile = itrade_csv.read(fn,os.path.join(itrade_config.dirCacheData,'currencies.txt'))
-        if infile:
-            # scan each line to read each rate
-            for eachLine in infile:
-                item = itrade_csv.parse(eachLine,3)
-                if item:
-                    # logging.debug('%s ::: %s' % (eachLine,item))
-                    self.update(item[0],item[1],float(item[2]))
+        infile = itrade_csv.read(fn, os.path.join(itrade_config.dirCacheData, 'currencies.txt'))
+        # scan each line to read each rate
+        for eachLine in infile:
+            item = itrade_csv.parse(eachLine, 3)
+            if item:
+                # logging.debug('{} ::: {}'.format(eachLine, item))
+                self.update(item[0], item[1], float(item[2]))
 
-    def save(self,fn=None):
+    def save(self, fn=None):
         # generate list of strings TO;FROM;RATE
         curs = []
-        for eachCurrency in self.m_currencies:
-            used,rate = self.m_currencies[eachCurrency]
-            curs.append("%s;%s;%.8f"%(eachCurrency[:3],eachCurrency[3:],rate))
+        for eachCurrency, target in self.m_currencies.items():
+            used, rate = target
+            curs.append("{};{};{:.8f}".format(eachCurrency[:3], eachCurrency[3:], rate))
 
         # open and write the file with these currencies information
-        itrade_csv.write(fn,os.path.join(itrade_config.dirCacheData,'currencies.txt'),curs)
+        itrade_csv.write(fn, os.path.join(itrade_config.dirCacheData, 'currencies.txt'), curs)
 
     # ---[ Convert ] ---
 
-    def key(self,curTo,curFrom):
+    def key(self, curTo, curFrom):
         return curTo.upper() + curFrom.upper()
 
-    def rate(self,curTo,curFrom):
+    def rate(self, curTo, curFrom):
         if curFrom == 'N/A' or curTo == 'N/A':
             return 1.0
         if curTo == curFrom:
             return 1.0
-        key = self.key(curTo,curFrom)
-        if key in self.m_currencies:
-            used,rate = self.m_currencies[key]
-            return rate
-        else:
-            return 1.0
+        key = self.key(curTo, curFrom)
+        _, rate = self.m_currencies.get(key, (False, 1.0))
+        return rate
 
-    def convert(self,curTo,curFrom,Value):
-        rate = self.rate(curTo,curFrom)
-        #print 'convert: value:%f from:%s to:%s rate=%f retval=%f' % (Value,curFrom,curTo,rate,Value*rate)
+    def convert(self, curTo, curFrom, Value):
+        rate = self.rate(curTo, curFrom)
+        # print('convert: value:{:f} from:{} to:{} rate={:f} retval={:f}'.format(Value, curFrom, curTo, rate, Value*rate))
         return Value * rate
 
     # ---[ Currency in use or not ? ] ---
 
-    def used(self,curTo,curFrom):
+    def used(self, curTo, curFrom):
         if curFrom == 'N/A' or curTo == 'N/A':
             return False
         if curTo == curFrom:
             return True
-        key = self.key(curTo,curFrom)
-        if key in self.m_currencies:
-            used,rate = self.m_currencies[key]
-            #print 'used >>> currency : ',key,' inUse: ',used,' rate: ',rate
-            return used
-        else:
-            return False
+        key = self.key(curTo, curFrom)
+        used, _ = self.m_currencies.get(key, (False, 1.0))
+        return used
 
-    def inuse(self,curTo,curFrom,bInUse):
+    def inuse(self, curTo, curFrom, bInUse):
         if curFrom == 'N/A' or curTo == 'N/A':
             return
         if curTo == curFrom:
             return
-        key = self.key(curTo,curFrom)
+        key = self.key(curTo, curFrom)
         if key in self.m_currencies:
-            used,rate = self.m_currencies[key]
-            self.m_currencies[key] = (bInUse,rate)
-            #print 'inuse >>> currency : ',key,' inUse: ',bInUse,' rate: ',rate
+            used, rate = self.m_currencies[key]
+            self.m_currencies[key] = (bInUse, rate)
+            # print('inuse >>> currency : ', key, ' inUse: ', bInUse, ' rate: ', rate)
 
     def reset(self):
-        #print '>>> currency reset'
+        # print('>>> currency reset')
         for key in self.m_currencies:
-            used,rate = self.m_currencies[key]
-            self.m_currencies[key] = (False,rate)
+            used, rate = self.m_currencies[key]
+            self.m_currencies[key] = (False, rate)
 
     # ---[ Get Last Trade from network ] ---
 
-    _s1 = { "GBX": "GBP", }
-    _s2 = { "GBX": 100.0, }
+    _s1 = {"GBX": "GBP", }
+    _s2 = {"GBX": 100.0, }
 
-    def get(self,curTo,curFrom):
+    def get(self, curTo, curFrom):
         if not itrade_config.isConnected():
             return None
 
@@ -226,52 +212,52 @@ class Currencies(object):
             return None
 
         if self.m_connection is None:
-            self.m_connection = ITradeConnection(cookies = None,
-                               proxy = itrade_config.proxyHostname,
-                               proxyAuth = itrade_config.proxyAuthentication,
-                               connectionTimeout = itrade_config.connectionTimeout
-                               )
-            #print "**** Create Currency Connection"
+            self.m_connection = ITradeConnection(cookies=None,
+                                                 proxy=itrade_config.proxyHostname,
+                                                 proxyAuth=itrade_config.proxyAuthentication,
+                                                 connectionTimeout=itrade_config.connectionTimeout
+                                                 )
+            # print("**** Create Currency Connection")
 
         # pence
-        if curFrom in self._s1.keys():
+        if curFrom in self._s1:
             a = self._s1[curFrom]
         else:
             a = curFrom
-        if curTo in self._s1.keys():
+        if curTo in self._s1:
             b = self._s1[curTo]
         else:
             b = curTo
 
         # get data
-        url = self.m_url % (a,b)
+        url = self.m_url.format(a, b)
         try:
             buf = self.m_connection.getDataFromUrl(url)
         except:
             return None
 
         # extract data
-        #print url,buf
+        # print(url, buf)
         sdata = string.split(buf, ',')
         f = float(sdata[1])
 
         # pence
-        if curFrom in self._s2.keys():
+        if curFrom in self._s2:
             f = f / self._s2[curFrom]
-        if curTo in self._s2.keys():
+        if curTo in self._s2:
             f = f * self._s2[curTo]
 
-        #print 'get: %s %s rate = %.4f' %(curTo,curFrom,float(sdata[1]))
-        return self.update(curTo,curFrom,f)
+        # print('get: {} {} rate = {:.4f}'.format(curTo, curFrom, float(sdata[1])))
+        return self.update(curTo, curFrom, f)
 
-    def getlasttrade(self,bAllEvenNotInUse=False):
+    def getlasttrade(self, bAllEvenNotInUse=False):
         if not itrade_config.isConnected():
             return
         for eachCurrency in self.m_currencies:
-            curTo = eachCurrency[:3]
-            curFrom = eachCurrency[3:]
-            if bAllEvenNotInUse or self.used(curTo,curFrom):
-                self.get(curTo,curFrom)
+            cur_to = eachCurrency[:3]
+            cur_from = eachCurrency[3:]
+            if bAllEvenNotInUse or self.used(cur_to, cur_from):
+                self.get(cur_to, cur_from)
         self.save()
 
 # ============================================================================
@@ -292,11 +278,11 @@ convert = currencies.convert
 # ============================================================================
 
 def main():
-    itrade_logging.setLevel(logging.INFO)
+    itrade_logging.setLevel(logging.DEBUG)
     print('From cache file : ')
-    print('1 EUR = %.2f EUR' % convert('EUR', 'EUR', 1))
-    print('1 EUR = %.2f USD' % convert('USD', 'EUR', 1))
-    print('1 USD = %.2f EUR' % convert('EUR', 'USD', 1))
+    print('1 EUR = {:.2f} EUR'.format(convert('EUR', 'EUR', 1)))
+    print('1 EUR = {:.2f} USD'.format(convert('USD', 'EUR', 1)))
+    print('1 USD = {:.2f} EUR'.format(convert('EUR', 'USD', 1)))
     print('Currencies get last trade ...')
     currencies.inuse('USD', 'EUR', True)
     currencies.inuse('GBX', 'EUR', True)
@@ -304,13 +290,13 @@ def main():
     currencies.inuse('USD', 'AUD', True)
     currencies.getlasttrade()
     print('From updated cache file : ')
-    print('1 EUR = %.2f EUR' % convert('EUR', 'EUR', 1))
-    print('1 EUR = %.2f USD' % convert('USD', 'EUR', 1))
-    print('1 EUR = %.2f GBP' % convert('GBP', 'EUR', 1))
-    print('1 EUR = %.2f GBX' % convert('GBX', 'EUR', 1))
-    print('1 USD = %.2f EUR' % convert('EUR', 'USD', 1))
-    print('1 USD = %.2f AUD' % convert('AUD', 'USD', 1))
-    # print 'EUR = %s',currency2symbol('EUR')
+    print('1 EUR = {:.2f} EUR'.format(convert('EUR', 'EUR', 1)))
+    print('1 EUR = {:.2f} USD'.format(convert('USD', 'EUR', 1)))
+    print('1 EUR = {:.2f} GBP'.format(convert('GBP', 'EUR', 1)))
+    print('1 EUR = {:.2f} GBX'.format(convert('GBX', 'EUR', 1)))
+    print('1 USD = {:.2f} EUR'.format(convert('EUR', 'USD', 1)))
+    print('1 USD = {:.2f} AUD'.format(convert('AUD', 'USD', 1)))
+    # print('EUR = {}'.format(currency2symbol('EUR')))
 
 
 if __name__ == '__main__':
