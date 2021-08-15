@@ -137,9 +137,9 @@ class iTradeCurrenciesMatrix(gridlib.Grid):
 
         grid = self.CreateGrid(count, count)
         self.EnableEditing(False)
-        for i in range(count):
-            self.SetColLabelValue(i, list[i])
-            self.SetRowLabelValue(i, list[i])
+        for i, currency in enumerate(list):
+            self.SetColLabelValue(i, currency)
+            self.SetRowLabelValue(i, currency)
 
         self.Bind(wx.grid.EVT_GRID_CELL_LEFT_DCLICK, parent.OnDClick)
 
