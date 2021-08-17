@@ -347,12 +347,11 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
         self.wxMarketCtrl = wx.ComboBox(pane,-1, "", size=wx.Size(160,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
         wx.EVT_COMBOBOX(self,self.wxMarketCtrl.GetId(),self.OnMarket)
 
-        count = 0
-        for eachCtrl in list_of_markets():
+        idx = wx.NOT_FOUND
+        for count, eachCtrl in enumerate(list_of_markets()):
             self.wxMarketCtrl.Append(eachCtrl,eachCtrl)
             if eachCtrl==self.m_market:
                 idx = count
-            count = count + 1
 
         self.wxMarketCtrl.SetSelection(idx)
 
@@ -364,6 +363,7 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
         wx.EVT_COMBOBOX(self,self.wxIndicatorCtrl.GetId(),self.OnIndicator)
 
         count = 0
+        idx = wx.NOT_FOUND
         for eachCtrl in quotes.list():
             if eachCtrl.list()==QList.indices:
                 #self.wxIndicatorCtrl.Append(eachCtrl.name(),eachCtrl.isin())
@@ -384,13 +384,12 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
         self.wxCurrencyCtrl = wx.ComboBox(pane,-1, "", size=wx.Size(80,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
         wx.EVT_COMBOBOX(self,self.wxCurrencyCtrl.GetId(),self.OnCurrency)
 
-        count = 0
-        for eachCtrl in list_of_currencies():
+        idx = wx.NOT_FOUND
+        for count, eachCtrl in enumerate(list_of_currencies()):
             #print eachCtrl
             self.wxCurrencyCtrl.Append(eachCtrl,eachCtrl)
             if eachCtrl==self.m_currency:
                 idx = count
-            count = count + 1
 
         self.wxCurrencyCtrl.SetSelection(idx)
 

@@ -244,13 +244,12 @@ class iTradeOperationDialog(iTradeSizedDialog):
         self.wxTypeCtrl = wx.ComboBox(pane,-1, "", size=wx.Size(160,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
         wx.EVT_COMBOBOX(self,self.wxTypeCtrl.GetId(),self.OnType)
 
-        count = 0
-        for k,v in operation_ctrl:
+        idx = wx.NOT_FOUND
+        for count, (k, v) in enumerate(operation_ctrl):
             #print '***',message(v),k
             self.wxTypeCtrl.Append(message(v),k)
             if k==self.m_type:
                 idx = count
-            count = count + 1
 
         self.wxTypeCtrl.SetSelection(idx)
 

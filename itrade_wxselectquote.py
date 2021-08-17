@@ -144,13 +144,11 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
         self.wxMarketCtrl.SetSizerProps(expand=True)
         wx.EVT_COMBOBOX(self,self.wxMarketCtrl.GetId(),self.OnMarket)
 
-        count = 0
-        idx = 0
-        for eachCtrl in list_of_markets(bFilterMode=False):
+        idx = wx.NOT_FOUND
+        for count, eachCtrl in enumerate(list_of_markets(bFilterMode=False)):
             self.wxMarketCtrl.Append(eachCtrl,eachCtrl)
             if eachCtrl==self.m_market:
                 idx = count
-            count = count + 1
 
         self.wxMarketCtrl.SetSelection(idx)
 

@@ -336,7 +336,7 @@ class iTradeQuotePropertiesPanel(wx.Panel):
         # --- live
         self.editLiveConnector.Clear()
         count = 0
-        idx = 0
+        idx = wx.NOT_FOUND
         lst = []
         for aname,amarket,aplace,adefaut,aconnector,aqlist,aqtag in listLiveConnector(self.m_quote.market(),self.m_quote.list(),self.m_quote.place()):
             if not aname in lst: # be sure its unique in the list
@@ -352,7 +352,7 @@ class iTradeQuotePropertiesPanel(wx.Panel):
         # --- import
         self.editImportConnector.Clear()
         count = 0
-        idx = 0
+        idx = wx.NOT_FOUND
         lst = []
         for aname,aplace,amarket,adefaut,aconnector,aqlist,aqtag in listImportConnector(self.m_quote.market(),self.m_quote.list(),self.m_quote.place()):
             if not aname in lst: # be sure its unique in the list
