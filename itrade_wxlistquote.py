@@ -440,7 +440,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         self.wxQListCtrl.Append(message('quote_select_indiceslist'), QList.indices)
         self.wxQListCtrl.Append(message('quote_select_trackerslist'), QList.trackers)
         self.wxQListCtrl.Append(message('quote_select_bondslist'), QList.bonds)
-        self.wxQListCtrl.SetSelection(self.m_qlist)
+        self.wxQListCtrl.SetSelection(self.m_qlist.value)
 
         self.wxCount = wx.StaticText(self, -1, '--')
         box.Add(self.wxCount, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
