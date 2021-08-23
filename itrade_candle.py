@@ -78,20 +78,36 @@ CANDLE_VOLUME_TREND_xx = 2
 # Basic Candle Type
 # ============================================================================
 class CandleType(Enum):
-    unknown = "unknown"
-    notype = "no type"
-    doji = "doji"
-    juji = "long-legged doji"
-    tombo = "dragonfly doji"
-    tohba = "gravestone doji"
-    flatfix = "flat fix"
-    marubozu_white = "white marubozu"
-    marubozu_black = "black marubozu"
-    marubozu_white_close = "closing white marubozu"
-    marubozu_black_open = "opening black marubozu"
-    marubozu_white_open = "opening white marubozu"
-    marubozu_black_close = "closing black marubozu"
+    unknown = 0
+    notype = 1
+    doji = 2
+    juji = 3
+    tombo = 4
+    tohba = 5
+    flatfix = 6
+    marubozu_white = 7
+    marubozu_black = 8
+    marubozu_white_close = 9
+    marubozu_black_open = 10
+    marubozu_white_open = 11
+    marubozu_black_close = 12
 
+
+candle_type = {
+    CandleType.unknown: "unknown",
+    CandleType.notype:  "no type",
+    CandleType.doji:    "doji",
+    CandleType.juji:    "long-legged doji",
+    CandleType.tombo:   "dragonfly doji",
+    CandleType.tohba:   "gravestone doji",
+    CandleType.flatfix: "flat fix",
+    CandleType.marubozu_white: "white marubozu",
+    CandleType.marubozu_black: "black marubozu",
+    CandleType.marubozu_white_close: "closing white marubozu",
+    CandleType.marubozu_black_open: "opening black marubozu",
+    CandleType.marubozu_white_open: "opening white marubozu",
+    CandleType.marubozu_black_close: "closing black marubozu"
+    }
 
 # ============================================================================
 # Candle color()
@@ -219,10 +235,10 @@ class Candle(object):
         self.computeType()
 
     def type(self):
-        return self.m_type
+        return self.m_type.value
 
     def __str__(self):
-        return self.m_type.value
+        return candle_type[self.m_type]
 
     def color(self):
         if self.cl >= self.op:
@@ -280,6 +296,24 @@ class Candle(object):
         else:
             self.m_type = CandleType.notype
 
+def main():
+    import itrade_config
+    from itrade_logging import setLevel
+    import logging
+    setLevel(logging.INFO)
+    itrade_config.app_header()
+
+    from itrade_candle import Candle
+    c = Candle(10.0, 11.0, 9.0, 10.0)
+    print('candle: %s - %s = doji' % (c, c.type()))
+    c = Candle(11.0, 11.0, 9.0, 11.0)
+    print('candle: %s - %s = dragonfly doji' % (c, c.type()))
+    c = Candle(9.0, 11.0, 9.0, 9.0)
+    print('candle: %s - %s = gravestone doji' % (c, c.type()))
+
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

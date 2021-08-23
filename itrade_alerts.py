@@ -74,8 +74,8 @@ ALERT_STATE_ARCHIVE = 3
 # ============================================================================
 
 class Alert(object):
-    def __init__(self,type,source,datation,title,desc,link,isin):
-        self.m_type = type
+    def __init__(self, a_type, source, datation, title, desc, link, isin):
+        self.m_type = a_type
         self.m_source = source
         self.m_datation = date(int(datation[0:4]),int(datation[5:7]),int(datation[8:10]))
         self.m_title = title
@@ -87,10 +87,10 @@ class Alert(object):
     # ---[ properties ] -----------------------------------
 
     def reference(self):
-        return '%d.%s.%s.%s."%s"' % (self.m_type, self.m_source, self.m_datation.strftime('%Y-%m-%d'), self.m_isin, self.m_title)
+        return u'%d.%s.%s.%s."%s"' % (self.m_type, self.m_source, self.m_datation.strftime('%Y-%m-%d'), self.m_isin, self.m_title)
 
     def __repr__(self):
-        return '%d;%s' % (self.m_state,self.reference())
+        return u'%d;%s' % (self.m_state,self.reference())
 
     def desc(self):
         return self.m_desc
@@ -195,13 +195,13 @@ class Alerts(object):
     def addAlert(self,ref,state):
         if self.existAlert(ref):
             # known :-(
-            info('Alerts::addAlert(): ref=%s already exists !' % ref)
+            info(u'Alerts::addAlert(): ref=%s already exists !' % ref)
             return False
         else:
             # parse ref
             item = ref.split('.')
             if len(item)!=5:
-                info('Alerts::addAlert(): ref=%s already exists !' % ref)
+                info(u'Alerts::addAlert(): ref=%s already exists !' % ref)
                 return False
 
             type,source,datation,isin,title = item
@@ -253,10 +253,10 @@ class Alerts(object):
 
     def register(self,name,plugin):
         if name in self.m_plugins:
-            warning("Alerts: can't register %s:%s : already registered !" % (name,plugin))
+            warning(u"Alerts: can't register %s:%s : already registered !" % (name,plugin))
             return False
         self.m_plugins[name] = plugin
-        debug('Alerts: register %s:%s : ok' % (name,plugin))
+        debug(u'Alerts: register %s:%s : ok' % (name,plugin))
         return True
 
     def numOfPlugins(self):
@@ -265,10 +265,10 @@ class Alerts(object):
     # ---[ scan ] ------------------------------------------
 
     def scan(self,dlg=None):
-        print('Alerts: scan %d:%s' % (self.numOfPlugins(),self.listPlugins()))
+        print(u'Alerts: scan %d:%s' % (self.numOfPlugins(),self.listPlugins()))
 
         for x, eachPlugin in enumerate(self.listPlugins()):
-            print('Alerts: scan %d' % x)
+            print(u'Alerts: scan %d' % x)
             eachPlugin.scan(dlg,x)
 
     # ---[ filters ] ---------------------------------------
@@ -289,8 +289,9 @@ except NameError:
 
 def main():
     setLevel(logging.INFO)
+    itrade_config.app_header()
     alerts.load()
-    alerts.newAlert(ALERT_TYPE_INFO_QUOTE, "boursorama", "2006-02-12", "Info sur FR0000044380", "", "", "FR0000044380")
+    alerts.newAlert(ALERT_TYPE_INFO_QUOTE, u"boursorama", u"2006-02-12", u"Info sur FR0000044380", u"", u"", u"FR0000044380")
     alerts.save()
 
 

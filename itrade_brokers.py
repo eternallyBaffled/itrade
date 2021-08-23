@@ -143,7 +143,9 @@ class Fees(object):
 # ============================================================================
 
 def main():
+    from itrade_logging import setLevel
     setLevel(logging.INFO)
+    itrade_config.app_header()
 
 
 if __name__ == '__main__':

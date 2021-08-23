@@ -83,7 +83,9 @@ alerts.register('SRD', gAlertsSRD)
 # ============================================================================
 
 def main():
+    import itrade_config
     setLevel(logging.INFO)
+    itrade_config.app_header()
     gAlertsSRD.scan(None, 0)
 
 
