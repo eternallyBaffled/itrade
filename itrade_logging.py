@@ -187,6 +187,7 @@ itrade_logger.addHandler(_stdoutHandler)
 
 def main():
     setLevel(logging.INFO)
+    itrade_config.app_header()
     info('information:' + itrade_config.__author__)
     warning('warning:' + itrade_config.__revision__)
     error('error:' + itrade_config.__version__)

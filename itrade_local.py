@@ -303,6 +303,7 @@ getLocale = gMessage.getLocale
 
 def main():
     import itrade_logging
+    itrade_config.app_header()
     itrade_logging.setLevel(logging.INFO)
     print('default (detection): ', gMessage.getAutoDetectedLang())
     setLang('us')
