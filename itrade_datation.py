@@ -137,13 +137,9 @@ class Calendar(object):
         if not isinstance(d,Datation):
             raise TypeError("parameter shall be date, Datation or string object")
 
-        #debug('isopen %s ? %s ' % (d,self.m_closed))
-
-        # is it saturday or sunday ?
-        if d.weekday()>=SATURDAY:
+        if d.is_weekend():
             return False
 
-        # key
         k = self.key(d,market)
         debug('isopen %s k=%s: ? ' % (d,k))
 
@@ -162,11 +158,9 @@ class Calendar(object):
 
         debug('issrd %s ? %s ' % (d,self.m_srd))
 
-        # is it saturday or sunday ?
-        if d.weekday()>=SATURDAY:
+        if d.is_weekend():
             return False
 
-        # key
         k = self.key(d,market)
         debug('issrd %s k=%s: ? ' % (d,k))
 
@@ -183,13 +177,10 @@ class Calendar(object):
         if not isinstance(d,Datation):
             raise TypeError("parameter shall be date, Datation or string object")
 
-        # key
-        k = self.key(d,market)
+        k = self.key(d, market)
 
         # is it a SRD day ?
-        if k in self.m_srd:
-            return self.m_srd[k]
-        return None
+        return self.m_srd.get(k)
 
     # --- [ key management ] --------------------------------------
 
@@ -210,8 +201,6 @@ class Calendar(object):
 
         # normalize the date notation !
         d = Datation(d)
-
-        # key
         k = self.key(d,market)
 
         if k in self.m_closed:
@@ -230,8 +219,6 @@ class Calendar(object):
 
         # normalize the date notation !
         d = Datation(d)
-
-        # key
         k = self.key(d,market)
 
         if k in self.m_srd:
@@ -301,7 +288,7 @@ class Calendar(object):
                 month = month + 1
             year = year + 1
 
-    def index(self,_date):
+    def index(self, _date):
         if _date in self.m_index:
             return self.m_index[_date]
         else:
@@ -350,6 +337,9 @@ class Datation(object):
     def __hash__(self):
         return self.m_date.toordinal()
 
+    def __gt__(self, other):
+        return self.m_date > other.m_date
+
     def year(self):
         return self.m_date.year
 
@@ -359,8 +349,11 @@ class Datation(object):
     def day(self):
         return self.m_date.day
 
-    def weekday(self):
+    def _weekday(self):
         return self.m_date.weekday()
+
+    def is_weekend(self):
+        return self._weekday() >= SATURDAY
 
     def date(self):
         return self.m_date
@@ -404,6 +397,7 @@ except NameError:
 
 def main():
     setLevel(logging.INFO)
+    itrade_config.app_header()
     info('test0 1==%s' % gCal.addClosed('2010-12-31'))
     info('test0 0==%s' % gCal.addClosed('20101231'))
     info('test1 0==%s' % gCal.isopen('2011-01-01'))
