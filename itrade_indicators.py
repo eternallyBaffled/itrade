@@ -49,6 +49,7 @@ def main():
     import itrade_config
     import itrade_ext
 
+    itrade_config.app_header()
     itrade_logging.setLevel(logging.INFO)
     itrade_ext.loadExtensions(itrade_config.fileIndData, itrade_config.dirIndData)
 
