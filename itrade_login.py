@@ -72,6 +72,16 @@ getLoginConnector = gLoginRegistry.get
 listLoginConnector = gLoginRegistry.list
 loggedLoginConnector = gLoginRegistry.logged
 
+def main():
+    from itrade_logging import setLevel
+    import itrade_config
+    import logging
+    setLevel(logging.INFO)
+    itrade_config.app_header()
+
+
+if __name__ == '__main__':
+    main()
 # ============================================================================
 # That's all folks !
 # ============================================================================

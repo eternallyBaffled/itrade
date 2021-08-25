@@ -245,9 +245,9 @@ _lom = {
     'TAIWAN STOCK EXCHANGE': False,
     }
 
-def set_market_loaded(market, set=True):
+def set_market_loaded(market, loaded=True):
     if market in _lom:
-        _lom[market] = set
+        _lom[market] = loaded
     if itrade_config.verbose:
         print('Load market %s' % market)
 
@@ -755,6 +755,15 @@ def yahooUrlJapan(market,live):
         #url = 'https://table.yahoo.co.jp/t?c=%s&a=%s&b=%s&f=%s&d=%s&e=%s&g=d&s=%s.t&y=%s&z=%s.t' % (d1[0],d1[1],d1[2],d2[0],d2[1],d2[2],ss,str(cursor),ss)
     return url
 
+def main():
+    from itrade_logging import setLevel
+    import logging
+    setLevel(logging.INFO)
+    itrade_config.app_header()
+
+
+if __name__ == '__main__':
+    main()
 # ============================================================================
 # That's all folks !
 # ============================================================================
