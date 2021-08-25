@@ -116,6 +116,7 @@ def main():
     vticker = None
     vquote  = None
 
+    itrade_config.app_header()
     itrade_config.ensure_setup()
 
     lang = gMessage.getAutoDetectedLang('us')
