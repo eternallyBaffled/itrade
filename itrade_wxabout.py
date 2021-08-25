@@ -183,11 +183,11 @@ class iTradeAboutBox(wx.Dialog):
               id = wxID_ABOUTBOX, title = message('about_title'), parent=prnt,
               name = 'AboutBox', style = wx.DEFAULT_DIALOG_STYLE)
 
-        self.blackback = wx.Window(self, -1, pos=(0, 0),
+        self.blackback = wx.Window(self, wx.ID_ANY, pos=(0, 0),
               size=self.GetClientSize(), style=wx.CLIP_CHILDREN)
         self.blackback.SetBackgroundColour(wx.BLACK)
 
-        self.m_html = wxUrlClickHtmlWindow(self.blackback, -1, style = wx.CLIP_CHILDREN | wx.html.HW_NO_SELECTION)
+        self.m_html = wxUrlClickHtmlWindow(self.blackback, wx.ID_ANY, style = wx.CLIP_CHILDREN | wx.html.HW_NO_SELECTION)
         EVT_HTML_URL_CLICK(self.m_html, self.OnLinkClick)
 
         self.setPage()
