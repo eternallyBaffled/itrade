@@ -219,14 +219,12 @@ def cmdline_importQuoteFromFile(quote,file):
 
 def cmdline_importMatrixFromInternet(matrix,dlg=None):
     year = date.today().year
-    nyear = 0
-    while nyear < itrade_config.numTradeYears:
+    for nyear in xrange(itrade_config.numTradeYears):
         if itrade_config.verbose:
             print('--- update the matrix --%d--' % year)
         matrix.update(date(year,1,1),date(year,12,31))
         if dlg:
             dlg.Update(nyear)
-        nyear = nyear + 1
         year = year -1
     if itrade_config.verbose:
         print('--- save the matrix data -----')
@@ -253,6 +251,7 @@ def cmdline_importMatrixFromFile(matrix,file):
 
 def main():
     setLevel(logging.INFO)
+    itrade_config.app_header()
     from itrade_quotes import quotes
     print('AUSY (Euronext market):')
     q = quotes.lookupTicker('OSI', 'EURONEXT')
