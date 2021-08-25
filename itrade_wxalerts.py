@@ -90,7 +90,7 @@ class iTradeAlertsPanel(wx.Window):
         wx.EVT_SIZE(self, self.OnSize)
 
         # create an image list
-        self.m_imagelist = wx.ImageList(16, 16)
+        self.m_imagelist = wx.ImageList(width=16, height=16)
         self.idx_tbref = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'invalid.png')))
 
         # List
@@ -214,7 +214,7 @@ class iTradeAlertsWindow(wx.Frame, iTrade_wxFrame):
         iTrade_wxFrame.__init__(self, parent, 'alerts')
         self.m_port = port
 
-        self.m_book = iTradeAlertsNotebookWindow(self, -1, port=self.m_port)
+        self.m_book = iTradeAlertsNotebookWindow(self, wx.ID_ANY, port=self.m_port)
 
         wx.EVT_WINDOW_DESTROY(self, self.OnDestroy)
         wx.EVT_SIZE(self, self.OnSize)
@@ -256,10 +256,10 @@ def main():
     setLang('us')
     gMessage.load()
     import itrade_wxportfolio
-    port = itrade_wxportfolio.select_iTradePortfolio(None, 'default', 'select')
+    port = itrade_wxportfolio.select_iTradePortfolio(win=None, dportfolio='default', operation='select')
     if port:
         port = loadPortfolio(port.filename())
-        open_iTradeAlerts(None, port)
+        open_iTradeAlerts(win=None, port=port)
         app.MainLoop()
     alerts.save()
 

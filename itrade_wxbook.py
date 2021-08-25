@@ -51,6 +51,7 @@ from itrade_quotes import quotes
 from itrade_defs import QList
 from itrade_ext import getDefaultLiveConnector
 from itrade_login import getLoginConnector, listLoginConnector
+from itrade_market import date_format
 
 # iTrade wx system
 if not itrade_config.nowxversion:
@@ -77,7 +78,6 @@ from itrade_wxconvert import open_iTradeConverter
 from itrade_wxpanes import iTrade_MatrixPortfolioPanel, iTrade_MatrixQuotesPanel, iTrade_MatrixStopsPanel, iTrade_MatrixIndicatorsPanel, iTrade_TradingPanel
 from itrade_wxmoney import iTradeEvaluationPanel
 from itrade_wxutil import iTradeYesNo, iTradeInformation, iTradeError, FontFromSize
-from itrade_market import date_format
 
 # ============================================================================
 # menu identifier
@@ -202,41 +202,41 @@ class iTradeMainToolbar(wx.ToolBar):
         self.SetToolBitmapSize(wx.Size(24,24))
         self.AddSimpleTool(self._NTB2_EXIT, wx.ArtProvider.GetBitmap(wx.ART_CROSS_MARK, wx.ART_TOOLBAR),
                            message('main_exit'), message('main_desc_exit'))
-        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+        self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
         self.AddSimpleTool(self._NTB2_NEW, wx.ArtProvider.GetBitmap(wx.ART_NEW, wx.ART_TOOLBAR),
                            message('main_new'), message('main_desc_new'))
-        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+        self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
         self.AddSimpleTool(self._NTB2_OPEN, wx.ArtProvider.GetBitmap(wx.ART_FILE_OPEN, wx.ART_TOOLBAR),
                            message('main_open'), message('main_desc_open'))
-        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+        self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
         self.AddSimpleTool(self._NTB2_EDIT, wx.ArtProvider.GetBitmap(wx.ART_EXECUTABLE_FILE, wx.ART_TOOLBAR),
                            message('main_edit'), message('main_desc_edit'))
-        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+        self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
         self.AddSimpleTool(self._NTB2_OPERATIONS, wx.ArtProvider.GetBitmap(wx.ART_REPORT_VIEW, wx.ART_TOOLBAR),
                            message('main_view_operations'), message('main_view_desc_operations'))
-        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+        self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
         self.AddSimpleTool(self._NTB2_MONEY, wx.Bitmap(os.path.join(itrade_config.dirRes, 'money.png')),
                            message('main_view_money'), message('main_view_desc_money'))
-        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+        self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
         self.AddSimpleTool(self._NTB2_ALERTS, wx.Bitmap(os.path.join(itrade_config.dirRes, 'bell.png')),
                            message('main_view_alerts'), message('main_view_desc_alerts'))
-        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+        self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
         self.AddSimpleTool(self._NTB2_CURRENCIES, wx.Bitmap(os.path.join(itrade_config.dirRes, 'currencies.png')),
                            message('main_view_currencies'), message('main_view_desc_currencies'))
-        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+        self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
         self.AddSimpleTool(self._NTB2_QUOTE, wx.Bitmap(os.path.join(itrade_config.dirRes, 'graph.png')),
                            message('main_quote_graph'), message('main_quote_desc_graph'))
-        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+        self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
         self.AddSimpleTool(self._NTB2_REFRESH, wx.Bitmap(os.path.join(itrade_config.dirRes, 'refresh.png')),
                            message('main_view_refresh'), message('main_view_desc_refresh'))
-        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+        self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
         self.AddSimpleTool(self._NTB2_AUTOSIZE, wx.Bitmap(os.path.join(itrade_config.dirRes, 'adjust_column.png')),
                            message('main_view_autosize'), message('main_view_desc_autosize'))
-        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+        self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
         self.AddSimpleTool(self._NTB2_ABOUT, wx.Bitmap(os.path.join(itrade_config.dirRes, 'about.png')),
                            message('main_about'), message('main_desc_about'))
-        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
-        self.m_indicator = wx.TextCtrl(self, -1, "", size=(300,15),style=wx.BORDER_NONE|wx.ALIGN_LEFT|wx.TE_READONLY)
+        self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
+        self.m_indicator = wx.TextCtrl(self, wx.ID_ANY, "", size=(300,15),style=wx.BORDER_NONE|wx.ALIGN_LEFT|wx.TE_READONLY)
 
         self.AddControl(self.m_indicator)
         self.ClearIndicator()
