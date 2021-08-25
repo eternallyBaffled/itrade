@@ -656,6 +656,7 @@ class Trades(object):
 
 def main():
     setLevel(logging.INFO)
+    itrade_config.app_header()
     # load extensions
     import itrade_ext
     itrade_ext.loadExtensions(itrade_config.fileExtData, itrade_config.dirExtData)

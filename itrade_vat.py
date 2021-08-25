@@ -58,6 +58,16 @@ def country2vat(cp):
         # don't know !
         return 1.0
 
+def main():
+    from itrade_logging import setLevel
+    import itrade_config
+    import logging
+    setLevel(logging.INFO)
+    itrade_config.app_header()
+
+
+if __name__ == '__main__':
+    main()
 # ============================================================================
 # That's all folks !
 # ============================================================================

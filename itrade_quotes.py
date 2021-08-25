@@ -1592,6 +1592,7 @@ def initQuotesModule():
 def main():
     setLevel(logging.INFO)
     # load configuration
+    itrade_config.app_header()
     itrade_config.ensure_setup()
     itrade_config.load_config()
     from itrade_local import setLang, gMessage
