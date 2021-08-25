@@ -253,6 +253,7 @@ def importFromPath(moduleName, path):
 
 def main():
     setLevel(logging.INFO)
+    itrade_config.app_header()
     loadExtensions(itrade_config.fileExtData, itrade_config.dirExtData)
     loadExtensions(itrade_config.fileIndData, itrade_config.dirIndData)
 
