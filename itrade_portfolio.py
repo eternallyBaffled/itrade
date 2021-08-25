@@ -787,16 +787,16 @@ class Portfolio(object):
         fn = self.filepath('operations')
         self.m_operations.save(fn)
 
-    def applyOperations(self,d=None):
+    def applyOperations(self, d=None):
         debug('applyOperations date<=%s' % d)
-        for eachOp in self.m_operations.list():
-            debug('applyOperations: %s' % eachOp)
-            if d is None or d>=eachOp.date():
-                typ = eachOp.type()
+        for operation in self.m_operations.list():
+            debug('applyOperations: %s' % operation)
+            if d is None or d >= operation.date():
+                typ = operation.type()
                 if typ in operation_apply and operation_apply[typ]:
-                    eachOp.apply(d)
+                    operation.apply(d)
             else:
-                info('ignore %s' % (eachOp.name()))
+                info('ignore %s' % (operation.name()))
 
     # --- [ manage login to services ] ----------------------------------------
 
@@ -1445,6 +1445,7 @@ def initPortfolioModule():
 
 def main():
     setLevel(logging.INFO)
+    itrade_config.app_header()
     initPortfolioModule()
     cmdline_evaluatePortfolio(2012)
 

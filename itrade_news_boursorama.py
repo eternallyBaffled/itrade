@@ -209,6 +209,7 @@ except NameError:
 
 def main():
     setLevel(logging.INFO)
+    itrade_config.app_header()
     from itrade_quotes import quotes
     quote = quotes.lookupTicker('RIB')
     print(gNewsBoursorama.feedQuote(quote))

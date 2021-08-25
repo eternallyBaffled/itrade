@@ -153,6 +153,8 @@ except NameError:
 
 def main():
     setLevel(logging.INFO)
+    import itrade_config
+    itrade_config.app_header()
     from itrade_local import setLang
     setLang('fr')
     from itrade_quotes import quotes
