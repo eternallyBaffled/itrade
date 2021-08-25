@@ -196,6 +196,7 @@ if __name__ == '__main__':
     from itrade_portfolio import loadPortfolio
 
     setLevel(logging.INFO)
+    itrade_config.app_header()
 
     print('--- load current portfolio ---')
     p = loadPortfolio()

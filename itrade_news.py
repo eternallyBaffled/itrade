@@ -111,6 +111,8 @@ except NameError:
 
 def main():
     setLevel(logging.INFO)
+    import itrade_config
+    itrade_config.app_header()
 
     class cb(object):
         pass
