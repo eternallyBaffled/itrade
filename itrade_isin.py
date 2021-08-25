@@ -182,7 +182,9 @@ def extractCUSIP(ref):
 # ============================================================================
 
 def main():
+    import itrade_config
     setLevel(logging.INFO)
+    itrade_config.app_header()
     info('test1 FR0000072621 : %s' % checkISIN('FR0000072621'))
     info('test1 FR0000072621 : %s' % buildISIN('FR', '07262'))
     info('test2 FR0010209809 : %s' % checkISIN('FR0010209809'))
