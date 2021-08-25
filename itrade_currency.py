@@ -278,6 +278,7 @@ convert = currencies.convert
 # ============================================================================
 
 def main():
+    itrade_config.app_header()
     itrade_logging.setLevel(logging.DEBUG)
     print('From cache file : ')
     print('1 EUR = {:.2f} EUR'.format(convert('EUR', 'EUR', 1)))
