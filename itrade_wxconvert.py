@@ -53,7 +53,7 @@ import wx.lib.newevent
 # iTrade system
 from itrade_logging import setLevel
 from itrade_local import message,getGroupChar,getDecimalChar
-from itrade_currency import list_of_currencies,convert,currencies
+from itrade_currency import list_of_currencies, currencies
 
 # iTrade wxPython system
 from itrade_wxutil import iTradeSizedDialog
@@ -131,8 +131,6 @@ class iTradeConverterDialog(iTradeSizedDialog):
         self.SetMinSize(self.GetSize())
 
         EVT_UPDATE_CONVERT(self, self.OnUpdateConvert)
-
-        # convert now
         self.convertValue()
 
     def OnUpdateConvert(self,event):
@@ -146,7 +144,7 @@ class iTradeConverterDialog(iTradeSizedDialog):
 
         # get the value and convert
         o = self.wxOrgVal.GetValue()
-        d = convert(self.m_destcur,self.m_orgcur,o)
+        d = currencies.convert(curTo=self.m_destcur, curFrom=self.m_orgcur, Value=o)
         self.wxDestVal.SetLabel('%.3f' % d)
 
         # should be enough !

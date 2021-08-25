@@ -49,7 +49,7 @@ from itrade_quotes import quotes, QuoteType
 from itrade_matrix import createMatrix
 from itrade_local import message, getLang
 import itrade_csv
-from itrade_currency import currency2symbol, currencies, convert
+from itrade_currency import currency2symbol, currencies
 from itrade_vat import country2vat
 from itrade_login import getLoginConnector
 from itrade_market import getDefaultIndice
@@ -986,13 +986,13 @@ class Portfolio(object):
     def nv_cash(self,currency=None):
         retval = self.m_cCash
         if currency:
-            retval = convert(currency,self.m_currency,retval)
+            retval = currencies.convert(curTo=currency, curFrom=self.m_currency, Value=retval)
         return retval
 
     def nv_credit(self,currency=None):
         retval = self.m_cCredit
         if currency:
-            retval = convert(currency,self.m_currency,retval)
+            retval = currencies.convert(curTo=currency, curFrom=self.m_currency, Value=retval)
         return retval
 
     def nv_invest(self):

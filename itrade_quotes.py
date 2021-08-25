@@ -57,7 +57,7 @@ from itrade_defs import QList, QTag
 from itrade_ext import getImportConnector, getLiveConnector, getDefaultLiveConnector
 from itrade_datation import Datation, gCal, date2str
 from itrade_market import market2currency, compute_country, market2place, list_of_markets, set_market_loaded, is_market_loaded
-import itrade_currency
+from itrade_currency import currencies, currency2symbol
 
 
 class QuoteColor(Enum):
@@ -205,7 +205,7 @@ class Quote(object):
         self.m_importconnector = self.m_defaultimportconnector
         self.m_name = self.m_defaultname
         self.m_ticker = self.m_defaultticker
-        self.m_symbcurr = itrade_currency.currency2symbol(self.m_currency)
+        self.m_symbcurr = currency2symbol(self.m_currency)
 
         self.m_daytrades = None
         self.m_weektrades = None
@@ -338,7 +338,7 @@ class Quote(object):
         else:
             retval = 0.0
         if currency:
-            retval = itrade_currency.convert(currency, self.m_currency, retval)
+            retval = currencies.convert(currency, self.m_currency, retval)
         return retval
 
     def sv_pv(self, currency, box=QuoteType.both, fmt="{:.2f}"):
@@ -621,7 +621,7 @@ class Quote(object):
 
     def nv_riskmoney(self, currency):
         # calculate the money at risk
-        sl = itrade_currency.convert(currency, self.m_currency, self.nv_stoploss())
+        sl = currencies.convert(currency, self.m_currency, self.nv_stoploss())
         x = (self.nv_pru() - sl) * self.nv_number()
         if x > 0:
             return x

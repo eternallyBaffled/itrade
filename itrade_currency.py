@@ -106,7 +106,6 @@ def buildListOfSupportedCurrencies():
 
 class Currencies(object):
     def __init__(self):
-        # url
         self.m_url = 'https://finance.yahoo.com/d/quotes.csv?s={}{}=X&f=s4l1t1c1ghov&e=.csv'
 
         self.m_connection = None
@@ -271,8 +270,6 @@ except NameError:
 
 currencies.load()
 
-convert = currencies.convert
-
 # ============================================================================
 # Test
 # ============================================================================
@@ -281,9 +278,9 @@ def main():
     itrade_config.app_header()
     itrade_logging.setLevel(logging.DEBUG)
     print('From cache file : ')
-    print('1 EUR = {:.2f} EUR'.format(convert('EUR', 'EUR', 1)))
-    print('1 EUR = {:.2f} USD'.format(convert('USD', 'EUR', 1)))
-    print('1 USD = {:.2f} EUR'.format(convert('EUR', 'USD', 1)))
+    print('1 EUR = {:.2f} EUR'.format(currencies.convert('EUR', 'EUR', 1)))
+    print('1 EUR = {:.2f} USD'.format(currencies.convert('USD', 'EUR', 1)))
+    print('1 USD = {:.2f} EUR'.format(currencies.convert('EUR', 'USD', 1)))
     print('Currencies get last trade ...')
     currencies.inuse('USD', 'EUR', True)
     currencies.inuse('GBX', 'EUR', True)
@@ -291,12 +288,12 @@ def main():
     currencies.inuse('USD', 'AUD', True)
     currencies.getlasttrade()
     print('From updated cache file : ')
-    print('1 EUR = {:.2f} EUR'.format(convert('EUR', 'EUR', 1)))
-    print('1 EUR = {:.2f} USD'.format(convert('USD', 'EUR', 1)))
-    print('1 EUR = {:.2f} GBP'.format(convert('GBP', 'EUR', 1)))
-    print('1 EUR = {:.2f} GBX'.format(convert('GBX', 'EUR', 1)))
-    print('1 USD = {:.2f} EUR'.format(convert('EUR', 'USD', 1)))
-    print('1 USD = {:.2f} AUD'.format(convert('AUD', 'USD', 1)))
+    print('1 EUR = {:.2f} EUR'.format(currencies.convert('EUR', 'EUR', 1)))
+    print('1 EUR = {:.2f} USD'.format(currencies.convert('USD', 'EUR', 1)))
+    print('1 EUR = {:.2f} GBP'.format(currencies.convert('GBP', 'EUR', 1)))
+    print('1 EUR = {:.2f} GBX'.format(currencies.convert('GBX', 'EUR', 1)))
+    print('1 USD = {:.2f} EUR'.format(currencies.convert('EUR', 'USD', 1)))
+    print('1 USD = {:.2f} AUD'.format(currencies.convert('AUD', 'USD', 1)))
     # print('EUR = {}'.format(currency2symbol('EUR')))
 
 
