@@ -52,6 +52,7 @@ import os
 import sys
 import imp
 import ConfigParser
+import inspect
 
 __revision__ = 'x???'
 
@@ -184,8 +185,6 @@ dirRes = resolve_folder('res')
 
 
 def ensure_setup():
-    read_revision()
-    print('{}({}) - {} {}'.format(softwareName, softwareStatus, softwareVersion, softwareVersionName))
     check_folder(dirSysData)
     check_folder(dirBrokersData)
     check_folder(dirSymbData)
@@ -200,6 +199,24 @@ def ensure_setup():
     ensure_folder(dirSnapshots)
     ensure_folder(dirReports)
     check_folder(dirRes)
+
+
+def app_header():
+    read_revision()
+    print('{}({}) - {} {}'.format(softwareName, softwareStatus, softwareVersion, softwareVersionName))
+    set_verbose_mode()
+
+
+verbose = False
+
+
+def set_verbose_mode():
+    global verbose
+    if __revision__[0] != 'x':
+        verbose = False
+    else:
+        print('Verbose mode : forced ON (under development release)')
+        verbose = True
 
 
 def default_closure_file():
@@ -338,13 +355,6 @@ timerForXYPopup = 500
 # default lang = system
 lang = 0
 
-# verbose mode
-if __revision__[0] != 'x':
-    verbose = False
-else:
-    print('Verbose mode : forced ON (under development release)')
-    verbose = True
-
 # experimental features
 experimental = False
 
@@ -421,6 +431,10 @@ def checkNewRelease(ping=False):
         print('checkNewRelease(): up to date')
         return 'ok'
 
+def caller_module():
+    frm = inspect.stack()[1]
+    mod = inspect.getmodule(frm[0])
+    return mod.__name__
 
 def load_config():
     # access global var
@@ -433,6 +447,9 @@ def load_config():
     global proxyAuthentication
     global connectionTimeout
     global column
+
+    if verbose:
+        print(u"load_config called from {}".format(caller_module()))
 
     # create a configuration object
     config = ConfigParser.ConfigParser()
@@ -599,7 +616,7 @@ def setDisconnected(status=True):
         print('Network : Ready')
 
 def isConnected():
-    #print 'isConnected(): %s' % (not gbDisconnected)
+    # print 'isConnected(): %s' % (not gbDisconnected)
     return not gbDisconnected
 
 # ============================================================================
@@ -611,6 +628,10 @@ def isConnected():
 # ============================================================================
 
 def main():
+    import logging
+    from itrade_logging import setLevel
+    setLevel(logging.INFO)
+    app_header()
     load_config()
     saveConfig()
     print(__revision__)
