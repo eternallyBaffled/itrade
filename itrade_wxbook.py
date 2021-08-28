@@ -50,7 +50,7 @@ from itrade_matrix import createMatrix
 from itrade_quotes import quotes
 from itrade_defs import QList
 from itrade_ext import getDefaultLiveConnector
-from itrade_login import getLoginConnector, listLoginConnector
+from itrade_login import gLoginRegistry
 from itrade_market import date_format
 
 # iTrade wx system
@@ -573,7 +573,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         self.accessmenu = wx.Menu()
 
         ncon = 0
-        for aname,acon in listLoginConnector():
+        for aname,acon in gLoginRegistry.list():
             self.accessmenu.Append(ID_ACCESS+ncon+1, acon.name(), acon.desc())
             ncon = ncon + 1
         if ncon>0:
@@ -1080,7 +1080,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         # get the connector
         m = self.accessmenu.FindItemById(e.GetId())
         m = m.GetText()
-        c = getLoginConnector(m)
+        c = gLoginRegistry.get(m)
         if c:
             # with the connector, load user info and open UI
             u,p = c.loadUserInfo()

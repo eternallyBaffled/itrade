@@ -51,7 +51,7 @@ from itrade_local import message, getLang
 import itrade_csv
 from itrade_currency import currency2symbol, currencies
 from itrade_vat import country2vat
-from itrade_login import getLoginConnector
+from itrade_login import gLoginRegistry
 from itrade_market import getDefaultIndice
 
 # ============================================================================
@@ -806,7 +806,7 @@ class Portfolio(object):
             name = quote.liveconnector(bForceLive=True).name()
             #print 'loginToServices:',quote.ticker(),name
             if name not in maperr:
-                con = getLoginConnector(name)
+                con = gLoginRegistry.get(name)
                 if con:
                     if not con.logged():
                         print('login to service :',name)
@@ -834,7 +834,7 @@ class Portfolio(object):
                 if eachQuote.isMatrix():
                     name = eachQuote.liveconnector().name()
                     if name not in maperr:
-                        con = getLoginConnector(name)
+                        con = gLoginRegistry.get(name)
                         if con:
                             if con.logged():
                                 print('logout from service :',name)

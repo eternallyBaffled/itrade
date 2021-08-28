@@ -67,10 +67,6 @@ class LoginRegistry(object):
 # ============================================================================
 gLoginRegistry = LoginRegistry()
 
-registerLoginConnector = gLoginRegistry.register
-getLoginConnector = gLoginRegistry.get
-listLoginConnector = gLoginRegistry.list
-loggedLoginConnector = gLoginRegistry.logged
 
 def main():
     from itrade_logging import setLevel

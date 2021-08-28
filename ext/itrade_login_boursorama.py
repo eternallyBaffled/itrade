@@ -46,7 +46,7 @@ import os
 # iTrade system
 import itrade_config
 from itrade_logging import setLevel, debug
-from itrade_login import registerLoginConnector
+from itrade_login import gLoginRegistry
 from itrade_local import message
 from itrade_connection import ITradeConnection, ITradeCookies
 
@@ -146,7 +146,7 @@ try:
 except NameError:
     gLoginBoursorama = Login_boursorama()
 
-registerLoginConnector(gLoginBoursorama.name(),gLoginBoursorama)
+gLoginRegistry.register(gLoginBoursorama.name(),gLoginBoursorama)
 
 # ============================================================================
 # Test me

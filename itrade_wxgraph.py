@@ -893,8 +893,6 @@ class iTrade_wxPanelGraph(GObject, PanelPrint):
         #print ']-- BeginCharting'
 
     def EndCharting(self):
-        #print 'EndCharting --['
-
         # adjust all font size
         if self.m_hasLegend:
             if self.legend1:
@@ -931,8 +929,6 @@ class iTrade_wxPanelGraph(GObject, PanelPrint):
             self.chart1vol.xaxis.set_major_formatter(self.dateFmt)
         if self.m_hasChart2Vol:
             self.chart2vol.xaxis.set_major_formatter(self.dateFmt)
-
-        #print ']-- EndCharting'
 
 # ============================================================================
 # That's all folks !

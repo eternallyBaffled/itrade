@@ -48,7 +48,7 @@ from collections import namedtuple
 from itrade_logging import setLevel
 import itrade_config
 from itrade_market import market2place
-from itrade_login import loggedLoginConnector
+from itrade_login import gLoginRegistry
 from itrade_defs import QList, QTag
 
 # ============================================================================
@@ -105,7 +105,7 @@ def getDefaultLiveConnector(market, lst, place=None):
     ret = gLiveRegistry.get(market, lst, QTag.live, place)
     if ret:
         # check live connector is logged
-        if loggedLoginConnector(ret.name()):
+        if gLoginRegistry.logged(ret.name()):
             return ret
 
     # no live connector or not logged : fall-back to differed connector

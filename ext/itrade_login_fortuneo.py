@@ -46,7 +46,7 @@ import httplib
 # iTrade system
 import itrade_config
 from itrade_logging import setLevel, debug
-from itrade_login import registerLoginConnector
+from itrade_login import gLoginRegistry
 from itrade_local import message
 
 # ============================================================================
@@ -277,7 +277,7 @@ try:
 except NameError:
     gLoginFortuneo = Login_fortuneo()
 
-registerLoginConnector(gLoginFortuneo.name(),gLoginFortuneo)
+gLoginRegistry.register(gLoginFortuneo.name(),gLoginFortuneo)
 
 # ============================================================================
 # Test me
