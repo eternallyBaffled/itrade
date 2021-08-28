@@ -47,7 +47,7 @@ import itrade_config
 import itrade_excel
 from itrade_logging import setLevel, info
 from itrade_defs import QList, QTag
-from itrade_ext import registerListSymbolConnector
+from itrade_ext import gListSymbolRegistry
 from itrade_connection import ITradeConnection
 
 # ============================================================================
@@ -183,8 +183,8 @@ def Import_ListOfQuotes_OMX(quotes,market='STOCKHOLM EXCHANGE',dlg=None,x=0):
 # ============================================================================
 
 if itrade_excel.canReadExcel:
-    registerListSymbolConnector('STOCKHOLM EXCHANGE','STO',QList.any,QTag.list,Import_ListOfQuotes_OMX)
-    registerListSymbolConnector('COPENHAGEN EXCHANGE','CSE',QList.any,QTag.list,Import_ListOfQuotes_OMX)
+    gListSymbolRegistry.register('STOCKHOLM EXCHANGE','STO',QList.any,QTag.list,Import_ListOfQuotes_OMX)
+    gListSymbolRegistry.register('COPENHAGEN EXCHANGE','CSE',QList.any,QTag.list,Import_ListOfQuotes_OMX)
 
 # ============================================================================
 # Test ME

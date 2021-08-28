@@ -48,7 +48,7 @@ import pyPdf
 import itrade_config
 from itrade_logging import setLevel, info
 from itrade_defs import QList, QTag
-from itrade_ext import registerListSymbolConnector
+from itrade_ext import gListSymbolRegistry
 from itrade_connection import ITradeConnection
 
 # ============================================================================
@@ -139,7 +139,7 @@ def Import_ListOfQuotes_MADRID(quotes,market='MADRID EXCHANGE',dlg=None,x=0):
 # Export me
 # ============================================================================
 
-registerListSymbolConnector('MADRID EXCHANGE','MAD',QList.any,QTag.list,Import_ListOfQuotes_MADRID)
+gListSymbolRegistry.register('MADRID EXCHANGE','MAD',QList.any,QTag.list,Import_ListOfQuotes_MADRID)
 
 # ============================================================================
 # Test ME

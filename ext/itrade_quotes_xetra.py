@@ -46,7 +46,7 @@ import string
 import itrade_config
 from itrade_logging import setLevel, debug
 from itrade_defs import QList, QTag
-from itrade_ext import registerListSymbolConnector
+from itrade_ext import gListSymbolRegistry
 from itrade_connection import ITradeConnection
 
 # ============================================================================
@@ -109,7 +109,7 @@ def Import_ListOfQuotes_Xetra(quotes,market='FRANKFURT EXCHANGE',dlg=None,x=0):
 # Export me
 # ============================================================================
 
-registerListSymbolConnector('FRANKFURT EXCHANGE','FRA',QList.any,QTag.list,Import_ListOfQuotes_Xetra)
+gListSymbolRegistry.register('FRANKFURT EXCHANGE','FRA',QList.any,QTag.list,Import_ListOfQuotes_Xetra)
 
 # ============================================================================
 # Test ME

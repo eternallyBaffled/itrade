@@ -45,7 +45,6 @@ from itrade_logging import setLevel, debug
 
 # ============================================================================
 # FeeRule
-#
 # ============================================================================
 
 class FeeRule(object):
@@ -100,7 +99,7 @@ class Fees(object):
         return self.m_portfolio
 
     def list(self):
-        return self.m_fees.values()
+        return self.m_fees
 
     def load(self,infile=None):
         infile = itrade_csv.read(infile,os.path.join(itrade_config.dirUserData,'default.fees.txt'))

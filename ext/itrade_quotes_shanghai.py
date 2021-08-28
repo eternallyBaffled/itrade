@@ -47,7 +47,7 @@ import urllib2
 import itrade_config
 from itrade_logging import setLevel, debug, info
 from itrade_defs import QList, QTag
-from itrade_ext import registerListSymbolConnector
+from itrade_ext import gListSymbolRegistry
 from itrade_connection import ITradeConnection
 
 # ============================================================================
@@ -210,7 +210,7 @@ def Import_ListOfQuotes_SHG(quotes,market='SHANGHAI EXCHANGE',dlg=None,x=0):
 # Export me
 # ============================================================================
 
-registerListSymbolConnector('SHANGHAI EXCHANGE','SHG',QList.any,QTag.list,Import_ListOfQuotes_SHG)
+gListSymbolRegistry.register('SHANGHAI EXCHANGE','SHG',QList.any,QTag.list,Import_ListOfQuotes_SHG)
 
 # ============================================================================
 # Test ME

@@ -1245,7 +1245,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         return self.m_indice
 
     def initIndice(self):
-        self.m_connector = getDefaultLiveConnector(self.m_market,QList.indices)
+        self.m_connector = getDefaultLiveConnector(market=self.m_market, lst=QList.indices)
         indice = self.m_portfolio.indice()
         #if itrade_config.verbose:
         #    print 'initIndice: indice %s use connector %s' % (indice,self.m_connector)

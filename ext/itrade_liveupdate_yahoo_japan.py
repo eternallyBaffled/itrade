@@ -49,7 +49,7 @@ import itrade_config
 from itrade_logging import setLevel, debug, info
 from itrade_quotes import quotes, Quote
 from itrade_defs import QList, QTag
-from itrade_ext import registerLiveConnector
+from itrade_ext import gLiveRegistry
 from itrade_market import yahooTicker,yahooUrlJapan,convertConnectorTimeToPlaceTime
 from itrade_connection import ITradeConnection
 
@@ -467,7 +467,7 @@ try:
 except NameError:
     gLiveYahoojp = LiveUpdate_yahoojp()
 
-registerLiveConnector('TOKYO EXCHANGE','TKS',QList.any,QTag.differed,gLiveYahoojp,bDefault=True)
+gLiveRegistry.register('TOKYO EXCHANGE','TKS',QList.any,QTag.differed,gLiveYahoojp,bDefault=True)
 
 # ============================================================================
 # Test ME

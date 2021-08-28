@@ -47,7 +47,7 @@ import httplib
 import itrade_config
 from itrade_logging import setLevel, info
 from itrade_defs import QList, QTag
-from itrade_ext import registerListSymbolConnector
+from itrade_ext import gListSymbolRegistry
 from itrade_connection import ITradeConnection
 
 # ============================================================================
@@ -144,7 +144,7 @@ def Import_ListOfQuotes_TKS(quotes,market='TOKYO EXCHANGE',dlg=None,x=0):
 # Export me
 # ============================================================================
 
-registerListSymbolConnector('TOKYO EXCHANGE','TKS',QList.any,QTag.list,Import_ListOfQuotes_TKS)
+gListSymbolRegistry.register('TOKYO EXCHANGE','TKS',QList.any,QTag.list,Import_ListOfQuotes_TKS)
 
 # ============================================================================
 # Test ME

@@ -50,7 +50,7 @@ from itrade_logging import setLevel, debug, info
 from itrade_quotes import quotes
 from itrade_datation import jjmmaa2yyyymmdd
 from itrade_defs import QTag, QList
-from itrade_ext import registerLiveConnector
+from itrade_ext import gLiveRegistry
 from itrade_market import euronextmic, convertConnectorTimeToPlaceTime
 from itrade_connection import ITradeConnection
 import itrade_config
@@ -355,10 +355,10 @@ try:
 
 except NameError:
     gLiveEuronext = LiveUpdate_Euronext_bonds()
-registerLiveConnector('EURONEXT','PAR',QList.bonds,QTag.live,gLiveEuronext,bDefault=True)
-registerLiveConnector('EURONEXT','BRU',QList.bonds,QTag.live,gLiveEuronext,bDefault=True)
-registerLiveConnector('EURONEXT','AMS',QList.bonds,QTag.live,gLiveEuronext,bDefault=True)
-registerLiveConnector('EURONEXT','LIS',QList.bonds,QTag.live,gLiveEuronext,bDefault=True)
+gLiveRegistry.register('EURONEXT','PAR',QList.bonds,QTag.live,gLiveEuronext,bDefault=True)
+gLiveRegistry.register('EURONEXT','BRU',QList.bonds,QTag.live,gLiveEuronext,bDefault=True)
+gLiveRegistry.register('EURONEXT','AMS',QList.bonds,QTag.live,gLiveEuronext,bDefault=True)
+gLiveRegistry.register('EURONEXT','LIS',QList.bonds,QTag.live,gLiveEuronext,bDefault=True)
 
 # ============================================================================
 # Test ME

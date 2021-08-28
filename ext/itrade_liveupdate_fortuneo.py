@@ -55,7 +55,7 @@ import itrade_config
 from itrade_logging import setLevel, debug, info
 import itrade_csv
 from itrade_defs import QList, QTag
-from itrade_ext import registerLiveConnector
+from itrade_ext import gLiveRegistry
 from itrade_quotes import quotes
 
 import blowfish
@@ -903,9 +903,9 @@ try:
 except NameError:
     gLiveFortuneo = LiveUpdate_fortuneo()
 
-registerLiveConnector('EURONEXT','PAR',QList.any,QTag.live,gLiveFortuneo,bDefault=True)
-registerLiveConnector('ALTERNEXT','PAR',QList.any,QTag.live,gLiveFortuneo,bDefault=True)
-registerLiveConnector('PARIS MARCHE LIBRE','PAR',QList.any,QTag.live,gLiveFortuneo,bDefault=True)
+gLiveRegistry.register('EURONEXT','PAR',QList.any,QTag.live,gLiveFortuneo,bDefault=True)
+gLiveRegistry.register('ALTERNEXT','PAR',QList.any,QTag.live,gLiveFortuneo,bDefault=True)
+gLiveRegistry.register('PARIS MARCHE LIBRE','PAR',QList.any,QTag.live,gLiveFortuneo,bDefault=True)
 
 # ============================================================================
 # Test ME

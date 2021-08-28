@@ -48,7 +48,7 @@ from itrade_logging import setLevel, debug
 from itrade_quotes import quotes
 from itrade_datation import Datation
 from itrade_defs import QList, QTag
-from itrade_ext import registerImportConnector
+from itrade_ext import gImportRegistry
 from itrade_market import yahooTicker, yahooUrlJapan
 from itrade_connection import ITradeConnection
 import itrade_config
@@ -260,7 +260,7 @@ try:
 except NameError:
     gImportYahoojp = ImportYahoojp()
 
-registerImportConnector('TOKYO EXCHANGE', 'TKS', QList.any, QTag.imported, gImportYahoojp, bDefault=True)
+gImportRegistry.register('TOKYO EXCHANGE', 'TKS', QList.any, QTag.imported, gImportYahoojp, bDefault=True)
 
 
 # ============================================================================

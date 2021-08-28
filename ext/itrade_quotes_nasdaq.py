@@ -46,7 +46,7 @@ import csv
 import itrade_config
 from itrade_logging import setLevel, debug
 from itrade_defs import QList, QTag
-from itrade_ext import registerListSymbolConnector
+from itrade_ext import gListSymbolRegistry
 from itrade_connection import ITradeConnection
 
 # ============================================================================
@@ -101,9 +101,9 @@ def Import_ListOfQuotes_NASDAQ(quotes,market='NASDAQ',dlg=None,x=0):
 # ============================================================================
 # Export me
 # ============================================================================
-registerListSymbolConnector('NASDAQ','NYC',QList.any,QTag.list,Import_ListOfQuotes_NASDAQ)
-registerListSymbolConnector('AMEX','NYC',QList.any,QTag.list,Import_ListOfQuotes_NASDAQ)
-registerListSymbolConnector('NYSE','NYC',QList.any,QTag.list,Import_ListOfQuotes_NASDAQ)
+gListSymbolRegistry.register('NASDAQ','NYC',QList.any,QTag.list,Import_ListOfQuotes_NASDAQ)
+gListSymbolRegistry.register('AMEX','NYC',QList.any,QTag.list,Import_ListOfQuotes_NASDAQ)
+gListSymbolRegistry.register('NYSE','NYC',QList.any,QTag.list,Import_ListOfQuotes_NASDAQ)
 
 # ============================================================================
 # Test ME

@@ -42,6 +42,7 @@ import glob
 import imp
 import os
 import sys
+from collections import namedtuple
 
 # iTrade system
 from itrade_logging import setLevel
@@ -56,9 +57,8 @@ from itrade_defs import QList, QTag
 
 loadedModules = {}  # keys are module names, values are modules ref
 
-# ============================================================================
-# ConnectorRegistry
-# ============================================================================
+Connector = namedtuple('Connector', ['market', 'place', 'bDefault', 'connector', 'qlist', 'qtag'])
+
 
 class ConnectorRegistry(object):
     def __init__(self):
@@ -83,7 +83,7 @@ class ConnectorRegistry(object):
                     return aconnector
         return None
 
-    def list(self,market,qlist,place):
+    def list(self, market, qlist, place):
         lst = []
         for amarket,aplace,adefault,aconnector,aqlist,aqtag in self.m_conn:
             if amarket==market and aplace==place and (aqlist==QList.any or aqlist==qlist):
@@ -99,32 +99,25 @@ try:
 except NameError:
     gLiveRegistry = ConnectorRegistry()
 
-registerLiveConnector = gLiveRegistry.register
-getLiveConnector = gLiveRegistry.get
-listLiveConnector = gLiveRegistry.list
 
-def getDefaultLiveConnector(market,list,place=None):
+def getDefaultLiveConnector(market, lst, place=None):
     # try live connector
-    ret = getLiveConnector(market,list,QTag.live,place)
+    ret = gLiveRegistry.get(market, lst, QTag.live, place)
     if ret:
         # check live connector is logged
         if loggedLoginConnector(ret.name()):
             return ret
 
     # no live connector or not logged : fall-back to differed connector
-    ret = getLiveConnector(market,list,QTag.differed,place)
+    ret = gLiveRegistry.get(market, lst, QTag.differed, place)
     if ret is None:
-        print('No default connector %s for market :' % market,' qlist:',list)
+        print(u'No default connector {} for market :'.format(market),' qlist:', lst)
     return ret
 
 try:
     ignore(gImportRegistry)
 except NameError:
     gImportRegistry = ConnectorRegistry()
-
-registerImportConnector = gImportRegistry.register
-getImportConnector = gImportRegistry.get
-listImportConnector = gImportRegistry.list
 
 # ============================================================================
 # Export ListSymbol Registry
@@ -135,10 +128,6 @@ try:
 except NameError:
     gListSymbolRegistry = ConnectorRegistry()
 
-registerListSymbolConnector = gListSymbolRegistry.register
-getListSymbolConnector = gListSymbolRegistry.get
-listListSymbolConnector = gListSymbolRegistry.list
-
 # ============================================================================
 # loadExtensions()
 #
@@ -148,17 +137,18 @@ listListSymbolConnector = gListSymbolRegistry.list
 #   folder: path of the folder to load the extension from
 # ============================================================================
 
+
 def loadExtensions(file, folder):
     # file to manage list of extensions
     extFile = os.path.join(folder, file)
     if not os.path.exists(extFile):
-        print('Load ({}) : {} file not found !'.format(folder, file))
+        print(u'Load ({}) : {} file not found !'.format(folder, file))
         return False
 
     # list of potential files to load
     files = glob.glob(os.path.join(folder, '*.py'))
     if not files:
-        print('Load (%s) : no extension file found !' % folder)
+        print(u'Load ({}) : no extension file found !'.format(folder))
         return False
 
     # list of enabled / disabled Files
@@ -171,10 +161,9 @@ def loadExtensions(file, folder):
         lines = ext.readlines()
         ext.close()
     except IOError:
-        print("Load (%s) : can't open %s file !" % (folder,extFile))
+        print(u"Load ({}) : can't open {} file !".format(folder, extFile))
 
     for s in lines:
-        #print s
         s = s.strip()
         if s and s[0] == '#':
             s = s[1:].strip()
@@ -198,7 +187,8 @@ def loadExtensions(file, folder):
                 loadOneExtension(f, folder)
     return True
 
-def loadOneExtension(ext,folder):
+
+def loadOneExtension(ext, folder):
     global loadedModules
 
     # extract module name
@@ -211,22 +201,22 @@ def loadOneExtension(ext,folder):
     # check module not loaded
     if isLoaded(moduleName):
         module = loadedModules.get(moduleName)
-        print('Extension (%s) %s already loaded' % (folder,moduleName))
+        print(u'Extension ({}) {} already loaded'.format(folder, moduleName))
         return module
 
     # import the module
-    module = importFromPath (moduleName,folder)
+    module = importFromPath(moduleName, folder)
 
-    # return the moduler reference
+    # return the module reference
     if not module:
-        print("Can't load (%s) %s" % (folder,moduleName))
+        print(u"Can't load ({}) {}".format(folder, moduleName))
     else:
         if itrade_config.verbose:
-            print('Load (%s) %s' % (folder,moduleName))
+            print(u'Load ({}) {}'.format(folder, moduleName))
     return module
 
 
-def isLoaded (name):
+def isLoaded(name):
     return name in loadedModules
 
 

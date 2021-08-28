@@ -48,7 +48,7 @@ from itrade_logging import setLevel, debug
 from itrade_quotes import quotes
 from itrade_datation import Datation, jjmmaa2yyyymmdd
 from itrade_defs import QList, QTag
-from itrade_ext import registerImportConnector
+from itrade_ext import gImportRegistry
 from itrade_market import euronextmic
 from itrade_connection import ITradeConnection
 import itrade_config
@@ -232,42 +232,42 @@ gImportEuronext = Import_euronext()
 
 
 
-registerImportConnector('EURONEXT','PAR',QList.any,QTag.imported,gImportEuronext,bDefault=False)
-#registerImportConnector('EURONEXT','PAR',QList.system,QTag.imported,gImportEuronext,bDefault=True)
-registerImportConnector('EURONEXT','PAR',QList.indices,QTag.imported,gImportEuronext,bDefault=True)
-registerImportConnector('EURONEXT','PAR',QList.trackers,QTag.imported,gImportEuronext,bDefault=True)
-registerImportConnector('EURONEXT','PAR',QList.bonds,QTag.imported,gImportEuronext,bDefault=True)
+gImportRegistry.register('EURONEXT','PAR',QList.any,QTag.imported,gImportEuronext,bDefault=False)
+#gImportRegistry.register('EURONEXT','PAR',QList.system,QTag.imported,gImportEuronext,bDefault=True)
+gImportRegistry.register('EURONEXT','PAR',QList.indices,QTag.imported,gImportEuronext,bDefault=True)
+gImportRegistry.register('EURONEXT','PAR',QList.trackers,QTag.imported,gImportEuronext,bDefault=True)
+gImportRegistry.register('EURONEXT','PAR',QList.bonds,QTag.imported,gImportEuronext,bDefault=True)
 
-registerImportConnector('EURONEXT','BRU',QList.any,QTag.imported,gImportEuronext,bDefault=False)
-#registerImportConnector('EURONEXT','BRU',QList.system,QTag.imported,gImportEuronext,bDefault=True)
-registerImportConnector('EURONEXT','BRU',QList.indices,QTag.imported,gImportEuronext,bDefault=True)
-registerImportConnector('EURONEXT','BRU',QList.trackers,QTag.imported,gImportEuronext,bDefault=True)
-registerImportConnector('EURONEXT','BRU',QList.bonds,QTag.imported,gImportEuronext,bDefault=True)
+gImportRegistry.register('EURONEXT','BRU',QList.any,QTag.imported,gImportEuronext,bDefault=False)
+#gImportRegistry.register('EURONEXT','BRU',QList.system,QTag.imported,gImportEuronext,bDefault=True)
+gImportRegistry.register('EURONEXT','BRU',QList.indices,QTag.imported,gImportEuronext,bDefault=True)
+gImportRegistry.register('EURONEXT','BRU',QList.trackers,QTag.imported,gImportEuronext,bDefault=True)
+gImportRegistry.register('EURONEXT','BRU',QList.bonds,QTag.imported,gImportEuronext,bDefault=True)
 
-registerImportConnector('EURONEXT','AMS',QList.any,QTag.imported,gImportEuronext,bDefault=False)
-#registerImportConnector('EURONEXT','AMS',QList.system,QTag.imported,gImportEuronext,bDefault=True)
-registerImportConnector('EURONEXT','AMS',QList.indices,QTag.imported,gImportEuronext,bDefault=True)
-registerImportConnector('EURONEXT','AMS',QList.trackers,QTag.imported,gImportEuronext,bDefault=True)
-registerImportConnector('EURONEXT','AMS',QList.bonds,QTag.imported,gImportEuronext,bDefault=True)
+gImportRegistry.register('EURONEXT','AMS',QList.any,QTag.imported,gImportEuronext,bDefault=False)
+#gImportRegistry.register('EURONEXT','AMS',QList.system,QTag.imported,gImportEuronext,bDefault=True)
+gImportRegistry.register('EURONEXT','AMS',QList.indices,QTag.imported,gImportEuronext,bDefault=True)
+gImportRegistry.register('EURONEXT','AMS',QList.trackers,QTag.imported,gImportEuronext,bDefault=True)
+gImportRegistry.register('EURONEXT','AMS',QList.bonds,QTag.imported,gImportEuronext,bDefault=True)
 
-registerImportConnector('EURONEXT','LIS',QList.any,QTag.imported,gImportEuronext,bDefault=False)
-#registerImportConnector('EURONEXT','LIS',QList.system,QTag.imported,gImportEuronext,bDefault=True)
-registerImportConnector('EURONEXT','LIS',QList.indices,QTag.imported,gImportEuronext,bDefault=True)
-registerImportConnector('EURONEXT','LIS',QList.trackers,QTag.imported,gImportEuronext,bDefault=True)
-registerImportConnector('EURONEXT','LIS',QList.bonds,QTag.imported,gImportEuronext,bDefault=True)
+gImportRegistry.register('EURONEXT','LIS',QList.any,QTag.imported,gImportEuronext,bDefault=False)
+#gImportRegistry.register('EURONEXT','LIS',QList.system,QTag.imported,gImportEuronext,bDefault=True)
+gImportRegistry.register('EURONEXT','LIS',QList.indices,QTag.imported,gImportEuronext,bDefault=True)
+gImportRegistry.register('EURONEXT','LIS',QList.trackers,QTag.imported,gImportEuronext,bDefault=True)
+gImportRegistry.register('EURONEXT','LIS',QList.bonds,QTag.imported,gImportEuronext,bDefault=True)
 
-registerImportConnector('ALTERNEXT','PAR',QList.any,QTag.imported,gImportEuronext,bDefault=False)
-#registerImportConnector('ALTERNEXT','PAR',QList.system,QTag.imported,gImportEuronext,bDefault=True)
-registerImportConnector('ALTERNEXT','PAR',QList.indices,QTag.imported,gImportEuronext,bDefault=True)
+gImportRegistry.register('ALTERNEXT','PAR',QList.any,QTag.imported,gImportEuronext,bDefault=False)
+#gImportRegistry.register('ALTERNEXT','PAR',QList.system,QTag.imported,gImportEuronext,bDefault=True)
+gImportRegistry.register('ALTERNEXT','PAR',QList.indices,QTag.imported,gImportEuronext,bDefault=True)
 
-registerImportConnector('ALTERNEXT','BRU',QList.any,QTag.imported,gImportEuronext,bDefault=False)
-registerImportConnector('ALTERNEXT','AMS',QList.any,QTag.imported,gImportEuronext,bDefault=False)
-registerImportConnector('ALTERNEXT','LIS',QList.any,QTag.imported,gImportEuronext,bDefault=False)
+gImportRegistry.register('ALTERNEXT','BRU',QList.any,QTag.imported,gImportEuronext,bDefault=False)
+gImportRegistry.register('ALTERNEXT','AMS',QList.any,QTag.imported,gImportEuronext,bDefault=False)
+gImportRegistry.register('ALTERNEXT','LIS',QList.any,QTag.imported,gImportEuronext,bDefault=False)
 
-registerImportConnector('PARIS MARCHE LIBRE','PAR',QList.any,QTag.imported,gImportEuronext,bDefault=False)
-#registerImportConnector('PARIS MARCHE LIBRE','PAR',QList.system,QTag.imported,gImportEuronext,bDefault=True)
-#registerImportConnector('PARIS MARCHE LIBRE','PAR',QList.indices,QTag.imported,gImportEuronext,bDefault=True)
-registerImportConnector('BRUXELLES MARCHE LIBRE','BRU',QList.any,QTag.imported,gImportEuronext,bDefault=False)
+gImportRegistry.register('PARIS MARCHE LIBRE','PAR',QList.any,QTag.imported,gImportEuronext,bDefault=False)
+#gImportRegistry.register('PARIS MARCHE LIBRE','PAR',QList.system,QTag.imported,gImportEuronext,bDefault=True)
+#gImportRegistry.register('PARIS MARCHE LIBRE','PAR',QList.indices,QTag.imported,gImportEuronext,bDefault=True)
+gImportRegistry.register('BRUXELLES MARCHE LIBRE','BRU',QList.any,QTag.imported,gImportEuronext,bDefault=False)
 
 # ============================================================================
 # Test ME

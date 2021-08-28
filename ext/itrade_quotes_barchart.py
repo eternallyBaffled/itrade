@@ -47,7 +47,7 @@ import urllib2
 import itrade_config
 from itrade_logging import setLevel
 from itrade_defs import QList, QTag
-from itrade_ext import registerListSymbolConnector
+from itrade_ext import gListSymbolRegistry
 from itrade_connection import ITradeConnection
 
 # ============================================================================
@@ -168,8 +168,8 @@ def Import_ListOfQuotes_BARCHART(quotes,market='TOTRONTO EXCHANGE',dlg=None,x=0)
 # Export me
 # ============================================================================
 
-registerListSymbolConnector('TORONTO EXCHANGE','TOR',QList.any,QTag.list,Import_ListOfQuotes_BARCHART)
-registerListSymbolConnector('TORONTO VENTURE','TOR',QList.any,QTag.list,Import_ListOfQuotes_BARCHART)
+gListSymbolRegistry.register('TORONTO EXCHANGE','TOR',QList.any,QTag.list,Import_ListOfQuotes_BARCHART)
+gListSymbolRegistry.register('TORONTO VENTURE','TOR',QList.any,QTag.list,Import_ListOfQuotes_BARCHART)
 
 # ============================================================================
 # Test ME

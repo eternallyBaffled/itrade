@@ -46,7 +46,7 @@ import itrade_config
 import itrade_excel
 from itrade_logging import setLevel, info
 from itrade_defs import QList, QTag
-from itrade_ext import registerListSymbolConnector
+from itrade_ext import gListSymbolRegistry
 from itrade_connection import ITradeConnection
 
 # ============================================================================
@@ -134,7 +134,7 @@ def Import_ListOfQuotes_HKG(quotes,market='HONG KONG EXCHANGE',dlg=None,x=0):
 # ============================================================================
 
 if itrade_excel.canReadExcel:
-    registerListSymbolConnector('HONG KONG EXCHANGE','HKG',QList.any,QTag.list,Import_ListOfQuotes_HKG)
+    gListSymbolRegistry.register('HONG KONG EXCHANGE','HKG',QList.any,QTag.list,Import_ListOfQuotes_HKG)
 
 # ============================================================================
 # Test ME

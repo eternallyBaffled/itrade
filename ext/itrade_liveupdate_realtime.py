@@ -53,7 +53,7 @@ from itrade_logging import setLevel, debug, info
 from itrade_datation import jjmmaa2yyyymmdd
 from itrade_quotes import quotes
 from itrade_defs import QList, QTag
-from itrade_ext import registerLiveConnector
+from itrade_ext import gLiveRegistry
 from itrade_market import convertConnectorTimeToPlaceTime
 from itrade_connection import ITradeConnection
 
@@ -445,22 +445,22 @@ if __name__ == '__main__':
 gLiveRealTime = LiveUpdate_RealTime()
 gLiveAlternext = LiveUpdate_RealTime()
 
-registerLiveConnector('EURONEXT','PAR',QList.any,QTag.live,gLiveRealTime,bDefault=False)
-#registerLiveConnector('EURONEXT','BRU',QList.any,QTag.live,gLiveRealTime,bDefault=False)
-#registerLiveConnector('EURONEXT','AMS',QList.any,QTag.live,gLiveRealTime,bDefault=False)
-#registerLiveConnector('EURONEXT','LIS',QList.any,QTag.live,gLiveRealTime,bDefault=False)
-registerLiveConnector('EURONEXT','PAR',QList.indices,QTag.live,gLiveRealTime,bDefault=False)
-registerLiveConnector('EURONEXT','BRU',QList.indices,QTag.live,gLiveRealTime,bDefault=False)
-registerLiveConnector('EURONEXT','AMS',QList.indices,QTag.live,gLiveRealTime,bDefault=False)
-registerLiveConnector('EURONEXT','LIS',QList.indices,QTag.live,gLiveRealTime,bDefault=False)
-registerLiveConnector('ALTERNEXT','PAR',QList.any,QTag.live,gLiveRealTime,bDefault=False)
+gLiveRegistry.register('EURONEXT','PAR',QList.any,QTag.live,gLiveRealTime,bDefault=False)
+#gLiveRegistry.register('EURONEXT','BRU',QList.any,QTag.live,gLiveRealTime,bDefault=False)
+#gLiveRegistry.register('EURONEXT','AMS',QList.any,QTag.live,gLiveRealTime,bDefault=False)
+#gLiveRegistry.register('EURONEXT','LIS',QList.any,QTag.live,gLiveRealTime,bDefault=False)
+gLiveRegistry.register('EURONEXT','PAR',QList.indices,QTag.live,gLiveRealTime,bDefault=False)
+gLiveRegistry.register('EURONEXT','BRU',QList.indices,QTag.live,gLiveRealTime,bDefault=False)
+gLiveRegistry.register('EURONEXT','AMS',QList.indices,QTag.live,gLiveRealTime,bDefault=False)
+gLiveRegistry.register('EURONEXT','LIS',QList.indices,QTag.live,gLiveRealTime,bDefault=False)
+gLiveRegistry.register('ALTERNEXT','PAR',QList.any,QTag.live,gLiveRealTime,bDefault=False)
 
-#registerLiveConnector('ALTERNEXT','AMS',QList.any,QTag.live,gLiveRealTime,bDefault=False)
-#registerLiveConnector('ALTERNEXT','BRU',QList.any,QTag.live,gLiveRealTime,bDefault=False)
-#registerLiveConnector('ALTERNEXT','LIS',QList.any,QTag.live,gLiveRealTime,bDefault=False)
+#gLiveRegistry.register('ALTERNEXT','AMS',QList.any,QTag.live,gLiveRealTime,bDefault=False)
+#gLiveRegistry.register('ALTERNEXT','BRU',QList.any,QTag.live,gLiveRealTime,bDefault=False)
+#gLiveRegistry.register('ALTERNEXT','LIS',QList.any,QTag.live,gLiveRealTime,bDefault=False)
 
-registerLiveConnector('PARIS MARCHE LIBRE','PAR',QList.any,QTag.live,gLiveRealTime,bDefault=False)
-#registerLiveConnector('BRUXELLES MARCHE LIBRE','BRU',QList.any,QTag.live,gLiveRealTime,bDefault=False)
+gLiveRegistry.register('PARIS MARCHE LIBRE','PAR',QList.any,QTag.live,gLiveRealTime,bDefault=False)
+#gLiveRegistry.register('BRUXELLES MARCHE LIBRE','BRU',QList.any,QTag.live,gLiveRealTime,bDefault=False)
 
 # ============================================================================
 # Test ME

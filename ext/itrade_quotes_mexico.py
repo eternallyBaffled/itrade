@@ -49,7 +49,7 @@ import cookielib
 import itrade_config
 from itrade_logging import setLevel, debug
 from itrade_defs import QList, QTag
-from itrade_ext import registerListSymbolConnector
+from itrade_ext import gListSymbolRegistry
 from itrade_connection import ITradeConnection
 
 # ============================================================================
@@ -216,7 +216,7 @@ def Import_ListOfQuotes_MEX(quotes,market='MEXICO EXCHANGE',dlg=None,x=0):
 # Export me
 # ============================================================================
 
-registerListSymbolConnector('MEXICO EXCHANGE','MEX',QList.any,QTag.list,Import_ListOfQuotes_MEX)
+gListSymbolRegistry.register('MEXICO EXCHANGE','MEX',QList.any,QTag.list,Import_ListOfQuotes_MEX)
 
 # ============================================================================
 # Test ME
