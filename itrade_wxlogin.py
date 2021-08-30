@@ -192,7 +192,7 @@ def main():
     wx.HelpProvider_Set(provider)
     u = 'user'
     p = 'passwd'
-    from itrade_login_fortuneo import gLoginFortuneo
+    from ext.itrade_login_fortuneo import gLoginFortuneo
     u, p = login_UI(None, u, p, gLoginFortuneo)
     print(u, p)
 

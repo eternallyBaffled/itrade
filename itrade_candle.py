@@ -296,6 +296,7 @@ class Candle(object):
         else:
             self.m_type = CandleType.notype
 
+
 def main():
     import itrade_config
     from itrade_logging import setLevel
@@ -303,7 +304,6 @@ def main():
     setLevel(logging.INFO)
     itrade_config.app_header()
 
-    from itrade_candle import Candle
     c = Candle(10.0, 11.0, 9.0, 10.0)
     print('candle: %s - %s = doji' % (c, c.type()))
     c = Candle(11.0, 11.0, 9.0, 11.0)

@@ -310,15 +310,13 @@ class iTrade_wxDecision(sc.SizedPanel):
 #
 # ============================================================================
 
-if __name__ == '__main__':
+class WndTest(wx.Frame):
+    def __init__(self, parent,quote,portfolio):
+        wx.Frame.__init__(self,parent,wx.NewId(), 'WndTest', size = (600,190), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE)
+        self.m_decision = iTrade_wxDecision(self,quote,portfolio)
 
-    class WndTest(wx.Frame):
-        def __init__(self, parent,quote,portfolio):
-            wx.Frame.__init__(self,parent,wx.NewId(), 'WndTest', size = (600,190), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE)
-            self.m_decision = iTrade_wxDecision(self,quote,portfolio)
-
-            self.Fit()
-            self.SetMinSize(self.GetSize())
+        self.Fit()
+        self.SetMinSize(self.GetSize())
 
 # ============================================================================
 # Test me
@@ -330,9 +328,8 @@ def main():
     # load configuration
     import itrade_config
     itrade_config.load_config()
-    from itrade_local import setLang, gMessage
+    from itrade_local import setLang
     setLang('us')
-    gMessage.load()
     # load extensions
     import itrade_ext
     itrade_ext.loadExtensions(itrade_config.fileExtData, itrade_config.dirExtData)
@@ -340,7 +337,7 @@ def main():
     initQuotesModule()
     ticker = 'GTO'
     quote = quotes.lookupTicker(ticker)
-    info('%s: %s' % (ticker, quote))
+    info(u'{}: {}'.format(ticker, quote))
     from itrade_portfolio import initPortfolioModule, loadPortfolio
     initPortfolioModule()
     port = loadPortfolio('default')

@@ -263,10 +263,7 @@ class Currencies(object):
 # Export
 # ============================================================================
 
-try:
-    ignore(currencies)
-except NameError:
-    currencies = Currencies()
+currencies = Currencies()
 
 currencies.load()
 

@@ -128,6 +128,7 @@ def set_application_root_folder(folder):
     """Set the home folder of the application from which all other files and folders are derived."""
     global dirRoot
     dirRoot = folder
+    update_folders()
 
 
 dirRoot = ''
@@ -150,38 +151,59 @@ def ensure_folder(folder):
 def resolve_folder(folder):
     return os.path.join(application_root_folder(), folder)
 
-# directory for system data
-dirSysData = resolve_folder('data')
-# directory for brokers data
-dirBrokersData = resolve_folder('brokers')
-# directory for symbol lists
-dirSymbData = resolve_folder('symbols')
-# directory for extensions
-dirExtData = resolve_folder('ext')
 fileExtData = 'extensions.txt'
-# directory for indicators
-dirIndData = resolve_folder('indicators')
 fileIndData = 'indicators.txt'
-# directory for user data
-dirUserData = resolve_folder('usrdata')
-# directory for alerts
-dirAlerts = resolve_folder('alerts')
-# directory for quotes images
-dirImageData = resolve_folder('images')
-# directory for cache data (quote, window prop, ...)
-dirCacheData = resolve_folder('cache')
 # file to get the current portfolio
 fileCurrentPortfolio = 'portfolio.txt'
-# directory for importation
-dirImport = resolve_folder('import')
-# directory for exportation
-dirExport = resolve_folder('export')
-# directory for snapshots
-dirSnapshots = resolve_folder('snapshots')
-# directory for trading reports
-dirReports = resolve_folder('reports')
-# directory for image resources
-dirRes = resolve_folder('res')
+
+dirSysData = ''
+dirBrokersData = ''
+dirSymbData = ''
+dirExtData = ''
+dirIndData = ''
+dirUserData = ''
+dirAlerts = ''
+dirImageData = ''
+dirCacheData = ''
+dirImport = ''
+dirExport = ''
+dirSnapshots = ''
+dirReports = ''
+dirRes = ''
+
+def update_folders():
+    global dirSysData, dirBrokersData, dirSymbData, dirExtData, dirIndData, dirUserData, dirAlerts, dirImageData, dirCacheData, dirImport, dirExport, dirSnapshots, dirReports, dirRes
+    # directory for system data
+    dirSysData = resolve_folder('data')
+    # directory for brokers data
+    dirBrokersData = resolve_folder('brokers')
+    # directory for symbol lists
+    dirSymbData = resolve_folder('symbols')
+    # directory for extensions
+    dirExtData = resolve_folder('ext')
+    # directory for indicators
+    dirIndData = resolve_folder('indicators')
+    # directory for user data
+    dirUserData = resolve_folder('usrdata')
+    # directory for alerts
+    dirAlerts = resolve_folder('alerts')
+    # directory for quotes images
+    dirImageData = resolve_folder('images')
+    # directory for cache data (quote, window prop, ...)
+    dirCacheData = resolve_folder('cache')
+    # directory for importation
+    dirImport = resolve_folder('import')
+    # directory for exportation
+    dirExport = resolve_folder('export')
+    # directory for snapshots
+    dirSnapshots = resolve_folder('snapshots')
+    # directory for trading reports
+    dirReports = resolve_folder('reports')
+    # directory for image resources
+    dirRes = resolve_folder('res')
+
+
+update_folders()
 
 
 def ensure_setup():
@@ -627,11 +649,13 @@ def isConnected():
 # Test
 # ============================================================================
 
+
 def main():
     import logging
     from itrade_logging import setLevel
     setLevel(logging.INFO)
     app_header()
+    set_application_root_folder(os.environ['itrade_path'])
     load_config()
     saveConfig()
     print(__revision__)

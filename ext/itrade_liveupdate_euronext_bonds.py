@@ -350,15 +350,14 @@ class LiveUpdate_Euronext_bonds(object):
 # Export me
 # ============================================================================
 
-try:
-    ignore(gLiveEuronext)
 
-except NameError:
-    gLiveEuronext = LiveUpdate_Euronext_bonds()
-gLiveRegistry.register('EURONEXT','PAR',QList.bonds,QTag.live,gLiveEuronext,bDefault=True)
-gLiveRegistry.register('EURONEXT','BRU',QList.bonds,QTag.live,gLiveEuronext,bDefault=True)
-gLiveRegistry.register('EURONEXT','AMS',QList.bonds,QTag.live,gLiveEuronext,bDefault=True)
-gLiveRegistry.register('EURONEXT','LIS',QList.bonds,QTag.live,gLiveEuronext,bDefault=True)
+gLiveEuronextBonds = LiveUpdate_Euronext_bonds()
+
+
+gLiveRegistry.register('EURONEXT','PAR',QList.bonds,QTag.live,gLiveEuronextBonds,bDefault=True)
+gLiveRegistry.register('EURONEXT','BRU',QList.bonds,QTag.live,gLiveEuronextBonds,bDefault=True)
+gLiveRegistry.register('EURONEXT','AMS',QList.bonds,QTag.live,gLiveEuronextBonds,bDefault=True)
+gLiveRegistry.register('EURONEXT','LIS',QList.bonds,QTag.live,gLiveEuronextBonds,bDefault=True)
 
 # ============================================================================
 # Test ME
@@ -366,21 +365,21 @@ gLiveRegistry.register('EURONEXT','LIS',QList.bonds,QTag.live,gLiveEuronext,bDef
 # ============================================================================
 
 def test(ticker):
-    if gLiveEuronext.iscacheddataenoughfreshq():
-        data = gLiveEuronext.getcacheddata(ticker)
+    if gLiveEuronextBonds.iscacheddataenoughfreshq():
+        data = gLiveEuronextBonds.getcacheddata(ticker)
         if data:
             debug(data)
         else:
             debug("nodata")
 
-    elif gLiveEuronext.connect():
-        state = gLiveEuronext.getstate()
+    elif gLiveEuronextBonds.connect():
+        state = gLiveEuronextBonds.getstate()
         if state:
             debug("state=%s" % state)
 
             quote = quotes.lookupTicker(ticker,'EURONEXT')
             if quote:
-                data = gLiveEuronext.getdata(quote)
+                data = gLiveEuronextBonds.getdata(quote)
                 if data is not None:
                     if data:
                         info(data)
@@ -393,7 +392,7 @@ def test(ticker):
         else:
             print("getstate() failure :-(")
 
-        gLiveEuronext.disconnect()
+        gLiveEuronextBonds.disconnect()
     else:
         print("connect() failure :-(")
 
@@ -409,7 +408,7 @@ if __name__ == '__main__':
 
     test('OSI')
     test('GTO')
-    gLiveEuronext.cacheddatanotfresh()
+    gLiveEuronextBonds.cacheddatanotfresh()
     test('GTO')
 
 # ============================================================================

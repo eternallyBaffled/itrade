@@ -304,6 +304,7 @@ class ITradeCookies(object):
         """get cookie string. If not, empty string is return"""
         return self.m_cookie
 
+
 def main():
     import itrade_config
     from itrade_logging import setLevel

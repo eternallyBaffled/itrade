@@ -94,10 +94,8 @@ class ConnectorRegistry(object):
 # Export Live and Import Registries
 # ============================================================================
 
-try:
-    ignore(gLiveRegistry)
-except NameError:
-    gLiveRegistry = ConnectorRegistry()
+
+gLiveRegistry = ConnectorRegistry()
 
 
 def getDefaultLiveConnector(market, lst, place=None):
@@ -114,19 +112,15 @@ def getDefaultLiveConnector(market, lst, place=None):
         print(u'No default connector {} for market :'.format(market),' qlist:', lst)
     return ret
 
-try:
-    ignore(gImportRegistry)
-except NameError:
-    gImportRegistry = ConnectorRegistry()
+
+gImportRegistry = ConnectorRegistry()
 
 # ============================================================================
 # Export ListSymbol Registry
 # ============================================================================
 
-try:
-    ignore(gListSymbolRegistry)
-except NameError:
-    gListSymbolRegistry = ConnectorRegistry()
+
+gListSymbolRegistry = ConnectorRegistry()
 
 # ============================================================================
 # loadExtensions()

@@ -180,10 +180,8 @@ class News_Balo(object):
 # Export me
 # ============================================================================
 
-try:
-    ignore(gNewsBalo)
-except NameError:
-    gNewsBalo = News_Balo()
+
+gNewsBalo = News_Balo()
 
 # ============================================================================
 # Test me

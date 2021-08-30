@@ -198,10 +198,8 @@ class News_Boursorama(object):
 # Export me
 # ============================================================================
 
-try:
-    ignore(gNewsBoursorama)
-except NameError:
-    gNewsBoursorama = News_Boursorama()
+
+gNewsBoursorama = News_Boursorama()
 
 # ============================================================================
 # Test me

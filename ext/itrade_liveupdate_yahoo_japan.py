@@ -462,10 +462,9 @@ class LiveUpdate_yahoojp(object):
 # Export me
 # ============================================================================
 
-try:
-    ignore(gLiveYahoojp)
-except NameError:
-    gLiveYahoojp = LiveUpdate_yahoojp()
+
+gLiveYahoojp = LiveUpdate_yahoojp()
+
 
 gLiveRegistry.register('TOKYO EXCHANGE','TKS',QList.any,QTag.differed,gLiveYahoojp,bDefault=True)
 

@@ -142,10 +142,8 @@ class News_Google(object):
 # Export me
 # ============================================================================
 
-try:
-    ignore(gNewsGoogle)
-except NameError:
-    gNewsGoogle = News_Google()
+
+gNewsGoogle = News_Google()
 
 # ============================================================================
 # Test me

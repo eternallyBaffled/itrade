@@ -41,7 +41,7 @@ import os
 
 import itrade_config
 import itrade_csv
-from itrade_logging import setLevel, debug
+from itrade_logging import debug
 
 # ============================================================================
 # FeeRule

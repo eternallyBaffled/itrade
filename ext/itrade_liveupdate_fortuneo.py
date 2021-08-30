@@ -898,10 +898,7 @@ class LiveUpdate_fortuneo(object):
 # Export me
 # ============================================================================
 
-try:
-    ignore(gLiveFortuneo)
-except NameError:
-    gLiveFortuneo = LiveUpdate_fortuneo()
+gLiveFortuneo = LiveUpdate_fortuneo()
 
 gLiveRegistry.register('EURONEXT','PAR',QList.any,QTag.live,gLiveFortuneo,bDefault=True)
 gLiveRegistry.register('ALTERNEXT','PAR',QList.any,QTag.live,gLiveFortuneo,bDefault=True)

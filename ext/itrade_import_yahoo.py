@@ -191,10 +191,9 @@ class Import_yahoo(object):
 # Export me
 # ============================================================================
 
-try:
-    ignore(gImportYahoo)
-except NameError:
-    gImportYahoo = Import_yahoo()
+
+gImportYahoo = Import_yahoo()
+
 
 gImportRegistry.register('NASDAQ','NYC',QList.any,QTag.imported,gImportYahoo,bDefault=True)
 gImportRegistry.register('NYSE','NYC',QList.any,QTag.imported,gImportYahoo,bDefault=True)

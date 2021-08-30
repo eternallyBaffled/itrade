@@ -95,6 +95,7 @@ def write(fn, fd, lines):
         print("Can't open the file %s/%s for writing!" % (fn, fd))
         return None
 
+
 def main():
     from itrade_logging import setLevel
     import itrade_config

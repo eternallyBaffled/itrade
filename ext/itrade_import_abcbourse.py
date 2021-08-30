@@ -176,10 +176,7 @@ class Import_ABCBourse(object):
 # Export me
 # ============================================================================
 
-try:
-    ignore(gImportABC)
-except NameError:
-    gImportABC = Import_ABCBourse()
+gImportABC = Import_ABCBourse()
 
 #registerImportConnector('EURONEXT','PAR',QList.any,QTag.imported,gImportABC,bDefault=False)
 #registerImportConnector('ALTERNEXT','PAR',QList.any,QTag.imported,gImportABC,bDefault=False)

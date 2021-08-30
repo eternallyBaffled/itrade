@@ -141,10 +141,9 @@ class Login_boursorama(object):
 # Export me
 # ============================================================================
 
-try:
-    ignore(gLoginBoursorama)
-except NameError:
-    gLoginBoursorama = Login_boursorama()
+
+gLoginBoursorama = Login_boursorama()
+
 
 gLoginRegistry.register(gLoginBoursorama.name(),gLoginBoursorama)
 

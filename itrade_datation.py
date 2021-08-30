@@ -383,13 +383,8 @@ class Datation(object):
 # Install the Calendar system
 # ============================================================================
 
-if __name__ == '__main__':
-    setLevel(logging.INFO)
 
-try:
-    ignore(gCal)
-except NameError:
-    gCal = Calendar()
+gCal = Calendar()
 
 # ============================================================================
 # Test

@@ -143,12 +143,15 @@ def quote_reference(isin, ticker, market, place):
 # ============================================================================
 
 class Quote(object):
-    def __init__(self, key, isin, name, ticker, market, currency, place, country, list=QList.system):
+    def __init__(self, key, isin, name, ticker, market, currency, place, country, list_type=QList.system):
         self.m_key = key
         self.m_isin = isin
         self.m_defaultname = name
+        self.m_name = name
         self.m_defaultticker = ticker
-        self.m_list = list
+        self.m_ticker = ticker
+        self.m_list = list_type
+        self.m_currency = "N/A"
 
         if not place:
             self.m_place = market2place(market)
@@ -1593,8 +1596,9 @@ def main():
     setLevel(logging.INFO)
     # load configuration
     itrade_config.app_header()
-    itrade_config.ensure_setup()
+    itrade_config.set_application_root_folder(os.environ['itrade_path'])
     itrade_config.load_config()
+    itrade_config.ensure_setup()
     from itrade_local import setLang, gMessage
     setLang('us')
     gMessage.load()

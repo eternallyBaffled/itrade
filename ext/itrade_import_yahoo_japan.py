@@ -255,10 +255,9 @@ class ImportYahoojp(object):
 # Export me
 # ============================================================================
 
-try:
-    ignore(gImportYahoojp)
-except NameError:
-    gImportYahoojp = ImportYahoojp()
+
+gImportYahoojp = ImportYahoojp()
+
 
 gImportRegistry.register('TOKYO EXCHANGE', 'TKS', QList.any, QTag.imported, gImportYahoojp, bDefault=True)
 

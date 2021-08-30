@@ -231,10 +231,11 @@ class Import_euronext_bonds(object):
 # ============================================================================
 # Export me
 # ============================================================================
-try:
-    ignore(gImportEuronext)
-except NameError:
-    gImportEuronext = Import_euronext_bonds()
+
+
+gImportEuronext = Import_euronext_bonds()
+
+
 gImportRegistry.register('EURONEXT','PAR',QList.bonds,QTag.imported,gImportEuronext,bDefault=True)
 gImportRegistry.register('EURONEXT','BRU',QList.bonds,QTag.imported,gImportEuronext,bDefault=True)
 gImportRegistry.register('EURONEXT','AMS',QList.bonds,QTag.imported,gImportEuronext,bDefault=True)

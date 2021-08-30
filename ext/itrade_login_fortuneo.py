@@ -272,10 +272,9 @@ class Login_fortuneo(object):
 # Export me
 # ============================================================================
 
-try:
-    ignore(gLoginFortuneo)
-except NameError:
-    gLoginFortuneo = Login_fortuneo()
+
+gLoginFortuneo = Login_fortuneo()
+
 
 gLoginRegistry.register(gLoginFortuneo.name(),gLoginFortuneo)
 

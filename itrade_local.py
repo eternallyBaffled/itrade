@@ -285,13 +285,11 @@ class LocalMessages(object):
 # Install the Local system
 # ============================================================================
 
-try:
-    ignore(gMessage)
-except NameError:
-    gMessage = LocalMessages()
+
+gMessage = LocalMessages()
+
 
 message = gMessage.getMsg
-msg = gMessage.getMsg
 setLang = gMessage.setLang
 getLang = gMessage.getLang
 setLocale = gMessage.setLocale
@@ -307,7 +305,6 @@ def main():
     itrade_logging.setLevel(logging.INFO)
     print('default (detection): ', gMessage.getAutoDetectedLang())
     setLang('us')
-    gMessage.load()
     print('pack us: %s' % gMessage.getLangFile())
     setLang('fr')
     gMessage.load()

@@ -382,10 +382,9 @@ class LiveUpdate_yahoo(object):
 # Export me
 # ============================================================================
 
-try:
-    ignore(gLiveYahoo)
-except NameError:
-    gLiveYahoo = LiveUpdate_yahoo()
+
+gLiveYahoo = LiveUpdate_yahoo()
+
 
 gLiveRegistry.register('NASDAQ','NYC',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
 gLiveRegistry.register('NYSE','NYC',QList.any,QTag.differed,gLiveYahoo,bDefault=True)

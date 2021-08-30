@@ -71,10 +71,8 @@ class Alerts_SRD(object):
 # Export me
 # ============================================================================
 
-try:
-    ignore(gAlertsSRD)
-except NameError:
-    gAlertsSRD = Alerts_SRD()
+
+gAlertsSRD = Alerts_SRD()
 
 alerts.register('SRD', gAlertsSRD)
 

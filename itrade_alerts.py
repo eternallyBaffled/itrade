@@ -269,7 +269,7 @@ class Alerts(object):
 
         for x, eachPlugin in enumerate(self.listPlugins()):
             print(u'Alerts: scan %d' % x)
-            eachPlugin.scan(dlg,x)
+            eachPlugin.scan(dlg, x)
 
     # ---[ filters ] ---------------------------------------
 
@@ -277,10 +277,8 @@ class Alerts(object):
 # Export singleton
 # ============================================================================
 
-try:
-    ignore(alerts)
-except NameError:
-    alerts = Alerts()
+
+alerts = Alerts()
 
 
 def main():

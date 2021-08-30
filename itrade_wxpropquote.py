@@ -295,20 +295,17 @@ class iTradeQuotePropertiesPanel(wx.Panel):
         if dlg: dlg.Destroy()
 
     def OnExport(self,event):
-        dlg = wx.FileDialog(self.m_parent, message('export_to_file'), itrade_config.dirExport, "", "*.txt", wx.SAVE|wx.OVERWRITE_PROMPT)
-        if dlg.ShowModal() == wx.ID_OK:
-            dirname  = dlg.GetDirectory()
-            filename = dlg.GetFilename()
-            file = os.path.join(dirname,filename)
-            if itrade_config.verbose:
-                print('Export file %s for quote %s' % (file,self.m_quote.key()))
+        with  wx.FileDialog(self.m_parent, message('export_to_file'), itrade_config.dirExport, "", "*.txt", wx.SAVE|wx.OVERWRITE_PROMPT) as dlg:
+            if dlg.ShowModal() == wx.ID_OK:
+                dirname  = dlg.GetDirectory()
+                filename = dlg.GetFilename()
+                file = os.path.join(dirname,filename)
+                if itrade_config.verbose:
+                    print('Export file %s for quote %s' % (file,self.m_quote.key()))
 
-            self.m_quote.saveTrades(file)
+                self.m_quote.saveTrades(file)
 
-            iTradeInformation(self,message('exported_to_file') % file, message('export_to_file'))
-
-            #
-        dlg.Destroy()
+                iTradeInformation(self,message('exported_to_file') % file, message('export_to_file'))
 
     def saveThenDisplayReference(self):
         self.editTicker.SetLabel(self.m_quote.ticker())
