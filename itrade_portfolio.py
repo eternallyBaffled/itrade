@@ -627,9 +627,6 @@ class Portfolio(object):
     def operations(self):
         return self.m_operations
 
-    def date(self):
-        return self.m_date
-
     # ---[ initialise internal structure ]-------------------------------------
 
     def _init_(self):
