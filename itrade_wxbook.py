@@ -44,7 +44,7 @@ import os
 # iTrade system
 import itrade_config
 from itrade_logging import debug, info
-from itrade_local import message, gMessage, getLang
+from itrade_local import message, gMessage
 from itrade_portfolio import loadPortfolio, OPERATION_BUY, OPERATION_SELL
 from itrade_matrix import createMatrix
 from itrade_quotes import quotes
@@ -796,7 +796,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
             self.NewContext(dp)
 
     def OnSupport(self,e):
-        id = getLang()
+        id = gMessage.getLang()
         if id in itrade_config.supportURL:
             url = itrade_config.supportURL[id]
         else:
@@ -804,7 +804,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         iTradeLaunchBrowser(url,new=True)
 
     def OnContent(self,e):
-        id = getLang()
+        id = gMessage.getLang()
         if id in itrade_config.manualURL:
             url = itrade_config.manualURL[id]
         else:
@@ -815,7 +815,7 @@ class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
         iTradeLaunchBrowser(itrade_config.bugTrackerURL,new=True)
 
     def OnForum(self,e):
-        id = getLang()
+        id = gMessage.getLang()
         if id in itrade_config.forumURL:
             url = itrade_config.forumURL[id]
         else:

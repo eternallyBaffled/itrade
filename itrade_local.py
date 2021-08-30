@@ -97,7 +97,7 @@ nl_groupsep = {
     }
 
 def getGroupChar():
-    ll = getLang()
+    ll = gMessage.getLang()
     if ll in nl_groupsep:
         return nl_groupsep[ll]
     else:
@@ -117,7 +117,7 @@ nl_decsep = {
     }
 
 def getDecimalChar():
-    ll = getLang()
+    ll = gMessage.getLang()
     if ll in nl_decsep:
         return nl_decsep[ll]
     else:
@@ -137,7 +137,7 @@ nl_shortdatefmt = {
     }
 
 def getShortDateFmt():
-    ll = getLang()
+    ll = gMessage.getLang()
     if ll in nl_shortdatefmt:
         return nl_shortdatefmt[ll]
     else:
@@ -291,9 +291,7 @@ gMessage = LocalMessages()
 
 message = gMessage.getMsg
 setLang = gMessage.setLang
-getLang = gMessage.getLang
 setLocale = gMessage.setLocale
-getLocale = gMessage.getLocale
 
 # ============================================================================
 # Test me
@@ -343,22 +341,22 @@ def main():
     print()
     import datetime
     setLang('fr')
-    print('6 décembre 2005 en francais (%s) : ' % getLocale(),
+    print('6 décembre 2005 en francais (%s) : ' % gMessage.getLocale(),
           datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x '))
     setLang('en')
-    print('6th december 2005 in english (%s) : ' % getLocale(),
+    print('6th december 2005 in english (%s) : ' % gMessage.getLocale(),
           datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x '))
     setLang('pt')
-    print('6th december 2005 in portuguese (%s) : ' % getLocale(),
+    print('6th december 2005 in portuguese (%s) : ' % gMessage.getLocale(),
           datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x '))
     setLang('de')
-    print('6th december 2005 in deutch (%s) : ' % getLocale(),
+    print('6th december 2005 in deutch (%s) : ' % gMessage.getLocale(),
           datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x '))
     setLang('it')
-    print('6 dicembre 2005 in italian (%s) : ' % getLocale(),
+    print('6 dicembre 2005 in italian (%s) : ' % gMessage.getLocale(),
           datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x '))
     setLang()
-    print('6th december 2005 in default lang (%s) : ' % getLocale(),
+    print('6th december 2005 in default lang (%s) : ' % gMessage.getLocale(),
           datetime.datetime(2005, 12, 6, 12, 13, 14).strftime(' %x '))
 
 

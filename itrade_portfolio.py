@@ -47,7 +47,7 @@ from itrade_logging import setLevel, debug, info
 import itrade_datation
 from itrade_quotes import quotes, QuoteType
 from itrade_matrix import createMatrix
-from itrade_local import message, getLang
+from itrade_local import message, gMessage
 import itrade_csv
 from itrade_currency import currency2symbol, currencies
 from itrade_vat import country2vat
@@ -1282,7 +1282,7 @@ class Portfolios(object):
                 item = itrade_csv.parse(eachLine,6)
                 if item:
                     #info('%s :: %s' % (eachLine,item))
-                    vat = country2vat(getLang())
+                    vat = country2vat(gMessage.getLang())
                     if len(item)>=5:
                         currency = item[4]
                         if len(item)>=6:
@@ -1333,7 +1333,7 @@ def loadPortfolio(fn=None):
             fn = 'default'
     debug('loadPortfolio %s',fn)
 
-    # create the porfolio
+    # create the portfolio
     portfolios.reinit()
     p = portfolios.portfolio(fn)
     if p is None:

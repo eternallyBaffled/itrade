@@ -41,7 +41,7 @@ import logging
 # iTrade system
 import itrade_config
 from itrade_logging import setLevel, info
-from itrade_local import message,getLang
+from itrade_local import message, gMessage
 
 # wxPython system
 if not itrade_config.nowxversion:
@@ -225,7 +225,7 @@ class iTrade_wxPanelPrint(object):
         self.m_parent = parent
 
         self.m_pd = wx.PrintData()
-        if getLang()=='us':
+        if gMessage.getLang()=='us':
             self.m_pd.SetPaperId(wx.PAPER_LETTER)
         else:
             self.m_pd.SetPaperId(wx.PAPER_A4)
