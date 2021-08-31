@@ -288,9 +288,7 @@ class LocalMessages(object):
 
 gMessage = LocalMessages()
 
-
 message = gMessage.getMsg
-setLocale = gMessage.setLocale
 
 # ============================================================================
 # Test me

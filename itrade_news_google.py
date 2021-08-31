@@ -45,7 +45,7 @@ import string
 
 # iTrade system
 from itrade_logging import setLevel, info, debug
-from itrade_local import setLocale
+from itrade_local import gMessage
 
 # feedparser
 import feedparser
@@ -101,7 +101,7 @@ class News_Google(object):
         flux.feed.title = feed.feed.title
 
         # force local to 'en' : strptime() will work correctly
-        setLocale('en')
+        gMessage.setLocale('en')
 
         for eachEntry in feed.entries:
             entry = _FeedEntry()
@@ -117,7 +117,7 @@ class News_Google(object):
             flux.entries.append(entry)
 
         # restore locale
-        setLocale()
+        gMessage.setLocale()
 
         #info('Feed %s',flux.feed.title)
         return flux

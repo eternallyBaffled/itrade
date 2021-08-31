@@ -109,7 +109,6 @@ class Volume(object):
 # ============================================================================
 
 def quote_reference(isin, ticker, market, place):
-    global quote
     # print 'quote_reference: isin={} ticker={} market={} place={}'.format(isin, ticker, market, place)
     if isin and isin != '':
         if market is None or market == '':
