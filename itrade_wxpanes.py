@@ -403,9 +403,7 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
 
     def populateMatrixEnd(self):
         # fix the item data
-        items = self.itemDataMap.items()
-        for x in range(len(items)):
-            key, data = items[x]
+        for x, key in enumerate(self.itemDataMap):
             self.m_list.SetItemData(x, key)
 
         # adjust columns width
@@ -415,7 +413,7 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
         self.SortColumn()
 
         # default selection
-        if len(items)>0:
+        if len(self.itemDataMap) > 0:
             self.m_currentItem = 0
             self.m_list.SetItemState(0, wx.LIST_STATE_SELECTED, wx.LIST_STATE_SELECTED)
             self.m_list.EnsureVisible(self.m_currentItem)
