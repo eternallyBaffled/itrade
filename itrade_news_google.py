@@ -153,8 +153,9 @@ def main():
     setLevel(logging.INFO)
     import itrade_config
     itrade_config.app_header()
-    from itrade_local import setLang
-    setLang('fr')
+    from itrade_local import gMessage
+    gMessage.setLang('fr')
+    gMessage.load()
     from itrade_quotes import quotes
     quote = quotes.lookupTicker('AAPL')
     print(gNewsGoogle.feedQuote(quote))

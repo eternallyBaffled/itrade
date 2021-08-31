@@ -518,7 +518,6 @@ class iTradeQuoteAnalysisPanel(wx.Window):
 # ============================================================================
 
 class iTradeQuoteLivePanel(wx.Panel):
-
     def __init__(self,parent,gparent,id,quote):
         wx.Panel.__init__(self, parent, id)
         self.m_id = id
@@ -1269,8 +1268,8 @@ def main():
     # load configuration
     import itrade_config
     itrade_config.load_config()
-    from itrade_local import setLang
-    setLang('us')
+    from itrade_local import gMessage
+    gMessage.setLang('us')
     # load extensions
     import itrade_ext
     itrade_ext.loadExtensions(itrade_config.fileExtData, itrade_config.dirExtData)

@@ -1599,8 +1599,8 @@ def main():
     itrade_config.set_application_root_folder(os.environ['itrade_path'])
     itrade_config.load_config()
     itrade_config.ensure_setup()
-    from itrade_local import setLang, gMessage
-    setLang('us')
+    from itrade_local import gMessage
+    gMessage.setLang('us')
     gMessage.load()
     # load euronext extensions
     import itrade_ext

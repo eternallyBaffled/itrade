@@ -328,8 +328,9 @@ def main():
     # load configuration
     import itrade_config
     itrade_config.load_config()
-    from itrade_local import setLang
-    setLang('us')
+    from itrade_local import gMessage
+    gMessage.setLang('us')
+    gMessage.load()
     # load extensions
     import itrade_ext
     itrade_ext.loadExtensions(itrade_config.fileExtData, itrade_config.dirExtData)

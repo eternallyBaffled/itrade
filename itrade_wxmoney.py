@@ -375,8 +375,8 @@ if __name__ == '__main__':
 
     app = wx.App(False)
 
-    from itrade_local import setLang, gMessage
-    setLang('us')
+    from itrade_local import gMessage
+    gMessage.setLang('us')
     gMessage.load()
 
     port,matrix = cmdline_evaluatePortfolio()

@@ -708,8 +708,9 @@ class Portfolio(object):
             pass
 
     def rename(self,nname):
-        # rename all files used by the portfolio
-
+        """
+        rename all files used by the portfolio
+        """
         fn = self.filepath('operations')
         nfn = self.filenamepath(nname,'operations')
         try:

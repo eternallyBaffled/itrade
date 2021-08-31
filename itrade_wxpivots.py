@@ -112,8 +112,8 @@ def main():
             self.m_quote = quote
 
     setLevel(logging.INFO)
-    from itrade_local import setLang, gMessage
-    setLang('us')
+    from itrade_local import gMessage
+    gMessage.setLang('us')
     gMessage.load()
     ticker = 'AXL'
     from itrade_quotes import quotes

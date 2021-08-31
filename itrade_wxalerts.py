@@ -252,8 +252,8 @@ def main():
     setLevel(logging.INFO)
     alerts.load()
     app = wx.App(False)
-    from itrade_local import setLang, gMessage
-    setLang('us')
+    from itrade_local import gMessage
+    gMessage.setLang('us')
     gMessage.load()
     import itrade_wxportfolio
     port = itrade_wxportfolio.select_iTradePortfolio(win=None, dportfolio='default', operation='select')

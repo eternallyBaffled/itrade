@@ -576,48 +576,43 @@ class iTrade_wxLive(wx.Panel):
             ssi = ssi + 1
         return ssi
 
-# ============================================================================
-# WndTest
-#
-# ============================================================================
 
-if __name__ == '__main__':
+class WndTest(wx.Frame,iTrade_wxLiveMixin):
+    def __init__(self, parent,quote):
+        wx.Frame.__init__(self,parent,wx.NewId(), 'WndTest', size = (600,190), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE)
+        iTrade_wxLiveMixin.__init__(self)
+        self.m_live = iTrade_wxLive(self,parent,quote)
+        self.m_quote = quote
+        self.registerLive(quote,itrade_config.refreshLive,quote.key())
 
-    class WndTest(wx.Frame,iTrade_wxLiveMixin):
-        def __init__(self, parent,quote):
-            wx.Frame.__init__(self,parent,wx.NewId(), 'WndTest', size = (600,190), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE)
-            iTrade_wxLiveMixin.__init__(self)
-            self.m_live = iTrade_wxLive(self,parent,quote)
-            self.m_quote = quote
-            self.registerLive(quote,itrade_config.refreshLive,quote.key())
+        wx.EVT_CLOSE(self, self.OnCloseWindow)
+        EVT_UPDATE_LIVE(self, self.OnLive)
 
-            wx.EVT_CLOSE(self, self.OnCloseWindow)
-            EVT_UPDATE_LIVE(self, self.OnLive)
+        self.startLive()
 
-            self.startLive()
+    def OnLive(self,event):
+        #print event.param
+        self.m_live.refresh()
+        self.m_live.Refresh(False)
+        event.Skip()
 
-        def OnLive(self,event):
-            #print event.param
-            self.m_live.refresh()
-            self.m_live.Refresh(False)
-            event.Skip()
-
-        def OnCloseWindow(self,event):
-            self.stopLive(bBusy=True)
-            self.Destroy()
+    def OnCloseWindow(self,event):
+        self.stopLive(bBusy=True)
+        self.Destroy()
 
 # ============================================================================
 # Test me
 # ============================================================================
 
 def main():
-    global ticker, quote
+    import os
     setLevel(logging.INFO)
     # load configuration
     import itrade_config
+    itrade_config.set_application_root_folder(os.environ['itrade_path'])
     itrade_config.load_config()
-    from itrade_local import setLang, gMessage
-    setLang('us')
+    from itrade_local import gMessage
+    gMessage.setLang('us')
     gMessage.load()
     # load extensions
     import itrade_ext
@@ -627,7 +622,7 @@ def main():
     initQuotesModule()
     ticker = 'GTO'
     quote = quotes.lookupTicker(ticker)
-    info('%s: %s' % (ticker, quote))
+    info(u'{}: {}'.format(ticker, quote))
     app = wx.App(False)
     frame = WndTest(None, quote)
     if frame:

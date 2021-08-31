@@ -193,8 +193,8 @@ def connection_UI(win,server,auth,timeout=25):
 def main():
     setLevel(logging.INFO)
     app = wx.App(False)
-    from itrade_local import setLang, gMessage
-    setLang('us')
+    from itrade_local import gMessage
+    gMessage.setLang('us')
     gMessage.load()
     provider = wx.SimpleHelpProvider()
     wx.HelpProvider_Set(provider)
