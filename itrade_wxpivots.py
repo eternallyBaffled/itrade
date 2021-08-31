@@ -94,23 +94,17 @@ class iTrade_wxPivots(wx.Panel):
             s2,s1,pivot,r1,r2 = pivot
             self.s_r2.SetLabel('%.2f'%r2)
             print('pivots:',s2,s1,pivot,r1,r2)
-        pass
 
-# ============================================================================
-# WndTest
-#
-# ============================================================================
+
+class WndTest(wx.Frame):
+    def __init__(self, parent, quote):
+        wx.Frame.__init__(self, parent, wx.NewId(), 'WndTest', size=(300, 300),
+                          style=wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE)
+        self.m_pivots = iTrade_wxPivots(self, quote)
+        self.m_quote = quote
+
 
 def main():
-    global ticker, quote
-
-    class WndTest(wx.Frame):
-        def __init__(self, parent, quote):
-            wx.Frame.__init__(self, parent, wx.NewId(), 'WndTest', size=(300, 300),
-                              style=wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE)
-            self.m_pivots = iTrade_wxPivots(self, quote)
-            self.m_quote = quote
-
     setLevel(logging.INFO)
     from itrade_local import gMessage
     gMessage.setLang('us')

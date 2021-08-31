@@ -100,11 +100,6 @@ class myStdoutStreamHandler(myStreamHandler):
     def disable(self):
         self.setLevel(sys.maxsize)
         itrade_logger.removeHandler(self)
-        logging._acquireLock()
-        try:
-            del logging._handlers[self]
-        finally:
-            logging._releaseLock()
 
     def emit(self, record):
         try:
@@ -115,9 +110,6 @@ class myStdoutStreamHandler(myStreamHandler):
             error('Error logging to stdout : shall remove the stdout handler !')
             exception('Uncaught exception in myStdoutStreamHandler:')
 
-# ============================================================================
-# myColorFormatter
-# ============================================================================
 
 class myColorFormatter(Formatter):
     def formatException(self, xxx_todo_changeme1):
@@ -139,10 +131,6 @@ class myColorFormatter(Formatter):
             return ''.join([color,Formatter.format(self, record, *args, **kwargs),itrade_ansicolors.RESET])
         else:
             return Formatter.format(self, record, *args, **kwargs)
-
-# ============================================================================
-#
-# ============================================================================
 
 # ============================================================================
 # Install the logger

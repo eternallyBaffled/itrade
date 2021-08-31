@@ -255,23 +255,23 @@ class GToolTrash(GTool):
 # ============================================================================
 
 class GObject(object):
-    def __init__(self,canvas):
+    def __init__(self, canvas):
         self.m_canvas = canvas
         self.objects = []
 
     def listObjects(self):
         return self.objects
 
-    def stackObject(self,obj):
+    def stackObject(self, obj):
         self.objects.append(obj)
 
-    def unstackObject(self,obj):
+    def unstackObject(self, obj):
         self.objects.remove(obj)
 
     def removeAllObjects(self):
         self.objects = []
 
-    def drawObject(self,obj,dc=None):
+    def drawObject(self, obj, dc=None):
         # obj: (self,chart,time,val,...)
         axe = self.chart2axe(obj[1])
 
@@ -297,9 +297,9 @@ class GObject(object):
         # end of drawing in the DC
         dc.EndDrawing()
 
-    def drawAllObjects(self,dc=None):
-        for eachObj in self.objects:
-            self.drawObject(eachObj,dc)
+    def drawAllObjects(self, dc=None):
+        for obj in self.objects:
+            self.drawObject(obj, dc)
 
 # ============================================================================
 # fmtVolumeFunc

@@ -47,7 +47,6 @@ import itrade_config
 if not itrade_config.nowxversion:
     import itrade_wxversion
 import wx
-import wx.lib.mixins.listctrl as wxl
 
 # iTrade system
 from itrade_logging import setLevel

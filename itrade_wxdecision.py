@@ -323,7 +323,6 @@ class WndTest(wx.Frame):
 # ============================================================================
 
 def main():
-    global ticker, quote
     setLevel(logging.INFO)
     # load configuration
     import itrade_config
