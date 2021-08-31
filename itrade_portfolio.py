@@ -516,12 +516,11 @@ class Operations(object):
 
     def load(self,infile=None):
         infile = itrade_csv.read(infile,os.path.join(itrade_config.dirUserData,'default.operations.txt'))
-        if infile:
-            # scan each line to read each trade
-            for eachLine in infile:
-                item = itrade_csv.parse(eachLine,7)
-                if item:
-                    self.add(item,False)
+        # scan each line to read each trade
+        for eachLine in infile:
+            item = itrade_csv.parse(eachLine,7)
+            if item:
+                self.add(item,False)
 
     def save(self,outfile=None):
         itrade_csv.write(outfile,os.path.join(itrade_config.dirUserData,'default.operations.txt'),self.list())
@@ -1274,32 +1273,31 @@ class Portfolios(object):
 
         # open and read the file to load these quotes information
         infile = itrade_csv.read(fn,os.path.join(itrade_config.dirUserData,'portfolio.txt'))
-        if infile:
-            # scan each line to read each portfolio
-            for eachLine in infile:
-                item = itrade_csv.parse(eachLine,6)
-                if item:
-                    #info('%s :: %s' % (eachLine,item))
-                    vat = country2vat(gMessage.getLang())
-                    if len(item)>=5:
-                        currency = item[4]
-                        if len(item)>=6:
-                            vat = float(item[5])
-                        else:
-                            vat = 1.0
-                        if len(item)>=8:
-                            term = int(item[6])
-                            risk = int(item[7])
-                        else:
-                            term = 3
-                            risk = 5
-                        if len(item)>=9:
-                            indice = item[8]
-                        else:
-                            indice = getDefaultIndice(item[3])
+        # scan each line to read each portfolio
+        for eachLine in infile:
+            item = itrade_csv.parse(eachLine,6)
+            if item:
+                #info('%s :: %s' % (eachLine,item))
+                vat = country2vat(gMessage.getLang())
+                if len(item)>=5:
+                    currency = item[4]
+                    if len(item)>=6:
+                        vat = float(item[5])
                     else:
-                        currency = 'EUR'
-                    self.addPortfolio(item[0],item[1],item[2],item[3],currency,vat,term,risk,indice)
+                        vat = 1.0
+                    if len(item)>=8:
+                        term = int(item[6])
+                        risk = int(item[7])
+                    else:
+                        term = 3
+                        risk = 5
+                    if len(item)>=9:
+                        indice = item[8]
+                    else:
+                        indice = getDefaultIndice(item[3])
+                else:
+                    currency = 'EUR'
+                self.addPortfolio(item[0],item[1],item[2],item[3],currency,vat,term,risk,indice)
 
     def save(self,fn=None):
         debug('Portfolios:save()')

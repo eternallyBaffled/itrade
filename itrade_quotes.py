@@ -1343,13 +1343,12 @@ class Quotes(object):
     def loadProperties(self):
         # open and read the file to load properties information
         infile = itrade_csv.read(None, os.path.join(itrade_config.dirUserData, 'properties.txt'))
-        if infile:
-            # scan each line to read each quote
-            for eachLine in infile:
-                item = itrade_csv.parse(eachLine, 3)
-                if item:
-                    # debug('{} ::: {}'.format(eachLine, item))
-                    self.addProperty(item[0], item[1], item[2])
+        # scan each line to read each quote
+        for eachLine in infile:
+            item = itrade_csv.parse(eachLine, 3)
+            if item:
+                # debug('{} ::: {}'.format(eachLine, item))
+                self.addProperty(item[0], item[1], item[2])
 
     def saveProperties(self):
         props = []
@@ -1374,13 +1373,12 @@ class Quotes(object):
     def loadStops(self, fs=None):
         # open and read the file to load stops information
         infile = itrade_csv.read(fs, os.path.join(itrade_config.dirUserData, 'default.stops.txt'))
-        if infile:
-            # scan each line to read each quote
-            for eachLine in infile:
-                item = itrade_csv.parse(eachLine, 3)
-                if item:
-                    # debug('{} ::: {}'.format(eachLine, item))
-                    self.addStops(item[0], item[1], item[2])
+        # scan each line to read each quote
+        for eachLine in infile:
+            item = itrade_csv.parse(eachLine, 3)
+            if item:
+                # debug('{} ::: {}'.format(eachLine, item))
+                self.addStops(item[0], item[1], item[2])
 
     def saveStops(self, fp=None):
         stops = []
@@ -1447,14 +1445,12 @@ class Quotes(object):
         # open and read the file to load these quotes information
         if not is_market_loaded(market):
             infile = itrade_csv.read(None, os.path.join(itrade_config.dirSymbData, 'quotes.{}.txt'.format(market)))
-            if infile:
-                self._addLines(infile, list=QList.system, debug=False)
+            self._addLines(infile, list=QList.system, debug=False)
             set_market_loaded(market)
 
     def load_list_from_csv(self, list_type, file_name):
         infile = itrade_csv.read(None, file_name)
-        if infile:
-            self._addLines(infile, list=list_type, debug=False)
+        self._addLines(infile, list=list_type, debug=False)
 
     def loadListOfQuotes(self):
         self.load_list_from_csv(QList.indices, os.path.join(itrade_config.dirSymbData, 'indices.txt'))

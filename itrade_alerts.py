@@ -228,12 +228,11 @@ class Alerts(object):
     def load(self,fn=None):
         # open and read the file to load these alerts information
         infile = itrade_csv.read(fn, itrade_config.default_alerts_file())
-        if infile:
-            # scan each line to read each alert
-            for eachLine in infile:
-                item = itrade_csv.parse(eachLine,2)
-                if item:
-                    self.addAlert(item[1],int(item[0]))
+        # scan each line to read each alert
+        for eachLine in infile:
+            item = itrade_csv.parse(eachLine, 2)
+            if item:
+                self.addAlert(item[1], int(item[0]))
 
     def save(self,fn=None):
         # open and write the file with these alerts information

@@ -69,31 +69,30 @@ class TradingMatrix(object):
     # load 'matrix.txt'
     def load(self,fn):
         infile = itrade_csv.read(None,os.path.join(itrade_config.dirUserData,'%s.matrix.txt' % fn))
-        if infile:
-            # scan each line to read each quote
-            for eachLine in infile:
-                item = itrade_csv.parse(eachLine,1)
-                if item:
-                    if len(item)>4:
-                        #print 'addKey:new fmt: %s : %s : %s : %s '% (item[0],item[2],item[3],item[5])
-                        ref = None
+        # scan each line to read each quote
+        for eachLine in infile:
+            item = itrade_csv.parse(eachLine,1)
+            if item:
+                if len(item)>4:
+                    #print 'addKey:new fmt: %s : %s : %s : %s '% (item[0],item[2],item[3],item[5])
+                    ref = None
 
-                        # be sure the market is loaded
-                        quotes.loadMarket(item[3])
+                    # be sure the market is loaded
+                    quotes.loadMarket(item[3])
 
-                        if item[0]=='':
-                            quote = quotes.lookupTicker(ticker=item[2],market=item[3],place=item[5])
-                            if quote:
-                                ref = quote.key()
+                    if item[0]=='':
+                        quote = quotes.lookupTicker(ticker=item[2],market=item[3],place=item[5])
+                        if quote:
+                            ref = quote.key()
 
-                        if not ref:
-                            ref = quote_reference(isin=item[0],ticker=item[2],market=item[3],place=item[5])
+                    if not ref:
+                        ref = quote_reference(isin=item[0],ticker=item[2],market=item[3],place=item[5])
 
-                        if not self.addKey(ref):
-                            print('load (new format): %s/%s : quote not found in quotes list ! (ref=%s)' % (item[0],item[2],ref))
+                    if not self.addKey(ref):
+                        print('load (new format): %s/%s : quote not found in quotes list ! (ref=%s)' % (item[0],item[2],ref))
 
-                    elif len(item)<=4:
-                        print('old matrix format : not supported anymore')
+                elif len(item)<=4:
+                    print('old matrix format : not supported anymore')
 
     # save 'matrix.txt'
     def save(self,fn):

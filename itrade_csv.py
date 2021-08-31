@@ -58,12 +58,12 @@ def read(fn, fd):
 
 
 def parser(line, separator=';'):
-    # logging.debug('CSV::parse() before :%s' % line);
+    # logging.debug(u'CSV::parse() before :{}'.format(line));
     line = line.strip()
     if line == '':
         return None
     line = line.split(separator)
-    # logging.debug('CSV::parse() after :%s' % line);
+    # logging.debug('CSV::parse() after :{}'.format(line));
     return line
 
 
@@ -75,7 +75,7 @@ def write_b(fn, lines):
     with open(fn, 'w') as f:
         for eachItem in lines:
             txt = eachItem.__repr__()
-            # print txt[0],txt[-1],'>>>',txt
+            # print(txt[0], txt[-1], '>>>', txt)
             if txt[:2] in ('u"', "u'"):
                 txt = txt[1:]
             if txt[0] == "'" and txt[-1] == "'":
@@ -92,7 +92,7 @@ def write(fn, fd, lines):
         else:
             write_b(fd, lines)
     except IOError:
-        print("Can't open the file %s/%s for writing!" % (fn, fd))
+        print(u"Can't open the file {}/{} for writing!".format(fn, fd))
         return None
 
 

@@ -230,30 +230,28 @@ class Calendar(object):
             debug('Calendar::addSRD(): %s k=%s: %s - added' % (d,k,self.m_srd[k]))
             return True
 
-    def load(self,fn=None):
+    def load(self, fn=None):
         # open and read the file to load these closure information
-        infile = itrade_csv.read(fn,os.path.join(itrade_config.dirSysData,'closed.txt'))
-        if infile:
-            # scan each line to read each quote
-            for eachLine in infile:
-                item = itrade_csv.parse(eachLine,3)
-                if item:
-                    if len(item)>2:
-                        self.addClosed(item[0],item[1],item[2])
-                    else:
-                        info("can't import item=%s" % item)
+        infile = itrade_csv.read(fn, os.path.join(itrade_config.dirSysData, 'closed.txt'))
+        # scan each line to read each quote
+        for eachLine in infile:
+            item = itrade_csv.parse(eachLine, 3)
+            if item:
+                if len(item) > 2:
+                    self.addClosed(item[0], item[1], item[2])
+                else:
+                    info("can't import item=%s" % item)
 
         # open and read the file to load these SRD information
-        infile = itrade_csv.read(fn,os.path.join(itrade_config.dirSysData,'srd.txt'))
-        if infile:
-            # scan each line to read each quote
-            for eachLine in infile:
-                item = itrade_csv.parse(eachLine,3)
-                if item:
-                    if len(item)>2:
-                        self.addSRD(item[0],item[1],item[2])
-                    else:
-                        info("can't import item=%s" % item)
+        infile = itrade_csv.read(fn, os.path.join(itrade_config.dirSysData, 'srd.txt'))
+        # scan each line to read each quote
+        for eachLine in infile:
+            item = itrade_csv.parse(eachLine, 3)
+            if item:
+                if len(item) > 2:
+                    self.addSRD(item[0], item[1], item[2])
+                else:
+                    info("can't import item=%s" % item)
 
     # --- [ index management ] ------------------------------------
 

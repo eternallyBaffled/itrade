@@ -714,13 +714,17 @@ def yahooTicker(ticker,market,place):
 
     return sticker
 
-infile = itrade_csv.read(None,os.path.join(itrade_config.dirSysData,'yahoo_tickers.txt'))
-if infile:
+
+def read_yahoo_tickers():
+    infile = itrade_csv.read(None, os.path.join(itrade_config.dirSysData, 'yahoo_tickers.txt'))
     # scan each line to read each quote
     for eachLine in infile:
-        item = itrade_csv.parse(eachLine,2)
+        item = itrade_csv.parse(eachLine, 2)
         if item:
             yahoo_map_tickers[item[0]] = item[1].strip().upper()
+
+
+read_yahoo_tickers()
 
 
 # ============================================================================

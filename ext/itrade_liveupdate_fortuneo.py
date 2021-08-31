@@ -550,12 +550,11 @@ class LiveUpdate_fortuneo(object):
         if self.m_places is None:
             self.m_places = {}
             infile = itrade_csv.read(None,os.path.join(itrade_config.dirSysData,'places.txt'))
-            if infile:
-                # scan each line to read each quote
-                for eachLine in infile:
-                    item = itrade_csv.parse(eachLine,2)
-                    if item:
-                        self.m_places[item[0]] = place2code(item[1].strip().upper())
+            # scan each line to read each quote
+            for eachLine in infile:
+                item = itrade_csv.parse(eachLine,2)
+                if item:
+                    self.m_places[item[0]] = place2code(item[1].strip().upper())
 
     def place(self,isin):
         if isin in self.m_places : return self.m_places[isin]

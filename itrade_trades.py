@@ -185,16 +185,15 @@ class Trades(object):
     def load(self, infile=None):
         infile = itrade_csv.read(infile, os.path.join(itrade_config.dirCacheData, '%s.txt' % self.m_quote.key()))
         #print 'Trades:load::',infile
-        if infile:
-            # scan each line to read each trade
-            debug('Trades::load %s %s' % (self.m_quote.ticker(),self.m_quote.key()))
-            for eachLine in infile:
-                item = itrade_csv.parse(eachLine,7)
-                if item:
-                    if (item[0]==self.m_quote.key()) or (item[0]==self.m_quote.isin() and item[0]!=''):
-                        #print item
-                        debug('Trades::load %s on %s' % (item[5],item[1]))
-                        self.add(item,bImporting=True)
+        # scan each line to read each trade
+        debug('Trades::load %s %s' % (self.m_quote.ticker(),self.m_quote.key()))
+        for eachLine in infile:
+            item = itrade_csv.parse(eachLine,7)
+            if item:
+                if (item[0]==self.m_quote.key()) or (item[0]==self.m_quote.isin() and item[0]!=''):
+                    #print item
+                    debug('Trades::load %s on %s' % (item[5],item[1]))
+                    self.add(item,bImporting=True)
 
     def imp(self,data,bLive):
         #debug('Trades::imp %s : %s : bLive=%s' % (self.m_quote.ticker(),data,bLive))
