@@ -942,7 +942,6 @@ class Portfolio(object):
                     self.m_cAppreciation = self.m_cAppreciation + eachOp.nv_value()
             elif eachOp.type() == OPERATION_QUOTE:
                 debug('dividend/share %s/%s : %f' % (eachOp.name(),eachOp.quote(),eachOp.nv_value()))
-                pass
             elif eachOp.type() == OPERATION_REGISTER:
                 debug('register/share %s/%s : %f' % (eachOp.name(),eachOp.quote(),eachOp.nv_value()))
                 self.m_cInvest = self.m_cInvest + eachOp.nv_value()

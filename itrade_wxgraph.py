@@ -643,7 +643,6 @@ class iTrade_wxPanelGraph(GObject, PanelPrint):
                 self.m_xylabel = iTrade_wxLabelPopup(self.m_canvas,self.m_xylabelPos,self.m_xylabelMax,label=self.GetXYLabel(self.m_xylabelAxis,self.m_xylabelData),multiline=True)
             except AttributeError:
                 info('axis not managed')
-                pass
             else:
                 #debug('OnTimer draw label')
                 self.m_xylabel.Draw()

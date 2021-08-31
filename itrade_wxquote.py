@@ -586,7 +586,6 @@ class iTradeQuoteGraphPanel(wx.Panel, iTrade_wxPanelGraph):
 
     def DonePage(self):
         print('$$$DonePage')
-        pass
 
     def RedrawAll(self,redraw=True):
         print('$$$RedrawAll redraw=%s' % redraw)
