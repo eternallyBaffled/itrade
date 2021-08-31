@@ -79,12 +79,12 @@ def _buildVerifCode(code):
 
     myTotal = 0
     strip = len(myCode) & 1
-    for i in range(0,len(myCode)):
-        if i%2 == strip:
-            myInt = int(myCode[i])
+    for char in myCode:
+        if char%2 == strip:
+            myInt = int(char)
             #print 'myInt=',myInt
         else:
-            myInt = int(myCode[i])*2
+            myInt = int(char)*2
             #print 'myInt=',myInt
             if myInt>9:
                 myInt = (myInt%10) + (myInt//10)

@@ -321,10 +321,10 @@ class iTradeCurrenciesWindow(wx.Frame, iTrade_wxFrame, iTrade_wxLiveCurrencyMixi
         self.unregisterLiveCurrency()
 
         clist = list_of_currencies()
-        for i in range(len(clist)):
-            for j in range(len(clist)):
+        for i, to_currency in enumerate(clist):
+            for j, from_currency in enumerate(clist):
                 # currencies.rate format : curTo, curFrom
-                self.m_list.SetCellValue(i, j, "{:.4f}".format(currencies.rate(clist[j], clist[i])))
+                self.m_list.SetCellValue(i, j, "{:.4f}".format(currencies.rate(from_currency, to_currency)))
                 self.m_list.SetCellAlignment(i, j, wx.ALIGN_RIGHT, wx.ALIGN_CENTER)
 
         if not bDuringInit and itrade_config.bAutoRefreshCurrencyView:

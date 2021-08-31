@@ -513,12 +513,10 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
                     else:
                         if itrade_config.verbose:
                             print('pane::OnLive %s: %s - bad : other view' % (evt.quote.key(),evt.param))
-                        pass
             self.m_parent.refreshConnexion()
         else:
             if itrade_config.verbose:
                 print('pane::OnLive %s: %s - bad : not running' % (evt.quote.key(),evt.param))
-            pass
 
     # refresh list
     def OnRefresh(self,e):
@@ -666,7 +664,7 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
         if quote is None: return False
 
         xtype = self.itemTypeMap[key]
-        item  = self.m_list.GetItem(x)
+        item = self.m_list.GetItem(x)
 
         bRef = False
 
@@ -690,7 +688,6 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
 
             pp = self.map(quote,key,xtype)
             bRef = (pp != self.itemDataMap[key])
-
         else:
             item.SetTextColour(wx.BLACK)
             item.SetImage(self.idx_tbref)

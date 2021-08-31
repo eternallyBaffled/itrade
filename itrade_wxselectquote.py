@@ -301,9 +301,9 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
         items = self.itemDataMap.items()
         line = 0
         curline = -1
-        for x in range(len(items)):
-            key, data = items[x]
-            if data[0]!='':
+        for x, item in enumerate(items):
+            key, data = item
+            if data[0] != '':
                 self.m_list.InsertImageStringItem(line, data[0], self.sm_q)
             else:
                 self.m_list.InsertImageStringItem(line, data[0], self.sm_i)
