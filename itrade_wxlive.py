@@ -104,7 +104,8 @@ class UpdateLiveThread(object):
             itrade_import.liveupdate_from_internet(self.m_quote)
             if self.m_keepGoing:
                 evt = UpdateLiveEvent(quote=self.m_quote, param=p)
-                if self.m_win: wx.PostEvent(self.m_win, evt)
+                if self.m_win:
+                    wx.PostEvent(self.m_win, evt)
 
             if self.m_keepGoing:
                 time.sleep(self.m_sleeptime)
@@ -240,7 +241,8 @@ class UpdateLiveCurrencyThread(object):
             itrade_currency.currencies.get(self.m_curTo, self.m_curFrom)
             if self.m_keepGoing:
                 evt = UpdateLiveCurrencyEvent(key=self.m_key, param=p)
-                if self.m_win: wx.PostEvent(self.m_win, evt)
+                if self.m_win:
+                    wx.PostEvent(self.m_win, evt)
 
             if self.m_keepGoing:
                 time.sleep(self.m_sleeptime)

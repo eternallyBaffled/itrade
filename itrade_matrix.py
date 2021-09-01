@@ -191,7 +191,7 @@ def createMatrix(fn='default',dp=None):
 # Test
 # ============================================================================
 
-if __name__ == '__main__':
+def main():
     from itrade_portfolio import loadPortfolio
 
     setLevel(logging.INFO)
@@ -214,6 +214,10 @@ if __name__ == '__main__':
     info('cash : %f' % p.nv_cash())
     info('investissement : %f' % p.nv_invest())
 #    info('evaluation : %f' % eval)
+
+
+if __name__ == '__main__':
+    main()
 
 # ============================================================================
 # That's all folks !

@@ -65,15 +65,20 @@ class Trade(object):
             debug('Trade::__init__():%s: %d %d %d' % (d,int(d[0:4]),int(d[4:6]),int(d[6:8])))
             self.m_date = date(int(d[0:4]),int(d[4:6]),int(d[6:8]))
         self.m_open = float(open)
-        if self.m_open<0.0: self.m_open=0.0
+        if self.m_open<0.0:
+            self.m_open=0.0
         self.m_close = float(close)
-        if self.m_close<0.0: self.m_close=0.0
+        if self.m_close<0.0:
+            self.m_close=0.0
         self.m_low = float(low)
-        if self.m_low<0.0: self.m_low=0.0
+        if self.m_low<0.0:
+            self.m_low=0.0
         self.m_high = float(high)
-        if self.m_high<0.0: self.m_high=0.0
+        if self.m_high<0.0:
+            self.m_high=0.0
         self.m_volume = long(volume)
-        if self.m_volume<0: self.m_volume=0
+        if self.m_volume<0:
+            self.m_volume=0
         self.m_trades = trades
         self.m_index = idx
 
@@ -525,7 +530,8 @@ class Trades(object):
         h = 0.0
         b = 0.0
         n = 14*10
-        if i<n: n=i
+        if i<n:
+            n=i
         while n>=0:
             if self.m_inClose[i-n]>=0.0:
                 t = self.m_inClose[i-n] - self.close(i-n-1)
@@ -571,8 +577,10 @@ class Trades(object):
         mh = (h1 + h2 + h3) / 3
 
         t = ((mc - ml) / (mh - ml)) * 100.0
-        if t<0.0: t=0.0
-        if t>100.0: t=100.0
+        if t<0.0:
+            t=0.0
+        if t>100.0:
+            t=100.0
         self.m_stoK[i] = t
 
     def compute_stoD(self,i):

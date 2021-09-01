@@ -224,9 +224,9 @@ operation_incl_taxes = {
     OPERATION_QUOTE     : True
 }
 
+
 class Operation(object):
     def __init__(self,d,t,m,v,e,n,vat,ref):
-
         # decode the datetime (string) to convert to datetime
         if isinstance(d,datetime.datetime):
             self.m_datetime = d
@@ -316,10 +316,6 @@ class Operation(object):
             return operation_srd[self.m_type]
         else:
             return False
-
-    def setType(self,nt):
-        self.m_type = nt
-        return self.m_type
 
     def name(self):
         if self.m_name:

@@ -52,7 +52,7 @@ def isnum(s):
     if not s:
         return False
     for c in s:
-        if not c in string.digits:
+        if c not in string.digits:
             return False
     return True
 
@@ -67,7 +67,7 @@ for i in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
     n += 1
 
 def _buildVerifCode(code):
-    #print '_buildVerifCode(%s)' % code
+    # print('_buildVerifCode(%s)' % code)
     myCode = ''
     for myCar in code:
         if isnum(myCar):
@@ -75,44 +75,46 @@ def _buildVerifCode(code):
         else:
             myInt = asc[myCar] - 55
         myCode = myCode + ("%d" % myInt)
-    #print 'code=',code,'len(myCode)=',len(myCode),'myCode=',myCode
+    # print('code=',code,'len(myCode)=',len(myCode),'myCode=',myCode)
 
     myTotal = 0
     strip = len(myCode) & 1
     for char in myCode:
-        if char%2 == strip:
+        if char % 2 == strip:
             myInt = int(char)
-            #print 'myInt=',myInt
+            # print('myInt=',myInt)
         else:
             myInt = int(char)*2
-            #print 'myInt=',myInt
-            if myInt>9:
+            # print('myInt=',myInt)
+            if myInt > 9:
                 myInt = (myInt%10) + (myInt//10)
-                #print 'myInt-redux=',myInt
+                # print('myInt-redux=',myInt)
         myTotal = myTotal + myInt
-        #print 'i=',i,'myTotal=',myTotal
+        # print('i=',i,'myTotal=',myTotal)
     return (10 - (myTotal%10)) % 10
+
 
 def checkISIN(isin):
     isin = isin.strip().upper()
-    if len(isin)==12:
-        tempCK = isin[-1:]
-        if isnum(tempCK):
-            checkDigit = int(tempCK)
-            if checkDigit == _buildVerifCode(isin[:-1]):
-                return True
+    if len(isin) != 12:
+        return False
 
-    return False
+    temp_ck = isin[-1:]
+    if not isnum(temp_ck):
+        return False
+
+    check_digit = int(temp_ck)
+    return check_digit == _buildVerifCode(isin[:-1])
 
 # ============================================================================
 # buildISIN
 # ============================================================================
 
-def buildISIN(country,code):
-    while (len(country)+len(code))<11:
+def buildISIN(country, code):
+    while len(country) + len(code) < 11:
         code = '0' + code
-    code = country+code
-    return code + "%d" % _buildVerifCode(code)
+    code = country + code
+    return code + "{:d}".format(_buildVerifCode(code))
 
 # ============================================================================
 # filterName
@@ -123,10 +125,10 @@ def buildISIN(country,code):
 def filterName(name):
     while True:
         pos = name.find(';')
-        if pos >-1:
-            #print pos,name
+        if pos > -1:
+            # print(pos, name)
             name = name[:pos] + name[pos+1:]
-            #print name
+            # print(name)
         else:
             return name
 
@@ -167,15 +169,6 @@ cusip_country = {
     'B' : 'BE',
 }
 
-def extractCUSIP(ref):
-    issuer = ref[:6]
-    issue  = ref[6:-1]
-    country = issuer[0]
-    if country in cusip_country:
-        country = cusip_country[country]
-    else:
-        country = 'US'
-    return country,issuer,issue
 
 # ============================================================================
 # Test
