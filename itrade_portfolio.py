@@ -322,7 +322,8 @@ class Operation(object):
         return self.m_type
 
     def name(self):
-        if self.m_name: return self.m_name
+        if self.m_name:
+            return self.m_name
         return ""
 
     def datetime(self):

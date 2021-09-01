@@ -1466,7 +1466,6 @@ class Quotes(object):
             for eachQuote in self.list():
                 if eachQuote.list() == QList.system and eachQuote.market() == eachMarket:
                     props.append(eachQuote.__repr__())
-            #
             # open and write the file with these quotes information
             itrade_csv.write(None, os.path.join(itrade_config.dirSymbData, 'quotes.{}.txt'.format(eachMarket)), props)
             print('System List of symbols {} saved.'.format(eachMarket))
@@ -1477,9 +1476,9 @@ class Quotes(object):
 
         # User list
         props = []
-        for eachQuote in self.list():
-            if eachQuote.list() == QList.user:
-                props.append(eachQuote.__repr__())
+        for quote in self.list():
+            if quote.list() == QList.user:
+                props.append(quote.__repr__())
         #
         # open and write the file with these quotes information
         itrade_csv.write(None, os.path.join(itrade_config.dirUserData, 'usrquotes.txt'), props)
@@ -1499,7 +1498,7 @@ class Quotes(object):
                 if market is None or eachQuote.market() == market:
                     del self.m_quotes[eachQuote.key()]
 
-    # ---[ Lookup (optionaly, filter by market) ] ---
+    # ---[ Lookup (optionally, filter by market) ] ---
 
     def lookupKey(self, key):
         if key is None:

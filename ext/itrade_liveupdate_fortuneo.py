@@ -442,7 +442,8 @@ def encode_topic(topic,key):
     print("Size: %s / %s" % (len(instring),len(outstring)))
     print('"%s"' % outstring)
     for i in range(0,len(outstring),2):
-        if i>0: topic = topic + "%3B"
+        if i>0:
+            topic = topic + "%3B"
         topic = topic + '%d' % hex2num(outstring[i:i+2])
 
     return '%5B'+topic+'%5D'
@@ -557,7 +558,8 @@ class LiveUpdate_fortuneo(object):
                     self.m_places[item[0]] = place2code(item[1].strip().upper())
 
     def place(self,isin):
-        if isin in self.m_places : return self.m_places[isin]
+        if isin in self.m_places :
+            return self.m_places[isin]
         return "025"
 
     # ---[ code to get data ] ---

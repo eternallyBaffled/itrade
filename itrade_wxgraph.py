@@ -237,7 +237,8 @@ class GToolFibo(GTool):
 
     def is_cursor_state(self,chart):
         # Fibo supported only in main chart
-        if chart != 1: return False
+        if chart != 1:
+            return False
         return True
 
 class GToolTrash(GTool):
@@ -601,32 +602,38 @@ class iTrade_wxPanelGraph(GObject, PanelPrint):
     def OnToolInd(self,event):
         self.m_cursormode = CURSOR_MODE_IND
         self.m_tool = GToolInd(self,self.m_canvas)
-        if event: event.Skip()
+        if event:
+            event.Skip()
 
     def OnToolHLine(self,event):
         self.m_cursormode = CURSOR_MODE_HLINE
         self.m_tool = GToolHLine(self,self.m_canvas)
-        if event: event.Skip()
+        if event:
+            event.Skip()
 
     def OnToolVLine(self,event):
         self.m_cursormode = CURSOR_MODE_VLINE
         self.m_tool = GToolVLine(self,self.m_canvas)
-        if event: event.Skip()
+        if event:
+            event.Skip()
 
     def OnToolOLine(self,event):
         self.m_cursormode = CURSOR_MODE_OLINE
         self.m_tool = GToolOLine(self,self.m_canvas)
-        if event: event.Skip()
+        if event:
+            event.Skip()
 
     def OnToolFibo(self,event):
         self.m_cursormode = CURSOR_MODE_FIBO
         self.m_tool = GToolFibo(self,self.m_canvas)
-        if event: event.Skip()
+        if event:
+            event.Skip()
 
     def OnToolTrash(self,event):
         self.m_cursormode = CURSOR_MODE_TRASH
         self.m_tool = GToolTrash(self,self.m_canvas)
-        if event: event.Skip()
+        if event:
+            event.Skip()
 
     # ---[ MOUSE MANAGEMENT ] -----------------------------------------------
 
@@ -708,8 +715,10 @@ class iTrade_wxPanelGraph(GObject, PanelPrint):
         except AttributeError:
             pass
         else:
-            if self.is_display_vcursor(): lastdc.DrawLine(*lastline1) # erase old
-            if self.is_display_hcursor(): lastdc.DrawLine(*lastline2) # erase old
+            if self.is_display_vcursor():
+                lastdc.DrawLine(*lastline1) # erase old
+            if self.is_display_hcursor():
+                lastdc.DrawLine(*lastline2) # erase old
 
     def draw_cursor(self, event):
         #event is a MplEvent.  Draw a cursor over the axes
@@ -749,8 +758,10 @@ class iTrade_wxPanelGraph(GObject, PanelPrint):
         line2 = (left, y, right, y)
         self.m_lastInfo = line1, line2, ax, dc
 
-        if self.is_display_vcursor(): dc.DrawLine(*line1) # draw new
-        if self.is_display_hcursor(): dc.DrawLine(*line2) # draw new
+        if self.is_display_vcursor():
+            dc.DrawLine(*line1) # draw new
+        if self.is_display_hcursor():
+            dc.DrawLine(*line2) # draw new
         #dc.EndDrawing()
 
         debug("Time=%d  Value=%f"% (time, value))

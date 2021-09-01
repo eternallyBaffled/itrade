@@ -788,7 +788,8 @@ class iTradeQuoteGraphPanel(wx.Panel, iTrade_wxPanelGraph):
         num = 0
 
         for i in range(begin,end):
-            if self.m_quote.m_daytrades.has_trade(i): num = num + 1
+            if self.m_quote.m_daytrades.has_trade(i):
+                num = num + 1
             dt = gCal.date(i)
             if dt:
                 d = date2num(dt)
@@ -1050,7 +1051,8 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
             self.AddPage(self.win[self.ID_PAGE_PROP], message('quote_properties'))
 
             # be sure to init & display the selected page
-            if fromInit: self.win[page].InitPage()
+            if fromInit:
+                self.win[page].InitPage()
 
             return page
 
@@ -1088,7 +1090,6 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
 # ============================================================================
 
 class iTradeQuoteWindow(wx.Frame,iTrade_wxFrame,iTrade_wxLiveMixin):
-
     def __init__(self,parent,id,port,quote,dpage=0):
         self.m_id = wx.NewId()
 

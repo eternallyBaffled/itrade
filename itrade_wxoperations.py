@@ -904,7 +904,8 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
 
                     try:
                         pr = str( '%.2f'%((vcredit + vdebit)/eachOp.nv_number()))
-                        if pr == '0.00' : pr =''
+                        if pr == '0.00' :
+                            pr =''
                     except ZeroDivisionError:
                         pr = ''
                     self.m_list.SetStringItem(x,IDC_PRU,pr)

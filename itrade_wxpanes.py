@@ -509,7 +509,8 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
                     if idview == self.m_id:
                         #debug('%s: %s' % (evt.quote.key(),evt.param))
                         ref = self.OnLiveQuote(evt.quote,xline)
-                        if ref and self.needDynamicSortColumn(): self.SortColumn()
+                        if ref and self.needDynamicSortColumn():
+                            self.SortColumn()
                     else:
                         if itrade_config.verbose:
                             print('pane::OnLive %s: %s - bad : other view' % (evt.quote.key(),evt.param))
@@ -529,10 +530,12 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
         if op1:
             quote,item = self.getQuoteAndItemOnTheLine(self.m_currentItem)
             if not quote:
-                if itrade_config.verbose: print('updateQuoteItems:',self.m_currentItem)
+                if itrade_config.verbose:
+                    print('updateQuoteItems:',self.m_currentItem)
                 op1 = False
             else:
-                if itrade_config.verbose: print('updateQuoteItems:',self.m_currentItem,quote.name())
+                if itrade_config.verbose:
+                    print('updateQuoteItems:',self.m_currentItem,quote.name())
         else:
             quote = None
 
@@ -661,7 +664,8 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
     def refreshPortfolioLine(self,x,disp):
         key = self.m_list.GetItemData(x)
         quote = self.itemQuoteMap[key]
-        if quote is None: return False
+        if quote is None:
+            return False
 
         xtype = self.itemTypeMap[key]
         item = self.m_list.GetItem(x)
