@@ -108,7 +108,7 @@ class iTrade_wxLabelPopup(object):
         else:
             self.max = None
         self.parent = parent
-        self.font = wx.Font(8, wx.ROMAN, wx.NORMAL, wx.NORMAL)
+        self.font = wx.Font(8, wx.FONTFAMILY_ROMAN, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
         self.bg = wx.NamedColour("YELLOW")
         return wx.MemoryDC()
 

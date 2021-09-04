@@ -39,6 +39,7 @@
 from __future__ import print_function
 import datetime
 import logging
+import operator
 import os
 
 # iTrade system
@@ -464,10 +465,7 @@ def isOperationTypeAQuote(type):
         return False
 
 def isOperationTypeIncludeTaxes(type):
-    if type in operation_incl_taxes:
-        return operation_incl_taxes[type]
-    else:
-        return True
+    return operation_incl_taxes.get(type, True)
 
 def isOperationTypeHasShareNumber(type):
     if type in operation_number:
@@ -494,41 +492,29 @@ def signOfOperationType(type):
 # ============================================================================
 
 class Operations(object):
-    def __init__(self,portfolio):
+    def __init__(self, portfolio):
         debug('Operations:__init__(%s)' % portfolio)
         self.m_operations = {}
-        self.m_portfolio = portfolio
         self.m_ref = 0
-
-    def portfolio(self):
-        return self.m_portfolio
+        self.m_portfolio = portfolio
 
     def list(self):
-        items = self.m_operations.values()
-        nlist = [(x.datetime(), x) for x in items]
-        nlist.sort()
-        nlist = [val for (key, val) in nlist]
-        #print nlist
-        return nlist
+        return sorted(self.m_operations.values(), key=operator.methodcaller('datetime'))
 
     def load(self,infile=None):
         infile = itrade_csv.read(infile,os.path.join(itrade_config.dirUserData,'default.operations.txt'))
         # scan each line to read each trade
-        for eachLine in infile:
-            item = itrade_csv.parse(eachLine,7)
+        for line in infile:
+            item = itrade_csv.parse(line,7)
             if item:
                 self.add(item,False)
 
     def save(self,outfile=None):
         itrade_csv.write(outfile,os.path.join(itrade_config.dirUserData,'default.operations.txt'),self.list())
 
-    def add(self,item,bApply):
+    def add(self, item, bApply):
         debug('Operations::add() before: 0:%s , 1:%s , 2:%s , 3:%s , 4:%s , 5:%s' % (item[0],item[1],item[2],item[3],item[4],item[5]))
-        ll = len(item)
-        if ll>=7:
-            vat = item[6]
-        else:
-            vat = self.m_portfolio.vat()
+        vat = self.item_vat(item)
         op = Operation(item[0],item[1],item[2],item[3],item[4],item[5],vat,self.m_ref)
         self.m_operations[self.m_ref] = op
         if bApply:
@@ -536,6 +522,13 @@ class Operations(object):
         debug('Operations::add() after: %s' % self.m_operations)
         self.m_ref = self.m_ref + 1
         return op.ref()
+
+    def item_vat(self, item):
+        if len(item) >= 7:
+            vat = item[6]
+        else:
+            vat = self.m_portfolio.vat()
+        return vat
 
     def remove(self,ref,bUndo):
         if bUndo:

@@ -130,7 +130,7 @@ class GToolHLine(GTool):
         if rect[3] >= y >= rect[1]:
             lc = wx.NamedColour("BLACK")
             bg = "BLUE"
-            font = wx.Font(8, wx.ROMAN, wx.NORMAL, wx.NORMAL)
+            font = wx.Font(8, wx.FONTFAMILY_ROMAN, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
 
             dc.SetPen(wx.Pen(lc, 1, wx.SOLID))
             dc.DrawLine(rect[0], y, rect[2], y)
@@ -163,7 +163,7 @@ class GToolUPL(GTool):
         if rect[3] >= y >= rect[1]:
             lc = wx.NamedColour("BLACK")
             bg = "RED"
-            font = wx.Font(8, wx.ROMAN, wx.NORMAL, wx.NORMAL)
+            font = wx.Font(8, wx.FONTFAMILY_ROMAN, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
 
             dc.SetPen(wx.Pen(lc, 1, wx.SOLID))
             dc.DrawLine(rect[0], y, rect[2], y)
@@ -214,7 +214,7 @@ class GToolVLine(GTool):
 
             lc = wx.NamedColour("BLACK")
             bg = "BLUE"
-            font = wx.Font(8, wx.ROMAN, wx.NORMAL, wx.NORMAL)
+            font = wx.Font(8, wx.FONTFAMILY_ROMAN, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
 
             dc.SetPen(wx.Pen(lc, 1, wx.SOLID))
             dc.DrawLine(x, rect[1], x, rect[3])

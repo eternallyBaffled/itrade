@@ -1492,11 +1492,11 @@ class Quotes(object):
             return True
         return False
 
-    def removeQuotes(self, market, list):
-        for eachQuote in self.list():
-            if list == eachQuote.list():
-                if market is None or eachQuote.market() == market:
-                    del self.m_quotes[eachQuote.key()]
+    def removeQuotes(self, market, lst):
+        for quote in self.list():
+            if lst == quote.list():
+                if market is None or quote.market() == market:
+                    del self.m_quotes[quote.key()]
 
     # ---[ Lookup (optionally, filter by market) ] ---
 

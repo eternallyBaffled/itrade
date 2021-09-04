@@ -107,11 +107,11 @@ def matplot_color_to_wxcolor(colorname='k'):
 
 def FontFromSize(size):
     if size == 2:
-        return wx.Font(10, wx.SWISS, wx.NORMAL, wx.NORMAL)
+        return wx.Font(10, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
     elif size == 3:
-        return wx.Font(12, wx.SWISS, wx.NORMAL, wx.NORMAL)
+        return wx.Font(12, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
     else:
-        return wx.Font(7, wx.SWISS, wx.NORMAL, wx.NORMAL)
+        return wx.Font(7, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
 
 # ============================================================================
 # wx.MessageDialog()
@@ -462,9 +462,6 @@ class HTMLDialog(wx.Dialog):
                 self.SetReturnCode(event.GetId())
                 self.Show(False)
 
-# ============================================================================
-# iTradeSizedDialog
-# ============================================================================
 
 class iTradeSizedDialog(sc.SizedDialog):
     def __init__(self, *args, **kwargs):
@@ -533,7 +530,7 @@ class iTradeDialog(iTradeSizedDialog):
         else:
             h = 32
         txt = wx.StaticText(pane, -1, text, size=(260,h))
-        txt.SetFont(wx.Font(10, wx.SWISS, wx.NORMAL, wx.NORMAL))
+        txt.SetFont(wx.Font(10, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
 
         txt.SetSizerProps(expand=True, valign='center', halign='center')
 

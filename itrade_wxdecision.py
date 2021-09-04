@@ -66,7 +66,7 @@ class iTrade_wxDecision(sc.SizedPanel):
         self.m_portfolio = portfolio
 
         # select a font
-        #self.m_font = wx.Font(10, wx.MODERN, wx.NORMAL, wx.NORMAL)
+        #self.m_font = wx.Font(10, wx.FONTFAMILY_MODERN, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
         #self.SetFont(self.m_font)
 
         # container

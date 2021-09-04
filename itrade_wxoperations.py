@@ -1189,12 +1189,11 @@ def open_iTradeOperations(win,port=None):
 # ============================================================================
 
 def edit_iTradeOperation(win,op,opmode,market=None,currency='EUR'):
-    dlg = iTradeOperationDialog(win,op,opmode,market,currency)
-    if dlg.ShowModal()==wx.ID_OK:
-        aRet = dlg.aRet
-    else:
-        aRet = None
-    dlg.Destroy()
+    with iTradeOperationDialog(win,op,opmode,market,currency) as dlg:
+        if dlg.ShowModal() == wx.ID_OK:
+            aRet = dlg.aRet
+        else:
+            aRet = None
     return aRet
 
 # ============================================================================
@@ -1234,8 +1233,8 @@ def main():
     # load configuration
     itrade_config.load_config()
     from itrade_local import gMessage
-    gMessage.setLang('us')
-    gMessage.load()
+#    gMessage.setLang('us')
+#    gMessage.load()
     # load extensions
     import itrade_ext
     itrade_ext.loadExtensions(itrade_config.fileExtData, itrade_config.dirExtData)

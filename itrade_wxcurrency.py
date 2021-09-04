@@ -192,7 +192,7 @@ class iTradeCurrenciesWindow(wx.Frame, iTrade_wxFrame, iTrade_wxLiveCurrencyMixi
                                  style=wx.LC_REPORT | wx.SUNKEN_BORDER | wx.LC_SINGLE_SEL | wx.LC_VRULES | wx.LC_HRULES,
                                  list=list_of_currencies())
         # self.m_list.SetImageList(self.m_imagelist, wx.IMAGE_LIST_SMALL)
-        self.m_list.SetFont(wx.Font(10, wx.SWISS, wx.NORMAL, wx.NORMAL))
+        self.m_list.SetFont(wx.Font(10, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
 
         wx.EVT_SIZE(self, self.OnSize)
 

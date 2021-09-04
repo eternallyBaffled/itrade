@@ -107,10 +107,10 @@ class News_Boursorama(object):
             debug('News_Boursorama:unable to connect :-(')
             return None
 
-        buf = unicode(buf,'iso-8859-1','strict')
+        buf = unicode(buf, 'iso-8859-1', 'strict')
         return buf
 
-    def feed(self,url):
+    def feed(self, url):
         self.m_url = url
         self.m_feed = _FeedEntry()
         self.m_feed.entries = []

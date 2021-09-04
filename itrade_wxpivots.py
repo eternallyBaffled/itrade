@@ -58,7 +58,7 @@ class iTrade_wxPivots(wx.Panel):
         self.m_parent = parent
         self.m_quote = quote
 
-        self.m_font = wx.Font(10, wx.MODERN, wx.NORMAL, wx.NORMAL)
+        self.m_font = wx.Font(10, wx.FONTFAMILY_MODERN, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
         self.SetFont(self.m_font)
 
         self.m_sizer = wx.BoxSizer(wx.VERTICAL)
