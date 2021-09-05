@@ -216,13 +216,13 @@ class Candle(object):
     >>> from itrade_candle import Candle
     >>> c = Candle(10.0, 11.0, 9.0, 10.0)
     >>> print('candle: %s - %s = doji' % (c, c.type()))
-    candle: doji - CandleType.doji = doji
+    candle: doji - 2 = doji
     >>> c = Candle(11.0, 11.0, 9.0, 11.0)
     >>> print('candle: %s - %s = dragonfly doji' % (c, c.type()))
-    candle: dragonfly doji - CandleType.tombo = dragonfly doji
+    candle: dragonfly doji - 4 = dragonfly doji
     >>> c = Candle(9.0, 11.0, 9.0, 9.0)
     >>> print('candle: %s - %s = gravestone doji' % (c, c.type()))
-    candle: gravestone doji - CandleType.tohba = gravestone doji
+    candle: gravestone doji - 5 = gravestone doji
     """
     def __init__(self,open,high,low,close,volind=CANDLE_VOLUME_AVERAGE,voltrend=CANDLE_VOLUME_TREND_NOTREND):
         self.hi = high
