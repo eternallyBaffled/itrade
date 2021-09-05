@@ -132,7 +132,7 @@ class GToolHLine(GTool):
             bg = "BLUE"
             font = wx.Font(8, wx.FONTFAMILY_ROMAN, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
 
-            dc.SetPen(wx.Pen(lc, 1, wx.SOLID))
+            dc.SetPen(wx.Pen(lc, 1, wx.PENSTYLE_SOLID))
             dc.DrawLine(rect[0], y, rect[2], y)
 
             label = parent.GetYLabel(axe,obj[3])
@@ -165,7 +165,7 @@ class GToolUPL(GTool):
             bg = "RED"
             font = wx.Font(8, wx.FONTFAMILY_ROMAN, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
 
-            dc.SetPen(wx.Pen(lc, 1, wx.SOLID))
+            dc.SetPen(wx.Pen(lc, 1, wx.PENSTYLE_SOLID))
             dc.DrawLine(rect[0], y, rect[2], y)
 
             label = parent.GetYLabel(axe,obj[3])
@@ -216,7 +216,7 @@ class GToolVLine(GTool):
             bg = "BLUE"
             font = wx.Font(8, wx.FONTFAMILY_ROMAN, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
 
-            dc.SetPen(wx.Pen(lc, 1, wx.SOLID))
+            dc.SetPen(wx.Pen(lc, 1, wx.PENSTYLE_SOLID))
             dc.DrawLine(x, rect[1], x, rect[3])
 
             label = parent.GetXLabel(time)
@@ -745,8 +745,8 @@ class iTrade_wxPanelGraph(GObject, PanelPrint):
 
         dc = wx.ClientDC(self.m_canvas)
         dc.SetLogicalFunction(wx.XOR)
-        dc.SetBrush(wx.Brush(wx.Colour(255,255,255), wx.TRANSPARENT))
-        dc.SetPen(wx.Pen(wx.Colour(200, 200, 200), 1, wx.SOLID))
+        dc.SetBrush(wx.Brush(wx.Colour(255,255,255), wx.BRUSHSTYLE_TRANSPARENT))
+        dc.SetPen(wx.Pen(wx.Colour(200, 200, 200), 1, wx.PENSTYLE_SOLID))
 
         dc.ResetBoundingBox()
         dc.BeginDrawing()

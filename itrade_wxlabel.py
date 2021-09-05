@@ -126,7 +126,7 @@ class iTrade_wxLabelPopup(object):
 
         self.bmp = wx.EmptyBitmap(w, h)
         dc.SelectObject(self.bmp)
-        dc.SetBackground(wx.Brush(self.bg, wx.SOLID))
+        dc.SetBackground(wx.Brush(self.bg, wx.PENSTYLE_SOLID))
         dc.Clear()
         dc.SetTextForeground(wx.BLACK)
         dc.SetFont(self.font)
@@ -183,7 +183,7 @@ def DrawRectLabel(dc, label, x, y, w, h, colorpen, colorbg, font, vert='top', ho
     bmp = wx.EmptyBitmap(w, h)
 
     memDC.SelectObject(bmp)
-    memDC.SetBackground(wx.Brush(colorbg, wx.SOLID))
+    memDC.SetBackground(wx.Brush(colorbg, wx.PENSTYLE_SOLID))
     memDC.Clear()
     memDC.SetTextForeground(colorpen)
     memDC.SetFont(font)
