@@ -58,7 +58,7 @@ import wx.lib.sized_controls as sc
 
 class iTrade_wxDecision(sc.SizedPanel):
     def __init__(self, parent, quote, portfolio):
-        sc.SizedPanel.__init__(self,parent,-1)
+        super(iTrade_wxDecision, self).__init__(parent=parent, id=wx.ID_ANY)
 
         # keep back reference
         self.m_parent = parent
@@ -311,9 +311,9 @@ class iTrade_wxDecision(sc.SizedPanel):
 # ============================================================================
 
 class WndTest(wx.Frame):
-    def __init__(self, parent,quote,portfolio):
-        wx.Frame.__init__(self,parent,wx.NewId(), 'WndTest', size = (600,190), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE)
-        self.m_decision = iTrade_wxDecision(self,quote,portfolio)
+    def __init__(self, parent, quote, portfolio):
+        super(WndTest, self).__init__(parent=parent, id=wx.NewId(), title='WndTest', size=(600,190), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE)
+        self.m_decision = iTrade_wxDecision(self, quote, portfolio)
 
         self.Fit()
         self.SetMinSize(self.GetSize())

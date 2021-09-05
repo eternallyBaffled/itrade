@@ -172,16 +172,14 @@ license_html = '''
 # About box
 # ============================================================================
 
-wxID_ABOUTBOX = wx.NewId()
 
 class iTradeAboutBox(wx.Dialog):
-
     border = 7
 
-    def __init__(self, prnt):
-        wx.Dialog.__init__(self, size=wx.Size(480, 525), pos=(-1, -1),
-              id = wxID_ABOUTBOX, title = message('about_title'), parent=prnt,
-              name = 'AboutBox', style = wx.DEFAULT_DIALOG_STYLE)
+    def __init__(self, parent):
+        super(iTradeAboutBox, self).__init__(self, size=wx.Size(480, 525), pos=(-1, -1),
+                                             id=wx.NewId(), title=message('about_title'), parent=parent,
+                                             name='AboutBox', style=wx.DEFAULT_DIALOG_STYLE)
 
         self.blackback = wx.Window(self, wx.ID_ANY, pos=(0, 0),
               size=self.GetClientSize(), style=wx.CLIP_CHILDREN)

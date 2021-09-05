@@ -248,7 +248,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
         for count, (k, v) in enumerate(operation_ctrl):
             #print '***',message(v),k
             self.wxTypeCtrl.Append(message(v),k)
-            if k==self.m_type:
+            if k == self.m_type:
                 idx = count
 
         self.wxTypeCtrl.SetSelection(idx)

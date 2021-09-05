@@ -68,7 +68,7 @@ EVT_HTML_URL_CLICK = wx.PyEventBinder(wxEVT_HTML_URL_CLICK)
 
 class wxHtmlWindowUrlClick(wx.PyEvent):
     def __init__(self, linkinfo):
-        wx.PyEvent.__init__(self)
+        super(wxHtmlWindowUrlClick, self).__init__()
         self.SetEventType(wxEVT_HTML_URL_CLICK)
         self.linkinfo = (linkinfo.GetHref(), linkinfo.GetTarget())
 
@@ -90,7 +90,7 @@ class wxUrlClickHtmlWindow(wxhtml.HtmlWindow):
 
 class iTradeHtmlPanel(wx.Panel):
     def __init__(self, parent,id, url=None):
-        wx.Panel.__init__(self, parent, id, size = (800,600), style = wx.TAB_TRAVERSAL|wx.CLIP_CHILDREN|wx.NO_FULL_REPAINT_ON_RESIZE)
+        super(iTradeHtmlPanel, self).__init__(parent, id, size=(800,600), style=wx.TAB_TRAVERSAL|wx.CLIP_CHILDREN|wx.NO_FULL_REPAINT_ON_RESIZE)
         self.url = url
         self.m_parent = parent
 
@@ -142,7 +142,7 @@ class iTradeHtmlPanel(wx.Panel):
 
 class iTradeRSSPanel(wx.Panel):
     def __init__(self, parent, id, quote):
-        wx.Panel.__init__(self, parent, id, size = (800,600), style=wx.TAB_TRAVERSAL|wx.CLIP_CHILDREN|wx.NO_FULL_REPAINT_ON_RESIZE)
+        super(iTradeRSSPanel, self).__init__(parent=parent, id=id, size=(800,600), style=wx.TAB_TRAVERSAL|wx.CLIP_CHILDREN|wx.NO_FULL_REPAINT_ON_RESIZE)
         self.m_quote = quote
 
         self.m_html = wxUrlClickHtmlWindow(self, -1)

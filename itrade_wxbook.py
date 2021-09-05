@@ -176,9 +176,8 @@ ID_PAGE_EVALUATION = 5
 # ============================================================================
 
 class iTradeMainToolbar(wx.ToolBar):
-
-    def __init__(self,parent,id):
-        wx.ToolBar.__init__(self,parent,id,style = wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT)
+    def __init__(self, parent, id):
+        super(iTradeMainToolbar, self).__init__(parent=parent, id=id, style=wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT)
         self.m_parent = parent
         self._init_toolbar()
 
@@ -367,9 +366,8 @@ class iTradeMainToolbar(wx.ToolBar):
 # ============================================================================
 
 class iTradeMainNotebookWindow(wx.Notebook):
-
-    def __init__(self,parent,id,page,portfolio,matrix):
-        wx.Notebook.__init__(self,parent,id,style=wx.SIMPLE_BORDER|wx.NB_TOP)
+    def __init__(self, parent, id, page, portfolio, matrix):
+        super(iTradeMainNotebookWindow, self).__init__(parent=parent, id=id, style=wx.SIMPLE_BORDER|wx.NB_TOP)
         self.m_portfolio = portfolio
         self.m_matrix = matrix
         self.m_parent = parent
@@ -468,12 +466,10 @@ class iTradeMainNotebookWindow(wx.Notebook):
 import wx.lib.newevent
 (PostInitEvent,EVT_POSTINIT) = wx.lib.newevent.NewEvent()
 
-class iTradeMainWindow(wx.Frame,iTrade_wxFrame):
-
+class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
     def __init__(self,parent,portfolio,matrix):
         self.m_id = wx.NewId()
-        wx.Frame.__init__(self,parent,self.m_id, "", size = ( 640,480), style = wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE)
-        iTrade_wxFrame.__init__(self,parent, 'main')
+        super(iTradeMainWindow, self).__init__( parent=parent, id=self.m_id, title="", size=(640, 480), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE, name='main')
 
         self.m_portfolio = portfolio
         self.m_matrix = matrix

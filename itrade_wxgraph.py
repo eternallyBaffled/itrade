@@ -73,8 +73,9 @@ GTOOL_FIBO = 4
 GTOOL_UPL = 254
 GTOOL_TRASH = 255
 
+
 class GTool(object):
-    def __init__(self,kind,parent,canvas):
+    def __init__(self, kind, parent, canvas):
         self.m_kind = kind
         self.m_parent = parent
         self.m_canvas = canvas
@@ -89,21 +90,23 @@ class GTool(object):
         return self.m_canvas
 
     def on_click(self,x,y,time,val,chart):
-        info('Tool %s on_click x:%d,y:%d time=%s val=%s chart=%d!' % (self.kind(),x, y, time, val , chart))
+        info(u'Tool {} on_click x:{:d},y:{:d} time={} val={} chart={:d}!'.format(self.kind(), x, y, time, val, chart))
 
     def is_cursor_state(self,chart):
         return True
+
 
 class GToolInd(GTool):
-    def __init__(self,parent,canvas):
-        GTool.__init__(self,GTOOL_IND,parent,canvas)
+    def __init__(self, parent, canvas):
+        super(GToolInd, self).__init__(kind=GTOOL_IND, parent=parent, canvas=canvas)
 
-    def is_cursor_state(self,chart):
+    def is_cursor_state(self, chart):
         return True
 
+
 class GToolHLine(GTool):
-    def __init__(self,parent,canvas):
-        GTool.__init__(self,GTOOL_HLINE,parent,canvas)
+    def __init__(self, parent, canvas):
+        super(GToolHLine, self).__init__(kind=GTOOL_HLINE, parent=parent, canvas=canvas)
 
     def is_cursor_state(self,chart):
         return True
@@ -140,9 +143,10 @@ class GToolHLine(GTool):
 
             DrawRectLabel(dc,label,rect[0],y,textExtent[0], textExtent[1],lc,bg,font,vert='top',horz='right')
 
+
 class GToolUPL(GTool):
-    def __init__(self,parent,canvas):
-        GTool.__init__(self,GTOOL_UPL,parent,canvas)
+    def __init__(self, parent, canvas):
+        super(GToolUPL, self).__init__(kind=GTOOL_UPL, parent=parent, canvas=canvas)
 
     def is_cursor_state(self,chart):
         return True
@@ -173,9 +177,10 @@ class GToolUPL(GTool):
 
             DrawRectLabel(dc,label,rect[0],y,textExtent[0], textExtent[1],lc,bg,font,vert='top',horz='right')
 
+
 class GToolVLine(GTool):
-    def __init__(self,parent,canvas):
-        GTool.__init__(self,GTOOL_VLINE,parent,canvas)
+    def __init__(self, parent, canvas):
+        super(GToolVLine, self).__init__(kind=GTOOL_VLINE, parent=parent, canvas=canvas)
 
     def is_cursor_state(self,chart):
         return True
@@ -224,26 +229,29 @@ class GToolVLine(GTool):
 
             DrawRectLabel(dc,label,x,rect[3], textExtent[0], textExtent[1],lc,bg,font,vert='bottom',horz='center')
 
+
 class GToolOLine(GTool):
-    def __init__(self,parent,canvas):
-        GTool.__init__(self,GTOOL_OLINE,parent,canvas)
+    def __init__(self, parent, canvas):
+        super(GToolOLine, self).__init__(kind=GTOOL_OLINE, parent=parent, canvas=canvas)
 
     def is_cursor_state(self,chart):
         return True
 
-class GToolFibo(GTool):
-    def __init__(self,parent,canvas):
-        GTool.__init__(self,GTOOL_FIBO,parent,canvas)
 
-    def is_cursor_state(self,chart):
+class GToolFibo(GTool):
+    def __init__(self, parent, canvas):
+        super(GToolFibo, self).__init__(kind=GTOOL_FIBO, parent=parent, canvas=canvas)
+
+    def is_cursor_state(self, chart):
         # Fibo supported only in main chart
         if chart != 1:
             return False
         return True
 
+
 class GToolTrash(GTool):
-    def __init__(self,parent,canvas):
-        GTool.__init__(self,GTOOL_TRASH,parent,canvas)
+    def __init__(self, parent, canvas):
+        super(GToolTrash, self).__init__(kind=GTOOL_TRASH, parent=parent, canvas=canvas)
 
     def is_cursor_state(self,chart):
         return True
@@ -351,7 +359,7 @@ def fmtPercentFunc(x,pos):
 class iTrade_wxToolbarGraph(wx.ToolBar):
     def __init__(self, canvas):
         self.m_parent = canvas.GetParent()
-        wx.ToolBar.__init__(self, self.m_parent, -1)
+        super(iTrade_wxToolbarGraph, self).__init__(parent=self.m_parent, id=wx.ID_ANY)
         self.m_canvas = canvas
         self._init_toolbar()
 
@@ -507,7 +515,7 @@ class FigureCanvasEx(FigureCanvas):
     """be sure the parent is able to draw all its objects"""
 
     def __init__(self, parent, id, figure):
-        FigureCanvas.__init__(self, parent, id, figure)
+        super(FigureCanvasEx, self).__init__(parent=parent, id=id, figure=figure)
         self.m_parent = parent
 
     def _onPaint(self, event):
@@ -527,8 +535,7 @@ class iTrade_wxPanelGraph(GObject, PanelPrint):
         self.figure = Figure(size, dpi = 96)
         self.m_canvas = FigureCanvasEx(self, -1, self.figure)
 
-        GObject.__init__(self, self.m_canvas)
-        PanelPrint.__init__(self, parent, CanvasPrintout, orientation = wx.LANDSCAPE)
+        super(iTrade_wxPanelGraph, self).__init__(canvas=self.m_canvas, parent=parent, po=CanvasPrintout, orientation=wx.LANDSCAPE)
 
         self.m_canvas.mpl_connect('motion_notify_event', self.mouse_move)
         self.m_canvas.mpl_connect('button_press_event', self.on_click)

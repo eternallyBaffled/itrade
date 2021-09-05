@@ -70,7 +70,7 @@ from itrade_wxutil import iTradeSizedDialog
 
 class iTradeConverterDialog(iTradeSizedDialog):
     def __init__(self, parent, curSelected=(0, 1)):
-        iTradeSizedDialog.__init__(self,parent,-1,message('converter_title'),
+        super(iTradeConverterDialog, self).__init__(parent=parent, id=wx.ID_ANY, title=message('converter_title'),
                                    size=(420, 420),style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
 
         # container

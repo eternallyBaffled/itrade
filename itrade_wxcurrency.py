@@ -84,7 +84,7 @@ ID_AUTOREFRESH = 231
 
 class iTradeCurrencyToolbar(wx.ToolBar):
     def __init__(self, parent, id):
-        wx.ToolBar.__init__(self, parent, id, style=wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT)
+        super(iTradeCurrencyToolbar, self).__init__(parent=parent, id=id, style=wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT)
         self.m_parent = parent
         self._init_toolbar()
 
@@ -124,14 +124,13 @@ class iTradeCurrencyToolbar(wx.ToolBar):
 class iTradeCurrenciesListCtrl(wx.ListCtrl, wxl.ListCtrlAutoWidthMixin):
     def __init__(self, parent, ID, pos=wx.DefaultPosition,
                  size=wx.DefaultSize, style=0):
-        wx.ListCtrl.__init__(self, parent, ID, pos, size, style)
-        wxl.ListCtrlAutoWidthMixin.__init__(self)
+        super(iTradeCurrenciesListCtrl, self).__init__(parent=parent, id=ID, pos=pos, size=size, style=style)
 
 
 class iTradeCurrenciesMatrix(gridlib.Grid):
     def __init__(self, parent, ID, pos=wx.DefaultPosition,
                  size=wx.DefaultSize, style=0, list=None):
-        gridlib.Grid.__init__(self, parent, ID, pos, size, style)
+        super(iTradeCurrenciesMatrix, self).__init__(parent=parent, id=ID, pos=pos, size=size, style=style)
         self.list = list
         count = len(list)
 
@@ -149,17 +148,12 @@ class iTradeCurrenciesMatrix(gridlib.Grid):
 
 class iTradeCurrenciesWindow(wx.Frame, iTrade_wxFrame, iTrade_wxLiveCurrencyMixin):
     def __init__(self, parent, title):
-        self.m_id = wx.NewId()
-        wx.Frame.__init__(self,
-                          None,
-                          self.m_id,
-                          title,
+        super(iTradeCurrenciesWindow, self).__init__(parent=parent,
+                          id=wx.NewId(),
+                          title=title,
                           size=(640, 480),
-                          style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE)
-        iTrade_wxFrame.__init__(self, parent, 'currencies')
-        iTrade_wxLiveCurrencyMixin.__init__(self)
-
-        # the menu
+                          style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE,
+                                                     name='currencies')
         self.filemenu = wx.Menu()
         # self.filemenu.Append(ID_SAVE, message('main_save'), message('main_desc_save'))
         # self.filemenu.AppendSeparator()
