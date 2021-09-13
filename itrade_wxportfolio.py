@@ -288,7 +288,7 @@ def select_iTradePortfolio(win,dportfolio=None,operation='select'):
 class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
     def __init__(self, parent, portfolio, operation):
         iTradeSizedDialog.__init__(self, None, -1, message('portfolio_properties_%s'% operation),
-                        style=wx.DEFAULT_DIALOG_STYLE , size=(420, 420) )
+                        style=wx.DEFAULT_DIALOG_STYLE , size=(420, 420))
 
         if portfolio:
             self.m_filename = portfolio.filename()
@@ -397,7 +397,7 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
         label = wx.StaticText(pane, -1, message('portfolio_vat'))
         label.SetSizerProps(valign='center')
 
-        self.wxVATCtrl = masked.Ctrl(pane, integerWidth=5, fractionWidth=3, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupChar=getGroupChar(), decimalChar=getDecimalChar() )
+        self.wxVATCtrl = masked.Ctrl(pane, integerWidth=5, fractionWidth=3, controlType=masked.controlTypes.NUMBER, allowNegative=False, groupChar=getGroupChar(), decimalChar=getDecimalChar())
         self.wxVATCtrl.SetValue((self.m_vat-1)*100)
 
         # Row8 : trading style
@@ -407,20 +407,20 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
         btnpane.SetSizerType("form")
         btnpane.SetSizerProps(expand=True)
 
-        label = wx.StaticText(btnpane, -1, message('prop_term'))
+        label = wx.StaticText(btnpane, wx.ID_ANY, message('prop_term'))
         label.SetSizerProps(valign='center')
 
         self.wxTermCtrl = masked.Ctrl(btnpane, integerWidth=3, fractionWidth=0, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupChar=getGroupChar(), decimalChar=getDecimalChar() )
         self.wxTermCtrl.SetValue(self.m_term)
 
-        label = wx.StaticText(btnpane, -1, message('prop_risk'))
+        label = wx.StaticText(btnpane, wx.ID_ANY, message('prop_risk'))
         label.SetSizerProps(valign='center')
 
         self.wxRiskCtrl = masked.Ctrl(btnpane, integerWidth=3, fractionWidth=0, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupChar=getGroupChar(), decimalChar=getDecimalChar() )
         self.wxRiskCtrl.SetValue(self.m_risk)
 
         # row 9 : separator
-        line = wx.StaticLine(container, -1, size=(20,-1), style=wx.LI_HORIZONTAL)
+        line = wx.StaticLine(container, wx.ID_ANY, size=(20,-1), style=wx.LI_HORIZONTAL)
         line.SetSizerProps(expand=True)
 
         # Last Row : OK and Cancel

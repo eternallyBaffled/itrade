@@ -214,7 +214,7 @@ class LocalMessages(object):
         lang,cp = locale.getlocale(locale.LC_ALL)
         return lang
 
-    def setLang(self,l=None):
+    def setLang(self, l=None):
         if l:
             self.m_lang = self.langSupported(l)
         else:
@@ -252,7 +252,7 @@ class LocalMessages(object):
             raise Exception('addMsg:: key %s already exist')
         self.m_msg[key] = m[1]
 
-    def getMsg(self,ref):
+    def getMsg(self, ref):
         if not self.m_lang:
             # package not initialized :-(
             lang = gMessage.getAutoDetectedLang('us')

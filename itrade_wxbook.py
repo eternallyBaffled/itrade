@@ -568,13 +568,13 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
         self.optionsmenu = wx.Menu()
         self.accessmenu = wx.Menu()
 
-        ncon = 0
-        for aname,acon in gLoginRegistry.list():
-            self.accessmenu.Append(ID_ACCESS+ncon+1, acon.name(), acon.desc())
-            ncon = ncon + 1
-        if ncon>0:
+        logins = gLoginRegistry.list()
+        for ncon, (aname, acon) in enumerate(logins, start=1):
+            # BUG: code implicitly assumes list is shorter than 49 elements
+            self.accessmenu.Append(ID_ACCESS+ncon, acon.name(), acon.desc())
+        if logins:
             # menu->options->login only if there at least one login plugin loaded
-            self.optionsmenu.AppendMenu(ID_ACCESS,message('main_options_access'),self.accessmenu,message('main_options_desc_access'))
+            self.optionsmenu.AppendMenu(ID_ACCESS, message('main_options_access'), self.accessmenu, message('main_options_desc_access'))
 
         self.langmenu = wx.Menu()
         self.langmenu.AppendRadioItem(wx.LANGUAGE_DEFAULT + ID_MAC_OFFSET, message('main_options_lang_default'),message('main_options_lang_default'))
@@ -659,8 +659,8 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
         wx.EVT_MENU(self, ID_NORMAL_VIEW, self.OnViewNormal)
         wx.EVT_MENU(self, ID_BIG_VIEW, self.OnViewBig)
 
-        for i in range(0,ncon):
-            wx.EVT_MENU(self, ID_ACCESS+i+1, self.OnAccess)
+        for i in xrange(1, len(logins)+1):
+            wx.EVT_MENU(self, ID_ACCESS+i, self.OnAccess)
 
         wx.EVT_MENU(self, wx.LANGUAGE_DEFAULT + ID_MAC_OFFSET, self.OnLangDefault)
         wx.EVT_MENU(self, wx.LANGUAGE_ENGLISH + ID_MAC_OFFSET, self.OnLangEnglish)
@@ -896,7 +896,7 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
         m = self.quotemenu.FindItemById(ID_REMOVE_QUOTE)
         m.Enable((self.m_book.GetSelection() == ID_PAGE_QUOTES) and op1 and not quote.isTraded())
 
-    def updateTitle(self,page=None):
+    def updateTitle(self, page=None):
         # get current page
         if page is None:
             page = self.m_book.GetSelection()
@@ -1094,8 +1094,7 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
 
     # --- [ Language management ] -------------------------------------
 
-    def SetLang(self,bDuringInit=False):
-
+    def SetLang(self, bDuringInit=False):
         if itrade_config.lang==1:
             lang = 'us'
         elif itrade_config.lang==2:

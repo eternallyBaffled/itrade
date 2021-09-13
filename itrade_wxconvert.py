@@ -87,7 +87,7 @@ class iTradeConverterDialog(iTradeSizedDialog):
         self.wxOrgVal.SetValue(1)
         masked.EVT_NUM(self, self.wxOrgVal.GetId(), self.OnValueChange)
 
-        self.wxOrgCur = wx.ComboBox(pane,-1, "", size=wx.Size(80,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
+        self.wxOrgCur = wx.ComboBox(pane, wx.ID_ANY, "", size=wx.Size(80,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
 
         list = list_of_currencies()
         (curFrom, curTo) = curSelected
@@ -97,13 +97,13 @@ class iTradeConverterDialog(iTradeSizedDialog):
 
         self.wxOrgCur.SetSelection(curFrom)
         self.m_orgcur = list[curFrom]
-        wx.EVT_COMBOBOX(self,self.wxOrgCur.GetId(),self.OnOrgCurrency)
+        wx.EVT_COMBOBOX(self, self.wxOrgCur.GetId(),self.OnOrgCurrency)
 
         # Row 2 : Dest Currency Value
-        self.wxDestVal = wx.StaticText(pane, -1, "", size=(100,-1), style = wx.ALIGN_RIGHT | wx.ST_NO_AUTORESIZE)
+        self.wxDestVal = wx.StaticText(pane, wx.ID_ANY, "", size=(100,-1), style = wx.ALIGN_RIGHT | wx.ST_NO_AUTORESIZE)
         self.wxDestVal.SetLabel('')
         self.wxDestVal.SetSizerProps(valign='center')
-        self.wxDestCur = wx.ComboBox(pane,-1, "", size=wx.Size(80,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
+        self.wxDestCur = wx.ComboBox(pane, wx.ID_ANY, "", size=wx.Size(80,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
 
         for c in list:
             self.wxDestCur.Append(c,c)
@@ -140,7 +140,7 @@ class iTradeConverterDialog(iTradeSizedDialog):
         # update currency rate if needed
         if not currencies.used(self.m_destcur,self.m_orgcur):
             currencies.inuse(self.m_destcur,self.m_orgcur,True)
-            currencies.get(self.m_destcur,self.m_orgcur)
+            currencies#c5e2ff.get(self.m_destcur,self.m_orgcur)
 
         # get the value and convert
         o = self.wxOrgVal.GetValue()
