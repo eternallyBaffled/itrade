@@ -295,7 +295,7 @@ class HTMLDialog(wx.Dialog):
         kwargs['defaultsize'] = defaultsize
 
         # init
-        wx.Dialog.__init__(self, parent, -1, caption, style=wx.TAB_TRAVERSAL|wx.DEFAULT_DIALOG_STYLE, size=size)
+        wx.Dialog.__init__(self, parent, wx.ID_ANY, caption, style=wx.TAB_TRAVERSAL|wx.DEFAULT_DIALOG_STYLE, size=size)
 
         # container
         self.m_html = wxUrlClickHtmlWindow(self, -1, style=wx.CLIP_CHILDREN | wx.html.HW_SCROLLBAR_NEVER | wx.TAB_TRAVERSAL)
@@ -500,7 +500,7 @@ class iTradeSizedDialog(sc.SizedDialog):
 
 class iTradeDialog(iTradeSizedDialog):
     def __init__(self, parent, caption, text, size=(420, 380), style=wx.OK | wx.YES_DEFAULT):
-        iTradeSizedDialog.__init__(self, parent, -1, caption, size, style=wx.DEFAULT_DIALOG_STYLE)
+        super(iTradeDialog, self).__init__(parent, wx.ID_ANY, caption, size, style=wx.DEFAULT_DIALOG_STYLE)
 
         image = None
         if style & wx.ICON_INFORMATION == wx.ICON_INFORMATION:
