@@ -43,7 +43,7 @@ import itrade_config
 
 # wxPython system
 if not itrade_config.nowxversion:
-    import itrade_wxversion
+    pass
 import wx
 from wx.lib import masked
 # import sized_controls from wx.lib for wxPython version >= 2.8.8.0 (from wxaddons otherwise)
@@ -62,17 +62,13 @@ from itrade_wxutil import iTradeSizedDialog
 # Creates a new Event class and a EVT binder function
 # ============================================================================
 
-(UpdateConvertEvent,EVT_UPDATE_CONVERT) = wx.lib.newevent.NewEvent()
+UpdateConvertEvent, EVT_UPDATE_CONVERT = wx.lib.newevent.NewEvent()
 
-# ============================================================================
-# iTradeConverterDialog
-# ============================================================================
 
 class iTradeConverterDialog(iTradeSizedDialog):
     def __init__(self, parent, curSelected=(0, 1)):
         super(iTradeConverterDialog, self).__init__(parent=parent, id=wx.ID_ANY, title=message('converter_title'),
-                                   size=(420, 420),style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
-
+                                   size=(420, 420), style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
         # container
         container = self.GetContentsPane()
         container.SetSizerType("vertical")
@@ -97,23 +93,23 @@ class iTradeConverterDialog(iTradeSizedDialog):
 
         self.wxOrgCur.SetSelection(curFrom)
         self.m_orgcur = list[curFrom]
-        wx.EVT_COMBOBOX(self, self.wxOrgCur.GetId(),self.OnOrgCurrency)
+        wx.EVT_COMBOBOX(self, self.wxOrgCur.GetId(), self.OnOrgCurrency)
 
         # Row 2 : Dest Currency Value
-        self.wxDestVal = wx.StaticText(pane, wx.ID_ANY, "", size=(100,-1), style = wx.ALIGN_RIGHT | wx.ST_NO_AUTORESIZE)
+        self.wxDestVal = wx.StaticText(pane, wx.ID_ANY, "", size=(100, -1), style=wx.ALIGN_RIGHT | wx.ST_NO_AUTORESIZE)
         self.wxDestVal.SetLabel('')
         self.wxDestVal.SetSizerProps(valign='center')
-        self.wxDestCur = wx.ComboBox(pane, wx.ID_ANY, "", size=wx.Size(80,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
+        self.wxDestCur = wx.ComboBox(pane, wx.ID_ANY, "", size=wx.Size(80, -1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
 
         for c in list:
-            self.wxDestCur.Append(c,c)
+            self.wxDestCur.Append(c, c)
 
         self.wxDestCur.SetSelection(curTo)
         self.m_destcur = list[curTo]
-        wx.EVT_COMBOBOX(self,self.wxDestCur.GetId(),self.OnDestCurrency)
+        wx.EVT_COMBOBOX(self, self.wxDestCur.GetId(), self.OnDestCurrency)
 
         # Last Row : OK and Cancel
-        btnpane = sc.SizedPanel(container, -1)
+        btnpane = sc.SizedPanel(parent=container, id=wx.ID_ANY)
         btnpane.SetSizerType("horizontal")
         btnpane.SetSizerProps(expand=True)
 
@@ -133,14 +129,11 @@ class iTradeConverterDialog(iTradeSizedDialog):
         EVT_UPDATE_CONVERT(self, self.OnUpdateConvert)
         self.convertValue()
 
-    def OnUpdateConvert(self,event):
+    def OnUpdateConvert(self, event):
         # can be long ...
         wx.SetCursor(wx.HOURGLASS_CURSOR)
 
-        # update currency rate if needed
-        if not currencies.used(self.m_destcur,self.m_orgcur):
-            currencies.inuse(self.m_destcur,self.m_orgcur,True)
-            currencies#c5e2ff.get(self.m_destcur,self.m_orgcur)
+        currencies.update_rate(self.m_destcur, self.m_orgcur)
 
         # get the value and convert
         o = self.wxOrgVal.GetValue()
@@ -152,20 +145,20 @@ class iTradeConverterDialog(iTradeSizedDialog):
 
     def convertValue(self):
         evt = UpdateConvertEvent()
-        wx.PostEvent(self,evt)
+        wx.PostEvent(self, evt)
 
-    def OnOrgCurrency(self,event):
+    def OnOrgCurrency(self, event):
         self.m_orgcur = self.wxOrgCur.GetClientData(self.wxOrgCur.GetSelection())
-        #print '$$$ org curr',self.m_orgcur
+        # print('$$$ org curr', self.m_orgcur)
         self.convertValue()
 
-    def OnDestCurrency(self,event):
+    def OnDestCurrency(self, event):
         self.m_destcur = self.wxDestCur.GetClientData(self.wxDestCur.GetSelection())
-        #print '$$$ dest curr',self.m_destcur
+        # print('$$$ dest curr', self.m_destcur)
         self.convertValue()
 
-    def OnValueChange(self,event):
-        #print '$$$ OnValueChange'
+    def OnValueChange(self, event):
+        # print('$$$ OnValueChange')
         self.convertValue()
 
 # ============================================================================

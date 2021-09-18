@@ -126,7 +126,7 @@ class Currencies(object):
             return rate
         if curTo == curFrom:
             return rate
-        key = self.key(curTo, curFrom)
+        key = self._key(curTo, curFrom)
         used, _ = self.m_currencies.get(key, (False, rate))
         self.m_currencies[key] = (used, rate)
         return rate
@@ -153,7 +153,7 @@ class Currencies(object):
 
     # ---[ Convert ] ---
 
-    def key(self, curTo, curFrom):
+    def _key(self, curTo, curFrom):
         return curTo.upper() + curFrom.upper()
 
     def rate(self, curTo, curFrom):
@@ -161,7 +161,7 @@ class Currencies(object):
             return 1.0
         if curTo == curFrom:
             return 1.0
-        key = self.key(curTo, curFrom)
+        key = self._key(curTo, curFrom)
         _, rate = self.m_currencies.get(key, (False, 1.0))
         return rate
 
@@ -177,7 +177,7 @@ class Currencies(object):
             return False
         if curTo == curFrom:
             return True
-        key = self.key(curTo, curFrom)
+        key = self._key(curTo, curFrom)
         used, _ = self.m_currencies.get(key, (False, 1.0))
         return used
 
@@ -186,7 +186,7 @@ class Currencies(object):
             return
         if curTo == curFrom:
             return
-        key = self.key(curTo, curFrom)
+        key = self._key(curTo, curFrom)
         if key in self.m_currencies:
             used, rate = self.m_currencies[key]
             self.m_currencies[key] = (bInUse, rate)
@@ -197,6 +197,11 @@ class Currencies(object):
         for key in self.m_currencies:
             used, rate = self.m_currencies[key]
             self.m_currencies[key] = (False, rate)
+
+    def update_rate(self, dest_currency, org_currency):
+        if not self.used(dest_currency, org_currency):
+            self.inuse(dest_currency, org_currency, True)
+            self.get(dest_currency, org_currency)
 
     # ---[ Get Last Trade from network ] ---
 
