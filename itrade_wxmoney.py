@@ -73,8 +73,8 @@ ID_CLOSE = 111
 
 class iTradeMoneyPanel(wx.Window):
 
-    def __init__(self,parent,id,port):
-        wx.Window.__init__(self, parent, id)
+    def __init__(self, parent, id, port):
+        super(iTradeMoneyPanel, self).__init__(parent, id)
         self.m_port = port
         self.m_currentItem = -1
 
@@ -89,8 +89,8 @@ class iTradeMoneyPanel(wx.Window):
 
 class iTradeEvaluationChartPanel(wx.Window):
 
-    def __init__(self,parent,id,port):
-        wx.Window.__init__(self, parent, id)
+    def __init__(self, parent, id, port):
+        super(iTradeEvaluationChartPanel, self).__init__(parent, id)
         self.m_port = port
         self.m_currentItem = -1
 
@@ -105,8 +105,8 @@ class iTradeEvaluationChartPanel(wx.Window):
 
 class iTradeComputePanel(wx.Window):
 
-    def __init__(self,parent,id,quote):
-        wx.Window.__init__(self, parent, id)
+    def __init__(self, parent, id, quote):
+        super(iTradeComputePanel, self).__init__(parent, id)
         self.m_quote = quote
         self.m_currentItem = -1
 
@@ -121,8 +121,8 @@ class iTradeComputePanel(wx.Window):
 
 class iTradeEvaluationPanel(wx.Window):
 
-    def __init__(self,parent,id,port):
-        wx.Window.__init__(self, parent, id)
+    def __init__(self, parent, id, port):
+        super(iTradeEvaluationPanel, self).__init__(parent, id)
         self.m_parent = parent
         self.m_port = port
         self.m_currentItem = -1
@@ -279,8 +279,8 @@ class iTradeMoneyNotebookWindow(wx.Notebook):
     ID_PAGE_EVALCHART = 2
     ID_PAGE_MONEY = 3
 
-    def __init__(self,parent,id,page,port,quote):
-        wx.Notebook.__init__(self,parent,id,wx.DefaultPosition, style=wx.SIMPLE_BORDER|wx.NB_TOP)
+    def __init__(self, parent, id, page, port, quote):
+        super(iTradeMoneyNotebookWindow, self).__init__(parent, id=id, pos=wx.DefaultPosition, style=wx.SIMPLE_BORDER|wx.NB_TOP)
         self.m_port = port
         self.m_quote = quote
         self.init()
@@ -326,17 +326,16 @@ class iTradeMoneyNotebookWindow(wx.Notebook):
 # iTradeMoneyWindow
 # ============================================================================
 
-class iTradeMoneyWindow(wx.Frame,iTrade_wxFrame):
+class iTradeMoneyWindow(wx.Frame, iTrade_wxFrame):
 
-    def __init__(self,parent,id,title,page,port,quote):
+    def __init__(self, parent, id, title, page, port, quote):
         self.m_id = wx.NewId()
-        wx.Frame.__init__(self,None,self.m_id, title, size = (640,480), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE)
-        iTrade_wxFrame.__init__(self,parent,'money')
+        super(iTradeMoneyWindow, self).__init__(parent=None, id=self.m_id, title=title, size=(640,480), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE, name='money')
         self.m_port = port
         self.m_quote = quote
         self.m_page = page
 
-        self.m_book = iTradeMoneyNotebookWindow(self, -1, page=self.m_page,port=self.m_port,quote=self.m_quote)
+        self.m_book = iTradeMoneyNotebookWindow(self, wx.ID_ANY, page=self.m_page, port=self.m_port, quote=self.m_quote)
 
         wx.EVT_WINDOW_DESTROY(self, self.OnDestroy)
         wx.EVT_SIZE(self, self.OnSize)
