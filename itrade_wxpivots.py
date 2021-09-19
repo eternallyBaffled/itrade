@@ -47,15 +47,11 @@ import wx
 import itrade_config
 from itrade_logging import setLevel, info
 
-# ============================================================================
-# iTrade_wxPivots
-# ============================================================================
 
 class iTrade_wxPivots(wx.Panel):
-    def __init__(self, parent,quote):
+    def __init__(self, parent, quote, *args, **kwargs):
         info('iTrade_wxPivots::__init__')
-        wx.Panel.__init__(self,parent,-1)
-        self.m_parent = parent
+        super(iTrade_wxPivots, self).__init__(*args, **kwargs)
         self.m_quote = quote
 
         self.m_font = wx.Font(10, wx.FONTFAMILY_MODERN, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
@@ -71,10 +67,10 @@ class iTrade_wxPivots(wx.Panel):
         box = wx.BoxSizer(wx.HORIZONTAL)
 
         bmp = wx.Bitmap(os.path.join(itrade_config.dirRes, 'resist2.png'))
-        bbmp = wx.StaticBitmap(self, -1, bmp, size=wx.Size(bmp.GetWidth()+5, bmp.GetHeight()+5))
+        bbmp = wx.StaticBitmap(parent=self, bitmap=bmp, size=wx.Size(bmp.GetWidth(), bmp.GetHeight()).IncBy(5))
         box.Add(bbmp, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.s_r2 = wx.StaticText(self, -1, '')
+        self.s_r2 = wx.StaticText(parent=self, label='')
         box.Add(self.s_r2, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         self.m_sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
@@ -86,19 +82,19 @@ class iTrade_wxPivots(wx.Panel):
         self.refresh()
 
     def OnSize(self, event):
-        w,h = self.GetClientSizeTuple()
+        w, h = self.GetClientSizeTuple()
 
     def refresh(self):
         pivot = self.m_quote.ov_pivots()
         if pivot:
-            s2,s1,pivot,r1,r2 = pivot
+            s2, s1, pivot, r1, r2 = pivot
             self.s_r2.SetLabel('%.2f'%r2)
-            print('pivots:',s2,s1,pivot,r1,r2)
+            print('pivots:', s2, s1, pivot, r1, r2)
 
 
 class WndTest(wx.Frame):
     def __init__(self, parent, quote):
-        wx.Frame.__init__(self, parent, wx.NewId(), 'WndTest', size=(300, 300),
+        super(WndTest, self).__init__(parent, id=wx.NewId(), title='WndTest', size=(300, 300),
                           style=wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE)
         self.m_pivots = iTrade_wxPivots(self, quote)
         self.m_quote = quote

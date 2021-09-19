@@ -51,21 +51,18 @@ import wx
 # matplotlib system
 from matplotlib.backends.backend_wx import RendererWx
 
-# ============================================================================
-# CanvasPrintout
-# ============================================================================
 
 class CanvasPrintout(wx.Printout):
     def __init__(self, canvas):
-        wx.Printout.__init__(self,title='Graph')
+        super(CanvasPrintout, self).__init__(title='Graph')
         self.canvas = canvas
 
         # width, in inches of output figure (approximate)
-        self.width  = 5
+        self.width = 5
         self.margin = 0.2
 
     def HasPage(self, page):
-        #current only supports 1 page print
+        # current only supports 1 page print
         return page == 1
 
     def GetPageInfo(self):
@@ -74,45 +71,46 @@ class CanvasPrintout(wx.Printout):
     def OnPrintPage(self, page):
         self.canvas.draw()
 
-        dc        = self.GetDC()
-        (ppw,pph) = self.GetPPIPrinter()      # printer's pixels per in
-        (pgw,pgh) = self.GetPageSizePixels()  # page size in pixels
-        (dcw,dch) = dc.GetSize()
-        (grw,grh) = self.canvas.GetSizeTuple()
+        dc = self.GetDC()
+        (ppw, pph) = self.GetPPIPrinter()      # printer's pixels per in
+        (pgw, pgh) = self.GetPageSizePixels()  # page size in pixels
+        (dcw, dch) = dc.GetSize()
+        (grw, grh) = self.canvas.GetSizeTuple()
 
         # save current figure dpi resolution and bg color,
         # so that we can temporarily set them to the dpi of
         # the printer, and the bg color to white
-        bgcolor   = self.canvas.figure.get_facecolor()
-        fig_dpi   = self.canvas.figure.dpi.get()
+        bgcolor = self.canvas.figure.get_facecolor()
+        fig_dpi = self.canvas.figure.dpi.get()
 
         # draw the bitmap, scaled appropriately
-        vscale    = float(ppw) / fig_dpi
+        vscale = float(ppw) / fig_dpi
 
         # set figure resolution,bg color for printer
         self.canvas.figure.dpi.set(ppw)
         self.canvas.figure.set_facecolor('#FFFFFF')
 
-        renderer  = RendererWx(self.canvas.bitmap, self.canvas.figure.dpi)
+        renderer = RendererWx(self.canvas.bitmap, self.canvas.figure.dpi)
         self.canvas.figure.draw(renderer)
-        self.canvas.bitmap.SetWidth(  int(self.canvas.bitmap.GetWidth() * vscale))
-        self.canvas.bitmap.SetHeight( int(self.canvas.bitmap.GetHeight()* vscale))
+        self.canvas.bitmap.SetWidth(int(self.canvas.bitmap.GetWidth() * vscale))
+        self.canvas.bitmap.SetHeight(int(self.canvas.bitmap.GetHeight() * vscale))
         self.canvas.draw()
 
         # page may need additional scaling on preview
         page_scale = 1.0
-        if self.IsPreview():   page_scale = float(dcw)/pgw
+        if self.IsPreview():
+            page_scale = float(dcw)/pgw
 
         # get margin in pixels = (margin in in) * (pixels/in)
-        top_margin  = int(self.margin * pph * page_scale)
+        top_margin = int(self.margin * pph * page_scale)
         left_margin = int(self.margin * ppw * page_scale)
 
         # set scale so that width of output is self.width inches
         # (assuming grw is size of graph in inches....)
         user_scale = (self.width * fig_dpi * page_scale)/float(grw)
 
-        dc.SetDeviceOrigin(left_margin,top_margin)
-        dc.SetUserScale(user_scale,user_scale)
+        dc.SetDeviceOrigin(left_margin, top_margin)
+        dc.SetUserScale(user_scale, user_scale)
 
         # this cute little number avoid API inconsistencies in wx
         try:
@@ -132,30 +130,31 @@ class CanvasPrintout(wx.Printout):
 
 # ============================================================================
 
+
 class MyPrintout(wx.Printout):
     def __init__(self, canvas):
-        wx.Printout.__init__(self)
+        super(MyPrintout, self).__init__()
         self.m_canvas = canvas
 
     def OnBeginDocument(self, start, end):
         info("MyPrintout.OnBeginDocument\n")
-        self.base_OnBeginDocument(start,end)
+        super(MyPrintout, self).OnBeginDocument(start, end)
 
     def OnEndDocument(self):
         info("MyPrintout.OnEndDocument\n")
-        self.base_OnEndDocument()
+        super(MyPrintout, self).OnEndDocument()
 
     def OnBeginPrinting(self):
         info("MyPrintout.OnBeginPrinting\n")
-        self.base_OnBeginPrinting()
+        super(MyPrintout, self).OnBeginPrinting()
 
     def OnEndPrinting(self):
         info("MyPrintout.OnEndPrinting\n")
-        self.base_OnEndPrinting()
+        super(MyPrintout, self).OnEndPrinting()
 
     def OnPreparePrinting(self):
         info("MyPrintout.OnPreparePrinting\n")
-        self.base_OnPreparePrinting()
+        super(MyPrintout, self).OnPreparePrinting()
 
     def HasPage(self, page):
         info("MyPrintout.HasPage: %d\n" % page)
@@ -175,8 +174,8 @@ class MyPrintout(wx.Printout):
         #-------------------------------------------
         # One possible method of setting scaling factors...
 
-        width,height = self.m_canvas.GetSizeTuple()
-        maxX,maxY = width,height
+        width, height = self.m_canvas.GetSizeTuple()
+        maxX, maxY = width, height
 
         # Let's have at least 50 device units margin
         marginX = 50
@@ -207,9 +206,9 @@ class MyPrintout(wx.Printout):
         #-------------------------------------------
         pandc = self.m_canvas.GetDC()
         sz = pandc.GetSizeTuple()
-        dc.Blit(0,0, sz[0], sz[1], 0, 0, pandc)
+        dc.Blit(0, 0, sz[0], sz[1], 0, 0, pandc)
 
-        #dc.DrawText(message('print_page') % page, marginX/2, maxY-marginY)
+        # dc.DrawText(message('print_page') % page, marginX/2, maxY-marginY)
 
         return True
 
@@ -221,7 +220,7 @@ class MyPrintout(wx.Printout):
 # ============================================================================
 
 class iTrade_wxPanelPrint(object):
-    def __init__(self, parent , po, orientation = wx.PORTRAIT):
+    def __init__(self, parent, po, orientation=wx.PORTRAIT):
         self.m_parent = parent
 
         self.m_pd = wx.PrintData()
@@ -292,16 +291,14 @@ class iTrade_wxPanelPrint(object):
 # Test me
 # ============================================================================
 
-class MyTestPanel(wx.Panel,iTrade_wxPanelPrint):
-
+class MyTestPanel(wx.Panel, iTrade_wxPanelPrint):
     def __init__(self, parent):
-        wx.Panel.__init__(self, parent, -1, wx.DefaultPosition, wx.DefaultSize)
-        iTrade_wxPanelPrint.__init__(self,parent,MyPrintout)
+        super(MyTestPanel, self).__init__(parent, po=MyPrintout)
 
         self.box = wx.BoxSizer(wx.VERTICAL)
 
         from itrade_wxhtml import iTradeHtmlPanel
-        self.m_canvas = iTradeHtmlPanel(self,wx.NewId(),"https://www.google.fr")
+        self.m_canvas = iTradeHtmlPanel(self, wx.NewId(), "https://www.google.fr")
         self.m_canvas.paint0()
         self.box.Add(self.m_canvas, 1, wx.GROW)
 
@@ -323,10 +320,11 @@ class MyTestPanel(wx.Panel,iTrade_wxPanelPrint):
         self.SetAutoLayout(True)
         self.SetSizer(self.box)
 
-class MyTestFrame(wx.Frame):
 
+class MyTestFrame(wx.Frame):
     def __init__(self, parent, id):
-        wx.Frame.__init__(self, parent, id, "iTrade Print and Preview Module", wx.Point(10,10), wx.Size(400, 400))
+        super(MyTestFrame, self).__init__(parent, id=id, title="iTrade Print and Preview Module",
+                                          pos=wx.Point(10, 10), size=wx.Size(400, 400))
         self.panel = MyTestPanel(self)
 
         wx.EVT_CLOSE(self, self.OnCloseWindow)
@@ -334,9 +332,10 @@ class MyTestFrame(wx.Frame):
     def OnCloseWindow(self, event):
         self.Destroy()
 
+
 class MyTestApp(wx.App):
     def OnInit(self):
-        frame = MyTestFrame(None, -1)
+        frame = MyTestFrame(None, wx.ID_ANY)
         frame.Show(True)
         self.SetTopWindow(frame)
         return True
