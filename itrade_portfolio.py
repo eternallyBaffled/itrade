@@ -1188,12 +1188,6 @@ class Portfolios(object):
             eachPortfolio.reinit()
 
     def list(self):
-        #items = self.m_portfolios.values()
-        #nlist = [(x.filename(), x) for x in items]
-        #nlist.sort()
-        #nlist = [val for (key, val) in nlist]
-        ##print nlist
-        #return nlist
         items = self.m_portfolios.values()
         items.sort(key=Portfolio.key)
         return items
@@ -1237,13 +1231,10 @@ class Portfolios(object):
             debug('Portfolios::renamePortfolio(): %s -> %s' % (filename,newfilename))
             return self.m_portfolios[newfilename]
 
-    def portfolio(self,fn):
-        if fn in self.m_portfolios:
-            return self.m_portfolios[fn]
-        else:
-            return None
+    def portfolio(self, fn):
+        return self.m_portfolios.get(fn, None)
 
-    def load(self,fn=None):
+    def load(self, fn=None):
         debug('Portfolios:load()')
 
         # open and read the file to load these quotes information
@@ -1252,7 +1243,7 @@ class Portfolios(object):
         for eachLine in infile:
             item = itrade_csv.parse(eachLine,6)
             if item:
-                #info('%s :: %s' % (eachLine,item))
+                # info('%s :: %s' % (eachLine,item))
                 vat = country2vat(gMessage.getLang())
                 if len(item)>=5:
                     currency = item[4]
