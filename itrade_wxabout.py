@@ -53,7 +53,7 @@ import wx.lib.wxpTag
 # iTrade system
 from itrade_logging import setLevel
 from itrade_local import message
-from itrade_wxhtml import wxUrlClickHtmlWindow,EVT_HTML_URL_CLICK
+from itrade_wxhtml import wxUrlClickHtmlWindow, EVT_HTML_URL_CLICK
 
 # ============================================================================
 # about_html
@@ -177,15 +177,14 @@ class iTradeAboutBox(wx.Dialog):
     border = 7
 
     def __init__(self, parent):
-        super(iTradeAboutBox, self).__init__(self, size=wx.Size(480, 525), pos=(-1, -1),
-                                             id=wx.NewId(), title=message('about_title'), parent=parent,
-                                             name='AboutBox', style=wx.DEFAULT_DIALOG_STYLE)
-
-        self.blackback = wx.Window(self, wx.ID_ANY, pos=(0, 0),
-              size=self.GetClientSize(), style=wx.CLIP_CHILDREN)
+        super(iTradeAboutBox, self).__init__(parent=parent, id=wx.NewId(), title=message('about_title'),
+                                             pos=(-1, -1), size=wx.Size(480, 525), style=wx.DEFAULT_DIALOG_STYLE,
+                                             name='AboutBox')
+        self.blackback = wx.Window(parent=self, id=wx.ID_ANY, pos=(0, 0), size=self.GetClientSize(),
+                                   style=wx.CLIP_CHILDREN)
         self.blackback.SetBackgroundColour(wx.BLACK)
 
-        self.m_html = wxUrlClickHtmlWindow(self.blackback, wx.ID_ANY, style = wx.CLIP_CHILDREN | wx.html.HW_NO_SELECTION)
+        self.m_html = wxUrlClickHtmlWindow(self.blackback, wx.ID_ANY, style=wx.CLIP_CHILDREN | wx.html.HW_NO_SELECTION)
         EVT_HTML_URL_CLICK(self.m_html, self.OnLinkClick)
 
         self.setPage()
@@ -203,7 +202,6 @@ class iTradeAboutBox(wx.Dialog):
         self.blackback.Layout()
         self.Center(wx.BOTH)
 
-        #
         self.SetAcceleratorTable(wx.AcceleratorTable([(0, wx.WXK_ESCAPE, wx.ID_OK)]))
 
     def gotoInternetUrl(self, url):
@@ -235,23 +233,23 @@ class iTradeAboutBox(wx.Dialog):
         elif clicked == 'Mail':
             self.gotoInternetUrl('mailto:dgil@ieee.org')
         elif clicked == 'LICENSE':
-            f = open('LICENSE','r')
-            lines = f.readlines()
-            s = ''
-            for l in lines:
-                s = s + l + '<br>'
-            self.m_html.SetPage(license_html % s)
-            f.close()
+            with open('LICENSE', 'r') as f:
+                lines = f.readlines()
+                s = '<br>'.join(lines)
+                self.m_html.SetPage(license_html % s)
 
     def setPage(self):
         self.m_html.SetPage(about_html % (
-              os.path.join(itrade_config.dirRes, 'itrade.png'), itrade_config.softwareVersionName, itrade_config.softwareStatus, itrade_config.softwareVersion,
-              '', about_text % (itrade_config.softwareWebsite, itrade_config.softwareCopyright,itrade_config.softwareLicense)
+              os.path.join(itrade_config.dirRes, 'itrade.png'), itrade_config.softwareVersionName,
+              itrade_config.softwareStatus, itrade_config.softwareVersion, '',
+              about_text % (itrade_config.softwareWebsite, itrade_config.softwareCopyright,
+                            itrade_config.softwareLicense)
               ))
 
 # ============================================================================
 # Test me
 # ============================================================================
+
 
 def main():
     setLevel(logging.INFO)
