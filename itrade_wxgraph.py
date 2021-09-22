@@ -89,10 +89,10 @@ class GTool(object):
     def canvas(self):
         return self.m_canvas
 
-    def on_click(self,x,y,time,val,chart):
+    def on_click(self, x, y, time, val, chart):
         info(u'Tool {} on_click x:{:d},y:{:d} time={} val={} chart={:d}!'.format(self.kind(), x, y, time, val, chart))
 
-    def is_cursor_state(self,chart):
+    def is_cursor_state(self, chart):
         return True
 
 
@@ -108,12 +108,12 @@ class GToolHLine(GTool):
     def __init__(self, parent, canvas):
         super(GToolHLine, self).__init__(kind=GTOOL_HLINE, parent=parent, canvas=canvas)
 
-    def is_cursor_state(self,chart):
+    def is_cursor_state(self, chart):
         return True
 
-    def on_click(self,x,y,time,val,chart):
+    def on_click(self, x, y, time, val, chart):
         # create the object
-        obj = (self,chart,time,val)
+        obj = (self, chart, time, val)
 
         # stack it
         self.m_parent.stackObject(obj)
@@ -121,15 +121,15 @@ class GToolHLine(GTool):
         # draw it
         self.m_parent.drawObject(obj)
 
-    def draw(self,parent,dc,obj,rect):
+    def draw(self, parent, dc, obj, rect):
         # obj: (self,chart,time,val)
         # rect: (left,top,right,bottom,width,height)
         axe = parent.chart2axe(obj[1])
 
         a,b = axe.get_ylim()
-        y = rect[3] - int( (obj[3] - a) * (rect[5] / (b-a)) )
+        y = rect[3] - int((obj[3] - a) * (rect[5] / (b-a)))
 
-        #print 'rect:',rect,'y range:',a,b,b-a,' val=',obj[3],(obj[3] - a),' y=',y
+        # print('rect:', rect, 'y range:', a, b, b-a, ' val=', obj[3], (obj[3] - a), ' y=', y)
         if rect[3] >= y >= rect[1]:
             lc = wx.NamedColour("BLACK")
             bg = "BLUE"
@@ -138,32 +138,32 @@ class GToolHLine(GTool):
             dc.SetPen(wx.Pen(lc, 1, wx.PENSTYLE_SOLID))
             dc.DrawLine(rect[0], y, rect[2], y)
 
-            label = parent.GetYLabel(axe,obj[3])
-            textExtent = self.m_parent.GetFullTextExtent(label,font)
+            label = parent.GetYLabel(axe, obj[3])
+            textExtent = self.m_parent.GetFullTextExtent(label, font)
 
-            DrawRectLabel(dc,label,rect[0],y,textExtent[0], textExtent[1],lc,bg,font,vert='top',horz='right')
+            DrawRectLabel(dc, label, rect[0], y, textExtent[0], textExtent[1], lc, bg, font, vert='top', horz='right')
 
 
 class GToolUPL(GTool):
     def __init__(self, parent, canvas):
         super(GToolUPL, self).__init__(kind=GTOOL_UPL, parent=parent, canvas=canvas)
 
-    def is_cursor_state(self,chart):
+    def is_cursor_state(self, chart):
         return True
 
-    def on_click(self,x,y,time,val,chart):
+    def on_click(self, x, y, time, val, chart):
         # do nothing
         pass
 
-    def draw(self,parent,dc,obj,rect):
+    def draw(self, parent, dc, obj, rect):
         # obj: (self,chart,time,val)
         # rect: (left,top,right,bottom,width,height)
         axe = parent.chart2axe(obj[1])
 
-        a,b = axe.get_ylim()
-        y = rect[3] - int( (obj[3] - a) * (rect[5] / (b-a)) )
+        a, b = axe.get_ylim()
+        y = rect[3] - int((obj[3] - a) * (rect[5] / (b-a)))
 
-        #print 'rect:',rect,'y range:',a,b,b-a,' val=',obj[3],(obj[3] - a),' y=',y
+        # print('rect:', rect, 'y range:', a, b, b-a, ' val=', obj[3], (obj[3] - a), ' y=', y)
         if rect[3] >= y >= rect[1]:
             lc = wx.NamedColour("BLACK")
             bg = "RED"
@@ -172,10 +172,10 @@ class GToolUPL(GTool):
             dc.SetPen(wx.Pen(lc, 1, wx.PENSTYLE_SOLID))
             dc.DrawLine(rect[0], y, rect[2], y)
 
-            label = parent.GetYLabel(axe,obj[3])
-            textExtent = self.m_parent.GetFullTextExtent(label,font)
+            label = parent.GetYLabel(axe, obj[3])
+            textExtent = self.m_parent.GetFullTextExtent(label, font)
 
-            DrawRectLabel(dc,label,rect[0],y,textExtent[0], textExtent[1],lc,bg,font,vert='top',horz='right')
+            DrawRectLabel(dc, label, rect[0], y, textExtent[0], textExtent[1], lc, bg, font, vert='top', horz='right')
 
 
 class GToolVLine(GTool):
@@ -185,7 +185,7 @@ class GToolVLine(GTool):
     def is_cursor_state(self,chart):
         return True
 
-    def on_click(self,x,y,time,val,chart):
+    def on_click(self, x, y, time, val, chart):
         # create the object
         obj = (self,chart,time,val,self.m_parent.GetIndexTime(0),self.m_parent.getPeriod())
 
@@ -196,8 +196,8 @@ class GToolVLine(GTool):
         self.m_parent.drawObject(obj)
 
     def draw(self,parent,dc,obj,rect):
-        # obj: (self,chart,time,val,offtime,periodtime)
-        # rect: (left,top,right,bottom,width,height)
+        # obj: (self, chart, time, val, offtime, periodtime)
+        # rect: (left, top, right, bottom, width, height)
         axe = parent.chart2axe(obj[1])
         time = obj[2]
 
@@ -234,7 +234,7 @@ class GToolOLine(GTool):
     def __init__(self, parent, canvas):
         super(GToolOLine, self).__init__(kind=GTOOL_OLINE, parent=parent, canvas=canvas)
 
-    def is_cursor_state(self,chart):
+    def is_cursor_state(self, chart):
         return True
 
 
@@ -253,10 +253,10 @@ class GToolTrash(GTool):
     def __init__(self, parent, canvas):
         super(GToolTrash, self).__init__(kind=GTOOL_TRASH, parent=parent, canvas=canvas)
 
-    def is_cursor_state(self,chart):
+    def is_cursor_state(self, chart):
         return True
 
-    def on_click(self,x,y,time,val,chart):
+    def on_click(self, x, y, time, val, chart):
         lst = self.m_parent.listObjects()
 
 # ============================================================================
@@ -316,10 +316,10 @@ class GObject(object):
 # Formatter function for Volumes
 # ============================================================================
 
-def fmtVolumeFunc(x,pos):
-    if pos%3==1:
-        if abs(x)>=1000:
-            if abs(x)>=1e6:
+def fmtVolumeFunc(x, pos):
+    if pos%3 == 1:
+        if abs(x) >= 1000:
+            if abs(x) >= 1e6:
                 return '%.1f M' % (x*1e-6)
             else:
                 return '%d K' % int(x*1e-3)
@@ -328,10 +328,10 @@ def fmtVolumeFunc(x,pos):
     else:
         return ''
 
-def fmtVolumeFunc0(x,pos):
-    if pos%3==0:
-        if abs(x)>=1000:
-            if abs(x)>=1e6:
+def fmtVolumeFunc0(x, pos):
+    if pos%3 == 0:
+        if abs(x) >= 1000:
+            if abs(x) >= 1e6:
                 return '%.1f M' % (x*1e-6)
             else:
                 return '%d K' % int(x*1e-3)
@@ -485,10 +485,10 @@ class iTrade_wxToolbarGraph(wx.ToolBar):
     def doPreview(self,event):
         self.m_parent.OnPrintPreview(event)
 
-    def doPrint(self,event):
+    def doPrint(self, event):
         self.m_parent.OnDoPrint(event)
 
-    def printSetup(self,event):
+    def printSetup(self, event):
         self.m_parent.OnPageSetup(event)
 
     def set_cursor(self, cursor):
@@ -519,9 +519,9 @@ class FigureCanvasEx(FigureCanvas):
         self.m_parent = parent
 
     def _onPaint(self, event):
-        #print '$$$ _onPaint ex : call default _onPaint'
+        # print('$$$ _onPaint ex : call default _onPaint')
         FigureCanvas._onPaint(self, event)
-        #print '$$$ _onPaint ex : call drawAllObjects in parent'
+        # print('$$$ _onPaint ex : call drawAllObjects in parent')
         self.m_parent.drawAllObjects()
 
 
@@ -804,7 +804,7 @@ class iTrade_wxPanelGraph(GObject, PanelPrint):
         # unmanaged toolbar in your frame
         return self.m_toolbar
 
-    def axe2chart(self,ax):
+    def axe2chart(self, ax):
         if ax == self.chart1 or ax == self.chart1vol:
             return 1
         elif ax == self.chart2 or ax == self.chart2vol:
@@ -814,44 +814,44 @@ class iTrade_wxPanelGraph(GObject, PanelPrint):
         else:
             return 0
 
-    def chart2axe(self,chart):
-        if chart==1:
+    def chart2axe(self, chart):
+        if chart == 1:
             return self.chart1
-        elif chart==2:
+        elif chart == 2:
             return self.chart2
-        elif chart==3:
+        elif chart == 3:
             return self.chart3
         else:
             return None
 
-    def chartUPL(self,strval):
+    def chartUPL(self, strval):
         if itrade_config.verbose:
-            print('chartUPL with xval=',strval)
+            print('chartUPL with xval=', strval)
 
         # create the object
-        obj = (GToolUPL(self,self.m_canvas),1,0,strval)
+        obj = (GToolUPL(self, self.m_canvas), 1, 0, strval)
 
         # stack it
         self.stackObject(obj)
 
-    def BeginCharting(self,nchart=2):
-        #print 'BeginCharting --['
+    def BeginCharting(self, nchart=2):
+        # print('BeginCharting --[')
 
         self.figure.clear()
 
-        if nchart==2:
+        if nchart == 2:
             # left, bottom, width, height
-            ra1 = [0.07,0.20,0.86,0.76]
-            ra1ovl = [0.07,0.20,0.86,0.15]
-            ra2 = [0.07,0.02,0.86,0.15]
-            ra2ovl = [0.07,0.02,0.86,0.15]
+            ra1 = [0.07, 0.20, 0.86, 0.76]
+            ra1ovl = [0.07, 0.20, 0.86, 0.15]
+            ra2 = [0.07, 0.02, 0.86, 0.15]
+            ra2ovl = [0.07, 0.02, 0.86, 0.15]
         else:
             # left, bottom, width, height
-            ra1 = [0.07,0.38,0.86,0.58]
-            ra1ovl = [0.07,0.38,0.86,0.15]
-            ra2 = [0.07,0.20,0.86,0.15]
-            ra2ovl = [0.07,0.20,0.86,0.15]
-            ra3 = [0.07,0.02,0.86,0.15]
+            ra1 = [0.07, 0.38, 0.86, 0.58]
+            ra1ovl = [0.07, 0.38, 0.86, 0.15]
+            ra2 = [0.07, 0.20, 0.86, 0.15]
+            ra2ovl = [0.07, 0.20, 0.86, 0.15]
+            ra3 = [0.07, 0.02, 0.86, 0.15]
 
         # by default : no legend
         self.legend1 = None
@@ -866,12 +866,12 @@ class iTrade_wxPanelGraph(GObject, PanelPrint):
 
         # chart1 for overlayed volume
         if self.m_hasChart1Vol:
-            self.chart1vol = self.figure.add_axes(ra1ovl,frameon=False)
+            self.chart1vol = self.figure.add_axes(ra1ovl, frameon=False)
             self.chart1vol.yaxis.tick_left()
             volumeFmt = FuncFormatter(fmtVolumeFunc)
             self.chart1vol.yaxis.set_major_formatter(volumeFmt)
             self.chart1vol.xaxis.set_major_locator(MultipleLocator(self.getMultiple()))
-            #self.chart1vol.grid(True)
+            # self.chart1vol.grid(True)
         else:
             self.chart1vol = None
 
@@ -885,19 +885,19 @@ class iTrade_wxPanelGraph(GObject, PanelPrint):
 
         # chart2 for overlayed volume
         if self.m_hasChart2Vol:
-            self.chart2vol = self.figure.add_axes(ra2ovl,frameon=False)
+            self.chart2vol = self.figure.add_axes(ra2ovl, frameon=False)
             self.chart2vol.yaxis.tick_left()
             volumeFmt = FuncFormatter(fmtVolumeFunc0)
             self.chart2vol.yaxis.set_major_formatter(volumeFmt)
             self.chart2vol.xaxis.set_major_locator(MultipleLocator(self.getMultiple()))
-            #self.chart2vol.grid(True)
+            # self.chart2vol.grid(True)
         else:
             self.chart2vol = None
 
         left, top = 0.015, 0.80
-        t = self.chart2.text(left, top, message('graph_volume'), fontsize = 7, transform = self.chart2.transAxes)
+        t = self.chart2.text(left, top, message('graph_volume'), fontsize=7, transform=self.chart2.transAxes)
 
-        if nchart==3:
+        if nchart == 3:
             self.chart3 = self.figure.add_axes(ra3)
             self.chart3.yaxis.tick_right()
             percentFmt = FuncFormatter(fmtPercentFunc)
@@ -907,7 +907,7 @@ class iTrade_wxPanelGraph(GObject, PanelPrint):
         else:
             self.chart3 = None
 
-        #print ']-- BeginCharting'
+        # print(']-- BeginCharting')
 
     def EndCharting(self):
         # adjust all font size
@@ -922,22 +922,22 @@ class iTrade_wxPanelGraph(GObject, PanelPrint):
                 for text in self.legend3.get_texts():
                     text.set_fontsize(7)
 
-        setp(self.chart1.get_xticklabels(),fontsize=7)
-        setp(self.chart1.get_yticklabels(),fontsize=7)
+        setp(self.chart1.get_xticklabels(), fontsize=7)
+        setp(self.chart1.get_yticklabels(), fontsize=7)
         if self.m_hasChart1Vol:
-            setp(self.chart1vol.get_yticklabels(),fontsize=7)
-            setp(self.chart1vol.get_xticklabels(),fontsize=7)
-        setp(self.chart2.get_xticklabels(),fontsize=7)
-        setp(self.chart2.get_yticklabels(),fontsize=7)
+            setp(self.chart1vol.get_yticklabels(), fontsize=7)
+            setp(self.chart1vol.get_xticklabels(), fontsize=7)
+        setp(self.chart2.get_xticklabels(), fontsize=7)
+        setp(self.chart2.get_yticklabels(), fontsize=7)
         if self.m_hasChart2Vol:
-            setp(self.chart2vol.get_xticklabels(),fontsize=7)
-            setp(self.chart2vol.get_yticklabels(),fontsize=7)
+            setp(self.chart2vol.get_xticklabels(), fontsize=7)
+            setp(self.chart2vol.get_yticklabels(), fontsize=7)
         if self.chart3:
-            setp(self.chart3.get_xticklabels(),fontsize=7)
-            setp(self.chart3.get_yticklabels(),fontsize=7)
+            setp(self.chart3.get_xticklabels(), fontsize=7)
+            setp(self.chart3.get_yticklabels(), fontsize=7)
 
         # format times correctly
-        self.dateFmt =  IndexDateFormatter(self.times, '%d %b')
+        self.dateFmt = IndexDateFormatter(self.times, '%d %b')
         self.chart1.xaxis.set_major_formatter(self.dateFmt)
         self.chart2.xaxis.set_major_formatter(self.dateFmt)
         if self.chart3:
