@@ -77,13 +77,13 @@ class iTradeStopsDialog(wx.Dialog):
         box = wx.BoxSizer(wx.HORIZONTAL)
 
         # current quote
-        label = wx.StaticText(self, -1, quote.name())
+        label = wx.StaticText(parent=self, id=wx.ID_ANY, label=quote.name())
         box.Add(label, 0, wx.ALIGN_LEFT|wx.ALL, 5)
 
-        label = wx.StaticText(self, -1, message('stops_last'))
+        label = wx.StaticText(parent=self, id=wx.ID_ANY, label=message('stops_last'))
         box.Add(label, 0, wx.ALIGN_LEFT|wx.ALL, 5)
 
-        label = wx.StaticText(self, -1, quote.sv_close(bDispCurrency=True))
+        label = wx.StaticText(parent=self, id=wx.ID_ANY, label=quote.sv_close(bDispCurrency=True))
         box.Add(label, 0, wx.ALIGN_LEFT|wx.ALL, 5)
 
         sizer.AddSizer(box, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
@@ -98,17 +98,17 @@ class iTradeStopsDialog(wx.Dialog):
 
             box = wx.BoxSizer(wx.HORIZONTAL)
 
-            label = wx.StaticText(self,
-                                  -1,
-                                  message('stops_portfolio').format(quote.nv_number(),
+            label = wx.StaticText(parent=self,
+                                  id=wx.ID_ANY,
+                                  label=message('stops_portfolio').format(quote.nv_number(),
                                                                     quote.sv_pr(bDispCurrency=True)))
-            box.Add(label, 0, wx.ALIGN_LEFT|wx.ALL, 5)
+            box.Add(item=label, proportion=0, flag=wx.ALIGN_LEFT|wx.ALL, border=5)
 
             sizer.AddSizer(box, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
         box = wx.BoxSizer(wx.HORIZONTAL)
 
-        label = wx.StaticText(self, -1, msgb)
+        label = wx.StaticText(parent=self, id=wx.ID_ANY, label=msgb)
         box.Add(label, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_LEFT|wx.ALL, 5)
 
         self.wxLoss = masked.Ctrl(self,
@@ -118,18 +118,18 @@ class iTradeStopsDialog(wx.Dialog):
                                   allowNegative=False,
                                   groupChar=getGroupChar(),
                                   decimalChar=getDecimalChar())
-        box.Add(self.wxLoss, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_LEFT|wx.ALL, 5)
+        box.Add(item=self.wxLoss, proportion=0, flag=wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_LEFT|wx.ALL, border=5)
         if quote.hasStops():
             self.wxLoss.SetValue(quote.nv_stoploss())
 
-        label = wx.StaticText(self, -1, quote.currency_symbol())
+        label = wx.StaticText(parent=self, id=wx.ID_ANY, label=quote.currency_symbol())
         box.Add(label, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_LEFT|wx.ALL, 5)
 
         sizer.AddSizer(box, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
         box = wx.BoxSizer(wx.HORIZONTAL)
 
-        label = wx.StaticText(self, -1, msgh)
+        label = wx.StaticText(parent=self, id=wx.ID_ANY, label=msgh)
         box.Add(label, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_LEFT|wx.ALL, 5)
 
         self.wxWin = masked.Ctrl(self,
@@ -143,7 +143,7 @@ class iTradeStopsDialog(wx.Dialog):
         if quote.hasStops():
             self.wxWin.SetValue(quote.nv_stopwin())
 
-        label = wx.StaticText(self, -1, quote.currency_symbol())
+        label = wx.StaticText(parent=self, id=wx.ID_ANY, label=quote.currency_symbol())
         box.Add(label, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_LEFT|wx.ALL, 5)
 
         sizer.AddSizer(box, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
