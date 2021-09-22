@@ -66,11 +66,13 @@ from itrade_news import gNews
 wxEVT_HTML_URL_CLICK = wx.NewId()
 EVT_HTML_URL_CLICK = wx.PyEventBinder(wxEVT_HTML_URL_CLICK)
 
+
 class wxHtmlWindowUrlClick(wx.PyEvent):
     def __init__(self, linkinfo):
         super(wxHtmlWindowUrlClick, self).__init__()
         self.SetEventType(wxEVT_HTML_URL_CLICK)
         self.linkinfo = (linkinfo.GetHref(), linkinfo.GetTarget())
+
 
 class wxUrlClickHtmlWindow(wxhtml.HtmlWindow):
 
@@ -89,7 +91,7 @@ class wxUrlClickHtmlWindow(wxhtml.HtmlWindow):
 # ============================================================================
 
 class iTradeHtmlPanel(wx.Panel):
-    def __init__(self, parent,id, url=None):
+    def __init__(self, parent, id, url=None):
         super(iTradeHtmlPanel, self).__init__(parent, id, size=(800,600), style=wx.TAB_TRAVERSAL|wx.CLIP_CHILDREN|wx.NO_FULL_REPAINT_ON_RESIZE)
         self.url = url
         self.m_parent = parent
@@ -121,7 +123,7 @@ class iTradeHtmlPanel(wx.Panel):
     def refresh(self):
         if self.url:
             self.paint0()
-            info('iTradeHtmlPanel::url=%s',self.url)
+            info('iTradeHtmlPanel::url=%s', self.url)
             self.m_html.LoadPage(self.url)
 
     def InitPage(self):
@@ -142,7 +144,8 @@ class iTradeHtmlPanel(wx.Panel):
 
 class iTradeRSSPanel(wx.Panel):
     def __init__(self, parent, id, quote):
-        super(iTradeRSSPanel, self).__init__(parent=parent, id=id, size=(800,600), style=wx.TAB_TRAVERSAL|wx.CLIP_CHILDREN|wx.NO_FULL_REPAINT_ON_RESIZE)
+        super(iTradeRSSPanel, self).__init__(parent=parent, id=id, size=(800, 600),
+                                             style=wx.TAB_TRAVERSAL|wx.CLIP_CHILDREN|wx.NO_FULL_REPAINT_ON_RESIZE)
         self.m_quote = quote
 
         self.m_html = wxUrlClickHtmlWindow(self, -1)
@@ -175,7 +178,7 @@ class iTradeRSSPanel(wx.Panel):
             return
 
         # render the page on the HTML object
-        gNews.goto(self,clicked)
+        gNews.goto(self, clicked)
 
     # ---[ HeaderPage / AppendToPage / TrailerPage must use buffered content ]---
 
@@ -185,8 +188,8 @@ class iTradeRSSPanel(wx.Panel):
         self.m_html.AppendToPage("<a href=':scan'>%s</a> " % message('rss_scan'))
         self.m_html.AppendToPage("<a href=':clear'>%s</a>" % message('rss_clear'))
 
-    def AppendToPage(self,content):
-        #print 'AppendToPage:',self.m_content,content
+    def AppendToPage(self, content):
+        # print('AppendToPage:', self.m_content, content)
         self.m_content = self.m_content + content
         self.m_content = self.m_content + '\n'
         self.m_html.AppendToPage(content)
@@ -194,7 +197,7 @@ class iTradeRSSPanel(wx.Panel):
     def TrailerPage(self):
         self.m_html.AppendToPage("</html></body>")
 
-    def SetPageWithoutCache(self,content):
+    def SetPageWithoutCache(self, content):
         self.m_html.SetPage(content)
 
     # ---[ cache management ]---
@@ -208,7 +211,7 @@ class iTradeRSSPanel(wx.Panel):
         self.saveCache()
 
     def deleteCache(self):
-        fn = os.path.join(itrade_config.dirCacheData,'%s.htm' % self.m_quote.key())
+        fn = os.path.join(itrade_config.dirCacheData, '%s.htm' % self.m_quote.key())
         info('deleteCache(%s)' % fn)
         try:
             os.remove(fn)
@@ -216,10 +219,10 @@ class iTradeRSSPanel(wx.Panel):
             pass
 
     def loadCache(self):
-        fn = os.path.join(itrade_config.dirCacheData,'%s.htm' % self.m_quote.key())
+        fn = os.path.join(itrade_config.dirCacheData, '%s.htm' % self.m_quote.key())
         if os.path.exists(fn):
             try:
-                f = open(fn,'r')
+                f = open(fn, 'r')
                 txt = f.read()
             except IOError:
                 self.emptyPage()
@@ -234,17 +237,17 @@ class iTradeRSSPanel(wx.Panel):
             info('loadCache(%s) : no cache -> empty page' % fn)
 
     def saveCache(self):
-        fn = os.path.join(itrade_config.dirCacheData,'%s.htm' % self.m_quote.key())
+        fn = os.path.join(itrade_config.dirCacheData, '%s.htm' % self.m_quote.key())
 
         # open the file
         try:
-            f = open(fn,'w')
+            f = open(fn, 'w')
         except IOError:
             # can't open the file (existing ?)
             info('saveCache(%s) : IOError :-(' % fn)
             return False
 
-        #print 'saveCache:encoding',f.encoding
+        # print('saveCache:encoding', f.encoding)
         f.write(self.m_content.encode('utf-8'))
 
         # close the file
@@ -283,14 +286,14 @@ class iTradeRSSPanel(wx.Panel):
 
     def buildPage(self):
         if self.m_feed and self.m_feed.entries:
-            info('Feed %s',self.m_feed.feed.title)
+            info('Feed %s', self.m_feed.feed.title)
             self.HeaderPage()
-            self.AppendToPage(" (%s %s)<p>" % (message('rss_freshness'),time.strftime('%x | %X',time.localtime())))
+            self.AppendToPage(" (%s %s)<p>" % (message('rss_freshness'), time.strftime('%x | %X', time.localtime())))
 
-            #self.AppendToPage("<head>%s</head><p>" % self.m_feed.feed.title)
+            # self.AppendToPage("<head>%s</head><p>" % self.m_feed.feed.title)
 
             for eachEntry in self.m_feed.entries:
-                self.AppendToPage("%s : <a href='%s'>%s</a><p>" % (time.strftime('%x',eachEntry.date),eachEntry.link,eachEntry.title))
+                self.AppendToPage("%s : <a href='%s'>%s</a><p>" % (time.strftime('%x', eachEntry.date), eachEntry.link, eachEntry.title))
 
             self.TrailerPage()
             self.saveCache()
@@ -317,8 +320,8 @@ class iTradeRSSPanel(wx.Panel):
 # iTradeLaunchBrowser
 # ============================================================================
 
-def iTradeLaunchBrowser(url,new=False):
-    webbrowser.open(url,new,autoraise=True)
+def iTradeLaunchBrowser(url, new=False):
+    webbrowser.open(url, new, autoraise=True)
 
 # ============================================================================
 # That's all folks !
