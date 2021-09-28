@@ -39,82 +39,86 @@
 
 # python system
 import logging
-import string
+from functools import partial
 
 # iTrade system
 from itrade_logging import setLevel, info
 
-# ============================================================================
-# isnum
-# ============================================================================
-
-def isnum(s):
-    if not s:
-        return False
-    for c in s:
-        if c not in string.digits:
-            return False
-    return True
 
 # ============================================================================
 # checkISIN
 # ============================================================================
+def _is_odd(n):
+    return n & 1
 
-asc = {}
-n = 65
-for i in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
-    asc[i] = n
-    n += 1
-
-def _buildVerifCode(code):
-    # print('_buildVerifCode(%s)' % code)
-    myCode = ''
-    for myCar in code:
-        if isnum(myCar):
-            myInt = int(myCar)
-        else:
-            myInt = asc[myCar] - 55
-        myCode = myCode + ("%d" % myInt)
-    # print('code=',code,'len(myCode)=',len(myCode),'myCode=',myCode)
+def _build_verif_code(code):
+    myCode = _transcode_to_decimal(code)
 
     myTotal = 0
-    strip = len(myCode) & 1
-    for char in myCode:
-        if char % 2 == strip:
-            myInt = int(char)
-            # print('myInt=',myInt)
-        else:
-            myInt = int(char)*2
-            # print('myInt=',myInt)
-            if myInt > 9:
-                myInt = (myInt%10) + (myInt//10)
-                # print('myInt-redux=',myInt)
+    for pos, char in enumerate(myCode, start=1):
+        myInt = _do_something_with_char(char, pos%2==_is_odd(len(myCode)))
         myTotal = myTotal + myInt
-        # print('i=',i,'myTotal=',myTotal)
     return (10 - (myTotal%10)) % 10
+
+
+def _do_something_with_char(char, odd):
+    if odd:
+        myInt = int(char) * 2
+#        print('myInt={:d}'.format(myInt))
+    else:
+        myInt = int(char)
+#        print('myInt={:d}'.format(myInt))
+    if myInt > 9:
+        myInt = (myInt % 10) + (myInt // 10)
+#            print('myInt-redux={:d}'.format(myInt))
+    return myInt
+
+
+def _transcode_to_decimal(code):
+    """
+    Takes a string with numbers and upper case characters from the roman alphabet and transforms it to one containing
+    only number characters.
+    """
+#    print(u'_build_verif_code({})'.format(code))
+    myCode = u''
+    for myCar in code:
+        myInt = char_to_number(myCar)
+        myCode += u'{:d}'.format(myInt)
+#    print('code={}'.format(code), 'len(myCode)={:d}'.format(len(myCode)), 'myCode={}'.format(myCode))
+    return myCode
+
+
+def char_to_number(myCar):
+    if myCar.isnumeric():
+        myInt = int(myCar)
+    else:
+        myInt = ord(myCar) - 55
+    return myInt
 
 
 def checkISIN(isin):
     isin = isin.strip().upper()
     if len(isin) != 12:
+        print('length fails')
         return False
 
     temp_ck = isin[-1:]
-    if not isnum(temp_ck):
+    if not temp_ck.isnumeric():
+        print('non-numeric check digit')
         return False
 
     check_digit = int(temp_ck)
-    return check_digit == _buildVerifCode(isin[:-1])
+    calculated_check_digit = _build_verif_code(isin[:-1])
+#    print(calculated_check_digit)
+    return check_digit == calculated_check_digit
 
 # ============================================================================
 # buildISIN
 # ============================================================================
 
 def buildISIN(country, code):
-    while len(country) + len(code) < 11:
-        code = '0' + code
-    code = country + code
-    return code + "{:d}".format(_buildVerifCode(code))
+    code = u'{}{:0>{width}}'.format(country, code, width=11-len(country))
+    return code + "{:d}".format(_build_verif_code(code))
 
 # ============================================================================
 # filterName
@@ -178,16 +182,16 @@ def main():
     import itrade_config
     setLevel(logging.INFO)
     itrade_config.app_header()
-    info('test1 FR0000072621 : %s' % checkISIN('FR0000072621'))
-    info('test1 FR0000072621 : %s' % buildISIN('FR', '07262'))
-    info('test2 FR0010209809 : %s' % checkISIN('FR0010209809'))
-    info('test2 FR0010209809 : %s' % buildISIN('FR', '1020980'))
-    info('test3 FR0004154060 : %s' % checkISIN('FR0004154060'))
-    info('test3 FR0004154060 : %s' % buildISIN('FR', '000415406'))
-    info('test4 ES0178430E18 : %s' % checkISIN('ES0178430E18'))
-    info('test4 ES0178430E18 : %s' % buildISIN('ES', '0178430E1'))
-    info('test5 NSCFR0000TF6 : %s' % checkISIN('NSCFR0000TF6'))
-    info('test4 NSCFR0000TF6 : %s' % buildISIN('NSCFR', 'TF'))
+    info(u'test1 FR0000072621 : {}'.format(checkISIN(u'FR0000072621')))
+    info(u'test1 FR0000072621 : {}'.format(buildISIN(u'FR', u'07262')))
+    info(u'test2 FR0010209809 : {}'.format(checkISIN(u'FR0010209809')))
+    info(u'test2 FR0010209809 : {}'.format(buildISIN(u'FR', u'1020980')))
+    info(u'test3 FR0004154060 : {}'.format(checkISIN(u'FR0004154060')))
+    info(u'test3 FR0004154060 : {}'.format(buildISIN(u'FR', u'000415406')))
+    info(u'test4 ES0178430E18 : {}'.format(checkISIN(u'ES0178430E18')))
+    info(u'test4 ES0178430E18 : {}'.format(buildISIN(u'ES', u'0178430E1')))
+    info(u'test5 NSCFR0000TF6 : {}'.format(checkISIN(u'NSCFR0000TF6')))
+    info(u'test4 NSCFR0000TF6 : {}'.format(buildISIN(u'NSCFR', u'TF')))
 
 
 if __name__ == '__main__':
