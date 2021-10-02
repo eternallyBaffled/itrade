@@ -46,7 +46,7 @@ import itrade_config
 from itrade_logging import debug, info
 from itrade_local import message, gMessage
 from itrade_portfolio import loadPortfolio, OPERATION_BUY, OPERATION_SELL
-from itrade_matrix import createMatrix
+from itrade_matrix import create_matrix
 from itrade_quotes import quotes
 from itrade_defs import QList
 from itrade_ext import getDefaultLiveConnector
@@ -759,7 +759,7 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
         # change portfolio
         self.m_portfolio = dp
 
-        self.m_matrix = createMatrix(dp.filename(),dp)
+        self.m_matrix = create_matrix(dp.filename(), dp)
         self.m_market = self.m_portfolio.market()
         self.initIndice()
 

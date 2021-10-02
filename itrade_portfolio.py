@@ -47,7 +47,7 @@ import itrade_config
 from itrade_logging import setLevel, debug, info
 import itrade_datation
 from itrade_quotes import quotes, QuoteType
-from itrade_matrix import createMatrix
+from itrade_matrix import create_matrix
 from itrade_local import message, gMessage
 import itrade_csv
 from itrade_currency import currency2symbol, currencies
@@ -1356,8 +1356,8 @@ def cmdline_evaluatePortfolio(year=2006):
     print('... %s:%s:%s ' % (p.filename(),p.name(),p.accountref()))
 
     print('--- build a matrix -----------')
-#    m = createMatrix(p.filename(),p)
-    m = createMatrix(p.filename())
+#    m = create_matrix(p.filename(),p)
+    m = create_matrix(p.filename())
 
     print('--- liveupdate this matrix ---')
     m.update()

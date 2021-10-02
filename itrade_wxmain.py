@@ -52,7 +52,7 @@ import wx
 
 import itrade_logging
 from itrade_portfolio import loadPortfolio
-from itrade_matrix import createMatrix
+from itrade_matrix import create_matrix
 
 # iTrade wxPython system
 from itrade_wxbook import iTradeMainWindow
@@ -93,7 +93,7 @@ class iTradeApp(wx.App):
         #print 'Portfolio : %s:%s:%s:%s:%f ' % (portfolio.filename(), portfolio.name(), portfolio.accountref(), portfolio.market(), portfolio.vat())
 
         print('--- build a matrix -----------')
-        matrix = createMatrix(portfolio.filename(), portfolio)
+        matrix = create_matrix(portfolio.filename(), portfolio)
 
         frame = iTradeMainWindow(None, portfolio, matrix)
         self.SetTopWindow(frame)

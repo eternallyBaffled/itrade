@@ -140,7 +140,7 @@ def main():
                 else:
                     itrade_import.cmdline_importQuoteFromInternet(quote)
             else:
-                matrix = itrade_matrix.createMatrix()
+                matrix = itrade_matrix.create_matrix()
                 if storage:
                     itrade_import.cmdline_importMatrixFromFile(matrix, storage)
                 else:
