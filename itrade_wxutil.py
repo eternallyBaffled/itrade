@@ -141,19 +141,19 @@ def Button(label, id, makedefault=0):
     return [(label, id, makedefault)]
 
 def OKButton(makedefault=1):
-    return Button(message('ok'), repr(wx.ID_OK), makedefault)
+    return Button(message('ok'), wx.ID_OK, makedefault)
 
 def CancelButton(makedefault=0):
-    return Button(message('cancel'), repr(wx.ID_CANCEL), makedefault)
+    return Button(message('cancel'), wx.ID_CANCEL, makedefault)
 
 def ApplyButton(makedefault=0):
-    return Button(message('valid'), repr(wx.ID_APPLY), makedefault)
+    return Button(message('valid'), wx.ID_APPLY, makedefault)
 
 def YesButton(makedefault=1):
-    return Button(message('yes'), repr(wx.ID_YES), makedefault)
+    return Button(message('yes'), wx.ID_YES, makedefault)
 
 def NoButton(makedefault=0):
-    return Button(message('no'), repr(wx.ID_NO), makedefault)
+    return Button(message('no'), wx.ID_NO, makedefault)
 
 # ============================================================================
 # generate HTML for buttons
@@ -179,7 +179,7 @@ DefaultButtonString = '''
 
 class Default_wxButton(wx.Button):
     def __init__(self, *args, **kwargs):
-        wx.Button.__init__(*(self,) + args, **kwargs)
+        super(Default_wxButton, self).__init__(*args, **kwargs)
         self.SetDefault()
 
 def HTMLforSingleButton(label, id=None, makedefault=0):
@@ -197,7 +197,8 @@ def HTMLforSingleButton(label, id=None, makedefault=0):
 def HTMLforButtons(buttons, betweenbuttons=""):
     def rn(n):
         return lambda tup, n=n: _tupn(tup, n)
-    return string.join(map(HTMLforSingleButton, map(rn(0), buttons), map(rn(1), buttons), map(rn(2), buttons)), betweenbuttons)
+    return string.join(map(HTMLforSingleButton, map(rn(0), buttons), map(rn(1), buttons), map(rn(2), buttons)),
+                       betweenbuttons)
 
 # ============================================================================
 # HTMLDialog
@@ -428,11 +429,11 @@ class HTMLDialog(wx.Dialog):
 
         # set final content
         the_html_page = (self.DefaultHTML.format(colourstring1, colourstring2,
-                               boxcolor,
-                               imstr1,
-                               text,
-                               buttonstring)
-                             )
+                                                boxcolor,
+                                                imstr1,
+                                                text,
+                                                buttonstring)
+                        )
 
         self.m_html.SetPage(the_html_page)
 
@@ -443,7 +444,7 @@ class HTMLDialog(wx.Dialog):
 
         c = self.m_html.GetInternalRepresentation()
         c.Layout(w-10)
-        self.SetSize(wx.Size(c.GetWidth()+10, c.GetHeight()+35))
+        self.SetSize(c.GetWidth()+10, c.GetHeight()+35)
 
         # layout everything
         self.Layout()
@@ -522,14 +523,14 @@ class iTradeDialog(iTradeSizedDialog):
         if image:
             image = wx.Bitmap(image)
             if image:
-                bmp = wx.StaticBitmap(pane, -1, image)
+                bmp = wx.StaticBitmap(parent=pane, id=wx.ID_ANY, bitmap=image)
                 bmp.SetSizerProps(valign='center')
 
         if len(text) > 96:
             h = 48
         else:
             h = 32
-        txt = wx.StaticText(pane, -1, text, size=(260,h))
+        txt = wx.StaticText(parent=pane, id=wx.ID_ANY, label=text, size=(260,h))
         txt.SetFont(wx.Font(10, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
 
         txt.SetSizerProps(expand=True, valign='center', halign='center')
@@ -569,7 +570,7 @@ class iTradeDialog(iTradeSizedDialog):
 
         # CANCEL
         if style & wx.CANCEL == wx.CANCEL:
-            btn = wx.Button(btnpane, wx.ID_CANCEL, message('cancel'))
+            btn = wx.Button(parent=btnpane, id=wx.ID_CANCEL, label=message('cancel'))
             btn.SetHelpText(message('cancel_desc'))
             wx.EVT_BUTTON(self, wx.ID_CANCEL, self.OnCancel)
 

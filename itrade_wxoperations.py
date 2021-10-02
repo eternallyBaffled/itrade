@@ -140,19 +140,19 @@ OPERATION_DELETE = 2
 # ============================================================================
 
 operation_ctrl = (
-    (OPERATION_BUY,'portfolio_ctrl_buy'),
-    (OPERATION_SELL,'portfolio_ctrl_sell'),
-    (OPERATION_CREDIT,'portfolio_ctrl_credit'),
-    (OPERATION_DEBIT,'portfolio_ctrl_debit'),
-    (OPERATION_FEE,'portfolio_ctrl_fee'),
-    (OPERATION_DIVIDEND,'portfolio_ctrl_dividend'),
-    (OPERATION_DETACHMENT,'portfolio_ctrl_detachment'),
-    (OPERATION_INTEREST,'portfolio_ctrl_interest'),
-    (OPERATION_BUY_SRD,'portfolio_ctrl_buy_srd'),
-    (OPERATION_SELL_SRD,'portfolio_ctrl_sell_srd'),
-    (OPERATION_LIQUIDATION,'portfolio_ctrl_liquidation'),
-    (OPERATION_QUOTE,'portfolio_ctrl_quote'),
-    (OPERATION_REGISTER,'portfolio_ctrl_register')
+    (OPERATION_BUY, 'portfolio_ctrl_buy'),
+    (OPERATION_SELL, 'portfolio_ctrl_sell'),
+    (OPERATION_CREDIT, 'portfolio_ctrl_credit'),
+    (OPERATION_DEBIT, 'portfolio_ctrl_debit'),
+    (OPERATION_FEE, 'portfolio_ctrl_fee'),
+    (OPERATION_DIVIDEND, 'portfolio_ctrl_dividend'),
+    (OPERATION_DETACHMENT, 'portfolio_ctrl_detachment'),
+    (OPERATION_INTEREST, 'portfolio_ctrl_interest'),
+    (OPERATION_BUY_SRD, 'portfolio_ctrl_buy_srd'),
+    (OPERATION_SELL_SRD, 'portfolio_ctrl_sell_srd'),
+    (OPERATION_LIQUIDATION, 'portfolio_ctrl_liquidation'),
+    (OPERATION_QUOTE, 'portfolio_ctrl_quote'),
+    (OPERATION_REGISTER, 'portfolio_ctrl_register')
 #    OPERATION_SPLIT     : 'portfolio_ctrl_split'
     )
 
@@ -205,7 +205,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
             tb = '??'
         tt = tb + ' %s - %s %s'
         if op:
-            self.tt = tt % (op.datetime().strftime('%x'),op.operation(),op.description())
+            self.tt = tt % (op.datetime().strftime('%x'), op.operation(), op.description())
         else:
             self.tt = tb
 
@@ -225,8 +225,9 @@ class iTradeOperationDialog(iTradeSizedDialog):
         label = wx.StaticText(pane, wx.ID_ANY, message('portfolio_date'))
         label.SetSizerProps(valign='center')
 
-        ssdatetime = wx.DateTimeFromDMY(self.m_datetime.day,self.m_datetime.month-1,self.m_datetime.year)
-        self.wxDateCtrl = wx.DatePickerCtrl(pane, wx.ID_ANY, ssdatetime , size = (120,-1), style = wx.DP_DROPDOWN | wx.DP_SHOWCENTURY)
+        ssdatetime = wx.DateTimeFromDMY(self.m_datetime.day, self.m_datetime.month-1, self.m_datetime.year)
+        self.wxDateCtrl = wx.DatePickerCtrl(pane, wx.ID_ANY, ssdatetime , size=(120, -1),
+                                            style=wx.DP_DROPDOWN | wx.DP_SHOWCENTURY)
         wx.EVT_DATE_CHANGED(self, self.wxDateCtrl.GetId(), self.OnDate)
 
         # Row 2 : time
@@ -238,16 +239,16 @@ class iTradeOperationDialog(iTradeSizedDialog):
         self.Bind(masked.EVT_TIMEUPDATE, self.OnTime, self.wxTimeCtrl )
 
         # Row 3 : kind of operation
-        label = wx.StaticText(pane, -1, message('portfolio_operation'))
+        label = wx.StaticText(parent=pane, id=wx.ID_ANY, label=message('portfolio_operation'))
         label.SetSizerProps(valign='center')
 
-        self.wxTypeCtrl = wx.ComboBox(pane, wx.ID_ANY, "", size=wx.Size(160,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
-        wx.EVT_COMBOBOX(self,self.wxTypeCtrl.GetId(),self.OnType)
+        self.wxTypeCtrl = wx.ComboBox(pane, wx.ID_ANY, "", size=wx.Size(160, -1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
+        wx.EVT_COMBOBOX(self, self.wxTypeCtrl.GetId(), self.OnType)
 
         idx = wx.NOT_FOUND
         for count, (k, v) in enumerate(operation_ctrl):
-            #print '***',message(v),k
-            self.wxTypeCtrl.Append(message(v),k)
+            # print('***',message(v),k)
+            self.wxTypeCtrl.Append(message(v), k)
             if k == self.m_type:
                 idx = count
 
@@ -265,8 +266,8 @@ class iTradeOperationDialog(iTradeSizedDialog):
         self.wxNameButton = wx.BitmapButton(btnpane, wx.ID_ANY, bmp, size=wx.Size(bmp.GetWidth()+5, bmp.GetHeight()+5))
         wx.EVT_BUTTON(self, self.wxNameButton.GetId(), self.OnQuote)
 
-        #print 'creating ctrl:',self.m_name
-        self.wxNameCtrl = wx.TextCtrl(btnpane, wx.ID_ANY, self.m_name, size=wx.Size(240,-1), style = wx.TE_LEFT)
+        # print('creating ctrl:',self.m_name)
+        self.wxNameCtrl = wx.TextCtrl(btnpane, wx.ID_ANY, self.m_name, size=wx.Size(240, -1), style=wx.TE_LEFT)
         wx.EVT_TEXT( self, self.wxNameCtrl.GetId(), self.OnDescChange )
         self.wxNameCtrl.SetSizerProps(expand=True)
 
@@ -278,19 +279,24 @@ class iTradeOperationDialog(iTradeSizedDialog):
         self.wxValueLabel = wx.StaticText(btnpane, wx.ID_ANY, message('portfolio_field_credit'))
         self.wxValueLabel.SetSizerProps(valign='center')
 
-        self.wxValueCtrl = masked.Ctrl(btnpane, integerWidth=9, fractionWidth=2, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupDigits = True, groupChar=getGroupChar(), decimalChar=getDecimalChar(), selectOnEntry=True )
+        self.wxValueCtrl = masked.Ctrl(btnpane, integerWidth=9, fractionWidth=2, controlType=masked.controlTypes.NUMBER,
+                                       allowNegative=False, groupDigits=True, groupChar=getGroupChar(),
+                                       decimalChar=getDecimalChar(), selectOnEntry=True)
         wx.EVT_TEXT( self, self.wxValueCtrl.GetId(), self.OnValueChange )
 
         self.wxValueTxt = wx.StaticText(btnpane, wx.ID_ANY, currency2symbol(currency))
         self.wxValueTxt.SetSizerProps(valign='center')
 
-        self.wxExpPreTxt = wx.StaticText(btnpane, -1, '')
+        self.wxExpPreTxt = wx.StaticText(parent=btnpane, id=wx.ID_ANY, label='')
         self.wxExpPreTxt.SetSizerProps(valign='center')
 
-        self.wxExpensesCtrl = masked.Ctrl(btnpane, integerWidth=4, fractionWidth=2, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupDigits = True, groupChar=getGroupChar(), decimalChar=getDecimalChar(), selectOnEntry=True )
+        self.wxExpensesCtrl = masked.Ctrl(btnpane, integerWidth=4, fractionWidth=2,
+                                          controlType=masked.controlTypes.NUMBER, allowNegative=False,
+                                          groupDigits=True, groupChar=getGroupChar(), decimalChar=getDecimalChar(),
+                                          selectOnEntry=True)
         wx.EVT_TEXT( self, self.wxExpensesCtrl.GetId(), self.OnExpensesChange )
 
-        self.wxExpPostTxt = wx.StaticText(btnpane, wx.ID_ANY, "%s %s" % (currency2symbol(currency),message('portfolio_post_expenses')))
+        self.wxExpPostTxt = wx.StaticText(btnpane, wx.ID_ANY, "%s %s" % (currency2symbol(currency), message('portfolio_post_expenses')))
         self.wxExpPostTxt.SetSizerProps(valign='center')
 
         # resizable pane
@@ -302,8 +308,9 @@ class iTradeOperationDialog(iTradeSizedDialog):
         label = wx.StaticText(pane, wx.ID_ANY, message('portfolio_quantity'))
         label.SetSizerProps(valign='center')
 
-        self.wxNumberCtrl = masked.Ctrl(pane, integerWidth=9, fractionWidth=0, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupChar=getGroupChar(), decimalChar=getDecimalChar() )
-        wx.EVT_TEXT( self, self.wxNumberCtrl.GetId(), self.OnNumberChange )
+        self.wxNumberCtrl = masked.Ctrl(pane, integerWidth=9, fractionWidth=0, controlType=masked.controlTypes.NUMBER,
+                                        allowNegative=False, groupChar=getGroupChar(), decimalChar=getDecimalChar())
+        wx.EVT_TEXT(self, self.wxNumberCtrl.GetId(), self.OnNumberChange)
 
         # separator
         line = wx.StaticLine(container, wx.ID_ANY, size=(20,-1), style=wx.LI_HORIZONTAL)
@@ -331,17 +338,18 @@ class iTradeOperationDialog(iTradeSizedDialog):
 
         self.refreshPage()
 
-    def OnCancel(self,event):
+    def OnCancel(self, event):
         self.aRet = None
         self.EndModal(wx.ID_CANCEL)
 
-    def OnValid(self,event):
+    def OnValid(self, event):
         if self.Validate() and self.TransferDataFromWindow():
-            self.aRet = (self.m_datetime,self.m_type,self.m_name,self.m_value,self.m_expenses,self.m_number,self.m_ref)
+            self.aRet = (self.m_datetime, self.m_type, self.m_name, self.m_value, self.m_expenses, self.m_number,
+                         self.m_ref)
             self.EndModal(wx.ID_OK)
 
     def refreshPage(self):
-        self.wxDateCtrl.SetValue(wx.DateTimeFromDMY(self.m_datetime.day,self.m_datetime.month-1,self.m_datetime.year))
+        self.wxDateCtrl.SetValue(wx.DateTimeFromDMY(self.m_datetime.day, self.m_datetime.month-1, self.m_datetime.year))
         self.wxValueCtrl.SetValue(self.m_value)
         self.wxExpensesCtrl.SetValue(self.m_expenses)
         self.wxNumberCtrl.SetValue(self.m_number)
@@ -353,7 +361,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
             self.wxExpPreTxt.SetLabel(message('portfolio_pre_expenses2'))
 
         sign = signOfOperationType(self.m_type)
-        if sign =='+':
+        if sign == '+':
             self.wxValueLabel.SetLabel(message('portfolio_field_credit'))
             self.wxExpensesCtrl.Show(True)
             self.wxValueCtrl.Show(True)
@@ -417,73 +425,66 @@ class iTradeOperationDialog(iTradeSizedDialog):
         dRet = self.wxDateCtrl.GetValue()
         if dRet:
             debug('OnDate: %s\n' % dRet)
-            self.m_datetime = self.m_datetime.combine(date(dRet.GetYear(),dRet.GetMonth()+1,dRet.GetDay()), self.m_datetime.time())
+            self.m_datetime = self.m_datetime.combine(date(dRet.GetYear(), dRet.GetMonth()+1, dRet.GetDay()),
+                                                      self.m_datetime.time())
             self.refreshPage()
 
     def OnTime(self, evt):
         dRet = self.wxTimeCtrl.GetValue(as_wxDateTime=True)
         if dRet:
             debug('OnTime: %s\n' % dRet)
-            self.m_datetime = self.m_datetime.combine(self.m_datetime.date(), datetime.time(dRet.GetHour(), dRet.GetMinute(), dRet.GetSecond()))
+            self.m_datetime = self.m_datetime.combine(self.m_datetime.date(),
+                                                      datetime.time(dRet.GetHour(), dRet.GetMinute(), dRet.GetSecond()))
             self.refreshPage()
 
-    def OnType(self,evt):
+    def OnType(self, evt):
         t = self.wxTypeCtrl.GetClientData(self.wxTypeCtrl.GetSelection())
         debug("OnType %s" % t)
         self.m_type = t
         self.refreshPage()
 
-    def OnQuote(self,evt):
+    def OnQuote(self, evt):
         quote = quotes.lookupKey(self.m_name)
-        quote = select_iTradeQuote(self,quote,filter=True,market=self.m_market,filterEnabled=True,tradableOnly=True)
+        quote = select_iTradeQuote(self, quote, filter=True, market=self.m_market, filterEnabled=True, tradableOnly=True)
         if quote:
-            debug('onQuote: %s - %s' % (quote.ticker(),quote.key()))
+            debug('onQuote: %s - %s' % (quote.ticker(), quote.key()))
             self.m_name = quote.key()
             self.m_market = quote.market()
             self.refreshPage()
 
-    def OnValueChange(self,event):
-        ctl = self.FindWindowById( event.GetId() )
-        if ctl.IsValid():
-            debug('new value value = %s\n' % ctl.GetValue() )
-            self.m_value = float(ctl.GetValue())
-
-    def OnNumberChange( self, event ):
-        ctl = self.FindWindowById( event.GetId() )
-        if ctl.IsValid():
-            debug('new number value = %s\n' % ctl.GetValue() )
-            self.m_number = int(ctl.GetValue())
-
-    def OnExpensesChange(self,event):
+    def OnValueChange(self, event):
         ctl = self.FindWindowById(event.GetId())
         if ctl.IsValid():
-            debug('new expenses value = %s\n' % ctl.GetValue() )
+            debug('new value value = %s\n' % ctl.GetValue())
+            self.m_value = float(ctl.GetValue())
+
+    def OnNumberChange(self, event):
+        ctl = self.FindWindowById(event.GetId())
+        if ctl.IsValid():
+            debug('new number value = %s\n' % ctl.GetValue())
+            self.m_number = int(ctl.GetValue())
+
+    def OnExpensesChange(self, event):
+        ctl = self.FindWindowById(event.GetId())
+        if ctl.IsValid():
+            debug('new expenses value = %s\n' % ctl.GetValue())
             self.m_expenses = float(ctl.GetValue())
 
-    def OnDescChange(self,event):
-        ctl = self.FindWindowById( event.GetId() )
-        debug('new value value = %s\n' % ctl.GetValue() )
+    def OnDescChange(self, event):
+        ctl = self.FindWindowById(event.GetId())
+        debug('new value value = %s\n' % ctl.GetValue())
         self.m_name = ctl.GetValue()
 
-# ============================================================================
-# iTradeOperationsListCtrl
-# ============================================================================
 
 class iTradeOperationsListCtrl(wx.ListCtrl, wxl.ListCtrlAutoWidthMixin):
     def __init__(self, parent, ID, pos=wx.DefaultPosition,
                  size=wx.DefaultSize, style=0):
-        wx.ListCtrl.__init__(self, parent, ID, pos, size, style)
-        wxl.ListCtrlAutoWidthMixin.__init__(self)
+        super(iTradeOperationsListCtrl, self).__init__(parent, ID, pos, size, style)
 
-# ============================================================================
-# iTradeOperationToolbar
-#
-# ============================================================================
 
 class iTradeOperationToolbar(wx.ToolBar):
-
-    def __init__(self,parent,id):
-        wx.ToolBar.__init__(self,parent,id,style = wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT)
+    def __init__(self, parent, id):
+        super(iTradeOperationToolbar, self).__init__(parent, id, style=wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT)
         self.m_parent = parent
         self._init_toolbar()
 
@@ -505,29 +506,29 @@ class iTradeOperationToolbar(wx.ToolBar):
         self._NTB2_CURRENTYEAR = wx.NewId()
         self._NTB2_ALLYEARS = wx.NewId()
 
-        self.SetToolBitmapSize(wx.Size(24,24))
+        self.SetToolBitmapSize(wx.Size(24, 24))
         self.AddSimpleTool(self._NTB2_EXIT, wx.ArtProvider.GetBitmap(wx.ART_CROSS_MARK, wx.ART_TOOLBAR),
                            message('main_close'), message('main_desc_close'))
-        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+        self.AddControl(wx.StaticLine(self, -1, size=(-1, 23), style=wx.LI_VERTICAL))
 
-        self.AddRadioLabelTool(self._NTB2_DISPALL,'',wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispall.png')),wx.NullBitmap,message('portfolio_dispall'),message('portfolio_desc_dispall'))
-        self.AddRadioLabelTool(self._NTB2_DISPQUOTES,'',wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispquote.png')),wx.NullBitmap,message('portfolio_dispquotes'),message('portfolio_desc_dispquotes'))
-        self.AddRadioLabelTool(self._NTB2_DISPCASH,'',wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispcash.png')),wx.NullBitmap,message('portfolio_dispcash'),message('portfolio_desc_dispcash'))
-        self.AddRadioLabelTool(self._NTB2_DISPSRD,'',wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispsrd.png')),wx.NullBitmap,message('portfolio_dispsrd'),message('portfolio_desc_dispsrd'))
-        self.AddRadioLabelTool(self._NTB2_DISPPVAL,'',wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispvalue.png')),wx.NullBitmap,message('portfolio_dispvalues'),message('portfolio_desc_dispvalues'))
-
-        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
-
-        self.AddSimpleTool(self._NTB2_ADD,wx.Bitmap(os.path.join(itrade_config.dirRes, 'add.png')),message('portfolio_opadd'),message('portfolio_desc_opadd'))
-        self.AddSimpleTool(self._NTB2_MODIFY,wx.Bitmap(os.path.join(itrade_config.dirRes, 'modify.png')),message('portfolio_opmodify'),message('portfolio_desc_opmodify'))
-        self.AddSimpleTool(self._NTB2_DELETE,wx.Bitmap(os.path.join(itrade_config.dirRes, 'delete.png')),message('portfolio_opdelete'),message('portfolio_desc_opdelete'))
+        self.AddRadioLabelTool(self._NTB2_DISPALL, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispall.png')), wx.NullBitmap, message('portfolio_dispall'), message('portfolio_desc_dispall'))
+        self.AddRadioLabelTool(self._NTB2_DISPQUOTES, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispquote.png')), wx.NullBitmap, message('portfolio_dispquotes'), message('portfolio_desc_dispquotes'))
+        self.AddRadioLabelTool(self._NTB2_DISPCASH, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispcash.png')), wx.NullBitmap, message('portfolio_dispcash'), message('portfolio_desc_dispcash'))
+        self.AddRadioLabelTool(self._NTB2_DISPSRD, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispsrd.png')), wx.NullBitmap, message('portfolio_dispsrd'), message('portfolio_desc_dispsrd'))
+        self.AddRadioLabelTool(self._NTB2_DISPPVAL, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispvalue.png')), wx.NullBitmap, message('portfolio_dispvalues'), message('portfolio_desc_dispvalues'))
 
         self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
 
-        self.AddRadioLabelTool(self._NTB2_30DAYS,'',wx.Bitmap(os.path.join(itrade_config.dirRes, 'filter30.png')),wx.NullBitmap,message('portfolio_per30days'),message('portfolio_desc_per30days'))
-        self.AddRadioLabelTool(self._NTB2_90DAYS,'',wx.Bitmap(os.path.join(itrade_config.dirRes, 'filter90.png')),wx.NullBitmap,message('portfolio_per90days'),message('portfolio_desc_per90days'))
-        self.AddRadioLabelTool(self._NTB2_CURRENTYEAR,'',wx.Bitmap(os.path.join(itrade_config.dirRes, 'filter.png')),wx.NullBitmap,message('portfolio_peryear'),message('portfolio_desc_peryear'))
-        self.AddRadioLabelTool(self._NTB2_ALLYEARS,'',wx.Bitmap(os.path.join(itrade_config.dirRes, 'nofilter.png')),wx.NullBitmap,message('portfolio_perall'),message('portfolio_desc_perall'))
+        self.AddSimpleTool(self._NTB2_ADD, wx.Bitmap(os.path.join(itrade_config.dirRes, 'add.png')), message('portfolio_opadd'),message('portfolio_desc_opadd'))
+        self.AddSimpleTool(self._NTB2_MODIFY, wx.Bitmap(os.path.join(itrade_config.dirRes, 'modify.png')), message('portfolio_opmodify'),message('portfolio_desc_opmodify'))
+        self.AddSimpleTool(self._NTB2_DELETE, wx.Bitmap(os.path.join(itrade_config.dirRes, 'delete.png')),                                                                                                                         message('portfolio_opdelete'),message('portfolio_desc_opdelete'))
+
+        self.AddControl(wx.StaticLine(self, -1, size=(-1, 23), style=wx.LI_VERTICAL))
+
+        self.AddRadioLabelTool(self._NTB2_30DAYS, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'filter30.png')), wx.NullBitmap, message('portfolio_per30days'), message('portfolio_desc_per30days'))
+        self.AddRadioLabelTool(self._NTB2_90DAYS, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'filter90.png')), wx.NullBitmap, message('portfolio_per90days'), message('portfolio_desc_per90days'))
+        self.AddRadioLabelTool(self._NTB2_CURRENTYEAR, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'filter.png')), wx.NullBitmap, message('portfolio_peryear'),                                                                                                       message('portfolio_desc_peryear'))
+        self.AddRadioLabelTool(self._NTB2_ALLYEARS, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'nofilter.png')), wx.NullBitmap, message('portfolio_perall'), message('portfolio_desc_perall'))
 
         wx.EVT_TOOL(self, self._NTB2_EXIT, self.onExit)
 
