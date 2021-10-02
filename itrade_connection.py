@@ -106,7 +106,7 @@ class ITradeConnection(object):
         # Parse URL
         (protocole, host, page, params, query, fragments) = urlparse.urlparse(url)
 
-        # print "==>", currentThread().getName(), protocole, host, page, params, query, fragments
+        # print("==>", currentThread().getName(), protocole, host, page, params, query, fragments)
         try:
             # Prepare new header
             if header:
@@ -157,14 +157,14 @@ class ITradeConnection(object):
                                         'Content-type': 'application/x-www-form-urlencoded'})
                     connection.request("POST", page, data, next_header)
                 else:
-                    # print "GET", request, next_header
+                    # print("GET", request, next_header)
                     connection.request("GET", request, None, next_header)
 
                 self.response = connection.getresponse()
 
                 if self.response:
                     if self.response.getheader('Content-Encoding') == 'gzip':
-                        # print "==>", currentThread().getName(), "gzip response"
+                        # print("==>", currentThread().getName(), "gzip response")
                         self.m_responseData = GzipFile(fileobj=StringIO(self.response.read())).read()
                     else:
                         ldata = self.response.getheader('content-length')
@@ -286,7 +286,6 @@ class ITradeConnection(object):
 
 class ITradeCookies(object):
     """Simple cookie repository"""
-
     def __init__(self):
         self.m_locker = Lock()
         self.m_cookie = ""
