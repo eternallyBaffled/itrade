@@ -160,11 +160,11 @@ class LocalMessages(object):
 
     def load(self, fn=None):
         if self.m_lang in self.m_llang:
-            logging.warning(u'lang %s already loaded !' % self.m_lang)
+            logging.warning(u'lang {} already loaded !'.format(self.m_lang))
             return
 
         if fn is None:
-            fn = os.path.join(itrade_config.dirSysData, '%s.messages.txt'%self.m_lang)
+            fn = os.path.join(itrade_config.dirSysData, u'{}.messages.txt'.format(self.m_lang))
         infile = itrade_csv.read(fn, fn)
         if infile:
             # store filename used for messaging
@@ -172,23 +172,21 @@ class LocalMessages(object):
 
             # scan each line to read each trade
             for eachLine in infile:
-                item = itrade_csv.parse(eachLine.decode("utf-8"),2)
+                item = itrade_csv.parse(eachLine.decode("utf-8"), 2)
                 if item:
                     self.addMsg(item)
-
-            # info
             print(u'Language Pack %s : %s' % (self.m_lang,self.m_llang[self.m_lang]))
         else:
             print(u'No Language Pack for %s !' % self.m_lang)
             # raise Exception(u'lang %s not found !' % self.m_lang)
 
-    def setLocale(self,lang=None):
+    def setLocale(self, lang=None):
         # try to setup the C runtime (_locale)
         if lang is None:
             lang = self.m_lang
-            logging.debug(u'setLocale(): default to %s' % lang)
+            logging.debug(u'setLocale(): default to {}'.format(lang))
         else:
-            logging.debug(u'setLocale(): set to %s' % lang)
+            logging.debug(u'setLocale(): set to {}'.format(lang))
 
         if sys.platform == 'darwin':
             # do nothing :-( (locale support on MacOSX is minimal)
@@ -197,17 +195,17 @@ class LocalMessages(object):
             try:
                 locale.setlocale(locale.LC_ALL, lang)
             except locale.Error:
-                print(u'setlocale %s : %s' % (lang,'locale unknown in this windows configuration ?'))
+                print(u'setlocale {} : {}'.format(lang, 'locale unknown in this windows configuration ?'))
         else:
             try:
                 locale.setlocale(locale.LC_ALL, nl_posix[lang])
             except locale.Error:
-                print(u'setlocale %s : %s' % (nl_posix[lang],'locale unknown in this configuration ?'))
+                print(u'setlocale {} : {}'.format(nl_posix[lang], 'locale unknown in this configuration ?'))
 
         # strptime is bugged :
         # first call will reset the TimeRE cache but continue using the previous TimeRE (bad lang) :-( !
         # obhack: call strptime to reset the cache, next call will use the right object
-        time.strptime('10','%H')
+        time.strptime('10', '%H')
         # NB: %H will be cached with the bad lang ; it is not important at all because %H is not localized
 
     def getLocale(self):
@@ -233,21 +231,21 @@ class LocalMessages(object):
         else:
             return None
 
-    def langSupported(self,l):
+    def langSupported(self, l):
         if l in nl_supported:
             if l in nl_convert:
                 return nl_convert[l]
             else:
                 return l
         else:
-            print(u"setlocale '%s' : unsupported language - default to french" % l)
+            print(u"setlocale '{}' : unsupported language - default to french".format(l))
             return 'fr'
 
     def addMsg(self, m):
         if len(m) != 2:
             # well formed ?
             return
-        key = u'%s%s' % (self.m_lang, m[0])
+        key = u'{}{}'.format(self.m_lang, m[0])
         if key in self.m_msg:
             raise Exception(u'addMsg:: key %s already exist')
         self.m_msg[key] = m[1]
@@ -258,21 +256,21 @@ class LocalMessages(object):
             lang = gMessage.getAutoDetectedLang('us')
             # print('getMsg: need to setLang :',lang," during ref:",ref)
             gMessage.setLang(lang)
-        if len(self.m_msg)==0:
+        if len(self.m_msg) == 0:
             # print('getMsg: need to load lang pack :',lang)
             gMessage.load()
 
-        key = '%s%s' % (self.m_lang,ref)
+        key = '{}{}'.format(self.m_lang, ref)
         if key in self.m_msg:
             return self.m_msg[key]
         else:
-            return '?%s:%s?' % (self.m_lang,ref)
+            return '?{}:{}?'.format(self.m_lang, ref)
 
-    def getAutoDetectedLang(self,dl='us'):
+    def getAutoDetectedLang(self, dl='us'):
         # set the default locale
-        locale.setlocale(locale.LC_ALL,'')
+        locale.setlocale(locale.LC_ALL, '')
         # get the current locale encoding and codepage
-        enc,cp = locale.getlocale()
+        enc, cp = locale.getlocale()
 
         # check if encoding known
         if enc in nl_autodetect:
@@ -298,24 +296,24 @@ def main():
     import itrade_logging
     itrade_config.app_header()
     itrade_logging.setLevel(logging.INFO)
-    print(u'default (detection): ', gMessage.getAutoDetectedLang())
+    print(u'default (detection): {}'.format(gMessage.getAutoDetectedLang()))
     gMessage.setLang('us')
-    print(u'pack us: %s' % gMessage.getLangFile())
+    print(u'pack us: {}'.format(gMessage.getLangFile()))
     gMessage.setLang('fr')
     gMessage.load()
-    print(u'pack fr: %s' % gMessage.getLangFile())
+    print(u'pack fr: {}'.format(gMessage.getLangFile()))
     gMessage.setLang('en')
     gMessage.load()
-    print(u'pack en: %s' % gMessage.getLangFile())
+    print(u'pack en: {}'.format(gMessage.getLangFile()))
     gMessage.setLang('pt')
     gMessage.load()
-    print(u'pack pt: %s' % gMessage.getLangFile())
+    print(u'pack pt: {}'.format(gMessage.getLangFile()))
     gMessage.setLang('de')
     gMessage.load()
-    print(u'pack de: %s' % gMessage.getLangFile())
+    print(u'pack de: {}'.format(gMessage.getLangFile()))
     gMessage.setLang('it')
     gMessage.load()
-    print(u'pack it: %s' % gMessage.getLangFile())
+    print(u'pack it: {}'.format(gMessage.getLangFile()))
     print()
     gMessage.setLang('fr')
     print(u'fr:', message('test'))
