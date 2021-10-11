@@ -298,20 +298,20 @@ class MyTestPanel(wx.Panel, iTrade_wxPanelPrint):
         self.box = wx.BoxSizer(wx.VERTICAL)
 
         from itrade_wxhtml import iTradeHtmlPanel
-        self.m_canvas = iTradeHtmlPanel(self, wx.NewId(), "https://www.google.fr")
+        self.m_canvas = iTradeHtmlPanel(self, wx.ID_ANY, "https://www.google.fr")
         self.m_canvas.paint0()
         self.box.Add(self.m_canvas, 1, wx.GROW)
 
         subbox = wx.BoxSizer(wx.HORIZONTAL)
-        btn = wx.Button(self, -1, "Page Setup")
+        btn = wx.Button(self, wx.ID_ANY, "Page Setup")
         self.Bind(wx.EVT_BUTTON, self.OnPageSetup, btn)
         subbox.Add(btn, 1, wx.GROW | wx.ALL, 2)
 
-        btn = wx.Button(self, -1, "Print Preview")
+        btn = wx.Button(self, wx.ID_ANY, "Print Preview")
         self.Bind(wx.EVT_BUTTON, self.OnPrintPreview, btn)
         subbox.Add(btn, 1, wx.GROW | wx.ALL, 2)
 
-        btn = wx.Button(self, -1, "Print")
+        btn = wx.Button(self, wx.ID_ANY, "Print")
         self.Bind(wx.EVT_BUTTON, self.OnDoPrint, btn)
         subbox.Add(btn, 1, wx.GROW | wx.ALL, 2)
 

@@ -592,16 +592,10 @@ class iTradeOperationToolbar(wx.ToolBar):
 # iTradeOperationsWindow
 # ============================================================================
 
-class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
-
-    # window  identifier
-    ID_WINDOW_TOP = 300
-    ID_WINDOW_INFO = 301
-
-    def __init__(self,parent,id,title,port):
-        self.m_id = wx.NewId()
-        wx.Frame.__init__(self,None,self.m_id, title, size = (800,320), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE)
-        iTrade_wxFrame.__init__(self,parent,'portfolio')
+class iTradeOperationsWindow(wx.Frame, iTrade_wxFrame, wxl.ColumnSorterMixin):
+    def __init__(self, parent, id, title, port):
+        wx.Frame.__init__(self, None, wx.ID_ANY, title, size=(800, 320), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE)
+        iTrade_wxFrame.__init__(self, parent, name='portfolio')
         self.m_port = port
         self.m_mode = DISP_ALL
         self.m_period = PERIOD_30DAYS
@@ -609,31 +603,31 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
 
         # the menu
         self.filemenu = wx.Menu()
-        self.filemenu.Append(ID_CLOSE,message('main_close'),message('main_desc_close'))
+        self.filemenu.Append(ID_CLOSE, message('main_close'), message('main_desc_close'))
 
         self.dispmenu = wx.Menu()
-        self.dispmenu.AppendRadioItem(ID_DISPALL,message('portfolio_dispall'),message('portfolio_desc_dispall'))
-        self.dispmenu.AppendRadioItem(ID_DISPQUOTES,message('portfolio_dispquotes'),message('portfolio_desc_dispquotes'))
-        self.dispmenu.AppendRadioItem(ID_DISPCASH,message('portfolio_dispcash'),message('portfolio_desc_dispcash'))
-        self.dispmenu.AppendRadioItem(ID_DISPSRD,message('portfolio_dispsrd'),message('portfolio_desc_dispsrd'))
-        self.dispmenu.AppendRadioItem(ID_DISPPVAL,message('portfolio_dispvalues'),message('portfolio_desc_dispvalues'))
+        self.dispmenu.AppendRadioItem(ID_DISPALL, message('portfolio_dispall'), message('portfolio_desc_dispall'))
+        self.dispmenu.AppendRadioItem(ID_DISPQUOTES, message('portfolio_dispquotes'), message('portfolio_desc_dispquotes'))
+        self.dispmenu.AppendRadioItem(ID_DISPCASH, message('portfolio_dispcash'), message('portfolio_desc_dispcash'))
+        self.dispmenu.AppendRadioItem(ID_DISPSRD, message('portfolio_dispsrd'), message('portfolio_desc_dispsrd'))
+        self.dispmenu.AppendRadioItem(ID_DISPPVAL, message('portfolio_dispvalues'), message('portfolio_desc_dispvalues'))
         self.dispmenu.AppendSeparator()
         self.textmenu = wx.Menu()
-        self.dispmenu.AppendSubMenu(self.textmenu, message('portfolio_text'),message('portfolio_desc_text'))
-        self.textmenu.AppendRadioItem(ID_SMALL_TEXT, message('portfolio_view_small'),message('portfolio_view_desc_small'))
-        self.textmenu.AppendRadioItem(ID_NORMAL_TEXT, message('portfolio_view_normal'),message('portfolio_view_desc_normal'))
-        self.textmenu.AppendRadioItem(ID_BIG_TEXT, message('portfolio_view_big'),message('portfolio_view_desc_big'))
+        self.dispmenu.AppendSubMenu(self.textmenu, message('portfolio_text'), message('portfolio_desc_text'))
+        self.textmenu.AppendRadioItem(ID_SMALL_TEXT, message('portfolio_view_small'), message('portfolio_view_desc_small'))
+        self.textmenu.AppendRadioItem(ID_NORMAL_TEXT, message('portfolio_view_normal'), message('portfolio_view_desc_normal'))
+        self.textmenu.AppendRadioItem(ID_BIG_TEXT, message('portfolio_view_big'), message('portfolio_view_desc_big'))
 
         self.opmenu = wx.Menu()
-        self.opmenu.Append(ID_MODIFY,message('portfolio_opmodify'),message('portfolio_desc_opmodify'))
-        self.opmenu.Append(ID_DELETE,message('portfolio_opdelete'),message('portfolio_desc_opdelete'))
-        self.opmenu.Append(ID_ADD,message('portfolio_opadd'),message('portfolio_desc_opadd'))
+        self.opmenu.Append(ID_MODIFY, message('portfolio_opmodify'), message('portfolio_desc_opmodify'))
+        self.opmenu.Append(ID_DELETE, message('portfolio_opdelete'), message('portfolio_desc_opdelete'))
+        self.opmenu.Append(ID_ADD, message('portfolio_opadd'), message('portfolio_desc_opadd'))
 
         self.permenu = wx.Menu()
-        self.permenu.AppendRadioItem(ID_30DAYS,message('portfolio_per30days'),message('portfolio_desc_per30days'))
-        self.permenu.AppendRadioItem(ID_90DAYS,message('portfolio_per90days'),message('portfolio_desc_per90days'))
-        self.permenu.AppendRadioItem(ID_CURRENTYEAR,message('portfolio_peryear'),message('portfolio_desc_peryear'))
-        self.permenu.AppendRadioItem(ID_ALLYEARS,message('portfolio_perall'),message('portfolio_desc_perall'))
+        self.permenu.AppendRadioItem(ID_30DAYS, message('portfolio_per30days'), message('portfolio_desc_per30days'))
+        self.permenu.AppendRadioItem(ID_90DAYS, message('portfolio_per90days'), message('portfolio_desc_per90days'))
+        self.permenu.AppendRadioItem(ID_CURRENTYEAR, message('portfolio_peryear'), message('portfolio_desc_peryear'))
+        self.permenu.AppendRadioItem(ID_ALLYEARS, message('portfolio_perall'), message('portfolio_desc_perall'))
 
         # default checking
         self.updateMenuItems()
@@ -642,16 +636,16 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
         menuBar = wx.MenuBar()
 
         # Adding the "<x>menu" to the MenuBar
-        menuBar.Append(self.filemenu,message('portfolio_menu_file'))
-        menuBar.Append(self.dispmenu,message('portfolio_menu_disp'))
-        menuBar.Append(self.opmenu,message('portfolio_menu_op'))
-        menuBar.Append(self.permenu,message('portfolio_menu_per'))
+        menuBar.Append(self.filemenu, message('portfolio_menu_file'))
+        menuBar.Append(self.dispmenu, message('portfolio_menu_disp'))
+        menuBar.Append(self.opmenu, message('portfolio_menu_op'))
+        menuBar.Append(self.permenu, message('portfolio_menu_per'))
 
         # Adding the MenuBar to the Frame content
         self.SetMenuBar(menuBar)
 
         # create an image list
-        self.m_imagelist = wx.ImageList(16,16)
+        self.m_imagelist = wx.ImageList(16, 16)
         self.idx_plus = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'plus.png')))
         self.idx_minus = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'minus.png')))
         self.idx_neutral = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'neutral.png')))
@@ -660,11 +654,8 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
         self.sm_up = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'sm_up.png')))
         self.sm_dn = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'sm_down.png')))
 
-        #
-        tID = wx.NewId()
-
-        self.m_list = iTradeOperationsListCtrl(self, tID,
-                                 style = wx.LC_REPORT | wx.SUNKEN_BORDER | wx.LC_SINGLE_SEL | wx.LC_VRULES | wx.LC_HRULES)
+        self.m_list = iTradeOperationsListCtrl(self, wx.ID_ANY,
+                                 style=wx.LC_REPORT | wx.SUNKEN_BORDER | wx.LC_SINGLE_SEL | wx.LC_VRULES | wx.LC_HRULES)
         self.m_list.SetImageList(self.m_imagelist, wx.IMAGE_LIST_SMALL)
 
         self.m_list.SetFont(FontFromSize(itrade_config.operationFontSize))
@@ -674,13 +665,13 @@ class iTradeOperationsWindow(wx.Frame,iTrade_wxFrame,wxl.ColumnSorterMixin):
         wxl.ColumnSorterMixin.__init__(self, IDC_RESERVED)
 
         # Toolbar
-        self.m_toolbar = iTradeOperationToolbar(self, wx.NewId())
+        self.m_toolbar = iTradeOperationToolbar(self, wx.ID_ANY)
 
         wx.EVT_SIZE(self, self.OnSize)
-        wx.EVT_LIST_ITEM_ACTIVATED(self, tID, self.OnItemActivated)
-        wx.EVT_LIST_ITEM_SELECTED(self, tID, self.OnItemSelected)
+        wx.EVT_LIST_ITEM_ACTIVATED(self, self.m_list.GetId(), self.OnItemActivated)
+        wx.EVT_LIST_ITEM_SELECTED(self, self.m_list.GetId(), self.OnItemSelected)
 
-        wx.EVT_COMMAND_RIGHT_CLICK(self.m_list, tID, self.OnRightClick)
+        wx.EVT_COMMAND_RIGHT_CLICK(self.m_list, self.m_list.GetId(), self.OnRightClick)
 
         wx.EVT_RIGHT_UP(self.m_list, self.OnRightClick)
         wx.EVT_RIGHT_DOWN(self.m_list, self.OnRightDown)

@@ -312,7 +312,7 @@ class iTrade_wxDecision(sc.SizedPanel):
 
 class WndTest(wx.Frame):
     def __init__(self, parent, quote, portfolio):
-        super(WndTest, self).__init__(parent=parent, id=wx.NewId(), title='WndTest', size=(600,190), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE)
+        super(WndTest, self).__init__(parent=parent, title='WndTest', size=(600,190), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE)
         self.m_decision = iTrade_wxDecision(self, quote, portfolio)
 
         self.Fit()

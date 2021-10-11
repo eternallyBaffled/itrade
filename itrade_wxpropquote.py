@@ -111,73 +111,68 @@ class iTradeQuotePropertiesPanel(wx.Panel):
 
         box = wx.BoxSizer(wx.HORIZONTAL)
 
-        nid = wx.NewId()
-        btn = wx.Button(self, nid, message('prop_restore'))
+        btn = wx.Button(self, wx.ID_ANY, message('prop_restore'))
         btn.SetHelpText(message('prop_desc_restore'))
         box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
-        wx.EVT_BUTTON(self, nid, self.OnRestoreReference)
+        wx.EVT_BUTTON(self, btn.GetId(), self.OnRestoreReference)
 
-        nid = wx.NewId()
-        btn = wx.Button(self, nid, message('prop_rename'))
+        btn = wx.Button(self, wx.ID_ANY, message('prop_rename'))
         btn.SetHelpText(message('prop_desc_rename'))
         box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
-        wx.EVT_BUTTON(self, nid, self.OnRename)
+        wx.EVT_BUTTON(self, btn.GetId(), self.OnRename)
 
-        nid = wx.NewId()
-        btn = wx.Button(self, nid, message('prop_reload'))
+        btn = wx.Button(self, wx.ID_ANY, message('prop_reload'))
         btn.SetHelpText(message('prop_desc_reload'))
         box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
-        wx.EVT_BUTTON(self, nid, self.OnReload)
+        wx.EVT_BUTTON(self, btn.GetId(), self.OnReload)
 
-        nid = wx.NewId()
-        btn = wx.Button(self, nid, message('prop_import'))
+        btn = wx.Button(self, wx.ID_ANY, message('prop_import'))
         btn.SetHelpText(message('prop_desc_import'))
         box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
-        wx.EVT_BUTTON(self, nid, self.OnImport)
+        wx.EVT_BUTTON(self, btn.GetId(), self.OnImport)
 
-        nid = wx.NewId()
-        btn = wx.Button(self, nid, message('prop_export'))
+        btn = wx.Button(self, wx.ID_ANY, message('prop_export'))
         btn.SetHelpText(message('prop_desc_export'))
         box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
-        wx.EVT_BUTTON(self, nid, self.OnExport)
+        wx.EVT_BUTTON(self, btn.GetId(), self.OnExport)
 
         thebox.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
         self._sizer.AddSizer(thebox, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
         # ---[ market ]---
-        box = wx.StaticBox(self, -1, message('prop_marketandconnector'))
+        box = wx.StaticBox(self, wx.ID_ANY, message('prop_marketandconnector'))
         thebox = wx.StaticBoxSizer(box,wx.VERTICAL)
 
         box = wx.BoxSizer(wx.HORIZONTAL)
 
-        label = wx.StaticText(self, -1, message('prop_market'))
+        label = wx.StaticText(self, wx.ID_ANY, message('prop_market'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        label = wx.StaticText(self, -1, self.m_quote.market())
+        label = wx.StaticText(self, wx.ID_ANY, self.m_quote.market())
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        label = wx.StaticText(self, -1, message('prop_country'))
+        label = wx.StaticText(self, wx.ID_ANY, message('prop_country'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        label = wx.StaticText(self, -1, self.m_quote.country())
+        label = wx.StaticText(self, wx.ID_ANY, self.m_quote.country())
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        label = wx.StaticText(self, -1, message('prop_place'))
+        label = wx.StaticText(self, wx.ID_ANY, message('prop_place'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        label = wx.StaticText(self, -1, self.m_quote.place())
+        label = wx.StaticText(self, wx.ID_ANY, self.m_quote.place())
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        label = wx.StaticText(self, -1, message('prop_currency'))
+        label = wx.StaticText(self, wx.ID_ANY, message('prop_currency'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        label = wx.StaticText(self, -1, self.m_quote.currency())
+        label = wx.StaticText(self, wx.ID_ANY, self.m_quote.currency())
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        label = wx.StaticText(self, -1, message('prop_typeofclock'))
+        label = wx.StaticText(self, wx.ID_ANY, message('prop_typeofclock'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.liveText = wx.StaticText(self, -1, self.m_quote.sv_type_of_clock(bDisplayTime=True))
+        self.liveText = wx.StaticText(self, wx.ID_ANY, self.m_quote.sv_type_of_clock(bDisplayTime=True))
         box.Add(self.liveText, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         thebox.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
@@ -186,16 +181,16 @@ class iTradeQuotePropertiesPanel(wx.Panel):
 
         box = wx.BoxSizer(wx.HORIZONTAL)
 
-        label = wx.StaticText(self, -1, message('prop_liveconnector'))
+        label = wx.StaticText(self, wx.ID_ANY, message('prop_liveconnector'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.editLiveConnector = wx.ComboBox(self,-1, "", size=wx.Size(120,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
+        self.editLiveConnector = wx.ComboBox(self, wx.ID_ANY, "", size=wx.Size(120,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
         box.Add(self.editLiveConnector, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        label = wx.StaticText(self, -1, message('prop_impconnector'))
+        label = wx.StaticText(self, wx.ID_ANY, message('prop_impconnector'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.editImportConnector = wx.ComboBox(self,-1, "", size=wx.Size(120,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
+        self.editImportConnector = wx.ComboBox(self, wx.ID_ANY, "", size=wx.Size(120,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
         box.Add(self.editImportConnector, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         thebox.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
@@ -206,24 +201,22 @@ class iTradeQuotePropertiesPanel(wx.Panel):
 
         box = wx.BoxSizer(wx.HORIZONTAL)
 
-        label = wx.StaticText(self, -1, message('prop_connhelp'))
+        label = wx.StaticText(self, wx.ID_ANY, message('prop_connhelp'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         thebox.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
         box = wx.BoxSizer(wx.HORIZONTAL)
 
-        nid = wx.NewId()
-        btn = wx.Button(self, nid, message('prop_restore'))
+        btn = wx.Button(self, wx.ID_ANY, message('prop_restore'))
         btn.SetHelpText(message('prop_desc_restore'))
         box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
-        wx.EVT_BUTTON(self, nid, self.OnRestoreConnector)
+        wx.EVT_BUTTON(self, btn.GetId(), self.OnRestoreConnector)
 
-        nid = wx.NewId()
-        btn = wx.Button(self, nid, message('prop_set'))
+        btn = wx.Button(self, wx.ID_ANY, message('prop_set'))
         btn.SetHelpText(message('prop_desc_set'))
         box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
-        wx.EVT_BUTTON(self, nid, self.OnSetConnector)
+        wx.EVT_BUTTON(self, btn.GetId(), self.OnSetConnector)
 
         thebox.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
         self._sizer.AddSizer(thebox, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
@@ -252,8 +245,8 @@ class iTradeQuotePropertiesPanel(wx.Panel):
     # --- [ commands management ] ---------------------------------------------
 
     def OnReload(self,event):
-        dlg = wx.ProgressDialog(message('main_refreshing'),"",1*itrade_config.numTradeYears,self,wx.PD_APP_MODAL)
-        dlg.Update(0,self.m_quote.name())
+        dlg = wx.ProgressDialog(message('main_refreshing'), "", 1*itrade_config.numTradeYears, self, wx.PD_APP_MODAL)
+        dlg.Update(0, self.m_quote.name())
 
         # force flush and reload from network of historical data
         self.m_quote.flushAndReload(dlg)
@@ -263,15 +256,15 @@ class iTradeQuotePropertiesPanel(wx.Panel):
         if self.m_wincb:
             self.m_wincb.OnRefresh()
 
-    def OnImport(self,event):
+    def OnImport(self, event):
         dlg = wx.FileDialog(self.m_parent, message('import_from_file'), itrade_config.dirImport, "", "*.txt", wx.OPEN|wx.FILE_MUST_EXIST)
         if dlg.ShowModal() == wx.ID_OK:
-            dirname  = dlg.GetDirectory()
+            dirname = dlg.GetDirectory()
             filename = dlg.GetFilename()
-            file = os.path.join(dirname,filename)
+            file = os.path.join(dirname, filename)
 
             if itrade_config.verbose:
-                print('Import file %s for quote %s' % (file,self.m_quote.key()))
+                print('Import file %s for quote %s' % (file, self.m_quote.key()))
 
             # clear everything
             self.m_quote.flushTrades()
@@ -292,20 +285,21 @@ class iTradeQuotePropertiesPanel(wx.Panel):
             if self.m_wincb:
                 self.m_wincb.OnRefresh()
 
-        if dlg: dlg.Destroy()
+        if dlg:
+            dlg.Destroy()
 
-    def OnExport(self,event):
-        with  wx.FileDialog(self.m_parent, message('export_to_file'), itrade_config.dirExport, "", "*.txt", wx.SAVE|wx.OVERWRITE_PROMPT) as dlg:
+    def OnExport(self, event):
+        with wx.FileDialog(self.m_parent, message('export_to_file'), itrade_config.dirExport, "", "*.txt", wx.SAVE|wx.OVERWRITE_PROMPT) as dlg:
             if dlg.ShowModal() == wx.ID_OK:
-                dirname  = dlg.GetDirectory()
+                dirname = dlg.GetDirectory()
                 filename = dlg.GetFilename()
-                file = os.path.join(dirname,filename)
+                file = os.path.join(dirname, filename)
                 if itrade_config.verbose:
-                    print('Export file %s for quote %s' % (file,self.m_quote.key()))
+                    print('Export file %s for quote %s' % (file, self.m_quote.key()))
 
                 self.m_quote.saveTrades(file)
 
-                iTradeInformation(self,message('exported_to_file') % file, message('export_to_file'))
+                iTradeInformation(self, message('exported_to_file') % file, message('export_to_file'))
 
     def saveThenDisplayReference(self):
         self.editTicker.SetLabel(self.m_quote.ticker())
@@ -313,7 +307,7 @@ class iTradeQuotePropertiesPanel(wx.Panel):
         quotes.saveProperties()
         self.m_parent.aRet = True
 
-    def OnRestoreReference(self,event):
+    def OnRestoreReference(self, event):
         # set default information for this value
         self.m_quote.set_name(self.m_quote.default_name())
         self.m_quote.set_ticker(self.m_quote.default_ticker())
@@ -321,7 +315,7 @@ class iTradeQuotePropertiesPanel(wx.Panel):
         # then refresh the display
         self.saveThenDisplayReference()
 
-    def OnRename(self,event):
+    def OnRename(self, event):
         self.m_quote.set_name(self.editName.GetValue())
         self.m_quote.set_ticker(self.editTicker.GetValue().upper())
 
@@ -334,11 +328,11 @@ class iTradeQuotePropertiesPanel(wx.Panel):
         count = 0
         idx = wx.NOT_FOUND
         lst = []
-        for aname,amarket,aplace,adefaut,aconnector,aqlist,aqtag in gLiveRegistry.list(self.m_quote.market(),self.m_quote.list(),self.m_quote.place()):
-            if not aname in lst: # be sure its unique in the list
-                self.editLiveConnector.Append(aname,aname)
+        for aname, amarket, aplace, adefaut, aconnector, aqlist, aqtag in gLiveRegistry.list(self.m_quote.market(), self.m_quote.list(), self.m_quote.place()):
+            if not aname in lst:  # be sure its unique in the list
+                self.editLiveConnector.Append(aname, aname)
                 lst.append(aname)
-                if aname==self.m_quote.liveconnector().name():
+                if aname == self.m_quote.liveconnector().name():
                     # found the "to be selected"
                     idx = count
                 count = count + 1
@@ -350,11 +344,11 @@ class iTradeQuotePropertiesPanel(wx.Panel):
         count = 0
         idx = wx.NOT_FOUND
         lst = []
-        for aname,aplace,amarket,adefaut,aconnector,aqlist,aqtag in gImportRegistry.list(self.m_quote.market(),self.m_quote.list(),self.m_quote.place()):
+        for aname, aplace, amarket, adefaut, aconnector, aqlist, aqtag in gImportRegistry.list(self.m_quote.market(), self.m_quote.list(), self.m_quote.place()):
             if aname not in lst:  # be sure its unique in the list
-                self.editImportConnector.Append(aname,aname)
+                self.editImportConnector.Append(aname, aname)
                 lst.append(aname)
-                if aname==self.m_quote.importconnector().name():
+                if aname == self.m_quote.importconnector().name():
                     # found the "to be selected"
                     idx = count
                 count = count + 1
@@ -386,9 +380,8 @@ class iTradeQuotePropertiesPanel(wx.Panel):
 # ============================================================================
 
 class iTradeQuotePropertyToolbar(wx.ToolBar):
-
-    def __init__(self,parent,id):
-        wx.ToolBar.__init__(self,parent,id,size = (120,32), style = wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT)
+    def __init__(self, parent, id):
+        super(iTradeQuotePropertyToolbar, self).__init__(parent, id, size=(120, 32), style=wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT)
         self.m_parent = parent
         self.m_Throbber = None
         self._init_toolbar()
@@ -400,7 +393,7 @@ class iTradeQuotePropertyToolbar(wx.ToolBar):
         self.SetToolBitmapSize(wx.Size(24,24))
         self.AddSimpleTool(self._NTB2_EXIT, wx.ArtProvider.GetBitmap(wx.ART_CROSS_MARK, wx.ART_TOOLBAR),
                            message('main_close'), message('main_desc_close'))
-        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+        self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1, 23), style=wx.LI_VERTICAL))
         self.AddSimpleTool(self._NTB2_SELECT, wx.Bitmap(os.path.join(itrade_config.dirRes, 'quotes.png')),
                            message('quote_select_title'), message('quote_select_title'))
 
@@ -408,10 +401,10 @@ class iTradeQuotePropertyToolbar(wx.ToolBar):
         wx.EVT_TOOL(self, self._NTB2_SELECT, self.select)
         self.Realize()
 
-    def select(self,event):
+    def select(self, event):
         self.m_parent.OnSelectQuote(event)
 
-    def exit(self,event):
+    def exit(self, event):
         self.m_parent.OnExit(event)
 
 # ============================================================================
@@ -420,10 +413,8 @@ class iTradeQuotePropertyToolbar(wx.ToolBar):
 # ============================================================================
 
 class iTradeQuotePropertyWindow(wx.Frame):
-
-    def __init__(self,parent,quote,dpage=1):
-        self.m_id = wx.NewId()
-        wx.Frame.__init__(self,None,self.m_id, style= wx.DEFAULT_FRAME_STYLE|wx.FULL_REPAINT_ON_RESIZE|wx.TAB_TRAVERSAL)
+    def __init__(self, parent, quote, dpage=1):
+        super(iTradeQuotePropertyWindow, self).__init__(None, wx.ID_ANY, style=wx.DEFAULT_FRAME_STYLE|wx.FULL_REPAINT_ON_RESIZE|wx.TAB_TRAVERSAL)
         self.m_quote = quote
         self.m_parent = parent
         self.m_framesizer = wx.BoxSizer(wx.VERTICAL)
@@ -432,10 +423,10 @@ class iTradeQuotePropertyWindow(wx.Frame):
         self.setTitle()
 
         # property panel
-        self.m_propwindow = iTradeQuotePropertiesPanel(self,wx.NewId(),self.m_quote,self.m_parent)
+        self.m_propwindow = iTradeQuotePropertiesPanel(self, wx.ID_ANY, self.m_quote, self.m_parent)
 
         # Toolbar
-        self.m_toolbar = iTradeQuotePropertyToolbar(self, wx.NewId())
+        self.m_toolbar = iTradeQuotePropertyToolbar(self, wx.ID_ANY)
 
         wx.EVT_WINDOW_DESTROY(self, self.OnDestroy)
 
@@ -445,22 +436,22 @@ class iTradeQuotePropertyWindow(wx.Frame):
         self.Fit()
 
     def setTitle(self):
-        self.SetTitle("%s %s - %s" % (message('quote_title'),self.m_quote.ticker(),self.m_quote.market()))
+        self.SetTitle("%s %s - %s" % (message('quote_title'), self.m_quote.ticker(), self.m_quote.market()))
 
     def OnDestroy(self, evt):
-        if self.m_parent and (self.m_id == evt.GetId()):
+        if self.m_parent and (self.GetId() == evt.GetId()):
             self.m_parent.m_hProperty = None
 
-    def OnSelectQuote(self,event,nquote=None):
+    def OnSelectQuote(self, event, nquote=None):
         if not nquote:
-            nquote = select_iTradeQuote(self,self.m_quote,filter=True,market=None,filterEnabled=False)
+            nquote = select_iTradeQuote(self, self.m_quote, filter=True, market=None, filterEnabled=False)
         if nquote and nquote != self.m_quote:
-            info('SelectQuote: %s - %s' % (nquote.ticker(),nquote.key()))
+            info('SelectQuote: %s - %s' % (nquote.ticker(), nquote.key()))
             self.m_quote = nquote
             self.m_propwindow.Destroy()
-            self.m_propwindow = iTradeQuotePropertiesPanel(self,wx.NewId(),self.m_quote,self.m_parent)
+            self.m_propwindow = iTradeQuotePropertiesPanel(self, wx.ID_ANY, self.m_quote, self.m_parent)
 
-    def OnExit(self,event):
+    def OnExit(self, event):
         self.Close()
 
 class iTradeQuotePropertyDialog(wx.Dialog):
@@ -470,18 +461,17 @@ class iTradeQuotePropertyDialog(wx.Dialog):
         pre.SetExtraStyle(wx.DIALOG_EX_CONTEXTHELP)
 
         # pre-init
-        self.m_id = wx.NewId()
         self.m_quote = quote
         self.m_parent = parent
 
         # post-init
-        pre.Create(parent, -1, "%s %s - %s" % (message('quote_title'),self.m_quote.ticker(),self.m_quote.market()), size=(560,370))
+        pre.Create(parent, -1, "%s %s - %s" % (message('quote_title'), self.m_quote.ticker(), self.m_quote.market()), size=(560, 370))
         self.PostCreate(pre)
 
         sizer = wx.BoxSizer(wx.VERTICAL)
 
         # property panel
-        self.m_propwindow = iTradeQuotePropertiesPanel(self,wx.NewId(),self.m_quote,None)
+        self.m_propwindow = iTradeQuotePropertiesPanel(self, wx.ID_ANY, self.m_quote, None)
         sizer.Add(self.m_propwindow, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         box = wx.BoxSizer(wx.HORIZONTAL)
@@ -502,7 +492,7 @@ class iTradeQuotePropertyDialog(wx.Dialog):
         self.SetAutoLayout(True)
         self.SetSizerAndFit(sizer)
 
-    def OnClose(self,event):
+    def OnClose(self, event):
         # aRet = True or False (see iTradeQuotePropertiesPanel __init__)
         self.EndModal(wx.ID_CANCEL)
 
@@ -513,20 +503,19 @@ class iTradeQuotePropertyDialog(wx.Dialog):
 #   quote   Quote object or ISIN reference to view
 # ============================================================================
 
-def open_iTradeQuoteProperty(win,quote,bDialog=False):
-    if not isinstance(quote,Quote):
+def open_iTradeQuoteProperty(win, quote, bDialog=False):
+    if not isinstance(quote, Quote):
         quote = quotes.lookupKey(quote)
     if bDialog:
-        dlg = iTradeQuotePropertyDialog(win,quote)
+        dlg = iTradeQuotePropertyDialog(win, quote)
         dlg.ShowModal()
         aRet = dlg.aRet
         dlg.Destroy()
         return aRet
-
     else:
         if win and win.m_hProperty:
             # set focus
-            win.m_hProperty.OnSelectQuote(None,quote)
+            win.m_hProperty.OnSelectQuote(None, quote)
             win.m_hProperty.SetFocus()
         else:
             frame = iTradeQuotePropertyWindow(win, quote)

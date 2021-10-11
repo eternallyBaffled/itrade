@@ -94,7 +94,7 @@ class iTrade_wxPivots(wx.Panel):
 
 class WndTest(wx.Frame):
     def __init__(self, parent, quote):
-        super(WndTest, self).__init__(parent, id=wx.NewId(), title='WndTest', size=(300, 300),
+        super(WndTest, self).__init__(parent, id=wx.ID_ANY, title='WndTest', size=(300, 300),
                           style=wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE)
         self.m_pivots = iTrade_wxPivots(self, quote)
         self.m_quote = quote

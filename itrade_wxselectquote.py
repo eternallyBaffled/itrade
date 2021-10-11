@@ -98,7 +98,6 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
 
         self.m_editing = True
 
-        tID = wx.NewId()
         self.m_imagelist = wx.ImageList(16,16)
         self.sm_q = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'quote.png')))
         self.sm_i = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'invalid.png')))
@@ -115,21 +114,19 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
         pane.SetSizerProps(expand=True)
 
         # pane : ISIN or Name selection
-        label = wx.StaticText(pane, -1, message('quote_select_isin'))
+        label = wx.StaticText(pane, wx.ID_ANY, message('quote_select_isin'))
         label.SetSizerProps(valign='center')
 
-        tID = wx.NewId()
-        self.wxIsinCtrl = wx.TextCtrl(pane, tID, self.m_isin)
+        self.wxIsinCtrl = wx.TextCtrl(pane, wx.ID_ANY, self.m_isin)
         self.wxIsinCtrl.SetSizerProps(expand=True)
-        wx.EVT_TEXT(self, tID, self.OnISINEdited)
+        wx.EVT_TEXT(self, self.wxIsinCtrl.GetId(), self.OnISINEdited)
 
-        label = wx.StaticText(pane, -1, message('quote_select_ticker'))
+        label = wx.StaticText(pane, wx.ID_ANY, message('quote_select_ticker'))
         label.SetSizerProps(valign='center')
 
-        tID = wx.NewId()
-        self.wxTickerCtrl = wx.TextCtrl(pane, tID, self.m_ticker)
+        self.wxTickerCtrl = wx.TextCtrl(pane, wx.ID_ANY, self.m_ticker)
         self.wxTickerCtrl.SetSizerProps(expand=True)
-        wx.EVT_TEXT(self, tID, self.OnTickerEdited)
+        wx.EVT_TEXT(self, self.wxTickerCtrl.GetId(), self.OnTickerEdited)
 
         # resizable pane
         pane = sc.SizedPanel(container, -1)
@@ -137,12 +134,12 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
         pane.SetSizerProps(expand=True)
 
         # pane : market & list filters
-        self.wxLabelMarketCtrl = wx.StaticText(pane, -1, message('quote_select_market'))
+        self.wxLabelMarketCtrl = wx.StaticText(pane, wx.ID_ANY, message('quote_select_market'))
         self.wxLabelMarketCtrl.SetSizerProps(valign='center')
 
-        self.wxMarketCtrl = wx.ComboBox(pane,-1, "", style=wx.CB_DROPDOWN|wx.CB_READONLY)
+        self.wxMarketCtrl = wx.ComboBox(pane, wx.ID_ANY, "", style=wx.CB_DROPDOWN|wx.CB_READONLY)
         self.wxMarketCtrl.SetSizerProps(expand=True)
-        wx.EVT_COMBOBOX(self,self.wxMarketCtrl.GetId(),self.OnMarket)
+        wx.EVT_COMBOBOX(self, self.wxMarketCtrl.GetId(), self.OnMarket)
 
         idx = wx.NOT_FOUND
         for count, eachCtrl in enumerate(list_of_markets(bFilterMode=False)):
@@ -152,31 +149,30 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
 
         self.wxMarketCtrl.SetSelection(idx)
 
-        self.wxLabelQListCtrl = wx.StaticText(pane, -1, message('quote_select_list'))
+        self.wxLabelQListCtrl = wx.StaticText(pane, wx.ID_ANY, message('quote_select_list'))
         self.wxLabelQListCtrl.SetSizerProps(valign='center')
 
-        self.wxQListCtrl = wx.ComboBox(pane,-1, "", style=wx.CB_DROPDOWN|wx.CB_READONLY)
+        self.wxQListCtrl = wx.ComboBox(pane, wx.ID_ANY, "", style=wx.CB_DROPDOWN|wx.CB_READONLY)
         self.wxQListCtrl.SetSizerProps(expand=True)
-        wx.EVT_COMBOBOX(self,self.wxQListCtrl.GetId(),self.OnQuoteList)
+        wx.EVT_COMBOBOX(self, self.wxQListCtrl.GetId(), self.OnQuoteList)
 
-        self.wxQListCtrl.Append(message('quote_select_alllist'),QList.all)
-        self.wxQListCtrl.Append(message('quote_select_syslist'),QList.system)
-        self.wxQListCtrl.Append(message('quote_select_usrlist'),QList.user)
+        self.wxQListCtrl.Append(message('quote_select_alllist'), QList.all)
+        self.wxQListCtrl.Append(message('quote_select_syslist'), QList.system)
+        self.wxQListCtrl.Append(message('quote_select_usrlist'), QList.user)
         if not self.m_qlist_tradableOnly:
-            self.wxQListCtrl.Append(message('quote_select_indiceslist'),QList.indices)
-        self.wxQListCtrl.Append(message('quote_select_trackerslist'),QList.trackers)
-        self.wxQListCtrl.Append(message('quote_select_bondslist'),QList.bonds)
+            self.wxQListCtrl.Append(message('quote_select_indiceslist'), QList.indices)
+        self.wxQListCtrl.Append(message('quote_select_trackerslist'), QList.trackers)
+        self.wxQListCtrl.Append(message('quote_select_bondslist'), QList.bonds)
         self.wxQListCtrl.SetSelection(self.m_qlist.value)
 
         # select traded or not
-        tID = wx.NewId()
-        self.wxFilterCtrl = wx.CheckBox(container, tID, message('quote_select_filterfield'))
+        self.wxFilterCtrl = wx.CheckBox(container, wx.ID_ANY, message('quote_select_filterfield'))
         self.wxFilterCtrl.SetValue(self.m_filter)
-        wx.EVT_CHECKBOX(self, tID, self.OnFilter)
+        wx.EVT_CHECKBOX(self, self.wxFilterCtrl.GetId(), self.OnFilter)
         self.wxFilterCtrl.Enable(filterEnabled)
 
         # List
-        self.m_list = iTradeSelectorListCtrl(container, tID, style = wx.LC_REPORT | wx.SUNKEN_BORDER,size=(440, 380))
+        self.m_list = iTradeSelectorListCtrl(container, self.wxFilterCtrl.GetId(), style=wx.LC_REPORT | wx.SUNKEN_BORDER, size=(440, 380))
         self.m_list.SetSizerProps(expand=True)
         self.m_list.SetImageList(self.m_imagelist, wx.IMAGE_LIST_SMALL)
 
@@ -184,9 +180,9 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
         # see wxPython/lib/mixins/listctrl.py
         wxl.ColumnSorterMixin.__init__(self, 5)
 
-        wx.EVT_LIST_COL_CLICK(self, tID, self.OnColClick)
-        wx.EVT_LIST_ITEM_ACTIVATED(self, tID, self.OnItemActivated)
-        wx.EVT_LIST_ITEM_SELECTED(self, tID, self.OnItemSelected)
+        wx.EVT_LIST_COL_CLICK(self, self.wxFilterCtrl.GetId(), self.OnColClick)
+        wx.EVT_LIST_ITEM_ACTIVATED(self, self.wxFilterCtrl.GetId(), self.OnItemActivated)
+        wx.EVT_LIST_ITEM_SELECTED(self, self.wxFilterCtrl.GetId(), self.OnItemSelected)
 
         # Last Row : OK and Cancel
         btnpane = sc.SizedPanel(container, -1)
@@ -201,7 +197,7 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
         self.wxOK = wx.Button(btnpane, wx.ID_OK, message('valid'))
         self.wxOK.SetDefault()
         self.wxOK.SetHelpText(message('valid_desc'))
-        wx.EVT_BUTTON(self, wx.ID_OK, self.OnValid)
+        wx.EVT_BUTTON(self, self.wxOK.GetId(), self.OnValid)
 
         # CANCEL
         btn = wx.Button(btnpane, wx.ID_CANCEL, message('cancel'))
@@ -211,15 +207,15 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
         self.OnFilter()
 
         EVT_POSTINIT(self, self.OnPostInit)
-        wx.PostEvent(self,PostInitEvent())
+        wx.PostEvent(self, PostInitEvent())
 
     # --- [ window management ] -------------------------------------
 
-    def OnPostInit(self,event):
+    def OnPostInit(self, event):
         quotes.loadMarket(self.m_market)
         self.PopulateList(bDuringInit=True)
         self.wxTickerCtrl.SetFocus()
-        print('OnPostInit : market=',self.m_market)
+        print('OnPostInit : market=', self.m_market)
 
     def resetFields(self):
         self.m_isin = ''
@@ -228,7 +224,7 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
         self.wxTickerCtrl.SetValue('')
         self.m_list.SetFocus()
 
-    def OnFilter(self,event=None):
+    def OnFilter(self, event=None):
         if event:
             self.m_filter = event.Checked()
             self.resetFields()
@@ -247,20 +243,20 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
         self.Fit()
         self.SetMinSize(self.GetSize())
 
-        print('OnFilter : market=',self.m_market)
+        print('OnFilter : market=', self.m_market)
 
-    def OnMarket(self,evt):
+    def OnMarket(self, evt):
         idx = self.wxMarketCtrl.GetSelection()
         self.m_market = self.wxMarketCtrl.GetClientData(idx)
         quotes.loadMarket(self.m_market)
         self.resetFields()
 
-    def OnQuoteList(self,evt):
+    def OnQuoteList(self, evt):
         idx = self.wxQListCtrl.GetSelection()
         self.m_qlist = idx
         self.resetFields()
 
-    def isFiltered(self,quote,bDuringInit):
+    def isFiltered(self, quote, bDuringInit):
         if (self.m_qlist == QList.all) or (self.m_qlist == quote.list() or self.m_filter):
             # good list
             if not self.m_qlist_tradableOnly or quote.list() != QList.indices:

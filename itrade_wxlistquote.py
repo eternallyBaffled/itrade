@@ -127,7 +127,7 @@ class iTradeQuoteListDialog(wx.Dialog):
         label = wx.StaticText(self, -1, message('prop_isin'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        tID = wx.NewId()
+        tID = wx.NewIdRef()
         self.editISIN = wx.TextCtrl(self, tID, self.m_isin, size=wx.Size(180, -1), style=wx.TE_LEFT)
         wx.EVT_TEXT(self, tID, self.OnISINEdited)
         box.Add(self.editISIN, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
@@ -187,7 +187,7 @@ class iTradeQuoteListDialog(wx.Dialog):
         label = wx.StaticText(self, -1, message('prop_place'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        tID = wx.NewId()
+        tID = wx.NewIdRef()
         self.editPlace = wx.ComboBox(self, tID, "", size=wx.Size(60, -1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
         box.Add(self.editPlace, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_COMBOBOX(self, tID, self.OnPlace)
@@ -196,7 +196,7 @@ class iTradeQuoteListDialog(wx.Dialog):
         label = wx.StaticText(self, -1, message('prop_currency'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        tID = wx.NewId()
+        tID = wx.NewIdRef()
         self.editCurrency = wx.ComboBox(self, tID, "", size=wx.Size(80, -1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
         box.Add(self.editCurrency, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_COMBOBOX(self, tID, self.OnCurrency)
@@ -384,7 +384,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         self.m_market = market
         self.m_qlist = QList.system
 
-        tID = wx.NewId()
+        tID = wx.NewIdRef()
         self.m_imagelist = wx.ImageList(16, 16)
         self.sm_q = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'quote.png')))
         self.sm_i = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'invalid.png')))

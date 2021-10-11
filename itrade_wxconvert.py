@@ -43,7 +43,7 @@ import itrade_config
 
 # wxPython system
 if not itrade_config.nowxversion:
-    pass
+    import itrade_wxversion
 import wx
 from wx.lib import masked
 # import sized_controls from wx.lib for wxPython version >= 2.8.8.0 (from wxaddons otherwise)

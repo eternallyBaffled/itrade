@@ -77,10 +77,8 @@ from itrade_wxutil import iTradeError, iTradeYesNo, iTradeSizedDialog
 
 class iTradePortfolioSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin):
     def __init__(self, parent, portfolio, operation, except_portfolio=None):
-        iTradeSizedDialog.__init__(self,parent, -1, message('portfolio_%s_title'%operation),
+        super(iTradePortfolioSelectorListCtrlDialog, self).__init__(parent, wx.ID_ANY, message('portfolio_%s_title'%operation),
                         style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER, size=(420, 420))
-
-        # init
         if portfolio:
             self.m_name = portfolio.filename()
             self.m_accountref = portfolio.accountref()
@@ -99,20 +97,19 @@ class iTradePortfolioSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterM
         pane.SetSizerProps(expand=True)
 
         # Row 1
-        label = wx.StaticText(pane, -1, message('portfolio_select_textfield'))
+        label = wx.StaticText(pane, wx.ID_ANY, message('portfolio_select_textfield'))
         label.SetSizerProps(valign='center')
-        self.wxNameCtrl = wx.TextCtrl(pane, -1, self.m_name, size=(80,-1))
+        self.wxNameCtrl = wx.TextCtrl(pane, wx.ID_ANY, self.m_name, size=(80,-1))
         self.wxNameCtrl.SetSizerProps(expand=True)
 
         # Row 2 :
-        tID = wx.NewId()
         self.m_imagelist = wx.ImageList(16,16)
         self.sm_q = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'quote.png')))
         self.sm_i = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'invalid.png')))
         self.sm_up = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'sm_up.png')))
         self.sm_dn = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'sm_down.png')))
 
-        self.m_list = iTradeSelectorListCtrl(container, tID,
+        self.m_list = iTradeSelectorListCtrl(container, wx.ID_ANY,
                                  style = wx.LC_REPORT | wx.SUNKEN_BORDER,
                                  size=(400, 380)
                                  )
@@ -125,9 +122,9 @@ class iTradePortfolioSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterM
         # see wxPython/lib/mixins/listctrl.py
         wxl.ColumnSorterMixin.__init__(self, 3)
 
-        wx.EVT_LIST_COL_CLICK(self, tID, self.OnColClick)
-        wx.EVT_LIST_ITEM_ACTIVATED(self, tID, self.OnItemActivated)
-        wx.EVT_LIST_ITEM_SELECTED(self, tID, self.OnItemSelected)
+        wx.EVT_LIST_COL_CLICK(self, self.m_list.GetId(), self.OnColClick)
+        wx.EVT_LIST_ITEM_ACTIVATED(self, self.m_list.GetId(), self.OnItemActivated)
+        wx.EVT_LIST_ITEM_SELECTED(self, self.m_list.GetId(), self.OnItemSelected)
 
         # Last Row : OK and Cancel
         btnpane = sc.SizedPanel(container, -1)
@@ -190,7 +187,7 @@ class iTradePortfolioSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterM
         self.itemDataMap = {}
         for eachPortfolio in portfolios.list():
             if self.m_except != eachPortfolio.filename():
-                self.itemDataMap[x] = (eachPortfolio.filename(),eachPortfolio.name(),eachPortfolio.accountref())
+                self.itemDataMap[x] = (eachPortfolio.filename(), eachPortfolio.name(), eachPortfolio.accountref())
                 x = x + 1
 
         items = self.itemDataMap.items()
@@ -231,17 +228,17 @@ class iTradePortfolioSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterM
 
     def OnItemActivated(self, event):
         self.currentItem = event.m_itemIndex
-        #debug("OnItemActivated: %s\nTopItem: %s" % (self.m_list.GetItemText(self.currentItem), self.m_list.GetTopItem()))
+        # debug("OnItemActivated: %s\nTopItem: %s" % (self.m_list.GetItemText(self.currentItem), self.m_list.GetTopItem()))
         self.OnValid(event)
 
     def OnItemSelected(self, event):
         self.currentItem = event.m_itemIndex
-        #debug("OnItemSelected: %s\nTopItem: %s" % (self.m_list.GetItemText(self.currentItem), self.m_list.GetTopItem()))
+        # debug("OnItemSelected: %s\nTopItem: %s" % (self.m_list.GetItemText(self.currentItem), self.m_list.GetTopItem()))
         portfolio = portfolios.portfolio(self.m_list.GetItemText(self.currentItem))
         self.wxNameCtrl.SetValue(portfolio.filename())
         event.Skip()
 
-    def OnValid(self,event):
+    def OnValid(self, event):
         name = self.wxNameCtrl.GetValue()
         portfolio = portfolios.portfolio(name)
         if not portfolio:
@@ -258,11 +255,11 @@ class iTradePortfolioSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterM
 # operation = 'select','delete'
 # ============================================================================
 
-def select_iTradePortfolio(win,dportfolio=None,operation='select'):
+def select_iTradePortfolio(win, dportfolio=None, operation='select'):
     if dportfolio:
-        if not isinstance(dportfolio,Portfolio):
+        if not isinstance(dportfolio, Portfolio):
             dportfolio = portfolios.portfolio(dportfolio)
-    if operation=='delete':
+    if operation == 'delete':
         # do not delete current selected !
         dlg = iTradePortfolioSelectorListCtrlDialog(win,None,operation,dportfolio.filename())
     else:
@@ -287,9 +284,8 @@ def select_iTradePortfolio(win,dportfolio=None,operation='select'):
 
 class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
     def __init__(self, parent, portfolio, operation):
-        iTradeSizedDialog.__init__(self, None, -1, message('portfolio_properties_%s'% operation),
-                        style=wx.DEFAULT_DIALOG_STYLE , size=(420, 420))
-
+        super(iTradePortfolioPropertiesDialog, self).__init__(None, wx.ID_ANY, message('portfolio_properties_%s'% operation),
+                        style=wx.DEFAULT_DIALOG_STYLE, size=(420, 420))
         if portfolio:
             self.m_filename = portfolio.filename()
             self.m_name = portfolio.name()
@@ -322,88 +318,88 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
         pane.SetSizerProps(expand=True)
 
         # row1 : filename
-        label = wx.StaticText(pane, -1, message('portfolio_filename'))
+        label = wx.StaticText(pane, wx.ID_ANY, message('portfolio_filename'))
         label.SetSizerProps(valign='center')
-        self.wxFilenameCtrl = wx.TextCtrl(pane, -1, self.m_filename, size=(120,-1))
+        self.wxFilenameCtrl = wx.TextCtrl(pane, wx.ID_ANY, self.m_filename, size=(120,-1))
         self.wxFilenameCtrl.SetSizerProps(expand=True)
 
         # row2 : name
-        label = wx.StaticText(pane, -1, message('portfolio_name'))
+        label = wx.StaticText(pane, wx.ID_ANY, message('portfolio_name'))
         label.SetSizerProps(valign='center')
-        self.wxNameCtrl = wx.TextCtrl(pane, -1, self.m_name, size=(180,-1))
+        self.wxNameCtrl = wx.TextCtrl(pane, wx.ID_ANY, self.m_name, size=(180,-1))
         self.wxNameCtrl.SetSizerProps(expand=True)
 
         # row3 : accountref
-        label = wx.StaticText(pane, -1, message('portfolio_accountref'))
+        label = wx.StaticText(pane, wx.ID_ANY, message('portfolio_accountref'))
         label.SetSizerProps(valign='center')
 
-        self.wxAccountRefCtrl = wx.TextCtrl(pane, -1, self.m_accountref, size=(80,-1))
+        self.wxAccountRefCtrl = wx.TextCtrl(pane, wx.ID_ANY, self.m_accountref, size=(80,-1))
         self.wxAccountRefCtrl.SetSizerProps(expand=True)
 
         # row4 : market
-        label = wx.StaticText(pane, -1, message('portfolio_market'))
+        label = wx.StaticText(pane, wx.ID_ANY, message('portfolio_market'))
         label.SetSizerProps(valign='center')
 
-        self.wxMarketCtrl = wx.ComboBox(pane,-1, "", size=wx.Size(160,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
-        wx.EVT_COMBOBOX(self,self.wxMarketCtrl.GetId(),self.OnMarket)
+        self.wxMarketCtrl = wx.ComboBox(pane, wx.ID_ANY, "", size=wx.Size(160, -1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
+        wx.EVT_COMBOBOX(self, self.wxMarketCtrl.GetId(), self.OnMarket)
 
         idx = wx.NOT_FOUND
         for count, eachCtrl in enumerate(list_of_markets()):
-            self.wxMarketCtrl.Append(eachCtrl,eachCtrl)
-            if eachCtrl==self.m_market:
+            self.wxMarketCtrl.Append(eachCtrl, eachCtrl)
+            if eachCtrl == self.m_market:
                 idx = count
 
         self.wxMarketCtrl.SetSelection(idx)
 
         # row5 : main indice
-        label = wx.StaticText(pane, -1, message('portfolio_indicator'))
+        label = wx.StaticText(pane, wx.ID_ANY, message('portfolio_indicator'))
         label.SetSizerProps(valign='center')
 
-        self.wxIndicatorCtrl = wx.ComboBox(pane,-1, "", size=wx.Size(160,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
-        wx.EVT_COMBOBOX(self,self.wxIndicatorCtrl.GetId(),self.OnIndicator)
+        self.wxIndicatorCtrl = wx.ComboBox(pane, wx.ID_ANY, "", size=wx.Size(160,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
+        wx.EVT_COMBOBOX(self, self.wxIndicatorCtrl.GetId(), self.OnIndicator)
 
         count = 0
         idx = wx.NOT_FOUND
         for eachCtrl in quotes.list():
-            if eachCtrl.list()==QList.indices:
-                #self.wxIndicatorCtrl.Append(eachCtrl.name(),eachCtrl.isin())
+            if eachCtrl.list() == QList.indices:
+                # self.wxIndicatorCtrl.Append(eachCtrl.name(), eachCtrl.isin())
                 try:
-                    self.wxIndicatorCtrl.Append(eachCtrl.name(),eachCtrl.isin())
+                    self.wxIndicatorCtrl.Append(eachCtrl.name(), eachCtrl.isin())
                 except:
-                    print('eachCtrl:',eachCtrl)
-                if eachCtrl.isin()==self.m_indice:
+                    print('eachCtrl:', eachCtrl)
+                if eachCtrl.isin() == self.m_indice:
                     idx = count
                 count = count + 1
 
         self.wxIndicatorCtrl.SetSelection(idx)
 
         # row6 : currency
-        label = wx.StaticText(pane, -1, message('portfolio_currency'))
+        label = wx.StaticText(pane, wx.ID_ANY, message('portfolio_currency'))
         label.SetSizerProps(valign='center')
 
-        self.wxCurrencyCtrl = wx.ComboBox(pane,-1, "", size=wx.Size(80,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
-        wx.EVT_COMBOBOX(self,self.wxCurrencyCtrl.GetId(),self.OnCurrency)
+        self.wxCurrencyCtrl = wx.ComboBox(pane, wx.ID_ANY, "", size=wx.Size(80,-1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
+        wx.EVT_COMBOBOX(self, self.wxCurrencyCtrl.GetId(), self.OnCurrency)
 
         idx = wx.NOT_FOUND
         for count, eachCtrl in enumerate(list_of_currencies()):
-            #print eachCtrl
-            self.wxCurrencyCtrl.Append(eachCtrl,eachCtrl)
-            if eachCtrl==self.m_currency:
+            # print(eachCtrl)
+            self.wxCurrencyCtrl.Append(eachCtrl, eachCtrl)
+            if eachCtrl == self.m_currency:
                 idx = count
 
         self.wxCurrencyCtrl.SetSelection(idx)
 
         # row7 : default vat
-        label = wx.StaticText(pane, -1, message('portfolio_vat'))
+        label = wx.StaticText(pane, wx.ID_ANY, message('portfolio_vat'))
         label.SetSizerProps(valign='center')
 
         self.wxVATCtrl = masked.Ctrl(pane, integerWidth=5, fractionWidth=3, controlType=masked.controlTypes.NUMBER, allowNegative=False, groupChar=getGroupChar(), decimalChar=getDecimalChar())
         self.wxVATCtrl.SetValue((self.m_vat-1)*100)
 
         # Row8 : trading style
-        label = wx.StaticText(container, -1, message('prop_tradingstyle'))
+        label = wx.StaticText(container, wx.ID_ANY, message('prop_tradingstyle'))
 
-        btnpane = sc.SizedPanel(container, -1, style = wx.RAISED_BORDER | wx.CAPTION | wx.TAB_TRAVERSAL|wx.CLIP_CHILDREN|wx.NO_FULL_REPAINT_ON_RESIZE)
+        btnpane = sc.SizedPanel(container, wx.ID_ANY, style=wx.RAISED_BORDER | wx.CAPTION | wx.TAB_TRAVERSAL|wx.CLIP_CHILDREN|wx.NO_FULL_REPAINT_ON_RESIZE)
         btnpane.SetSizerType("form")
         btnpane.SetSizerProps(expand=True)
 

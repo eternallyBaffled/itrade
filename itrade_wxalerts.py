@@ -93,9 +93,7 @@ class iTradeAlertsPanel(wx.Window):
         self.idx_tbref = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'invalid.png')))
 
         # List
-        tID = wx.NewId()
-
-        self.m_list = iTradeAlertsListCtrl(self, tID, style=wx.LC_REPORT | wx.SUNKEN_BORDER | wx.LC_SINGLE_SEL | wx.LC_VRULES | wx.LC_HRULES)
+        self.m_list = iTradeAlertsListCtrl(self, wx.ID_ANY, style=wx.LC_REPORT | wx.SUNKEN_BORDER | wx.LC_SINGLE_SEL | wx.LC_VRULES | wx.LC_HRULES)
         self.m_list.SetImageList(self.m_imagelist, wx.IMAGE_LIST_SMALL)
         self.m_list.SetFont(wx.Font(10, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
 
@@ -124,10 +122,10 @@ class iTradeAlertsPanel(wx.Window):
         x = 0
         for eachAlert in alerts.listAlerts():
             self.m_list.InsertImageStringItem(x, "%s" % eachAlert.date(), self.idx_tbref)
-            self.m_list.SetStringItem(x,IDC_TYPE,eachAlert.type_desc())
-            self.m_list.SetStringItem(x,IDC_SOURCE,eachAlert.source())
-            self.m_list.SetStringItem(x,IDC_ISIN,eachAlert.isin())
-            self.m_list.SetStringItem(x,IDC_TITLE,eachAlert.title())
+            self.m_list.SetStringItem(x, IDC_TYPE,eachAlert.type_desc())
+            self.m_list.SetStringItem(x, IDC_SOURCE,eachAlert.source())
+            self.m_list.SetStringItem(x, IDC_ISIN,eachAlert.isin())
+            self.m_list.SetStringItem(x, IDC_TITLE,eachAlert.title())
 
             x = x + 1
 
@@ -139,7 +137,7 @@ class iTradeAlertsPanel(wx.Window):
         self.m_list.SetColumnWidth(IDC_TITLE, wx.LIST_AUTOSIZE)
 
         # default selection
-        if x>0:
+        if x > 0:
             self.m_currentItem = 0
             self.m_list.SetItemState(0, wx.LIST_STATE_SELECTED, wx.LIST_STATE_SELECTED)
             self.m_list.EnsureVisible(self.m_currentItem)
@@ -180,10 +178,10 @@ class iTradeAlertsNotebookWindow(wx.Notebook):
         self.win = {}
         self.DeleteAllPages()
 
-        self.win[self.ID_PAGE_ALERTS] = iTradeAlertsPanel(self,wx.NewId(),self.m_port)
+        self.win[self.ID_PAGE_ALERTS] = iTradeAlertsPanel(self, wx.ID_ANY, self.m_port)
         self.AddPage(self.win[self.ID_PAGE_ALERTS], message('alerts_alerts'))
 
-        self.win[self.ID_PAGE_NEWS] = iTradeNewsPanel(self,wx.NewId(),self.m_port)
+        self.win[self.ID_PAGE_NEWS] = iTradeNewsPanel(self, wx.ID_ANY, self.m_port)
         self.AddPage(self.win[self.ID_PAGE_NEWS], message('alerts_news'))
 
     def OnPageChanged(self, event):
@@ -208,7 +206,7 @@ class iTradeAlertsNotebookWindow(wx.Notebook):
 
 class iTradeAlertsWindow(wx.Frame, iTrade_wxFrame):
     def __init__(self, parent, title, port):
-        super(iTradeAlertsWindow, self).__init__(parent=None, id=wx.NewId(), title=title, size=(640, 480), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE, name='alerts')
+        super(iTradeAlertsWindow, self).__init__(parent=None, id=wx.ID_ANY, title=title, size=(640, 480), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE, name='alerts')
         self.m_port = port
         self.m_book = iTradeAlertsNotebookWindow(self, wx.ID_ANY, port=self.m_port)
 
@@ -235,7 +233,7 @@ def open_iTradeAlerts(win, port=None):
     else:
         if not isinstance(port, Portfolio):
             port = loadPortfolio()
-        frame = iTradeAlertsWindow(win, "%s - %s" %(message('alerts_title'),port.name()), port)
+        frame = iTradeAlertsWindow(win, u"{} - {}".format(message('alerts_title'), port.name()), port)
         if win:
             win.m_hAlerts = frame
         frame.Show()

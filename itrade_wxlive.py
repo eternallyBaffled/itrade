@@ -579,25 +579,25 @@ class iTrade_wxLive(wx.Panel):
         return ssi
 
 
-class WndTest(wx.Frame,iTrade_wxLiveMixin):
-    def __init__(self, parent,quote):
-        super(WndTest, self).__init__(parent=parent, id=wx.NewId(), title='WndTest', size=(600,190), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE)
-        self.m_live = iTrade_wxLive(self,parent,quote)
+class WndTest(wx.Frame, iTrade_wxLiveMixin):
+    def __init__(self, parent, quote):
+        super(WndTest, self).__init__(parent=parent, id=wx.ID_ANY, title='WndTest', size=(600,190), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE)
+        self.m_live = iTrade_wxLive(self, parent, quote)
         self.m_quote = quote
-        self.registerLive(quote,itrade_config.refreshLive,quote.key())
+        self.registerLive(quote, itrade_config.refreshLive, quote.key())
 
         wx.EVT_CLOSE(self, self.OnCloseWindow)
         EVT_UPDATE_LIVE(self, self.OnLive)
 
         self.startLive()
 
-    def OnLive(self,event):
-        #print event.param
+    def OnLive(self, event):
+        # print(event.param)
         self.m_live.refresh()
         self.m_live.Refresh(False)
         event.Skip()
 
-    def OnCloseWindow(self,event):
+    def OnCloseWindow(self, event):
         self.stopLive(bBusy=True)
         self.Destroy()
 

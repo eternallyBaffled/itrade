@@ -290,7 +290,7 @@ class iTradeMainToolbar(wx.ToolBar):
     def onQuote(self,event):
         self.m_parent.OnGraphQuote(event)
 
-    def onAbout(self,event):
+    def onAbout(self, event):
         self.m_parent.OnAbout(event)
 
     # ---[ Market Indicator management ] ---
@@ -301,21 +301,21 @@ class iTradeMainToolbar(wx.ToolBar):
         else:
             label = " " + message('indicator_noautorefresh')
         self.m_indicator.SetForegroundColour(wx.NullColour)
-        #self.m_indicator.ClearBackground()
+        # self.m_indicator.ClearBackground()
         self.m_indicator.ChangeValue(label)
 
-    def SetIndicator(self,market,connector,indice):
+    def SetIndicator(self, market, connector, indice):
         dateclock = connector.currentDate(indice)
         if dateclock != "----":
-            conv=time.strptime(dateclock,"%d/%m/%Y")
-            dateclock = time.strftime(date_format[indice.market()][0],conv)
+            conv=time.strptime(dateclock, "%d/%m/%Y")
+            dateclock = time.strftime(date_format[indice.market()][0], conv)
 
         clock = connector.currentClock(indice)
         if clock != '::':
-            #print'clock:',clock
-            conv=time.strptime(clock,"%H:%M")
-            clock = time.strftime(date_format[indice.market()][1],conv)
-            #print'clock am pm:',clock
+            # print('clock:', clock)
+            conv=time.strptime(clock, "%H:%M")
+            clock = time.strftime(date_format[indice.market()][1], conv)
+            # print('clock am pm:', clock)
         if clock == "::":
             label = " " + indice.market() + " : " + message('indicator_disconnected')
             self.m_indicator.SetForegroundColour(wx.BLACK)
@@ -333,19 +333,19 @@ class iTradeMainToolbar(wx.ToolBar):
                     # blue4 00008B
                     color = wx.Colour(0,0,139)
 
-            if label==self.m_indicator.GetValue():
+            if label == self.m_indicator.GetValue():
                 # display indice red or blue
                 self.ClearIndicator()
                 self.m_indicator.SetForegroundColour(color)
             else:
                 if indice.sv_percent()[0] == '-':
                     # Orange - FF7F00 Indice change
-                    color = wx.Colour(255,127,0)
+                    color = wx.Colour(255, 127, 0)
                 elif indice.sv_percent()[0] == ' ':
                     color = wx.BLACK
                 else:
                     # green4 008B00 Indice change
-                    color = wx.Colour(0,139,0)
+                    color = wx.Colour(0, 139, 0)
                 self.ClearIndicator()
                 self.m_indicator.SetForegroundColour(color)
         self.m_indicator.ChangeValue(label)
@@ -376,7 +376,7 @@ class iTradeMainNotebookWindow(wx.Notebook):
         # events
         wx.EVT_NOTEBOOK_PAGE_CHANGED(self, id, self.OnPageChanged)
         wx.EVT_NOTEBOOK_PAGE_CHANGING(self, id, self.OnPageChanging)
-        wx.EVT_ERASE_BACKGROUND(self,self.OnEraseBackground)
+        wx.EVT_ERASE_BACKGROUND(self, self.OnEraseBackground)
 
     # --- [ window management ] -------------------------------------
 
@@ -386,28 +386,28 @@ class iTradeMainNotebookWindow(wx.Notebook):
     # --- [ page management ] -------------------------------------
 
     def init(self,parent):
-        #print 'book init --['
+        # print('book init --[')
         self.win = {}
         self.DeleteAllPages()
 
-        self.win[ID_PAGE_QUOTES] = iTrade_MatrixQuotesPanel(self,parent,wx.NewId(),self.m_portfolio,self.m_matrix)
+        self.win[ID_PAGE_QUOTES] = iTrade_MatrixQuotesPanel(self, parent, wx.ID_ANY, self.m_portfolio, self.m_matrix)
         self.AddPage(self.win[ID_PAGE_QUOTES], message('page_quotes'))
 
-        self.win[ID_PAGE_PORTFOLIO] = iTrade_MatrixPortfolioPanel(self,parent,wx.NewId(),self.m_portfolio,self.m_matrix)
+        self.win[ID_PAGE_PORTFOLIO] = iTrade_MatrixPortfolioPanel(self, parent, wx.ID_ANY, self.m_portfolio, self.m_matrix)
         self.AddPage(self.win[ID_PAGE_PORTFOLIO], message('page_portfolio'))
 
-        self.win[ID_PAGE_STOPS] = iTrade_MatrixStopsPanel(self,parent,wx.NewId(),self.m_portfolio,self.m_matrix)
+        self.win[ID_PAGE_STOPS] = iTrade_MatrixStopsPanel(self, parent, wx.ID_ANY, self.m_portfolio, self.m_matrix)
         self.AddPage(self.win[ID_PAGE_STOPS], message('page_stops'))
 
-        self.win[ID_PAGE_INDICATORS] = iTrade_MatrixIndicatorsPanel(self,parent,wx.NewId(),self.m_portfolio,self.m_matrix)
+        self.win[ID_PAGE_INDICATORS] = iTrade_MatrixIndicatorsPanel(self, parent, wx.ID_ANY, self.m_portfolio, self.m_matrix)
         self.AddPage(self.win[ID_PAGE_INDICATORS], message('page_indicators'))
 
-        self.win[ID_PAGE_TRADING] = iTrade_TradingPanel(self,parent,wx.NewId(),self.m_portfolio,self.m_matrix)
+        self.win[ID_PAGE_TRADING] = iTrade_TradingPanel(self, parent, wx.ID_ANY, self.m_portfolio, self.m_matrix)
         self.AddPage(self.win[ID_PAGE_TRADING], message('page_trading'))
 
-        self.win[ID_PAGE_EVALUATION] = iTradeEvaluationPanel(self,wx.NewId(),self.m_portfolio)
+        self.win[ID_PAGE_EVALUATION] = iTradeEvaluationPanel(self, wx.ID_ANY, self.m_portfolio)
         self.AddPage(self.win[ID_PAGE_EVALUATION], message('page_evaluation'))
-        #print ']-- book init'
+        # print(']-- book init')
 
     def OnPageChanged(self, event):
         old = event.GetOldSelection()
@@ -467,9 +467,8 @@ import wx.lib.newevent
 (PostInitEvent,EVT_POSTINIT) = wx.lib.newevent.NewEvent()
 
 class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
-    def __init__(self,parent,portfolio,matrix):
-        self.m_id = wx.NewId()
-        super(iTradeMainWindow, self).__init__( parent=parent, id=self.m_id, title="", size=(640, 480), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE, name='main')
+    def __init__(self, parent, portfolio, matrix):
+        super(iTradeMainWindow, self).__init__(parent=parent, size=(640, 480), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE, name='main')
 
         self.m_portfolio = portfolio
         self.m_matrix = matrix
@@ -481,8 +480,7 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
         # Set Lang
         self.SetLang(bDuringInit=True)
 
-        self.m_bookId = wx.NewId()
-        self.m_book = iTradeMainNotebookWindow(self, self.m_bookId, page=-1, portfolio=self.m_portfolio,matrix=self.m_matrix)
+        self.m_book = iTradeMainNotebookWindow(parent=self, id=wx.ID_ANY, page=-1, portfolio=self.m_portfolio, matrix=self.m_matrix)
 
         # link to other windows
         self.m_hOperation = None
@@ -499,14 +497,14 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
         self.buildMenu()
 
         # Toolbar
-        self.m_toolbar = iTradeMainToolbar(self, wx.NewId())
+        self.m_toolbar = iTradeMainToolbar(self, wx.ID_ANY)
 
         wx.EVT_SIZE(self, self.OnSize)
-        wx.EVT_ERASE_BACKGROUND(self,self.OnEraseBackground)
+        wx.EVT_ERASE_BACKGROUND(self, self.OnEraseBackground)
 
         # refresh full view after window init finished
         EVT_POSTINIT(self, self.OnPostInit)
-        wx.PostEvent(self,PostInitEvent())
+        wx.PostEvent(self, PostInitEvent())
 
         # last
         self.Show(True)
@@ -516,54 +514,54 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
     def buildMenu(self):
         # the main menu
         self.filemenu = wx.Menu()
-        self.filemenu.Append(wx.ID_OPEN,message('main_open'),message('main_desc_open'))
-        self.filemenu.Append(wx.ID_NEW,message('main_new'),message('main_desc_new'))
-        self.filemenu.Append(wx.ID_SAVEAS,message('main_saveas'),message('main_desc_saveas'))
-        self.filemenu.Append(wx.ID_DELETE,message('main_delete'),message('main_desc_delete'))
+        self.filemenu.Append(wx.ID_OPEN, message('main_open'), message('main_desc_open'))
+        self.filemenu.Append(wx.ID_NEW, message('main_new'), message('main_desc_new'))
+        self.filemenu.Append(wx.ID_SAVEAS, message('main_saveas'), message('main_desc_saveas'))
+        self.filemenu.Append(wx.ID_DELETE, message('main_delete'), message('main_desc_delete'))
         self.filemenu.AppendSeparator()
-        self.filemenu.Append(wx.ID_EDIT,message('main_edit'),message('main_desc_edit'))
+        self.filemenu.Append(wx.ID_EDIT, message('main_edit'), message('main_desc_edit'))
         self.filemenu.AppendSeparator()
-        self.filemenu.Append(ID_MANAGELIST,message('main_managelist'),message('main_desc_managelist'))
+        self.filemenu.Append(ID_MANAGELIST, message('main_managelist'), message('main_desc_managelist'))
         self.filemenu.AppendSeparator()
-        self.filemenu.Append(wx.ID_EXIT,message('main_exit'),message('main_desc_exit'))
+        self.filemenu.Append(wx.ID_EXIT, message('main_exit'), message('main_desc_exit'))
 
         self.matrixmenu = wx.Menu()
-        self.matrixmenu.Append(ID_QUOTES, message('main_view_quotes'),message('main_view_desc_quotes'))
-        self.matrixmenu.Append(ID_PORTFOLIO, message('main_view_portfolio'),message('main_view_desc_portfolio'))
-        self.matrixmenu.Append(ID_STOPS, message('main_view_stops'),message('main_view_desc_stops'))
-        self.matrixmenu.Append(ID_INDICATORS, message('main_view_indicators'),message('main_view_desc_indicators'))
+        self.matrixmenu.Append(ID_QUOTES, message('main_view_quotes'), message('main_view_desc_quotes'))
+        self.matrixmenu.Append(ID_PORTFOLIO, message('main_view_portfolio'), message('main_view_desc_portfolio'))
+        self.matrixmenu.Append(ID_STOPS, message('main_view_stops'), message('main_view_desc_stops'))
+        self.matrixmenu.Append(ID_INDICATORS, message('main_view_indicators'), message('main_view_desc_indicators'))
         self.matrixmenu.AppendSeparator()
-        self.matrixmenu.AppendRadioItem(ID_SMALL_VIEW, message('main_view_small'),message('main_view_desc_small'))
-        self.matrixmenu.AppendRadioItem(ID_NORMAL_VIEW, message('main_view_normal'),message('main_view_desc_normal'))
-        self.matrixmenu.AppendRadioItem(ID_BIG_VIEW, message('main_view_big'),message('main_view_desc_big'))
+        self.matrixmenu.AppendRadioItem(ID_SMALL_VIEW, message('main_view_small'), message('main_view_desc_small'))
+        self.matrixmenu.AppendRadioItem(ID_NORMAL_VIEW, message('main_view_normal'), message('main_view_desc_normal'))
+        self.matrixmenu.AppendRadioItem(ID_BIG_VIEW, message('main_view_big'), message('main_view_desc_big'))
         self.matrixmenu.AppendSeparator()
-        self.matrixmenu.Append(wx.ID_REFRESH, message('main_view_refresh'),message('main_view_desc_refresh'))
-        self.matrixmenu.AppendCheckItem(ID_AUTOREFRESH, message('main_view_autorefresh'),message('main_view_desc_autorefresh'))
-        self.matrixmenu.Append(ID_AUTOSIZE, message('main_view_autosize'),message('main_view_desc_autosize'))
+        self.matrixmenu.Append(wx.ID_REFRESH, message('main_view_refresh'), message('main_view_desc_refresh'))
+        self.matrixmenu.AppendCheckItem(ID_AUTOREFRESH, message('main_view_autorefresh'), message('main_view_desc_autorefresh'))
+        self.matrixmenu.Append(ID_AUTOSIZE, message('main_view_autosize'), message('main_view_desc_autosize'))
 
         self.quotemenu = wx.Menu()
-        self.quotemenu.Append(ID_ADD_QUOTE, message('main_quote_add'),message('main_quote_desc_add'))
-        self.quotemenu.Append(ID_REMOVE_QUOTE, message('main_quote_remove'),message('main_quote_desc_add'))
+        self.quotemenu.Append(ID_ADD_QUOTE, message('main_quote_add'), message('main_quote_desc_add'))
+        self.quotemenu.Append(ID_REMOVE_QUOTE, message('main_quote_remove'), message('main_quote_desc_add'))
         self.quotemenu.AppendSeparator()
-        self.quotemenu.Append(ID_GRAPH_QUOTE, message('main_quote_graph'),message('main_quote_desc_graph'))
-        self.quotemenu.Append(ID_LIVE_QUOTE, message('main_quote_live'),message('main_quote_desc_live'))
+        self.quotemenu.Append(ID_GRAPH_QUOTE, message('main_quote_graph'), message('main_quote_desc_graph'))
+        self.quotemenu.Append(ID_LIVE_QUOTE, message('main_quote_live'), message('main_quote_desc_live'))
         self.quotemenu.AppendSeparator()
-        self.quotemenu.Append(ID_BUY_QUOTE, message('main_quote_buy'),message('main_quote_desc_buy'))
-        self.quotemenu.Append(ID_SELL_QUOTE, message('main_quote_sell'),message('main_quote_desc_sell'))
+        self.quotemenu.Append(ID_BUY_QUOTE, message('main_quote_buy'), message('main_quote_desc_buy'))
+        self.quotemenu.Append(ID_SELL_QUOTE, message('main_quote_sell'), message('main_quote_desc_sell'))
         self.quotemenu.AppendSeparator()
-        self.quotemenu.Append(ID_PROPERTY_QUOTE, message('main_quote_property'),message('main_quote_desc_property'))
+        self.quotemenu.Append(ID_PROPERTY_QUOTE, message('main_quote_property'), message('main_quote_desc_property'))
 
         self.viewmenu = wx.Menu()
-        self.viewmenu.Append(ID_OPERATIONS, message('main_view_operations'),message('main_view_desc_operations'))
+        self.viewmenu.Append(ID_OPERATIONS, message('main_view_operations'), message('main_view_desc_operations'))
         self.viewmenu.AppendSeparator()
-        self.viewmenu.Append(ID_TRADING, message('main_view_trading'),message('main_view_desc_trading'))
-        self.viewmenu.Append(ID_EVALUATION, message('main_view_evaluation'),message('main_view_desc_evaluation'))
+        self.viewmenu.Append(ID_TRADING, message('main_view_trading'), message('main_view_desc_trading'))
+        self.viewmenu.Append(ID_EVALUATION, message('main_view_evaluation'), message('main_view_desc_evaluation'))
         self.viewmenu.AppendSeparator()
-        self.viewmenu.Append(ID_CURRENCIES, message('main_view_currencies'),message('main_view_desc_currencies'))
-        self.viewmenu.Append(ID_ALERTS, message('main_view_alerts'),message('main_view_desc_alerts'))
+        self.viewmenu.Append(ID_CURRENCIES, message('main_view_currencies'), message('main_view_desc_currencies'))
+        self.viewmenu.Append(ID_ALERTS, message('main_view_alerts'), message('main_view_desc_alerts'))
         self.viewmenu.AppendSeparator()
-        self.viewmenu.Append(ID_CONVERT, message('main_view_convert'),message('main_view_desc_convert'))
-        self.viewmenu.Append(ID_COMPUTE, message('main_view_compute'),message('main_view_desc_compute'))
+        self.viewmenu.Append(ID_CONVERT, message('main_view_convert'), message('main_view_desc_convert'))
+        self.viewmenu.Append(ID_COMPUTE, message('main_view_compute'), message('main_view_desc_compute'))
 
         self.optionsmenu = wx.Menu()
         self.accessmenu = wx.Menu()
@@ -577,34 +575,34 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
             self.optionsmenu.AppendMenu(ID_ACCESS, message('main_options_access'), self.accessmenu, message('main_options_desc_access'))
 
         self.langmenu = wx.Menu()
-        self.langmenu.AppendRadioItem(wx.LANGUAGE_DEFAULT + ID_MAC_OFFSET, message('main_options_lang_default'),message('main_options_lang_default'))
-        self.langmenu.AppendRadioItem(wx.LANGUAGE_ENGLISH + ID_MAC_OFFSET, message('main_options_lang_english'),message('main_options_lang_english'))
-        self.langmenu.AppendRadioItem(wx.LANGUAGE_FRENCH + ID_MAC_OFFSET, message('main_options_lang_french'),message('main_options_lang_french'))
-        self.langmenu.AppendRadioItem(wx.LANGUAGE_PORTUGUESE + ID_MAC_OFFSET, message('main_options_lang_portuguese'),message('main_options_lang_portuguese'))
-        self.langmenu.AppendRadioItem(wx.LANGUAGE_GERMAN + ID_MAC_OFFSET, message('main_options_lang_deutch'),message('main_options_lang_deutch'))
-        self.langmenu.AppendRadioItem(wx.LANGUAGE_ITALIAN + ID_MAC_OFFSET, message('main_options_lang_italian'),message('main_options_lang_italian'))
-        self.optionsmenu.AppendMenu(ID_LANG,message('main_options_lang'),self.langmenu,message('main_options_desc_lang'))
+        self.langmenu.AppendRadioItem(wx.LANGUAGE_DEFAULT + ID_MAC_OFFSET, message('main_options_lang_default'), message('main_options_lang_default'))
+        self.langmenu.AppendRadioItem(wx.LANGUAGE_ENGLISH + ID_MAC_OFFSET, message('main_options_lang_english'), message('main_options_lang_english'))
+        self.langmenu.AppendRadioItem(wx.LANGUAGE_FRENCH + ID_MAC_OFFSET, message('main_options_lang_french'), message('main_options_lang_french'))
+        self.langmenu.AppendRadioItem(wx.LANGUAGE_PORTUGUESE + ID_MAC_OFFSET, message('main_options_lang_portuguese'), message('main_options_lang_portuguese'))
+        self.langmenu.AppendRadioItem(wx.LANGUAGE_GERMAN + ID_MAC_OFFSET, message('main_options_lang_deutch'), message('main_options_lang_deutch'))
+        self.langmenu.AppendRadioItem(wx.LANGUAGE_ITALIAN + ID_MAC_OFFSET, message('main_options_lang_italian'), message('main_options_lang_italian'))
+        self.optionsmenu.AppendMenu(ID_LANG, message('main_options_lang'), self.langmenu, message('main_options_desc_lang'))
         if itrade_config.lang == 255:
-            self.optionsmenu.Enable(ID_LANG,False)
+            self.optionsmenu.Enable(ID_LANG, False)
 
         self.cachemenu = wx.Menu()
-        self.cachemenu.Append(ID_CACHE_ERASE_DATA, message('main_cache_erase_data'),message('main_cache_desc_erase_data'))
-        self.cachemenu.Append(ID_CACHE_ERASE_NEWS, message('main_cache_erase_news'),message('main_cache_desc_erase_news'))
+        self.cachemenu.Append(ID_CACHE_ERASE_DATA, message('main_cache_erase_data'), message('main_cache_desc_erase_data'))
+        self.cachemenu.Append(ID_CACHE_ERASE_NEWS, message('main_cache_erase_news'), message('main_cache_desc_erase_news'))
         self.cachemenu.AppendSeparator()
-        self.cachemenu.Append(ID_CACHE_ERASE_ALL, message('main_cache_erase_all'),message('main_cache_desc_erase_all'))
-        self.optionsmenu.AppendMenu(ID_CACHE,message('main_options_cache'),self.cachemenu,message('main_options_desc_cache'))
+        self.cachemenu.Append(ID_CACHE_ERASE_ALL, message('main_cache_erase_all'), message('main_cache_desc_erase_all'))
+        self.optionsmenu.AppendMenu(ID_CACHE, message('main_options_cache'), self.cachemenu, message('main_options_desc_cache'))
 
-        self.optionsmenu.Append(ID_CONNEXION,message('main_options_connexion'),message('main_options_desc_connexion'))
+        self.optionsmenu.Append(ID_CONNEXION, message('main_options_connexion'), message('main_options_desc_connexion'))
 
         self.helpmenu = wx.Menu()
-        self.helpmenu.Append(wx.ID_HELP_CONTENTS, message('main_help_contents'),message('main_help_desc_contents'))
+        self.helpmenu.Append(wx.ID_HELP_CONTENTS, message('main_help_contents'), message('main_help_desc_contents'))
         self.helpmenu.AppendSeparator()
-        self.helpmenu.Append(ID_SUPPORT, message('main_help_support'),message('main_help_desc_support'))
-        self.helpmenu.Append(ID_BUG, message('main_help_bugs'),message('main_help_desc_bugs'))
-        self.helpmenu.Append(ID_FORUM, message('main_help_forum'),message('main_help_desc_forum'))
-        self.helpmenu.Append(ID_DONORS, message('main_help_donors'),message('main_help_desc_donors'))
+        self.helpmenu.Append(ID_SUPPORT, message('main_help_support'), message('main_help_desc_support'))
+        self.helpmenu.Append(ID_BUG, message('main_help_bugs'), message('main_help_desc_bugs'))
+        self.helpmenu.Append(ID_FORUM, message('main_help_forum'), message('main_help_desc_forum'))
+        self.helpmenu.Append(ID_DONORS, message('main_help_donors'), message('main_help_desc_donors'))
         self.helpmenu.AppendSeparator()
-        self.helpmenu.Append(ID_CHECKSOFTWARE, message('main_help_checksoftware'),message('main_help_desc_checksoftware'))
+        self.helpmenu.Append(ID_CHECKSOFTWARE, message('main_help_checksoftware'), message('main_help_desc_checksoftware'))
         self.helpmenu.AppendSeparator()
         self.helpmenu.Append(wx.ID_ABOUT, message('main_about'), message('main_desc_about'))
 
@@ -612,12 +610,12 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
         menuBar = wx.MenuBar()
 
         # Adding the "filemenu" to the MenuBar
-        menuBar.Append(self.filemenu,message('main_file'))
-        menuBar.Append(self.matrixmenu,message('main_matrix'))
-        menuBar.Append(self.viewmenu,message('main_view'))
-        menuBar.Append(self.quotemenu,message('main_quote'))
-        menuBar.Append(self.optionsmenu,message('main_options'))
-        menuBar.Append(self.helpmenu,message('main_help'))
+        menuBar.Append(self.filemenu, message('main_file'))
+        menuBar.Append(self.matrixmenu, message('main_matrix'))
+        menuBar.Append(self.viewmenu, message('main_view'))
+        menuBar.Append(self.quotemenu, message('main_quote'))
+        menuBar.Append(self.optionsmenu, message('main_options'))
+        menuBar.Append(self.helpmenu, message('main_help'))
 
         # Adding the MenuBar to the Frame content
         self.SetMenuBar(menuBar)
@@ -685,12 +683,12 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
     def OnEraseBackground(self, evt):
         pass
 
-    def OnPostInit(self,event):
+    def OnPostInit(self, event):
         self.updateTitle()
         self.updateCheckItems()
-        self.InitCurrentPage(bReset=True,bInit=True)
+        self.InitCurrentPage(bReset=True, bInit=True)
 
-    def OnRefresh(self,event=None):
+    def OnRefresh(self, event=None):
         # called by a child (toolbar button, property window, ...)
         if itrade_config.verbose:
             print()
@@ -719,7 +717,7 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
         if self.m_hCurrency:
             self.m_hCurrency.Close()
 
-    def OnExit(self,e):
+    def OnExit(self, e):
         self.Close(True)
 
     def OnCloseWindow(self, evt):
@@ -728,19 +726,19 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
         self.Destroy()
 
     def OnDestroyWindow(self, evt):
-        if evt.GetId()==self.m_id:
+        if evt.GetId() == self.GetId():
             self.CloseLinks()
 
-    def InitCurrentPage(self,bReset,bInit):
-        self.m_book.InitCurrentPage(bReset,bInit)
+    def InitCurrentPage(self, bReset, bInit):
+        self.m_book.InitCurrentPage(bReset, bInit)
 
     def DoneCurrentPage(self):
         self.m_book.DoneCurrentPage()
 
     # --- [ menu ] -------------------------------------
 
-    def OnOpen(self,e):
-        dp = select_iTradePortfolio(self,self.m_portfolio,'select')
+    def OnOpen(self, e):
+        dp = select_iTradePortfolio(self, self.m_portfolio, 'select')
         if dp and dp != self.m_portfolio:
             # can be long ...
             wx.SetCursor(wx.HOURGLASS_CURSOR)
@@ -749,7 +747,7 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
             dp = loadPortfolio(dp.filename())
             self.NewContext(dp)
 
-    def NewContext(self,dp):
+    def NewContext(self, dp):
         # can be long ...
         wx.SetCursor(wx.HOURGLASS_CURSOR)
 
@@ -769,59 +767,59 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
         # populate current view and refresh
         self.OnPostInit(None)
 
-    def OnNew(self,e):
-        dp = properties_iTradePortfolio(self,None,'create')
+    def OnNew(self, e):
+        dp = properties_iTradePortfolio(self, None, 'create')
         if dp:
             self.NewContext(dp)
             self.Save()
 
-    def OnEdit(self,e):
-        dp = properties_iTradePortfolio(self,self.m_portfolio,'edit')
+    def OnEdit(self, e):
+        dp = properties_iTradePortfolio(self, self.m_portfolio, 'edit')
         if dp:
             self.NewContext(dp)
             self.Save()
 
-    def OnDelete(self,e):
-        dp = select_iTradePortfolio(self,self.m_portfolio,'delete')
+    def OnDelete(self, e):
+        dp = select_iTradePortfolio(self, self.m_portfolio, 'delete')
         if dp:
-            properties_iTradePortfolio(self,dp,'delete')
+            properties_iTradePortfolio(self, dp, 'delete')
 
-    def OnSaveAs(self,e):
-        dp = properties_iTradePortfolio(self,self.m_portfolio,'rename')
+    def OnSaveAs(self, e):
+        dp = properties_iTradePortfolio(self, self.m_portfolio, 'rename')
         if dp:
             self.NewContext(dp)
 
-    def OnSupport(self,e):
+    def OnSupport(self, e):
         id = gMessage.getLang()
         if id in itrade_config.supportURL:
             url = itrade_config.supportURL[id]
         else:
             url = itrade_config.supportURL['en']
-        iTradeLaunchBrowser(url,new=True)
+        iTradeLaunchBrowser(url, new=True)
 
-    def OnContent(self,e):
+    def OnContent(self, e):
         id = gMessage.getLang()
         if id in itrade_config.manualURL:
             url = itrade_config.manualURL[id]
         else:
             url = itrade_config.manualURL['en']
-        iTradeLaunchBrowser(url,new=True)
+        iTradeLaunchBrowser(url, new=True)
 
-    def OnBug(self,e):
-        iTradeLaunchBrowser(itrade_config.bugTrackerURL,new=True)
+    def OnBug(self, e):
+        iTradeLaunchBrowser(itrade_config.bugTrackerURL, new=True)
 
-    def OnForum(self,e):
+    def OnForum(self, e):
         id = gMessage.getLang()
         if id in itrade_config.forumURL:
             url = itrade_config.forumURL[id]
         else:
             url = itrade_config.forumURL['en']
-        iTradeLaunchBrowser(url,new=True)
+        iTradeLaunchBrowser(url, new=True)
 
-    def OnDonors(self,e):
-        iTradeLaunchBrowser(itrade_config.donorsTrackerURL,new=True)
+    def OnDonors(self, e):
+        iTradeLaunchBrowser(itrade_config.donorsTrackerURL, new=True)
 
-    def OnCheckSoftware(self,e):
+    def OnCheckSoftware(self, e):
         # can be long ...
         wx.SetCursor(wx.HOURGLASS_CURSOR)
 
@@ -830,20 +828,20 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
         # restore
         wx.SetCursor(wx.STANDARD_CURSOR)
 
-        if url=='ok':
-            iTradeInformation(self,message('checksoftware_uptodate'),message('checksoftware_title'))
-        elif url=='dev':
-            iTradeInformation(self,message('checksoftware_development'),message('checksoftware_title'))
-        elif url=='err':
-            iTradeError(self,message('checksoftware_error'),message('checksoftware_title'))
+        if url == 'ok':
+            iTradeInformation(self, message('checksoftware_uptodate'), message('checksoftware_title'))
+        elif url == 'dev':
+            iTradeInformation(self, message('checksoftware_development'), message('checksoftware_title'))
+        elif url == 'err':
+            iTradeError(self, message('checksoftware_error'), message('checksoftware_title'))
         else:
-            if iTradeYesNo(self,message('checksoftware_needupdate'),message('checksoftware_title'))==wx.ID_YES:
-                iTradeLaunchBrowser(url,new=True)
+            if iTradeYesNo(self, message('checksoftware_needupdate'), message('checksoftware_title')) == wx.ID_YES:
+                iTradeLaunchBrowser(url, new=True)
 
-    def OnManageList(self,e):
-        list_iTradeQuote(self,self.m_portfolio.market())
+    def OnManageList(self, e):
+        list_iTradeQuote(self, self.m_portfolio.market())
 
-    def OnAbout(self,e):
+    def OnAbout(self, e):
         d = iTradeAboutBox(self)
         d.CentreOnParent()
         d.ShowModal()
@@ -854,38 +852,38 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
         m.Check(itrade_config.bAutoRefreshMatrixView)
 
         m = self.matrixmenu.FindItemById(ID_SMALL_VIEW)
-        m.Check(itrade_config.matrixFontSize==1)
+        m.Check(itrade_config.matrixFontSize == 1)
 
         m = self.matrixmenu.FindItemById(ID_NORMAL_VIEW)
-        m.Check(itrade_config.matrixFontSize==2)
+        m.Check(itrade_config.matrixFontSize == 2)
 
         m = self.matrixmenu.FindItemById(ID_BIG_VIEW)
-        m.Check(itrade_config.matrixFontSize==3)
+        m.Check(itrade_config.matrixFontSize == 3)
 
         if itrade_config.lang != 255:
             m = self.langmenu.FindItemById(wx.LANGUAGE_DEFAULT + ID_MAC_OFFSET)
-            m.Check(itrade_config.lang==0)
+            m.Check(itrade_config.lang == 0)
 
             m = self.langmenu.FindItemById(wx.LANGUAGE_ENGLISH + ID_MAC_OFFSET)
-            m.Check(itrade_config.lang==1)
+            m.Check(itrade_config.lang == 1)
 
             m = self.langmenu.FindItemById(wx.LANGUAGE_FRENCH + ID_MAC_OFFSET)
-            m.Check(itrade_config.lang==2)
+            m.Check(itrade_config.lang == 2)
 
             m = self.langmenu.FindItemById(wx.LANGUAGE_PORTUGUESE + ID_MAC_OFFSET)
-            m.Check(itrade_config.lang==3)
+            m.Check(itrade_config.lang == 3)
 
             m = self.langmenu.FindItemById(wx.LANGUAGE_GERMAN + ID_MAC_OFFSET)
-            m.Check(itrade_config.lang==4)
+            m.Check(itrade_config.lang == 4)
 
             m = self.langmenu.FindItemById(wx.LANGUAGE_ITALIAN + ID_MAC_OFFSET)
-            m.Check(itrade_config.lang==5)
+            m.Check(itrade_config.lang == 5)
 
         # refresh Enable state based on current View
         m = self.quotemenu.FindItemById(ID_ADD_QUOTE)
         m.Enable(self.m_book.GetSelection() == ID_PAGE_QUOTES)
 
-    def updateQuoteItems(self,op1,quote):
+    def updateQuoteItems(self, op1, quote):
         m = self.quotemenu.FindItemById(ID_GRAPH_QUOTE)
         m.Enable(op1)
         m = self.quotemenu.FindItemById(ID_LIVE_QUOTE)
@@ -915,77 +913,77 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
             title = message('main_title_evaluation')
         else:
             title = '??? %s:%s'
-        self.SetTitle(title % (self.m_portfolio.name(),self.m_portfolio.accountref()))
+        self.SetTitle(title % (self.m_portfolio.name(), self.m_portfolio.accountref()))
 
     def RebuildList(self):
         self.Save()
         self.DoneCurrentPage()
         self.m_matrix.build()
-        self.InitCurrentPage(bReset=True,bInit=False)
+        self.InitCurrentPage(bReset=True, bInit=False)
 
-    def OnPortfolio(self,e):
+    def OnPortfolio(self, e):
         # check current page
         if self.m_book.GetSelection() != ID_PAGE_PORTFOLIO:
             self.m_book.SetSelection(ID_PAGE_PORTFOLIO)
         self.updateTitle()
 
-    def OnQuotes(self,e):
+    def OnQuotes(self, e):
         # check current page
         if self.m_book.GetSelection() != ID_PAGE_QUOTES:
             self.m_book.SetSelection(ID_PAGE_QUOTES)
         self.updateTitle()
 
-    def OnStops(self,e):
+    def OnStops(self, e):
         # check current page
         if self.m_book.GetSelection() != ID_PAGE_STOPS:
             self.m_book.SetSelection(ID_PAGE_STOPS)
         self.updateTitle()
 
-    def OnIndicators(self,e):
+    def OnIndicators(self, e):
         # check current page
         if self.m_book.GetSelection() != ID_PAGE_INDICATORS:
             self.m_book.SetSelection(ID_PAGE_INDICATORS)
         self.updateTitle()
 
-    def OnTrading(self,e):
+    def OnTrading(self, e):
         # check current page
         if self.m_book.GetSelection() != ID_PAGE_TRADING:
             self.m_book.SetSelection(ID_PAGE_TRADING)
         self.updateTitle()
 
-    def OnEvaluation(self,e):
+    def OnEvaluation(self, e):
         # check current page
         if self.m_book.GetSelection() != ID_PAGE_EVALUATION:
             self.m_book.SetSelection(ID_PAGE_EVALUATION)
         self.updateTitle()
 
-    def OnOperations(self,e):
-        open_iTradeOperations(self,self.m_portfolio)
+    def OnOperations(self, e):
+        open_iTradeOperations(self, self.m_portfolio)
 
-    def OnCompute(self,e):
+    def OnCompute(self, e):
         quote = self.currentQuote()
-        open_iTradeMoney(self,1,self.m_portfolio,quote)
+        open_iTradeMoney(self, 1, self.m_portfolio,quote)
 
-    def OnConvert(self,e):
+    def OnConvert(self, e):
         open_iTradeConverter(self)
 
-    def OnAlerts(self,e):
-        open_iTradeAlerts(self,self.m_portfolio)
+    def OnAlerts(self, e):
+        open_iTradeAlerts(self, self.m_portfolio)
 
-    def OnCurrencies(self,e):
+    def OnCurrencies(self, e):
         open_iTradeCurrencies(self)
 
-    def OnGraphQuote(self,e):
+    def OnGraphQuote(self, e):
         if self.currentItem()>=0:
             debug("OnGraphQuote: %s" % self.currentItemText())
             self.openCurrentQuote(page=0)
 
-    def OnLiveQuote(self,e):
+    def OnLiveQuote(self, e):
         if self.currentItem()>=0:
             debug("OnLiveQuote: %s" % self.currentItemText())
             self.openCurrentQuote(page=1)
 
-    def OnPropertyQuote(self,e):
+    def OnPropertyQuote(self, e):
         if self.currentItem()>=0:
             debug("OnPropertyQuote: %s" % self.currentItemText())
             self.openCurrentQuote(page=6)
@@ -1000,7 +998,7 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
 
     # --- [ buy / sell from the matrix ] ------------------------------------
 
-    def OnBuyQuote(self,e):
+    def OnBuyQuote(self, e):
         quote = self.currentQuote()
         if quote and quote.list()==QList.indices:
             quote=None

@@ -160,14 +160,11 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
         self.sm_up = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'sm_up.png')))
         self.sm_dn = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'sm_down.png')))
 
-        # List
-        tID = wx.NewId()
-
-        self.m_list = iTradeMatrixListCtrl(self, tID,
-                                 style = wx.LC_REPORT | wx.SUNKEN_BORDER | wx.LC_SINGLE_SEL | wx.LC_VRULES | wx.LC_HRULES)
-        wx.EVT_LIST_ITEM_ACTIVATED(self, tID, self.OnItemActivated)
-        wx.EVT_LIST_ITEM_SELECTED(self, tID, self.OnItemSelected)
-        wx.EVT_COMMAND_RIGHT_CLICK(self.m_list, tID, self.OnRightClick)
+        self.m_list = iTradeMatrixListCtrl(self, wx.ID_ANY,
+                                 style=wx.LC_REPORT | wx.SUNKEN_BORDER | wx.LC_SINGLE_SEL | wx.LC_VRULES | wx.LC_HRULES)
+        wx.EVT_LIST_ITEM_ACTIVATED(self, self.m_list.GetId(), self.OnItemActivated)
+        wx.EVT_LIST_ITEM_SELECTED(self, self.m_list.GetId(), self.OnItemSelected)
+        wx.EVT_COMMAND_RIGHT_CLICK(self.m_list, self.m_list.GetId(), self.OnRightClick)
         wx.EVT_RIGHT_UP(self.m_list, self.OnRightClick)
         wx.EVT_RIGHT_DOWN(self.m_list, self.OnRightDown)
         wx.EVT_LEFT_DOWN(self.m_list, self.OnLeftDown)
@@ -183,8 +180,8 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
         # events
         wx.EVT_CLOSE(self, self.OnCloseWindow)
         wx.EVT_SIZE(self, self.OnSize)
-        wx.EVT_ERASE_BACKGROUND(self,self.OnEraseBackground)
-        wx.EVT_LIST_COL_CLICK(self,tID,self.OnColClick)
+        wx.EVT_ERASE_BACKGROUND(self, self.OnEraseBackground)
+        wx.EVT_LIST_COL_CLICK(self, self.m_list.GetId(), self.OnColClick)
 
         EVT_UPDATE_LIVE(self, self.OnLive)
 
@@ -199,7 +196,7 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
     def OnSize(self, evt):
         w,h = self.GetClientSizeTuple()
         self.m_list.SetDimensions(0, 0, w, h)
-        #event.Skip(False)
+        # event.Skip(False)
 
     def OnCloseWindow(self, evt):
         self.stopLive(bBusy=False)
@@ -225,50 +222,49 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
 
         #
         if itrade_config.verbose:
-            print('Load sorting',self.name(),'- column:',self.m_sort_colnum,'ascending:',self.m_sort_colasc)
+            print('Load sorting', self.name(), '- column:', self.m_sort_colnum, 'ascending:', self.m_sort_colasc)
 
     def SaveSortColumn(self):
         # update from current column
         self.m_sort_colnum = self._col
-        if self._col!=-1:
+        if self._col != -1:
             self.m_sort_colasc = self._colSortFlag[self._col]
         else:
             self.m_sort_colasc = 1
 
-        #
         if itrade_config.verbose:
-            print('Save sorting',self.name(),'- column:',self.m_sort_colnum,'ascending:',self.m_sort_colasc)
+            print('Save sorting', self.name(), '- column:', self.m_sort_colnum, 'ascending:', self.m_sort_colasc)
 
         # format for saving
-        itrade_config.column[self.name()] = '%s;%s' % (self.m_sort_colnum,self.m_sort_colasc)
+        itrade_config.column[self.name()] = '%s;%s' % (self.m_sort_colnum, self.m_sort_colasc)
 
     def SortColumn(self):
         # sort the default column
-        if self.m_sort_colnum!=-1:
+        if self.m_sort_colnum != -1:
             if itrade_config.verbose:
-                print('Sorting',self.name(),'- column:',self.m_sort_colnum,'ascending:',self.m_sort_colasc)
-            self.SortListItems(self.m_sort_colnum,ascending=self.m_sort_colasc)
+                print('Sorting', self.name(), '- column:', self.m_sort_colnum, 'ascending:', self.m_sort_colasc)
+            self.SortListItems(self.m_sort_colnum, ascending=self.m_sort_colasc)
 
     def needDynamicSortColumn(self):
-        if self.m_sort_colnum<IDC_PRU:
+        if self.m_sort_colnum < IDC_PRU:
             return False
-        if self.m_sort_colnum>=IDC_NAME:
+        if self.m_sort_colnum >= IDC_NAME:
             return False
         return True
 
-    def getQuoteAndItemOnTheLine(self,x):
+    def getQuoteAndItemOnTheLine(self, x):
         key = self.m_list.GetItemData(x)
-        #print 'line:%d -> key=%d quote=%s' % (x,key,self.itemQuoteMap[key].ticker())
+        # print('line:%d -> key=%d quote=%s' % (x, key, self.itemQuoteMap[key].ticker()))
         quote = self.itemQuoteMap[key]
         item = self.m_list.GetItem(x)
-        return quote,item
+        return quote, item
 
-    def openCurrentQuote(self,page=0):
-        quote,item = self.getQuoteAndItemOnTheLine(self.m_currentItem)
-        if page==6:
-            open_iTradeQuoteProperty(self.m_parent,quote)
+    def openCurrentQuote(self, page=0):
+        quote, item = self.getQuoteAndItemOnTheLine(self.m_currentItem)
+        if page == 6:
+            open_iTradeQuoteProperty(self.m_parent, quote)
         else:
-            open_iTradeQuote(self.m_parent,self.m_portfolio,quote,page)
+            open_iTradeQuote(self.m_parent, self.m_portfolio, quote, page)
 
     # ---[ List commands and pop-up ] -----------------------------------------
 
@@ -330,9 +326,9 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
         else:
             inList = True
             quote,item = self.getQuoteAndItemOnTheLine(self.m_currentItem)
-            #debug("OnRightClick %s : %s\n" % (self.m_list.GetItemText(self.m_currentItem),quote))
+            # debug("OnRightClick %s : %s\n" % (self.m_list.GetItemText(self.m_currentItem),quote))
 
-        menu = self.OpenContextMenu(inList,quote)
+        menu = self.OpenContextMenu(inList, quote)
 
         # Popup the menu.  If an item is selected then its handler
         # will be called before PopupMenu returns.

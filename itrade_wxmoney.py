@@ -294,16 +294,16 @@ class iTradeMoneyNotebookWindow(wx.Notebook):
         self.win = {}
         self.DeleteAllPages()
 
-        self.win[self.ID_PAGE_EVALUATION] = iTradeEvaluationPanel(self,wx.NewId(),self.m_port)
+        self.win[self.ID_PAGE_EVALUATION] = iTradeEvaluationPanel(self, wx.ID_ANY, self.m_port)
         self.AddPage(self.win[self.ID_PAGE_EVALUATION], message('money_evaluation'))
 
-        self.win[self.ID_PAGE_COMPUTE] = iTradeComputePanel(self,wx.NewId(),self.m_quote)
+        self.win[self.ID_PAGE_COMPUTE] = iTradeComputePanel(self, wx.ID_ANY, self.m_quote)
         self.AddPage(self.win[self.ID_PAGE_COMPUTE], message('money_compute'))
 
-        self.win[self.ID_PAGE_EVALCHART] = iTradeEvaluationChartPanel(self,wx.NewId(),self.m_port)
+        self.win[self.ID_PAGE_EVALCHART] = iTradeEvaluationChartPanel(self, wx.ID_ANY, self.m_port)
         self.AddPage(self.win[self.ID_PAGE_EVALCHART], message('money_evaluationchart'))
 
-        self.win[self.ID_PAGE_MONEY] = iTradeMoneyPanel(self,wx.NewId(),self.m_port)
+        self.win[self.ID_PAGE_MONEY] = iTradeMoneyPanel(self, wx.ID_ANY, self.m_port)
         self.AddPage(self.win[self.ID_PAGE_MONEY], message('money_money'))
 
     def OnPageChanged(self, event):
@@ -329,8 +329,7 @@ class iTradeMoneyNotebookWindow(wx.Notebook):
 class iTradeMoneyWindow(wx.Frame, iTrade_wxFrame):
 
     def __init__(self, parent, id, title, page, port, quote):
-        self.m_id = wx.NewId()
-        super(iTradeMoneyWindow, self).__init__(parent=None, id=self.m_id, title=title, size=(640,480), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE, name='money')
+        super(iTradeMoneyWindow, self).__init__(parent=None, id=id, title=title, size=(640,480), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE, name='money')
         self.m_port = port
         self.m_quote = quote
         self.m_page = page
@@ -352,15 +351,15 @@ class iTradeMoneyWindow(wx.Frame, iTrade_wxFrame):
 # open_iTradeMoney
 # ============================================================================
 
-def open_iTradeMoney(win,page=0,port=None,quote=None):
+def open_iTradeMoney(win, page=0, port=None, quote=None):
     debug('open_iTradeMoney')
     if win and win.m_hMoney:
         # set focus
         win.m_hMoney.SetFocus()
     else:
-        if not isinstance(port,Portfolio):
+        if not isinstance(port,  Portfolio):
             port = loadPortfolio()
-        frame = iTradeMoneyWindow(win, -1, "%s - %s" %(message('money_title'),port.name()),page,port,quote)
+        frame = iTradeMoneyWindow(win, wx.ID_ANY, "%s - %s" % (message('money_title'), port.name()), page, port, quote)
         if win:
             win.m_hMoney = frame
         frame.Show()
