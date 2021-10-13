@@ -320,7 +320,11 @@ class iTradeRSSPanel(wx.Panel):
 # iTradeLaunchBrowser
 # ============================================================================
 
-def iTradeLaunchBrowser(url, new=False):
+EXISTING = 0
+NEW_WINDOW = 1
+NEW_TAB = 2
+
+def iTradeLaunchBrowser(url, new=NEW_WINDOW):
     webbrowser.open(url, new, autoraise=True)
 
 # ============================================================================

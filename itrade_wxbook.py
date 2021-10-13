@@ -795,7 +795,7 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
             url = itrade_config.supportURL[id]
         else:
             url = itrade_config.supportURL['en']
-        iTradeLaunchBrowser(url, new=True)
+        iTradeLaunchBrowser(url)
 
     def OnContent(self, e):
         id = gMessage.getLang()
@@ -803,10 +803,10 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
             url = itrade_config.manualURL[id]
         else:
             url = itrade_config.manualURL['en']
-        iTradeLaunchBrowser(url, new=True)
+        iTradeLaunchBrowser(url)
 
     def OnBug(self, e):
-        iTradeLaunchBrowser(itrade_config.bugTrackerURL, new=True)
+        iTradeLaunchBrowser(itrade_config.bugTrackerURL)
 
     def OnForum(self, e):
         id = gMessage.getLang()
@@ -814,10 +814,10 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
             url = itrade_config.forumURL[id]
         else:
             url = itrade_config.forumURL['en']
-        iTradeLaunchBrowser(url, new=True)
+        iTradeLaunchBrowser(url)
 
     def OnDonors(self, e):
-        iTradeLaunchBrowser(itrade_config.donorsTrackerURL, new=True)
+        iTradeLaunchBrowser(itrade_config.donorsTrackerURL)
 
     def OnCheckSoftware(self, e):
         # can be long ...
@@ -836,7 +836,7 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
             iTradeError(self, message('checksoftware_error'), message('checksoftware_title'))
         else:
             if iTradeYesNo(self, message('checksoftware_needupdate'), message('checksoftware_title')) == wx.ID_YES:
-                iTradeLaunchBrowser(url, new=True)
+                iTradeLaunchBrowser(url)
 
     def OnManageList(self, e):
         list_iTradeQuote(self, self.m_portfolio.market())
