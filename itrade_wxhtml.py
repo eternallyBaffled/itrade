@@ -46,8 +46,6 @@ import time
 import itrade_config
 
 # wxPython system
-if not itrade_config.nowxversion:
-    import itrade_wxversion
 import wx
 import wx.html as wxhtml
 
@@ -92,11 +90,11 @@ class wxUrlClickHtmlWindow(wxhtml.HtmlWindow):
 
 class iTradeHtmlPanel(wx.Panel):
     def __init__(self, parent, id, url=None):
-        super(iTradeHtmlPanel, self).__init__(parent, id, size=(800,600), style=wx.TAB_TRAVERSAL|wx.CLIP_CHILDREN|wx.NO_FULL_REPAINT_ON_RESIZE)
+        super(iTradeHtmlPanel, self).__init__(parent=parent, id=id, size=(800,600), style=wx.TAB_TRAVERSAL|wx.CLIP_CHILDREN|wx.NO_FULL_REPAINT_ON_RESIZE)
         self.url = url
         self.m_parent = parent
 
-        self.m_html = wxUrlClickHtmlWindow(self, -1)
+        self.m_html = wxUrlClickHtmlWindow(parent=self)
         EVT_HTML_URL_CLICK(self.m_html, self.OnLinkClick)
 
         wx.EVT_SIZE(self, self.OnSize)
@@ -116,9 +114,9 @@ class iTradeHtmlPanel(wx.Panel):
         self.m_html.SetSize(self.GetSizeTuple())
 
     def paint0(self):
-        self.m_html.SetPage('<html><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><body>')
-        self.m_html.AppendToPage("<head>%s</head>" % message('html_connecting'))
-        self.m_html.AppendToPage("</body></html>")
+        content = u'<html><head><meta charset=iso-8859-1"></head>\
+        <body>{}</body></html>'
+        self.m_html.SetPage(content.format(message('html_connecting')))
 
     def refresh(self):
         if self.url:
@@ -325,7 +323,7 @@ NEW_WINDOW = 1
 NEW_TAB = 2
 
 def iTradeLaunchBrowser(url, new=NEW_WINDOW):
-    webbrowser.open(url, new, autoraise=True)
+    webbrowser.open(url, new)
 
 # ============================================================================
 # That's all folks !
