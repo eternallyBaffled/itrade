@@ -116,7 +116,7 @@ class iTradeQuoteListDialog(wx.Dialog):
             tb = '??'
 
         # post-init
-        pre.Create(parent, -1, self.tt, size=(420, 420))
+        pre.Create(parent, wx.ID_ANY, self.tt, size=(420, 420))
         self.PostCreate(pre)
 
         sizer = wx.BoxSizer(wx.VERTICAL)
@@ -124,12 +124,11 @@ class iTradeQuoteListDialog(wx.Dialog):
         # isin
         box = wx.BoxSizer(wx.HORIZONTAL)
 
-        label = wx.StaticText(self, -1, message('prop_isin'))
+        label = wx.StaticText(self, wx.ID_ANY, message('prop_isin'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        tID = wx.NewIdRef()
-        self.editISIN = wx.TextCtrl(self, tID, self.m_isin, size=wx.Size(180, -1), style=wx.TE_LEFT)
-        wx.EVT_TEXT(self, tID, self.OnISINEdited)
+        self.editISIN = wx.TextCtrl(self, wx.ID_ANY, self.m_isin, size=wx.Size(180, -1), style=wx.TE_LEFT)
+        wx.EVT_TEXT(self, self.editISIN.GetId(), self.OnISINEdited)
         box.Add(self.editISIN, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
@@ -137,16 +136,16 @@ class iTradeQuoteListDialog(wx.Dialog):
         # ticker and name
         box = wx.BoxSizer(wx.HORIZONTAL)
 
-        label = wx.StaticText(self, -1, message('prop_ticker'))
+        label = wx.StaticText(self, wx.ID_ANY, message('prop_ticker'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.editTicker = wx.TextCtrl(self, -1, self.m_ticker, size=wx.Size(60, -1), style=wx.TE_LEFT)
+        self.editTicker = wx.TextCtrl(self, wx.ID_ANY, self.m_ticker, size=wx.Size(60, -1), style=wx.TE_LEFT)
         box.Add(self.editTicker, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        label = wx.StaticText(self, -1, message('prop_name'))
+        label = wx.StaticText(self, wx.ID_ANY, message('prop_name'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.editName = wx.TextCtrl(self, -1, self.m_name, size=wx.Size(210, -1), style=wx.TE_LEFT)
+        self.editName = wx.TextCtrl(self, wx.ID_ANY, self.m_name, size=wx.Size(210, -1), style=wx.TE_LEFT)
         box.Add(self.editName, 0, wx.ALIGN_CENTRE_VERTICAL|wx.ALL, 5)
 
         sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
@@ -154,10 +153,10 @@ class iTradeQuoteListDialog(wx.Dialog):
         # market
         box = wx.BoxSizer(wx.HORIZONTAL)
 
-        label = wx.StaticText(self, -1, message('prop_market'))
+        label = wx.StaticText(self, wx.ID_ANY, message('prop_market'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.editMarket = wx.ComboBox(self, -1, "", size=wx.Size(200, -1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
+        self.editMarket = wx.ComboBox(self, wx.ID_ANY, "", size=wx.Size(200, -1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
         box.Add(self.editMarket, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_COMBOBOX(self, self.editMarket.GetId(), self.OnMarket)
 
@@ -178,28 +177,26 @@ class iTradeQuoteListDialog(wx.Dialog):
         # country & place & currency
         box = wx.BoxSizer(wx.HORIZONTAL)
 
-        label = wx.StaticText(self, -1, message('prop_country'))
+        label = wx.StaticText(self, wx.ID_ANY, message('prop_country'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.dispCountry = wx.StaticText(self, -1, self.m_country)
+        self.dispCountry = wx.StaticText(self, wx.ID_ANY, self.m_country)
         box.Add(self.dispCountry, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        label = wx.StaticText(self, -1, message('prop_place'))
+        label = wx.StaticText(self, wx.ID_ANY, message('prop_place'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        tID = wx.NewIdRef()
-        self.editPlace = wx.ComboBox(self, tID, "", size=wx.Size(60, -1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
+        self.editPlace = wx.ComboBox(self, wx.ID_ANY, "", size=wx.Size(60, -1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
         box.Add(self.editPlace, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
-        wx.EVT_COMBOBOX(self, tID, self.OnPlace)
+        wx.EVT_COMBOBOX(self, self.editPlace.GetId(), self.OnPlace)
         self.fillPlaces()
 
-        label = wx.StaticText(self, -1, message('prop_currency'))
+        label = wx.StaticText(self, wx.ID_ANY, message('prop_currency'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        tID = wx.NewIdRef()
-        self.editCurrency = wx.ComboBox(self, tID, "", size=wx.Size(80, -1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
+        self.editCurrency = wx.ComboBox(self, wx.ID_ANY, "", size=wx.Size(80, -1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
         box.Add(self.editCurrency, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
-        wx.EVT_COMBOBOX(self, tID, self.OnCurrency)
+        wx.EVT_COMBOBOX(self, self.editCurrency.GetId(), self.OnCurrency)
 
         idx = wx.NOT_FOUND
         for count, eachCtrl in enumerate(list_of_currencies()):
@@ -375,7 +372,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         pre = wx.PreDialog()
         pre.SetExtraStyle(wx.DIALOG_EX_CONTEXTHELP)
         title = message('quote_list_title')
-        pre.Create(parent, -1, title, size=(590, 460))
+        pre.Create(parent, wx.ID_ANY, title, size=(590, 460))
         self.PostCreate(pre)
 
         self.m_parent = parent
@@ -384,14 +381,13 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         self.m_market = market
         self.m_qlist = QList.system
 
-        tID = wx.NewIdRef()
         self.m_imagelist = wx.ImageList(16, 16)
         self.sm_q = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'quote.png')))
         self.sm_i = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'invalid.png')))
         self.sm_up = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'sm_up.png')))
         self.sm_dn = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'sm_down.png')))
 
-        self.m_list = iTradeSelectorListCtrl(self, tID,
+        self.m_list = iTradeSelectorListCtrl(self, wx.ID_ANY,
                                  style=wx.LC_REPORT | wx.SUNKEN_BORDER,
                                  size=(570, 380)
                                  )
@@ -401,20 +397,20 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         # see wxPython/lib/mixins/listctrl.py
         wxl.ColumnSorterMixin.__init__(self, 7)
 
-        wx.EVT_LIST_COL_CLICK(self, tID, self.OnColClick)
+        wx.EVT_LIST_COL_CLICK(self, self.m_list.GetId(), self.OnColClick)
         wx.EVT_SIZE(self, self.OnSize)
-        wx.EVT_LIST_ITEM_ACTIVATED(self, tID, self.OnItemActivated)
-        wx.EVT_LIST_ITEM_SELECTED(self, tID, self.OnItemSelected)
+        wx.EVT_LIST_ITEM_ACTIVATED(self, self.m_list.GetId(), self.OnItemActivated)
+        wx.EVT_LIST_ITEM_SELECTED(self, self.m_list.GetId(), self.OnItemSelected)
 
         sizer = wx.BoxSizer(wx.VERTICAL)
 
         # market selection
         box = wx.BoxSizer(wx.HORIZONTAL)
 
-        label = wx.StaticText(self, -1, message('quote_select_market'))
+        label = wx.StaticText(self, wx.ID_ANY, message('quote_select_market'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.wxMarketCtrl = wx.ComboBox(self, -1, "", size=wx.Size(200, -1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
+        self.wxMarketCtrl = wx.ComboBox(self, wx.ID_ANY, "", size=wx.Size(200, -1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
         box.Add(self.wxMarketCtrl, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_COMBOBOX(self, self.wxMarketCtrl.GetId(), self.OnMarket)
 
@@ -427,10 +423,10 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         self.wxMarketCtrl.SetSelection(idx)
 
         # list selection
-        label = wx.StaticText(self, -1, message('quote_select_list'))
+        label = wx.StaticText(self, wx.ID_ANY, message('quote_select_list'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.wxQListCtrl = wx.ComboBox(self, -1, "", size=wx.Size(140, -1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
+        self.wxQListCtrl = wx.ComboBox(self, wx.ID_ANY, "", size=wx.Size(140, -1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
         box.Add(self.wxQListCtrl, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_COMBOBOX(self, self.wxQListCtrl.GetId(), self.OnQuoteList)
 
@@ -442,7 +438,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         self.wxQListCtrl.Append(message('quote_select_bondslist'), QList.bonds)
         self.wxQListCtrl.SetSelection(self.m_qlist.value)
 
-        self.wxCount = wx.StaticText(self, -1, '--')
+        self.wxCount = wx.StaticText(self, wx.ID_ANY, '--')
         box.Add(self.wxCount, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
