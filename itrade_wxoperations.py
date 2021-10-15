@@ -489,103 +489,99 @@ class iTradeOperationToolbar(wx.ToolBar):
         self._init_toolbar()
 
     def _init_toolbar(self):
-        self._NTB2_EXIT = wx.NewId()
-
-        self._NTB2_DISPALL = wx.NewId()
-        self._NTB2_DISPQUOTES = wx.NewId()
-        self._NTB2_DISPCASH = wx.NewId()
-        self._NTB2_DISPSRD = wx.NewId()
-        self._NTB2_DISPPVAL = wx.NewId()
-
-        self._NTB2_ADD = wx.NewId()
-        self._NTB2_MODIFY = wx.NewId()
-        self._NTB2_DELETE = wx.NewId()
-
-        self._NTB2_30DAYS = wx.NewId()
-        self._NTB2_90DAYS = wx.NewId()
-        self._NTB2_CURRENTYEAR = wx.NewId()
-        self._NTB2_ALLYEARS = wx.NewId()
-
         self.SetToolBitmapSize(wx.Size(24, 24))
-        self.AddSimpleTool(self._NTB2_EXIT, wx.ArtProvider.GetBitmap(wx.ART_CROSS_MARK, wx.ART_TOOLBAR),
+        exit_tool = self.AddSimpleTool(wx.ID_ANY, wx.ArtProvider.GetBitmap(wx.ART_CROSS_MARK, wx.ART_TOOLBAR),
                            message('main_close'), message('main_desc_close'))
-        self.AddControl(wx.StaticLine(self, -1, size=(-1, 23), style=wx.LI_VERTICAL))
+        self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1, 23), style=wx.LI_VERTICAL))
 
-        self.AddRadioLabelTool(self._NTB2_DISPALL, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispall.png')), wx.NullBitmap, message('portfolio_dispall'), message('portfolio_desc_dispall'))
-        self.AddRadioLabelTool(self._NTB2_DISPQUOTES, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispquote.png')), wx.NullBitmap, message('portfolio_dispquotes'), message('portfolio_desc_dispquotes'))
-        self.AddRadioLabelTool(self._NTB2_DISPCASH, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispcash.png')), wx.NullBitmap, message('portfolio_dispcash'), message('portfolio_desc_dispcash'))
-        self.AddRadioLabelTool(self._NTB2_DISPSRD, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispsrd.png')), wx.NullBitmap, message('portfolio_dispsrd'), message('portfolio_desc_dispsrd'))
-        self.AddRadioLabelTool(self._NTB2_DISPPVAL, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispvalue.png')), wx.NullBitmap, message('portfolio_dispvalues'), message('portfolio_desc_dispvalues'))
+        dispall_tool = self.AddRadioLabelTool(wx.ID_ANY, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispall.png')), wx.NullBitmap, message('portfolio_dispall'), message('portfolio_desc_dispall'))
+        quotes_tool = self.AddRadioLabelTool(wx.ID_ANY, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispquote.png')), wx.NullBitmap, message('portfolio_dispquotes'), message('portfolio_desc_dispquotes'))
+        cash_tool = self.AddRadioLabelTool(wx.ID_ANY, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispcash.png')), wx.NullBitmap, message('portfolio_dispcash'), message('portfolio_desc_dispcash'))
+        srd_tool = self.AddRadioLabelTool(wx.ID_ANY, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispsrd.png')), wx.NullBitmap, message('portfolio_dispsrd'), message('portfolio_desc_dispsrd'))
+        pval_tool = self.AddRadioLabelTool(wx.ID_ANY, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispvalue.png')), wx.NullBitmap, message('portfolio_dispvalues'), message('portfolio_desc_dispvalues'))
 
-        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+        self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
 
-        self.AddSimpleTool(self._NTB2_ADD, wx.Bitmap(os.path.join(itrade_config.dirRes, 'add.png')), message('portfolio_opadd'),message('portfolio_desc_opadd'))
-        self.AddSimpleTool(self._NTB2_MODIFY, wx.Bitmap(os.path.join(itrade_config.dirRes, 'modify.png')), message('portfolio_opmodify'),message('portfolio_desc_opmodify'))
-        self.AddSimpleTool(self._NTB2_DELETE, wx.Bitmap(os.path.join(itrade_config.dirRes, 'delete.png')),                                                                                                                         message('portfolio_opdelete'),message('portfolio_desc_opdelete'))
+        add_tool = self.AddSimpleTool(wx.ID_ANY, wx.Bitmap(os.path.join(itrade_config.dirRes, 'add.png')), message('portfolio_opadd'), message('portfolio_desc_opadd'))
+        modify_tool = self.AddSimpleTool(wx.ID_ANY, wx.Bitmap(os.path.join(itrade_config.dirRes, 'modify.png')), message('portfolio_opmodify'), message('portfolio_desc_opmodify'))
+        delete_tool = self.AddSimpleTool(wx.ID_ANY, wx.Bitmap(os.path.join(itrade_config.dirRes, 'delete.png')), message('portfolio_opdelete'), message('portfolio_desc_opdelete'))
 
-        self.AddControl(wx.StaticLine(self, -1, size=(-1, 23), style=wx.LI_VERTICAL))
+        self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1, 23), style=wx.LI_VERTICAL))
 
-        self.AddRadioLabelTool(self._NTB2_30DAYS, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'filter30.png')), wx.NullBitmap, message('portfolio_per30days'), message('portfolio_desc_per30days'))
-        self.AddRadioLabelTool(self._NTB2_90DAYS, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'filter90.png')), wx.NullBitmap, message('portfolio_per90days'), message('portfolio_desc_per90days'))
-        self.AddRadioLabelTool(self._NTB2_CURRENTYEAR, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'filter.png')), wx.NullBitmap, message('portfolio_peryear'),                                                                                                       message('portfolio_desc_peryear'))
-        self.AddRadioLabelTool(self._NTB2_ALLYEARS, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'nofilter.png')), wx.NullBitmap, message('portfolio_perall'), message('portfolio_desc_perall'))
+        d30_tool = self.AddRadioLabelTool(wx.ID_ANY, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'filter30.png')), wx.NullBitmap, message('portfolio_per30days'), message('portfolio_desc_per30days'))
+        d90_tool = self.AddRadioLabelTool(wx.ID_ANY, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'filter90.png')), wx.NullBitmap, message('portfolio_per90days'), message('portfolio_desc_per90days'))
+        year_tool = self.AddRadioLabelTool(wx.ID_ANY, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'filter.png')), wx.NullBitmap, message('portfolio_peryear'), message('portfolio_desc_peryear'))
+        all_tool = self.AddRadioLabelTool(wx.ID_ANY, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'nofilter.png')), wx.NullBitmap, message('portfolio_perall'), message('portfolio_desc_perall'))
 
+        self._NTB2_EXIT = exit_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_EXIT, self.onExit)
 
+        self._NTB2_DISPALL = dispall_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_DISPALL, self.onDispAll)
+        self._NTB2_DISPQUOTES = quotes_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_DISPQUOTES, self.onDispQuotes)
+        self._NTB2_DISPCASH = cash_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_DISPCASH, self.onDispCash)
+        self._NTB2_DISPSRD = srd_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_DISPSRD, self.onDispSRD)
+        self._NTB2_DISPPVAL = pval_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_DISPPVAL, self.onDispPVal)
 
+        self._NTB2_MODIFY = modify_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_MODIFY, self.onModify)
+        self._NTB2_DELETE = delete_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_DELETE, self.onDelete)
+        self._NTB2_ADD = add_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_ADD, self.onAdd)
 
+        self._NTB2_30DAYS = d30_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_30DAYS, self.on30Days)
+        self._NTB2_90DAYS = d90_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_90DAYS, self.on90Days)
+        self._NTB2_CURRENTYEAR = year_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_CURRENTYEAR, self.onCurrentYear)
+        self._NTB2_ALLYEARS = all_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_ALLYEARS, self.onAllYears)
 
         self.Realize()
 
-    def onDispAll(self,event):
+    def onDispAll(self, event):
         self.m_parent.OnDispAll(event)
 
-    def onDispQuotes(self,event):
+    def onDispQuotes(self, event):
         self.m_parent.OnDispQuotes(event)
 
-    def onDispCash(self,event):
+    def onDispCash(self, event):
         self.m_parent.OnDispCash(event)
 
-    def onDispSRD(self,event):
+    def onDispSRD(self, event):
         self.m_parent.OnDispSRD(event)
 
-    def onDispPVal(self,event):
+    def onDispPVal(self, event):
         self.m_parent.OnDispPVal(event)
 
-    def onAdd(self,event):
+    def onAdd(self, event):
         self.m_parent.OnAdd(event)
 
-    def onModify(self,event):
+    def onModify(self, event):
         self.m_parent.OnModify(event)
 
-    def onDelete(self,event):
+    def onDelete(self, event):
         self.m_parent.OnDelete(event)
 
-    def on30Days(self,event):
+    def on30Days(self, event):
         self.m_parent.On30Days(event)
 
-    def on90Days(self,event):
+    def on90Days(self, event):
         self.m_parent.On90Days(event)
 
-    def onCurrentYear(self,event):
+    def onCurrentYear(self, event):
         self.m_parent.OnCurrentYear(event)
 
-    def onAllYears(self,event):
+    def onAllYears(self, event):
         self.m_parent.OnAllYears(event)
 
-    def onExit(self,event):
+    def onExit(self, event):
         self.m_parent.OnClose(event)
 
 # ============================================================================
@@ -720,15 +716,15 @@ class iTradeOperationsWindow(wx.Frame, iTrade_wxFrame, wxl.ColumnSorterMixin):
         self.m_list.SetFont(FontFromSize(itrade_config.operationFontSize))
         self.populate()
 
-    def OnTextSmall(self,e):
+    def OnTextSmall(self, e):
         itrade_config.operationFontSize = 1
         self.OnChangeViewText()
 
-    def OnTextNormal(self,e):
+    def OnTextNormal(self, e):
         itrade_config.operationFontSize = 2
         self.OnChangeViewText()
 
-    def OnTextBig(self,e):
+    def OnTextBig(self, e):
         itrade_config.operationFontSize = 3
         self.OnChangeViewText()
 
@@ -756,34 +752,34 @@ class iTradeOperationsWindow(wx.Frame, iTrade_wxFrame, wxl.ColumnSorterMixin):
         if self.m_mode == DISP_PVAL:
             return False
 
-    def filterDisplay(self,op):
+    def filterDisplay(self, op):
         if self.m_mode == DISP_ALL:
             # no filter at all
             return True
 
         if self.m_mode == DISP_QUOTES:
             # display on quotes transfers
-            return op.isQuote() and (op.type()!=OPERATION_LIQUIDATION)
+            return op.isQuote() and (op.type() != OPERATION_LIQUIDATION)
 
         if self.m_mode == DISP_CASH:
             # display on quotes transfers
-            return op.isCash() and (not op.isSRD() or op.type()==OPERATION_LIQUIDATION)
+            return op.isCash() and (not op.isSRD() or op.type() == OPERATION_LIQUIDATION)
 
         if self.m_mode == DISP_SRD:
             # display on SRD operations
             return op.isSRD()
 
         if self.m_mode == DISP_PVAL:
-            return (op.type() == OPERATION_SELL) or (op.type()==OPERATION_LIQUIDATION)
+            return (op.type() == OPERATION_SELL) or (op.type() == OPERATION_LIQUIDATION)
 
         return False
 
-    def filterPeriod(self,op):
+    def filterPeriod(self, op):
         if self.m_period == PERIOD_ALLYEARS:
             return True
         elif self.m_period == PERIOD_CURRENTYEAR:
             # year should be the current one
-            return op.date().year==date.today().year
+            return op.date().year == date.today().year
         elif self.m_period == PERIOD_90DAYS:
             # last 90 days
             return (date.today() - op.date()) <= timedelta(90)
@@ -824,12 +820,12 @@ class iTradeOperationsWindow(wx.Frame, iTrade_wxFrame, wxl.ColumnSorterMixin):
         srd = 0
         for eachOp in self.m_port.operations().list():
             if self.filterDisplay(eachOp):
-                #print 'populate:',eachOp
+                # print('populate:', eachOp)
                 sign = eachOp.sign()
 
-                if sign=='+':
+                if sign == '+':
                     if eachOp.isSRD():
-                        if eachOp.type()==OPERATION_LIQUIDATION:
+                        if eachOp.type() == OPERATION_LIQUIDATION:
                             balance = balance + eachOp.nv_value()
                             srd = srd + ( eachOp.nv_value() + eachOp.nv_expenses() )
                         else:
@@ -839,7 +835,7 @@ class iTradeOperationsWindow(wx.Frame, iTrade_wxFrame, wxl.ColumnSorterMixin):
                             balance = balance + eachOp.nv_pvalue()
                         else:
                             balance = balance + eachOp.nv_value()
-                elif sign=='-':
+                elif sign == '-':
                     if eachOp.isSRD():
                         srd = srd - eachOp.nv_value()
                     else:
@@ -847,62 +843,62 @@ class iTradeOperationsWindow(wx.Frame, iTrade_wxFrame, wxl.ColumnSorterMixin):
 
                 # do we really need to display this op ?
                 if self.filterPeriod(eachOp):
-                    if sign=='+':
+                    if sign == '+':
                         idx = self.idx_plus
-                    elif sign=='-':
+                    elif sign == '-':
                         idx = self.idx_minus
-                    elif sign==' ' or sign=='~':
+                    elif sign == ' ' or sign == '~':
                         idx = self.idx_neutral
                     else:
                         idx = self.idx_unknown
                     sdate = eachOp.datetime().strftime('%x %X')
                     self.m_list.InsertImageStringItem(x, sdate, idx)
-                    self.m_list.SetStringItem(x,IDC_OPERATION,eachOp.operation())
+                    self.m_list.SetStringItem(x, IDC_OPERATION, eachOp.operation())
                     if eachOp.nv_number()>0:
-                        self.m_list.SetStringItem(x,IDC_NUMBER,'%s' % eachOp.sv_number())
+                        self.m_list.SetStringItem(x, IDC_NUMBER, '%s' % eachOp.sv_number())
                     else:
-                        self.m_list.SetStringItem(x,IDC_NUMBER,'')
-                    if sign=='+':
-                        self.m_list.SetStringItem(x,IDC_CREDIT,eachOp.sv_value())
+                        self.m_list.SetStringItem(x, IDC_NUMBER, '')
+                    if sign == '+':
+                        self.m_list.SetStringItem(x, IDC_CREDIT, eachOp.sv_value())
                         vdebit = 0.0
                         vcredit = eachOp.nv_value()
-                    elif sign=='-':
-                        self.m_list.SetStringItem(x,IDC_DEBIT,eachOp.sv_value())
+                    elif sign == '-':
+                        self.m_list.SetStringItem(x, IDC_DEBIT, eachOp.sv_value())
                         vcredit = 0.0
                         vdebit = eachOp.nv_value()
-                    elif sign=='~':
-                        self.m_list.SetStringItem(x,IDC_CREDIT,eachOp.sv_value())
+                    elif sign == '~':
+                        self.m_list.SetStringItem(x, IDC_CREDIT, eachOp.sv_value())
                         vcredit = eachOp.nv_value()
-                        self.m_list.SetStringItem(x,IDC_DEBIT,eachOp.sv_value())
+                        self.m_list.SetStringItem(x, IDC_DEBIT, eachOp.sv_value())
                         vdebit = eachOp.nv_value()
                     else:
                         vcredit = 0.0
                         vdebit = 0.0
-                    self.m_list.SetStringItem(x,IDC_EXPENSES,eachOp.sv_expenses())
-                    self.m_list.SetStringItem(x,IDC_DESCRIPTION,eachOp.description())
-                    self.m_list.SetStringItem(x,IDC_BALANCE,'%.2f' % balance)
+                    self.m_list.SetStringItem(x, IDC_EXPENSES, eachOp.sv_expenses())
+                    self.m_list.SetStringItem(x, IDC_DESCRIPTION, eachOp.description())
+                    self.m_list.SetStringItem(x, IDC_BALANCE, '%.2f' % balance)
 
                     if self.filterSRDcolumn():
                         if eachOp.isSRD():
-                            self.m_list.SetStringItem(x,IDC_SRD,'%.2f' % srd)
+                            self.m_list.SetStringItem(x, IDC_SRD, '%.2f' % srd)
                             vsrd = srd
                         else:
-                            self.m_list.SetStringItem(x,IDC_SRD,'')
+                            self.m_list.SetStringItem(x, IDC_SRD, '')
                             vsrd = 0.0
-                        self.m_list.SetStringItem(x,IDC_RESERVED,'%d' % eachOp.ref())
+                        self.m_list.SetStringItem(x, IDC_RESERVED, '%d' % eachOp.ref())
                     else:
                         vsrd = 0.0
-                        self.m_list.SetStringItem(x,IDC_SRD,'%d' % eachOp.ref())
+                        self.m_list.SetStringItem(x, IDC_SRD, '%d' % eachOp.ref())
 
                     try:
-                        pr = str( '%.2f'%((vcredit + vdebit)/eachOp.nv_number()))
+                        pr = str('%.2f'%((vcredit + vdebit)/eachOp.nv_number()))
                         if pr == '0.00' :
-                            pr =''
+                            pr = ''
                     except ZeroDivisionError:
                         pr = ''
-                    self.m_list.SetStringItem(x,IDC_PRU,pr)
+                    self.m_list.SetStringItem(x, IDC_PRU, pr)
 
-                    self.itemDataMap[x] = (eachOp.date().strftime('%Y%m%d'),eachOp.operation(),eachOp.description(),eachOp.nv_number(),pr,vdebit,vcredit,eachOp.nv_expenses(),balance,vsrd)
+                    self.itemDataMap[x] = (eachOp.date().strftime('%Y%m%d'), eachOp.operation(), eachOp.description(), eachOp.nv_number(), pr, vdebit, vcredit, eachOp.nv_expenses(), balance, vsrd)
                     self.itemOpMap[x] = eachOp.ref()
 
                     item = self.m_list.GetItem(x)
@@ -917,7 +913,7 @@ class iTradeOperationsWindow(wx.Frame, iTrade_wxFrame, wxl.ColumnSorterMixin):
                     self.m_list.SetItem(item)
 
                     # one more item !
-                    #self.m_op[x] = eachOp
+                    # self.m_op[x] = eachOp
 
                     x = x + 1
 
@@ -961,10 +957,10 @@ class iTradeOperationsWindow(wx.Frame, iTrade_wxFrame, wxl.ColumnSorterMixin):
 
         # operations
         m = self.opmenu.FindItemById(ID_DELETE)
-        m.Enable(self.m_currentItem>=0)
+        m.Enable(self.m_currentItem >= 0)
 
         m = self.opmenu.FindItemById(ID_MODIFY)
-        m.Enable(self.m_currentItem>=0)
+        m.Enable(self.m_currentItem >= 0)
 
         # display
         if self.m_mode == DISP_ALL:
@@ -980,71 +976,71 @@ class iTradeOperationsWindow(wx.Frame, iTrade_wxFrame, wxl.ColumnSorterMixin):
         m.Check(True)
 
         m = self.textmenu.FindItemById(ID_SMALL_TEXT)
-        m.Check(itrade_config.operationFontSize==1)
+        m.Check(itrade_config.operationFontSize == 1)
         m = self.textmenu.FindItemById(ID_NORMAL_TEXT)
-        m.Check(itrade_config.operationFontSize==2)
+        m.Check(itrade_config.operationFontSize == 2)
         m = self.textmenu.FindItemById(ID_BIG_TEXT)
-        m.Check(itrade_config.operationFontSize==3)
+        m.Check(itrade_config.operationFontSize == 3)
 
-    def OnClose(self,e):
+    def OnClose(self, e):
         self.Close(True)
 
-    def OnDispAll(self,e):
+    def OnDispAll(self, e):
         self.m_mode = DISP_ALL
         self.updateMenuItems()
-        self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_DISPALL,True)
+        self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_DISPALL, True)
         self.populate()
 
-    def OnDispQuotes(self,e):
+    def OnDispQuotes(self, e):
         self.m_mode = DISP_QUOTES
         self.updateMenuItems()
-        self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_DISPQUOTES,True)
+        self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_DISPQUOTES, True)
         self.populate()
 
-    def OnDispCash(self,e):
+    def OnDispCash(self, e):
         self.m_mode = DISP_CASH
         self.updateMenuItems()
-        self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_DISPCASH,True)
+        self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_DISPCASH, True)
         self.populate()
 
-    def OnDispSRD(self,e):
+    def OnDispSRD(self, e):
         self.m_mode = DISP_SRD
         self.updateMenuItems()
-        self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_DISPSRD,True)
+        self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_DISPSRD, True)
         self.populate()
 
-    def OnDispPVal(self,e):
+    def OnDispPVal(self, e):
         self.m_mode = DISP_PVAL
         self.updateMenuItems()
-        self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_DISPPVAL,True)
+        self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_DISPPVAL, True)
         self.populate()
 
-    def On30Days(self,e):
+    def On30Days(self, e):
         self.m_period = PERIOD_30DAYS
         self.updateMenuItems()
-        self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_30DAYS,True)
+        self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_30DAYS, True)
         self.populate()
 
-    def On90Days(self,e):
+    def On90Days(self, e):
         self.m_period = PERIOD_90DAYS
         self.updateMenuItems()
-        self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_90DAYS,True)
+        self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_90DAYS, True)
         self.populate()
 
-    def OnCurrentYear(self,e):
+    def OnCurrentYear(self, e):
         self.m_period = PERIOD_CURRENTYEAR
         self.updateMenuItems()
-        self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_CURRENTYEAR,True)
+        self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_CURRENTYEAR, True)
         self.populate()
 
-    def OnAllYears(self,e):
+    def OnAllYears(self, e):
         self.m_period = PERIOD_ALLYEARS
         self.updateMenuItems()
-        self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_ALLYEARS,True)
+        self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_ALLYEARS, True)
         self.populate()
 
     def OnSize(self, event):
-        w,h = self.GetClientSizeTuple()
+        w, h = self.GetClientSizeTuple()
         self.m_toolbar.SetDimensions(0, 0, w, 32)
         self.m_list.SetDimensions(0, 32, w, h-32)
         event.Skip(False)
@@ -1070,14 +1066,14 @@ class iTradeOperationsWindow(wx.Frame, iTrade_wxFrame, wxl.ColumnSorterMixin):
     def OnItemActivated(self, event):
         self.m_currentItem = event.m_itemIndex
         self.updateMenuItems()
-        if self.m_currentItem>=0:
+        if self.m_currentItem >= 0:
             debug("OnItemActivated: %s" % self.m_list.GetItemText(self.m_currentItem))
             self.OnModify(event)
 
     def OnItemSelected(self, event):
         self.m_currentItem = event.m_itemIndex
         self.updateMenuItems()
-        if self.m_currentItem>=0:
+        if self.m_currentItem >= 0:
             debug("OnItemSelected: %s, %s, %s, %s\n" %
                            (self.m_currentItem,
                             self.m_list.GetItemText(self.m_currentItem),
@@ -1086,7 +1082,7 @@ class iTradeOperationsWindow(wx.Frame, iTrade_wxFrame, wxl.ColumnSorterMixin):
         event.Skip()
 
     def OnRightClick(self, event):
-        if self.m_currentItem<0:
+        if self.m_currentItem < 0:
             inList = False
         else:
             debug("OnRightClick %s\n" % self.m_list.GetItemText(self.m_currentItem))
@@ -1105,9 +1101,9 @@ class iTradeOperationsWindow(wx.Frame, iTrade_wxFrame, wxl.ColumnSorterMixin):
         menu = wx.Menu()
         # add some items
         menu.Append(self.m_popupID_Modify, message('main_popup_edit'))
-        menu.Enable(self.m_popupID_Modify,inList)
+        menu.Enable(self.m_popupID_Modify, inList)
         menu.Append(self.m_popupID_Delete, message('main_popup_remove'))
-        menu.Enable(self.m_popupID_Delete,inList)
+        menu.Enable(self.m_popupID_Delete, inList)
         menu.AppendSeparator()
         menu.Append(self.m_popupID_Add, message('main_popup_add'))
 
@@ -1119,11 +1115,11 @@ class iTradeOperationsWindow(wx.Frame, iTrade_wxFrame, wxl.ColumnSorterMixin):
     def OnModify(self, event):
         key = self.m_list.GetItemData(self.m_currentItem)
         ind = self.itemOpMap[key]
-        info("OnModify currentItem=%d key=%d ind=%d",self.m_currentItem,key,ind)
+        info("OnModify currentItem=%d key=%d ind=%d", self.m_currentItem, key, ind)
 
-        aRet = edit_iTradeOperation(self,self.m_port.getOperation(ind),OPERATION_MODIFY,currency=self.m_port.currency())
+        aRet = edit_iTradeOperation(self, self.m_port.getOperation(ind), OPERATION_MODIFY, currency=self.m_port.currency())
         if aRet:
-            info('OnModify: date=%s type=%s name=%s value=%12.2f expenses=%12.2f number=%d ref=%d' %(str(aRet[0]),aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6]))
+            info('OnModify: date=%s type=%s name=%s value=%12.2f expenses=%12.2f number=%d ref=%d' %(str(aRet[0]), aRet[1], aRet[2], aRet[3], aRet[4], aRet[5], aRet[6]))
             self.m_port.delOperation(ind)
             self.m_port.addOperation(aRet)
             self.RebuildList()
@@ -1131,9 +1127,9 @@ class iTradeOperationsWindow(wx.Frame, iTrade_wxFrame, wxl.ColumnSorterMixin):
     def OnDelete(self, event):
         key = self.m_list.GetItemData(self.m_currentItem)
         ind = self.itemOpMap[key]
-        info("OnDelete currentItem=%d key=%d ind=%d",self.m_currentItem,key,ind)
+        info("OnDelete currentItem=%d key=%d ind=%d", self.m_currentItem, key, ind)
 
-        aRet = edit_iTradeOperation(self,self.m_port.getOperation(ind),OPERATION_DELETE,currency=self.m_port.currency())
+        aRet = edit_iTradeOperation(self, self.m_port.getOperation(ind), OPERATION_DELETE, currency=self.m_port.currency())
         if aRet:
             info('OnDelete: date=%s type=%s name=%s value=%12.2f expenses=%12.2f number=%d ref=%d' %(str(aRet[0]),aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6]))
             self.m_port.delOperation(ind)
