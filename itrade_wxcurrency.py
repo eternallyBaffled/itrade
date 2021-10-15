@@ -89,22 +89,21 @@ class iTradeCurrencyToolbar(wx.ToolBar):
         self._init_toolbar()
 
     def _init_toolbar(self):
-        self._NTB2_EXIT = wx.NewId()
-        self._NTB2_CONVERT = wx.NewId()
-        self._NTB2_REFRESH = wx.NewId()
-
         self.SetToolBitmapSize(wx.Size(24, 24))
-        self.AddSimpleTool(self._NTB2_EXIT, wx.ArtProvider.GetBitmap(wx.ART_CROSS_MARK, wx.ART_TOOLBAR),
+        close_tool = self.AddSimpleTool(wx.ID_ANY, wx.ArtProvider.GetBitmap(wx.ART_CROSS_MARK, wx.ART_TOOLBAR),
                            message('main_close'), message('main_desc_close'))
 
-        self.AddControl(wx.StaticLine(self, -1, size=(-1, 23), style=wx.LI_VERTICAL))
-        self.AddSimpleTool(self._NTB2_CONVERT, wx.Bitmap(os.path.join(itrade_config.dirRes, 'convert.png')),
+        self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1, 23), style=wx.LI_VERTICAL))
+        convert_tool = self.AddSimpleTool(wx.ID_ANY, wx.Bitmap(os.path.join(itrade_config.dirRes, 'convert.png')),
                            message('main_view_convert'), message('main_view_desc_convert'))
-        self.AddSimpleTool(self._NTB2_REFRESH, wx.Bitmap(os.path.join(itrade_config.dirRes, 'refresh.png')),
+        refresh_tool = self.AddSimpleTool(wx.ID_ANY, wx.Bitmap(os.path.join(itrade_config.dirRes, 'refresh.png')),
                            message('main_view_refresh'), message('main_view_desc_refresh'))
 
+        self._NTB2_EXIT = close_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_EXIT, self.onExit)
+        self._NTB2_CONVERT = convert_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_CONVERT, self.onConvert)
+        self._NTB2_REFRESH = refresh_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_REFRESH, self.onRefresh)
         self.Realize()
 

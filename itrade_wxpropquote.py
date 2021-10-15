@@ -387,17 +387,16 @@ class iTradeQuotePropertyToolbar(wx.ToolBar):
         self._init_toolbar()
 
     def _init_toolbar(self):
-        self._NTB2_EXIT = wx.NewId()
-        self._NTB2_SELECT = wx.NewId()
-
-        self.SetToolBitmapSize(wx.Size(24,24))
-        self.AddSimpleTool(self._NTB2_EXIT, wx.ArtProvider.GetBitmap(wx.ART_CROSS_MARK, wx.ART_TOOLBAR),
+        self.SetToolBitmapSize(wx.Size(24, 24))
+        ex_tool = self.AddSimpleTool(wx.ID_ANY, wx.ArtProvider.GetBitmap(wx.ART_CROSS_MARK, wx.ART_TOOLBAR),
                            message('main_close'), message('main_desc_close'))
         self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1, 23), style=wx.LI_VERTICAL))
-        self.AddSimpleTool(self._NTB2_SELECT, wx.Bitmap(os.path.join(itrade_config.dirRes, 'quotes.png')),
+        select_tool = self.AddSimpleTool(wx.ID_ANY, wx.Bitmap(os.path.join(itrade_config.dirRes, 'quotes.png')),
                            message('quote_select_title'), message('quote_select_title'))
 
+        self._NTB2_EXIT = ex_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_EXIT, self.exit)
+        self._NTB2_SELECT = select_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_SELECT, self.select)
         self.Realize()
 
