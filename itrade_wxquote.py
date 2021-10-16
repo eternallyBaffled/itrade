@@ -79,28 +79,27 @@ from itrade_market import yahoosuffix
 
 class iTradeQuoteToolbar(wx.ToolBar):
 
-    def __init__(self,parent,id):
-        wx.ToolBar.__init__(self,parent,id,size = (120,32), style = wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT)
+    def __init__(self, parent, id):
+        wx.ToolBar.__init__(self, parent, id, size=(120,32), style=wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT)
         self.m_parent = parent
         self.m_Throbber = None
         self._init_toolbar()
 
     def _init_toolbar(self):
-        self._NTB2_EXIT = wx.NewId()
-        self._NTB2_SELECT = wx.NewId()
-        self._NTB2_REFRESH = wx.NewId()
-
-        self.SetToolBitmapSize(wx.Size(24,24))
-        self.AddSimpleTool(self._NTB2_EXIT, wx.ArtProvider.GetBitmap(wx.ART_CROSS_MARK, wx.ART_TOOLBAR),
+        self.SetToolBitmapSize(wx.Size(24, 24))
+        exit_tool = self.AddSimpleTool(wx.ID_ANY, wx.ArtProvider.GetBitmap(wx.ART_CROSS_MARK, wx.ART_TOOLBAR),
                            message('main_close'), message('main_desc_close'))
-        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
-        self.AddSimpleTool(self._NTB2_SELECT, wx.Bitmap(os.path.join(itrade_config.dirRes, 'quotes.png')),
+        self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
+        select_tool = self.AddSimpleTool(wx.ID_ANY, wx.Bitmap(os.path.join(itrade_config.dirRes, 'quotes.png')),
                            message('quote_select_title'), message('quote_select_title'))
-        self.AddSimpleTool(self._NTB2_REFRESH, wx.Bitmap(os.path.join(itrade_config.dirRes, 'refresh.png')),
+        refresh_tool = self.AddSimpleTool(wx.ID_ANY, wx.Bitmap(os.path.join(itrade_config.dirRes, 'refresh.png')),
                            message('main_view_refresh'), message('main_view_desc_refresh'))
 
+        self._NTB2_EXIT = exit_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_EXIT, self.exit)
+        self._NTB2_SELECT = select_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_SELECT, self.select)
+        self._NTB2_REFRESH = refresh_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_REFRESH, self.refresh)
         self.Realize()
 

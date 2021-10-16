@@ -172,126 +172,123 @@ ID_PAGE_EVALUATION = 5
 
 # ============================================================================
 # iTradeMainToolbar
-#
 # ============================================================================
 
 class iTradeMainToolbar(wx.ToolBar):
     def __init__(self, parent, id):
         super(iTradeMainToolbar, self).__init__(parent=parent, id=id, style=wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT)
-        self.m_parent = parent
+#        self.m_parent = parent
         self._init_toolbar()
 
     def _init_toolbar(self):
         self.ClearTools()
 
-        self._NTB2_EXIT = wx.NewId()
-        self._NTB2_NEW = wx.NewId()
-        self._NTB2_OPEN = wx.NewId()
-        self._NTB2_EDIT = wx.NewId()
-        self._NTB2_SAVE_AS = wx.NewId()
-        self._NTB2_MONEY = wx.NewId()
-        self._NTB2_CURRENCIES = wx.NewId()
-        self._NTB2_OPERATIONS = wx.NewId()
-        self._NTB2_ALERTS = wx.NewId()
-        self._NTB2_QUOTE = wx.NewId()
-        self._NTB2_REFRESH = wx.NewId()
-        self._NTB2_AUTOSIZE = wx.NewId()
-        self._NTB2_ABOUT = wx.NewId()
-
         self.SetToolBitmapSize(wx.Size(24,24))
-        self.AddSimpleTool(self._NTB2_EXIT, wx.ArtProvider.GetBitmap(wx.ART_CROSS_MARK, wx.ART_TOOLBAR),
+        exit_tool = self.AddSimpleTool(wx.ID_ANY, wx.ArtProvider.GetBitmap(wx.ART_CROSS_MARK, wx.ART_TOOLBAR),
                            message('main_exit'), message('main_desc_exit'))
         self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
-        self.AddSimpleTool(self._NTB2_NEW, wx.ArtProvider.GetBitmap(wx.ART_NEW, wx.ART_TOOLBAR),
+        new_tool = self.AddSimpleTool(wx.ID_ANY, wx.ArtProvider.GetBitmap(wx.ART_NEW, wx.ART_TOOLBAR),
                            message('main_new'), message('main_desc_new'))
         self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
-        self.AddSimpleTool(self._NTB2_OPEN, wx.ArtProvider.GetBitmap(wx.ART_FILE_OPEN, wx.ART_TOOLBAR),
+        open_tool = self.AddSimpleTool(wx.ID_ANY, wx.ArtProvider.GetBitmap(wx.ART_FILE_OPEN, wx.ART_TOOLBAR),
                            message('main_open'), message('main_desc_open'))
         self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
-        self.AddSimpleTool(self._NTB2_EDIT, wx.ArtProvider.GetBitmap(wx.ART_EXECUTABLE_FILE, wx.ART_TOOLBAR),
+        edit_tool = self.AddSimpleTool(wx.ID_ANY, wx.ArtProvider.GetBitmap(wx.ART_EXECUTABLE_FILE, wx.ART_TOOLBAR),
                            message('main_edit'), message('main_desc_edit'))
         self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
-        self.AddSimpleTool(self._NTB2_OPERATIONS, wx.ArtProvider.GetBitmap(wx.ART_REPORT_VIEW, wx.ART_TOOLBAR),
+        oper_tool = self.AddSimpleTool(wx.ID_ANY, wx.ArtProvider.GetBitmap(wx.ART_REPORT_VIEW, wx.ART_TOOLBAR),
                            message('main_view_operations'), message('main_view_desc_operations'))
         self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
-        self.AddSimpleTool(self._NTB2_MONEY, wx.Bitmap(os.path.join(itrade_config.dirRes, 'money.png')),
+        money_tool = self.AddSimpleTool(wx.ID_ANY, wx.Bitmap(os.path.join(itrade_config.dirRes, 'money.png')),
                            message('main_view_money'), message('main_view_desc_money'))
         self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
-        self.AddSimpleTool(self._NTB2_ALERTS, wx.Bitmap(os.path.join(itrade_config.dirRes, 'bell.png')),
+        alert_tool = self.AddSimpleTool(wx.ID_ANY, wx.Bitmap(os.path.join(itrade_config.dirRes, 'bell.png')),
                            message('main_view_alerts'), message('main_view_desc_alerts'))
         self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
-        self.AddSimpleTool(self._NTB2_CURRENCIES, wx.Bitmap(os.path.join(itrade_config.dirRes, 'currencies.png')),
+        currency_tool = self.AddSimpleTool(wx.ID_ANY, wx.Bitmap(os.path.join(itrade_config.dirRes, 'currencies.png')),
                            message('main_view_currencies'), message('main_view_desc_currencies'))
         self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
-        self.AddSimpleTool(self._NTB2_QUOTE, wx.Bitmap(os.path.join(itrade_config.dirRes, 'graph.png')),
+        quote_tool = self.AddSimpleTool(wx.ID_ANY, wx.Bitmap(os.path.join(itrade_config.dirRes, 'graph.png')),
                            message('main_quote_graph'), message('main_quote_desc_graph'))
         self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
-        self.AddSimpleTool(self._NTB2_REFRESH, wx.Bitmap(os.path.join(itrade_config.dirRes, 'refresh.png')),
+        refresh_tool = self.AddSimpleTool(wx.ID_ANY, wx.Bitmap(os.path.join(itrade_config.dirRes, 'refresh.png')),
                            message('main_view_refresh'), message('main_view_desc_refresh'))
         self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
-        self.AddSimpleTool(self._NTB2_AUTOSIZE, wx.Bitmap(os.path.join(itrade_config.dirRes, 'adjust_column.png')),
+        autosize_tool = self.AddSimpleTool(wx.ID_ANY, wx.Bitmap(os.path.join(itrade_config.dirRes, 'adjust_column.png')),
                            message('main_view_autosize'), message('main_view_desc_autosize'))
         self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
-        self.AddSimpleTool(self._NTB2_ABOUT, wx.Bitmap(os.path.join(itrade_config.dirRes, 'about.png')),
+        about_tool = self.AddSimpleTool(wx.ID_ANY, wx.Bitmap(os.path.join(itrade_config.dirRes, 'about.png')),
                            message('main_about'), message('main_desc_about'))
         self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
-        self.m_indicator = wx.TextCtrl(self, wx.ID_ANY, "", size=(300,15),style=wx.BORDER_NONE|wx.ALIGN_LEFT|wx.TE_READONLY)
+        self.m_indicator = wx.TextCtrl(self, wx.ID_ANY, "", size=(300,15), style=wx.BORDER_NONE|wx.ALIGN_LEFT|wx.TE_READONLY)
 
         self.AddControl(self.m_indicator)
         self.ClearIndicator()
 
+        self._NTB2_EXIT = exit_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_EXIT, self.onExit)
+        self._NTB2_NEW = new_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_NEW, self.onNew)
+        self._NTB2_OPEN = open_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_OPEN, self.onOpen)
+        self._NTB2_EDIT = edit_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_EDIT, self.onEdit)
+        self._NTB2_OPERATIONS = oper_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_OPERATIONS, self.onOperations)
+        self._NTB2_CURRENCIES = currency_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_CURRENCIES, self.onCurrencies)
+        self._NTB2_MONEY = money_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_MONEY, self.onMoney)
+        self._NTB2_ALERTS = alert_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_ALERTS, self.onAlerts)
+        self._NTB2_QUOTE = quote_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_QUOTE, self.onQuote)
+        self._NTB2_ABOUT = about_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_ABOUT, self.onAbout)
+        self._NTB2_REFRESH = refresh_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_REFRESH, self.onRefresh)
+        self._NTB2_AUTOSIZE = autosize_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_AUTOSIZE, self.onAutoSize)
         self.Realize()
 
     def onRefresh(self, event):
-        self.m_parent.OnRefresh(event)
+        self.GetParent().OnRefresh(event)
 
     def onAutoSize(self, event):
-        self.m_parent.OnAutoSize(event)
+        self.GetParent().OnAutoSize(event)
 
-    def onOpen(self,event):
-        self.m_parent.OnOpen(event)
+    def onOpen(self, event):
+        self.GetParent().OnOpen(event)
 
-    def onNew(self,event):
-        self.m_parent.OnNew(event)
+    def onNew(self, event):
+        self.GetParent().OnNew(event)
 
-    def onEdit(self,event):
-        self.m_parent.OnEdit(event)
+    def onEdit(self, event):
+        self.GetParent().OnEdit(event)
 
-    def onExit(self,event):
-        self.m_parent.OnExit(event)
+    def onExit(self, event):
+        self.GetParent().OnExit(event)
 
-    def onOperations(self,event):
-        self.m_parent.OnOperations(event)
+    def onOperations(self, event):
+        self.GetParent().OnOperations(event)
 
-    def onMoney(self,event):
-        self.m_parent.OnMoney(event)
+    def onMoney(self, event):
+        self.GetParent().OnMoney(event)
 
-    def onCurrencies(self,event):
-        self.m_parent.OnCurrencies(event)
+    def onCurrencies(self, event):
+        self.GetParent().OnCurrencies(event)
 
-    def onCompute(self,event):
-        self.m_parent.OnCompute(event)
+    def onCompute(self, event):
+        self.GetParent().OnCompute(event)
 
-    def onAlerts(self,event):
-        self.m_parent.OnAlerts(event)
+    def onAlerts(self, event):
+        self.GetParent().OnAlerts(event)
 
-    def onQuote(self,event):
-        self.m_parent.OnGraphQuote(event)
+    def onQuote(self, event):
+        self.GetParent().OnGraphQuote(event)
 
     def onAbout(self, event):
-        self.m_parent.OnAbout(event)
+        self.GetParent().OnAbout(event)
 
     # ---[ Market Indicator management ] ---
 
@@ -316,10 +313,10 @@ class iTradeMainToolbar(wx.ToolBar):
             conv=time.strptime(clock, "%H:%M")
             clock = time.strftime(date_format[indice.market()][1], conv)
             # print('clock am pm:', clock)
+
         if clock == "::":
             label = " " + indice.market() + " : " + message('indicator_disconnected')
             self.m_indicator.SetForegroundColour(wx.BLACK)
-
         else:
             label = " " + indice.market() + " - " + dateclock+ " - " + clock
             if indice:
@@ -348,6 +345,7 @@ class iTradeMainToolbar(wx.ToolBar):
                     color = wx.Colour(0, 139, 0)
                 self.ClearIndicator()
                 self.m_indicator.SetForegroundColour(color)
+
         self.m_indicator.ChangeValue(label)
         # get indicator and toolbar positions and sizes
         indicatorposition = self.m_indicator.GetScreenPosition()
@@ -370,7 +368,7 @@ class iTradeMainNotebookWindow(wx.Notebook):
         super(iTradeMainNotebookWindow, self).__init__(parent=parent, id=id, style=wx.SIMPLE_BORDER|wx.NB_TOP)
         self.m_portfolio = portfolio
         self.m_matrix = matrix
-        self.m_parent = parent
+#        self.m_parent = parent
         self.init(parent)
 
         # events
@@ -419,7 +417,7 @@ class iTradeMainNotebookWindow(wx.Notebook):
                 self.win[old].DoneCurrentPage()
             if new >= 0:
                 self.win[new].InitCurrentPage()
-                self.m_parent.updateTitle(new)
+                self.GetParent().updateTitle(new)
         event.Skip()
 
     def OnPageChanging(self, event):
@@ -452,7 +450,7 @@ class iTradeMainNotebookWindow(wx.Notebook):
         # Init current page
         sel = self.GetSelection()
         self.win[sel].InitCurrentPage()
-        #print 'book::InitCurrentPage: page:',sel
+        # print('book::InitCurrentPage: page:', sel)
 
     def DoneCurrentPage(self):
         sel = self.GetSelection()
@@ -464,7 +462,7 @@ class iTradeMainNotebookWindow(wx.Notebook):
 # ============================================================================
 
 import wx.lib.newevent
-(PostInitEvent,EVT_POSTINIT) = wx.lib.newevent.NewEvent()
+(PostInitEvent, EVT_POSTINIT) = wx.lib.newevent.NewEvent()
 
 class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
     def __init__(self, parent, portfolio, matrix):
