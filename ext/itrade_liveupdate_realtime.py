@@ -39,6 +39,7 @@
 
 # python system
 from __future__ import print_function
+from contextlib import closing
 from datetime import date, datetime
 import logging
 import thread
@@ -110,9 +111,8 @@ class LiveUpdate_RealTime(object):
                     req = urllib2.Request('https://www.boursorama.com/recherche/index.phtml?search%5Bquery%5D=' + isin)
                     req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
                     try:
-                        f = urllib2.urlopen(req)
-                        data = f.read()
-                        f.close()
+                        with closing(urllib2.urlopen(req)) as f:
+                            data = f.read()
 
                         ch = 'class="bourse fit block" >'
 
@@ -234,9 +234,8 @@ class LiveUpdate_RealTime(object):
                 req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
 
                 try:
-                    f = urllib2.urlopen(req)
-                    data = f.read()
-                    f.close()
+                    with closing(urllib2.urlopen(req)) as f:
+                        data = f.read()
 
                     ch = 'class="bourse fit block" >'
 
@@ -281,9 +280,8 @@ class LiveUpdate_RealTime(object):
                 req = urllib2.Request('https://www.boursorama.com/cours.phtml?symbole=' + symbol)
             req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
 
-            f = urllib2.urlopen(req)
-            data = f.read()
-            f.close()
+            with closing(urllib2.urlopen(req)) as f:
+                data = f.read()
         except Exception:
             debug('LiveUpdate_Boursorama:unable to connect :-(')
             return None

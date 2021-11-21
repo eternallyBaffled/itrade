@@ -41,6 +41,7 @@ from __future__ import print_function
 import logging
 import string
 import urllib2
+from contextlib import closing
 
 # iTrade system
 import itrade_config
@@ -87,9 +88,8 @@ def Import_ListOfQuotes_MIL(quotes,market='MILAN EXCHANGE',dlg=None,x=0):
     req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
 
     try:
-        f = urllib2.urlopen(req)
-        data = f.read()
-        f.close()
+        with closing(urllib2.urlopen(req)) as f:
+            data = f.read()
     except Exception:
         info('Import_ListOfQuotes_%s:unable to connect :-(' % market)
         return False
@@ -106,9 +106,8 @@ def Import_ListOfQuotes_MIL(quotes,market='MILAN EXCHANGE',dlg=None,x=0):
             req = urllib2.Request(finalurl)
             req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
             try:
-                f = urllib2.urlopen(req)
-                datas = f.read()
-                f.close()
+                with closing(urllib2.urlopen(req)) as f:
+                    datas = f.read()
             except Exception:
                 info('Import_ListOfQuotes_ISIN_TICKER_NAME_%s:unable to connect :-(' % market)
                 return False
@@ -122,7 +121,7 @@ def Import_ListOfQuotes_MIL(quotes,market='MILAN EXCHANGE',dlg=None,x=0):
                 if nline.find('<b>Codice Alfanumerico<b>') != -1:
                     ticker = nline[nline.index('"right">')+8:nline.index('</td></tr>')]
 
-                    n =  n + 1
+                    n = n + 1
                     dlg.Update(x,'BORSA ITALIANA : %d /~350'%n)
 
                     quotes.addQuote(isin=isin, name=name,

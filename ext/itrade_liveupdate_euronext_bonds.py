@@ -43,6 +43,7 @@ import logging
 import string
 import thread
 import urllib2
+from contextlib import closing
 from datetime import date, datetime
 
 # iTrade system
@@ -198,9 +199,8 @@ class LiveUpdate_Euronext_bonds(object):
             req = urllib2.Request(url)
             req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
 
-            f = urllib2.urlopen(req)
-            buf = f.read()
-            f.close()
+            with closing(urllib2.urlopen(req)) as f:
+                buf = f.read()
 
             #buf=self.m_connection.getDataFromUrl(url)
         except Exception:

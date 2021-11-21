@@ -42,6 +42,7 @@ from __future__ import print_function
 import logging
 import string
 import urllib2
+from contextlib import closing
 
 # iTrade system
 import itrade_config
@@ -88,7 +89,7 @@ def Import_ListOfQuotes_BARCHART(quotes,market='TOTRONTO EXCHANGE',dlg=None,x=0)
         lines = [removeCarriage(l) for l in lines]
         return lines
 
-    def import_letter(letter,dlg,x):
+    def import_letter(letter, dlg, x):
         if dlg:
             dlg.Update(x,"%s:'%s'"%(market,letter))
             #print x,"%s:'%s'"%(market,letter)
@@ -97,9 +98,8 @@ def Import_ListOfQuotes_BARCHART(quotes,market='TOTRONTO EXCHANGE',dlg=None,x=0)
             req = urllib2.Request(url%letter)
             req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
 
-            f = urllib2.urlopen(req)
-            data = f.read()
-            f.close()
+            with closing(urllib2.urlopen(req)) as f:
+                data = f.read()
         except Exception:
             print('Import_ListOfQuotes_BARCHART:unable to connect to',url%letter)
             return False

@@ -236,20 +236,14 @@ class iTradeRSSPanel(wx.Panel):
 
     def saveCache(self):
         fn = os.path.join(itrade_config.dirCacheData, '%s.htm' % self.m_quote.key())
-
-        # open the file
         try:
-            f = open(fn, 'w')
+            with open(fn, 'w') as f:
+                # print('saveCache:encoding', f.encoding)
+                f.write(self.m_content.encode('utf-8'))
         except IOError:
             # can't open the file (existing ?)
             info('saveCache(%s) : IOError :-(' % fn)
             return False
-
-        # print('saveCache:encoding', f.encoding)
-        f.write(self.m_content.encode('utf-8'))
-
-        # close the file
-        f.close()
 
         info('saveCache(%s) : OK' % fn)
 

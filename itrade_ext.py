@@ -151,9 +151,8 @@ def loadExtensions(file, folder):
     lines = []
 
     try:
-        ext = open(extFile)
-        lines = ext.readlines()
-        ext.close()
+        with open(extFile) as ext:
+            lines = ext.readlines()
     except IOError:
         print(u"Load ({}) : can't open {} file !".format(folder, extFile))
 

@@ -42,6 +42,7 @@ from __future__ import print_function
 import logging
 import string
 import urllib2
+from contextlib import closing
 
 # iTrade system
 import itrade_config
@@ -90,9 +91,8 @@ def Import_ListOfQuotes_SHG(quotes,market='SHANGHAI EXCHANGE',dlg=None,x=0):
         req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
 
         try:
-            f = urllib2.urlopen(req)
-            data = f.read()
-            f.close()
+            with closing(urllib2.urlopen(req)) as f:
+                data = f.read()
 
             #data=connection.getDataFromUrl(url)
         except Exception:
