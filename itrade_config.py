@@ -481,77 +481,77 @@ def load_config():
     print('User Configuration :',fn)
     config.read(fn)
 
-    # try to read informations
+    # try to read information
     try:
-        v = config.get("view","AutoRefreshView")
-    except:
+        v = config.get("view", "AutoRefreshView")
+    except Exception:
         v = None
     if v:
-        if v=="False":
+        if v == "False":
             bAutoRefreshMatrixView = False
         else:
             bAutoRefreshMatrixView = True
 
     try:
-        v = config.get("view","AutoRefreshCurrency")
-    except:
+        v = config.get("view", "AutoRefreshCurrency")
+    except Exception:
         v = None
     if v:
-        if v=="False":
+        if v == "False":
             bAutoRefreshCurrencyView = False
         else:
             bAutoRefreshCurrencyView = True
 
     try:
-        v = config.get("view","MatrixFontSize")
-    except:
+        v = config.get("view", "MatrixFontSize")
+    except Exception:
         v = 2
     if v:
         try:
             matrixFontSize = int(v)
-        except:
+        except Exception:
             matrixFontSize = 2
 
     try:
-        v = config.get("view","OperationFontSize")
-    except:
+        v = config.get("view", "OperationFontSize")
+    except Exception:
         v = 2
     if v:
         try:
             operationFontSize = int(v)
-        except:
+        except Exception:
             operationFontSize = 2
 
     try:
-        v = config.get("view","lang")
-    except:
+        v = config.get("view", "lang")
+    except Exception:
         v = 0
     if v:
         try:
             lang = int(v)
-        except:
+        except Exception:
             lang = 0
 
     try:
-        proxyHostname = config.get("net","proxyHostname")
-    except:
+        proxyHostname = config.get("net", "proxyHostname")
+    except Exception:
         proxyHostname = None
 
     try:
-        proxyAuthentication = config.get("net","proxyAuthentication")
-    except:
+        proxyAuthentication = config.get("net", "proxyAuthentication")
+    except Exception:
         proxyAuthentication = None
 
     try:
-        connectionTimeout = int(config.get("net","connectionTimeout"))
-    except:
+        connectionTimeout = int(config.get("net", "connectionTimeout"))
+    except Exception:
         connectionTimeout = default_connectionTimeout
 
     # read columns
     for i in column.keys():
         try:
-            column[i] = config.get("column",i)
-        except:
+            column[i] = config.get("column", i)
+        except Exception:
             column[i] = "-1;1"
 
 # ============================================================================
