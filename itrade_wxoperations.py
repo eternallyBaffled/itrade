@@ -477,14 +477,14 @@ class iTradeOperationDialog(iTradeSizedDialog):
 
 
 class iTradeOperationsListCtrl(wx.ListCtrl, wxl.ListCtrlAutoWidthMixin):
-    def __init__(self, parent, ID, pos=wx.DefaultPosition,
-                 size=wx.DefaultSize, style=0):
-        super(iTradeOperationsListCtrl, self).__init__(parent, ID, pos, size, style)
+    def __init__(self, parent, ID, pos=wx.DefaultPosition, size=wx.DefaultSize, style=0):
+        wx.ListCtrl.__init__(self, parent, ID, pos, size, style)
+        wxl.ListCtrlAutoWidthMixin.__init__(self)
 
 
 class iTradeOperationToolbar(wx.ToolBar):
     def __init__(self, parent, id):
-        super(iTradeOperationToolbar, self).__init__(parent, id, style=wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT)
+        wx.ToolBar.__init__(self, parent, id, style=wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT)
         self.m_parent = parent
         self._init_toolbar()
 

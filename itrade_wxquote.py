@@ -140,7 +140,7 @@ def exists(filename):
 class iTradeQuoteInfoWindow(sc.SizedPanel):
 
     def __init__(self, parent, id, size, quote):
-        super(iTradeQuoteInfoWindow, self).__init__(parent, id, size=size, style=wx.SIMPLE_BORDER | wx.TAB_TRAVERSAL | wx.NO_FULL_REPAINT_ON_RESIZE)
+        sc.SizedPanel.__init__(self, parent, id, size=size, style=wx.SIMPLE_BORDER | wx.TAB_TRAVERSAL | wx.NO_FULL_REPAINT_ON_RESIZE)
 
         self.m_parent = parent
         self.m_quote = quote
@@ -340,7 +340,7 @@ class iTradeQuoteInfoWindow(sc.SizedPanel):
 class CustomDataTable(gridlib.PyGridTableBase):
 
     def __init__(self, quote):
-        super(CustomDataTable, self).__init__()
+        gridlib.PyGridTableBase.__init__(self)
 
         self.colLabels = [ message('date'),
                            message('volume'),
@@ -432,7 +432,7 @@ class CustomDataTable(gridlib.PyGridTableBase):
 class CustTableGrid(gridlib.Grid):
 
     def __init__(self, parent, quote):
-        super(CustTableGrid, self).__init__(parent, wx.ID_ANY)
+        gridlib.Grid.__init__(self, parent, wx.ID_ANY)
         table = CustomDataTable(quote)
         # The second parameter means that the grid is to take ownership of the
         # table and will destroy it when done.  Otherwise you would need to keep
@@ -452,7 +452,7 @@ class CustTableGrid(gridlib.Grid):
 class iTradeQuoteTablePanel(wx.Panel):
 
     def __init__(self, parent, id, quote):
-        super(iTradeQuoteTablePanel, self).__init__(parent, id)
+        wx.Panel.__init__(self, parent, id)
         self.m_quote = quote
         self.m_parent = parent
         self.m_port = parent.portfolio()
@@ -487,7 +487,7 @@ class iTradeQuoteTablePanel(wx.Panel):
 class iTradeQuoteAnalysisPanel(wx.Window):
 
     def __init__(self, parent, id, quote):
-        super(iTradeQuoteAnalysisPanel, self).__init__(parent, id)
+        wx.Window.__init__(self, parent, id)
         self.m_quote = quote
         self.m_parent = parent
         self.m_port = parent.portfolio()
@@ -515,7 +515,7 @@ class iTradeQuoteAnalysisPanel(wx.Window):
 
 class iTradeQuoteLivePanel(wx.Panel):
     def __init__(self, parent, gparent, id, quote):
-        super(iTradeQuoteLivePanel, self).__init__(parent, id)
+        wx.Panel.__init__(self, parent, id)
         self.m_quote = quote
         self.m_parent = gparent
         self.m_port = parent.portfolio()
@@ -545,7 +545,8 @@ class iTradeQuoteLivePanel(wx.Panel):
 
 class iTradeQuoteGraphPanel(wx.Panel, iTrade_wxPanelGraph):
     def __init__(self, parent, id, quote):
-        super(iTradeQuoteGraphPanel, self).__init__(parent=parent, id=id, size=(5,4))
+        wx.Panel.__init__(self, parent=parent, id=id, size=(5,4))
+        iTrade_wxPanelGraph.__init__(self, parent=parent, id=id, size=(5,4))
         self.m_quote = quote
         self.m_nIndex = self.m_quote.lastindex()
         # print('m_nIndex=', self.m_nIndex)

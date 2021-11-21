@@ -177,7 +177,7 @@ class iTradeAboutBox(wx.Dialog):
     border = 7
 
     def __init__(self, parent):
-        super(iTradeAboutBox, self).__init__(parent=parent, id=wx.ID_ANY, title=message('about_title'),
+        wx.Dialog.__init__(self, parent=parent, id=wx.ID_ANY, title=message('about_title'),
                                              pos=(-1, -1), size=wx.Size(480, 525), style=wx.DEFAULT_DIALOG_STYLE,
                                              name='AboutBox')
         self.blackback = wx.Window(parent=self, id=wx.ID_ANY, pos=(0, 0), size=self.GetClientSize(),

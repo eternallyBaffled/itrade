@@ -77,8 +77,9 @@ from itrade_wxutil import iTradeError, iTradeYesNo, iTradeSizedDialog
 
 class iTradePortfolioSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin):
     def __init__(self, parent, portfolio, operation, except_portfolio=None):
-        super(iTradePortfolioSelectorListCtrlDialog, self).__init__(parent, wx.ID_ANY, message('portfolio_%s_title'%operation),
+        iTradeSizedDialog.__init__(self, parent, wx.ID_ANY, message('portfolio_%s_title'%operation),
                         style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER, size=(420, 420))
+#        wxl.ColumnSorterMixin.__init__(self)
         if portfolio:
             self.m_name = portfolio.filename()
             self.m_accountref = portfolio.accountref()
@@ -284,7 +285,7 @@ def select_iTradePortfolio(win, dportfolio=None, operation='select'):
 
 class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
     def __init__(self, parent, portfolio, operation):
-        super(iTradePortfolioPropertiesDialog, self).__init__(None, wx.ID_ANY, message('portfolio_properties_%s'% operation),
+        iTradeSizedDialog.__init__(self, None, wx.ID_ANY, message('portfolio_properties_%s'% operation),
                         style=wx.DEFAULT_DIALOG_STYLE, size=(420, 420))
         if portfolio:
             self.m_filename = portfolio.filename()

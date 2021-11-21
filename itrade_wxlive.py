@@ -347,7 +347,7 @@ cNEGATIF = wx.Colour(255,51,51)
 class iTrade_wxLive(wx.Panel):
     def __init__(self, parent, wn, quote):
         #debug('iTrade_wxLive::__init__')
-        super(iTrade_wxLive, self).__init__(parent=parent, id=wx.ID_ANY)
+        wx.Panel.__init__(self, parent=parent, id=wx.ID_ANY)
         self.m_parent = wn
         self.m_quote = quote
         self.m_live = quote.liveconnector()
@@ -581,7 +581,8 @@ class iTrade_wxLive(wx.Panel):
 
 class WndTest(wx.Frame, iTrade_wxLiveMixin):
     def __init__(self, parent, quote):
-        super(WndTest, self).__init__(parent=parent, id=wx.ID_ANY, title='WndTest', size=(600,190), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE)
+        wx.Frame.__init__(self, parent=parent, id=wx.ID_ANY, title='WndTest', size=(600,190), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE)
+        iTrade_wxLiveMixin.__init__(self)
         self.m_live = iTrade_wxLive(self, parent, quote)
         self.m_quote = quote
         self.registerLive(quote, itrade_config.refreshLive, quote.key())

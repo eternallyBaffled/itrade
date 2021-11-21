@@ -40,7 +40,6 @@
 import logging
 import re
 import string
-from types import TupleType
 import os
 import sys
 
@@ -159,8 +158,9 @@ def NoButton(makedefault=0):
 # generate HTML for buttons
 # ============================================================================
 
+
 def _tupn(tup, n):
-    if type(tup) == TupleType:
+    if isinstance(tup, tuple):
         try:
             return tup[n]
         except IndexError:
@@ -179,7 +179,7 @@ DefaultButtonString = '''
 
 class Default_wxButton(wx.Button):
     def __init__(self, *args, **kwargs):
-        super(Default_wxButton, self).__init__(*args, **kwargs)
+        wx.Button.__init__(self, *args, **kwargs)
         self.SetDefault()
 
 def HTMLforSingleButton(label, id=None, makedefault=0):
@@ -501,7 +501,7 @@ class iTradeSizedDialog(sc.SizedDialog):
 
 class iTradeDialog(iTradeSizedDialog):
     def __init__(self, parent, caption, text, size=(420, 380), style=wx.OK | wx.YES_DEFAULT):
-        super(iTradeDialog, self).__init__(parent, wx.ID_ANY, caption, size, style=wx.DEFAULT_DIALOG_STYLE)
+        iTradeSizedDialog.__init__(self, parent, wx.ID_ANY, caption, size, style=wx.DEFAULT_DIALOG_STYLE)
 
         image = None
         if style & wx.ICON_INFORMATION == wx.ICON_INFORMATION:

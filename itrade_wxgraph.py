@@ -98,7 +98,7 @@ class GTool(object):
 
 class GToolInd(GTool):
     def __init__(self, parent, canvas):
-        super(GToolInd, self).__init__(kind=GTOOL_IND, parent=parent, canvas=canvas)
+        GTool.__init__(self, kind=GTOOL_IND, parent=parent, canvas=canvas)
 
     def is_cursor_state(self, chart):
         return True
@@ -106,7 +106,7 @@ class GToolInd(GTool):
 
 class GToolHLine(GTool):
     def __init__(self, parent, canvas):
-        super(GToolHLine, self).__init__(kind=GTOOL_HLINE, parent=parent, canvas=canvas)
+        GTool.__init__(self, kind=GTOOL_HLINE, parent=parent, canvas=canvas)
 
     def is_cursor_state(self, chart):
         return True
@@ -146,7 +146,7 @@ class GToolHLine(GTool):
 
 class GToolUPL(GTool):
     def __init__(self, parent, canvas):
-        super(GToolUPL, self).__init__(kind=GTOOL_UPL, parent=parent, canvas=canvas)
+        GTool.__init__(self, kind=GTOOL_UPL, parent=parent, canvas=canvas)
 
     def is_cursor_state(self, chart):
         return True
@@ -180,7 +180,7 @@ class GToolUPL(GTool):
 
 class GToolVLine(GTool):
     def __init__(self, parent, canvas):
-        super(GToolVLine, self).__init__(kind=GTOOL_VLINE, parent=parent, canvas=canvas)
+        GTool.__init__(self, kind=GTOOL_VLINE, parent=parent, canvas=canvas)
 
     def is_cursor_state(self,chart):
         return True
@@ -232,7 +232,7 @@ class GToolVLine(GTool):
 
 class GToolOLine(GTool):
     def __init__(self, parent, canvas):
-        super(GToolOLine, self).__init__(kind=GTOOL_OLINE, parent=parent, canvas=canvas)
+        GTool.__init__(self, kind=GTOOL_OLINE, parent=parent, canvas=canvas)
 
     def is_cursor_state(self, chart):
         return True
@@ -240,7 +240,7 @@ class GToolOLine(GTool):
 
 class GToolFibo(GTool):
     def __init__(self, parent, canvas):
-        super(GToolFibo, self).__init__(kind=GTOOL_FIBO, parent=parent, canvas=canvas)
+        GTool.__init__(self, kind=GTOOL_FIBO, parent=parent, canvas=canvas)
 
     def is_cursor_state(self, chart):
         # Fibo supported only in main chart
@@ -251,7 +251,7 @@ class GToolFibo(GTool):
 
 class GToolTrash(GTool):
     def __init__(self, parent, canvas):
-        super(GToolTrash, self).__init__(kind=GTOOL_TRASH, parent=parent, canvas=canvas)
+        GTool.__init__(self, kind=GTOOL_TRASH, parent=parent, canvas=canvas)
 
     def is_cursor_state(self, chart):
         return True
@@ -359,116 +359,114 @@ def fmtPercentFunc(x,pos):
 class iTrade_wxToolbarGraph(wx.ToolBar):
     def __init__(self, canvas):
         self.m_parent = canvas.GetParent()
-        super(iTrade_wxToolbarGraph, self).__init__(parent=self.m_parent, id=wx.ID_ANY)
+        wx.ToolBar.__init__(self, parent=self.m_parent)
         self.m_canvas = canvas
         self._init_toolbar()
 
     def _init_toolbar(self):
-        self._NTB2_HOME = wx.NewId()
-        self._NTB2_PANLEFT = wx.NewId()
-        self._NTB2_PANRIGHT = wx.NewId()
-        self._NTB2_ZOOMOUT = wx.NewId()
-        self._NTB2_ZOOMIN = wx.NewId()
-        self._NTB2_CONFIG = wx.NewId()
-        self._NTB2_SAVE = wx.NewId()
-        self._NTB2_PRINT = wx.NewId()
-        self._NTB2_SETUP = wx.NewId()
-        self._NTB2_PREVIEW = wx.NewId()
-
-        self._NTB2_TOOL_IND   = wx.NewId()
-        self._NTB2_TOOL_HLINE = wx.NewId()
-        self._NTB2_TOOL_VLINE = wx.NewId()
-        self._NTB2_TOOL_OLINE = wx.NewId()
-        self._NTB2_TOOL_FIBO = wx.NewId()
-        self._NTB2_TOOL_TRASH = wx.NewId()
-
         self.SetToolBitmapSize(wx.Size(24,24))
-        self.AddSimpleTool(self._NTB2_HOME, wx.ArtProvider.GetBitmap(wx.ART_GO_HOME, wx.ART_TOOLBAR),
+        home_tool = self.AddSimpleTool(wx.ID_ANY, wx.ArtProvider.GetBitmap(wx.ART_GO_HOME, wx.ART_TOOLBAR),
                            message('tb_home'), message('tb_home'))
-        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
-        self.AddSimpleTool(self._NTB2_PANLEFT, wx.ArtProvider.GetBitmap(wx.ART_GO_BACK, wx.ART_TOOLBAR),
+        self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
+        panleft_tool = self.AddSimpleTool(wx.ID_ANY, wx.ArtProvider.GetBitmap(wx.ART_GO_BACK, wx.ART_TOOLBAR),
                            message('tb_pan_left'), message('tb_pan_left'))
-        self.AddSimpleTool(self._NTB2_PANRIGHT, wx.ArtProvider.GetBitmap(wx.ART_GO_FORWARD, wx.ART_TOOLBAR),
+        panright_tool = self.AddSimpleTool(wx.ID_ANY, wx.ArtProvider.GetBitmap(wx.ART_GO_FORWARD, wx.ART_TOOLBAR),
                            message('tb_pan_right'), message('tb_pan_right'))
-        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
-        self.AddSimpleTool(self._NTB2_ZOOMOUT, wx.Bitmap(os.path.join(itrade_config.dirRes, 'stock_zoom-out.xpm')),
+        self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
+        zoomout_tool = self.AddSimpleTool(wx.ID_ANY, wx.Bitmap(os.path.join(itrade_config.dirRes, 'stock_zoom-out.xpm')),
                            message('tb_zoom_out'), message('tb_zoom_out'))
-        self.AddSimpleTool(self._NTB2_ZOOMIN, wx.Bitmap(os.path.join(itrade_config.dirRes, 'stock_zoom-in.xpm')),
+        zoomin_tool = self.AddSimpleTool(wx.ID_ANY, wx.Bitmap(os.path.join(itrade_config.dirRes, 'stock_zoom-in.xpm')),
                            message('tb_zoom_in'), message('tb_zoom_in'))
-        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
-        self.AddSimpleTool(self._NTB2_CONFIG, wx.ArtProvider.GetBitmap(wx.ART_TICK_MARK, wx.ART_TOOLBAR),
+        self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
+        config_tool = self.AddSimpleTool(wx.ID_ANY, wx.ArtProvider.GetBitmap(wx.ART_TICK_MARK, wx.ART_TOOLBAR),
                            message('tb_config'), message('tb_config'))
-        self.AddSimpleTool(self._NTB2_SAVE, wx.ArtProvider.GetBitmap(wx.ART_FILE_SAVE, wx.ART_TOOLBAR),
+        save_tool = self.AddSimpleTool(wx.ID_ANY, wx.ArtProvider.GetBitmap(wx.ART_FILE_SAVE, wx.ART_TOOLBAR),
                            message('tb_save_file'), message('tb_save_file'))
-        self.AddSimpleTool(self._NTB2_SETUP, wx.Bitmap(os.path.join(itrade_config.dirRes, 'printsetup.png')), message('tb_setup'), message('tb_setup'))
-        self.AddSimpleTool(self._NTB2_PRINT, wx.Bitmap(os.path.join(itrade_config.dirRes, 'print.png')), message('tb_print'), message('tb_print'))
-        self.AddSimpleTool(self._NTB2_PREVIEW, wx.Bitmap(os.path.join(itrade_config.dirRes, 'printpreview.png')), message('tb_preview'), message('tb_preview'))
-        self.AddControl(wx.StaticLine(self, -1, size=(-1,23), style=wx.LI_VERTICAL))
+        setup_tool = self.AddSimpleTool(wx.ID_ANY, wx.Bitmap(os.path.join(itrade_config.dirRes, 'printsetup.png')), message('tb_setup'), message('tb_setup'))
+        print_tool = self.AddSimpleTool(wx.ID_ANY, wx.Bitmap(os.path.join(itrade_config.dirRes, 'print.png')), message('tb_print'), message('tb_print'))
+        preview_tool = self.AddSimpleTool(wx.ID_ANY, wx.Bitmap(os.path.join(itrade_config.dirRes, 'printpreview.png')), message('tb_preview'), message('tb_preview'))
+        self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
 
-        self.AddRadioLabelTool(self._NTB2_TOOL_IND, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'toolind.png')), wx.NullBitmap, message('tb_tool_ind'), message('tb_tool_ind'))
-        self.AddRadioLabelTool(self._NTB2_TOOL_HLINE, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'toolhline.png')), wx.NullBitmap, message('tb_tool_hline'), message('tb_tool_hline'))
-        self.AddRadioLabelTool(self._NTB2_TOOL_VLINE, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'toolvline.png')), wx.NullBitmap, message('tb_tool_vline'), message('tb_tool_vline'))
-        self.AddRadioLabelTool(self._NTB2_TOOL_OLINE, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'toololine.png')), wx.NullBitmap, message('tb_tool_oline'), message('tb_tool_oline'))
-        self.AddRadioLabelTool(self._NTB2_TOOL_FIBO, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'toolfibo.png')), wx.NullBitmap, message('tb_tool_fibo'), message('tb_tool_fibo'))
-        self.AddRadioLabelTool(self._NTB2_TOOL_TRASH, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'tooltrash.png')), wx.NullBitmap, message('tb_tool_trash'), message('tb_tool_trash'))
+        ind_tool = self.AddRadioLabelTool(wx.ID_ANY, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'toolind.png')), wx.NullBitmap, message('tb_tool_ind'), message('tb_tool_ind'))
+        hline_tool = self.AddRadioLabelTool(wx.ID_ANY, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'toolhline.png')), wx.NullBitmap, message('tb_tool_hline'), message('tb_tool_hline'))
+        vline_tool = self.AddRadioLabelTool(wx.ID_ANY, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'toolvline.png')), wx.NullBitmap, message('tb_tool_vline'), message('tb_tool_vline'))
+        oline_tool = self.AddRadioLabelTool(wx.ID_ANY, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'toololine.png')), wx.NullBitmap, message('tb_tool_oline'), message('tb_tool_oline'))
+        fibo_tool = self.AddRadioLabelTool(wx.ID_ANY, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'toolfibo.png')), wx.NullBitmap, message('tb_tool_fibo'), message('tb_tool_fibo'))
+        trash_tool = self.AddRadioLabelTool(wx.ID_ANY, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'tooltrash.png')), wx.NullBitmap, message('tb_tool_trash'), message('tb_tool_trash'))
 
+        self._NTB2_HOME = home_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_HOME, self.home)
+        self._NTB2_PANLEFT = panleft_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_PANLEFT, self.panLeft)
+        self._NTB2_PANRIGHT = panright_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_PANRIGHT, self.panRight)
+        self._NTB2_ZOOMOUT = zoomout_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_ZOOMOUT, self.zoomOut)
+        self._NTB2_ZOOMIN = zoomin_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_ZOOMIN, self.zoomIn)
+        self._NTB2_CONFIG = config_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_CONFIG, self.config)
+        self._NTB2_SAVE = save_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_SAVE, self.save)
+        self._NTB2_SETUP = setup_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_SETUP, self.printSetup)
+        self._NTB2_PRINT = print_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_PRINT, self.doPrint)
+        self._NTB2_PREVIEW = preview_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_PREVIEW, self.doPreview)
 
+        self._NTB2_TOOL_IND = ind_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_TOOL_IND, self.toolInd)
+        self._NTB2_TOOL_HLINE = hline_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_TOOL_HLINE, self.toolHLine)
+        self._NTB2_TOOL_VLINE = vline_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_TOOL_VLINE, self.toolVLine)
+        self._NTB2_TOOL_OLINE = oline_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_TOOL_OLINE, self.toolOLine)
+        self._NTB2_TOOL_FIBO = fibo_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_TOOL_FIBO, self.toolFibo)
+        self._NTB2_TOOL_TRASH = trash_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_TOOL_TRASH, self.toolTrash)
 
         self.Realize()
 
-    def config(self,event):
+    def config(self, event):
         self.m_parent.OnConfig(event)
 
-    def home(self,event):
+    def home(self, event):
         self.m_parent.OnHome(event)
 
-    def panLeft(self,event):
+    def panLeft(self, event):
         self.m_parent.OnPanLeft(event)
 
-    def panRight(self,event):
+    def panRight(self, event):
         self.m_parent.OnPanRight(event)
 
-    def zoomOut(self,event):
+    def zoomOut(self, event):
         self.m_parent.OnZoomOut(event)
 
-    def zoomIn(self,event):
+    def zoomIn(self, event):
         self.m_parent.OnZoomIn(event)
 
-    def toolInd(self,event):
+    def toolInd(self, event):
         self.m_parent.OnToolInd(event)
 
-    def toolHLine(self,event):
+    def toolHLine(self, event):
         self.m_parent.OnToolHLine(event)
 
-    def toolVLine(self,event):
+    def toolVLine(self, event):
         self.m_parent.OnToolVLine(event)
 
-    def toolOLine(self,event):
+    def toolOLine(self, event):
         self.m_parent.OnToolOLine(event)
 
-    def toolFibo(self,event):
+    def toolFibo(self, event):
         self.m_parent.OnToolFibo(event)
 
-    def toolTrash(self,event):
+    def toolTrash(self, event):
         self.m_parent.OnToolTrash(event)
 
-    def save(self,event):
+    def save(self, event):
         filetypes, exts, filter_index = self.m_canvas._get_imagesave_wildcards()
         default_file = self.m_parent.m_quote.name() + "." + self.m_canvas.get_default_filetype()
         dlg = wx.FileDialog(self.m_parent, message('save_to_file'),
@@ -482,7 +480,7 @@ class iTrade_wxToolbarGraph(wx.ToolBar):
             self.m_canvas.print_figure(os.path.join(dirname, filename))
         dlg.Destroy()
 
-    def doPreview(self,event):
+    def doPreview(self, event):
         self.m_parent.OnPrintPreview(event)
 
     def doPrint(self, event):
@@ -515,7 +513,7 @@ class FigureCanvasEx(FigureCanvas):
     """be sure the parent is able to draw all its objects"""
 
     def __init__(self, parent, id, figure):
-        super(FigureCanvasEx, self).__init__(parent=parent, id=id, figure=figure)
+        FigureCanvas.__init__(self, parent=parent, id=id, figure=figure)
         self.m_parent = parent
 
     def _onPaint(self, event):
@@ -532,10 +530,11 @@ class iTrade_wxPanelGraph(GObject, PanelPrint):
         self.SetBackgroundColour("WHITE")
 
         # figure me
-        self.figure = Figure(size, dpi = 96)
-        self.m_canvas = FigureCanvasEx(self, -1, self.figure)
+        self.figure = Figure(size, dpi=96)
+        self.m_canvas = FigureCanvasEx(self, wx.ID_ANY, self.figure)
 
-        super(iTrade_wxPanelGraph, self).__init__(canvas=self.m_canvas, parent=parent, po=CanvasPrintout, orientation=wx.LANDSCAPE)
+        GObject.__init__(self, canvas=self.m_canvas)
+        PanelPrint.__init__(self, parent=parent, po=CanvasPrintout, orientation=wx.LANDSCAPE)
 
         self.m_canvas.mpl_connect('motion_notify_event', self.mouse_move)
         self.m_canvas.mpl_connect('button_press_event', self.on_click)
@@ -559,23 +558,23 @@ class iTrade_wxPanelGraph(GObject, PanelPrint):
         wx.EVT_PAINT(self, self.OnPaint)
 
         # cursor need a timer
-        self.cursorx,self.cursory = 0,0
+        self.cursorx, self.cursory = 0, 0
         self.m_timer = wx.Timer(self)
         wx.EVT_TIMER(self, -1, self.OnTimer)
 
     # ---[ CURSOR MANAGEMENT ] -----------------------------------------------
 
-    def set_cursor_mode(self,mode):
+    def set_cursor_mode(self, mode):
         self.m_cursormode = mode
         if mode == CURSOR_MODE_HLINE:
-            self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_TOOL_HLINE,True)
+            self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_TOOL_HLINE, True)
         elif mode == CURSOR_MODE_TRASH:
-            self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_TOOL_TRASH,True)
+            self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_TOOL_TRASH, True)
         else:
             self.m_cursormode = CURSOR_MODE_IND
-            self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_TOOL_IND,True)
+            self.m_toolbar.ToggleTool(self.m_toolbar._NTB2_TOOL_IND, True)
 
-    def cursorState(self,ax):
+    def cursorState(self, ax):
         # return False if something prevent cursor to show up
         if ax:
             chart = self.axe2chart(ax)
@@ -606,39 +605,39 @@ class iTrade_wxPanelGraph(GObject, PanelPrint):
 
     # ---[ TOOLBOX MANAGEMENT ] ---------------------------------------------
 
-    def OnToolInd(self,event):
+    def OnToolInd(self, event):
         self.m_cursormode = CURSOR_MODE_IND
-        self.m_tool = GToolInd(self,self.m_canvas)
+        self.m_tool = GToolInd(self, self.m_canvas)
         if event:
             event.Skip()
 
-    def OnToolHLine(self,event):
+    def OnToolHLine(self, event):
         self.m_cursormode = CURSOR_MODE_HLINE
-        self.m_tool = GToolHLine(self,self.m_canvas)
+        self.m_tool = GToolHLine(self, self.m_canvas)
         if event:
             event.Skip()
 
-    def OnToolVLine(self,event):
+    def OnToolVLine(self, event):
         self.m_cursormode = CURSOR_MODE_VLINE
-        self.m_tool = GToolVLine(self,self.m_canvas)
+        self.m_tool = GToolVLine(self, self.m_canvas)
         if event:
             event.Skip()
 
-    def OnToolOLine(self,event):
+    def OnToolOLine(self, event):
         self.m_cursormode = CURSOR_MODE_OLINE
-        self.m_tool = GToolOLine(self,self.m_canvas)
+        self.m_tool = GToolOLine(self, self.m_canvas)
         if event:
             event.Skip()
 
-    def OnToolFibo(self,event):
+    def OnToolFibo(self, event):
         self.m_cursormode = CURSOR_MODE_FIBO
-        self.m_tool = GToolFibo(self,self.m_canvas)
+        self.m_tool = GToolFibo(self, self.m_canvas)
         if event:
             event.Skip()
 
-    def OnToolTrash(self,event):
+    def OnToolTrash(self, event):
         self.m_cursormode = CURSOR_MODE_TRASH
-        self.m_tool = GToolTrash(self,self.m_canvas)
+        self.m_tool = GToolTrash(self, self.m_canvas)
         if event:
             event.Skip()
 
@@ -649,37 +648,37 @@ class iTrade_wxPanelGraph(GObject, PanelPrint):
         self.y = event.GetY()
         event.Skip()
 
-    def OnTimer(self,event):
-        #debug('OnTimer')
+    def OnTimer(self, event):
+        # debug('OnTimer')
         if self.cursorState(None) and (self.m_cursormode == CURSOR_MODE_IND):
-            #debug('OnTimer create label')
+            # debug('OnTimer create label')
             try:
-                self.m_xylabel = iTrade_wxLabelPopup(self.m_canvas,self.m_xylabelPos,self.m_xylabelMax,label=self.GetXYLabel(self.m_xylabelAxis,self.m_xylabelData),multiline=True)
+                self.m_xylabel = iTrade_wxLabelPopup(self.m_canvas, self.m_xylabelPos, self.m_xylabelMax, label=self.GetXYLabel(self.m_xylabelAxis, self.m_xylabelData), multiline=True)
             except AttributeError:
                 info('axis not managed')
             else:
-                #debug('OnTimer draw label')
+                # debug('OnTimer draw label')
                 self.m_xylabel.Draw()
 
-    def on_click(self,event):
+    def on_click(self, event):
         if self.cursorState(event.inaxes):
             chart = self.axe2chart(event.inaxes)
-            if chart>0 and event.xdata is not None:
+            if chart > 0 and event.xdata is not None:
                 self.erase_cursor()
                 self.m_tool.on_click(event.x, event.y, int(event.xdata), event.ydata, chart)
                 self.draw_cursor(event)
 
-    def mouse_move(self,event):
+    def mouse_move(self, event):
         if self.cursorState(event.inaxes):
             # just in case mouse is bad (PinPoint :-( )
             if self.cursorx != event.x or self.cursory != event.y:
                 debug('Move x:%d,y:%d!' %(event.x, event.y))
                 self.m_timer.Stop()
-                self.cursorx,self.cursory = event.x, event.y
+                self.cursorx, self.cursory = event.x, event.y
                 self.draw_cursor(event)
                 if event.inaxes:
-                    debug('Start timer x:%d,y:%d t:%d!' %(event.x, event.y,itrade_config.timerForXYPopup))
-                    self.m_timer.Start(itrade_config.timerForXYPopup,oneShot=True)
+                    debug('Start timer x:%d,y:%d t:%d!' %(event.x, event.y, itrade_config.timerForXYPopup))
+                    self.m_timer.Start(itrade_config.timerForXYPopup, oneShot=True)
 
     # ---[ CURSOR DRAWING during MOVE ] -----------------------------------------------------------------
 
@@ -723,14 +722,14 @@ class iTrade_wxPanelGraph(GObject, PanelPrint):
             pass
         else:
             if self.is_display_vcursor():
-                lastdc.DrawLine(*lastline1) # erase old
+                lastdc.DrawLine(*lastline1)  # erase old
             if self.is_display_hcursor():
-                lastdc.DrawLine(*lastline2) # erase old
+                lastdc.DrawLine(*lastline2)  # erase old
 
     def draw_cursor(self, event):
-        #event is a MplEvent.  Draw a cursor over the axes
+        # event is a MplEvent. Draw a cursor over the axes
         if event.inaxes is None:
-            #info('Out !')
+            # info('Out !')
             self.erase_cursor()
             return
 
@@ -745,10 +744,10 @@ class iTrade_wxPanelGraph(GObject, PanelPrint):
 
         time, value = event.xdata, event.ydata
 
-        a,b = ax.get_xlim()
+        a, b = ax.get_xlim()
         period = b - a
         newx = left+((width/period)*int(time))
-        #debug('newx=%d width=%d period=%d time=%d' % (newx,width,period,int(time)))
+        # debug('newx=%d width=%d period=%d time=%d' % (newx,width,period,int(time)))
 
         dc = wx.ClientDC(self.m_canvas)
         dc.SetLogicalFunction(wx.XOR)
@@ -766,26 +765,26 @@ class iTrade_wxPanelGraph(GObject, PanelPrint):
         self.m_lastInfo = line1, line2, ax, dc
 
         if self.is_display_vcursor():
-            dc.DrawLine(*line1) # draw new
+            dc.DrawLine(*line1)  # draw new
         if self.is_display_hcursor():
-            dc.DrawLine(*line2) # draw new
-        #dc.EndDrawing()
+            dc.DrawLine(*line2)  # draw new
+        # dc.EndDrawing()
 
         debug("Time=%d  Value=%f"% (time, value))
 
         # add x and y labels
-        if int(time)<len(self.times):
+        if int(time) < len(self.times):
             if self.is_display_vcursor():
-                self.m_xlabel = iTrade_wxLabelPopup(self.m_canvas,(x,bottom), label=self.GetXLabel(int(time)))
+                self.m_xlabel = iTrade_wxLabelPopup(self.m_canvas, (x, bottom), label=self.GetXLabel(int(time)))
                 self.m_xlabel.Draw()
             if self.is_display_hcursor():
-                self.m_ylabel = iTrade_wxLabelPopup(self.m_canvas,(right,y), label=self.GetYLabel(ax,value))
+                self.m_ylabel = iTrade_wxLabelPopup(self.m_canvas, (right, y), label=self.GetYLabel(ax,value))
                 self.m_ylabel.Draw()
 
             # save some data for Timed behaviour
-            self.m_xylabelMax = (right,bottom)
-            self.m_xylabelPos = (x,y)
-            self.m_xylabelData = (int(time),value)
+            self.m_xylabelMax = (right, bottom)
+            self.m_xylabelPos = (x, y)
+            self.m_xylabelData = (int(time), value)
             self.m_xylabelAxis = ax
 
         dc.EndDrawing()

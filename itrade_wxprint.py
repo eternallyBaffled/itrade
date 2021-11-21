@@ -54,7 +54,7 @@ from matplotlib.backends.backend_wx import RendererWx
 
 class CanvasPrintout(wx.Printout):
     def __init__(self, canvas):
-        super(CanvasPrintout, self).__init__(title='Graph')
+        wx.Printout.__init__(self, title='Graph')
         self.canvas = canvas
 
         # width, in inches of output figure (approximate)
@@ -133,28 +133,28 @@ class CanvasPrintout(wx.Printout):
 
 class MyPrintout(wx.Printout):
     def __init__(self, canvas):
-        super(MyPrintout, self).__init__()
+        wx.Printout.__init__(self)
         self.m_canvas = canvas
 
     def OnBeginDocument(self, start, end):
         info("MyPrintout.OnBeginDocument\n")
-        super(MyPrintout, self).OnBeginDocument(start, end)
+        self.base_OnBeginDocument(start,end)
 
     def OnEndDocument(self):
         info("MyPrintout.OnEndDocument\n")
-        super(MyPrintout, self).OnEndDocument()
+        self.base_OnEndDocument()
 
     def OnBeginPrinting(self):
         info("MyPrintout.OnBeginPrinting\n")
-        super(MyPrintout, self).OnBeginPrinting()
+        self.base_OnBeginPrinting()
 
     def OnEndPrinting(self):
         info("MyPrintout.OnEndPrinting\n")
-        super(MyPrintout, self).OnEndPrinting()
+        self.base_OnEndPrinting()
 
     def OnPreparePrinting(self):
         info("MyPrintout.OnPreparePrinting\n")
-        super(MyPrintout, self).OnPreparePrinting()
+        self.base_OnPreparePrinting()
 
     def HasPage(self, page):
         info("MyPrintout.HasPage: %d\n" % page)
@@ -293,7 +293,8 @@ class iTrade_wxPanelPrint(object):
 
 class MyTestPanel(wx.Panel, iTrade_wxPanelPrint):
     def __init__(self, parent):
-        super(MyTestPanel, self).__init__(parent, po=MyPrintout)
+        wx.Panel.__init__(self, parent)
+        iTrade_wxPanelPrint.__init__(self, parent, po=MyPrintout)
 
         self.box = wx.BoxSizer(wx.VERTICAL)
 
@@ -323,7 +324,7 @@ class MyTestPanel(wx.Panel, iTrade_wxPanelPrint):
 
 class MyTestFrame(wx.Frame):
     def __init__(self, parent, id):
-        super(MyTestFrame, self).__init__(parent, id=id, title="iTrade Print and Preview Module",
+        wx.Frame.__init__(self, parent, id=id, title="iTrade Print and Preview Module",
                                           pos=wx.Point(10, 10), size=wx.Size(400, 400))
         self.panel = MyTestPanel(self)
 

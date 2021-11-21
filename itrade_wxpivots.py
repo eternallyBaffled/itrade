@@ -51,7 +51,7 @@ from itrade_logging import setLevel, info
 class iTrade_wxPivots(wx.Panel):
     def __init__(self, parent, quote, *args, **kwargs):
         info('iTrade_wxPivots::__init__')
-        super(iTrade_wxPivots, self).__init__(*args, **kwargs)
+        wx.Panel.__init__(self, *args, **kwargs)
         self.m_quote = quote
 
         self.m_font = wx.Font(10, wx.FONTFAMILY_MODERN, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
@@ -94,7 +94,7 @@ class iTrade_wxPivots(wx.Panel):
 
 class WndTest(wx.Frame):
     def __init__(self, parent, quote):
-        super(WndTest, self).__init__(parent, id=wx.ID_ANY, title='WndTest', size=(300, 300),
+        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title='WndTest', size=(300, 300),
                           style=wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE)
         self.m_pivots = iTrade_wxPivots(self, quote)
         self.m_quote = quote

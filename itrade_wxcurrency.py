@@ -84,7 +84,7 @@ ID_AUTOREFRESH = 231
 
 class iTradeCurrencyToolbar(wx.ToolBar):
     def __init__(self, parent, id):
-        super(iTradeCurrencyToolbar, self).__init__(parent=parent, id=id, style=wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT)
+        wx.ToolBar.__init__(self, parent=parent, id=id, style=wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT)
         self.m_parent = parent
         self._init_toolbar()
 
@@ -121,15 +121,14 @@ class iTradeCurrencyToolbar(wx.ToolBar):
 # ============================================================================
 
 class iTradeCurrenciesListCtrl(wx.ListCtrl, wxl.ListCtrlAutoWidthMixin):
-    def __init__(self, parent, ID, pos=wx.DefaultPosition,
-                 size=wx.DefaultSize, style=0):
-        super(iTradeCurrenciesListCtrl, self).__init__(parent=parent, id=ID, pos=pos, size=size, style=style)
+    def __init__(self, parent, ID, pos=wx.DefaultPosition, size=wx.DefaultSize, style=0):
+        wx.ListCtrl.__init__(self, parent=parent, id=ID, pos=pos, size=size, style=style)
+        wxl.ListCtrlAutoWidthMixin.__init__(self)
 
 
 class iTradeCurrenciesMatrix(gridlib.Grid):
-    def __init__(self, parent, ID, pos=wx.DefaultPosition,
-                 size=wx.DefaultSize, style=0, list=None):
-        super(iTradeCurrenciesMatrix, self).__init__(parent=parent, id=ID, pos=pos, size=size, style=style)
+    def __init__(self, parent, ID, pos=wx.DefaultPosition, size=wx.DefaultSize, style=0, list=None):
+        gridlib.Grid.__init__(self, parent=parent, id=ID, pos=pos, size=size, style=style)
         self.list = list
         count = len(list)
 
@@ -147,12 +146,15 @@ class iTradeCurrenciesMatrix(gridlib.Grid):
 
 class iTradeCurrenciesWindow(wx.Frame, iTrade_wxFrame, iTrade_wxLiveCurrencyMixin):
     def __init__(self, parent, title):
-        super(iTradeCurrenciesWindow, self).__init__(parent=parent,
+        wx.Frame.__init__(self, parent=parent,
                           id=wx.ID_ANY,
                           title=title,
                           size=(640, 480),
                           style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE,
-                                                     name='currencies')
+                          name='currencies')
+        iTrade_wxFrame.__init__(self, parent=parent,
+                                name='currencies')
+        iTrade_wxLiveCurrencyMixin.__init__(self)
         self.filemenu = wx.Menu()
         # self.filemenu.Append(ID_SAVE, message('main_save'), message('main_desc_save'))
         # self.filemenu.AppendSeparator()
@@ -181,7 +183,7 @@ class iTradeCurrenciesWindow(wx.Frame, iTrade_wxFrame, iTrade_wxLiveCurrencyMixi
         self.m_toolbar = iTradeCurrencyToolbar(parent=self, id=wx.ID_ANY)
 
         # default list is quotes
-        self.m_list = iTradeCurrenciesMatrix(parent=self, id=wx.ID_ANY,
+        self.m_list = iTradeCurrenciesMatrix(parent=self, ID=wx.ID_ANY,
                                  style=wx.LC_REPORT | wx.SUNKEN_BORDER | wx.LC_SINGLE_SEL | wx.LC_VRULES | wx.LC_HRULES,
                                  list=list_of_currencies())
         # self.m_list.SetImageList(self.m_imagelist, wx.IMAGE_LIST_SMALL)

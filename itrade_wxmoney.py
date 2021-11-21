@@ -74,7 +74,7 @@ ID_CLOSE = 111
 class iTradeMoneyPanel(wx.Window):
 
     def __init__(self, parent, id, port):
-        super(iTradeMoneyPanel, self).__init__(parent, id)
+        wx.Window.__init__(self, parent, id)
         self.m_port = port
         self.m_currentItem = -1
 
@@ -90,7 +90,7 @@ class iTradeMoneyPanel(wx.Window):
 class iTradeEvaluationChartPanel(wx.Window):
 
     def __init__(self, parent, id, port):
-        super(iTradeEvaluationChartPanel, self).__init__(parent, id)
+        wx.Window.__init__(self, parent, id)
         self.m_port = port
         self.m_currentItem = -1
 
@@ -106,7 +106,7 @@ class iTradeEvaluationChartPanel(wx.Window):
 class iTradeComputePanel(wx.Window):
 
     def __init__(self, parent, id, quote):
-        super(iTradeComputePanel, self).__init__(parent, id)
+        wx.Window.__init__(self, parent, id)
         self.m_quote = quote
         self.m_currentItem = -1
 
@@ -122,7 +122,7 @@ class iTradeComputePanel(wx.Window):
 class iTradeEvaluationPanel(wx.Window):
 
     def __init__(self, parent, id, port):
-        super(iTradeEvaluationPanel, self).__init__(parent, id)
+        wx.Window.__init__(self, parent, id)
         self.m_parent = parent
         self.m_port = port
         self.m_currentItem = -1
@@ -280,7 +280,7 @@ class iTradeMoneyNotebookWindow(wx.Notebook):
     ID_PAGE_MONEY = 3
 
     def __init__(self, parent, id, page, port, quote):
-        super(iTradeMoneyNotebookWindow, self).__init__(parent, id=id, pos=wx.DefaultPosition, style=wx.SIMPLE_BORDER|wx.NB_TOP)
+        wx.Notebook.__init__(self, parent, id=id, pos=wx.DefaultPosition, style=wx.SIMPLE_BORDER|wx.NB_TOP)
         self.m_port = port
         self.m_quote = quote
         self.init()
@@ -327,9 +327,9 @@ class iTradeMoneyNotebookWindow(wx.Notebook):
 # ============================================================================
 
 class iTradeMoneyWindow(wx.Frame, iTrade_wxFrame):
-
     def __init__(self, parent, id, title, page, port, quote):
-        super(iTradeMoneyWindow, self).__init__(parent=None, id=id, title=title, size=(640,480), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE, name='money')
+        wx.Frame.__init__(self, parent=None, id=id, title=title, size=(640,480), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE, name='money')
+        iTrade_wxFrame.__init__(self, parent=None, name='money')
         self.m_port = port
         self.m_quote = quote
         self.m_page = page
@@ -377,9 +377,9 @@ if __name__ == '__main__':
     gMessage.setLang('us')
     gMessage.load()
 
-    port,matrix = cmdline_evaluatePortfolio()
+    port, matrix = cmdline_evaluatePortfolio()
 
-    open_iTradeMoney(None, port, None)
+    open_iTradeMoney(None, port=port, quote=None)
     app.MainLoop()
 
 # ============================================================================

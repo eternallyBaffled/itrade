@@ -176,8 +176,7 @@ ID_PAGE_EVALUATION = 5
 
 class iTradeMainToolbar(wx.ToolBar):
     def __init__(self, parent, id):
-        super(iTradeMainToolbar, self).__init__(parent=parent, id=id, style=wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT)
-#        self.m_parent = parent
+        wx.ToolBar.__init__(self, parent=parent, id=id, style=wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT)
         self._init_toolbar()
 
     def _init_toolbar(self):
@@ -365,7 +364,7 @@ class iTradeMainToolbar(wx.ToolBar):
 
 class iTradeMainNotebookWindow(wx.Notebook):
     def __init__(self, parent, id, page, portfolio, matrix):
-        super(iTradeMainNotebookWindow, self).__init__(parent=parent, id=id, style=wx.SIMPLE_BORDER|wx.NB_TOP)
+        wx.Notebook.__init__(self, parent=parent, id=id, style=wx.SIMPLE_BORDER|wx.NB_TOP)
         self.m_portfolio = portfolio
         self.m_matrix = matrix
 #        self.m_parent = parent
@@ -466,7 +465,8 @@ import wx.lib.newevent
 
 class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
     def __init__(self, parent, portfolio, matrix):
-        super(iTradeMainWindow, self).__init__(parent=parent, size=(640, 480), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE, name='main')
+        wx.Frame.__init__(self, parent=parent, size=(640, 480), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE, name='main')
+        iTrade_wxFrame.__init__(self, parent=parent, name='main')
 
         self.m_portfolio = portfolio
         self.m_matrix = matrix
@@ -910,8 +910,8 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
         elif page == ID_PAGE_EVALUATION:
             title = message('main_title_evaluation')
         else:
-            title = '??? %s:%s'
-        self.SetTitle(title % (self.m_portfolio.name(), self.m_portfolio.accountref()))
+            title = u'??? {}:{}'
+        self.SetTitle(title.format(self.m_portfolio.name(), self.m_portfolio.accountref()))
 
     def RebuildList(self):
         self.Save()

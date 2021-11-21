@@ -67,7 +67,7 @@ UpdateConvertEvent, EVT_UPDATE_CONVERT = wx.lib.newevent.NewEvent()
 
 class iTradeConverterDialog(iTradeSizedDialog):
     def __init__(self, parent, curSelected=(0, 1)):
-        super(iTradeConverterDialog, self).__init__(parent=parent, id=wx.ID_ANY, title=message('converter_title'),
+        iTradeSizedDialog.__init__(self, parent=parent, id=wx.ID_ANY, title=message('converter_title'),
                                    size=(420, 420), style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
         # container
         container = self.GetContentsPane()

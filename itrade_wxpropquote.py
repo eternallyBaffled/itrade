@@ -381,7 +381,7 @@ class iTradeQuotePropertiesPanel(wx.Panel):
 
 class iTradeQuotePropertyToolbar(wx.ToolBar):
     def __init__(self, parent, id):
-        super(iTradeQuotePropertyToolbar, self).__init__(parent, id, size=(120, 32), style=wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT)
+        wx.ToolBar.__init__(self, parent, id, size=(120, 32), style=wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT)
         self.m_parent = parent
         self.m_Throbber = None
         self._init_toolbar()
@@ -413,7 +413,7 @@ class iTradeQuotePropertyToolbar(wx.ToolBar):
 
 class iTradeQuotePropertyWindow(wx.Frame):
     def __init__(self, parent, quote, dpage=1):
-        super(iTradeQuotePropertyWindow, self).__init__(None, wx.ID_ANY, style=wx.DEFAULT_FRAME_STYLE|wx.FULL_REPAINT_ON_RESIZE|wx.TAB_TRAVERSAL)
+        wx.Frame.__init__(self, parent=None, id=wx.ID_ANY, style=wx.DEFAULT_FRAME_STYLE|wx.FULL_REPAINT_ON_RESIZE|wx.TAB_TRAVERSAL)
         self.m_quote = quote
         self.m_parent = parent
         self.m_framesizer = wx.BoxSizer(wx.VERTICAL)

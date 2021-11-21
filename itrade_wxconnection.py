@@ -62,7 +62,8 @@ from itrade_wxutil import iTradeSizedDialog
 
 class iTradeConnectionDialog(iTradeSizedDialog):
     def __init__(self, parent, server, auth, timeout):
-        super(iTradeConnectionDialog, self).__init__(parent=parent, id=wx.ID_ANY, title=message('connection_title'), size=(420, 420), style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
+        iTradeSizedDialog.__init__(self, parent=parent, id=wx.ID_ANY, title=message('connection_title'),
+                                   size=(420, 420), style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
 
         if server != "":
             ip, self.m_port = server.split(':')

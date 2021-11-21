@@ -71,9 +71,9 @@ IDC_TITLE = 4
 # ============================================================================
 
 class iTradeAlertsListCtrl(wx.ListCtrl, wxl.ListCtrlAutoWidthMixin):
-    def __init__(self, parent, id, pos=wx.DefaultPosition,
-                 size=wx.DefaultSize, style=0):
-        super(iTradeAlertsListCtrl, self).__init__(parent, id, pos, size, style)
+    def __init__(self, parent, id, pos=wx.DefaultPosition, size=wx.DefaultSize, style=0):
+        wx.ListCtrl.__init__(self, parent, id, pos, size, style)
+        wxl.ListCtrlAutoWidthMixin.__init__(self)
 
 # ============================================================================
 # iTradeAlertsPanel
@@ -82,8 +82,8 @@ class iTradeAlertsListCtrl(wx.ListCtrl, wxl.ListCtrlAutoWidthMixin):
 # ============================================================================
 
 class iTradeAlertsPanel(wx.Window):
-    def __init__(self, parent, id,port):
-        super(iTradeAlertsPanel, self).__init__(parent, id)
+    def __init__(self, parent, id, port):
+        wx.Window.__init__(self, parent, id)
         self.m_port = port
 
         wx.EVT_SIZE(self, self.OnSize)
@@ -152,7 +152,7 @@ class iTradeAlertsPanel(wx.Window):
 
 class iTradeNewsPanel(wx.Window):
     def __init__(self, parent, id, port):
-        super(iTradeNewsPanel, self).__init__(parent, id)
+        wx.Window.__init__(self, parent, id)
         self.m_port = port
 
     def refresh(self):
@@ -167,7 +167,7 @@ class iTradeAlertsNotebookWindow(wx.Notebook):
     ID_PAGE_NEWS = 1
 
     def __init__(self, parent, id, port):
-        super(iTradeAlertsNotebookWindow, self).__init__(parent=parent, id=id, pos=wx.DefaultPosition, style=wx.SIMPLE_BORDER|wx.NB_TOP)
+        wx.Notebook.__init__(self, parent=parent, id=id, pos=wx.DefaultPosition, style=wx.SIMPLE_BORDER|wx.NB_TOP)
         self.m_port = port
         self.init()
 
@@ -206,7 +206,8 @@ class iTradeAlertsNotebookWindow(wx.Notebook):
 
 class iTradeAlertsWindow(wx.Frame, iTrade_wxFrame):
     def __init__(self, parent, title, port):
-        super(iTradeAlertsWindow, self).__init__(parent=None, id=wx.ID_ANY, title=title, size=(640, 480), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE, name='alerts')
+        wx.Frame.__init__(self, parent=None, id=wx.ID_ANY, title=title, size=(640, 480), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE, name='alerts')
+        iTrade_wxFrame.__init__(self, parent=None, name='alerts')
         self.m_port = port
         self.m_book = iTradeAlertsNotebookWindow(self, wx.ID_ANY, port=self.m_port)
 

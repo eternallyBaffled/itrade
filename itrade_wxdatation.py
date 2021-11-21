@@ -57,7 +57,7 @@ from itrade_local import message
 
 class iTradeDatePicker(wx.Dialog):
     def __init__(self, parent, title, ddate=None):
-        super(iTradeDatePicker, self).__init__(parent=parent, id=wx.ID_ANY, title=title, size=(420, 420))
+        wx.Dialog.__init__(self, parent=parent, id=wx.ID_ANY, title=title, size=(420, 420))
         self.dRet = ddate
 
         # calendar
