@@ -115,10 +115,10 @@ class CanvasPrintout(wx.Printout):
         # this cute little number avoid API inconsistencies in wx
         try:
             dc.DrawBitmap(self.canvas.bitmap, 0, 0)
-        except:
+        except Exception:
             try:
                 dc.DrawBitmap(self.canvas.bitmap, (0, 0))
-            except:
+            except Exception:
                 pass
         self.canvas.m_parent.drawAllObjects(dc)
 

@@ -102,7 +102,7 @@ class News_Balo(object):
         info('Balo News refresh %s',self.m_url)
         try:
             buf=self.m_connection.getDataFromUrl(self.m_url)
-        except:
+        except Exception:
             debug('News_Balo:unable to connect :-(')
             return None
 
@@ -137,7 +137,7 @@ class News_Balo(object):
         info('goto %s',url)
         try:
             buf=self.m_connection.getDataFromUrl(url)
-        except:
+        except Exception:
             debug('News_Balo:unable to connect :-(')
             if html:
                 html.paint_NC()

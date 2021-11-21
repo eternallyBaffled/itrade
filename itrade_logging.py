@@ -181,7 +181,7 @@ def main():
     error('error:' + itrade_config.__version__)
     try:
         a = 0 / 0
-    except:
+    except Exception:
         exception('Uncaught divide by 0 exception')
     critical('critical')
     debug('debug: __main__')

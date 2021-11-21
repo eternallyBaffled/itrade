@@ -365,7 +365,7 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
                 # self.wxIndicatorCtrl.Append(eachCtrl.name(), eachCtrl.isin())
                 try:
                     self.wxIndicatorCtrl.Append(eachCtrl.name(), eachCtrl.isin())
-                except:
+                except Exception:
                     print('eachCtrl:', eachCtrl)
                 if eachCtrl.isin() == self.m_indice:
                     idx = count

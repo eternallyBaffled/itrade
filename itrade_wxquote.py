@@ -132,10 +132,9 @@ class iTradeQuoteToolbar(wx.ToolBar):
 
 def exists(filename):
     try:
-        f = open(filename)
-        f.close()
-        return True
-    except:
+        with open(filename) as f:
+            return True
+    except Exception:
         return False
 
 class iTradeQuoteInfoWindow(sc.SizedPanel):
@@ -780,7 +779,7 @@ class iTradeQuoteGraphPanel(wx.Panel, iTrade_wxPanelGraph):
         self.idx = []
         num = 0
 
-        for i in range(begin,end):
+        for i in range(begin, end):
             if self.m_quote.m_daytrades.has_trade(i):
                 num = num + 1
             dt = gCal.date(i)
@@ -804,7 +803,7 @@ class iTradeQuoteGraphPanel(wx.Panel, iTrade_wxPanelGraph):
                     self.m_quote.m_daytrades.bollinger(i,0)
 
         # self.m_quote.m_daytrades.m_[begin:end]
-        # print 'ChartRealize: begin:',begin,' end:',end,' num:',num
+        # print('ChartRealize: begin:', begin, ' end:', end, ' num:', num)
 
         if num > 0:
             if self.m_dispChart1Type == 'c':

@@ -41,7 +41,7 @@ import logging
 import re
 from datetime import date, timedelta
 from urllib import urlencode
-from httplib import HTTPConnection
+from httplib import HTTPConnection, HTTPException
 
 # iTrade system
 from itrade_logging import setLevel, debug
@@ -79,8 +79,8 @@ class Import_ABCBourse(object):
     def connect(self):
         debug('Import_ABCBourse:connect to web site')
         try:
-            self.m_conn = HTTPConnection(self.m_host,80)
-        except:
+            self.m_conn = HTTPConnection(self.m_host, 80)
+        except HTTPException:
             debug('Import_ABCBourse:unable to connect :-(')
             return False
         return True
@@ -102,7 +102,7 @@ class Import_ABCBourse(object):
         try:
             self.m_conn.request("GET", self.m_url, None, headers)
             response = self.m_conn.getresponse()
-        except:
+        except HTTPException:
             debug('Import_ABCBourse:GET failure')
             return None
 
@@ -155,7 +155,7 @@ class Import_ABCBourse(object):
         try:
             self.m_conn.request("POST", self.m_url, params, headers)
             response = self.m_conn.getresponse()
-        except:
+        except HTTPException:
             debug('Import_ABCBourse:POST failure')
             return None
 

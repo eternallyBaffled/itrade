@@ -951,7 +951,7 @@ class Quote(object):
     def sv_percent(self, d=None):
         try:
             x = self.nv_percent(d)
-        except:
+        except Exception:
             return " ---.-- %"
 
         if x is not None:

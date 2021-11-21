@@ -44,7 +44,7 @@ xlrd_url = 'https://pypi.org/project/xlrd/'
 
 try:
     import xlrd
-except:
+except ImportError:
     canReadExcel = False
     print('XLRD package (%s) not installed.' % xlrd_url)
 

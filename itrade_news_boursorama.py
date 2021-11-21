@@ -103,7 +103,7 @@ class News_Boursorama(object):
         debug("News_Boursorama:getdata: url=%s ",url)
         try:
             buf = self.m_connection.getDataFromUrl(url)
-        except:
+        except Exception:
             debug('News_Boursorama:unable to connect :-(')
             return None
 

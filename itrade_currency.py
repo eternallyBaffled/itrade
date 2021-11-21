@@ -237,7 +237,7 @@ class Currencies(object):
         url = self.m_url.format(a, b)
         try:
             buf = self.m_connection.getDataFromUrl(url)
-        except:
+        except Exception:
             return None
 
         # extract data

@@ -129,21 +129,22 @@ class iTrade_wxFrame(object):
                         self.SetPosition(self._config['position'])
                     if 'size' in self._config:
                         self.SetSize(self._config['size'])
-            except:
+            except Exception:
                 self._config = {}
 
     def saveConfig(self):
         if self.m_name and not self.IsMaximized():
-            if itrade_config.verbose: print('iTrade_wxFrame::saveConfig',self.m_name)
+            if itrade_config.verbose:
+                print('iTrade_wxFrame::saveConfig', self.m_name)
             self._config['position'] = self.GetRestoredPosition()
             self._config['size'] = self.GetRestoredSize()
             try:
                 path = os.path.join(itrade_config.dirCacheData,'%s.win' % self.m_name)
-                if itrade_config.verbose: print('saveConfig: %s %s' % (path,self._config))
-                f = open(path, "w")
-                pprint.pprint(self._config, f)
-                f.close()
-            except:
+                if itrade_config.verbose:
+                    print('saveConfig: %s %s' % (path, self._config))
+                with open(path, "w") as f:
+                    pprint.pprint(self._config, f)
+            except Exception:
                 # argh
                 print('saveConfig: argh')
                 pass
