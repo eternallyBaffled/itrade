@@ -81,7 +81,7 @@ def Import_ListOfQuotes_OTCBB(quotes,market='OTCBB',dlg=None,x=0):
 
     try:
         data=connection.getDataFromUrl(url)
-    except:
+    except Exception:
         debug('Import_ListOfQuotes_OTCBB:unable to connect :-(')
         return False
 

@@ -87,7 +87,7 @@ def Import_ListOfQuotes_HKG(quotes,market='HONG KONG EXCHANGE',dlg=None,x=0):
 
         try:
             data = connection.getDataFromUrl(url)
-        except:
+        except Exception:
             info('Import_ListOfQuotes_HKG_%s:unable to connect :-(' % market)
             return False
 
@@ -95,7 +95,7 @@ def Import_ListOfQuotes_HKG(quotes,market='HONG KONG EXCHANGE',dlg=None,x=0):
         book = itrade_excel.open_excel(file=None,content=data)
         sh = book.sheet_by_index(0)
 
-        #print 'Import_ListOfQuotes_HKG_%s:' % market,'book',book,'sheet',sh,'nrows=',sh.nrows
+        #print('Import_ListOfQuotes_HKG_%s:' % market,'book',book,'sheet',sh,'nrows=',sh.nrows)
 
         for line in range(sh.nrows):
             if sh.cell_type(line,1) != xlrd.XL_CELL_EMPTY:

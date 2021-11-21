@@ -83,7 +83,7 @@ def Import_ListOfQuotes_MEX(quotes,market='MEXICO EXCHANGE',dlg=None,x=0):
 
     try:
         data=connection.getDataFromUrl(url)
-    except:
+    except Exception:
         debug('Import_ListOfQuotes_MEX unable to connect :-(')
         return False
 

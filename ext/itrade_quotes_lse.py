@@ -94,7 +94,7 @@ def Import_ListOfQuotes_LSE(quotes,market='LSE SETS',dlg=None,x=0):
     try:
         f = urllib2.urlopen(req)
         data = f.read()
-    except:
+    except Exception:
         info('Import_ListOfQuotes_LSE_%s:unable to connect :-(' % market)
         return False
 

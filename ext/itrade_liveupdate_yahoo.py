@@ -180,7 +180,7 @@ class LiveUpdate_yahoo(object):
         debug("LiveUpdate_yahoo:getdata: url=%s",url)
         try:
             data=self.m_connection.getDataFromUrl(url)[:-2] # Get rid of CRLF
-        except:
+        except Exception:
             debug('LiveUpdate_yahoo:unable to connect :-(')
             return None
 

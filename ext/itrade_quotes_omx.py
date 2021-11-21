@@ -81,7 +81,7 @@ def Import_ListOfQuotes_OMX(quotes,market='STOCKHOLM EXCHANGE',dlg=None,x=0):
     ch ='href="/digitalAssets/'
     try:
         url = connection.getDataFromUrl('https://www.nasdaqomxnordic.com/shares?languadeID=1')
-    except:
+    except Exception:
         info('Import_ListOfQuotes_OMX_%s:unable to get XLS file name :-(' % market)
         return False
 
@@ -107,7 +107,7 @@ def Import_ListOfQuotes_OMX(quotes,market='STOCKHOLM EXCHANGE',dlg=None,x=0):
 
     try:
         data = connection.getDataFromUrl(url)
-    except:
+    except Exception:
         info('Import_ListOfQuotes_OMX_%s:unable to connect :-(' % market)
         return False
 

@@ -83,7 +83,7 @@ def Import_ListOfQuotes_IE(quotes,market='IRISH EXCHANGE',dlg=None,x=0):
 
     try:
         data=connection.getDataFromUrl(url)
-    except:
+    except Exception:
         debug('Import_ListOfQuotes_IE:unable to connect :-(')
         return False
 

@@ -82,7 +82,7 @@ def Import_ListOfQuotes_WBO(quotes,market='WIENER BORSE',dlg=None,x=0):
 
     try:
         data=connection.getDataFromUrl(url)
-    except:
+    except Exception:
         debug('Import_ListOfQuotes_WBO:unable to connect :-(')
         return False
 

@@ -97,7 +97,7 @@ class LiveUpdate_ABCBourse(object):
         debug('LiveUpdate_ABCBourse:connect to web site')
         try:
             self.m_conn = HTTPConnection(self.m_host,80)
-        except:
+        except Exception:
             debug('LiveUpdate_ABCBourse:unable to connect :-(')
             return False
         return True
@@ -124,7 +124,7 @@ class LiveUpdate_ABCBourse(object):
         try:
             self.m_conn.request("GET", self.m_url, None, headers)
             response = self.m_conn.getresponse()
-        except:
+        except Exception:
             debug('LiveUpdate_ABCBourse:GET failure')
             return None
 
@@ -167,7 +167,7 @@ class LiveUpdate_ABCBourse(object):
         try:
             self.m_conn.request("POST", self.m_url, params, headers)
             response = self.m_conn.getresponse()
-        except:
+        except Exception:
             debug('LiveUpdate_ABCBourse:POST failure')
             return None
 

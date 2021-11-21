@@ -374,7 +374,7 @@ class LiveUpdate_yahoojp(object):
 
             return data
 
-        except:
+        except Exception:
             debug('LiveUpdate_yahoojapan:unable to connect :-(')
             return None
 

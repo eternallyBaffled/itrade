@@ -119,7 +119,7 @@ def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT',dlg=None,x=0):
         handle = urlopen(req)
         cj = str(cj)
         cookie = cj[cj.find('ZDEDebuggerPresent='):cj.find(' for europeanequities.nyx.com/>')]
-    except:
+    except Exception:
         debug('Import_ListOfQuotes_Euronext:unable to connect :-(')
         return False
 
@@ -147,7 +147,7 @@ def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT',dlg=None,x=0):
         conn.request("POST",url,params,headers)
         response = conn.getresponse()
         data = response.read()
-    except:
+    except Exception:
         debug('Import_ListOfQuotes_Euronext:unable to connect :-(')
         return False
 

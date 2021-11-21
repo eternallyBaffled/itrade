@@ -90,7 +90,7 @@ def Import_ListOfQuotes_MIL(quotes,market='MILAN EXCHANGE',dlg=None,x=0):
         f = urllib2.urlopen(req)
         data = f.read()
         f.close()
-    except:
+    except Exception:
         info('Import_ListOfQuotes_%s:unable to connect :-(' % market)
         return False
 
@@ -109,7 +109,7 @@ def Import_ListOfQuotes_MIL(quotes,market='MILAN EXCHANGE',dlg=None,x=0):
                 f = urllib2.urlopen(req)
                 datas = f.read()
                 f.close()
-            except:
+            except Exception:
                 info('Import_ListOfQuotes_ISIN_TICKER_NAME_%s:unable to connect :-(' % market)
                 return False
 

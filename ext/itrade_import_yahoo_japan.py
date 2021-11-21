@@ -127,8 +127,8 @@ class ImportYahoojp(object):
 
             debug("ImportYahoojp:getdata: url=%s ",url)
             try:
-                buf=self.m_connection.getDataFromUrl(url)
-            except:
+                buf = self.m_connection.getDataFromUrl(url)
+            except Exception:
                 debug('ImportYahoojp:unable to connect :-(')
                 return None
             # pull data

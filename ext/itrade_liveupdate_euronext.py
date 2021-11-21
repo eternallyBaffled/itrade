@@ -42,6 +42,7 @@ import logging
 import string
 import thread
 import urllib2
+from contextlib import closing
 from datetime import date, datetime
 
 # iTrade system
@@ -196,19 +197,16 @@ class LiveUpdate_Euronext(object):
         query = string.join(query, '&')
 
         url = self.m_url + query
-        #print 'url:',url
+        #print('url:',url)
         debug("LiveUpdate_Euronext:getdata: url=%s ",url)
 
         try:
-
             req = urllib2.Request(url)
             req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
 
-            f = urllib2.urlopen(req)
-            buf = f.read()
-            f.close()
-
-        except:
+            with closing(urllib2.urlopen(req)) as f:
+                buf = f.read()
+        except Exception:
             debug('LiveUpdate_Euronext:unable to connect :-(')
             return None
 

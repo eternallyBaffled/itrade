@@ -87,7 +87,7 @@ def Import_ListOfQuotes_MADRID(quotes,market='MADRID EXCHANGE',dlg=None,x=0):
 
     try:
         urllib.urlretrieve(url, f)
-    except:
+    except Exception:
         info('Import_ListOfQuotes_MADRID_%s:unable to connect :-(' % market)
         return False
 

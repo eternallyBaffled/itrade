@@ -77,7 +77,7 @@ def Import_ListOfQuotes_SGX(quotes,market='SINGAPORE EXCHANGE',dlg=None,x=0):
     # find date to update list
     try:
         data = connection.getDataFromUrl('https://info.sgx.com/webstocks.nsf/isincodedownload/')
-    except:
+    except Exception:
         info('Import_ListOfQuotes_SGX_%s:unable to get file name :-(' % market)
         return False
 
@@ -94,7 +94,7 @@ def Import_ListOfQuotes_SGX(quotes,market='SINGAPORE EXCHANGE',dlg=None,x=0):
 
     try:
         data = connection.getDataFromUrl(url)
-    except:
+    except Exception:
         info('Import_ListOfQuotes_SGX_%s:unable to connect :-(' % market)
         return False
 

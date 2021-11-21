@@ -171,10 +171,9 @@ class Import_euronext_bonds(object):
         query = map(lambda var_val: '%s=%s' % (var_val[0], str(var_val[1])), query)
         query = string.join(query, '&')
         url = self.m_url + '?' + query
-        #print url
+        #print(url)
         debug("Import_euronext_bonds:getdata: url=%s ",url)
         try:
-
             req = urllib2.Request(url)
             req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
 
@@ -183,14 +182,14 @@ class Import_euronext_bonds(object):
             f.close()
 
             #buf=self.m_connection.getDataFromUrl(url)
-        except:
+        except Exception:
             debug('Import_euronext_bonds:unable to connect :-(')
             return None
 
         # pull data
         lines = self.splitLines(buf)
         data = ''
-        #print lines
+        #print(lines)
 
         for eachLine in lines[4:]:
             eachLine = eachLine.replace('","',';')
@@ -198,7 +197,7 @@ class Import_euronext_bonds(object):
             sdata = string.split(eachLine,';')
 
             if len(sdata)== 11:
-                #print sdata
+                #print(sdata)
                 #if (sdata[0] != "Date") and (quote.list() == QList.indices):
                 sdate = jjmmaa2yyyymmdd(sdata[2])
                 open = self.parseFValue(sdata[3].replace(',','.'))

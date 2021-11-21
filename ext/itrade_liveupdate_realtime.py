@@ -86,11 +86,11 @@ class LiveUpdate_RealTime(object):
             symbol = ''
 
             # try to open dictionnary of ticker_bourso.txt
-            f = open(os.path.join(itrade_config.dirUserData,'ticker_bourso.txt'),'r')
+            f = open(os.path.join(itrade_config.dirUserData,'ticker_bourso.txt'), 'r')
             self.m_isinsymbol = cPickle.load(f)
             f.close()
 
-        except:
+        except Exception:
             print('Missing or invalid file: ticker_bourso.txt')
 
             # read isin codes of properties.txt file in directory usrdata
@@ -126,14 +126,14 @@ class LiveUpdate_RealTime(object):
                                     symbol = symbol[:symbol.find('" >')]
                                     self.m_isinsymbol [isin] = symbol
                                     debug('%s found and added in dictionary (%s)' % (isin,symbol))
-                    except:
+                    except Exception:
                         pass
 
                 dic = open(os.path.join(itrade_config.dirUserData,'ticker_bourso.txt'), 'w')
                 cPickle.dump(self.m_isinsymbol,dic)
                 dic.close()
 
-            except:
+            except Exception:
                 pass
 
     # ---[ reentrant ] ---
@@ -260,7 +260,7 @@ class LiveUpdate_RealTime(object):
                     else:
                         return None
 
-                except:
+                except Exception:
                     debug('LiveUpdate_Boursorama:unable to connect :-(')
                     return None
         else:
@@ -284,7 +284,7 @@ class LiveUpdate_RealTime(object):
             f = urllib2.urlopen(req)
             data = f.read()
             f.close()
-        except:
+        except Exception:
             debug('LiveUpdate_Boursorama:unable to connect :-(')
             return None
 
@@ -349,7 +349,6 @@ class LiveUpdate_RealTime(object):
                     data = ';'.join([quote.key(),sdate,first,high,low,last,volume,percent])
                     #print "connect to Boursorama",quote.key()
                     return data
-
         return None
 
     # ---[ cache management on data ] ---

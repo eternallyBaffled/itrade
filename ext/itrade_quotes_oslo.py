@@ -90,7 +90,7 @@ def Import_ListOfQuotes_OSLO(quotes,market='OSLO EXCHANGE',dlg=None,x=0):
 
         try:
             data=connection.getDataFromUrl(url)
-        except:
+        except Exception:
             debug('Import_ListOfQuotes_OSLO:unable to connect :-(')
             return False
 

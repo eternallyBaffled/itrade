@@ -78,7 +78,7 @@ def Import_ListOfQuotes_SWX(quotes,market='SWISS EXCHANGE',dlg=None,x=0):
         url = 'https://www.six-swiss-exchange.com/shares/companies/download/issuers_all_fr.csv'
         try:
             data = connection.getDataFromUrl(url)
-        except:
+        except Exception:
             info('Import_ListOfQuotes_SWX_%s:unable to get file name :-(' % market)
             return False
     else:

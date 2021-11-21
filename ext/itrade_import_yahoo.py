@@ -136,8 +136,8 @@ class Import_yahoo(object):
 
         debug("Import_yahoo:getdata: url=%s ",url)
         try:
-            buf=self.m_connection.getDataFromUrl(url)
-        except:
+            buf = self.m_connection.getDataFromUrl(url)
+        except Exception:
             debug('Import_yahoo:unable to connect :-(')
             return None
 

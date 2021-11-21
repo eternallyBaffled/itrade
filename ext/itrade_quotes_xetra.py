@@ -83,7 +83,7 @@ def Import_ListOfQuotes_Xetra(quotes,market='FRANKFURT EXCHANGE',dlg=None,x=0):
 
     try:
         data=connection.getDataFromUrl(url)
-    except:
+    except Exception:
         debug('Import_ListOfQuotes_Deutsche Borse AG :unable to connect :-(')
         return False
 

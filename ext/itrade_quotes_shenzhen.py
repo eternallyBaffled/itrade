@@ -82,7 +82,7 @@ def Import_ListOfQuotes_SHE(quotes,market='SHENZHEN EXCHANGE',dlg=None,x=0):
 
     try:
         data = connection.getDataFromUrl(url)
-    except:
+    except Exception:
         info('Import_ListOfQuotes_SHE_%s:unable to connect :-(' % market)
         return False
 

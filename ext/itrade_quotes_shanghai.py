@@ -95,7 +95,7 @@ def Import_ListOfQuotes_SHG(quotes,market='SHANGHAI EXCHANGE',dlg=None,x=0):
             f.close()
 
             #data=connection.getDataFromUrl(url)
-        except:
+        except Exception:
             print('Import_ListOfQuotes_SSE A SHARE:unable to connect to',url)
             return False
 
@@ -145,7 +145,7 @@ def Import_ListOfQuotes_SHG(quotes,market='SHANGHAI EXCHANGE',dlg=None,x=0):
 
     try:
         data=connection.getDataFromUrl(url)
-    except:
+    except Exception:
         debug('Import_ListOfQuotes_SSE B SHARE:unable to connect :-(')
         return False
 

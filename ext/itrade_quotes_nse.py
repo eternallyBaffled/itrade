@@ -103,7 +103,7 @@ def Import_ListOfQuotes_NSE(quotes,market='NATIONAL EXCHANGE OF INDIA',dlg=None,
         conn = httplib.HTTPConnection(host,80)
         conn.request("GET",url,None,headers)
         response = conn.getresponse()
-    except:
+    except Exception:
         debug('Import_ListOfQuotes_NSE unable to connect :-(')
         return False
 

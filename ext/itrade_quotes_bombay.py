@@ -88,7 +88,7 @@ def Import_ListOfQuotes_BSE(quotes,market='BOMBAY EXCHANGE',dlg=None,x=0):
 
         try:
             data=connection.getDataFromUrl(url)
-        except:
+        except Exception:
             debug('Import_ListOfQuotes_BSE unable to connect :-(')
             return False
         # returns the data

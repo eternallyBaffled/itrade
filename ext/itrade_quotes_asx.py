@@ -79,10 +79,9 @@ def Import_ListOfQuotes_ASX(quotes,market='ASX',dlg=None,x=0):
                 return s
         lines = [removeCarriage(l) for l in lines]
         return lines
-
     try:
         data=connection.getDataFromUrl(url)
-    except:
+    except Exception:
         debug('Import_ListOfQuotes_ASX:unable to connect :-(')
         return False
 

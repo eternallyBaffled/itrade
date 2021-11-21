@@ -133,7 +133,7 @@ class Login_fortuneo(object):
         try:
             self.m_conn.request("POST", self.m_login_url, params, headers)
             flux = self.m_conn.getresponse()
-        except:
+        except Exception:
             print('Login_fortuneo:POST login %s failure %s' % (u,self.m_login_url))
             return False
 
@@ -213,7 +213,7 @@ class Login_fortuneo(object):
         try:
             self.m_conn.request("POST", self.m_ack_url, params, headers)
             flux = self.m_conn.getresponse()
-        except:
+        except Exception:
             print('Login_fortuneo:POST ack failure %s' % self.m_ack_url)
             return False
 
@@ -228,7 +228,7 @@ class Login_fortuneo(object):
         try:
             self.m_conn.request("GET", self.m_trader_url % (BV_SessionID,BV_EngineID), None, headers)
             flux = self.m_conn.getresponse()
-        except:
+        except Exception:
             print('Login_fortuneo:GET trader failure %s' % self.m_trader_url)
             return False
 

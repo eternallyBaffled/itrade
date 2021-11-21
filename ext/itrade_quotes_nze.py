@@ -91,7 +91,7 @@ def Import_ListOfQuotes_NZE(quotes,market='NEW ZEALAND EXCHANGE',dlg=None,x=0):
 
         try:
             data=connection.getDataFromUrl(url%letter)
-        except:
+        except Exception:
             debug('Import_ListOfQuotes_NZE unable to connect :-(')
             return False
 

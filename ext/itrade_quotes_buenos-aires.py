@@ -69,7 +69,7 @@ def Import_ListOfQuotes_BUE(quotes,market='BUENOS AIRES EXCHANGE',dlg=None,x=0):
 
     try:
         data=urllib.urlopen(url)
-    except:
+    except Exception:
         debug('Import_ListOfQuotes_BUE unable to connect :-(')
         return False
 

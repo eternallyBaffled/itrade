@@ -95,7 +95,7 @@ def Import_ListOfQuotes_KRX(quotes,market='KOREA STOCK EXCHANGE',dlg=None,x=0):
 
     try:
         data = connection.getDataFromUrl(url)
-    except:
+    except Exception:
         info('Import_ListOfQuotes_KRX_%s:unable to connect :-(' % market)
         return False
 
@@ -139,7 +139,7 @@ def Import_ListOfQuotes_KRX(quotes,market='KOREA STOCK EXCHANGE',dlg=None,x=0):
         conn = httplib.HTTPConnection(host,80)
         conn.request("POST",url,params,headers)
         response = conn.getresponse()
-    except:
+    except Exception:
         debug('Import_ListOfQuotes_KRX unable to connect :-(')
         return False
 

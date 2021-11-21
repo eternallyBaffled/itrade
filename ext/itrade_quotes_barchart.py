@@ -100,7 +100,7 @@ def Import_ListOfQuotes_BARCHART(quotes,market='TOTRONTO EXCHANGE',dlg=None,x=0)
             f = urllib2.urlopen(req)
             data = f.read()
             f.close()
-        except:
+        except Exception:
             print('Import_ListOfQuotes_BARCHART:unable to connect to',url%letter)
             return False
 

@@ -609,7 +609,7 @@ class LiveUpdate_fortuneo(object):
         try:
             self.m_conn.request("POST", "/streaming", params, headers)
             flux = self.m_conn.getresponse()
-        except:
+        except Exception:
             info('LiveUpdate_fortuneo:POST failure')
             return None
 

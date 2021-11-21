@@ -203,7 +203,7 @@ class LiveUpdate_Euronext_bonds(object):
             f.close()
 
             #buf=self.m_connection.getDataFromUrl(url)
-        except:
+        except Exception:
             debug('LiveUpdate_Euronext_bonds:unable to connect :-(')
             return None
 

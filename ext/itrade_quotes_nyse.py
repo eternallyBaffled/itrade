@@ -73,7 +73,7 @@ def Import_ListOfQuotes_NASDAQ(quotes,market='NASDAQ',dlg=None,x=0):
     try:
         data = urllib.urlopen(url)
         #data=connection.getDataFromUrl(url)
-    except:
+    except Exception:
         debug('Import_ListOfQuotes_NASDAQ:unable to connect :-(')
         return False
 
