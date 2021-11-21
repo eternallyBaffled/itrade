@@ -104,9 +104,9 @@ class ITradeConnection(object):
         @param data: dictionary of parameters for POST (optional, default is None)"""
 
         # Parse URL
-        (protocole, host, page, params, query, fragments) = urlparse.urlparse(url)
+        (protocol, host, page, params, query, fragments) = urlparse.urlparse(url)
 
-        # print("==>", currentThread().getName(), protocole, host, page, params, query, fragments)
+        # print("==>", currentThread().getName(), protocol, host, page, params, query, fragments)
         try:
             # Prepare new header
             if header:
@@ -124,7 +124,7 @@ class ITradeConnection(object):
                 # Http request does not have host value for direct connection
                 request = "{}?{}".format(page, query)
 
-            if protocole.lower() == "http":
+            if protocol.lower() == "http":
                 if host in self.m_httpConnection:
                     # Reuse already opened connection
                     connection = self.m_httpConnection[host]
@@ -194,7 +194,7 @@ class ITradeConnection(object):
                     msg = Exception("Receive bad answer from server (code {}) while requesting : {}".format(self.getStatus(), url))
                     # info(msg)
                     self.m_responseData = ""
-                    self.clearConnection(protocole, host)
+                    self.clearConnection(protocol, host)
                     raise msg
 
                 # Save cookie string
@@ -211,11 +211,11 @@ class ITradeConnection(object):
                 msg = Exception("Connexion timeout while requesting the remote server : {}".format(url))
                 logging.error(msg)
                 self.m_responseData = ""
-                self.clearConnection(protocole, host)
+                self.clearConnection(protocol, host)
                 raise msg
 
             except (socket.gaierror, httplib.CannotSendRequest, httplib.BadStatusLine) as e:
-                self.clearConnection(protocole, host)
+                self.clearConnection(protocol, host)
                 if not self.m_retrying:
                     # Retry one time because this kind of error can be "normal"
                     # Eg. after a connection keep-alive timeout
