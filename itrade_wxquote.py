@@ -321,7 +321,7 @@ class iTradeQuoteInfoWindow(sc.SizedPanel):
 
         # paint the content
         if itrade_config.verbose:
-            print('QuoteInfoWinfow::refresh Paint Quote %s - live=%s' % (self.m_quote.ticker(), live))
+            print('QuoteInfoWindow::refresh Paint Quote %s - live=%s' % (self.m_quote.ticker(), live))
         self.paint()
 
         # fit but stay on the space given by the parent
