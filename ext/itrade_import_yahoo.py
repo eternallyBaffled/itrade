@@ -162,10 +162,10 @@ class Import_yahoo(object):
                     pass
                 else:
                     sdate = dd_mmm_yy2yyyymmdd(sdate)
-                open = string.atof(sdata[1])
-                high = string.atof(sdata[2])
-                low = string.atof(sdata[3])
-                value = string.atof(sdata[6])   #   Adj. Close*
+                open = float(sdata[1])
+                high = float(sdata[2])
+                low = float(sdata[3])
+                value = float(sdata[6])   #   Adj. Close*
                 volume = string.atoi(sdata[5])
 
                 if volume >= 0:

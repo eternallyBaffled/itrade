@@ -232,32 +232,32 @@ class LiveUpdate_yahoo(object):
             return None
 
         # decode data
-        value = string.atof (sdata[1])
+        value = float (sdata[1])
 
         if sdata[4]=='N/A':
             debug('invalid change : N/A')
             change = 0.0
             return None
         else:
-            change = string.atof (sdata[4])
+            change = float(sdata[4])
         if sdata[5]=='N/A':
             debug('invalid open : N/A')
             open = 0.0
             return None
         else:
-            open = string.atof (sdata[5])
+            open = float(sdata[5])
         if sdata[6]=='N/A':
             debug('invalid high : N/A')
             high = 0.0
             return None
         else:
-            high = string.atof (sdata[6])
+            high = float(sdata[6])
         if sdata[7]=='N/A':
             debug('invalid low : N/A')
             low = 0.0
             return None
         else:
-            low = string.atof (sdata[7])
+            low = float(sdata[7])
 
         volume = string.atoi (sdata[8])
         if volume<0:

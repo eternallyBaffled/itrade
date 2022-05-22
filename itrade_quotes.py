@@ -664,10 +664,10 @@ class Quote(object):
             item = itrade_csv.parse(data[0], 9)
             if len(item) > 7:
                 # percent is included !
-                self.m_percent = string.atof(item[7])
+                self.m_percent = float(item[7])
             if len(item) > 8:
                 # previous close is included !
-                self.m_prevclose = string.atof(item[8])
+                self.m_prevclose = float(item[8])
 
     # ---[ save or export trades / date is unique key ] ---
 

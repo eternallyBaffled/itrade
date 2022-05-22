@@ -169,7 +169,7 @@ class LiveUpdate_Euronext(object):
         ret = ''
         for val in val:
             ret = ret+val
-        return string.atof(ret)
+        return float(ret)
 
     def parseLValue(self,d):
         if d=='-': return 0
