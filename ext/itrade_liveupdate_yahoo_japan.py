@@ -133,9 +133,9 @@ class LiveUpdate_yahoojp(object):
     def yahooDate (self,date):
         # Date part is easy.
         sdate = string.split (date[1:-1], '/')
-        month = string.atoi (sdate[0])
-        day = string.atoi (sdate[1])
-        year = string.atoi (sdate[2])
+        month = int(sdate[0])
+        day = int(sdate[1])
+        year = int(sdate[2])
 
         return "%4d%02d%02d" % (year,month,day)
 
@@ -340,7 +340,7 @@ class LiveUpdate_yahoojp(object):
             else:
                 low = float(sdata[7])
 
-            volume = string.atoi (sdata[8])
+            volume = int(sdata[8])
             if volume<0:
                 debug('volume : invalid negative %d' % volume)
                 return None

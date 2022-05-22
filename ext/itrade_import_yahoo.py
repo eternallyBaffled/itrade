@@ -166,7 +166,7 @@ class Import_yahoo(object):
                 high = float(sdata[2])
                 low = float(sdata[3])
                 value = float(sdata[6])   #   Adj. Close*
-                volume = string.atoi(sdata[5])
+                volume = int(sdata[5])
 
                 if volume >= 0:
                     # encode in EBP format
