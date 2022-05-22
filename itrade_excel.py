@@ -46,10 +46,11 @@ try:
     import xlrd
 except ImportError:
     canReadExcel = False
-    print('XLRD package (%s) not installed.' % xlrd_url)
+    print('XLRD package ({}) not installed.'.format(xlrd_url))
 
-def open_excel(filename,content):
-    book = xlrd.open_workbook(filename=filename,file_contents=content)
+
+def open_excel(filename, content):
+    book = xlrd.open_workbook(filename=filename, file_contents=content)
     return book
 
 # ============================================================================

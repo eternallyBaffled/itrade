@@ -51,45 +51,46 @@ from itrade_logging import setLevel, info, debug
 # (update) a quote
 # ============================================================================
 
-def import_from_internet(quote,fromdate=None,todate=None):
+
+def import_from_internet(quote, fromdate=None, todate=None):
     bRet = False
 
-    if quote.ticker()=='':
-        info("import_from_internet(%s): no ticker" % quote.isin())
+    if quote.ticker() == '':
+        info(u"import_from_internet({}): no ticker".format(quote.isin()))
         #return bRet
 
     if not itrade_config.isConnected():
-        info("import_from_internet(%s): no connexion" % quote.ticker())
+        info(u"import_from_internet({}): no connexion".format(quote.ticker()))
         return bRet
 
     abc = quote.importconnector()
     if abc and abc.connect():
         state = abc.getstate()
         if state:
-            #debug("state=%s" % (state))
-            #debug('import historic %s from %s ...' % (quote.ticker(),abc.name()))
-            data = abc.getdata(quote,fromdate,todate)
+            #debug(u"state={}".format(state))
+            #debug(u'import historic {} from {} ...'.format(quote.ticker(), abc.name()))
+            data = abc.getdata(quote, fromdate, todate)
             if data is not None:
                 if data:
-                    #debug('import_from_internet(%s): data:%s'% (quote.ticker(),data))
-                    quote.importTrades(data,bLive=False)
+                    #debug(u'import_from_internet({}): data:{}'.format(quote.ticker(), data))
+                    quote.importTrades(data, bLive=False)
                     bRet = True
                 else:
                     if itrade_config.verbose:
-                        print("import_from_internet(%s): nodata [%s,%s)" % (quote.ticker(),fromdate,todate))
+                        print(u"import_from_internet({}): nodata [{},{})".format(quote.ticker(), fromdate, todate))
                     bRet = False
             else:
                 if itrade_config.verbose:
-                    print("import_from_internet(%s): nodata [%s,%s)" % (quote.ticker(),fromdate,todate))
+                    print(u"import_from_internet({}): nodata [{},{})".format(quote.ticker(), fromdate, todate))
                 bRet = False
         else:
-            print("import_from_internet(%s): getstate() failure :-(" % quote.ticker())
+            print(u"import_from_internet({}): getstate() failure :-(".format(quote.ticker()))
             bRet = False
 
         abc.disconnect()
         return bRet
     else:
-        print("import_from_internet(%s): connect() failure :-(" % quote.ticker())
+        print(u"import_from_internet({}): connect() failure :-(".format(quote.ticker()))
         return bRet
 
 # ============================================================================
@@ -98,11 +99,12 @@ def import_from_internet(quote,fromdate=None,todate=None):
 # (update) a quote
 # ============================================================================
 
+
 def liveupdate_from_internet(quote):
     bRet = False
 
     if not itrade_config.isConnected():
-        debug("liveupdate_from_internet(%s): no connexion" % quote.ticker())
+        debug(u"liveupdate_from_internet({}): no connexion".format(quote.ticker()))
         return bRet
 
     abc = quote.liveconnector()
@@ -111,11 +113,11 @@ def liveupdate_from_internet(quote):
         data = abc.getcacheddata(quote)
         if data:
             #debug(data)
-            debug("liveupdate_from_internet(%s): import live from cache" % quote.ticker())
-            quote.importTrades(data,bLive=True)
+            debug(u"liveupdate_from_internet({}): import live from cache".format(quote.ticker()))
+            quote.importTrades(data, bLive=True)
             bRet = True
         else:
-            #debug("liveupdate_from_internet(%s): nodata" % quote.ticker())
+            #debug(u"liveupdate_from_internet({}): nodata".format(quote.ticker()))
             bRet = False
 
         abc.release()
@@ -124,27 +126,27 @@ def liveupdate_from_internet(quote):
     elif abc.connect():
         state = abc.getstate()
         if state:
-            #debug("state=%s" % (state))
-            #debug('liveupdate_from_internet(%s): import live from abcbourse ...' % quote.ticker())
+            #debug(u"state={}".format(state))
+            #debug(u'liveupdate_from_internet({}): import live from abcbourse ...'.format(quote.ticker()))
             data = abc.getdata(quote)
             if data is not None:
                 if data:
-                    #debug('liveupdate_from_internet(%s): data:%s'% (quote.ticker(),data))
-                    quote.importTrades(data,bLive=True)
+                    #debug(u'liveupdate_from_internet({}): data:{}'.format(quote.ticker(), data))
+                    quote.importTrades(data, bLive=True)
                     bRet = True
                 else:
-                    #debug("liveupdate_from_internet(%s): nodata" % quote.ticker())
+                    #debug(u"liveupdate_from_internet({}): nodata".format(quote.ticker()))
                     bRet = False
             else:
                 if abc.alive():
                     if itrade_config.verbose:
-                        print("liveupdate_from_internet(%s): alive but no trade yet" % quote.ticker())
+                        print(u"liveupdate_from_internet({}): alive but no trade yet".format(quote.ticker()))
                 else:
                     if itrade_config.verbose:
-                        print("liveupdate_from_internet(%s): not alive yet" % quote.ticker())
+                        print(u"liveupdate_from_internet({}): not alive yet".format(quote.ticker()))
                 bRet = False
         else:
-            print("liveupdate_from_internet(%s): getstate() failure :-(" % quote.ticker())
+            print(u"liveupdate_from_internet({}): getstate() failure :-(".format(quote.ticker()))
             bRet = False
 
         abc.disconnect()
@@ -153,7 +155,7 @@ def liveupdate_from_internet(quote):
         return bRet
 
     else:
-        print("liveupdate_from_internet(%s): connect() failure :-(" % quote.ticker())
+        print(u"liveupdate_from_internet({}): connect() failure :-(".format(quote.ticker()))
 
         abc.release()
         return bRet
@@ -162,7 +164,8 @@ def liveupdate_from_internet(quote):
 # CommandLine : -i / import a quote
 # ============================================================================
 
-def cmdline_importQuoteFromInternet(quote,dlg=None):
+
+def cmdline_importQuoteFromInternet(quote, dlg=None):
     year = date.today().year
     ic = quote.importconnector()
     spl = False
@@ -177,14 +180,14 @@ def cmdline_importQuoteFromInternet(quote,dlg=None):
     bStop = False
     while (not bStop) and (nyear < itrade_config.numTradeYears):
         if itrade_config.verbose:
-            print('--- update the quote -- %d to %d ---' % (year-step+1,year))
+            print(u'--- update the quote -- {:d} to {:d} ---'.format(year-step+1, year))
         if spl:
-            if not import_from_internet(quote,date(year-step+1,1,1),date(year,6,30)):
+            if not import_from_internet(quote, date(year-step+1,1,1), date(year,6,30)):
                 bStop = True
-            if not import_from_internet(quote,date(year-step+1,7,1),date(year,12,31)):
+            if not import_from_internet(quote, date(year-step+1,7,1), date(year,12,31)):
                 bStop = True
         else:
-            if not import_from_internet(quote,date(year-step+1,1,1),date(year,12,31)):
+            if not import_from_internet(quote, date(year-step+1,1,1), date(year,12,31)):
                 bStop = True
         if year == date.today().year:
             # SF bug 1625731 : at the year begins, it's possible import_from_internet returns no data
@@ -199,13 +202,14 @@ def cmdline_importQuoteFromInternet(quote,dlg=None):
     quote.saveTrades()
     return True
 
-def cmdline_importQuoteFromFile(quote,file):
+
+def cmdline_importQuoteFromFile(quote, file):
     if itrade_config.verbose:
         print('--- load data from file ------')
-    if not os.access(file,os.R_OK):
-        file = os.path.join(itrade_config.dirImport,file)
+    if not os.access(file, os.R_OK):
+        file = os.path.join(itrade_config.dirImport, file)
         if not os.access(file,os.R_OK):
-            print('file not found %s!' % file)
+            print(u'file not found {}!'.format(file))
             return False
     quote.loadTrades(file)
     if itrade_config.verbose:
@@ -217,27 +221,29 @@ def cmdline_importQuoteFromFile(quote,file):
 # CommandLine : -i / import the matrix
 # ============================================================================
 
-def cmdline_importMatrixFromInternet(matrix,dlg=None):
+
+def cmdline_importMatrixFromInternet(matrix, dlg=None):
     year = date.today().year
     for nyear in xrange(itrade_config.numTradeYears):
         if itrade_config.verbose:
-            print('--- update the matrix --%d--' % year)
-        matrix.update(date(year,1,1),date(year,12,31))
+            print(u'--- update the matrix --{:d}--'.format(year))
+        matrix.update(date(year,1,1), date(year,12,31))
         if dlg:
             dlg.Update(nyear)
-        year = year -1
+        year = year - 1
     if itrade_config.verbose:
         print('--- save the matrix data -----')
     matrix.saveTrades()
     return True
 
-def cmdline_importMatrixFromFile(matrix,file):
+
+def cmdline_importMatrixFromFile(matrix, file):
     if itrade_config.verbose:
-        print('--- load data from file ------ %s' % file)
-    if not os.access(file,os.R_OK):
-        file = os.path.join(itrade_config.dirImport,file)
-        if not os.access(file,os.R_OK):
-            print('file not found %s !' % file)
+        print(u'--- load data from file ------ {}'.format(file))
+    if not os.access(file, os.R_OK):
+        file = os.path.join(itrade_config.dirImport, file)
+        if not os.access(file, os.R_OK):
+            print(u'file not found {} !'.format(file))
             return False
     matrix.loadTrades(file)
     if itrade_config.verbose:
