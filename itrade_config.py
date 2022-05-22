@@ -87,7 +87,7 @@ softwareLatest  = 'https://itrade.svn.sourceforge.net/svnroot/itrade/trunk/OFFIC
 
 # iTrade version (major.minor)
 softwareVersion = __version__
-softwareVersionName = 'Druuna - (unstable) (%s)' % __revision__
+softwareVersionName = u'Druuna - (unstable) ({})'.format(__revision__)
 softwareStatus = __status__
 
 # support
@@ -447,7 +447,7 @@ def checkNewRelease(ping=False):
     #print current,latest
 
     if current<latest:
-        print('checkNewRelease(): please update (%d vs %d) : %s' % (current,latest,downloadURL))
+        print(u'checkNewRelease(): please update ({:d} vs {:d}) : {}'.format(current, latest, downloadURL))
         return downloadURL
     else:
         print('checkNewRelease(): up to date')
@@ -569,11 +569,11 @@ def saveConfig():
     if bAutoRefreshCurrencyView != default_bAutoRefreshCurrencyView:
         config.set("view", "AutoRefreshCurrency", bAutoRefreshCurrencyView)
     if matrixFontSize != default_matrixFontSize:
-        config.set("view","MatrixFontSize","%d" % matrixFontSize)
+        config.set("view", "MatrixFontSize", "{:d}".format(matrixFontSize))
     if operationFontSize != default_operationFontSize:
-        config.set("view","OperationFontSize","%d" % operationFontSize)
+        config.set("view", "OperationFontSize", "{:d}".format(operationFontSize))
     if (lang != 0) and (lang != 255):
-        config.set("view","lang","%d" % lang)
+        config.set("view", "lang", "{:d}".format(lang))
 
     # create "Net" section
     config.add_section("net")

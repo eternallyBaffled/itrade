@@ -87,10 +87,10 @@ class Alert(object):
     # ---[ properties ] -----------------------------------
 
     def reference(self):
-        return u'%d.%s.%s.%s."%s"' % (self.m_type, self.m_source, self.m_datation.strftime('%Y-%m-%d'), self.m_isin, self.m_title)
+        return u'{:d}.{}.{}.{}."{}"'.format(self.m_type, self.m_source, self.m_datation.strftime('%Y-%m-%d'), self.m_isin, self.m_title)
 
     def __repr__(self):
-        return u'%d;%s' % (self.m_state,self.reference())
+        return u'{:d};{}'.format(self.m_state, self.reference())
 
     def desc(self):
         return self.m_desc
@@ -121,7 +121,7 @@ class Alert(object):
     def getstate(self):
         return self.m_state
 
-    def setstate(self,state):
+    def setstate(self, state):
         self.m_state = state
         return self.m_state
 
@@ -180,11 +180,11 @@ class Alerts(object):
     def saveFile(self,ref,ext,content):
         pass
 
-    def readFile(self,ref,ext):
-        fn = os.path.join(itrade_config.dirAlerts,'%s.%s' % (ref,ext))
+    def readFile(self, ref, ext):
+        fn = os.path.join(itrade_config.dirAlerts, u'{}.{}'.format(ref, ext))
         if os.path.exists(fn):
             try:
-                f = open(fn,'r')
+                f = open(fn, 'r')
                 txt = f.read()
             except IOError:
                 return None
@@ -195,13 +195,13 @@ class Alerts(object):
     def addAlert(self,ref,state):
         if self.existAlert(ref):
             # known :-(
-            info(u'Alerts::addAlert(): ref=%s already exists !' % ref)
+            info(u'Alerts::addAlert(): ref={} already exists !'.format(ref))
             return False
         else:
             # parse ref
             item = ref.split('.')
             if len(item)!=5:
-                info(u'Alerts::addAlert(): ref=%s already exists !' % ref)
+                info(u'Alerts::addAlert(): ref={} already exists !'.format(ref))
                 return False
 
             type,source,datation,isin,title = item
@@ -252,10 +252,10 @@ class Alerts(object):
 
     def register(self,name,plugin):
         if name in self.m_plugins:
-            warning(u"Alerts: can't register %s:%s : already registered !" % (name,plugin))
+            warning(u"Alerts: can't register {}:{} : already registered !".format(name, plugin))
             return False
         self.m_plugins[name] = plugin
-        debug(u'Alerts: register %s:%s : ok' % (name,plugin))
+        debug(u'Alerts: register {}:{} : ok'.format(name, plugin))
         return True
 
     def numOfPlugins(self):
@@ -264,10 +264,10 @@ class Alerts(object):
     # ---[ scan ] ------------------------------------------
 
     def scan(self,dlg=None):
-        print(u'Alerts: scan %d:%s' % (self.numOfPlugins(),self.listPlugins()))
+        print(u'Alerts: scan {:d}:{}'.format(self.numOfPlugins(), self.listPlugins()))
 
         for x, eachPlugin in enumerate(self.listPlugins()):
-            print(u'Alerts: scan %d' % x)
+            print(u'Alerts: scan {:d}'.format(x))
             eachPlugin.scan(dlg, x)
 
     # ---[ filters ] ---------------------------------------

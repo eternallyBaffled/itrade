@@ -316,13 +316,13 @@ class Quote(object):
         fmt = fmt + "{}"
         return fmt.format(self.nv_pru(box), sc)
 
-    def sv_pr(self, box=QuoteType.both, fmt="{:.2f}", bDispCurrency=False):
+    def sv_pr(self, box=QuoteType.both, fmt=u"{:.2f}", bDispCurrency=False):
         # return PR in the default currency (i.e. portfolio currency)
         if bDispCurrency:
             sc = ''.join((' ', self.currency_symbol(), ' '))
         else:
             sc = ''
-        fmt = fmt + "{}"
+        fmt = fmt + u"{}"
         return fmt.format(self.nv_pr(box), sc)
 
     def nv_pv(self, currency, box=QuoteType.both):
@@ -904,18 +904,18 @@ class Quote(object):
         if x is not None:
             st, re, rb, rh, cl = self.currentStatus()
             if st == 'OK':
-                return "{:3.3f}{}".format(x, sc)
+                return u"{:3.3f}{}".format(x, sc)
             elif st == 'SUSPEND+':
-                return "{:3.3f}{}(+)".format(x, sc)
+                return u"{:3.3f}{}(+)".format(x, sc)
             elif st == 'SUSPEND-':
-                return "{:3.3f}{}(-)".format(x, sc)
+                return u"{:3.3f}{}(-)".format(x, sc)
             elif st == 'SUSPEND':
-                return "{:3.3f}{}(s)".format(x, sc)
+                return u"{:3.3f}{}(s)".format(x, sc)
             elif st == 'CLOSED':
-                return "{:3.3f}{}(c)".format(x, sc)
+                return u"{:3.3f}{}(c)".format(x, sc)
             else:
-                return "{:3.3f}{}({})".format(x, sc, st)
-        return " ---.---{}".format(sc)
+                return u"{:3.3f}{}({})".format(x, sc, st)
+        return u" ---.---{}".format(sc)
 
     def sv_open(self, d=None):
         x = self.nv_open(d)

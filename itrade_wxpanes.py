@@ -596,7 +596,7 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
                         self.m_list.SetStringItem(x, IDC_PRU, u"{} {}".format(eachQuote.sv_pru(QuoteType.cash, "{:.2f}"), self.m_portfolio.currency_symbol()))
                     else:
                         self.m_list.SetStringItem(x, IDC_PRU, "-")
-                    self.m_list.SetStringItem(x,IDC_PR, eachQuote.sv_pr(QuoteType.cash,fmt="%.0f",bDispCurrency=True))
+                    self.m_list.SetStringItem(x,IDC_PR, eachQuote.sv_pr(QuoteType.cash, fmt="{:.0f}", bDispCurrency=True))
                     self.m_list.SetStringItem(x,IDC_NAME,eachQuote.name())
 
                     self.map(eachQuote,x,QuoteType.cash)
@@ -608,7 +608,7 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
 
                 if eachQuote.nv_number(QuoteType.credit)>0:
                     self.m_list.InsertImageStringItem(x, eachQuote.isin(), self.idx_tbref)
-                    self.m_list.SetStringItem(x,IDC_TICKER,"%s (%s)" % (eachQuote.ticker(),message("money_srd")))
+                    self.m_list.SetStringItem(x,IDC_TICKER, u"{} ({})".format(eachQuote.ticker(), message("money_srd")))
                     self.m_list.SetStringItem(x,IDC_QTY,eachQuote.sv_number(QuoteType.credit))
                     if eachQuote.isTraded():
                         self.m_list.SetStringItem(x, IDC_PRU, u"{} {}".format(eachQuote.sv_pru(QuoteType.credit, "{:.2f}"), self.m_portfolio.currency_symbol()))
@@ -645,11 +645,11 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
         self.populateMatrixEnd()
 
     # refresh the evaluation portfolio line
-    def refreshEvalLine(self,x):
-        self.m_list.SetStringItem(x,IDC_PR,"%s %s" % (self.m_portfolio.sv_buy(fmt="%.0f"),self.m_portfolio.currency_symbol()))
-        self.m_list.SetStringItem(x,IDC_PV,"%s %s" % (self.m_portfolio.sv_value(fmt="%.0f"),self.m_portfolio.currency_symbol()))
-        self.m_list.SetStringItem(x,IDC_PROFIT,"%s %s" % (self.m_portfolio.sv_perf(fmt="%.0f"),self.m_portfolio.currency_symbol()))
-        self.m_list.SetStringItem(x,IDC_PERCENT,self.m_portfolio.sv_perfPercent())
+    def refreshEvalLine(self, x):
+        self.m_list.SetStringItem(x, IDC_PR, u"{} {}".format(self.m_portfolio.sv_buy(fmt="{:.0f}"), self.m_portfolio.currency_symbol()))
+        self.m_list.SetStringItem(x, IDC_PV, u"{} {}".format(self.m_portfolio.sv_value(fmt="{:.0f}"), self.m_portfolio.currency_symbol()))
+        self.m_list.SetStringItem(x, IDC_PROFIT, u"{} {}".format(self.m_portfolio.sv_perf(fmt="{:.0f}"), self.m_portfolio.currency_symbol()))
+        self.m_list.SetStringItem(x, IDC_PERCENT, self.m_portfolio.sv_perfPercent())
 
         if self.m_portfolio.nv_perf()>=0:
             self.refreshColorLine(x, QuoteColor.green)
@@ -675,8 +675,8 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
                 self.m_list.SetStringItem(x,IDC_PERFDAY,quote.sv_percent())
             else:
                 self.m_list.SetStringItem(x,IDC_PERFDAY," ---.-- % ")
-            self.m_list.SetStringItem(x,IDC_PV,"%s %s" % (quote.sv_pv(self.m_portfolio.currency(),xtype,fmt="%.0f"),self.m_portfolio.currency_symbol()))
-            self.m_list.SetStringItem(x,IDC_PROFIT,"%s %s" % (quote.sv_profit(self.m_portfolio.currency(),xtype,fmt="%.0f"),self.m_portfolio.currency_symbol()))
+            self.m_list.SetStringItem(x,IDC_PV, u"{} {}".format(quote.sv_pv(self.m_portfolio.currency(), xtype, fmt="{:.0f}"), self.m_portfolio.currency_symbol()))
+            self.m_list.SetStringItem(x,IDC_PROFIT, u"{} {}".format(quote.sv_profit(self.m_portfolio.currency(), xtype, fmt="{:.0f}"), self.m_portfolio.currency_symbol()))
             self.m_list.SetStringItem(x,IDC_PERCENT,quote.sv_profitPercent(self.m_portfolio.currency(),xtype))
             # line color depending on pricing
             if quote.nv_pru(xtype) >= quote.nv_close():
@@ -691,11 +691,11 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
         else:
             item.SetTextColour(wx.BLACK)
             item.SetImage(self.idx_tbref)
-            self.m_list.SetStringItem(x,IDC_PVU," ---.-- ")
-            self.m_list.SetStringItem(x,IDC_PERFDAY," ---.-- % ")
-            self.m_list.SetStringItem(x,IDC_PV," ---.-- {}".format(self.m_portfolio.currency_symbol()))
-            self.m_list.SetStringItem(x,IDC_PROFIT," ----.-- {}".format(self.m_portfolio.currency_symbol()))
-            self.m_list.SetStringItem(x,IDC_PERCENT," +---.-- % ")
+            self.m_list.SetStringItem(x, IDC_PVU, " ---.-- ")
+            self.m_list.SetStringItem(x, IDC_PERFDAY, " ---.-- % ")
+            self.m_list.SetStringItem(x, IDC_PV, u" ---.-- {}".format(self.m_portfolio.currency_symbol()))
+            self.m_list.SetStringItem(x, IDC_PROFIT, u" ----.-- {}".format(self.m_portfolio.currency_symbol()))
+            self.m_list.SetStringItem(x, IDC_PERCENT, " +---.-- % ")
 
         self.m_list.SetItem(item)
 
@@ -775,8 +775,8 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
 
 class iTrade_MatrixQuotesPanel(iTrade_MatrixPanel):
 
-    def __init__(self,parent,wm,id,portfolio,matrix):
-        iTrade_MatrixPanel.__init__(self, parent,wm, id, portfolio, matrix)
+    def __init__(self, parent, wm, id, portfolio, matrix):
+        iTrade_MatrixPanel.__init__(self, parent, wm, id, portfolio, matrix)
 
     def name(self):
         return "quotes"
@@ -799,9 +799,9 @@ class iTrade_MatrixQuotesPanel(iTrade_MatrixPanel):
         self.m_list.InsertColumn(IDC_PREV, message('prev'), wx.LIST_FORMAT_RIGHT)
         self.m_list.InsertColumn(IDC_OPEN, message('open'), wx.LIST_FORMAT_RIGHT)
         self.m_list.InsertColumn(IDC_HIGH, message('high'), wx.LIST_FORMAT_RIGHT)
-        self.m_list.InsertColumn(IDC_LOW,  message('low'), wx.LIST_FORMAT_RIGHT)
-        self.m_list.InsertColumn(IDC_CLOSE,message('last'), wx.LIST_FORMAT_RIGHT)
-        self.m_list.InsertColumn(IDC_PIVOTS,message('pivots'), wx.LIST_FORMAT_LEFT)
+        self.m_list.InsertColumn(IDC_LOW, message('low'), wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_CLOSE, message('last'), wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_PIVOTS, message('pivots'), wx.LIST_FORMAT_LEFT)
         self.m_list.InsertColumn(IDC_PERCENT, ' % ', wx.LIST_FORMAT_RIGHT)
         self.m_list.InsertColumn(IDC_NAME, message('name'), wx.LIST_FORMAT_LEFT)
 
@@ -868,7 +868,7 @@ class iTrade_MatrixQuotesPanel(iTrade_MatrixPanel):
                 color = QuoteColor.nochange
         else:
             self.m_list.SetStringItem(x,IDC_PREV," ---.-- ")
-            self.m_list.SetStringItem(x,IDC_CLOSE," ----.-- {} ".format(quote.currency_symbol()))
+            self.m_list.SetStringItem(x,IDC_CLOSE, u" ----.-- {} ".format(quote.currency_symbol()))
             self.m_list.SetStringItem(x,IDC_OPEN," ---.-- ")
             self.m_list.SetStringItem(x,IDC_HIGH," ---.-- ")
             self.m_list.SetStringItem(x,IDC_LOW," ---.-- ")

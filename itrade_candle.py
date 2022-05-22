@@ -305,11 +305,11 @@ def main():
     itrade_config.app_header()
 
     c = Candle(10.0, 11.0, 9.0, 10.0)
-    print('candle: %s - %s = doji' % (c, c.type()))
+    print(u'candle: {} - {} = doji'.format(c, c.type()))
     c = Candle(11.0, 11.0, 9.0, 11.0)
-    print('candle: %s - %s = dragonfly doji' % (c, c.type()))
+    print(u'candle: {} - {} = dragonfly doji'.format(c, c.type()))
     c = Candle(9.0, 11.0, 9.0, 9.0)
-    print('candle: %s - %s = gravestone doji' % (c, c.type()))
+    print(u'candle: {} - {} = gravestone doji'.format(c, c.type()))
 
 
 if __name__ == '__main__':
