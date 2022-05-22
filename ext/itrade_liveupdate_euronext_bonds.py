@@ -176,7 +176,7 @@ class LiveUpdate_Euronext_bonds(object):
         ret = ''
         for val in val:
             ret = ret+val
-        return string.atol(ret)
+        return long(ret)
 
     def getdata(self,quote):
         self.m_connected = False

@@ -106,7 +106,7 @@ class Import_euronext_bonds(object):
         ret = ''
         for val in val:
             ret = ret+val
-        return string.atol(ret)
+        return long(ret)
 
     def splitLines(self,buf):
         lines = string.split(buf, '\n')
