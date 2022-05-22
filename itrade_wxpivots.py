@@ -88,7 +88,7 @@ class iTrade_wxPivots(wx.Panel):
         pivot = self.m_quote.ov_pivots()
         if pivot:
             s2, s1, pivot, r1, r2 = pivot
-            self.s_r2.SetLabel('%.2f'%r2)
+            self.s_r2.SetLabel(':.2f'.format(r2))
             print('pivots:', s2, s1, pivot, r1, r2)
 
 

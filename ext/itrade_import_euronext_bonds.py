@@ -150,9 +150,9 @@ class Import_euronext_bonds(object):
         datefromurl =str(int(datefrom/100))+'00000'
         dateto = time.mktime(time.strptime(dateto, format))
         datefinurl =str(int(dateto)/100)+'00000'
-        endurl = 'typefile=csv&layout=vertical&typedate=dmy&separator=comma&mic=%s&isin=%s&name=&namefile=Price_Data_Historical&from=%s&to=%s&adjusted=1&base=0' % (mic,quote.isin(),datefromurl,datefinurl)
+        endurl = 'typefile=csv&layout=vertical&typedate=dmy&separator=comma&mic={}&isin={}&name=&namefile=Price_Data_Historical&from={}&to={}&adjusted=1&base=0'.format(mic, quote.isin(), datefromurl, datefinurl)
 
-        debug("Import_euronext_bonds:getdata quote:%s begin:%s end:%s" % (quote,d1,d2))
+        debug("Import_euronext_bonds:getdata quote:{} begin:{} end:{}".format(quote, d1, d2))
 
         query = (
             ('typefile', 'csv'),
@@ -169,7 +169,7 @@ class Import_euronext_bonds(object):
             ('base', '0'),
         )
 
-        query = map(lambda var_val: '%s=%s' % (var_val[0], str(var_val[1])), query)
+        query = map(lambda var_val: '{}={}'.format(var_val[0], str(var_val[1])), query)
         query = string.join(query, '&')
         url = self.m_url + '?' + query
         #print(url)
@@ -219,7 +219,7 @@ class Import_euronext_bonds(object):
                     value,
                     volume
                     )
-                line = map(lambda val: '%s' % str(val), line)
+                line = map(lambda val: str(val), line)
                 line = string.join(line, ';')
                 #print line
 
@@ -251,7 +251,7 @@ def test(ticker,d):
 
         state = gImportEuronext.getstate()
         if state:
-            debug("state=%s" % state)
+            debug("state={}".format(state))
 
             quote = quotes.lookupTicker(ticker,'EURONEXT')
             data = gImportEuronext.getdata(quote,d)

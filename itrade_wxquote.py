@@ -79,8 +79,8 @@ from itrade_market import yahoosuffix
 
 class iTradeQuoteToolbar(wx.ToolBar):
 
-    def __init__(self, parent, id):
-        wx.ToolBar.__init__(self, parent, id, size=(120,32), style=wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT)
+    def __init__(self, parent, id, *args, **kwargs):
+        wx.ToolBar.__init__(self, parent, id, size=(120,32), style=wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT, *args, **kwargs)
         self.m_parent = parent
         self.m_Throbber = None
         self._init_toolbar()
@@ -451,8 +451,8 @@ class CustTableGrid(gridlib.Grid):
 
 class iTradeQuoteTablePanel(wx.Panel):
 
-    def __init__(self, parent, id, quote):
-        wx.Panel.__init__(self, parent, id)
+    def __init__(self, parent, id, quote, *args, **kwargs):
+        wx.Panel.__init__(self, parent, id, *args, **kwargs)
         self.m_quote = quote
         self.m_parent = parent
         self.m_port = parent.portfolio()
@@ -486,8 +486,8 @@ class iTradeQuoteTablePanel(wx.Panel):
 
 class iTradeQuoteAnalysisPanel(wx.Window):
 
-    def __init__(self, parent, id, quote):
-        wx.Window.__init__(self, parent, id)
+    def __init__(self, parent, id, quote, *args, **kwargs):
+        wx.Window.__init__(self, parent, id, *args, **kwargs)
         self.m_quote = quote
         self.m_parent = parent
         self.m_port = parent.portfolio()
@@ -514,8 +514,8 @@ class iTradeQuoteAnalysisPanel(wx.Window):
 # ============================================================================
 
 class iTradeQuoteLivePanel(wx.Panel):
-    def __init__(self, parent, gparent, id, quote):
-        wx.Panel.__init__(self, parent, id)
+    def __init__(self, parent, gparent, id, quote, *args, **kwargs):
+        wx.Panel.__init__(self, parent, id, *args, **kwargs)
         self.m_quote = quote
         self.m_parent = gparent
         self.m_port = parent.portfolio()
@@ -544,9 +544,9 @@ class iTradeQuoteLivePanel(wx.Panel):
 # ============================================================================
 
 class iTradeQuoteGraphPanel(wx.Panel, iTrade_wxPanelGraph):
-    def __init__(self, parent, id, quote):
-        wx.Panel.__init__(self, parent=parent, id=id, size=(5,4))
-        iTrade_wxPanelGraph.__init__(self, parent=parent, id=id, size=(5,4))
+    def __init__(self, parent, id, quote, *args, **kwargs):
+        wx.Panel.__init__(self, parent=parent, id=id, size=(5,4), *args, **kwargs)
+        iTrade_wxPanelGraph.__init__(self, parent=parent, id=id, size=(5,4), *args, **kwargs)
         self.m_quote = quote
         self.m_nIndex = self.m_quote.lastindex()
         # print('m_nIndex=', self.m_nIndex)
@@ -964,8 +964,8 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
     ID_PAGE_TABLE = 5
     ID_PAGE_PROP = 6
 
-    def __init__(self,parent,id,size,quote,page=0):
-        wx.Notebook.__init__(self,parent,id,wx.DefaultPosition, size, style=wx.SIMPLE_BORDER|wx.NB_TOP)
+    def __init__(self,parent,id,size,quote,page=0, *args, **kwargs):
+        wx.Notebook.__init__(self,parent,id,wx.DefaultPosition, size, style=wx.SIMPLE_BORDER|wx.NB_TOP, *args, **kwargs)
         self.m_quote = None
         self.m_parent = parent
         self.m_port = parent.portfolio()
@@ -1083,10 +1083,10 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
 # ============================================================================
 
 class iTradeQuoteWindow(wx.Frame, iTrade_wxFrame, iTrade_wxLiveMixin):
-    def __init__(self, parent, id, port, quote, dpage=0):
-        wx.Frame.__init__(self, parent=None, id=wx.ID_ANY, size=(800, 480), style=wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE)
-        iTrade_wxFrame.__init__(self, parent=parent, name='view', hasStatusBar=False)
-        iTrade_wxLiveMixin.__init__(self)
+    def __init__(self, parent, id, port, quote, dpage=0, *args, **kwargs):
+        wx.Frame.__init__(self, parent=None, id=wx.ID_ANY, size=(800, 480), style=wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE, *args, **kwargs)
+        iTrade_wxFrame.__init__(self, parent=parent, name='view', hasStatusBar=False, *args, **kwargs)
+        iTrade_wxLiveMixin.__init__(self, *args, **kwargs)
 
         # store linked information
         self.m_quote = quote

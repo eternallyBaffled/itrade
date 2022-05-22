@@ -42,7 +42,6 @@ from __future__ import print_function
 from datetime import date
 import logging
 import os
-import string
 from enum import Enum
 from decimal import Decimal
 
@@ -117,14 +116,14 @@ def quote_reference(isin, ticker, market, place):
                 quote = lst[0]
                 market = quote.market()
                 place = quote.place()
-                return '{}.{}.{}'.format(isin, market, place)
+                return u'{}.{}.{}'.format(isin, market, place)
         else:
             if place is None or place == '':
                 lst = quotes.lookupISIN(isin, market)
                 if len(lst) > 0:
                     quote = lst[0]
                     place = quote.place()
-            return '{}.{}.{}'.format(isin, market, place)
+            return u'{}.{}.{}'.format(isin, market, place)
 
     if market is None or market == '':
         quote = quotes.lookupTicker(ticker)
@@ -135,7 +134,7 @@ def quote_reference(isin, ticker, market, place):
             market = '?'
             place = '?'
 
-    return '{}.{}.{}'.format(ticker, market, place)
+    return u'{}.{}.{}'.format(ticker, market, place)
 
 # ============================================================================
 # Quote
@@ -238,9 +237,9 @@ class Quote(object):
 
     def __repr__(self):
         return '{};{};{};{};{};{};{}'.format(self.m_isin,
-                                             self.m_name,
+                                             self.name(),
                                              self.m_ticker,
-                                             self.m_market, self.m_currency, self.m_place, self.m_country)
+                                             self.market(), self.m_currency, self.m_place, self.m_country)
 
     def __hash__(self):
         return self.m_key
@@ -311,7 +310,7 @@ class Quote(object):
     def sv_pru(self, box=QuoteType.both, fmt="{:.3f}", bDispCurrency=False):
         # return PRU in the default currency (i.e. portfolio currency)
         if bDispCurrency:
-            sc = ''.join((' ', self.m_symbcurr, ' '))
+            sc = ''.join((' ', self.currency_symbol(), ' '))
         else:
             sc = ''
         fmt = fmt + "{}"
@@ -320,7 +319,7 @@ class Quote(object):
     def sv_pr(self, box=QuoteType.both, fmt="{:.2f}", bDispCurrency=False):
         # return PR in the default currency (i.e. portfolio currency)
         if bDispCurrency:
-            sc = ''.join((' ', self.m_symbcurr, ' '))
+            sc = ''.join((' ', self.currency_symbol(), ' '))
         else:
             sc = ''
         fmt = fmt + "{}"
@@ -382,7 +381,7 @@ class Quote(object):
         # was: return self.m_isMonitored or self.m_isTraded or self.m_wasTraded
 
     def descr(self):
-        return '{} ({}-{})'.format(self.m_name, self.m_isin, self.m_ticker)
+        return '{} ({}-{})'.format(self.name(), self.m_isin, self.m_ticker)
 
     def trades(self):
         return self.m_daytrades
@@ -401,7 +400,7 @@ class Quote(object):
 
     def liveconnector(self, bForceLive=False, bDebug=False):
         if bForceLive:
-            ret = gLiveRegistry.get(self.m_market, self.m_list, QTag.live, self.m_place)
+            ret = gLiveRegistry.get(self.market(), self.m_list, QTag.live, self.m_place)
             if bDebug:
                 print('liveconnector: for live connector {}'.format(ret))
             if ret:
@@ -414,7 +413,7 @@ class Quote(object):
             return self.m_userliveconnector
 
         if not self.m_liveconnector:
-            self.m_liveconnector = getDefaultLiveConnector(market=self.m_market, lst=self.m_list, place=self.m_place)
+            self.m_liveconnector = getDefaultLiveConnector(market=self.market(), lst=self.m_list, place=self.m_place)
             if bDebug:
                 print('liveconnector: get liveconnector {}'.format(self.m_liveconnector))
         if bDebug:
@@ -434,19 +433,19 @@ class Quote(object):
 
     def restore_defaultconnectors(self):
         self.m_userliveconnector = None
-        # self.m_liveconnector = getDefaultLiveConnector(self.m_market, self.m_list, self.m_place)
-        self.m_importconnector = gImportRegistry.get(self.m_market, self.m_list, QTag.imported, self.m_place)
+        # self.m_liveconnector = getDefaultLiveConnector(self.market(), self.m_list, self.m_place)
+        self.m_importconnector = gImportRegistry.get(self.market(), self.m_list, QTag.imported, self.m_place)
         self.m_pluginId = None
 
     def set_liveconnector(self, name):
         if itrade_config.verbose:
             print('set_liveconnector {}/{} for '.format(self.key(), self.name()),
-                  self.m_market,
+                  self.market(),
                   self.m_list,
                   QTag.any,
                   self.m_place,
                   name)
-        conn = gLiveRegistry.get(self.m_market, self.m_list, QTag.any, self.m_place, name)
+        conn = gLiveRegistry.get(self.market(), self.m_list, QTag.any, self.m_place, name)
         # if itrade_config.verbose:
         #     print(' returns', conn)
         if conn:
@@ -454,7 +453,7 @@ class Quote(object):
             self.m_pluginId = None
 
     def set_importconnector(self, name):
-        conn = gImportRegistry.get(self.m_market, self.m_list, QTag.imported, self.m_place, name)
+        conn = gImportRegistry.get(self.market(), self.m_list, QTag.imported, self.m_place, name)
         if conn:
             self.m_importconnector = conn
             self.m_pluginId = None
@@ -608,7 +607,7 @@ class Quote(object):
     def sv_stoploss(self, bDispCurrency=False):
         # return a string with optional currency
         if bDispCurrency:
-            sc = ' ' + self.m_symbcurr + ' '
+            sc = ' ' + self.currency_symbol() + ' '
         else:
             sc = ''
         return "{:.2f}{}".format(self.nv_stoploss(), sc)
@@ -616,7 +615,7 @@ class Quote(object):
     def sv_stopwin(self, bDispCurrency=False):
         # return a string with optional currency
         if bDispCurrency:
-            sc = ' ' + self.m_symbcurr + ' '
+            sc = ' ' + self.currency_symbol() + ' '
         else:
             sc = ''
         return "{:.2f}{}".format(self.nv_stopwin(), sc)
@@ -689,9 +688,9 @@ class Quote(object):
             # import until 'yesterday' (be sure the day is or will open !)
             ajd = date.today()
             # if market is or will open:
-            ajd = Datation(ajd).prevopen(self.m_market).date()
+            ajd = Datation(ajd).prevopen(self.market()).date()
             # else:
-            #   ajd = Datation(ajd).nearopen(self.m_market).date()
+            #   ajd = Datation(ajd).nearopen(self.market()).date()
 
             # full importation ?
             tr = self.m_daytrades.lastimport()
@@ -898,7 +897,7 @@ class Quote(object):
 
     def sv_close(self, d=None, bDispCurrency=False):
         if bDispCurrency:
-            sc = ' ' + self.m_symbcurr + ' '
+            sc = ' ' + self.currency_symbol() + ' '
         else:
             sc = ''
         x = self.nv_close(d)
@@ -1072,7 +1071,7 @@ class Quote(object):
                 return False
 
     def isOpen(self):
-        return gCal.isopen(date.today(), self.m_market)
+        return gCal.isopen(date.today(), self.market())
 
     # ---[ compute all the data ] ---
 

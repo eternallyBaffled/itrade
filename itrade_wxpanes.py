@@ -134,9 +134,9 @@ class iTradeMatrixListCtrl(wx.ListCtrl, wxl.ListCtrlAutoWidthMixin):
 
 class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
 
-    def __init__(self,parent,wm,id,portfolio,matrix):
-        wx.Panel.__init__(self, parent, id)
-        iTrade_wxLiveMixin.__init__(self)
+    def __init__(self,parent,wm,id,portfolio,matrix, *args, **kwargs):
+        wx.Panel.__init__(self, parent, id, *args, **kwargs)
+        iTrade_wxLiveMixin.__init__(self, *args, **kwargs)
 
         self.m_parent = wm
         self.m_portfolio = portfolio
@@ -543,8 +543,8 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
 
 class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
 
-    def __init__(self,parent,wm,id,portfolio,matrix):
-        iTrade_MatrixPanel.__init__(self, parent,wm, id, portfolio, matrix)
+    def __init__(self, parent, wm, id, portfolio, matrix, *args, **kwargs):
+        iTrade_MatrixPanel.__init__(self, parent, wm, id, portfolio, matrix, *args, **kwargs)
 
     def name(self):
         return "portfolio"
@@ -593,9 +593,9 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
                     self.m_list.SetStringItem(x,IDC_TICKER,eachQuote.ticker())
                     self.m_list.SetStringItem(x,IDC_QTY,eachQuote.sv_number(QuoteType.cash))
                     if eachQuote.isTraded():
-                        self.m_list.SetStringItem(x,IDC_PRU,"%s %s" % (eachQuote.sv_pru(QuoteType.cash,"%.2f"),self.m_portfolio.currency_symbol()))
+                        self.m_list.SetStringItem(x, IDC_PRU, u"{} {}".format(eachQuote.sv_pru(QuoteType.cash, "{:.2f}"), self.m_portfolio.currency_symbol()))
                     else:
-                        self.m_list.SetStringItem(x,IDC_PRU,"-")
+                        self.m_list.SetStringItem(x, IDC_PRU, "-")
                     self.m_list.SetStringItem(x,IDC_PR, eachQuote.sv_pr(QuoteType.cash,fmt="%.0f",bDispCurrency=True))
                     self.m_list.SetStringItem(x,IDC_NAME,eachQuote.name())
 
@@ -611,9 +611,9 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
                     self.m_list.SetStringItem(x,IDC_TICKER,"%s (%s)" % (eachQuote.ticker(),message("money_srd")))
                     self.m_list.SetStringItem(x,IDC_QTY,eachQuote.sv_number(QuoteType.credit))
                     if eachQuote.isTraded():
-                        self.m_list.SetStringItem(x,IDC_PRU,"%s %s" % (eachQuote.sv_pru(QuoteType.credit,"%.2f"),self.m_portfolio.currency_symbol()))
+                        self.m_list.SetStringItem(x, IDC_PRU, u"{} {}".format(eachQuote.sv_pru(QuoteType.credit, "{:.2f}"), self.m_portfolio.currency_symbol()))
                     else:
-                        self.m_list.SetStringItem(x,IDC_PRU,"-")
+                        self.m_list.SetStringItem(x, IDC_PRU, "-")
                     self.m_list.SetStringItem(x,IDC_PR, eachQuote.sv_pr(QuoteType.credit,bDispCurrency=True))
                     self.m_list.SetStringItem(x,IDC_NAME,eachQuote.name())
 
@@ -693,8 +693,8 @@ class iTrade_MatrixPortfolioPanel(iTrade_MatrixPanel):
             item.SetImage(self.idx_tbref)
             self.m_list.SetStringItem(x,IDC_PVU," ---.-- ")
             self.m_list.SetStringItem(x,IDC_PERFDAY," ---.-- % ")
-            self.m_list.SetStringItem(x,IDC_PV," ---.-- %s" % self.m_portfolio.currency_symbol())
-            self.m_list.SetStringItem(x,IDC_PROFIT," ----.-- %s" % self.m_portfolio.currency_symbol())
+            self.m_list.SetStringItem(x,IDC_PV," ---.-- {}".format(self.m_portfolio.currency_symbol()))
+            self.m_list.SetStringItem(x,IDC_PROFIT," ----.-- {}".format(self.m_portfolio.currency_symbol()))
             self.m_list.SetStringItem(x,IDC_PERCENT," +---.-- % ")
 
         self.m_list.SetItem(item)
@@ -817,10 +817,10 @@ class iTrade_MatrixQuotesPanel(iTrade_MatrixPanel):
                 self.m_list.InsertImageStringItem(x, eachQuote.isin(), self.idx_tbref)
                 self.m_list.SetStringItem(x,IDC_TICKER,eachQuote.ticker())
                 if eachQuote.isTraded():
-                    self.m_list.SetStringItem(x,IDC_PRU,"%s %s" % (eachQuote.sv_pru(QuoteType.both,"%.2f"),self.m_portfolio.currency_symbol()))
+                    self.m_list.SetStringItem(x, IDC_PRU, u"{} {}".format(eachQuote.sv_pru(QuoteType.both, "{:.2f}"), self.m_portfolio.currency_symbol()))
                 else:
-                    self.m_list.SetStringItem(x,IDC_PRU,"-")
-                self.m_list.SetStringItem(x,IDC_NAME,eachQuote.name())
+                    self.m_list.SetStringItem(x, IDC_PRU, "-")
+                self.m_list.SetStringItem(x, IDC_NAME, eachQuote.name())
 
                 self.map(eachQuote, x, QuoteType.both)
                 self.itemQuoteMap[x] = eachQuote
@@ -837,8 +837,8 @@ class iTrade_MatrixQuotesPanel(iTrade_MatrixPanel):
         self.populateMatrixEnd()
 
     # refresh one quote
-    def refreshQuoteLine(self,x,disp):
-        quote,item = self.getQuoteAndItemOnTheLine(x)
+    def refreshQuoteLine(self, x, disp):
+        quote, item = self.getQuoteAndItemOnTheLine(x)
         bRef = False
 
         # refresh line text
@@ -868,7 +868,7 @@ class iTrade_MatrixQuotesPanel(iTrade_MatrixPanel):
                 color = QuoteColor.nochange
         else:
             self.m_list.SetStringItem(x,IDC_PREV," ---.-- ")
-            self.m_list.SetStringItem(x,IDC_CLOSE," ----.-- %s " % quote.currency_symbol())
+            self.m_list.SetStringItem(x,IDC_CLOSE," ----.-- {} ".format(quote.currency_symbol()))
             self.m_list.SetStringItem(x,IDC_OPEN," ---.-- ")
             self.m_list.SetStringItem(x,IDC_HIGH," ---.-- ")
             self.m_list.SetStringItem(x,IDC_LOW," ---.-- ")
@@ -877,7 +877,7 @@ class iTrade_MatrixQuotesPanel(iTrade_MatrixPanel):
             self.m_list.SetStringItem(x,IDC_PERCENT," +---.-- % ")
             color = QuoteColor.invalid
 
-        self.refreshColorLine(x,color)
+        self.refreshColorLine(x, color)
 
         # __x not working : change the full line :-(
         # __x item = self.m_list.GetItem(x,IDC_PREV)
@@ -890,24 +890,24 @@ class iTrade_MatrixQuotesPanel(iTrade_MatrixPanel):
     def refreshList(self):
         keepGoing = True
         if self.m_parent.hasFocus():
-            dlg = wx.ProgressDialog(message('main_refreshing'),"",self.m_maxlines,self,wx.PD_CAN_ABORT | wx.PD_APP_MODAL)
+            dlg = wx.ProgressDialog(message('main_refreshing'), "", self.m_maxlines, self, wx.PD_CAN_ABORT | wx.PD_APP_MODAL)
         else:
             dlg = None
 
-        for xline in range(0,self.m_maxlines):
+        for xline in range(0, self.m_maxlines):
             if keepGoing:
                 key = self.m_list.GetItemData(xline)
                 quote = self.itemQuoteMap[key]
                 if dlg:
-                    keepGoing = dlg.Update(xline,quote.name())
+                    keepGoing = dlg.Update(xline, quote.name())
                 quote.update()
-                self.refreshQuoteLine(xline,True)
+                self.refreshQuoteLine(xline, True)
 
         if dlg:
             dlg.Destroy()
 
     def OnLiveQuote(self, quote, xline):
-        return self.refreshQuoteLine(xline,True)
+        return self.refreshQuoteLine(xline, True)
 
     # ---[ popup menu management ] --------------------------------------------
 
@@ -1017,11 +1017,11 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
                 self.m_list.InsertImageStringItem(x, eachQuote.isin(), self.idx_tbref)
                 self.m_list.SetStringItem(x,IDC_TICKER,eachQuote.ticker())
                 if eachQuote.isTraded():
-                    self.m_list.SetStringItem(x,IDC_PRU,"%s %s" % (eachQuote.sv_pru(QuoteType.both,"%.2f"),self.m_portfolio.currency_symbol()))
+                    self.m_list.SetStringItem(x, IDC_PRU, u"{} {}".format(eachQuote.sv_pru(QuoteType.both, "{:.2f}"), self.m_portfolio.currency_symbol()))
                 else:
-                    self.m_list.SetStringItem(x,IDC_PRU,"-")
-                self.m_list.SetStringItem(x,IDC_STOPLOSS,"~ %s " % eachQuote.sv_stoploss())
-                self.m_list.SetStringItem(x,IDC_STOPWIN,"~ %s " % eachQuote.sv_stopwin())
+                    self.m_list.SetStringItem(x, IDC_PRU, u"-")
+                self.m_list.SetStringItem(x,IDC_STOPLOSS,"~ {} ".format(eachQuote.sv_stoploss()))
+                self.m_list.SetStringItem(x,IDC_STOPWIN,"~ {} ".format(eachQuote.sv_stopwin()))
                 self.m_list.SetStringItem(x,IDC_NAME,eachQuote.name())
 
                 self.map(eachQuote, x, QuoteType.both)
@@ -1056,19 +1056,18 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
             else:
                 self.m_list.SetStringItem(x,IDC_INVEST, quote.sv_pr(fmt="%.0f",bDispCurrency=True))
                 self.m_list.SetStringItem(x,IDC_RISKM, quote.sv_riskmoney(self.m_portfolio.currency(),self.m_portfolio.currency_symbol()))
-                self.m_list.SetStringItem(x,IDC_PV,"%s %s" % (quote.sv_pv(self.m_portfolio.currency(),fmt="%.0f"),self.m_portfolio.currency_symbol()))
-                self.m_list.SetStringItem(x,IDC_PROFIT,"%s %s" % (quote.sv_profit(self.m_portfolio.currency(),fmt="%.0f"),self.m_portfolio.currency_symbol()))
+                self.m_list.SetStringItem(x,IDC_PV,"{} {}".format(quote.sv_pv(self.m_portfolio.currency(),fmt="%.0f"),self.m_portfolio.currency_symbol()))
                 self.m_list.SetStringItem(x,IDC_PERCENT,quote.sv_profitPercent(self.m_portfolio.currency()))
 
                 key = self.m_list.GetItemData(x)
                 pp = self.map(quote, key, QuoteType.both)
                 bRef = (pp != self.itemDataMap[key])
         else:
-            self.m_list.SetStringItem(x,IDC_INVEST, " ------ %s" % self.m_portfolio.currency_symbol())
-            self.m_list.SetStringItem(x,IDC_RISKM, " ------ %s" % self.m_portfolio.currency_symbol())
-            self.m_list.SetStringItem(x,IDC_CURRENT," ---.-- %s " % quote.currency_symbol())
-            self.m_list.SetStringItem(x,IDC_PV," ------ %s" % self.m_portfolio.currency_symbol())
-            self.m_list.SetStringItem(x,IDC_PROFIT," ------ %s" % self.m_portfolio.currency_symbol())
+            self.m_list.SetStringItem(x,IDC_INVEST, " ------ {}".format(self.m_portfolio.currency_symbol()))
+            self.m_list.SetStringItem(x,IDC_RISKM, " ------ {}".format(self.m_portfolio.currency_symbol()))
+            self.m_list.SetStringItem(x,IDC_CURRENT," ---.-- {} ".format(quote.currency_symbol()))
+            self.m_list.SetStringItem(x,IDC_PV," ------ {}".format(self.m_portfolio.currency_symbol()))
+            self.m_list.SetStringItem(x,IDC_PROFIT," ------ {}".format(self.m_portfolio.currency_symbol()))
             self.m_list.SetStringItem(x,IDC_PERCENT," +---.-- % ")
             color = QuoteColor.invalid
 
@@ -1220,7 +1219,7 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
                 self.m_list.InsertImageStringItem(x, eachQuote.isin(), self.idx_tbref)
                 self.m_list.SetStringItem(x,IDC_TICKER,eachQuote.ticker())
                 if eachQuote.isTraded():
-                    self.m_list.SetStringItem(x,IDC_PRU,eachQuote.sv_pru(QuoteType.both, "%.3f", False))
+                    self.m_list.SetStringItem(x,IDC_PRU,eachQuote.sv_pru(QuoteType.both, "{:.3f}", False))
                 else:
                     self.m_list.SetStringItem(x,IDC_PRU,"-")
 

@@ -238,7 +238,7 @@ class iTrade_wxDecision(sc.SizedPanel):
     def refresh(self):
         # refresh cash
         self.wxCashNumOfShares.SetLabel(self.m_quote.sv_number(QuoteType.cash))
-        self.wxCashPRU.SetLabel(self.m_quote.sv_pru(QuoteType.cash,fmt="%.2f",bDispCurrency=True))
+        self.wxCashPRU.SetLabel(self.m_quote.sv_pru(QuoteType.cash,fmt="{:.2f}",bDispCurrency=True))
         self.wxCashPR.SetLabel(self.m_quote.sv_pr(QuoteType.cash,bDispCurrency=True))
 
         profit = self.m_quote.nv_profit(self.m_quote.currency(),QuoteType.cash)
@@ -257,7 +257,7 @@ class iTrade_wxDecision(sc.SizedPanel):
 
         # refresh credit
         self.wxCreditNumOfShares.SetLabel(self.m_quote.sv_number(QuoteType.credit))
-        self.wxCreditPRU.SetLabel(self.m_quote.sv_pru(QuoteType.credit, fmt="%.2f", bDispCurrency=True))
+        self.wxCreditPRU.SetLabel(self.m_quote.sv_pru(QuoteType.credit, fmt="{:.2f}", bDispCurrency=True))
         self.wxCreditPR.SetLabel(self.m_quote.sv_pr(QuoteType.credit, bDispCurrency=True))
 
         profit = self.m_quote.nv_profit(self.m_quote.currency(), QuoteType.credit)
