@@ -1195,41 +1195,41 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
 
     # ---[ Quotes ] -----------------------------------------
 
-    def AddAndRefresh(self,quote=None):
-        quote = addInMatrix_iTradeQuote(self,self.m_matrix,self.m_portfolio,quote)
+    def AddAndRefresh(self, quote=None):
+        quote = addInMatrix_iTradeQuote(self, self.m_matrix, self.m_portfolio, quote)
         if quote:
-            print('AddAndRefresh:',quote)
+            print('AddAndRefresh:', quote)
             self.m_portfolio.setupCurrencies()
             self.m_portfolio.loginToServices(quote)
             self.RebuildList()
 
-    def OnAddQuote(self,e):
+    def OnAddQuote(self, e):
         self.AddAndRefresh(None)
 
-    def OnRemoveCurrentQuote(self,e):
+    def OnRemoveCurrentQuote(self, e):
         quote = self.currentQuote()
         # ask a confirmation
-        idRet = iTradeYesNo(self, message('remove_quote_info') % quote.name(), message('remove_quote_title'))
+        idRet = iTradeYesNo(self, message('remove_quote_info').format(quote.name()), message('remove_quote_title'))
         if idRet == wx.ID_YES:
-            if removeFromMatrix_iTradeQuote(self,self.m_matrix,quote):
-                print('OnRemoveCurrentQuote:',quote)
+            if removeFromMatrix_iTradeQuote(self, self.m_matrix, quote):
+                print('OnRemoveCurrentQuote:', quote)
                 self.m_portfolio.setupCurrencies()
                 self.RebuildList()
 
     # ---[ Stops ] -----------------------------------------
 
-    def OnAddStops(self,e):
-        quote = addOrEditStops_iTradeQuote(self,quote=None,market=self.m_portfolio.market(),bAdd=True)
+    def OnAddStops(self, e):
+        quote = addOrEditStops_iTradeQuote(self, quote=None, market=self.m_portfolio.market(), bAdd=True)
         if quote:
             self.AddAndRefresh(quote)
 
-    def OnRemoveStops(self,e):
-        if removeStops_iTradeQuote(self,quote=self.currentQuote()):
+    def OnRemoveStops(self, e):
+        if removeStops_iTradeQuote(self, quote=self.currentQuote()):
             self.RebuildList()
 
-    def OnEditStops(self,e):
-        quote=self.currentQuote()
-        if addOrEditStops_iTradeQuote(self,quote,market=quote.market(),bAdd=False):
+    def OnEditStops(self, e):
+        quote = self.currentQuote()
+        if addOrEditStops_iTradeQuote(self, quote, market=quote.market(), bAdd=False):
             self.RebuildList()
 
     # ---[ Indice ] -----------------------------------------

@@ -232,14 +232,14 @@ class Operation(object):
         if isinstance(d,datetime.datetime):
             self.m_datetime = d
         else:
-            debug('Operation::__init__():%s' % d)
+            debug('Operation::__init__():{}'.format(d))
             try:
-                self.m_datetime = datetime.datetime.strptime(d,'%Y-%m-%d %H:%M:%S.%f')
+                self.m_datetime = datetime.datetime.strptime(d, '%Y-%m-%d %H:%M:%S.%f')
             except ValueError:
                 try:
-                    self.m_datetime = datetime.datetime.strptime(d,'%Y-%m-%d %H:%M:%S')
+                    self.m_datetime = datetime.datetime.strptime(d, '%Y-%m-%d %H:%M:%S')
                 except ValueError:
-                    self.m_datetime = datetime.datetime.strptime(d,'%Y-%m-%d')
+                    self.m_datetime = datetime.datetime.strptime(d, '%Y-%m-%d')
 
         self.m_type = t
         self.m_value = float(v)
@@ -258,7 +258,7 @@ class Operation(object):
                     self.m_name = self.m_quote.name()
                 else:
                     lst = quotes.lookupISIN(m)
-                    if len(lst)>0:
+                    if len(lst) > 0:
                         self.m_quote = lst[0]
                         self.m_name = self.m_quote.name()
                     else:
@@ -286,13 +286,13 @@ class Operation(object):
         return self.m_value
 
     def sv_value(self):
-        return '%.2f' % self.nv_value()
+        return '{:.2f}'.format(self.nv_value())
 
     def nv_expenses(self):
         return self.m_expenses
 
     def sv_expenses(self):
-        return '%.2f' % self.nv_expenses()
+        return '{:.2f}'.format(self.nv_expenses())
 
     def nv_vat(self):
         return self.m_vat
@@ -1030,141 +1030,141 @@ class Portfolio(object):
     def nv_perfTotalPercent(self):
         n = self.nv_totalValue()
         i = self.nv_invest()
-        if n==0.0 or i==0.0:
+        if n == 0.0 or i == 0.0:
             return 0.0
         return ((n*100.0) / i) - 100
 
     def nv_percentCash(self, box=QuoteType.both):
         total = self.nv_value(box) + self.nv_cash()
-        if total==0.0:
+        if total == 0.0:
             return 0.0
         else:
             return (total-self.nv_value(box))/total*100.0
 
     def nv_percentQuotes(self, box=QuoteType.both):
         total = self.nv_value(box) + self.nv_cash()
-        if total==0.0:
+        if total == 0.0:
             return 0.0
         else:
             return (total-self.nv_cash())/total*100.0
 
     # --- [ string API ] ------------------------------------------------------
 
-    def sv_cash(self,currency=None,fmt="%.2f",bDispCurrency=False):
+    def sv_cash(self, currency=None, fmt="{:.2f}", bDispCurrency=False):
+        if bDispCurrency:
+            sc = ' ' + self.currency_symbol() + ' '
+        else:
+            sc = ''
+        fmt = fmt + "{}"
+        return fmt.format(self.nv_cash(), sc)
+
+    def sv_credit(self, currency=None, fmt="{:.2f}", bDispCurrency=False):
+        if bDispCurrency:
+            sc = ' ' + self.currency_symbol() + ' '
+        else:
+            sc = ''
+        fmt = fmt + "{}"
+        return fmt.format(self.nv_credit(), sc)
+
+    def sv_taxes(self, fmt="{:.2f}", bDispCurrency=False):
+        if bDispCurrency:
+            sc = ' ' + self.currency_symbol() + ' '
+        else:
+            sc = ''
+        fmt = fmt + "{}"
+        return fmt.format(self.nv_taxes(), sc)
+
+    def sv_expenses(self, fmt="{:.2f}", bDispCurrency=False):
+        if bDispCurrency:
+            sc = ' ' + self.currency_symbol() + ' '
+        else:
+            sc = ''
+        fmt = fmt + "{}"
+        return fmt.format(self.nv_expenses(), sc)
+
+    def sv_transfer(self, fmt="{:.2f}", bDispCurrency=False):
+        if bDispCurrency:
+            sc = ' ' + self.currency_symbol() + ' '
+        else:
+            sc = ''
+        fmt = fmt + "{}"
+        return fmt.format(self.nv_transfer(), sc)
+
+    def sv_taxable(self, fmt="{:.2f}", bDispCurrency=False):
+        if bDispCurrency:
+            sc = ' ' + self.currency_symbol() + ' '
+        else:
+            sc = ''
+        fmt = fmt + "{}"
+        return fmt.format(self.nv_taxable(), sc)
+
+    def sv_appreciation(self, fmt="{:.2f}", bDispCurrency=False):
+        if bDispCurrency:
+            sc = ' ' + self.currency_symbol() + ' '
+        else:
+            sc = ''
+        fmt = fmt + "{}"
+        return fmt.format(self.nv_appreciation(), sc)
+
+    def sv_invest(self, fmt="{:.2f}", bDispCurrency=False):
         if bDispCurrency:
             sc = ' '+self.currency_symbol()+' '
         else:
             sc = ''
-        fmt = fmt + "%s"
-        return fmt % (self.nv_cash(),sc)
+        fmt = fmt + "{}"
+        return fmt.format(self.nv_invest(), sc)
 
-    def sv_credit(self,currency=None,fmt="%.2f",bDispCurrency=False):
+    def sv_value(self, box=QuoteType.both, fmt="{:.2f}", bDispCurrency=False):
         if bDispCurrency:
             sc = ' '+self.currency_symbol()+' '
         else:
             sc = ''
-        fmt = fmt + "%s"
-        return fmt % (self.nv_credit(),sc)
+        fmt = fmt + "{}"
+        return fmt.format(self.nv_value(box), sc)
 
-    def sv_taxes(self,fmt="%.2f",bDispCurrency=False):
+    def sv_buy(self, box=QuoteType.both, fmt="{:.2f}", bDispCurrency=False):
         if bDispCurrency:
-            sc = ' '+self.currency_symbol()+' '
+            sc = ' ' + self.currency_symbol() + ' '
         else:
             sc = ''
-        fmt = fmt + "%s"
-        return fmt % (self.nv_taxes(),sc)
+        fmt = fmt + "{}"
+        return fmt.format(self.nv_buy(box), sc)
 
-    def sv_expenses(self,fmt="%.2f",bDispCurrency=False):
+    def sv_perf(self, box=QuoteType.both, fmt="{:.2f}", bDispCurrency=False):
         if bDispCurrency:
-            sc = ' '+self.currency_symbol()+' '
+            sc = ' ' + self.currency_symbol() + ' '
         else:
             sc = ''
-        fmt = fmt + "%s"
-        return fmt % (self.nv_expenses(),sc)
+        fmt = fmt + "{}"
+        return fmt.format(self.nv_perf(box), sc)
 
-    def sv_transfer(self,fmt="%.2f",bDispCurrency=False):
+    def sv_perfPercent(self, box=QuoteType.both, fmt="{:3.2f} %"):
+        return fmt.format(self.nv_perfPercent(box))
+
+    def sv_percentCash(self, box=QuoteType.both, fmt="{:3.2f} %"):
+        return fmt.format(self.nv_percentCash(box))
+
+    def sv_percentQuotes(self, box=QuoteType.both, fmt="{:3.2f} %"):
+        return fmt.format(self.nv_percentQuotes(box))
+
+    def sv_totalValue(self, fmt="{:.2f}", bDispCurrency=False):
         if bDispCurrency:
-            sc = ' '+self.currency_symbol()+' '
+            sc = ' ' + self.currency_symbol() + ' '
         else:
             sc = ''
-        fmt = fmt + "%s"
-        return fmt % (self.nv_transfer(),sc)
+        fmt = fmt + u"{}"
+        return fmt.format(self.nv_totalValue(), sc)
 
-    def sv_taxable(self,fmt="%.2f",bDispCurrency=False):
+    def sv_perfTotal(self, fmt="{:.2f}", bDispCurrency=False):
         if bDispCurrency:
-            sc = ' '+self.currency_symbol()+' '
+            sc = ' ' + self.currency_symbol() + ' '
         else:
             sc = ''
-        fmt = fmt + "%s"
-        return fmt % (self.nv_taxable(),sc)
+        fmt = fmt + u"{}"
+        return fmt.format(self.nv_perfTotal(), sc)
 
-    def sv_appreciation(self,fmt="%.2f",bDispCurrency=False):
-        if bDispCurrency:
-            sc = ' '+self.currency_symbol()+' '
-        else:
-            sc = ''
-        fmt = fmt + "%s"
-        return fmt % (self.nv_appreciation(),sc)
-
-    def sv_invest(self,fmt="%.2f",bDispCurrency=False):
-        if bDispCurrency:
-            sc = ' '+self.currency_symbol()+' '
-        else:
-            sc = ''
-        fmt = fmt + "%s"
-        return fmt % (self.nv_invest(),sc)
-
-    def sv_value(self, box=QuoteType.both, fmt="%.2f", bDispCurrency=False):
-        if bDispCurrency:
-            sc = ' '+self.currency_symbol()+' '
-        else:
-            sc = ''
-        fmt = fmt + "%s"
-        return fmt % (self.nv_value(box),sc)
-
-    def sv_buy(self, box=QuoteType.both, fmt="%.2f", bDispCurrency=False):
-        if bDispCurrency:
-            sc = ' '+self.currency_symbol()+' '
-        else:
-            sc = ''
-        fmt = fmt + "%s"
-        return fmt % (self.nv_buy(box),sc)
-
-    def sv_perf(self, box=QuoteType.both, fmt="%.2f", bDispCurrency=False):
-        if bDispCurrency:
-            sc = ' '+self.currency_symbol()+' '
-        else:
-            sc = ''
-        fmt = fmt + "%s"
-        return fmt % (self.nv_perf(box),sc)
-
-    def sv_perfPercent(self, box=QuoteType.both, fmt="%3.2f %%"):
-        return fmt % self.nv_perfPercent(box)
-
-    def sv_percentCash(self, box=QuoteType.both, fmt="%3.2f %%"):
-        return fmt % self.nv_percentCash(box)
-
-    def sv_percentQuotes(self, box=QuoteType.both, fmt="%3.2f %%"):
-        return fmt % self.nv_percentQuotes(box)
-
-    def sv_totalValue(self, fmt="%.2f", bDispCurrency=False):
-        if bDispCurrency:
-            sc = ' '+self.currency_symbol()+' '
-        else:
-            sc = ''
-        fmt = fmt + "%s"
-        return fmt % (self.nv_totalValue(),sc)
-
-    def sv_perfTotal(self,fmt="%.2f",bDispCurrency=False):
-        if bDispCurrency:
-            sc = ' '+self.currency_symbol()+' '
-        else:
-            sc = ''
-        fmt = fmt + "%s"
-        return fmt % (self.nv_perfTotal(),sc)
-
-    def sv_perfTotalPercent(self,fmt="%3.2f %%"):
-        return fmt % self.nv_perfTotalPercent()
+    def sv_perfTotalPercent(self, fmt="{:3.2f} %"):
+        return fmt.format(self.nv_perfTotalPercent())
 
 # ============================================================================
 # Portfolios
@@ -1173,6 +1173,7 @@ class Portfolio(object):
 # usrdata/portfolio.txt CSV File format :
 #   filename;username;accountref
 # ============================================================================
+
 
 class Portfolios(object):
     def __init__(self):
@@ -1192,43 +1193,43 @@ class Portfolios(object):
         items.sort(key=Portfolio.key)
         return items
 
-    def existPortfolio(self,fn):
+    def existPortfolio(self, fn):
         return fn in self.m_portfolios
 
-    def delPortfolio(self,filename):
+    def delPortfolio(self, filename):
         if filename not in self.m_portfolios:
             return False
         else:
-            debug('Portfolios::delPortfolio(): %s' % self.m_portfolios[filename])
+            debug('Portfolios::delPortfolio(): {}'.format(self.m_portfolios[filename]))
             self.m_portfolios[filename].remove()
             del self.m_portfolios[filename]
             return True
 
-    def addPortfolio(self,filename,name,accountref,market,currency,vat,term,risk,indice):
+    def addPortfolio(self, filename, name, accountref, market, currency, vat, term, risk, indice):
         if filename in self.m_portfolios:
             return None
         else:
-            self.m_portfolios[filename] = Portfolio(filename,name,accountref,market,currency,vat,term,risk,indice)
-            debug('Portfolios::addPortfolio(): %s' % self.m_portfolios[filename])
+            self.m_portfolios[filename] = Portfolio(filename, name, accountref, market, currency, vat, term, risk, indice)
+            debug('Portfolios::addPortfolio(): {}'.format(self.m_portfolios[filename]))
             return self.m_portfolios[filename]
 
-    def editPortfolio(self,filename,name,accountref,market,currency,vat,term,risk,indice):
+    def editPortfolio(self, filename, name, accountref, market, currency, vat, term, risk, indice):
         if filename not in self.m_portfolios:
             return None
         else:
             del self.m_portfolios[filename]
-            self.m_portfolios[filename] = Portfolio(filename,name,accountref,market,currency,vat,term,risk,indice)
-            debug('Portfolios::editPortfolio(): %s' % self.m_portfolios[filename])
+            self.m_portfolios[filename] = Portfolio(filename, name, accountref, market, currency, vat, term, risk, indice)
+            debug(u'Portfolios::editPortfolio(): {}'.format(self.m_portfolios[filename]))
             return self.m_portfolios[filename]
 
-    def renamePortfolio(self,filename,newfilename):
+    def renamePortfolio(self, filename, newfilename):
         if filename not in self.m_portfolios:
             return None
         else:
             self.m_portfolios[filename].rename(newfilename)
             self.m_portfolios[newfilename] = self.m_portfolios[filename]
             del self.m_portfolios[filename]
-            debug('Portfolios::renamePortfolio(): %s -> %s' % (filename,newfilename))
+            debug(u'Portfolios::renamePortfolio(): {} -> {}'.format(filename, newfilename))
             return self.m_portfolios[newfilename]
 
     def portfolio(self, fn):
@@ -1238,38 +1239,38 @@ class Portfolios(object):
         debug('Portfolios:load()')
 
         # open and read the file to load these quotes information
-        infile = itrade_csv.read(fn,os.path.join(itrade_config.dirUserData,'portfolio.txt'))
+        infile = itrade_csv.read(fn, os.path.join(itrade_config.dirUserData, 'portfolio.txt'))
         # scan each line to read each portfolio
         for eachLine in infile:
-            item = itrade_csv.parse(eachLine,6)
+            item = itrade_csv.parse(eachLine, 6)
             if item:
-                # info('%s :: %s' % (eachLine,item))
+                # info('{} :: {}'.format(eachLine, item))
                 vat = country2vat(gMessage.getLang())
-                if len(item)>=5:
+                if len(item) >= 5:
                     currency = item[4]
-                    if len(item)>=6:
+                    if len(item) >= 6:
                         vat = float(item[5])
                     else:
                         vat = 1.0
-                    if len(item)>=8:
+                    if len(item) >= 8:
                         term = int(item[6])
                         risk = int(item[7])
                     else:
                         term = 3
                         risk = 5
-                    if len(item)>=9:
+                    if len(item) >= 9:
                         indice = item[8]
                     else:
                         indice = getDefaultIndice(item[3])
                 else:
                     currency = 'EUR'
-                self.addPortfolio(item[0],item[1],item[2],item[3],currency,vat,term,risk,indice)
+                self.addPortfolio(item[0], item[1], item[2], item[3], currency, vat, term, risk, indice)
 
-    def save(self,fn=None):
+    def save(self, fn=None):
         debug('Portfolios:save()')
 
         # open and write the file with these quotes information
-        itrade_csv.write(fn,os.path.join(itrade_config.dirUserData,'portfolio.txt'),self.m_portfolios.values())
+        itrade_csv.write(fn, os.path.join(itrade_config.dirUserData, 'portfolio.txt'), self.m_portfolios.values())
 
 # ============================================================================
 # loadPortfolio
@@ -1277,31 +1278,33 @@ class Portfolios(object):
 #   fn    filename reference
 # ============================================================================
 
+
 class currentCell(object):
-    def __init__(self,f):
+    def __init__(self, f):
         self.f = f
 
     def __repr__(self):
-        return '%s' % self.f
+        return '{}'.format(self.f)
+
 
 def loadPortfolio(fn=None):
     # default portfolio reference
     if fn is None:
-        defref = itrade_csv.read(None,os.path.join(itrade_config.dirUserData,'default.txt'))
+        defref = itrade_csv.read(None, os.path.join(itrade_config.dirUserData, 'default.txt'))
         if defref:
-            item = itrade_csv.parse(defref[0],1)
+            item = itrade_csv.parse(defref[0], 1)
             fn = item[0]
         else:
             fn = 'default'
-    debug('loadPortfolio %s',fn)
+    debug('loadPortfolio %s', fn)
 
     # create the portfolio
     portfolios.reinit()
     p = portfolios.portfolio(fn)
     if p is None:
         # portfolio does not exist !
-        print("Portfolio '%s' does not exist ... create it" % fn)
-        p = portfolios.addPortfolio(fn,fn,'noref','EURONEXT','EUR',country2vat('fr'), 3, 5,getDefaultIndice('EURONEXT'))
+        print(u"Portfolio '{}' does not exist ... create it".format(fn))
+        p = portfolios.addPortfolio(fn, fn, 'noref', 'EURONEXT', 'EUR', country2vat('fr'), 3, 5, getDefaultIndice('EURONEXT'))
         portfolios.save()
 
     # load properties
@@ -1320,7 +1323,7 @@ def loadPortfolio(fn=None):
     # save current file
     scf = {}
     scf[0] = currentCell(fn)
-    itrade_csv.write(None,os.path.join(itrade_config.dirUserData,'default.txt'),scf.values())
+    itrade_csv.write(None, os.path.join(itrade_config.dirUserData, 'default.txt'), scf.values())
 
     # return the portfolio
     return p
@@ -1331,8 +1334,9 @@ def loadPortfolio(fn=None):
 #   fn    filename reference (shall be unique)
 # ============================================================================
 
+
 def newPortfolio(fn=None):
-    debug('newPortfolio %s',fn)
+    debug('newPortfolio %s',  fn)
 
     # create the portfolio
     portfolios.reinit()
@@ -1341,7 +1345,7 @@ def newPortfolio(fn=None):
     # save current file
     scf = {}
     scf[0] = currentCell(fn)
-    itrade_csv.write(None,os.path.join(itrade_config.dirUserData,'default.txt'),scf.values())
+    itrade_csv.write(None, os.path.join(itrade_config.dirUserData, 'default.txt'), scf.values())
 
     # return the portfolio
     return p
@@ -1350,13 +1354,14 @@ def newPortfolio(fn=None):
 # CommandLine : -e / evaluate portfolio
 # ============================================================================
 
+
 def cmdline_evaluatePortfolio(year=2006):
     print('--- load current portfolio ---')
     p = loadPortfolio()
     print('... %s:%s:%s ' % (p.filename(),p.name(),p.accountref()))
 
     print('--- build a matrix -----------')
-#    m = create_matrix(p.filename(),p)
+#    m = create_matrix(p.filename(), p)
     m = create_matrix(p.filename())
 
     print('--- liveupdate this matrix ---')

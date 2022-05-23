@@ -236,7 +236,7 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
             print('Save sorting', self.name(), '- column:', self.m_sort_colnum, 'ascending:', self.m_sort_colasc)
 
         # format for saving
-        itrade_config.column[self.name()] = '%s;%s' % (self.m_sort_colnum, self.m_sort_colasc)
+        itrade_config.column[self.name()] = u'{};{}'.format(self.m_sort_colnum, self.m_sort_colasc)
 
     def SortColumn(self):
         # sort the default column
@@ -459,7 +459,7 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
                 curFrom = eachKey[3:]
                 if currencies.used(curTo,curFrom):
                     if dlg:
-                        keepGoing = dlg.Update(x,"%s -> %s" % (curFrom,curTo))
+                        keepGoing = dlg.Update(x,u"{} -> {}".format(curFrom, curTo))
                     currencies.get(curTo,curFrom)
                     x = x + 1
 
@@ -509,11 +509,11 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
                             self.SortColumn()
                     else:
                         if itrade_config.verbose:
-                            print('pane::OnLive %s: %s - bad : other view' % (evt.quote.key(),evt.param))
+                            print(u'pane::OnLive {}: {} - bad : other view'.format(evt.quote.key(), evt.param))
             self.m_parent.refreshConnexion()
         else:
             if itrade_config.verbose:
-                print('pane::OnLive %s: %s - bad : not running' % (evt.quote.key(),evt.param))
+                print(u'pane::OnLive {}: {} - bad : not running'.format(evt.quote.key(), evt.param))
 
     # refresh list
     def OnRefresh(self,e):
@@ -1252,7 +1252,7 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
             self.m_list.SetStringItem(x,IDC_MA50,quote.sv_ma(50))
             self.m_list.SetStringItem(x,IDC_MA100,quote.sv_ma(100))
             self.m_list.SetStringItem(x,IDC_RSI,quote.sv_rsi(14))
-            self.m_list.SetStringItem(x,IDC_STOCH,'%s (%s)' % (quote.sv_stoK(),quote.sv_stoD()))
+            self.m_list.SetStringItem(x,IDC_STOCH,u'{} ({})'.format(quote.sv_stoK(), quote.sv_stoD()))
 
             key = self.m_list.GetItemData(x)
 
@@ -1270,7 +1270,7 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
             self.m_list.SetStringItem(x,IDC_DMI," ---.-- ")
             self.m_list.SetStringItem(x,IDC_EMV," ---.-- ")
             self.m_list.SetStringItem(x,IDC_OVB," ------ ")
-            self.m_list.SetStringItem(x,IDC_LAST," ----.-- %s " % quote.currency_symbol())
+            self.m_list.SetStringItem(x,IDC_LAST, u" ----.-- {} ".format(quote.currency_symbol()))
             color = QuoteColor.nochange
 
         # update line color and icon

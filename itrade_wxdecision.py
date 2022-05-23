@@ -108,7 +108,7 @@ class iTrade_wxDecision(sc.SizedPanel):
         self.wxCashPR.SetSizerProps(valign='center')
 
         # Pane#1 Box #1 Row #4 : Profit in portfolio
-        label = wx.StaticText(box1, -1, message('decision_profit') % quote.currency_symbol())
+        label = wx.StaticText(box1, -1, message('decision_profit').format(quote.currency_symbol()))
         label.SetSizerProps(valign='center',halign='right')
 
         self.wxCashProfit = wx.StaticText(box1, -1, '')
@@ -163,7 +163,7 @@ class iTrade_wxDecision(sc.SizedPanel):
         self.wxCreditPR.SetSizerProps(valign='center')
 
         # Pane#2 Box #2 Row #4 : Profit in portfolio
-        label = wx.StaticText(box2, -1, message('decision_profit') % quote.currency_symbol())
+        label = wx.StaticText(box2, -1, message('decision_profit').format(quote.currency_symbol()))
         label.SetSizerProps(valign='center',halign='right')
 
         self.wxCreditProfit = wx.StaticText(box2, -1, '')
@@ -196,36 +196,36 @@ class iTrade_wxDecision(sc.SizedPanel):
         box1.SetSizerProps(expand=True)
 
         # Pane#3 Box #1 Row #1 : Available Cash in portfolio currency
-        label = wx.StaticText(box1, -1, message('decision_availablecash') % portfolio.currency_symbol())
-        label.SetSizerProps(valign='center',halign='right')
+        label = wx.StaticText(box1, -1, message('decision_availablecash').format(portfolio.currency_symbol()))
+        label.SetSizerProps(valign='center', halign='right')
 
         self.wxAvailableCash = wx.StaticText(box1, -1, '')
         self.wxAvailableCash.SetSizerProps(valign='center')
 
         # Pane#3 Box #1 Row #2 : Available Cash in quote currency
-        self.wxLabelAvailableCashQC = wx.StaticText(box1, -1, message('decision_availablecash') % quote.currency_symbol())
-        self.wxLabelAvailableCashQC.SetSizerProps(valign='center',halign='right')
+        self.wxLabelAvailableCashQC = wx.StaticText(box1, -1, message('decision_availablecash').format(quote.currency_symbol()))
+        self.wxLabelAvailableCashQC.SetSizerProps(valign='center', halign='right')
 
         self.wxAvailableCashQC = wx.StaticText(box1, -1, '')
         self.wxAvailableCashQC.SetSizerProps(valign='center')
 
         # Pane#3 Box #1 Row #3 : Committed Credit
-        label = wx.StaticText(box1, -1, message('decision_committedcredit') % portfolio.currency_symbol())
-        label.SetSizerProps(valign='center',halign='right')
+        label = wx.StaticText(box1, -1, message('decision_committedcredit').format(portfolio.currency_symbol()))
+        label.SetSizerProps(valign='center', halign='right')
 
         self.wxCommittedCredit = wx.StaticText(box1, -1, '')
         self.wxCommittedCredit.SetSizerProps(valign='center')
 
         # Pane#3 Box #1 Row #4 : Available Credit in portfolio currency
-        label = wx.StaticText(box1, -1, message('decision_availablecredit') % portfolio.currency_symbol())
-        label.SetSizerProps(valign='center',halign='right')
+        label = wx.StaticText(box1, -1, message('decision_availablecredit').format(portfolio.currency_symbol()))
+        label.SetSizerProps(valign='center', halign='right')
 
         self.wxAvailableCredit = wx.StaticText(box1, -1, '')
         self.wxAvailableCredit.SetSizerProps(valign='center')
 
         # Pane#3 Box #1 Row #5 : Available Credit in quote currency
-        self.wxLabelAvailableCreditQC = wx.StaticText(box1, -1, message('decision_availablecredit') % quote.currency_symbol())
-        self.wxLabelAvailableCreditQC.SetSizerProps(valign='center',halign='right')
+        self.wxLabelAvailableCreditQC = wx.StaticText(box1, -1, message('decision_availablecredit').format(quote.currency_symbol()))
+        self.wxLabelAvailableCreditQC.SetSizerProps(valign='center', halign='right')
 
         self.wxAvailableCreditQC = wx.StaticText(box1, -1, '')
         self.wxAvailableCreditQC.SetSizerProps(valign='center')
@@ -252,8 +252,8 @@ class iTrade_wxDecision(sc.SizedPanel):
             self.wxCashProfit.SetForegroundColour(wx.BLUE)
             self.wxCashProfitPercent.SetForegroundColour(wx.BLUE)
 
-        self.wxCashProfit.SetLabel("%s %s" % (self.m_quote.sv_profit(self.m_quote.currency(),QuoteType.cash,fmt="%.0f"),self.m_quote.currency_symbol()))
-        self.wxCashProfitPercent.SetLabel(self.m_quote.sv_profitPercent(self.m_quote.currency(),QuoteType.cash))
+        self.wxCashProfit.SetLabel(u"{} {}".format(self.m_quote.sv_profit(self.m_quote.currency(), QuoteType.cash, fmt="{:.0f}"), self.m_quote.currency_symbol()))
+        self.wxCashProfitPercent.SetLabel(self.m_quote.sv_profitPercent(self.m_quote.currency(), QuoteType.cash))
 
         # refresh credit
         self.wxCreditNumOfShares.SetLabel(self.m_quote.sv_number(QuoteType.credit))
@@ -271,26 +271,26 @@ class iTrade_wxDecision(sc.SizedPanel):
             self.wxCreditProfit.SetForegroundColour(wx.BLUE)
             self.wxCreditProfitPercent.SetForegroundColour(wx.BLUE)
 
-        self.wxCreditProfit.SetLabel("%s %s" % (self.m_quote.sv_profit(self.m_quote.currency(), QuoteType.credit,fmt="%.0f"),self.m_quote.currency_symbol()))
+        self.wxCreditProfit.SetLabel(u"%s %s".format(self.m_quote.sv_profit(self.m_quote.currency(), QuoteType.credit, fmt="{:.0f}"), self.m_quote.currency_symbol()))
         self.wxCreditProfitPercent.SetLabel(self.m_quote.sv_profitPercent(self.m_quote.currency(), QuoteType.credit))
 
         # Purchasing Power
         self.m_portfolio.computeOperations()
 
         cash = self.m_portfolio.nv_cash()
-        if cash==0:
+        if cash == 0:
             self.wxAvailableCash.SetForegroundColour(wx.BLACK)
             self.wxAvailableCashQC.SetForegroundColour(wx.BLACK)
-        elif cash<0:
+        elif cash < 0:
             self.wxAvailableCash.SetForegroundColour(wx.RED)
             self.wxAvailableCashQC.SetForegroundColour(wx.RED)
         else:
             self.wxAvailableCash.SetForegroundColour(wx.BLUE)
             self.wxAvailableCashQC.SetForegroundColour(wx.BLUE)
-        self.wxAvailableCash.SetLabel(self.m_portfolio.sv_cash(currency=self.m_portfolio.currency(),fmt="%.0f",bDispCurrency=True))
-        self.wxAvailableCashQC.SetLabel(self.m_portfolio.sv_cash(currency=self.m_quote.currency(),fmt="%.0f",bDispCurrency=True))
+        self.wxAvailableCash.SetLabel(self.m_portfolio.sv_cash(currency=self.m_portfolio.currency(), fmt="{:.0f}", bDispCurrency=True))
+        self.wxAvailableCashQC.SetLabel(self.m_portfolio.sv_cash(currency=self.m_quote.currency(), fmt="{:.0f}", bDispCurrency=True))
 
-        self.wxCommittedCredit.SetLabel(self.m_portfolio.sv_credit(currency=self.m_portfolio.currency(),fmt="%.0f",bDispCurrency=True))
+        self.wxCommittedCredit.SetLabel(self.m_portfolio.sv_credit(currency=self.m_portfolio.currency(), fmt="{:.0f}", bDispCurrency=True))
         self.wxAvailableCredit.SetLabel('?')
         self.wxAvailableCreditQC.SetLabel('?')
 
@@ -305,10 +305,6 @@ class iTrade_wxDecision(sc.SizedPanel):
         self.Fit()
         self.SetMinSize(self.GetSize())
 
-# ============================================================================
-# WndTest
-#
-# ============================================================================
 
 class WndTest(wx.Frame):
     def __init__(self, parent, quote, portfolio):

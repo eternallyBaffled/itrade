@@ -137,7 +137,7 @@ class News_Boursorama(object):
                     stitle = stitle.group()[1:-1]
 
                     entry = _FeedEntry()
-                    entry.link = ('boursorama::%s' % self.m_baselink) % snum
+                    entry.link = u'boursorama::{}'.format(self.m_baselink) % snum
                     entry.title = stitle
                     entry.date = sdate
                     entry.summary = ""
@@ -146,10 +146,10 @@ class News_Boursorama(object):
 
         return self.m_feed
 
-    def goto(self,html,url):
+    def goto(self, html, url):
         if html:
             html.paint0()
-        info('goto %s',url)
+        info('goto %s', url)
 
         buf = self.getdata(url)
         #print buf
@@ -186,13 +186,13 @@ class News_Boursorama(object):
                 print('empty')
 
     # ---[ public interface ] ---
-    def feedQuote(self,quote,lang=None,page=0):
+    def feedQuote(self, quote, lang=None, page=0):
         if quote is None:
             return
         self.m_quote = quote
         if lang is None:
             lang = self.m_quote.country()
-        return self.feed(self.m_baseurl[page] % self.m_quote.ticker())
+        return self.feed(self.m_baseurl[page].format(self.m_quote.ticker()))
 
 # ============================================================================
 # Export me

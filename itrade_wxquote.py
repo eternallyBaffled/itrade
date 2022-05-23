@@ -876,46 +876,44 @@ class iTradeQuoteGraphPanel(wx.Panel, iTrade_wxPanelGraph):
         dt = self.GetTime(idxtime)
         return dt.strftime(' %Y ')
 
-    def GetXLabel(self,idxtime):
+    def GetXLabel(self, idxtime):
         dt = self.GetTime(idxtime)
         return dt.strftime(' %x ')
 
-    def GetTime(self,idxtime):
+    def GetTime(self, idxtime):
         return gCal.date(self.GetIndexTime(idxtime))
 
-    def GetIndexTime(self,idxtime):
-        if idxtime<0:
+    def GetIndexTime(self, idxtime):
+        if idxtime < 0:
             idxtime = len(self.idx)+idxtime
-        elif idxtime==0:
+        elif idxtime == 0:
             idxtime = len(self.idx)/2
-        elif idxtime>=len(self.idx):
+        elif idxtime >= len(self.idx):
             idxtime = len(self.idx)-1
         return self.idx[idxtime]
 
-    def GetYLabel(self,ax,value):
-        if ax==self.chart1:
-            return ' %.2f ' % value
-        elif self.m_hasChart1Vol and (ax==self.chart1vol):
-            return ' %s ' % fmtVolumeFunc(value,1)
-        elif ax==self.chart2:
-            return ' %s ' % fmtVolumeFunc(value,1)
-        elif self.m_hasChart2Vol and (ax==self.chart2vol):
-            return ' %s ' % fmtVolumeFunc(value,1)
-        elif ax==self.chart3:
-            return ' %.2f%% ' % value
+    def GetYLabel(self, ax, value):
+        if ax == self.chart1:
+            return ' {:.2f} '.format(value)
+        elif self.m_hasChart1Vol and (ax == self.chart1vol):
+            return ' {} '.format(fmtVolumeFunc(value, 1))
+        elif ax == self.chart2:
+            return ' {} '.format(fmtVolumeFunc(value, 1))
+        elif self.m_hasChart2Vol and (ax == self.chart2vol):
+            return ' {} '.format(fmtVolumeFunc(value, 1))
+        elif ax == self.chart3:
+            return ' {:.2f}% '.format(value)
         else:
             return ' unknown axis '
 
-#"Time: %f\n Price:%f\nYOUPIE" %
-
-    def space(self,msg,val):
+    def space(self, msg, val):
         l = len(msg)
-        m = max(22,len(self.m_quote.name()))
-        while (l+len(val))<m:
+        m = max(22, len(self.m_quote.name()))
+        while (l + len(val)) < m:
             val = ' ' + val
-        return msg+val
+        return msg + val
 
-    def GetXYLabel(self,ax,data):
+    def GetXYLabel(self, ax, data):
         idx = self.idx[data[0]]
         dt = gCal.date(idx)
         chart = self.axe2chart(ax)
@@ -925,15 +923,15 @@ class iTradeQuoteGraphPanel(wx.Panel, iTrade_wxPanelGraph):
             s = s + 'k, '+ self.space(message('popup_high'), self.m_quote.sv_high(dt)) + ' \n'
             s = s + 'k, '+ self.space(message('popup_low'), self.m_quote.sv_low(dt)) + ' \n'
             s = s + 'k, '+ self.space(message('popup_close'), self.m_quote.sv_close(dt)) + ' \n'
-            s = s + 'k, '+ self.space(message('popup_percent') % self.m_quote.sv_percent(dt), self.m_quote.sv_unitvar(dt)) + ' \n'
-            s = s + 'k, '+ self.space(message('popup_volume') , self.m_quote.sv_volume(dt)) + ' \n'
-            if chart==3:
+            s = s + 'k, '+ self.space(message('popup_percent').format(self.m_quote.sv_percent(dt)), self.m_quote.sv_unitvar(dt)) + ' \n'
+            s = s + 'k, '+ self.space(message('popup_volume'), self.m_quote.sv_volume(dt)) + ' \n'
+            if chart == 3:
                 if self.m_dispRSI14:
                     s = s + 'k, '+ self.space('RSI (%s)'%14, self.m_quote.sv_rsi(14,dt)) + ' \n'
                 if self.m_dispSto:
                     s = s + 'b, '+ self.space('STO %%K (%s)'%14, self.m_quote.sv_stoK(dt)) + ' \n'
                     s = s + 'm, '+ self.space('STO %%D (%s)'%14, self.m_quote.sv_stoD(dt)) + ' \n'
-            elif chart==2:
+            elif chart == 2:
                 s = s + 'r, '+ self.space('VMA%s'%15, self.m_quote.sv_vma(15,dt)) + ' \n'
                 s = s + 'k, '+ self.space('OVB', self.m_quote.sv_ovb(dt)) + ' \n'
             else:

@@ -89,14 +89,14 @@ class TradingMatrix(object):
                         ref = quote_reference(isin=item[0], ticker=item[2], market=item[3], place=item[5])
 
                     if not self.addKey(ref):
-                        print('load (new format): %s/%s : quote not found in quotes list ! (ref=%s)' % (item[0],item[2],ref))
+                        print(u'load (new format): {}/{} : quote not found in quotes list ! (ref={})'.format(item[0], item[2], ref))
 
                 elif len(item) <= 4:
                     print('old matrix format : not supported anymore')
 
     # save 'matrix.txt'
     def save(self, fn):
-        itrade_csv.write(None, os.path.join(itrade_config.dirUserData,'%s.matrix.txt' % fn), self.m_quotes.values())
+        itrade_csv.write(None, os.path.join(itrade_config.dirUserData, u'%s.matrix.txt'.format(fn)), self.m_quotes.values())
 
     # save all trades of the matrix
     def saveTrades(self):
@@ -140,22 +140,22 @@ class TradingMatrix(object):
         for eachQuote in self.list():
             # update information
             if itrade_config.verbose:
-                info('matrix::update: %s - %s' % (eachQuote.key(),eachQuote.ticker()))
+                info(u'matrix::update: {} - {}'.format(eachQuote.key(), eachQuote.ticker()))
             eachQuote.update(fromdate,todate)
 
             # compute information
             if itrade_config.verbose:
-                info('matrix::compute: %s - %s' % (eachQuote.key(),eachQuote.ticker()))
+                info(u'matrix::compute: {} - {}'.format(eachQuote.key(), eachQuote.ticker()))
             eachQuote.compute(todate)
 
     # add a quote in the matrix
     def addKey(self, i):
         q = quotes.lookupKey(i)
-        # print('addKey: %s %s' % (i,q))
+        # print(u'addKey: {} {}'.format(i, q))
         if q:
-            debug('addKey: add %s', q.ticker())
+            debug(u'addKey: add %s', q.ticker())
             self.m_quotes[q.key()] = q
-            debug('addKey: monitor %s' % i)
+            debug(u'addKey: monitor {}'.format(i))
             q.monitorIt(True)
             return True
         else:
@@ -167,7 +167,7 @@ class TradingMatrix(object):
         if q:
             debug('removeKey: add %s', q.ticker())
             del self.m_quotes[q.key()]
-            debug('removeKey: un-monitor %s' % i)
+            debug(u'removeKey: un-monitor {}'.format(i))
             q.monitorIt(False)
 
 # ============================================================================
@@ -197,7 +197,7 @@ def main():
 
     print('--- load current portfolio ---')
     p = loadPortfolio()
-    print('... %s:%s:%s ' % (p.filename(),p.name(),p.accountref()))
+    print(u'... {}:{}:{} '.format(p.filename(), p.name(), p.accountref()))
 
     print('--- build a matrix -----------')
     m = create_matrix(p.filename())
@@ -209,9 +209,9 @@ def main():
     m.save(p.filename())
 
     eval = p.computeOperations()
-    info(u'cash : %f' % p.nv_cash())
-    info(u'investment : %f' % p.nv_invest())
-#    info(u'evaluation : %f' % eval)
+    info(u'cash : {:f}'.format(p.nv_cash()))
+    info(u'investment : {:f}'.format(p.nv_invest()))
+#    info(u'evaluation : {:f}'.format(eval))
 
 
 if __name__ == '__main__':

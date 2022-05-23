@@ -276,7 +276,7 @@ class iTradeQuotePropertiesPanel(wx.Panel):
             # be sure indicators have been updated
             self.m_quote.compute()
 
-            iTradeInformation(self, message('imported_from_file') % file, message('import_from_file'))
+            iTradeInformation(self, message('imported_from_file').format(file), message('import_from_file'))
 
             dlg.Destroy()
             dlg = None
@@ -295,11 +295,11 @@ class iTradeQuotePropertiesPanel(wx.Panel):
                 filename = dlg.GetFilename()
                 file = os.path.join(dirname, filename)
                 if itrade_config.verbose:
-                    print('Export file %s for quote %s' % (file, self.m_quote.key()))
+                    print('Export file {} for quote {}'.format(file, self.m_quote.key()))
 
                 self.m_quote.saveTrades(file)
 
-                iTradeInformation(self, message('exported_to_file') % file, message('export_to_file'))
+                iTradeInformation(self, message('exported_to_file').format(file), message('export_to_file'))
 
     def saveThenDisplayReference(self):
         self.editTicker.SetLabel(self.m_quote.ticker())

@@ -77,7 +77,7 @@ from itrade_wxutil import iTradeError, iTradeYesNo, iTradeSizedDialog
 
 class iTradePortfolioSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin):
     def __init__(self, parent, portfolio, operation, except_portfolio=None):
-        iTradeSizedDialog.__init__(self, parent, wx.ID_ANY, message('portfolio_%s_title'%operation),
+        iTradeSizedDialog.__init__(self, parent, wx.ID_ANY, message(u'portfolio_{}_title'.format(operation)),
                         style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER, size=(420, 420))
 #        wxl.ColumnSorterMixin.__init__(self)
         if portfolio:
@@ -225,11 +225,11 @@ class iTradePortfolioSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterM
         return (self.sm_dn, self.sm_up)
 
     def OnColClick(self, event):
-        debug("OnColClick: %d\n" % event.GetColumn())
+        debug("OnColClick: {:d}\n".format(event.GetColumn()))
 
     def OnItemActivated(self, event):
         self.currentItem = event.m_itemIndex
-        # debug("OnItemActivated: %s\nTopItem: %s" % (self.m_list.GetItemText(self.currentItem), self.m_list.GetTopItem()))
+        # debug(u"OnItemActivated: {}\nTopItem: {}".format(self.m_list.GetItemText(self.currentItem), self.m_list.GetTopItem()))
         self.OnValid(event)
 
     def OnItemSelected(self, event):
@@ -256,20 +256,21 @@ class iTradePortfolioSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterM
 # operation = 'select','delete'
 # ============================================================================
 
+
 def select_iTradePortfolio(win, dportfolio=None, operation='select'):
     if dportfolio:
         if not isinstance(dportfolio, Portfolio):
             dportfolio = portfolios.portfolio(dportfolio)
     if operation == 'delete':
         # do not delete current selected !
-        dlg = iTradePortfolioSelectorListCtrlDialog(win,None,operation,dportfolio.filename())
+        dlg = iTradePortfolioSelectorListCtrlDialog(win, None, operation, dportfolio.filename())
     else:
-        dlg = iTradePortfolioSelectorListCtrlDialog(win,dportfolio,operation,None)
-    if dlg.ShowModal()==wx.ID_OK:
+        dlg = iTradePortfolioSelectorListCtrlDialog(win, dportfolio, operation, None)
+    if dlg.ShowModal() == wx.ID_OK:
         if dlg.portfolio == dportfolio:
-            info('select_iTradePortfolio() : %s is already the current portfolio' % dlg.portfolio)
+            info(u'select_iTradePortfolio() : {} is already the current portfolio'.format(dlg.portfolio))
         else:
-            info('select_iTradePortfolio() : %s' % dlg.portfolio)
+            info(u'select_iTradePortfolio() : {}'.format(dlg.portfolio))
         portfolio = dlg.portfolio
     else:
         portfolio = None
@@ -283,10 +284,11 @@ def select_iTradePortfolio(win, dportfolio=None, operation='select'):
 #   operation   'edit','create','delete','rename'
 # ============================================================================
 
+
 class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
-    def __init__(self, parent, portfolio, operation):
-        iTradeSizedDialog.__init__(self, None, wx.ID_ANY, message('portfolio_properties_%s'% operation),
-                        style=wx.DEFAULT_DIALOG_STYLE, size=(420, 420))
+    def __init__(self, parent, portfolio, operation, *args, **kwargs):
+        iTradeSizedDialog.__init__(self, None, wx.ID_ANY, message('portfolio_properties_{}'.format(operation)),
+                        style=wx.DEFAULT_DIALOG_STYLE, size=(420, 420), *args, **kwargs)
         if portfolio:
             self.m_filename = portfolio.filename()
             self.m_name = portfolio.name()
@@ -321,20 +323,20 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
         # row1 : filename
         label = wx.StaticText(pane, wx.ID_ANY, message('portfolio_filename'))
         label.SetSizerProps(valign='center')
-        self.wxFilenameCtrl = wx.TextCtrl(pane, wx.ID_ANY, self.m_filename, size=(120,-1))
+        self.wxFilenameCtrl = wx.TextCtrl(pane, wx.ID_ANY, self.m_filename, size=(120, -1))
         self.wxFilenameCtrl.SetSizerProps(expand=True)
 
         # row2 : name
         label = wx.StaticText(pane, wx.ID_ANY, message('portfolio_name'))
         label.SetSizerProps(valign='center')
-        self.wxNameCtrl = wx.TextCtrl(pane, wx.ID_ANY, self.m_name, size=(180,-1))
+        self.wxNameCtrl = wx.TextCtrl(pane, wx.ID_ANY, self.m_name, size=(180, -1))
         self.wxNameCtrl.SetSizerProps(expand=True)
 
         # row3 : accountref
         label = wx.StaticText(pane, wx.ID_ANY, message('portfolio_accountref'))
         label.SetSizerProps(valign='center')
 
-        self.wxAccountRefCtrl = wx.TextCtrl(pane, wx.ID_ANY, self.m_accountref, size=(80,-1))
+        self.wxAccountRefCtrl = wx.TextCtrl(pane, wx.ID_ANY, self.m_accountref, size=(80, -1))
         self.wxAccountRefCtrl.SetSizerProps(expand=True)
 
         # row4 : market
@@ -499,7 +501,7 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
         self.Fit()
         self.SetMinSize(self.GetSize())
 
-    def OnValid(self,event):
+    def OnValid(self, event):
         self.m_filename = self.wxFilenameCtrl.GetValue().lower().strip()
         self.m_vat = (self.wxVATCtrl.GetValue()/100) + 1
         self.m_term = self.wxTermCtrl.GetValue()
@@ -508,34 +510,34 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
         if (self.m_operation=='create' or self.m_operation=='rename') and portfolios.existPortfolio(self.m_filename):
             self.wxFilenameCtrl.SetValue('')
             self.wxFilenameCtrl.SetFocus()
-            iTradeError(self, message('portfolio_exist_info') % self.m_filename, message('portfolio_exist_info_title'))
+            iTradeError(self, message('portfolio_exist_info').format(self.m_filename), message('portfolio_exist_info_title'))
             return
 
         self.m_name = self.wxNameCtrl.GetValue().strip()
         self.m_accountref = self.wxAccountRefCtrl.GetValue().strip()
         if self.m_operation=='delete':
-            idRet = iTradeYesNo(self, message('portfolio_delete_confirm')%self.m_name, message('portfolio_delete_confirm_title'))
+            idRet = iTradeYesNo(self, message('portfolio_delete_confirm').format(self.m_name), message('portfolio_delete_confirm_title'))
             if idRet == wx.ID_NO:
                 return
         if self.m_operation=='rename':
-            idRet = iTradeYesNo(self, message('portfolio_rename_confirm')%self.m_filename, message('portfolio_rename_confirm_title'))
+            idRet = iTradeYesNo(self, message('portfolio_rename_confirm').format(self.m_filename), message('portfolio_rename_confirm_title'))
             if idRet == wx.ID_NO:
                 return
         self.EndModal(wx.ID_OK)
 
     def OnMarket(self,evt):
         t = self.wxMarketCtrl.GetClientData(self.wxMarketCtrl.GetSelection())
-        debug("OnMarket %s" % t)
+        debug("OnMarket {}".format(t))
         self.m_market = t
 
     def OnIndicator(self,evt):
         t = self.wxIndicatorCtrl.GetClientData(self.wxIndicatorCtrl.GetSelection())
-        info("OnIndicator %s" % t)
+        info("OnIndicator {}".format(t))
         self.m_indice = t
 
-    def OnCurrency(self,evt):
+    def OnCurrency(self, evt):
         t = self.wxCurrencyCtrl.GetClientData(self.wxCurrencyCtrl.GetSelection())
-        debug("OnCurrency %s" % t)
+        debug("OnCurrency {}".format(t))
         self.m_currency = t
 
 # ============================================================================
@@ -545,25 +547,25 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
 #   operation   'edit','create','delete','rename'
 # ============================================================================
 
-def properties_iTradePortfolio(win,portfolio,operation='create'):
-    dlg = iTradePortfolioPropertiesDialog(win,portfolio,operation)
+def properties_iTradePortfolio(win, portfolio, operation='create'):
+    dlg = iTradePortfolioPropertiesDialog(win, portfolio, operation)
     retport = None
-    if dlg.ShowModal()==wx.ID_OK:
-        info('properties_iTradePortfolio(operation=%s) : %s' % (operation,dlg.m_name))
-        if operation=='delete':
+    if dlg.ShowModal() == wx.ID_OK:
+        info('properties_iTradePortfolio(operation={}) : {}'.format(operation, dlg.m_name))
+        if operation == 'delete':
             if portfolios.delPortfolio(portfolio.filename()):
                 portfolios.save()
                 retport = None
-        elif operation=='edit':
-            if portfolios.editPortfolio(portfolio.filename(),dlg.m_name,dlg.m_accountref,dlg.m_market,dlg.m_currency,dlg.m_vat,dlg.m_term,dlg.m_risk,dlg.m_indice):
+        elif operation == 'edit':
+            if portfolios.editPortfolio(portfolio.filename(), dlg.m_name, dlg.m_accountref, dlg.m_market, dlg.m_currency, dlg.m_vat, dlg.m_term, dlg.m_risk, dlg.m_indice):
                 portfolios.save()
                 retport = portfolios.portfolio(portfolio.filename())
-        elif operation=='create':
+        elif operation == 'create':
             if portfolios.addPortfolio(dlg.m_filename,dlg.m_name,dlg.m_accountref,dlg.m_market,dlg.m_currency,dlg.m_vat,dlg.m_term,dlg.m_risk,dlg.m_indice):
                 portfolios.save()
                 retport = loadPortfolio(dlg.m_filename)
-        elif operation=='rename':
-            if portfolios.renamePortfolio(portfolio.filename(),dlg.m_filename):
+        elif operation == 'rename':
+            if portfolios.renamePortfolio(portfolio.filename(), dlg.m_filename):
                 portfolios.save()
                 retport = loadPortfolio(dlg.m_filename)
     dlg.Destroy()
