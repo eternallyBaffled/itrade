@@ -157,7 +157,7 @@ class MyPrintout(wx.Printout):
         self.base_OnPreparePrinting()
 
     def HasPage(self, page):
-        info("MyPrintout.HasPage: %d\n" % page)
+        info("MyPrintout.HasPage: {:d}\n".format(page))
         if page <= 2:
             return True
         else:
@@ -168,7 +168,7 @@ class MyPrintout(wx.Printout):
         return (1, 2, 1, 2)
 
     def OnPrintPage(self, page):
-        info("MyPrintout.OnPrintPage: %d\n" % page)
+        info("MyPrintout.OnPrintPage: {:d}\n".format(page))
         dc = self.GetDC()
 
         #-------------------------------------------

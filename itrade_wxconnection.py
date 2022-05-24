@@ -68,7 +68,7 @@ class iTradeConnectionDialog(iTradeSizedDialog):
         if server != "":
             ip, self.m_port = server.split(':')
             a,b,c,d = ip.split('.')
-            self.m_ip = '%3i.%3i.%3i.%3i' % (int(a),int(b),int(c),int(d))
+            self.m_ip = '{:3i}.{:3i}.{:3i}.{:3i}'.format(int(a), int(b), int(c), int(d))
             self.m_port = int(self.m_port)
         else:
             self.m_ip = "   .   .   .   "
@@ -156,36 +156,36 @@ class iTradeConnectionDialog(iTradeSizedDialog):
 
         #print "*** ip:",self.m_ip,"port:",self.m_port
 
-        if self.m_ip != ".   .   ." and self.m_ip != "" and self.m_port>0:
-            a,b,c,d = self.m_ip.split('.')
-            self.m_server = ('%i.%i.%i.%i' % (int(a),int(b),int(c),int(d))) + (":%s" % self.m_port)
+        if self.m_ip != ".   .   ." and self.m_ip != "" and self.m_port > 0:
+            a, b, c, d = self.m_ip.split('.')
+            self.m_server = '{:i}.{:i}.{:i}.{:i}:{}'.format(int(a), int(b), int(c), int(d), self.m_port)
         else:
             self.m_server = ""
 
         self.m_timeout = self.wxTimeoutCtrl.GetValue()
 
         if itrade_config.verbose:
-            print("*** Proxy server:",self.m_server, "- Proxy auth:",self.m_auth,"- Connection timeout:",self.m_timeout)
+            print("*** Proxy server:", self.m_server, "- Proxy auth:", self.m_auth, "- Connection timeout:", self.m_timeout)
         self.EndModal(wx.ID_OK)
 
 # ============================================================================
 # connection_UI
-#
-# ============================================================================
+# =======================================e=====================================
 
-def connection_UI(win,server,auth,timeout=25):
+
+def connection_UI(win, server, auth, timeout=25):
     if server is None:
         server = ''
     if auth is None:
         auth = ''
 
-    dlg = iTradeConnectionDialog(win,server,auth,timeout)
-    if dlg.ShowModal()==wx.ID_OK:
+    dlg = iTradeConnectionDialog(win, server, auth, timeout)
+    if dlg.ShowModal() == wx.ID_OK:
         server = dlg.m_server
         auth = dlg.m_auth
         timeout = dlg.m_timeout
     dlg.Destroy()
-    return server,auth,timeout
+    return server, auth, timeout
 
 # ============================================================================
 # Test me

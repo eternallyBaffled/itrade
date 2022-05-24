@@ -102,7 +102,7 @@ class iTradeHtmlPanel(wx.Panel):
     # ---[ Default OnLinkClick handler ] --------------------------------------
 
     def OnLinkClick(self, event):
-        info('OnLinkClick: %s\n' % event.linkinfo[0])
+        info('OnLinkClick: {}\n'.format(event.linkinfo[0]))
         clicked = event.linkinfo[0]
 
         # launch external browser
@@ -157,7 +157,7 @@ class iTradeRSSPanel(wx.Panel):
     # ---[ Default OnLinkClick handler ] --------------------------------------
 
     def OnLinkClick(self, event):
-        info('iTradeRSSPanel:OnLinkClick: %s\n' % event.linkinfo[0])
+        info('iTradeRSSPanel:OnLinkClick: {}\n'.format(event.linkinfo[0]))
         clicked = event.linkinfo[0]
 
         if clicked == ':back':
@@ -183,8 +183,8 @@ class iTradeRSSPanel(wx.Panel):
     def HeaderPage(self):
         self.m_content = ""
         self.m_html.SetPage('<html><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><body>')
-        self.m_html.AppendToPage("<a href=':scan'>%s</a> " % message('rss_scan'))
-        self.m_html.AppendToPage("<a href=':clear'>%s</a>" % message('rss_clear'))
+        self.m_html.AppendToPage("<a href=':scan'>{}</a> ".format(message('rss_scan')))
+        self.m_html.AppendToPage("<a href=':clear'>{}</a>".format(message('rss_clear')))
 
     def AppendToPage(self, content):
         # print('AppendToPage:', self.m_content, content)
@@ -209,43 +209,43 @@ class iTradeRSSPanel(wx.Panel):
         self.saveCache()
 
     def deleteCache(self):
-        fn = os.path.join(itrade_config.dirCacheData, '%s.htm' % self.m_quote.key())
-        info('deleteCache(%s)' % fn)
+        fn = os.path.join(itrade_config.dirCacheData, '{}.htm'.format(self.m_quote.key()))
+        info('deleteCache({})'.format(fn))
         try:
             os.remove(fn)
         except OSError:
             pass
 
     def loadCache(self):
-        fn = os.path.join(itrade_config.dirCacheData, '%s.htm' % self.m_quote.key())
+        fn = os.path.join(itrade_config.dirCacheData, '{}.htm'.format(self.m_quote.key()))
         if os.path.exists(fn):
             try:
                 f = open(fn, 'r')
                 txt = f.read()
             except IOError:
                 self.emptyPage()
-                info('loadCache(%s) : IOError -> empty page' % fn)
+                info('loadCache({}) : IOError -> empty page'.format(fn))
                 return
             self.HeaderPage()
             self.AppendToPage(txt.decode('utf-8'))
             self.TrailerPage()
-            info('loadCache(%s) : OK' % fn)
+            info(u'loadCache({}) : OK'.format(fn))
         else:
             self.emptyPage()
-            info('loadCache(%s) : no cache -> empty page' % fn)
+            info(u'loadCache({}) : no cache -> empty page'.format(fn))
 
     def saveCache(self):
-        fn = os.path.join(itrade_config.dirCacheData, '%s.htm' % self.m_quote.key())
+        fn = os.path.join(itrade_config.dirCacheData, '{}.htm'.format(self.m_quote.key()))
         try:
             with open(fn, 'w') as f:
                 # print('saveCache:encoding', f.encoding)
                 f.write(self.m_content.encode('utf-8'))
         except IOError:
             # can't open the file (existing ?)
-            info('saveCache(%s) : IOError :-(' % fn)
+            info('saveCache({}) : IOError :-('.format(fn))
             return False
 
-        info('saveCache(%s) : OK' % fn)
+        info('saveCache({}) : OK'.format(fn))
 
     # ---[ Window Management ]-------------------------------------------------
 
@@ -268,24 +268,24 @@ class iTradeRSSPanel(wx.Panel):
 
     def paint0(self):
         self.HeaderPage()
-        self.AppendToPage("<head>%s</head>" % message('html_connecting'))
+        self.AppendToPage("<head>{}</head>".format(message('html_connecting')))
         self.TrailerPage()
 
     def paint_NC(self):
         self.HeaderPage()
-        self.AppendToPage("<head>%s</head>" % message('html_noconnect'))
+        self.AppendToPage("<head>{}</head>".format(message('html_noconnect')))
         self.TrailerPage()
 
     def buildPage(self):
         if self.m_feed and self.m_feed.entries:
             info('Feed %s', self.m_feed.feed.title)
             self.HeaderPage()
-            self.AppendToPage(" (%s %s)<p>" % (message('rss_freshness'), time.strftime('%x | %X', time.localtime())))
+            self.AppendToPage(" ({} {})<p>".format(message('rss_freshness'), time.strftime('%x | %X', time.localtime())))
 
-            # self.AppendToPage("<head>%s</head><p>" % self.m_feed.feed.title)
+            # self.AppendToPage("<head>{}</head><p>".format(self.m_feed.feed.title))
 
             for eachEntry in self.m_feed.entries:
-                self.AppendToPage("%s : <a href='%s'>%s</a><p>" % (time.strftime('%x', eachEntry.date), eachEntry.link, eachEntry.title))
+                self.AppendToPage("{} : <a href='{}'>{}</a><p>".format(time.strftime('%x', eachEntry.date), eachEntry.link, eachEntry.title))
 
             self.TrailerPage()
             self.saveCache()

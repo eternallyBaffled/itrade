@@ -81,15 +81,15 @@ def yy2yyyy(yy):
 
 def dd_mmm_yy2yyyymmdd(d):
     d = string.split(d, '-')
-    day = '%02d' % int(d[0])
-    month = '%02d' % MONTH2NUM[d[1]]
+    day = '{:02d}'.format(int(d[0]))
+    month = '{:02d}'.format(MONTH2NUM[d[1]])
     year = yy2yyyy(d[2])
     return year + month + day
 
 def jjmmaa2yyyymmdd(d):
     d = string.split(d,'/')
-    day = '%02d' % int(d[0])
-    month = '%02d' % int(d[1])
+    day = '{:02d}'.format(int(d[0]))
+    month = '{:02d}'.format(int(d[1]))
     year = yy2yyyy(d[2])
     return year + month + day
 
@@ -119,6 +119,7 @@ FRIDAY = 4
 SATURDAY = 5
 SUNDAY = 6
 
+
 class Calendar(object):
     def __init__(self):
         self.m_closed = {}
@@ -131,17 +132,17 @@ class Calendar(object):
 
     # --- [ properties ] --------------------------------------
 
-    def isopen(self,d,market=None):
+    def isopen(self, d, market=None):
         if type(d)==type('') or isinstance(d,date):
             d = Datation(d)
-        if not isinstance(d,Datation):
+        if not isinstance(d, Datation):
             raise TypeError("parameter shall be date, Datation or string object")
 
         if d.is_weekend():
             return False
 
-        k = self.key(d,market)
-        debug('isopen %s k=%s: ? ' % (d,k))
+        k = self.key(d, market)
+        debug('isopen {} k={}: ? '.format(d, k))
 
         # is it a special day ?
         if k in self.m_closed:
@@ -153,16 +154,16 @@ class Calendar(object):
     def issrd(self,d,market=None):
         if type(d)==type('') or isinstance(d,date):
             d = Datation(d)
-        if not isinstance(d,Datation):
+        if not isinstance(d, Datation):
             raise TypeError("parameter shall be date, Datation or string object")
 
-        debug('issrd %s ? %s ' % (d,self.m_srd))
+        debug('issrd {} ? {} '.format(d, self.m_srd))
 
         if d.is_weekend():
             return False
 
-        k = self.key(d,market)
-        debug('issrd %s k=%s: ? ' % (d,k))
+        k = self.key(d, market)
+        debug('issrd {} k={}: ? '.format(d, k))
 
         # is it a SRD day ?
         if k in self.m_srd:
@@ -171,10 +172,10 @@ class Calendar(object):
         # normal day
         return False
 
-    def srd(self,d,market=None):
+    def srd(self, d, market=None):
         if type(d)==type('') or isinstance(d,date):
             d = Datation(d)
-        if not isinstance(d,Datation):
+        if not isinstance(d, Datation):
             raise TypeError("parameter shall be date, Datation or string object")
 
         k = self.key(d, market)
@@ -190,26 +191,26 @@ class Calendar(object):
             market = 'EURONEXT'
 
         # key : date + market
-        return  '%s%s' % (market,d)
+        return u'{}{}'.format(market, d)
 
     # --- [ file management ] -------------------------------------
 
-    def addClosed(self,d,market=None,title=None):
+    def addClosed(self, d, market=None, title=None):
         # default Market Entry Place
         if market is None:
             market = 'EURONEXT'
 
         # normalize the date notation !
         d = Datation(d)
-        k = self.key(d,market)
+        k = self.key(d, market)
 
         if k in self.m_closed:
-            debug('Calendar::addClosed(): %s k=%s: %s - already !' % (d,k,self.m_closed[k]))
+            debug('Calendar::addClosed(): {} k={}: {} - already !'.format(d, k, self.m_closed[k]))
             return False
         else:
             # add it in the closed list
-            self.m_closed[k] = (market,title)
-            debug('Calendar::addClosed(): %s k=%s: %s - added' % (d,k,self.m_closed[k]))
+            self.m_closed[k] = (market, title)
+            debug('Calendar::addClosed(): {} k={}: {} - added'.format(d, k, self.m_closed[k]))
             return True
 
     def addSRD(self,d,market=None,title=None):
@@ -222,12 +223,12 @@ class Calendar(object):
         k = self.key(d,market)
 
         if k in self.m_srd:
-            debug('Calendar::addSRD(): %s k=%s: %s - already !' % (d,k,self.m_srd[k]))
+            debug('Calendar::addSRD(): {} k={}: {} - already !'.format(d, k, self.m_srd[k]))
             return False
         else:
             # add it in the srd list
             self.m_srd[k] = (market,title)
-            debug('Calendar::addSRD(): %s k=%s: %s - added' % (d,k,self.m_srd[k]))
+            debug('Calendar::addSRD(): {} k={}: {} - added'.format(d, k, self.m_srd[k]))
             return True
 
     def load(self, fn=None):
@@ -240,7 +241,7 @@ class Calendar(object):
                 if len(item) > 2:
                     self.addClosed(item[0], item[1], item[2])
                 else:
-                    info("can't import item=%s" % item)
+                    info("can't import item={}".format(item))
 
         # open and read the file to load these SRD information
         infile = itrade_csv.read(fn, os.path.join(itrade_config.dirSysData, 'srd.txt'))
@@ -251,7 +252,7 @@ class Calendar(object):
                 if len(item) > 2:
                     self.addSRD(item[0], item[1], item[2])
                 else:
-                    info("can't import item=%s" % item)
+                    info("can't import item={}".format(item))
 
     # --- [ index management ] ------------------------------------
 
@@ -260,24 +261,24 @@ class Calendar(object):
         year = date.today().year - itrade_config.numTradeYears + 1
         num = (itrade_config.numTradeYears * (12*31)) + 5
         while num > 0:
-            # print('--- index datation --%d--' % year)
+            # print('--- index datation --{:d}--'.format(year))
             month = 1
             while month <= 12 and num>0:
-                # print('--- index datation --%d--' % month)
+                # print('--- index datation --{:d}--'.format(month))
                 day = 1
                 while day <= 31 and num>0:
-                    # print('--- index datation --%d--' % day)
+                    # print('--- index datation --{:d}--'.format(day))
                     try:
                         d = date(year,month,day)
                         #d = Datation(d)
                         if d.weekday()<SATURDAY:
                         #if self.isopen(d):
-                            # print('num=%d - index %s = %d' % (num,d,self.m_maxidx))
+                            # print('num={:d} - index {} = {:d}'.format(num, d, self.m_maxidx))
                             self.m_index[d] = self.m_maxidx
                             self.m_date[self.m_maxidx] = d
                             self.m_maxidx = self.m_maxidx + 1
                         else:
-                            # print('num=%d - index %s = closed' % (num,d))
+                            # print('num={:d} - index {} = closed'.format(num, d))
                             pass
                     except ValueError:
                         pass
@@ -314,23 +315,23 @@ class Calendar(object):
 # ============================================================================
 
 class Datation(object):
-    def __init__(self,d):
-        #debug('Datation::__init__():%s: instance=%s' %(d,type(d)))
-        if isinstance(d,date):
+    def __init__(self, d):
+        #debug('Datation::__init__():{}: instance={}'.format(d, type(d)))
+        if isinstance(d, date):
             self.m_date = d
         else:
-            if d[4]=='-':
-                #debug('Datation::__init__():%s: %d %d %d' % (d,int(d[0:4]),int(d[5:7]),int(d[8:10])))
-                self.m_date = date(int(d[0:4]),int(d[5:7]),int(d[8:10]))
+            if d[4] == '-':
+                #debug('Datation::__init__():{}: {:d} {:d} {:d}'.format(d, int(d[0:4]), int(d[5:7]), int(d[8:10])))
+                self.m_date = date(int(d[0:4]), int(d[5:7]), int(d[8:10]))
             else:
-                #debug('Datation::__init__():%s: %d %d %d' % (d,int(d[0:4]),int(d[4:6]),int(d[6:8])))
-                self.m_date = date(int(d[0:4]),int(d[4:6]),int(d[6:8]))
+                #debug('Datation::__init__():{}: {:d} {:d} {:d}'.format(d, int(d[0:4]), int(d[4:6]), int(d[6:8])))
+                self.m_date = date(int(d[0:4]), int(d[4:6]), int(d[6:8]))
 
     def __str__(self):
-        return '%4.4d%2.2d%2.2d' % (self.m_date.year,self.m_date.month,self.m_date.day)
+        return '{:4d}{:2d}{:2d}'.format(self.m_date.year, self.m_date.month, self.m_date.day)
 
     def __repr__(self):
-        return '%4.4d-%2.2d-%2.2d' % (self.m_date.year,self.m_date.month,self.m_date.day)
+        return '{:4d}-{:2d}-{:2d}'.format(self.m_date.year, self.m_date.month, self.m_date.day)
 
     def __hash__(self):
         return self.m_date.toordinal()
@@ -356,21 +357,21 @@ class Datation(object):
     def date(self):
         return self.m_date
 
-    def nextopen(self,market=None):
+    def nextopen(self, market=None):
         ndate = self.m_date + timedelta(1)
-        while not gCal.isopen(ndate,market):
+        while not gCal.isopen(ndate, market):
             ndate = ndate + timedelta(1)
         return Datation(ndate)
 
-    def prevopen(self,market=None):
+    def prevopen(self, market=None):
         ndate = self.m_date - timedelta(1)
-        while not gCal.isopen(ndate,market):
+        while not gCal.isopen(ndate, market):
             ndate = ndate - timedelta(1)
         return Datation(ndate)
 
-    def nearopen(self,market=None):
+    def nearopen(self, market=None):
         ndate = self.m_date
-        while not gCal.isopen(ndate,market):
+        while not gCal.isopen(ndate, market):
             ndate = ndate - timedelta(1)
         return Datation(ndate)
 
@@ -391,35 +392,35 @@ gCal = Calendar()
 def main():
     setLevel(logging.INFO)
     itrade_config.app_header()
-    info('test0 1==%s' % gCal.addClosed('2010-12-31'))
-    info('test0 0==%s' % gCal.addClosed('20101231'))
-    info('test1 0==%s' % gCal.isopen('2011-01-01'))
-    info('test2 0==%s' % gCal.isopen('20110101'))
-    info('test3 1==%s' % gCal.isopen('20110104'))
-    info('test4 0==%s' % gCal.isopen('20101231'))  # closed in default market (PAR)
-    info('test4 1==%s' % gCal.isopen('20101231', 'TOK'))  # but open in other market
-    info('test5 20110104==%s' % Datation('20110104'))
-    info('test6 20110105==%s' % Datation('20110104').nextopen())
-    info('test7 20110103==%s' % Datation('20110104').prevopen())
-    info('test8 20101230==%s' % Datation('20110103').prevopen())
-    info('test9 20101230==%s' % Datation('20101231').prevopen())
-    info('test10 20100130>20100101 == %s' % (Datation('20100130') > Datation('20100101')))
-    info('test10 20100101>20100130 == %s' % (Datation('20100101') > Datation('20100130')))
-    info('test10 20100227>20100101 == %s' % (Datation('20100227') > Datation('20100101')))
-    info('test10 20100101>20100227 == %s' % (Datation('20100101') > Datation('20100227')))
-    info('test11 20110814 index is %d == -1' % (Datation('20110814').index()))
-    info('test11 20110815 index is %d != -1' % (Datation('20110815').index()))
-    info('test11 20110816 index is %d != -1' % (Datation('20110816').index()))
-    info('test11 20111231 index is %d == -1' % (Datation('20111231').index()))
-    info('test11 20110102 index is %d == -1' % (Datation('20110102').index()))
-    info('test11 20110103 index is %d != -1' % (Datation('20110103').index()))
-    print('lastindex = %d, lastdate = %s' % (gCal.lastindex(), gCal.lastdate()))
+    info('test0 1=={}'.format(gCal.addClosed('2010-12-31')))
+    info('test0 0=={}'.format(gCal.addClosed('20101231')))
+    info('test1 0=={}'.format(gCal.isopen('2011-01-01')))
+    info('test2 0=={}'.format(gCal.isopen('20110101')))
+    info('test3 1=={}'.format(gCal.isopen('20110104')))
+    info('test4 0=={}'.format(gCal.isopen('20101231')))  # closed in default market (PAR)
+    info('test4 1=={}'.format(gCal.isopen('20101231', 'TOK')))  # but open in other market
+    info('test5 20110104=={}'.format(Datation('20110104')))
+    info('test6 20110105=={}'.format(Datation('20110104').nextopen()))
+    info('test7 20110103=={}'.format(Datation('20110104').prevopen()))
+    info('test8 20101230=={}'.format(Datation('20110103').prevopen()))
+    info('test9 20101230=={}'.format(Datation('20101231').prevopen()))
+    info('test10 20100130>20100101 == {}'.format(Datation('20100130') > Datation('20100101')))
+    info('test10 20100101>20100130 == {}'.format(Datation('20100101') > Datation('20100130')))
+    info('test10 20100227>20100101 == {}'.format(Datation('20100227') > Datation('20100101')))
+    info('test10 20100101>20100227 == {}'.format(Datation('20100101') > Datation('20100227')))
+    info('test11 20110814 index is {:d} == -1'.format(Datation('20110814').index()))
+    info('test11 20110815 index is {:d} != -1'.format(Datation('20110815').index()))
+    info('test11 20110816 index is {:d} != -1'.format(Datation('20110816').index()))
+    info('test11 20111231 index is {:d} == -1'.format(Datation('20111231').index()))
+    info('test11 20110102 index is {:d} == -1'.format(Datation('20110102').index()))
+    info('test11 20110103 index is {:d} != -1'.format(Datation('20110103').index()))
+    print('lastindex = {:d}, lastdate = {}'.format(gCal.lastindex(), gCal.lastdate()))
     ts = '20050816'
     dt = datetime(*time.strptime(ts.strip('"'), '%Y%m%d')[:6])
-    print('%s = %s' % (ts, dt))
+    print('{} = {}'.format(ts, dt))
     ts = '2005-08-16'
     dt = datetime(*time.strptime(ts.strip('"'), '%Y-%m-%d')[:6])
-    print('%s = %s' % (ts, dt))
+    print('{} = {}'.format(ts, dt))
 
 
 if __name__ == '__main__':

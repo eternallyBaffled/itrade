@@ -320,11 +320,11 @@ def fmtVolumeFunc(x, pos):
     if pos%3 == 1:
         if abs(x) >= 1000:
             if abs(x) >= 1e6:
-                return '%.1f M' % (x*1e-6)
+                return '{:.1f} M'.format(x*1e-6)
             else:
-                return '%d K' % int(x*1e-3)
+                return '{:d} K'.format(int(x*1e-3))
         else:
-            return '%d' % x
+            return '{:d}'.format(x)
     else:
         return ''
 
@@ -332,11 +332,11 @@ def fmtVolumeFunc0(x, pos):
     if pos%3 == 0:
         if abs(x) >= 1000:
             if abs(x) >= 1e6:
-                return '%.1f M' % (x*1e-6)
+                return '{:.1f} M'.format(x*1e-6)
             else:
-                return '%d K' % int(x*1e-3)
+                return '{:d} K'.format(int(x*1e-3))
         else:
-            return '%d' % x
+            return '{:d}'.format(x)
     else:
         return ''
 
@@ -348,7 +348,7 @@ def fmtVolumeFunc0(x, pos):
 
 def fmtPercentFunc(x,pos):
     if x==10 or x==20 or x==30 or x==40 or x==50 or x==60 or x==70 or x==80 or x==90:
-        return '%d %%' % x
+        return '{:d} %'.format(x)
     else:
         return ''
 
@@ -476,7 +476,7 @@ class iTrade_wxToolbarGraph(wx.ToolBar):
         if dlg.ShowModal() == wx.ID_OK:
             dirname = dlg.GetDirectory()
             filename = dlg.GetFilename()
-            debug('Save file dir:%s name:%s' % (dirname, filename), 3, self)
+            debug('Save file dir:{} name:{}'.format(dirname, filename), 3, self)
             self.m_canvas.print_figure(os.path.join(dirname, filename))
         dlg.Destroy()
 
@@ -672,12 +672,12 @@ class iTrade_wxPanelGraph(GObject, PanelPrint):
         if self.cursorState(event.inaxes):
             # just in case mouse is bad (PinPoint :-( )
             if self.cursorx != event.x or self.cursory != event.y:
-                debug('Move x:%d,y:%d!' %(event.x, event.y))
+                debug('Move x:{:d},y:{:d}!'.format(event.x, event.y))
                 self.m_timer.Stop()
                 self.cursorx, self.cursory = event.x, event.y
                 self.draw_cursor(event)
                 if event.inaxes:
-                    debug('Start timer x:%d,y:%d t:%d!' %(event.x, event.y, itrade_config.timerForXYPopup))
+                    debug('Start timer x:{:d},y:{:d} t:{:d}!'.format(event.x, event.y, itrade_config.timerForXYPopup))
                     self.m_timer.Start(itrade_config.timerForXYPopup, oneShot=True)
 
     # ---[ CURSOR DRAWING during MOVE ] -----------------------------------------------------------------
@@ -770,7 +770,7 @@ class iTrade_wxPanelGraph(GObject, PanelPrint):
             dc.DrawLine(*line2)  # draw new
         # dc.EndDrawing()
 
-        debug("Time=%d  Value=%f"% (time, value))
+        debug("Time={:d}  Value={:f}".format(time, value))
 
         # add x and y labels
         if int(time) < len(self.times):

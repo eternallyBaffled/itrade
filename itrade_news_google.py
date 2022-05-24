@@ -105,12 +105,12 @@ class News_Google(object):
 
         for eachEntry in feed.entries:
             entry = _FeedEntry()
-            entry.link = "google::%s" % eachEntry.link
-            entry.title = "%s" % eachEntry.title
+            entry.link = "google::{}".format(eachEntry.link)
+            entry.title = u"{}".format(eachEntry.title)
 
             # convert datetime in the right locale
             entry.date = time.strptime(eachEntry.date, "%a, %d %b %Y %H:%M:%S %Z")
-            print('%s: %s -> %s' % (entry.link,eachEntry.date,entry.date))
+            print('{}: {} -> {}'.format(entry.link, eachEntry.date, entry.date))
 
             entry.summary = eachEntry.summary
             entry.source = "google"
@@ -122,7 +122,7 @@ class News_Google(object):
         #info('Feed %s',flux.feed.title)
         return flux
 
-    def goto(self,html,url):        # __x to be removed
+    def goto(self, html, url):        # __x to be removed
         webbrowser.open(url)
 
     # ---[ public interface ] ---
@@ -134,9 +134,9 @@ class News_Google(object):
             lang = self.m_quote.country()
 
         param = self.m_quote.name()+' '+self.m_quote.ticker()
-        param = string.replace(param,' ','+')
+        param = string.replace(param, ' ', '+')
 
-        return self.feed(self.m_baseurl % (lang,param))
+        return self.feed(self.m_baseurl.format(lang, param))
 
 # ============================================================================
 # Export me

@@ -238,7 +238,7 @@ class iTradeQuoteInfoWindow(sc.SizedPanel):
         self.m_parent.OnExit(evt)
 
     def suffixLogo(self, ext):
-        return '%s-%s.%s' % (self.m_quote.ticker().lower(), self.m_quote.market().lower(), ext)
+        return '{}-{}.{}'.format(self.m_quote.ticker().lower(), self.m_quote.market().lower(), ext)
 
     def paintLogo(self):
         if self.m_logo is None:
@@ -260,7 +260,7 @@ class iTradeQuoteInfoWindow(sc.SizedPanel):
 
         # paint fields
         self.wxTicker.SetLabel(self.m_quote.ticker())
-        self.wxDate.SetLabel("%s | %s | %s" % (self.m_quote.sv_date(bDisplayShort=True), self.m_quote.sv_clock(), self.m_quote.sv_type_of_clock()))
+        self.wxDate.SetLabel("{} | {} | {}".format(self.m_quote.sv_date(bDisplayShort=True), self.m_quote.sv_clock(), self.m_quote.sv_type_of_clock()))
 
         percent = self.m_quote.nv_percent()
         if percent == 0:
@@ -298,17 +298,17 @@ class iTradeQuoteInfoWindow(sc.SizedPanel):
 
         self.wxStatus.SetLabel(status)
         self.wxReopen.SetLabel(self.m_quote.sv_reopen())
-        self.wxHigh_threshold.SetLabel("%.2f" % self.m_quote.high_threshold())
-        self.wxLow_threshold.SetLabel("%.2f" % self.m_quote.low_threshold())
+        self.wxHigh_threshold.SetLabel("{:.2f}".format(self.m_quote.high_threshold()))
+        self.wxLow_threshold.SetLabel("{:.2f}".format(self.m_quote.low_threshold()))
 
     def refresh(self, nquote=None, live=False):
-        debug('QuoteInfoWindow::refresh %s' % self.m_quote.ticker())
+        debug('QuoteInfoWindow::refresh {}'.format(self.m_quote.ticker()))
 
         # update the logo if needed
         fit = False
         if nquote and nquote != self.m_quote:
             if itrade_config.verbose:
-                print('QuoteInfoWindow::refresh New Quote %s - live=%s' % (nquote.ticker(), live))
+                print('QuoteInfoWindow::refresh New Quote {} - live={}'.format(nquote.ticker(), live))
             self.m_quote = nquote
             self.m_logo = None
             fit = True
@@ -321,7 +321,7 @@ class iTradeQuoteInfoWindow(sc.SizedPanel):
 
         # paint the content
         if itrade_config.verbose:
-            print('QuoteInfoWindow::refresh Paint Quote %s - live=%s' % (self.m_quote.ticker(), live))
+            print('QuoteInfoWindow::refresh Paint Quote {} - live={}'.format(self.m_quote.ticker(), live))
         self.paint()
 
         # fit but stay on the space given by the parent
@@ -581,7 +581,7 @@ class iTradeQuoteGraphPanel(wx.Panel, iTrade_wxPanelGraph):
         print('$$$DonePage')
 
     def RedrawAll(self, redraw=True):
-        print('$$$RedrawAll redraw=%s' % redraw)
+        print('$$$RedrawAll redraw={}'.format(redraw))
         self.ChartRealize()
         if redraw:
             self.m_canvas.draw()
@@ -757,7 +757,7 @@ class iTradeQuoteGraphPanel(wx.Panel, iTrade_wxPanelGraph):
         return self.zoomMultiple[self.zoomLevel]
 
     def getTextPeriod(self):
-        return '%s %s %s' % (message('graph_period'),self.getPeriod(),message('graph_days'))
+        return '{} {} {}'.format(message('graph_period'), self.getPeriod(), message('graph_days'))
 
     def ChartRealize(self):
         # special case __x
@@ -927,19 +927,19 @@ class iTradeQuoteGraphPanel(wx.Panel, iTrade_wxPanelGraph):
             s = s + 'k, '+ self.space(message('popup_volume'), self.m_quote.sv_volume(dt)) + ' \n'
             if chart == 3:
                 if self.m_dispRSI14:
-                    s = s + 'k, '+ self.space('RSI (%s)'%14, self.m_quote.sv_rsi(14,dt)) + ' \n'
+                    s = s + 'k, '+ self.space('RSI ({})'.format(14), self.m_quote.sv_rsi(14,dt)) + ' \n'
                 if self.m_dispSto:
-                    s = s + 'b, '+ self.space('STO %%K (%s)'%14, self.m_quote.sv_stoK(dt)) + ' \n'
-                    s = s + 'm, '+ self.space('STO %%D (%s)'%14, self.m_quote.sv_stoD(dt)) + ' \n'
+                    s = s + 'b, '+ self.space('STO %K ({})'.format(14), self.m_quote.sv_stoK(dt)) + ' \n'
+                    s = s + 'm, '+ self.space('STO %D ({})'.format(14), self.m_quote.sv_stoD(dt)) + ' \n'
             elif chart == 2:
-                s = s + 'r, '+ self.space('VMA%s'%15, self.m_quote.sv_vma(15,dt)) + ' \n'
+                s = s + 'r, '+ self.space('VMA{}'.format(15), self.m_quote.sv_vma(15,dt)) + ' \n'
                 s = s + 'k, '+ self.space('OVB', self.m_quote.sv_ovb(dt)) + ' \n'
             else:
-                s = s + 'm, '+ self.space('MA%s'%20, self.m_quote.sv_ma(20,dt)) + ' \n'
-                s = s + 'r, '+ self.space('MA%s'%50, self.m_quote.sv_ma(50,dt)) + ' \n'
-                s = s + 'b, '+ self.space('MA%s'%100, self.m_quote.sv_ma(100,dt)) + ' \n'
+                s = s + 'm, '+ self.space('MA{}'.format(20), self.m_quote.sv_ma(20,dt)) + ' \n'
+                s = s + 'r, '+ self.space('MA{}'.format(50), self.m_quote.sv_ma(50,dt)) + ' \n'
+                s = s + 'b, '+ self.space('MA{}'.format(100), self.m_quote.sv_ma(100,dt)) + ' \n'
                 if self.m_dispMA150:
-                    s = s + 'c, '+ self.space('MA%s'%150, self.m_quote.sv_ma(150,dt)) + ' \n'
+                    s = s + 'c, '+ self.space('MA{}'.format(150), self.m_quote.sv_ma(150,dt)) + ' \n'
         else:
             s = 'k, ' + self.m_quote.name() + ' ('+ dt.strftime('%x') + ') \n'
             s = s + 'k, ' + message('popup_notrade') + ' '
@@ -981,7 +981,7 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
         sel = self.GetSelection()
         if itrade_config.verbose:
             print()
-            print('QuoteNotebookWindow::OnPageChanged: old=%d new=%d sel=%d' % (old, new, sel))
+            print('QuoteNotebookWindow::OnPageChanged: old={:d} new={:d} sel={:d}'.format(old, new, sel))
         if old != new:
             if old >= 0:
                 self.win[old].DonePage()
@@ -1019,9 +1019,9 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
                 isin = itrade_config.intradayGraphUrlUseISIN[m]
 
                 if isin:
-                    url = url % self.m_quote.isin()
+                    url = url.format(self.m_quote.isin())
                 else:
-                    url = url % (self.m_quote.ticker()+suffix)
+                    url = url.format(self.m_quote.ticker()+suffix)
             else:
                 # chart not available because no url
                 url = ''
@@ -1051,19 +1051,19 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
         if nquote:
             # refresh the new quote
             if itrade_config.verbose:
-                print('QuoteNotebookWindow::refresh Init New Quote : %s - page: %s' % (nquote.ticker(), self.m_curpage))
-            page = self.init(nquote,self.m_curpage)
+                print('QuoteNotebookWindow::refresh Init New Quote : {} - page: {}'.format(nquote.ticker(), self.m_curpage))
+            page = self.init(nquote, self.m_curpage)
             if itrade_config.verbose:
-                print('QuoteNotebookWindow::refresh Internal Page : %s - page: %s' % (nquote.ticker(), page))
+                print('QuoteNotebookWindow::refresh Internal Page : {} - page: {}'.format(nquote.ticker(), page))
             self.SetSelection(page)
         else:
             # refresh current page
             if (self.m_curpage == self.ID_PAGE_LIVE) or (not live):
                 if itrade_config.verbose:
-                    print('QuoteNotebookWindow::refresh Current Quote %s live=%s page: %s' % (self.m_quote.ticker(), live,self.m_curpage))
+                    print('QuoteNotebookWindow::refresh Current Quote {} live={} page: {}'.format(self.m_quote.ticker(), live, self.m_curpage))
                 self.win[self.m_curpage].refresh()
 
-    def OnRefresh(self,  event=None):
+    def OnRefresh(self, event=None):
         # called by a child to refresh the book on the current quote (after importing for example)
         if itrade_config.verbose:
             print()
@@ -1120,43 +1120,43 @@ class iTradeQuoteWindow(wx.Frame, iTrade_wxFrame, iTrade_wxLiveMixin):
     # ---[ Change the current window title ] ----------------------------------
 
     def setTitle(self):
-        self.SetTitle("%s %s - %s : %s" % (message('quote_title'),self.m_quote.key(),self.m_quote.ticker(),self.m_quote.name()))
+        self.SetTitle("{} {} - {} : {}".format(message('quote_title'), self.m_quote.key(), self.m_quote.ticker(), self.m_quote.name()))
 
     # ---[ Select a new quote ] -----------------------------------------------
 
-    def SelectQuote(self,nquote=None):
+    def SelectQuote(self, nquote=None):
         if not nquote:
-            nquote = select_iTradeQuote(self,self.m_quote,filter=True,market=None)
+            nquote = select_iTradeQuote(self, self.m_quote, filter=True, market=None)
         if nquote and nquote != self.m_quote:
             if itrade_config.verbose:
                 print()
-                print('QuoteWindow::SelectQuote: %s -> %s %s' % (self.m_quote.ticker(),nquote.ticker(),nquote.key()))
+                print('QuoteWindow::SelectQuote: {} -> {} {}'.format(self.m_quote.ticker(), nquote.ticker(), nquote.key()))
             self.stopLive(self.m_quote)
             self.unregisterLive(self.m_quote)
             self.m_notewindow.Hide()
             self.m_quote = nquote
-            self.registerLive(self.m_quote,itrade_config.refreshLive)
+            self.registerLive(self.m_quote, itrade_config.refreshLive)
             self.setTitle()
             self.refresh(self.m_quote)
             self.m_notewindow.Show()
 
     # ---[ Refresh mechanism ] ------------------------------------------------
 
-    def refresh(self,nquote=None,live=False):
+    def refresh(self, nquote=None, live=False):
         if itrade_config.verbose:
-            print('QuoteWindow::refresh %s %s: live=%s' % (self.m_quote.ticker(),self.m_quote.key(),live))
-        self.m_infowindow.refresh(nquote,live)
-        self.m_notewindow.refresh(nquote,live)
+            print('QuoteWindow::refresh {} {}: live={}'.format(self.m_quote.ticker(), self.m_quote.key(), live))
+        self.m_infowindow.refresh(nquote, live)
+        self.m_notewindow.refresh(nquote, live)
 
     def OnLive(self, evt):
         # be sure this quote is still under population
         if evt.quote == self.m_quote and self.isRunning(evt.quote):
             if itrade_config.verbose:
-                print('QuoteWindow::OnLive %s %s: %s' % (evt.quote.ticker(),evt.quote.key(),evt.param))
+                print('QuoteWindow::OnLive {} {}: {}'.format(evt.quote.ticker(), evt.quote.key(), evt.param))
             self.refresh(live=True)
         else:
             if itrade_config.verbose:
-                print('QuoteWindow::OnLive %s %s: %s - NOT RUNNING' % (evt.quote.ticker(),evt.quote.key(),evt.param))
+                print('QuoteWindow::OnLive {} {}: {} - NOT RUNNING'.format(evt.quote.ticker(), evt.quote.key(), evt.param))
 
     # ---[ Default Windows handlers ] -----------------------------------------
 

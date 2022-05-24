@@ -203,9 +203,9 @@ class iTradeOperationDialog(iTradeSizedDialog):
             tb = message('portfolio_delete')
         else:
             tb = '??'
-        tt = tb + ' %s - %s %s'
+        tt = tb + ' {} - {} {}'
         if op:
-            self.tt = tt % (op.datetime().strftime('%x'), op.operation(), op.description())
+            self.tt = tt.format(op.datetime().strftime('%x'), op.operation(), op.description())
         else:
             self.tt = tb
 
@@ -296,7 +296,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
                                           selectOnEntry=True)
         wx.EVT_TEXT( self, self.wxExpensesCtrl.GetId(), self.OnExpensesChange )
 
-        self.wxExpPostTxt = wx.StaticText(btnpane, wx.ID_ANY, "%s %s" % (currency2symbol(currency), message('portfolio_post_expenses')))
+        self.wxExpPostTxt = wx.StaticText(btnpane, wx.ID_ANY, "{} {}".format(currency2symbol(currency), message('portfolio_post_expenses')))
         self.wxExpPostTxt.SetSizerProps(valign='center')
 
         # resizable pane
@@ -424,7 +424,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
     def OnDate(self, evt):
         dRet = self.wxDateCtrl.GetValue()
         if dRet:
-            debug('OnDate: %s\n' % dRet)
+            debug('OnDate: {}\n'.format(dRet))
             self.m_datetime = self.m_datetime.combine(date(dRet.GetYear(), dRet.GetMonth()+1, dRet.GetDay()),
                                                       self.m_datetime.time())
             self.refreshPage()
@@ -432,14 +432,14 @@ class iTradeOperationDialog(iTradeSizedDialog):
     def OnTime(self, evt):
         dRet = self.wxTimeCtrl.GetValue(as_wxDateTime=True)
         if dRet:
-            debug('OnTime: %s\n' % dRet)
+            debug('OnTime: {}\n'.format(dRet))
             self.m_datetime = self.m_datetime.combine(self.m_datetime.date(),
                                                       datetime.time(dRet.GetHour(), dRet.GetMinute(), dRet.GetSecond()))
             self.refreshPage()
 
     def OnType(self, evt):
         t = self.wxTypeCtrl.GetClientData(self.wxTypeCtrl.GetSelection())
-        debug("OnType %s" % t)
+        debug("OnType {}".format(t))
         self.m_type = t
         self.refreshPage()
 
@@ -447,7 +447,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
         quote = quotes.lookupKey(self.m_name)
         quote = select_iTradeQuote(self, quote, filter=True, market=self.m_market, filterEnabled=True, tradableOnly=True)
         if quote:
-            debug('onQuote: %s - %s' % (quote.ticker(), quote.key()))
+            debug('onQuote: {} - {}'.format(quote.ticker(), quote.key()))
             self.m_name = quote.key()
             self.m_market = quote.market()
             self.refreshPage()
@@ -455,24 +455,24 @@ class iTradeOperationDialog(iTradeSizedDialog):
     def OnValueChange(self, event):
         ctl = self.FindWindowById(event.GetId())
         if ctl.IsValid():
-            debug('new value value = %s\n' % ctl.GetValue())
+            debug('new value value = {}\n'.format(ctl.GetValue()))
             self.m_value = float(ctl.GetValue())
 
     def OnNumberChange(self, event):
         ctl = self.FindWindowById(event.GetId())
         if ctl.IsValid():
-            debug('new number value = %s\n' % ctl.GetValue())
+            debug('new number value = {}\n'.format(ctl.GetValue()))
             self.m_number = int(ctl.GetValue())
 
     def OnExpensesChange(self, event):
         ctl = self.FindWindowById(event.GetId())
         if ctl.IsValid():
-            debug('new expenses value = %s\n' % ctl.GetValue())
+            debug('new expenses value = {}\n'.format(ctl.GetValue()))
             self.m_expenses = float(ctl.GetValue())
 
     def OnDescChange(self, event):
         ctl = self.FindWindowById(event.GetId())
-        debug('new value value = %s\n' % ctl.GetValue())
+        debug('new value value = {}\n'.format(ctl.GetValue()))
         self.m_name = ctl.GetValue()
 
 
@@ -855,7 +855,7 @@ class iTradeOperationsWindow(wx.Frame, iTrade_wxFrame, wxl.ColumnSorterMixin):
                     self.m_list.InsertImageStringItem(x, sdate, idx)
                     self.m_list.SetStringItem(x, IDC_OPERATION, eachOp.operation())
                     if eachOp.nv_number()>0:
-                        self.m_list.SetStringItem(x, IDC_NUMBER, '%s' % eachOp.sv_number())
+                        self.m_list.SetStringItem(x, IDC_NUMBER, '{}'.format(eachOp.sv_number()))
                     else:
                         self.m_list.SetStringItem(x, IDC_NUMBER, '')
                     if sign == '+':
@@ -876,23 +876,23 @@ class iTradeOperationsWindow(wx.Frame, iTrade_wxFrame, wxl.ColumnSorterMixin):
                         vdebit = 0.0
                     self.m_list.SetStringItem(x, IDC_EXPENSES, eachOp.sv_expenses())
                     self.m_list.SetStringItem(x, IDC_DESCRIPTION, eachOp.description())
-                    self.m_list.SetStringItem(x, IDC_BALANCE, '%.2f' % balance)
+                    self.m_list.SetStringItem(x, IDC_BALANCE, '{:.2f}'.format(balance))
 
                     if self.filterSRDcolumn():
                         if eachOp.isSRD():
-                            self.m_list.SetStringItem(x, IDC_SRD, '%.2f' % srd)
+                            self.m_list.SetStringItem(x, IDC_SRD, '{:.2f}'.format(srd))
                             vsrd = srd
                         else:
                             self.m_list.SetStringItem(x, IDC_SRD, '')
                             vsrd = 0.0
-                        self.m_list.SetStringItem(x, IDC_RESERVED, '%d' % eachOp.ref())
+                        self.m_list.SetStringItem(x, IDC_RESERVED, '{:d}'.format(eachOp.ref()))
                     else:
                         vsrd = 0.0
-                        self.m_list.SetStringItem(x, IDC_SRD, '%d' % eachOp.ref())
+                        self.m_list.SetStringItem(x, IDC_SRD, '{:d}'.format(eachOp.ref()))
 
                     try:
-                        pr = str('%.2f'%((vcredit + vdebit)/eachOp.nv_number()))
-                        if pr == '0.00' :
+                        pr = str('{:.2f}'.format((vcredit + vdebit)/eachOp.nv_number()))
+                        if pr == '0.00':
                             pr = ''
                     except ZeroDivisionError:
                         pr = ''

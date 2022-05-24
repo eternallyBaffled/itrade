@@ -70,17 +70,17 @@ class News(object):
     def setCallback(self,callback):
         self.m_cb = callback
 
-    def feedQuote(self,quote,lang=None):
+    def feedQuote(self, quote, lang=None):
         if lang is None:
             lang = quote.country()
-        print('feedQuote: lang=%s' % lang)
+        print(u'feedQuote: lang={}'.format(lang))
 
         # __x very temporary : need to aggregate news from various sources
         #                      using callback to notify the progress
-        if lang.upper()=='FR':
-            return gNewsBoursorama.feedQuote(quote,lang)
+        if lang.upper() == 'FR':
+            return gNewsBoursorama.feedQuote(quote, lang)
         else:
-            return gNewsGoogle.feedQuote(quote,lang)
+            return gNewsGoogle.feedQuote(quote, lang)
 
     def goto(self,parent,url):
         # url is : <service>::<url>

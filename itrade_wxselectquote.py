@@ -392,8 +392,8 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
         isin = event.GetString().upper()
         if isin!='' and isin!=self.m_isin:
             self.m_isin = isin
-            lst = quotes.lookupISIN(self.m_isin,self.m_market)
-            if len(lst)>0 and lst[0]:
+            lst = quotes.lookupISIN(self.m_isin, self.m_market)
+            if len(lst) >                                                                                                                                                                                                                                                                                                       0 and lst[0]:
                 quote = lst[0]
                 self.m_isin = quote.isin()
                 self.m_ticker = quote.ticker()
@@ -443,10 +443,10 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
 #   filterEnabled   can use the filter
 # ============================================================================
 
-def select_iTradeQuote(win,dquote=None,filter=False,market=None,filterEnabled=True,tradableOnly=False):
-    dlg = iTradeQuoteSelectorListCtrlDialog(win,dquote,filter,market,filterEnabled,tradableOnly)
-    if dlg.ShowModal()==wx.ID_OK:
-        info('select_iTradeQuote() : %s' % dlg.quote)
+def select_iTradeQuote(win, dquote=None, filter=False, market=None, filterEnabled=True, tradableOnly=False):
+    dlg = iTradeQuoteSelectorListCtrlDialog(win, dquote, filter, market, filterEnabled, tradableOnly)
+    if dlg.ShowModal() == wx.ID_OK:
+        info('select_iTradeQuote() : {}'.format(dlg.quote))
         quote = dlg.quote
     else:
         quote = None

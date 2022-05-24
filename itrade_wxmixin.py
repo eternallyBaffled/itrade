@@ -123,7 +123,7 @@ class iTrade_wxFrame(object):
         if self.m_name:
             if itrade_config.verbose: print('iTrade_wxFrame::loadConfig',self.m_name)
             try:
-                self._config = itrade_config.readThenEvalFile(os.path.join(itrade_config.dirCacheData,'%s.win'%self.m_name))
+                self._config = itrade_config.readThenEvalFile(os.path.join(itrade_config.dirCacheData, '{}.win'.format(self.m_name)))
                 if self._config != {}:
                     if 'position' in self._config:
                         self.SetPosition(self._config['position'])
@@ -139,9 +139,9 @@ class iTrade_wxFrame(object):
             self._config['position'] = self.GetRestoredPosition()
             self._config['size'] = self.GetRestoredSize()
             try:
-                path = os.path.join(itrade_config.dirCacheData,'%s.win' % self.m_name)
+                path = os.path.join(itrade_config.dirCacheData,'{}.win'.format(self.m_name))
                 if itrade_config.verbose:
-                    print('saveConfig: %s %s' % (path, self._config))
+                    print('saveConfig: {} {}'.format(path, self._config))
                 with open(path, "w") as f:
                     pprint.pprint(self._config, f)
             except Exception:

@@ -1055,7 +1055,7 @@ class Portfolio(object):
             sc = ' ' + self.currency_symbol() + ' '
         else:
             sc = ''
-        fmt = fmt + "{}"
+        fmt = fmt + u"{}"
         return fmt.format(self.nv_cash(), sc)
 
     def sv_credit(self, currency=None, fmt="{:.2f}", bDispCurrency=False):
@@ -1063,7 +1063,7 @@ class Portfolio(object):
             sc = ' ' + self.currency_symbol() + ' '
         else:
             sc = ''
-        fmt = fmt + "{}"
+        fmt = fmt + u"{}"
         return fmt.format(self.nv_credit(), sc)
 
     def sv_taxes(self, fmt="{:.2f}", bDispCurrency=False):
@@ -1071,7 +1071,7 @@ class Portfolio(object):
             sc = ' ' + self.currency_symbol() + ' '
         else:
             sc = ''
-        fmt = fmt + "{}"
+        fmt = fmt + u"{}"
         return fmt.format(self.nv_taxes(), sc)
 
     def sv_expenses(self, fmt="{:.2f}", bDispCurrency=False):
@@ -1079,7 +1079,7 @@ class Portfolio(object):
             sc = ' ' + self.currency_symbol() + ' '
         else:
             sc = ''
-        fmt = fmt + "{}"
+        fmt = fmt + u"{}"
         return fmt.format(self.nv_expenses(), sc)
 
     def sv_transfer(self, fmt="{:.2f}", bDispCurrency=False):
@@ -1087,7 +1087,7 @@ class Portfolio(object):
             sc = ' ' + self.currency_symbol() + ' '
         else:
             sc = ''
-        fmt = fmt + "{}"
+        fmt = fmt + u"{}"
         return fmt.format(self.nv_transfer(), sc)
 
     def sv_taxable(self, fmt="{:.2f}", bDispCurrency=False):
@@ -1095,7 +1095,7 @@ class Portfolio(object):
             sc = ' ' + self.currency_symbol() + ' '
         else:
             sc = ''
-        fmt = fmt + "{}"
+        fmt = fmt + u"{}"
         return fmt.format(self.nv_taxable(), sc)
 
     def sv_appreciation(self, fmt="{:.2f}", bDispCurrency=False):
@@ -1103,15 +1103,15 @@ class Portfolio(object):
             sc = ' ' + self.currency_symbol() + ' '
         else:
             sc = ''
-        fmt = fmt + "{}"
+        fmt = fmt + u"{}"
         return fmt.format(self.nv_appreciation(), sc)
 
-    def sv_invest(self, fmt="{:.2f}", bDispCurrency=False):
+    def sv_invest(self, fmt=u"{:.2f}", bDispCurrency=False):
         if bDispCurrency:
-            sc = ' '+self.currency_symbol()+' '
+            sc = ' ' + self.currency_symbol() + ' '
         else:
             sc = ''
-        fmt = fmt + "{}"
+        fmt = fmt + u"{}"
         return fmt.format(self.nv_invest(), sc)
 
     def sv_value(self, box=QuoteType.both, fmt="{:.2f}", bDispCurrency=False):
@@ -1119,7 +1119,7 @@ class Portfolio(object):
             sc = ' '+self.currency_symbol()+' '
         else:
             sc = ''
-        fmt = fmt + "{}"
+        fmt = fmt + u"{}"
         return fmt.format(self.nv_value(box), sc)
 
     def sv_buy(self, box=QuoteType.both, fmt="{:.2f}", bDispCurrency=False):
@@ -1127,7 +1127,7 @@ class Portfolio(object):
             sc = ' ' + self.currency_symbol() + ' '
         else:
             sc = ''
-        fmt = fmt + "{}"
+        fmt = fmt + u"{}"
         return fmt.format(self.nv_buy(box), sc)
 
     def sv_perf(self, box=QuoteType.both, fmt="{:.2f}", bDispCurrency=False):
@@ -1135,7 +1135,7 @@ class Portfolio(object):
             sc = ' ' + self.currency_symbol() + ' '
         else:
             sc = ''
-        fmt = fmt + "{}"
+        fmt = fmt + u"{}"
         return fmt.format(self.nv_perf(box), sc)
 
     def sv_perfPercent(self, box=QuoteType.both, fmt="{:3.2f} %"):

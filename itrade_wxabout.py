@@ -236,13 +236,13 @@ class iTradeAboutBox(wx.Dialog):
             with open('LICENSE', 'r') as f:
                 lines = f.readlines()
                 s = '<br>'.join(lines)
-                self.m_html.SetPage(license_html % s)
+                self.m_html.SetPage(license_html.format(s))
 
     def setPage(self):
-        self.m_html.SetPage(about_html % (
+        self.m_html.SetPage(about_html.format(
               os.path.join(itrade_config.dirRes, 'itrade.png'), itrade_config.softwareVersionName,
               itrade_config.softwareStatus, itrade_config.softwareVersion, '',
-              about_text % (itrade_config.softwareWebsite, itrade_config.softwareCopyright,
+              about_text.format(itrade_config.softwareWebsite, itrade_config.softwareCopyright,
                             itrade_config.softwareLicense)
               ))
 

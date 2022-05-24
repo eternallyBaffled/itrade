@@ -173,7 +173,7 @@ class News_Boursorama(object):
             #print '----------------('
             #print buf
             #print ')----------------'
-            page = '<html><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><body>' + "<br><a href=':back'>%s</a><H3>" % message('backtolist') + title + "</H3>" + buf + "<br><br><a href=':back'>%s</a>" % message('backtolist')  + "</body></html>"
+            page = '<html><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><body>' + "<br><a href=':back'>{}</a><H3>".format(message('backtolist')) + title + "</H3>" + buf + "<br><br><a href=':back'>{}</a>".format(message('backtolist')) + "</body></html>"
 
             if html:
                 html.SetPageWithoutCache(page)

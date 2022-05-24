@@ -60,36 +60,34 @@ class Formatter(logging.Formatter):
                 raise
         return logging.Formatter.formatException(self, (E, e, tb))
 
-# ============================================================================
-# myStreamHandler
-# ============================================================================
 
 class myStreamHandler(logging.StreamHandler):
     def emit(self, record):
         msg = self.format(record)
         if not hasattr(types, "UnicodeType"):
-            self.stream.write("%s\n" % msg)
+            self.stream.write("{}\n".format(msg))
         else:
             try:
-                self.stream.write("%s\n" % msg)
+                self.stream.write("{}\n".format(msg))
             except UnicodeError:
-                self.stream.write("%s\n" % msg.encode("UTF-8"))
+                self.stream.write("{}\n".format(msg.encode("UTF-8")))
         self.flush()
 
 # ============================================================================
 # myFileHandler
 # ============================================================================
 
+
 class myFileHandler(logging.FileHandler):
     def emit(self, record):
         msg = self.format(record)
         if not hasattr(types, "UnicodeType"):
-            self.stream.write("%s\n" % msg)
+            self.stream.write("{}\n".format(msg))
         else:
             try:
-                self.stream.write("%s\n" % msg)
+                self.stream.write("{}\n".format(msg))
             except UnicodeError:
-                self.stream.write("%s\n" % msg.encode("UTF-8"))
+                self.stream.write("{}\n".format(msg.encode("UTF-8")))
         self.flush()
 
 # ============================================================================

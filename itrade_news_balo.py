@@ -122,11 +122,11 @@ class News_Balo(object):
                     stitle = stitle.group()[1:-1]
 
                     entry = _Feed()
-                    entry.link = news_link_url%snum
+                    entry.link = news_link_url.format(snum)
                     entry.title = stitle
                     entry.date = sdate
                     entry.summary = ""
-                    print('%s: %s' % (sdate,stitle))
+                    print('{}: {}'.format(sdate, stitle))
                     self.m_feed.entries.append(entry)
 
         return self.m_feed
@@ -156,7 +156,7 @@ class News_Balo(object):
         buf = re.search(r'<tr>[ \t\n\r]*<td>.*</table>', buf, re.IGNORECASE|re.MULTILINE|re.DOTALL)
         if buf:
             buf = buf.group()[:-8]
-            page = '<html><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><body>' + "<br><a href=':back'>%s</a><H3>" % message('backtolist') + title + "</H3>" + buf + "<br><br><a href=':back'>%s</a>" % message('backtolist')  + "</body></html>"
+            page = '<html><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><body>' + "<br><a href=':back'>{}</a><H3>".format(message('backtolist')) + title + "</H3>" + buf + "<br><br><a href=':back'>{}</a>".format(message('backtolist')) + "</body></html>"
 
             if html:
                 html.SetPageWithoutCache(page)
@@ -169,7 +169,7 @@ class News_Balo(object):
                 print('empty')
 
     # ---[ public interface ] ---
-    def feedQuote(self,quote,lang=None,page=0):
+    def feedQuote(self, quote, lang=None, page=0):
         self.m_quote = quote
         if lang is None:
             lang = self.m_quote.country()

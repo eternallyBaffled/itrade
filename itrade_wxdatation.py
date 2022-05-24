@@ -66,14 +66,14 @@ class iTradeDatePicker(wx.Dialog):
 
         if ddate is None:
             dd = wx.DateTime_Now()
-            debug('iTradeDatePicker() today date = %s' % dd.__str__())
+            debug('iTradeDatePicker() today date = {}'.format(dd.__str__()))
         else:
-            debug('iTradeDatePicker() default date = %d %d %d' % (ddate.day,ddate.month,ddate.year))
-            dd = wx.DateTimeFromDMY(ddate.day,ddate.month-1,ddate.year)
-            debug('iTradeDatePicker() default date = %s' % dd.__str__())
+            debug('iTradeDatePicker() default date = {:d} {:d} {:d}'.format(ddate.day, ddate.month, ddate.year))
+            dd = wx.DateTimeFromDMY(ddate.day, ddate.month-1, ddate.year)
+            debug('iTradeDatePicker() default date = {}'.format(dd.__str__()))
 
-        self.cal = wxcal.CalendarCtrl(self, -1, dd, pos = (25,50),
-                             style = wxcal.CAL_SHOW_HOLIDAYS
+        self.cal = wxcal.CalendarCtrl(self, -1, dd, pos=(25, 50),
+                             style=wxcal.CAL_SHOW_HOLIDAYS
                              | wxcal.CAL_MONDAY_FIRST
                              | wxcal.CAL_SEQUENTIAL_MONTH_SELECTION
                              )

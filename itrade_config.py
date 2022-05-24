@@ -296,79 +296,79 @@ taxesPercent = 0.27
 intradayGraphUrl = {}
 intradayGraphUrlUseISIN = {}
 
-intradayGraphUrl['EURONEXT'] = "https://chart.finance.yahoo.com/z?s=%s&t=1d&q=l&l=on&z=l&c=^FCHI&a=v&p=s&lang=fr-FR&region=FR"
+intradayGraphUrl['EURONEXT'] = "https://chart.finance.yahoo.com/z?s={}&t=1d&q=l&l=on&z=l&c=^FCHI&a=v&p=s&lang=fr-FR&region=FR"
 intradayGraphUrlUseISIN['EURONEXT'] = False
-intradayGraphUrl['ALTERNEXT'] = "https://chart.finance.yahoo.com/z?s=%s&t=1d&q=l&l=on&z=l&c=^FCHI&a=v&p=s&lang=fr-FR&region=FR"
+intradayGraphUrl['ALTERNEXT'] = "https://chart.finance.yahoo.com/z?s={}&t=1d&q=l&l=on&z=l&c=^FCHI&a=v&p=s&lang=fr-FR&region=FR"
 intradayGraphUrlUseISIN['ALTERNEXT'] = False
-intradayGraphUrl['PARIS MARCHE LIBRE'] = "https://chart.finance.yahoo.com/z?s=%s&t=1d&q=l&l=on&z=l&c=^FCHI&a=v&p=s&lang=fr-FR&region=FR"
+intradayGraphUrl['PARIS MARCHE LIBRE'] = "https://chart.finance.yahoo.com/z?s={}&t=1d&q=l&l=on&z=l&c=^FCHI&a=v&p=s&lang=fr-FR&region=FR"
 intradayGraphUrlUseISIN['PARIS MARCHE LIBRE'] = False
-intradayGraphUrl['BRUXELLES MARCHE LIBRE'] = "https://chart.finance.yahoo.com/z?s=%s&t=1d&q=l&l=on&z=l&c=^FCHI&a=v&p=s&lang=fr-FR&region=FR"
+intradayGraphUrl['BRUXELLES MARCHE LIBRE'] = "https://chart.finance.yahoo.com/z?s={}&t=1d&q=l&l=on&z=l&c=^FCHI&a=v&p=s&lang=fr-FR&region=FR"
 intradayGraphUrlUseISIN['BRUXELLES MARCHE LIBRE'] = False
-intradayGraphUrl['NASDAQ'] = "https://chart.finance.yahoo.com/z?s=%s&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
+intradayGraphUrl['NASDAQ'] = "https://chart.finance.yahoo.com/z?s={}&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
 intradayGraphUrlUseISIN['NASDAQ'] = False
-intradayGraphUrl['NYSE'] = "https://chart.finance.yahoo.com/z?s=%s&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
+intradayGraphUrl['NYSE'] = "https://chart.finance.yahoo.com/z?s={}&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
 intradayGraphUrlUseISIN['NYSE'] = False
-intradayGraphUrl['AMEX'] = "https://chart.finance.yahoo.com/z?s=%s&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
+intradayGraphUrl['AMEX'] = "https://chart.finance.yahoo.com/z?s={}&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
 intradayGraphUrlUseISIN['AMEX'] = False
-intradayGraphUrl['OTCBB'] = "https://chart.finance.yahoo.com/z?s=%s&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
+intradayGraphUrl['OTCBB'] = "https://chart.finance.yahoo.com/z?s={}&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
 intradayGraphUrlUseISIN['OTCBB'] = False
-intradayGraphUrl['ASX'] = "https://chart.finance.yahoo.com/z?s=%s&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
+intradayGraphUrl['ASX'] = "https://chart.finance.yahoo.com/z?s={}&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
 intradayGraphUrlUseISIN['ASX'] = False
-intradayGraphUrl['TORONTO VENTURE'] = "https://chart.finance.yahoo.com/z?s=%s&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
+intradayGraphUrl['TORONTO VENTURE'] = "https://chart.finance.yahoo.com/z?s={}&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
 intradayGraphUrlUseISIN['TORONTO VENTURE'] = False
-intradayGraphUrl['TORONTO EXCHANGE'] = "https://chart.finance.yahoo.com/z?s=%s&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
+intradayGraphUrl['TORONTO EXCHANGE'] = "https://chart.finance.yahoo.com/z?s={}&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
 intradayGraphUrlUseISIN['TORONTO EXCHANGE'] = False
-intradayGraphUrl['MILAN EXCHANGE'] = "https://chart.finance.yahoo.com/z?s=%s&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
+intradayGraphUrl['MILAN EXCHANGE'] = "https://chart.finance.yahoo.com/z?s={}&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
 intradayGraphUrlUseISIN['MILAN EXCHANGE'] = False
-intradayGraphUrl['SWISS EXCHANGE'] = "https://chart.finance.yahoo.com/z?s=%s&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
+intradayGraphUrl['SWISS EXCHANGE'] = "https://chart.finance.yahoo.com/z?s={}&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
 intradayGraphUrlUseISIN['SWISS EXCHANGE'] = False
-intradayGraphUrl['LSE SEAQ'] = "https://chart.finance.yahoo.com/z?s=%s&t=1d&q=l&l=on&z=l&c=^FTSE&a=v&p=s&lang=en-GB&region=GB"
+intradayGraphUrl['LSE SEAQ'] = "https://chart.finance.yahoo.com/z?s={}&t=1d&q=l&l=on&z=l&c=^FTSE&a=v&p=s&lang=en-GB&region=GB"
 intradayGraphUrlUseISIN['LSE SEAQ'] = False
-intradayGraphUrl['LSE SETSqx'] = "https://chart.finance.yahoo.com/z?s=%s&t=1d&q=l&l=on&z=l&c=^FTSE&a=v&p=s&lang=en-GB&region=GB"
+intradayGraphUrl['LSE SETSqx'] = "https://chart.finance.yahoo.com/z?s={}&t=1d&q=l&l=on&z=l&c=^FTSE&a=v&p=s&lang=en-GB&region=GB"
 intradayGraphUrlUseISIN['LSE SETSqx'] = False
-intradayGraphUrl['LSE SETS'] = "https://chart.finance.yahoo.com/z?s=%s&t=1d&q=l&l=on&z=l&c=^FTSE&a=v&p=s&lang=en-GB&region=GB"
+intradayGraphUrl['LSE SETS'] = "https://chart.finance.yahoo.com/z?s={}&t=1d&q=l&l=on&z=l&c=^FTSE&a=v&p=s&lang=en-GB&region=GB"
 intradayGraphUrlUseISIN['LSE SETS'] = False
-intradayGraphUrl['IRISH EXCHANGE'] = "https://chart.finance.yahoo.com/z?s=%s&t=1d&q=l&l=on&z=l&c=^FTSE&a=v&p=s&lang=en-GB&region=GB"
+intradayGraphUrl['IRISH EXCHANGE'] = "https://chart.finance.yahoo.com/z?s={}&t=1d&q=l&l=on&z=l&c=^FTSE&a=v&p=s&lang=en-GB&region=GB"
 intradayGraphUrlUseISIN['IRISH EXCHANGE'] = False
-intradayGraphUrl['MADRID EXCHANGE'] = "https://chart.finance.yahoo.com/z?s=%s&t=1d&q=l&l=on&z=l&c=^FTSE&a=v&p=s&lang=en-GB&region=GB"
+intradayGraphUrl['MADRID EXCHANGE'] = "https://chart.finance.yahoo.com/z?s={}&t=1d&q=l&l=on&z=l&c=^FTSE&a=v&p=s&lang=en-GB&region=GB"
 intradayGraphUrlUseISIN['MADRID EXCHANGE'] = False
-intradayGraphUrl['FRANKFURT EXCHANGE'] = "https://chart.finance.yahoo.com/z?s=%s&t=1d&q=l&l=on&z=l&c=^FTSE&a=v&p=s&lang=en-GB&region=GB"
+intradayGraphUrl['FRANKFURT EXCHANGE'] = "https://chart.finance.yahoo.com/z?s={}&t=1d&q=l&l=on&z=l&c=^FTSE&a=v&p=s&lang=en-GB&region=GB"
 intradayGraphUrlUseISIN['FRANKFURT EXCHANGE'] = False
-intradayGraphUrl['STOCKHOLM EXCHANGE'] = "https://chart.finance.yahoo.com/z?s=%s&t=1d&q=l&l=on&z=l&c=^FTSE&a=v&p=s&lang=en-GB&region=GB"
+intradayGraphUrl['STOCKHOLM EXCHANGE'] = "https://chart.finance.yahoo.com/z?s={}&t=1d&q=l&l=on&z=l&c=^FTSE&a=v&p=s&lang=en-GB&region=GB"
 intradayGraphUrlUseISIN['STOCKHOLM EXCHANGE'] = False
-intradayGraphUrl['COPENHAGEN EXCHANGE'] = "https://chart.finance.yahoo.com/z?s=%s&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
+intradayGraphUrl['COPENHAGEN EXCHANGE'] = "https://chart.finance.yahoo.com/z?s={}&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
 intradayGraphUrlUseISIN['COPENHAGEN EXCHANGE'] = False
-intradayGraphUrl['OSLO EXCHANGE'] = "https://chart.finance.yahoo.com/z?s=%s&t=1d&q=l&l=on&z=l&c=^FTSE&a=v&p=s&lang=en-GB&region=GB"
+intradayGraphUrl['OSLO EXCHANGE'] = "https://chart.finance.yahoo.com/z?s={}&t=1d&q=l&l=on&z=l&c=^FTSE&a=v&p=s&lang=en-GB&region=GB"
 intradayGraphUrlUseISIN['OSLO EXCHANGE'] = False
-intradayGraphUrl['SAO PAULO EXCHANGE'] = "https://chart.finance.yahoo.com/z?s=%s&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
+intradayGraphUrl['SAO PAULO EXCHANGE'] = "https://chart.finance.yahoo.com/z?s={}&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
 intradayGraphUrlUseISIN['SAO PAULO EXCHANGE'] = False
-intradayGraphUrl['HONG KONG EXCHANGE'] = "https://chart.finance.yahoo.com/z?s=%s&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
+intradayGraphUrl['HONG KONG EXCHANGE'] = "https://chart.finance.yahoo.com/z?s={}&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
 intradayGraphUrlUseISIN['HONG KONG EXCHANGE'] = False
-intradayGraphUrl['SHANGHAI EXCHANGE'] = "https://chart.finance.yahoo.com/z?s=%s&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
+intradayGraphUrl['SHANGHAI EXCHANGE'] = "https://chart.finance.yahoo.com/z?s={}&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
 intradayGraphUrlUseISIN['SHANGHAI EXCHANGE'] = False
-intradayGraphUrl['SHENZHEN EXCHANGE'] = "https://chart.finance.yahoo.com/z?s=%s&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
+intradayGraphUrl['SHENZHEN EXCHANGE'] = "https://chart.finance.yahoo.com/z?s={}&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
 intradayGraphUrlUseISIN['SHENZHEN EXCHANGE'] = False
-intradayGraphUrl['NATIONAL EXCHANGE OF INDIA'] = "https://chart.finance.yahoo.com/z?s=%s&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
+intradayGraphUrl['NATIONAL EXCHANGE OF INDIA'] = "https://chart.finance.yahoo.com/z?s={}&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
 intradayGraphUrlUseISIN['NATIONAL EXCHANGE OF INDIA'] = False
-intradayGraphUrl['BOMBAY EXCHANGE'] = "https://chart.finance.yahoo.com/z?s=%s&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
+intradayGraphUrl['BOMBAY EXCHANGE'] = "https://chart.finance.yahoo.com/z?s={}&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
 intradayGraphUrlUseISIN['BOMBAY EXCHANGE'] = False
-intradayGraphUrl['NEW ZEALAND EXCHANGE'] = "https://chart.finance.yahoo.com/z?s=%s&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
+intradayGraphUrl['NEW ZEALAND EXCHANGE'] = "https://chart.finance.yahoo.com/z?s={}&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
 intradayGraphUrlUseISIN['NEW ZEALAND EXCHANGE'] = False
-intradayGraphUrl['BUENOS AIRES EXCHANGE'] = "https://chart.finance.yahoo.com/z?s=%s&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
+intradayGraphUrl['BUENOS AIRES EXCHANGE'] = "https://chart.finance.yahoo.com/z?s={}&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
 intradayGraphUrlUseISIN['BUENOS AIRES EXCHANGE'] = False
-intradayGraphUrl['MEXICO EXCHANGE'] = "https://chart.finance.yahoo.com/z?s=%s&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
+intradayGraphUrl['MEXICO EXCHANGE'] = "https://chart.finance.yahoo.com/z?s={}&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
 intradayGraphUrlUseISIN['MEXICO EXCHANGE'] = False
-intradayGraphUrl['SINGAPORE EXCHANGE'] = "https://chart.finance.yahoo.com/z?s=%s&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
+intradayGraphUrl['SINGAPORE EXCHANGE'] = "https://chart.finance.yahoo.com/z?s={}&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
 intradayGraphUrlUseISIN['SINGAPORE EXCHANGE'] = False
-intradayGraphUrl['KOREA STOCK EXCHANGE'] = "https://chart.finance.yahoo.com/z?s=%s&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
+intradayGraphUrl['KOREA STOCK EXCHANGE'] = "https://chart.finance.yahoo.com/z?s={}&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
 intradayGraphUrlUseISIN['KOREA STOCK EXCHANGE'] = False
-intradayGraphUrl['KOREA KOSDAQ EXCHANGE'] = "https://chart.finance.yahoo.com/z?s=%s&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
+intradayGraphUrl['KOREA KOSDAQ EXCHANGE'] = "https://chart.finance.yahoo.com/z?s={}&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
 intradayGraphUrlUseISIN['KOREA KOSDAQ EXCHANGE'] = False
-intradayGraphUrl['WIENER BORSE'] = "https://chart.finance.yahoo.com/z?s=%s&t=1d&q=l&l=on&z=l&a=v&p=s&lang=en-US&region=US"
+intradayGraphUrl['WIENER BORSE'] = "https://chart.finance.yahoo.com/z?s={}&t=1d&q=l&l=on&z=l&a=v&p=s&lang=en-US&region=US"
 intradayGraphUrlUseISIN['WIENER BORSE'] = False
-intradayGraphUrl['TOKYO EXCHANGE'] = "https://gchart.yahoo.co.jp/b?s=%s&t=1y&q=c&l=off&z=m&p=m65,m130&a=&c="
+intradayGraphUrl['TOKYO EXCHANGE'] = "https://gchart.yahoo.co.jp/b?s={}&t=1y&q=c&l=off&z=m&p=m65,m130&a=&c="
 intradayGraphUrlUseISIN['TOKYO EXCHANGE'] = False
-intradayGraphUrl['TAIWAN STOCK EXCHANGE'] = "https://chart.finance.yahoo.com/z?s=%s&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
+intradayGraphUrl['TAIWAN STOCK EXCHANGE'] = "https://chart.finance.yahoo.com/z?s={}&t=1d&q=l&l=on&z=l&c=^GSPC&a=v&p=s&lang=en-US&region=US"
 intradayGraphUrlUseISIN['TAIWAN STOCK EXCHANGE'] = False
 
 # in ms, time before activating XYPopup
@@ -638,7 +638,7 @@ def setDisconnected(status=True):
         print('Network : Ready')
 
 def isConnected():
-    # print 'isConnected(): %s' % (not gbDisconnected)
+    # print 'isConnected(): {}'.format(not gbDisconnected)
     return not gbDisconnected
 
 # ============================================================================

@@ -1198,7 +1198,7 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
         self.m_list.InsertColumn(IDC_MA20, 'MMA20', wx.LIST_FORMAT_RIGHT)
         self.m_list.InsertColumn(IDC_MA50, 'MMA50', wx.LIST_FORMAT_RIGHT)
         self.m_list.InsertColumn(IDC_MA100, 'MMA100', wx.LIST_FORMAT_RIGHT)
-        self.m_list.InsertColumn(IDC_RSI, 'RSI (%s)'%14, wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_RSI, 'RSI ({})'.format(14), wx.LIST_FORMAT_RIGHT)
         self.m_list.InsertColumn(IDC_MACD, 'MACD', wx.LIST_FORMAT_RIGHT)
         self.m_list.InsertColumn(IDC_STOCH, 'STO %K (%D)', wx.LIST_FORMAT_RIGHT)
         self.m_list.InsertColumn(IDC_DMI, 'DMI', wx.LIST_FORMAT_RIGHT)

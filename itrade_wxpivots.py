@@ -109,7 +109,7 @@ def main():
     from itrade_quotes import quotes
     quote = quotes.lookupTicker(ticker)
     quote.loadTrades()
-    info('%s: %s' % (ticker, quote))
+    info('{}: {}'.format(ticker, quote))
     app = wx.App(False)
     frame = WndTest(None, quote)
     if frame:

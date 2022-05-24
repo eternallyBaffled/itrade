@@ -121,7 +121,7 @@ class iTradeAlertsPanel(wx.Window):
 
         x = 0
         for eachAlert in alerts.listAlerts():
-            self.m_list.InsertImageStringItem(x, "%s" % eachAlert.date(), self.idx_tbref)
+            self.m_list.InsertImageStringItem(x, "{}".format(eachAlert.date()), self.idx_tbref)
             self.m_list.SetStringItem(x, IDC_TYPE,eachAlert.type_desc())
             self.m_list.SetStringItem(x, IDC_SOURCE,eachAlert.source())
             self.m_list.SetStringItem(x, IDC_ISIN,eachAlert.isin())
@@ -188,7 +188,7 @@ class iTradeAlertsNotebookWindow(wx.Notebook):
         old = event.GetOldSelection()
         new = event.GetSelection()
         sel = self.GetSelection()
-        info('OnPageChanged,  old:%d, new:%d, sel:%d\n' % (old, new, sel))
+        info('OnPageChanged,  old:{:d}, new:{:d}, sel:{:d}\n'.format(old, new, sel))
         if old != new:
             self.win[new].refresh()
         event.Skip()
@@ -197,7 +197,7 @@ class iTradeAlertsNotebookWindow(wx.Notebook):
         old = event.GetOldSelection()
         new = event.GetSelection()
         sel = self.GetSelection()
-        info('OnPageChanging, old:%d, new:%d, sel:%d\n' % (old, new, sel))
+        info('OnPageChanging, old:{:d}, new:{:d}, sel:{:d}\n'.format(old, new, sel))
         event.Skip()
 
 # ============================================================================

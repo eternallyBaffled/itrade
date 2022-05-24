@@ -245,15 +245,18 @@ _lom = {
     'TAIWAN STOCK EXCHANGE': False,
     }
 
+
 def set_market_loaded(market, loaded=True):
     if market in _lom:
         _lom[market] = loaded
     if itrade_config.verbose:
-        print('Load market %s' % market)
+        print(u'Load market {}'.format(market))
+
 
 def unload_markets():
     for market in _lom:
         _lom[market] = False
+
 
 def is_market_loaded(market):
     if market in _lom:
@@ -261,7 +264,8 @@ def is_market_loaded(market):
     else:
         return False
 
-def list_of_markets(ifLoaded=False,bFilterMode=False):
+
+def list_of_markets(ifLoaded=False, bFilterMode=False):
     lom = []
     if bFilterMode:
         lom.append(message('all_markets'))
@@ -276,10 +280,10 @@ def list_of_markets(ifLoaded=False,bFilterMode=False):
 # use isin / market / place to found the country
 # ============================================================================
 
-def compute_country(isin,market,place):
+def compute_country(isin, market, place):
     if isin:
         cp = isin[0:2].upper()
-        if cp=='QS':
+        if cp == 'QS':
             return 'FR'
         else:
             return cp
@@ -537,15 +541,15 @@ place_timezone = {
     "TAI":  "Asia/Taipei",
     }
 
-def convertConnectorTimeToPlaceTime(mdatetime,zone,place):
+def convertConnectorTimeToPlaceTime(mdatetime, zone, place):
     #fmt = '%Y-%m-%d %H:%M:%S %Z%z'
 
     market_tz = timezone(zone)
-    place_tz  = timezone(place_timezone[place])
+    place_tz = timezone(place_timezone[place])
 
     market_dt = market_tz.localize(mdatetime)
     #print '*** market time:',market_dt.strftime(fmt)
-    place_dt  = place_tz.normalize(market_dt.astimezone(place_tz))
+    place_dt = place_tz.normalize(market_dt.astimezone(place_tz))
     #print '*** place time:',place_dt.strftime(fmt)
     return place_dt
 
@@ -567,7 +571,7 @@ euronext_mic = {
     'BRUXELLES MARCHE LIBRE.BRU': 'MLXB',
     }
 
-def euronextmic(market,place):
+def euronextmic(market, place):
     key = market + '.' + place
     if key in euronext_mic:
         mic = euronext_mic[key]

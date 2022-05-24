@@ -138,7 +138,7 @@ class iTradeConverterDialog(iTradeSizedDialog):
         # get the value and convert
         o = self.wxOrgVal.GetValue()
         d = currencies.convert(curTo=self.m_destcur, curFrom=self.m_orgcur, Value=o)
-        self.wxDestVal.SetLabel('%.3f' % d)
+        self.wxDestVal.SetLabel('{:.3f}'.format(d))
 
         # should be enough !
         wx.SetCursor(wx.STANDARD_CURSOR)

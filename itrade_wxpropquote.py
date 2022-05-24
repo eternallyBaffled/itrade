@@ -264,7 +264,7 @@ class iTradeQuotePropertiesPanel(wx.Panel):
             file = os.path.join(dirname, filename)
 
             if itrade_config.verbose:
-                print('Import file %s for quote %s' % (file, self.m_quote.key()))
+                print('Import file {} for quote {}'.format(file, self.m_quote.key()))
 
             # clear everything
             self.m_quote.flushTrades()
@@ -435,7 +435,7 @@ class iTradeQuotePropertyWindow(wx.Frame):
         self.Fit()
 
     def setTitle(self):
-        self.SetTitle("%s %s - %s" % (message('quote_title'), self.m_quote.ticker(), self.m_quote.market()))
+        self.SetTitle(u"{} {} - {}".format(message('quote_title'), self.m_quote.ticker(), self.m_quote.market()))
 
     def OnDestroy(self, evt):
         if self.m_parent and (self.GetId() == evt.GetId()):
@@ -445,13 +445,14 @@ class iTradeQuotePropertyWindow(wx.Frame):
         if not nquote:
             nquote = select_iTradeQuote(self, self.m_quote, filter=True, market=None, filterEnabled=False)
         if nquote and nquote != self.m_quote:
-            info('SelectQuote: %s - %s' % (nquote.ticker(), nquote.key()))
+            info('SelectQuote: {} - {}'.format(nquote.ticker(), nquote.key()))
             self.m_quote = nquote
             self.m_propwindow.Destroy()
             self.m_propwindow = iTradeQuotePropertiesPanel(self, wx.ID_ANY, self.m_quote, self.m_parent)
 
     def OnExit(self, event):
         self.Close()
+
 
 class iTradeQuotePropertyDialog(wx.Dialog):
     def __init__(self, parent, quote):
@@ -464,7 +465,7 @@ class iTradeQuotePropertyDialog(wx.Dialog):
         self.m_parent = parent
 
         # post-init
-        pre.Create(parent, -1, "%s %s - %s" % (message('quote_title'), self.m_quote.ticker(), self.m_quote.market()), size=(560, 370))
+        pre.Create(parent, -1, "{} {} - {}".format(message('quote_title'), self.m_quote.ticker(), self.m_quote.market()), size=(560, 370))
         self.PostCreate(pre)
 
         sizer = wx.BoxSizer(wx.VERTICAL)

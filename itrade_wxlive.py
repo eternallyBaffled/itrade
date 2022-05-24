@@ -143,10 +143,10 @@ class iTrade_wxLiveMixin(object):
                     t.Start()
             else:
                 if itrade_config.verbose:
-                    print('wxLiveMixin::startLive : %s UNKNOWN KEY' % key)
+                    print('wxLiveMixin::startLive : {} UNKNOWN KEY'.format(key))
         else:
             # if itrade_config.verbose:
-            #    print('wxLiveMixin::startLive : %d threads' % len(self.m_threads.values()))
+            #    print('wxLiveMixin::startLive : {:d} threads'.format(len(self.m_threads.values())))
             # start live for all registered quotes
             for t in self.m_threads.values():
                 if not t.IsRunning():
@@ -171,10 +171,10 @@ class iTrade_wxLiveMixin(object):
                     t.Stop()
             else:
                 if itrade_config.verbose:
-                    print('wxLiveMixin::stopLive : %s UNKNOWN KEY' % key)
+                    print('wxLiveMixin::stopLive : {} UNKNOWN KEY'.format(key))
         else:
             # if itrade_config.verbose:
-            #    print('wxLiveMixin::stopLive : %d threads ---[' % len(self.m_threads.values()))
+            #    print('wxLiveMixin::stopLive : {:d} threads ---['.format(len(self.m_threads.values())))
             if len(self.m_threads.values()):
                 # stop live for all registered quotes
                 if bBusy:
@@ -278,10 +278,10 @@ class iTrade_wxLiveCurrencyMixin(object):
                     t.Start()
             else:
                 if itrade_config.verbose:
-                    print('startLive Currency : %s UNKNOWN KEY' % key)
+                    print('startLive Currency : {} UNKNOWN KEY'.format(key))
         else:
             # if itrade_config.verbose:
-            #    print('startLive Currency : %d threads' % len(self.m_threads.values()))
+            #    print('startLive Currency : {:d} threads'.format(len(self.m_threads.values())))
 
             # start live for all registered currencies
             for t in self.m_threads.values():
@@ -305,10 +305,10 @@ class iTrade_wxLiveCurrencyMixin(object):
                     t.Stop()
             else:
                 if itrade_config.verbose:
-                    print('stopLive Currency : %s UNKNOWN KEY' % key)
+                    print('stopLive Currency : {} UNKNOWN KEY'.format(key))
         else:
             # if itrade_config.verbose:
-            #    print('stopLive Currency : %d threads ---[' % len(self.m_threads.values()))
+            #    print('stopLive Currency : {:d} threads ---['.format(len(self.m_threads.values())))
 
             if len(self.m_threads.values()):
                 # stop live for all registered currencies
@@ -443,14 +443,14 @@ class iTrade_wxLive(wx.Panel):
             bg = cNEUTRAL
         ref.SetBackgroundColour(bg)
         ref.ClearBackground()
-        if nvalue==0:
+        if nvalue == 0:
             ref.SetLabel("-")
         else:
-            ref.SetLabel("%d" % nvalue)
+            ref.SetLabel("{:d}".format(nvalue))
         return bg
 
-    def cells(self,ref,svalue):
-        if ref.GetLabel()==svalue:
+    def cells(self, ref, svalue):
+        if ref.GetLabel() == svalue:
             bg = wx.NullColour
         else:
             bg = cNEUTRAL
@@ -558,9 +558,9 @@ class iTrade_wxLive(wx.Panel):
                 if bg==wx.NullColour:
                     bg = self.cells(self.hourlt[i],trade[0])
                 else:
-                    self.setcell(self.hourlt[i],trade[0],bg)
-                self.setcell(self.pricelt[i],trade[2],bg)
-                self.setcell(self.qtelt[i],"%d"%trade[1],bg)
+                    self.setcell(self.hourlt[i], trade[0], bg)
+                self.setcell(self.pricelt[i], trade[2], bg)
+                self.setcell(self.qtelt[i], "{:d}".format(trade[1], bg))
                 i = i + 1
 
             for i in range(i,LTLINES):
@@ -572,7 +572,7 @@ class iTrade_wxLive(wx.Panel):
         ssi = 0
         for trade in lt:
             if trade[0]==self.hourlt[ssi].GetLabel():
-                if ("%d"%trade[1])==self.qtelt[ssi].GetLabel():
+                if ("{:d}".format(trade[1]))==self.qtelt[ssi].GetLabel():
                     if trade[2]==self.pricelt[ssi].GetLabel():
                         return ssi
             ssi = ssi + 1

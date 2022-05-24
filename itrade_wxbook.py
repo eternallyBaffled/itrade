@@ -410,7 +410,7 @@ class iTradeMainNotebookWindow(wx.Notebook):
         old = event.GetOldSelection()
         new = event.GetSelection()
         sel = self.GetSelection()
-        info('OnPageChanged,  old:%d, new:%d, sel:%d\n' % (old, new, sel))
+        info('OnPageChanged,  old:{:d}, new:{:d}, sel:{:d}\n'.format(old, new, sel))
         if old != new:
             if old >= 0:
                 self.win[old].DoneCurrentPage()
@@ -423,7 +423,7 @@ class iTradeMainNotebookWindow(wx.Notebook):
         old = event.GetOldSelection()
         new = event.GetSelection()
         sel = self.GetSelection()
-        info('OnPageChanging, old:%d, new:%d, sel:%d\n' % (old, new, sel))
+        info('OnPageChanging, old:{:d}, new:{:d}, sel:{:d}\n'.format(old, new, sel))
         event.Skip()
 
     def OnRefresh(self, event):
@@ -690,7 +690,7 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
         # called by a child (toolbar button, property window, ...)
         if itrade_config.verbose:
             print()
-            print('MainWindow::OnRefresh event=%s' % event)
+            print('MainWindow::OnRefresh event={}'.format(event))
 
         # to force a refresh of the book
         self.m_book.OnRefresh(event)
@@ -973,17 +973,17 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
 
     def OnGraphQuote(self, e):
         if self.currentItem()>=0:
-            debug("OnGraphQuote: %s" % self.currentItemText())
+            debug("OnGraphQuote: {}".format(self.currentItemText()))
             self.openCurrentQuote(page=0)
 
     def OnLiveQuote(self, e):
         if self.currentItem()>=0:
-            debug("OnLiveQuote: %s" % self.currentItemText())
+            debug("OnLiveQuote: {}".format(self.currentItemText()))
             self.openCurrentQuote(page=1)
 
     def OnPropertyQuote(self, e):
         if self.currentItem()>=0:
-            debug("OnPropertyQuote: %s" % self.currentItemText())
+            debug("OnPropertyQuote: {}".format(self.currentItemText()))
             self.openCurrentQuote(page=6)
 
     # --- [ Save any persistant data ] ----------------------------------------
@@ -1252,10 +1252,10 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
                     #    print 'initIndice: indice %s use connector %s' % (indice,self.m_connector)
                 else:
                     if itrade_config.verbose:
-                        print('initIndice: indice %s not found' % indice)
+                        print('initIndice: indice {} not found'.format(indice))
             else:
                 if itrade_config.verbose:
-                    print('initIndice: indice %s not found' % indice)
+                    print('initIndice: indice {} not found'.format(indice))
                 self.m_indice = None
         else:
             if itrade_config.verbose:
