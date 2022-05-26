@@ -68,21 +68,21 @@ def splitLines(buf):
     return lines
 
 
-def Import_ListOfQuotes_MIL(quotes,market='MILAN EXCHANGE',dlg=None,x=0):
+def Import_ListOfQuotes_MIL(quotes,market='MILAN EXCHANGE', dlg=None, x=0):
     if itrade_config.verbose:
-        print('Update %s list of symbols' % market)
-    connection = ITradeConnection(cookies = None,
-                               proxy = itrade_config.proxyHostname,
-                               proxyAuth = itrade_config.proxyAuthentication,
-                               connectionTimeout = itrade_config.connectionTimeout
+        print(u'Update {} list of symbols'.format(market))
+    connection = ITradeConnection(cookies=None,
+                               proxy=itrade_config.proxyHostname,
+                               proxyAuth=itrade_config.proxyAuthentication,
+                               connectionTimeout=itrade_config.connectionTimeout
                                )
 
-    if market=='MILAN EXCHANGE':
-        url = "https://www.borsaitaliana.it/bitApp/listino?main_list=1&sub_list=1&service=Results&search=nome&lang=it&target=null&nome="
+    if market == 'MILAN EXCHANGE':
+        url = u"https://www.borsaitaliana.it/bitApp/listino?main_list=1&sub_list=1&service=Results&search=nome&lang=it&target=null&nome="
     else:
         return False
 
-    info('Import_ListOfQuotes_%s:connect to %s' % (market,url))
+    info(u'Import_ListOfQuotes_{}:connect to {}'.format(market, url))
 
     req = urllib2.Request(url)
     req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
@@ -91,7 +91,7 @@ def Import_ListOfQuotes_MIL(quotes,market='MILAN EXCHANGE',dlg=None,x=0):
         with closing(urllib2.urlopen(req)) as f:
             data = f.read()
     except Exception:
-        info('Import_ListOfQuotes_%s:unable to connect :-(' % market)
+        info(u'Import_ListOfQuotes_{}:unable to connect :-('.format(market))
         return False
 
     # returns the data
@@ -109,7 +109,7 @@ def Import_ListOfQuotes_MIL(quotes,market='MILAN EXCHANGE',dlg=None,x=0):
                 with closing(urllib2.urlopen(req)) as f:
                     datas = f.read()
             except Exception:
-                info('Import_ListOfQuotes_ISIN_TICKER_NAME_%s:unable to connect :-(' % market)
+                info(u'Import_ListOfQuotes_ISIN_TICKER_NAME_{}:unable to connect :-('.format(market))
                 return False
 
             finaldatas = splitLines(datas)
@@ -122,20 +122,20 @@ def Import_ListOfQuotes_MIL(quotes,market='MILAN EXCHANGE',dlg=None,x=0):
                     ticker = nline[nline.index('"right">')+8:nline.index('</td></tr>')]
 
                     n = n + 1
-                    dlg.Update(x,'BORSA ITALIANA : %d /~350'%n)
+                    dlg.Update(x, u'BORSA ITALIANA : {:d} /~350'.format(n))
 
                     quotes.addQuote(isin=isin, name=name,
                         ticker=ticker, market=market,
                         currency='EUR', place='MIL', country='IT')
     if itrade_config.verbose:
-        print('Imported %d lines from %s data.' % (n,market))
+        print(u'Imported {:d} lines from {} data.'.format(n, market))
 
     return True
 
 # ============================================================================
 # Export me
 # ============================================================================
-gListSymbolRegistry.register('MILAN EXCHANGE','MIL',QList.any,QTag.list,Import_ListOfQuotes_MIL)
+gListSymbolRegistry.register('MILAN EXCHANGE', 'MIL', QList.any, QTag.list, Import_ListOfQuotes_MIL)
 # ============================================================================
 # Test ME
 # ============================================================================
@@ -144,7 +144,7 @@ if __name__ == '__main__':
     setLevel(logging.INFO)
 
     from itrade_quotes import quotes
-    Import_ListOfQuotes_MIL(quotes,'MILAN EXCHANGE')
+    Import_ListOfQuotes_MIL(quotes, 'MILAN EXCHANGE')
     quotes.saveListOfQuotes()
 
 # ============================================================================

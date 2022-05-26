@@ -110,27 +110,27 @@ class Import_yahoo(object):
         d1 = self.parseDate(datedebut)
         d2 = self.parseDate(datefin)
 
-        debug("Import_yahoo:getdata quote:%s begin:%s end:%s" % (quote,d1,d2))
+        debug(u"Import_yahoo:getdata quote:{} begin:{} end:{}".format(quote, d1, d2))
 
-        sname = yahooTicker(quote.ticker(),quote.market(),quote.place())
+        sname = yahooTicker(quote.ticker(), quote.market(), quote.place())
 
-        if sname[0]=='^':
+        if sname[0] == '^':
             ss = "%5E" + sname[1:]
         else:
             ss = sname
         query = (
             ('s', ss),
-            ('a', '%02d' % (int(d1[1])-1)),
+            ('a', u'{:02d}'.format(int(d1[1])-1)),
             ('b', d1[2]),
             ('c', d1[0]),
-            ('d', '%02d' % (int(d2[1])-1)),
+            ('d', u'{:02d}'.format(int(d2[1])-1)),
             ('e', d2[2]),
             ('f', d2[0]),
             ('y', '0'),
             ('g', 'd'),
             ('ignore', '.csv'),
         )
-        query = map(lambda var_val: '%s=%s' % (var_val[0], str(var_val[1])), query)
+        query = map(lambda var_val: u'{}={}'.format(var_val[0], str(var_val[1])), query)
         query = string.join(query, '&')
         url = yahooUrl(quote.market(),live=False) + '?' + query
 
@@ -180,7 +180,7 @@ class Import_yahoo(object):
                        value,
                        volume
                     )
-                    line = map(lambda val: '%s' % str(val), line)
+                    line = map(lambda val: u'{}'.format(str(val)), line)
                     line = string.join(line, ';')
                     # append
                     data = data + line + '\r\n'
@@ -305,7 +305,7 @@ def test(ticker,d):
 
         state = gImportYahoo.getstate()
         if state:
-            debug("state=%s" % state)
+            debug(u"state={}".format(state))
 
             quote = quotes.lookupTicker(ticker,'NASDAQ')
             data = gImportYahoo.getdata(quote,d)

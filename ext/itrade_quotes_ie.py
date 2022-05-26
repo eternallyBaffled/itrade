@@ -67,16 +67,16 @@ def splitLines(buf):
     return lines
 
 
-def Import_ListOfQuotes_IE(quotes,market='IRISH EXCHANGE',dlg=None,x=0):
+def Import_ListOfQuotes_IE(quotes, market='IRISH EXCHANGE', dlg=None, x=0):
     if itrade_config.verbose:
-        print('Update %s list of symbols' % market)
-    connection = ITradeConnection(cookies = None,
-                               proxy = itrade_config.proxyHostname,
-                               proxyAuth = itrade_config.proxyAuthentication,
-                               connectionTimeout = itrade_config.connectionTimeout
+        print(u'Update {} list of symbols'.format(market))
+    connection = ITradeConnection(cookies=None,
+                               proxy=itrade_config.proxyHostname,
+                               proxyAuth=itrade_config.proxyAuthentication,
+                               connectionTimeout=itrade_config.connectionTimeout
                                )
 
-    if market=='IRISH EXCHANGE':
+    if market == 'IRISH EXCHANGE':
         url = "https://www.ise.ie/Prices,-Indices-Stats/Equity-Market-Data/Instrument-Identifiers/?list=full&type=SEDOL&exportTo=text"
     else:
         return False
@@ -141,7 +141,7 @@ def Import_ListOfQuotes_IE(quotes,market='IRISH EXCHANGE',dlg=None,x=0):
                     tick = ''
                     nlines = nlines + 1
     if itrade_config.verbose:
-        print('Imported %d/%d lines from IRISH EXCHANGE data.' % (count,nlines))
+        print(u'Imported {:d}/{:d} lines from IRISH EXCHANGE data.'.format(count, nlines))
 
     return True
 
@@ -149,7 +149,7 @@ def Import_ListOfQuotes_IE(quotes,market='IRISH EXCHANGE',dlg=None,x=0):
 # Export me
 # ============================================================================
 
-gListSymbolRegistry.register('IRISH EXCHANGE','DUB',QList.any,QTag.list,Import_ListOfQuotes_IE)
+gListSymbolRegistry.register('IRISH EXCHANGE', 'DUB', QList.any, QTag.list, Import_ListOfQuotes_IE)
 
 # ============================================================================
 # Test ME
@@ -160,7 +160,7 @@ if __name__ == '__main__':
 
     from itrade_quotes import quotes
 
-    Import_ListOfQuotes_IE(quotes,'IRISH EXCHANGE')
+    Import_ListOfQuotes_IE(quotes, 'IRISH EXCHANGE')
     quotes.saveListOfQuotes()
 
 # ============================================================================

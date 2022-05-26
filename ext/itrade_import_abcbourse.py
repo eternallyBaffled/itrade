@@ -106,7 +106,7 @@ class Import_ABCBourse(object):
             debug('Import_ABCBourse:GET failure')
             return None
 
-        debug("status:%s reason:%s" %(response.status, response.reason))
+        debug(u"status:{} reason:{}".format(response.status, response.reason))
         if response.status != 200:
             debug('Import_ABCBourse:status!=200')
             return None
@@ -144,7 +144,7 @@ class Import_ABCBourse(object):
         if isinstance(datefin,Datation):
             datefin = datefin.date()
 
-        debug("Import_ABCBourse:getdata quote:%s begin:%s end:%s" % (quote,datedebut,datefin))
+        debug(u"Import_ABCBourse:getdata quote:{} begin:{} end:{}".format(quote, datedebut, datefin))
 
         # init params and headers
         params = urlencode({'__VIEWSTATE': self.m_viewstate, 'dayDeb': datedebut.day, 'monthDeb': datedebut.month, 'yearDeb': datedebut.year, 'dayFin': datefin.day, 'monthFin': datefin.month, 'yearFin': datefin.year, 'OneSico': 'on', 'txtOneSico': quote.isin(), 'dlFormat': 'e', 'listFormat': 'isin', 'ImageButton1.x': 25, 'ImageButton1.y': 10 })
@@ -159,7 +159,7 @@ class Import_ABCBourse(object):
             debug('Import_ABCBourse:POST failure')
             return None
 
-        debug("status:%s reason:%s" %(response.status, response.reason))
+        debug(u"status:{} reason:{}".format(response.status, response.reason))
         if response.status != 200:
             debug('Import_ABCBourse:status!=200')
             return None
@@ -199,7 +199,7 @@ def test(ticker,d):
 
         state = gImportABC.getstate()
         if state:
-            debug("state=%s" % state)
+            debug(u"state={}".format(state))
 
             quote = quotes.lookupTicker(ticker,'EURONEXT')
             data = gImportABC.getdata(quote,d)

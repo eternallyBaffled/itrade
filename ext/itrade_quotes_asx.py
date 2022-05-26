@@ -55,15 +55,16 @@ from itrade_connection import ITradeConnection
 #
 # ============================================================================
 
-def Import_ListOfQuotes_ASX(quotes,market='ASX',dlg=None,x=0):
-    print('Update %s list of symbols' % market)
-    connection = ITradeConnection(cookies = None,
-                               proxy = itrade_config.proxyHostname,
-                               proxyAuth = itrade_config.proxyAuthentication,
-                               connectionTimeout = itrade_config.connectionTimeout
+
+def Import_ListOfQuotes_ASX(quotes, market='ASX', dlg=None, x=0):
+    print(u'Update {} list of symbols'.format(market))
+    connection = ITradeConnection(cookies=None,
+                               proxy=itrade_config.proxyHostname,
+                               proxyAuth=itrade_config.proxyAuthentication,
+                               connectionTimeout=itrade_config.connectionTimeout
                                )
 
-    if market=='ASX':
+    if market == 'ASX':
         url = "https://www.asx.com.au/asx/research/ASXListedCompanies.csv"
         n = 0
     else:
@@ -72,15 +73,16 @@ def Import_ListOfQuotes_ASX(quotes,market='ASX',dlg=None,x=0):
     def splitLines(buf):
         lines = string.split(buf, '\n')
         lines = filter(lambda x:x, lines)
+
         def removeCarriage(s):
-            if s[-1]=='\r':
+            if s[-1] == '\r':
                 return s[:-1]
             else:
                 return s
         lines = [removeCarriage(l) for l in lines]
         return lines
     try:
-        data=connection.getDataFromUrl(url)
+        data = connection.getDataFromUrl(url)
     except Exception:
         debug('Import_ListOfQuotes_ASX:unable to connect :-(')
         return False
@@ -99,7 +101,7 @@ def Import_ListOfQuotes_ASX(quotes,market='ASX',dlg=None,x=0):
         n = n + 1
 
     if itrade_config.verbose:
-        print('Imported %d lines from %s data.' % (n,market))
+        print(u'Imported {:d} lines from {} data.'.format(n, market))
 
     return True
 # ============================================================================

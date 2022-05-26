@@ -68,27 +68,27 @@ def splitLines(buf):
     return lines
 
 
-def Import_ListOfQuotes_LSE(quotes,market='LSE SETS',dlg=None,x=0):
+def Import_ListOfQuotes_LSE(quotes, market='LSE SETS', dlg=None, x=0):
     if itrade_config.verbose:
-        print('Update %s list of symbols' % market)
-    connection = ITradeConnection(cookies = None,
-                               proxy = itrade_config.proxyHostname,
-                               proxyAuth = itrade_config.proxyAuthentication,
-                               connectionTimeout = itrade_config.connectionTimeout
+        print(u'Update {} list of symbols'.format(market))
+    connection = ITradeConnection(cookies=None,
+                               proxy=itrade_config.proxyHostname,
+                               proxyAuth=itrade_config.proxyAuthentication,
+                               connectionTimeout=itrade_config.connectionTimeout
                                )
 
     import xlrd
 
-    if market=='LSE SETS':
+    if market == 'LSE SETS':
         url = 'https://www.londonstockexchange.com/products-and-services/trading-services/sets/list-sets.xls'
-    elif market=='LSE SETSqx':
+    elif market == 'LSE SETSqx':
         url = 'https://www.londonstockexchange.com/products-and-services/trading-services/setsqx/ccp-securities.xls'
-    elif market=='LSE SEAQ':
+    elif market == 'LSE SEAQ':
         url = 'https://www.londonstockexchange.com/products-and-services/trading-services/seaq/list-seaq.xls'
     else:
         return False
 
-    info('Import_ListOfQuotes_LSE_%s:connect to %s' % (market,url))
+    info(u'Import_ListOfQuotes_LSE_{}:connect to {}'.format(market, url))
     req = urllib2.Request(url)
     req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
 
@@ -96,28 +96,28 @@ def Import_ListOfQuotes_LSE(quotes,market='LSE SETS',dlg=None,x=0):
         with closing(urllib2.urlopen(req)) as f:
             data = f.read()
     except Exception:
-        info('Import_ListOfQuotes_LSE_%s:unable to connect :-(' % market)
+        info(u'Import_ListOfQuotes_LSE_{}:unable to connect :-('.format(market))
         return False
 
     # returns the data
-    book = itrade_excel.open_excel(file=None,content=data)
+    book = itrade_excel.open_excel(file=None, content=data)
     sh = book.sheet_by_index(0)
     n = 0
     indice = {}
 
-    #print 'Import_ListOfQuotes_LSE_%s:' % market,'book',book,'sheet',sh,'nrows=',sh.nrows
+    #print u'Import_ListOfQuotes_LSE_{}:'.format(market), 'book', book, 'sheet', sh, 'nrows=', sh.nrows
 
     for line in range(sh.nrows):
-        if sh.cell_type(line,1) != xlrd.XL_CELL_EMPTY:
-            if n==0:
+        if sh.cell_type(line, 1) != xlrd.XL_CELL_EMPTY:
+            if n == 0:
                 for i in range(sh.ncols):
                     val = sh.cell_value(line,i)
                     indice[val] = i
 
                     # be sure we have detected the title
-                    if val=='ISIN': n = n + 1
+                    if val == 'ISIN': n = n + 1
 
-                if n==1:
+                if n == 1:
                     #if itrade_config.verbose: print 'Indice:',indice
 
                     iISIN = indice['ISIN']
@@ -126,22 +126,22 @@ def Import_ListOfQuotes_LSE(quotes,market='LSE SETS',dlg=None,x=0):
                     iCountry = indice['Country of Register']
                     iTicker = indice['Mnemonic']
             else:
-                ticker = sh.cell_value(line,iTicker)
-                if type(ticker)==float: ticker='%s' % ticker
-                if ticker[-1:]=='.':
+                ticker = sh.cell_value(line, iTicker)
+                if type(ticker) == float: ticker = u'{}'.format(ticker)
+                if ticker[-1:] == '.':
                     ticker = ticker[:-1]
 
-                name = sh.cell_value(line,iName).replace(',',' ')
+                name = sh.cell_value(line, iName).replace(',', ' ')
                 name = name.encode('cp1252')
                 name = name.replace('£',' ')
                 name = name.replace('  ','')
-                quotes.addQuote(isin=sh.cell_value(line,iISIN),name=name,
-                    ticker=ticker,market=market,
-                    currency=sh.cell_value(line,iCurrency),place='LON',
+                quotes.addQuote(isin=sh.cell_value(line, iISIN), name=name,
+                    ticker=ticker, market=market,
+                    currency=sh.cell_value(line,iCurrency), place='LON',
                     country=sh.cell_value(line,iCountry))
                 n = n + 1
     if itrade_config.verbose:
-        print('Imported %d/%d lines from %s' % (n,sh.nrows,market))
+        print(u'Imported {:d}/{:d} lines from {}'.format(n, sh.nrows, market))
 
     return True
 

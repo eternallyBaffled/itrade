@@ -67,15 +67,15 @@ def splitLines(buf):
     return lines
 
 
-def Import_ListOfQuotes_NZE(quotes,market='NEW ZEALAND EXCHANGE',dlg=None,x=0):
+def Import_ListOfQuotes_NZE(quotes, market='NEW ZEALAND EXCHANGE', dlg=None, x=0):
     if itrade_config.verbose:
-        print('Update %s list of symbols' % market)
+        print(u'Update {} list of symbols'.format(market))
     connection=ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
 
-    if market=='NEW ZEALAND EXCHANGE':
-        url = 'https://www.findata.co.nz/Markets/NZX/%s.htm'
+    if market == 'NEW ZEALAND EXCHANGE':
+        url = u'https://www.findata.co.nz/Markets/NZX/{}.htm'
     else:
         return False
 
@@ -85,12 +85,11 @@ def Import_ListOfQuotes_NZE(quotes,market='NEW ZEALAND EXCHANGE',dlg=None,x=0):
     isin = ''
 
     for letter in select_alpha:
-
         if dlg:
-            dlg.Update(x,"    NZX   :  %s  to  Z"%letter)
+            dlg.Update(x, u"    NZX   :  {}  to  Z".format(letter))
 
         try:
-            data=connection.getDataFromUrl(url%letter)
+            data = connection.getDataFromUrl(url.format(letter))
         except Exception:
             debug('Import_ListOfQuotes_NZE unable to connect :-(')
             return False
@@ -110,10 +109,10 @@ def Import_ListOfQuotes_NZE(quotes,market='NEW ZEALAND EXCHANGE',dlg=None,x=0):
                         count = count + 1
 
                         # ok to proceed
-                        quotes.addQuote(isin=isin,name=name,
-                                ticker=ticker,market='NEW ZEALAND EXCHANGE',currency='NZD',place='NZE',country='NZ')
+                        quotes.addQuote(isin=isin, name=name,
+                                ticker=ticker, market='NEW ZEALAND EXCHANGE', currency='NZD', place='NZE', country='NZ')
     if itrade_config.verbose:
-        print('Imported %d lines from NEW ZEALAND EXCHANGE' % count)
+        print(u'Imported {:d} lines from NEW ZEALAND EXCHANGE'.format(count))
 
     return True
 
@@ -121,7 +120,7 @@ def Import_ListOfQuotes_NZE(quotes,market='NEW ZEALAND EXCHANGE',dlg=None,x=0):
 # Export me
 # ============================================================================
 
-gListSymbolRegistry.register('NEW ZEALAND EXCHANGE','NZE',QList.any,QTag.list,Import_ListOfQuotes_NZE)
+gListSymbolRegistry.register('NEW ZEALAND EXCHANGE', 'NZE', QList.any, QTag.list, Import_ListOfQuotes_NZE)
 
 # ============================================================================
 # Test ME
@@ -132,7 +131,7 @@ if __name__ == '__main__':
 
     from itrade_quotes import quotes
 
-    Import_ListOfQuotes_NZE(quotes,'NEW ZEALAND EXCHANGE')
+    Import_ListOfQuotes_NZE(quotes, 'NEW ZEALAND EXCHANGE')
     quotes.saveListOfQuotes()
 
 # ============================================================================

@@ -59,30 +59,30 @@ from itrade_wxhtml import wxUrlClickHtmlWindow, EVT_HTML_URL_CLICK
 # about_html
 # ============================================================================
 
-about_html = '''
+about_html = u'''
 <html>
 <body bgcolor="#C5C1C4">
 <center>
-<table cellpadding="5" bgcolor="#FFFFFF" width="100%%">
+<table cellpadding="5" bgcolor="#FFFFFF" width="100%">
   <tr>
     <td align="center">
-      <br><img src="%s"><br>
+      <br><img src="{}"><br>
       <font color="#006600" size="+4"><b>iTrade</b></font><br>
-      <strong>%s %s - %s</strong>
-      %s
+      <strong>{} {} - {}</strong>
+      {}
     </td>
   </tr>
 </table>
-%s
+{}
 </body>
 </html>
 '''
 
-about_text = '''
+about_text = u'''
 <p>Trading and Charting software written in <b>Python</b> and <b>wxPython</b>
 </p>
-<p><a href="iTrade">%s</a><br><br>
-<b>&copy; %s</b> and <a href="Authors">Authors</a> (<a href="Mail">dgil@ieee.org</a>)<br><br>
+<p><a href="iTrade">{}</a><br><br>
+<b>&copy; {}</b> and <a href="Authors">Authors</a> (<a href="Mail">dgil@ieee.org</a>)<br><br>
 <a href="Credits">Credits</a>
 </p>
 
@@ -92,7 +92,7 @@ sit back and enjoy.  Be sure to take a peek at the source code for each
 demo item so you can learn how to help us on this project.
 </p>
 <p>
-<font size="-1"><b>iTrade</b> is published under the terms of the %s license.
+<font size="-1"><b>iTrade</b> is published under the terms of the {} license.
 Please see <i><a href="LICENSE">LICENSE</a></i> file for more information.</font>
 </p>
 
@@ -146,18 +146,18 @@ credits_html = '''
 # license_html
 # ============================================================================
 
-license_html = '''
+license_html = u'''
 <html>
 <body bgcolor="#4488FF">
 <center>
-<table bgcolor="#FFFFFF" width="100%%">
+<table bgcolor="#FFFFFF" width="100%">
   <tr>
     <td align="left">
       <p>
       <a href="Back">Back</a>
         <br><br>
       <font size="-2">
-               %s
+               {}
       </font>
       <p>
       <a href="Back">Back</a><br>

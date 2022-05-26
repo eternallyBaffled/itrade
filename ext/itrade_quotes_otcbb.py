@@ -66,15 +66,15 @@ def splitLines(buf):
     return lines
 
 
-def Import_ListOfQuotes_OTCBB(quotes,market='OTCBB',dlg=None,x=0):
+def Import_ListOfQuotes_OTCBB(quotes, market='OTCBB', dlg=None, x=0):
     if itrade_config.verbose:
-        print('Update %s list of symbols' % market)
-    connection = ITradeConnection(cookies = None,
-                               proxy = itrade_config.proxyHostname,
-                               proxyAuth = itrade_config.proxyAuthentication,
-                               connectionTimeout = itrade_config.connectionTimeout
+        print(u'Update {} list of symbols'.format(market))
+    connection = ITradeConnection(cookies=None,
+                               proxy=itrade_config.proxyHostname,
+                               proxyAuth=itrade_config.proxyAuthentication,
+                               connectionTimeout=itrade_config.connectionTimeout
                                )
-    if market=='OTCBB':
+    if market == 'OTCBB':
         url = 'https://www.otcbb.com/dynamic/tradingdata/download/allotcbb.txt'
     else:
         return False
@@ -100,7 +100,7 @@ def Import_ListOfQuotes_OTCBB(quotes,market='OTCBB',dlg=None,x=0):
                 ticker = data[0]
                 quotes.addQuote(isin=isin,name=name,ticker=ticker,market='OTCBB',currency='USD',place='NYC',country='US')
     if itrade_config.verbose:
-        print('Imported %d lines from OTCBB data.' % count)
+        print(u'Imported {:d} lines from OTCBB data.'.format(count))
 
     return True
 

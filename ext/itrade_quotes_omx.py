@@ -70,7 +70,7 @@ def splitLines(buf):
 
 def Import_ListOfQuotes_OMX(quotes,market='STOCKHOLM EXCHANGE',dlg=None,x=0):
     if itrade_config.verbose:
-        print('Update %s list of symbols' % market)
+        print(u'Update {} list of symbols'.format(market))
     connection=ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
@@ -82,14 +82,14 @@ def Import_ListOfQuotes_OMX(quotes,market='STOCKHOLM EXCHANGE',dlg=None,x=0):
     try:
         url = connection.getDataFromUrl('https://www.nasdaqomxnordic.com/shares?languadeID=1')
     except Exception:
-        info('Import_ListOfQuotes_OMX_%s:unable to get XLS file name :-(' % market)
+        info(u'Import_ListOfQuotes_OMX_{}:unable to get XLS file name :-('.format(market))
         return False
 
     if url.find(ch):
         a = url.find(ch)+len(ch)
         endurl = url[a:url.index('"',a)]
     else:
-        info('Import_ListOfQuotes_OMX_%s:unable to parse XLS file name :-(' % market)
+        info(u'Import_ListOfQuotes_OMX_{}:unable to parse XLS file name :-('.format(market))
         return False
 
     url = "https://www.nasdaqomxnordic.com/digitalAssets/" + endurl
@@ -103,16 +103,16 @@ def Import_ListOfQuotes_OMX(quotes,market='STOCKHOLM EXCHANGE',dlg=None,x=0):
     else:
         return False
 
-    info('Import_ListOfQuotes_OMX_%s:connect to %s' % (market,url))
+    info(u'Import_ListOfQuotes_OMX_{}:connect to {}'.format(market, url))
 
     try:
         data = connection.getDataFromUrl(url)
     except Exception:
-        info('Import_ListOfQuotes_OMX_%s:unable to connect :-(' % market)
+        info(u'Import_ListOfQuotes_OMX_{}:unable to connect :-('.format(market))
         return False
 
     # returns the data
-    book = itrade_excel.open_excel(file=None,content=data)
+    book = itrade_excel.open_excel(file=None, content=data)
     sh = book.sheet_by_index(1)
     n = 0
     indice = {}
@@ -144,7 +144,7 @@ def Import_ListOfQuotes_OMX(quotes,market='STOCKHOLM EXCHANGE',dlg=None,x=0):
                     isin=sh.cell_value(line,iISIN)
 
                     ticker = sh.cell_value(line,iTicker)
-                    if type(ticker)==float: ticker='%s' % ticker
+                    if type(ticker)==float: ticker = u'{}'.format(ticker)
                     ticker=ticker.replace(' ','-')
 
                     name = sh.cell_value(line,0)
@@ -174,7 +174,7 @@ def Import_ListOfQuotes_OMX(quotes,market='STOCKHOLM EXCHANGE',dlg=None,x=0):
 
                     n = n + 1
     if itrade_config.verbose:
-        print('Imported %d/%d lines from %s' % (n-1,sh.nrows,market))
+        print(u'Imported {:d}/{:d} lines from {}'.format(n-1, sh.nrows, market))
 
     return True
 

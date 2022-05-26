@@ -56,17 +56,17 @@ from itrade_connection import ITradeConnection
 # ============================================================================
 
 
-def Import_ListOfQuotes_BARCHART(quotes,market='TOTRONTO EXCHANGE',dlg=None,x=0):
+def Import_ListOfQuotes_BARCHART(quotes, market='TOTRONTO EXCHANGE', dlg=None, x=0):
     if itrade_config.verbose:
-        print('Update %s list of symbols' % market)
-    connection = ITradeConnection(cookies = None,
-                               proxy = itrade_config.proxyHostname,
-                               proxyAuth = itrade_config.proxyAuthentication,
-                               connectionTimeout = itrade_config.connectionTimeout
+        print(u'Update {} list of symbols'.format(market))
+    connection = ITradeConnection(cookies=None,
+                               proxy=itrade_config.proxyHostname,
+                               proxyAuth=itrade_config.proxyAuthentication,
+                               connectionTimeout=itrade_config.connectionTimeout
                                )
 
     if market=='TORONTO EXCHANGE' or market=='TORONTO VENTURE':
-        url = 'https://www.barchart.com/lookup.php?field=name&string=%s&search=begins&type[]=CAN&_dtp1=0'
+        url = u'https://www.barchart.com/lookup.php?field=name&string={}&search=begins&type[]=CAN&_dtp1=0'
 
         m_currency = 'CAD'
         m_place = 'TOR'
@@ -91,17 +91,16 @@ def Import_ListOfQuotes_BARCHART(quotes,market='TOTRONTO EXCHANGE',dlg=None,x=0)
 
     def import_letter(letter, dlg, x):
         if dlg:
-            dlg.Update(x,"%s:'%s'"%(market,letter))
-            #print x,"%s:'%s'"%(market,letter)
+            dlg.Update(x, u"{}:'{}'".format(market, letter))
 
         try:
-            req = urllib2.Request(url%letter)
+            req = urllib2.Request(url.format(letter))
             req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
 
             with closing(urllib2.urlopen(req)) as f:
                 data = f.read()
         except Exception:
-            print('Import_ListOfQuotes_BARCHART:unable to connect to',url%letter)
+            print('Import_ListOfQuotes_BARCHART:unable to connect to', url.format(letter))
             return False
 
             # returns the data
@@ -120,11 +119,11 @@ def Import_ListOfQuotes_BARCHART(quotes,market='TOTRONTO EXCHANGE',dlg=None,x=0)
                     name = name[name.index('">')+2:]
 
 
-                    quotes.addQuote(isin='',name=name,ticker=ticker,market=market,currency=m_currency,place=m_place,country=m_country)
+                    quotes.addQuote(isin='', name=name, ticker=ticker, market=market, currency=m_currency, place=m_place, country=m_country)
                     count = count + 1
 
         if itrade_config.verbose:
-            print('Imported %d lines from BARCHART(letter=%s)' % (count,letter))
+            print(u'Imported {:d} lines from BARCHART(letter={})'.format(count, letter))
 
     #import_letter('1',dlg,x-1)
     #import_letter('2',dlg,x)

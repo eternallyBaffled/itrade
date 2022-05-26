@@ -112,7 +112,7 @@ class ImportYahoojp(object):
         d1 = self.parseDate(datedebut)
         d2 = self.parseDate(datefin)
 
-        debug("ImportYahoojp:getdata quote:%s begin:%s end:%s" % (quote,d1,d2))
+        debug(u"ImportYahoojp:getdata quote:{} begin:{} end:{}".format(quote, d1, d2))
 
         sname = yahooTicker(quote.ticker(),quote.market(),quote.place())
 
@@ -122,10 +122,10 @@ class ImportYahoojp(object):
         lines = []
 
         for cursor in range(0,4650,50):
-            url = yahooUrlJapan(quote.market(),live=False) + '?' +'c=%s&a=%s&b=%s&f=%s&d=%s&e=%s&g=d&s=%s&y=%s&z=%s' % (d1[0],d1[1],d1[2],d2[0],d2[1],d2[2],ss,str(cursor),ss)
+            url = yahooUrlJapan(quote.market(),live=False) + '?' +u'c={}&a={}&b={}&f={}&d={}&e={}&g=d&s={}&y={}&z={}'.format(d1[0], d1[1], d1[2], d2[0], d2[1], d2[2], ss, str(cursor), ss)
             #url = 'http://table.yahoo.co.jp/t?s=%s&a=1&b=1&c=2000&d=%s&e=%s&f=%s&g=d&q=t&y=%s&z=/b?p=tjfzqcvy4.ewcf7pt&x=.csv' % (ss,d2[1],d2[2],d2[0],str(cursor))
 
-            debug("ImportYahoojp:getdata: url=%s ",url)
+            debug("ImportYahoojp:getdata: url=%s ", url)
             try:
                 buf = self.m_connection.getDataFromUrl(url)
             except Exception:
@@ -244,7 +244,7 @@ class ImportYahoojp(object):
                     value,
                     volume
                 )
-                line = map(lambda val: '%s' % str(val), line)
+                line = map(lambda val: str(val), line)
                 line = string.join(line, ';')
 
                 # append
@@ -272,10 +272,10 @@ def test(ticker,d):
 
         state = gImportYahoojp.getstate()
         if state:
-            debug("state=%s" % state)
+            debug(u"state={}".format(state))
 
-            quote = quotes.lookupTicker(ticker,'TOKYO EXCHANGE')
-            data = gImportYahoojp.getdata(quote,d)
+            quote = quotes.lookupTicker(ticker, 'TOKYO EXCHANGE')
+            data = gImportYahoojp.getdata(quote, d)
             if data is not None:
                 if data:
                     debug(data)
@@ -295,7 +295,7 @@ if __name__ == '__main__':
 
     # never failed - fixed date
     print("15/03/2005")
-    test('AAPL', date(2005,3,15))
+    test('AAPL', date(2005, 3, 15))
 
     # never failed except week-end
     print("yesterday-today :-(")

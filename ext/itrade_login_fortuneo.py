@@ -60,16 +60,17 @@ from itrade_local import message
 #
 # ============================================================================
 
+
 class Login_fortuneo(object):
     def __init__(self):
         debug('LiveUpdate_fortuneo:__init__')
-        self.m_default_host = "www.fortuneo.fr"
-        self.m_login_url =  "/cgi-bin/webact/WebBank/scripts/FRT5.2/loginFRT.jsp"
-        self.m_ack_url   =  "/cgi-bin/webact/WebBank/scripts/FRT5.2/mainFRT.jsp"
-        self.m_trader_url = "/cgi-bin/webact/WebBank/scripts/FRT5.2/outils/traderQuotes/TraderQuotes.jsp?place_indice=025&plisin=025_FR0000130007&pageAccueil=synthese&BV_SessionID=%s&BV_EngineID=%s"
+        self.m_default_host = u"www.fortuneo.fr"
+        self.m_login_url = u"/cgi-bin/webact/WebBank/scripts/FRT5.2/loginFRT.jsp"
+        self.m_ack_url = u"/cgi-bin/webact/WebBank/scripts/FRT5.2/mainFRT.jsp"
+        self.m_trader_url = u"/cgi-bin/webact/WebBank/scripts/FRT5.2/outils/traderQuotes/TraderQuotes.jsp?place_indice=025&plisin=025_FR0000130007&pageAccueil=synthese&BV_SessionID={}&BV_EngineID={}"
         self.m_logged = False
 
-        debug('Fortuneo login (%s) - ready to run' % self.m_default_host)
+        debug(u'Fortuneo login ({}) - ready to run'.format(self.m_default_host))
 
     # ---[ properties ] ---
 
@@ -103,21 +104,21 @@ class Login_fortuneo(object):
     def login(self,u=None,p=None):
         # load username / password (if required)
         if u is None or p is None:
-            u,p = self.loadUserInfo()
+            u, p = self.loadUserInfo()
             if u is None or p is None or u=='' or p=='':
                 print('login: userinfo are invalid - please reenter Access Information')
                 return False
         #print 'log:',u,p
 
         # create the HTTPS connexion
-        self.m_conn = httplib.HTTPSConnection(self.m_default_host,443)
+        self.m_conn = httplib.HTTPSConnection(self.m_default_host, 443)
         if self.m_conn is None:
-            print('login: not connected on %s' % self.m_default_host)
+            print(u'login: not connected on {}'.format(self.m_default_host))
             return False
 
         self.m_logged = False
 
-        params = "sourceB2B=FTO&username=%s&password=%s&pageAccueil=synthese\r\n" % (u,p)
+        params = u"sourceB2B=FTO&username={}&password={}&pageAccueil=synthese\r\n".format(u, p)
 
         headers = {
                     "Connection":"keep-alive",
@@ -134,7 +135,7 @@ class Login_fortuneo(object):
             self.m_conn.request("POST", self.m_login_url, params, headers)
             flux = self.m_conn.getresponse()
         except Exception:
-            print('Login_fortuneo:POST login %s failure %s' % (u,self.m_login_url))
+            print(u'Login_fortuneo:POST login {} failure {}'.format(u, self.m_login_url))
             return False
 
         if flux.status == 200:
@@ -202,11 +203,11 @@ class Login_fortuneo(object):
             #print 'BV_EngineID =',BV_EngineID
 
         else:
-            print('Login_fortuneo: login %s status==%d!=200 reason:%s headers:%s' % (u,flux.status,flux.reason,flux.getheaders()))
+            print(u'Login_fortuneo: login {} status=={:d}!=200 reason:{} headers:{}'.format(u, flux.status, flux.reason, flux.getheaders()))
             return False
 
         # POST ACK
-        params = "BV_SessionID=%s&BV_EngineID=%s\r\n" % (BV_SessionID,BV_EngineID)
+        params = u"BV_SessionID={}&BV_EngineID={}\r\n".format(BV_SessionID, BV_EngineID)
 
         # OK ! GOOD ! use BV_SessionID and BV_EngineID to get secure cookie
 
@@ -214,11 +215,11 @@ class Login_fortuneo(object):
             self.m_conn.request("POST", self.m_ack_url, params, headers)
             flux = self.m_conn.getresponse()
         except Exception:
-            print('Login_fortuneo:POST ack failure %s' % self.m_ack_url)
+            print(u'Login_fortuneo:POST ack failure {}'.format(self.m_ack_url))
             return False
 
         if flux.status != 200:
-            print('Login_fortuneo: ack status==%d!=200 reason:%s headers:%s' % (flux.status,flux.reason,flux.getheaders()))
+            print(u'Login_fortuneo: ack status=={:d}!=200 reason:{} headers:{}'.format(flux.status, flux.reason, flux.getheaders()))
             return False
 
         buf = flux.read()
@@ -226,14 +227,14 @@ class Login_fortuneo(object):
 
         # GET trader request
         try:
-            self.m_conn.request("GET", self.m_trader_url % (BV_SessionID,BV_EngineID), None, headers)
+            self.m_conn.request("GET", self.m_trader_url.format(BV_SessionID, BV_EngineID), None, headers)
             flux = self.m_conn.getresponse()
         except Exception:
-            print('Login_fortuneo:GET trader failure %s' % self.m_trader_url)
+            print(u'Login_fortuneo:GET trader failure {}'.format(self.m_trader_url))
             return False
 
         if flux.status != 200:
-            print('Login_fortuneo: trader status==%d!=200 reason:%s' % (flux.status,flux.reason))
+            print(u'Login_fortuneo: trader status=={:d}!=200 reason:{}'.format(flux.status, flux.reason))
             return False
 
         buf = flux.read()

@@ -53,15 +53,15 @@ from itrade_connection import ITradeConnection
 # Import_ListOfQuotes_NASDAQ()
 # ============================================================================
 
-def Import_ListOfQuotes_NASDAQ(quotes,market='NASDAQ',dlg=None,x=0):
+def Import_ListOfQuotes_NASDAQ(quotes, market='NASDAQ', dlg=None, x=0):
     if itrade_config.verbose:
-        print('Update %s list of symbols' % market)
-    connection = ITradeConnection(cookies = None,
-                               proxy = itrade_config.proxyHostname,
-                               proxyAuth = itrade_config.proxyAuthentication,
-                               connectionTimeout = itrade_config.connectionTimeout
+        print(u'Update {} list of symbols'.format(market))
+    connection = ITradeConnection(cookies=None,
+                               proxy=itrade_config.proxyHostname,
+                               proxyAuth=itrade_config.proxyAuthentication,
+                               connectionTimeout=itrade_config.connectionTimeout
                                )
-    if market=='NYSE':
+    if market == 'NYSE':
         url = 'https://www.nasdaq.com/screening/companies-by-industry.aspx?letter=0&exchange=nyse&render=download'
     elif market == 'NASDAQ':
         url = 'https://www.nasdaq.com/screening/companies-by-industry.aspx?letter=0&exchange=nasdaq&render=download'
@@ -92,9 +92,9 @@ def Import_ListOfQuotes_NASDAQ(quotes,market='NASDAQ',dlg=None,x=0):
             ticker = line[0]
             ticker = ticker.strip()
             ticker = ticker.replace('/','-').replace('^','-P')
-            quotes.addQuote(isin=isin,name=name,ticker=ticker,market=market,currency='USD',place='NYC',country='US')
+            quotes.addQuote(isin=isin, name=name, ticker=ticker, market=market, currency='USD', place='NYC', country='US')
     if itrade_config.verbose:
-        print('Imported %d lines from NASDAQ data.' % count)
+        print(u'Imported {:d} lines from NASDAQ data.'.format(count))
 
     return True
 

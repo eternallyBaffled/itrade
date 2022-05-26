@@ -69,9 +69,9 @@ def splitLines(buf):
     return lines
 
 
-def Import_ListOfQuotes_SHG(quotes,market='SHANGHAI EXCHANGE',dlg=None,x=0):
+def Import_ListOfQuotes_SHG(quotes, market='SHANGHAI EXCHANGE', dlg=None, x=0):
     if itrade_config.verbose:
-        print('Update %s list of symbols' % market)
+        print(u'Update {} list of symbols'.format(market))
     connection=ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
@@ -86,7 +86,7 @@ def Import_ListOfQuotes_SHG(quotes,market='SHANGHAI EXCHANGE',dlg=None,x=0):
     for cursor in range(1,921,20):
         url = urlA+str(cursor)
 
-        info('Import_ListOfQuotes_SSE A SHARE:connect to %s' %url)
+        info(u'Import_ListOfQuotes_SSE A SHARE:connect to {}'.format(url))
         req = urllib2.Request(url)
         req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
 
@@ -96,7 +96,7 @@ def Import_ListOfQuotes_SHG(quotes,market='SHANGHAI EXCHANGE',dlg=None,x=0):
 
             #data=connection.getDataFromUrl(url)
         except Exception:
-            print('Import_ListOfQuotes_SSE A SHARE:unable to connect to',url)
+            print('Import_ListOfQuotes_SSE A SHARE:unable to connect to', url)
             return False
 
         lines = splitLines(data)
@@ -131,20 +131,20 @@ def Import_ListOfQuotes_SHG(quotes,market='SHANGHAI EXCHANGE',dlg=None,x=0):
 
                 count = count + 1
 
-                dlg.Update(x,'SSE A SHARE: %s / ~1000'%cursor)
+                dlg.Update(x, u'SSE A SHARE: {} / ~1000'.format(cursor))
 
-                quotes.addQuote(isin='',name=name,
-                        ticker=ticker,market='SHANGHAI EXCHANGE',
-                        currency='CNY',place='SHG',country='CN')
+                quotes.addQuote(isin='', name=name,
+                        ticker=ticker, market='SHANGHAI EXCHANGE',
+                        currency='CNY', place='SHG', country='CN')
 
     # Download SSE B SHARE
 
     url = 'https://www.sse.com.cn/sseportal/en_us/ps/bshare/lccl.shtml'
 
-    info('Import_ListOfQuotes_SSE B SHARE:connect to %s' %url)
+    info(u'Import_ListOfQuotes_SSE B SHARE:connect to {}'.format(url))
 
     try:
-        data=connection.getDataFromUrl(url)
+        data = connection.getDataFromUrl(url)
     except Exception:
         debug('Import_ListOfQuotes_SSE B SHARE:unable to connect :-(')
         return False
@@ -201,7 +201,7 @@ def Import_ListOfQuotes_SHG(quotes,market='SHANGHAI EXCHANGE',dlg=None,x=0):
                     name = name[:-5]
 
     if itrade_config.verbose:
-        print('Imported %d lines from SHANGHAI EXCHANGE' %count)
+        print(u'Imported {:d} lines from SHANGHAI EXCHANGE'.format(count))
 
     return True
 

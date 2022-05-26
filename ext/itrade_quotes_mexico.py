@@ -70,13 +70,13 @@ def splitLines(buf):
     return lines
 
 
-def Import_ListOfQuotes_MEX(quotes,market='MEXICO EXCHANGE',dlg=None,x=0):
-    print('Update %s list of symbols' % market)
-    connection=ITradeConnection(cookies=None,
+def Import_ListOfQuotes_MEX(quotes, market='MEXICO EXCHANGE', dlg=None, x=0):
+    print(u'Update {} list of symbols'.format(market))
+    connection = ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
 
-    if market=='MEXICO EXCHANGE':
+    if market == 'MEXICO EXCHANGE':
         url = 'https://www.bmv.com.mx/wb3/wb/BMV/BMV_busqueda_de_valores/_rid/222/_mto/3/_url/BMVAPP/componenteSelectorInput.jsf?st=1'
     else:
         return False
@@ -151,16 +151,16 @@ def Import_ListOfQuotes_MEX(quotes,market='MEXICO EXCHANGE',dlg=None,x=0):
                      , "Content-Length": len(params)
                     }
 
-        conn = httplib.HTTPConnection(host,80)
-        conn.request("POST",url,params,headers)
+        conn = httplib.HTTPConnection(host, 80)
+        conn.request("POST", url, params, headers)
 
         response = conn.getresponse()
         #print response.status, response.reason
 
-        if page > 0 :
+        if page > 0:
             #Partial activation of the Progressbar
-            x=x+0.07
-            dlg.Update(x,'%s : %s / %s'%(market,indice,endpage))
+            x = x + 0.07
+            dlg.Update(x, u'{} : {} / {}'.format(market, indice, endpage))
 
             startch = '<tr class="Tabla1_Renglon_'
             endch = '</tr><input type="hidden"'
@@ -204,9 +204,9 @@ def Import_ListOfQuotes_MEX(quotes,market='MEXICO EXCHANGE',dlg=None,x=0):
                         newticker = newticker.replace('&amp;','&')
                         countserie = countserie + 1
 
-                        quotes.addQuote(isin='',name=name,ticker=newticker,market='MEXICO EXCHANGE',currency='MXN',place='MEX',country='MX')
+                        quotes.addQuote(isin='', name=name, ticker=newticker, market='MEXICO EXCHANGE', currency='MXN', place='MEX', country='MX')
 
-    print('Imported %d quotes with %d different tickers from MEXICO EXCHANGE data.' % (countname,countserie))
+    print(u'Imported {:d} quotes with {:d} different tickers from MEXICO EXCHANGE data.'.format(countname, countserie))
     response.close()
     handle.close()
 
@@ -216,7 +216,7 @@ def Import_ListOfQuotes_MEX(quotes,market='MEXICO EXCHANGE',dlg=None,x=0):
 # Export me
 # ============================================================================
 
-gListSymbolRegistry.register('MEXICO EXCHANGE','MEX',QList.any,QTag.list,Import_ListOfQuotes_MEX)
+gListSymbolRegistry.register('MEXICO EXCHANGE', 'MEX', QList.any, QTag.list, Import_ListOfQuotes_MEX)
 
 # ============================================================================
 # Test ME
@@ -227,7 +227,7 @@ if __name__ == '__main__':
 
     from itrade_quotes import quotes
 
-    Import_ListOfQuotes_MEX(quotes,'MEXICO EXCHANGE')
+    Import_ListOfQuotes_MEX(quotes, 'MEXICO EXCHANGE')
     quotes.saveListOfQuotes()
 
 # ============================================================================

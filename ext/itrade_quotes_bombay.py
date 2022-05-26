@@ -66,14 +66,14 @@ def splitLines(buf):
     return lines
 
 
-def Import_ListOfQuotes_BSE(quotes,market='BOMBAY EXCHANGE',dlg=None,x=0):
+def Import_ListOfQuotes_BSE(quotes, market='BOMBAY EXCHANGE', dlg=None, x=0):
     if itrade_config.verbose:
-        print('Update %s list of symbols' % market)
+        print(u'Update {} list of symbols'.format(market))
     connection=ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
 
-    if market=='BOMBAY EXCHANGE':
+    if market == 'BOMBAY EXCHANGE':
         starturl = 'https://test.bseindia.com/scripsearch/scrips.aspx?myScrip='
         #endurl = '&flag=sr'
     else:
@@ -112,13 +112,13 @@ def Import_ListOfQuotes_BSE(quotes,market='BOMBAY EXCHANGE',dlg=None,x=0):
                     #print name,ticker
                     n = n + 1
                     #Partial activation of the Progressbar
-                    dlg.Update(x,'B S E : %s /~3800' %n)
+                    dlg.Update(x, u'B S E : {} /~3800'.format(n))
 
                     quotes.addQuote(isin=isin, name=name,
                         ticker=ticker, market='BOMBAY EXCHANGE', currency='INR', place='BSE', country='IN')
 
     if itrade_config.verbose:
-        print('Imported %d lines from BOMBAY EXCHANGE' %n)
+        print(u'Imported {:d} lines from BOMBAY EXCHANGE'.format(n))
 
     return True
 
@@ -126,7 +126,7 @@ def Import_ListOfQuotes_BSE(quotes,market='BOMBAY EXCHANGE',dlg=None,x=0):
 # Export me
 # ============================================================================
 
-gListSymbolRegistry.register('BOMBAY EXCHANGE','BSE',QList.any,QTag.list,Import_ListOfQuotes_BSE)
+gListSymbolRegistry.register('BOMBAY EXCHANGE', 'BSE', QList.any, QTag.list, Import_ListOfQuotes_BSE)
 
 # ============================================================================
 # Test ME
@@ -137,7 +137,7 @@ if __name__ == '__main__':
 
     from itrade_quotes import quotes
 
-    Import_ListOfQuotes_BSE(quotes,'BOMBAY EXCHANGE')
+    Import_ListOfQuotes_BSE(quotes, 'BOMBAY EXCHANGE')
     quotes.saveListOfQuotes()
 
 # ============================================================================

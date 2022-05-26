@@ -55,14 +55,14 @@ from itrade_connection import ITradeConnection
 # ============================================================================
 
 
-def Import_ListOfQuotes_BUE(quotes,market='BUENOS AIRES EXCHANGE',dlg=None,x=0):
+def Import_ListOfQuotes_BUE(quotes, market='BUENOS AIRES EXCHANGE', dlg=None, x=0):
     if itrade_config.verbose:
-        print('Update %s list of symbols' % market)
+        print(u'Update {} list of symbols'.format(market))
     connection=ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
 
-    if market=='BUENOS AIRES EXCHANGE':
+    if market == 'BUENOS AIRES EXCHANGE':
         url = 'https://www.bolsar.com/NET/Research/Especies/Acciones.aspx'
     else:
         return False
@@ -118,12 +118,12 @@ def Import_ListOfQuotes_BUE(quotes,market='BUENOS AIRES EXCHANGE',dlg=None,x=0):
                 n = 0
 
                 # ok to proceed
-                if isin!='':
+                if isin != '':
                     quotes.addQuote(isin=isin, name=name,
-                    ticker=ticker, market='BUENOS AIRES EXCHANGE',currency='ARS',place='BUE',country='AR')
+                        ticker=ticker, market='BUENOS AIRES EXCHANGE', currency='ARS', place='BUE', country='AR')
                     nlines = nlines + 1
     if itrade_config.verbose:
-        print('Imported %d lines from BUENOS AIRES EXCHANGE data.' % nlines)
+        print(u'Imported {:d} lines from BUENOS AIRES EXCHANGE data.'.format(nlines))
     data.close()
     return True
 
@@ -131,7 +131,7 @@ def Import_ListOfQuotes_BUE(quotes,market='BUENOS AIRES EXCHANGE',dlg=None,x=0):
 # Export me
 # ============================================================================
 
-gListSymbolRegistry.register('BUENOS AIRES EXCHANGE','BUE',QList.any,QTag.list,Import_ListOfQuotes_BUE)
+gListSymbolRegistry.register('BUENOS AIRES EXCHANGE', 'BUE', QList.any, QTag.list, Import_ListOfQuotes_BUE)
 
 # ============================================================================
 # Test ME

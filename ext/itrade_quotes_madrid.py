@@ -55,16 +55,16 @@ from itrade_connection import ITradeConnection
 # Import_ListOfQuotes_MADRID()
 # ============================================================================
 
-def Import_ListOfQuotes_MADRID(quotes,market='MADRID EXCHANGE',dlg=None,x=0):
+def Import_ListOfQuotes_MADRID(quotes, market='MADRID EXCHANGE', dlg=None, x=0):
     if itrade_config.verbose:
-        print('Update %s list of symbols' % market)
-    connection = ITradeConnection(cookies = None,
-                               proxy = itrade_config.proxyHostname,
-                               proxyAuth = itrade_config.proxyAuthentication,
-                               connectionTimeout = itrade_config.connectionTimeout
+        print(u'Update {} list of symbols'.format(market))
+    connection = ITradeConnection(cookies=None,
+                               proxy=itrade_config.proxyHostname,
+                               proxyAuth=itrade_config.proxyAuthentication,
+                               connectionTimeout=itrade_config.connectionTimeout
                                )
 
-    if market=='MADRID EXCHANGE':
+    if market == 'MADRID EXCHANGE':
         url = 'https://www.bolsamadrid.es/docs/SBolsas/InformesSB/listadodevalores.pdf'
     else:
         return False
@@ -80,7 +80,7 @@ def Import_ListOfQuotes_MADRID(quotes,market='MADRID EXCHANGE',dlg=None,x=0):
         lines = [removeCarriage(l) for l in lines]
         return lines
 
-    info('Import_ListOfQuotes_MADRID_%s:connect to %s' % (market,url))
+    info(u'Import_ListOfQuotes_MADRID_{}:connect to {}'.format(market, url))
 
     f = 'listadodevalores.pdf'
     n = 0
@@ -88,7 +88,7 @@ def Import_ListOfQuotes_MADRID(quotes,market='MADRID EXCHANGE',dlg=None,x=0):
     try:
         urllib.urlretrieve(url, f)
     except Exception:
-        info('Import_ListOfQuotes_MADRID_%s:unable to connect :-(' % market)
+        info(u'Import_ListOfQuotes_MADRID_{}:unable to connect :-('.format(market))
         return False
 
     # returns the data
@@ -100,7 +100,7 @@ def Import_ListOfQuotes_MADRID(quotes,market='MADRID EXCHANGE',dlg=None,x=0):
         data = page.extractText()
         data = data[data.find('DecimalsFixing')+15:]
         cr = data[:8]
-        lines =splitLines(data)
+        lines = splitLines(data)
 
         for line in lines:
             if 'Sociedad de Bolsas' in line:
@@ -130,7 +130,7 @@ def Import_ListOfQuotes_MADRID(quotes,market='MADRID EXCHANGE',dlg=None,x=0):
                                 currency='EUR', place='MAD', country='ES')
                     n = n + 1
     if itrade_config.verbose:
-        print('Imported %d lines from %s' % (n,market))
+        print(u'Imported {:d} lines from {}'.format(n, market))
     source.close()
     os.remove(f)
     return True
@@ -139,7 +139,7 @@ def Import_ListOfQuotes_MADRID(quotes,market='MADRID EXCHANGE',dlg=None,x=0):
 # Export me
 # ============================================================================
 
-gListSymbolRegistry.register('MADRID EXCHANGE','MAD',QList.any,QTag.list,Import_ListOfQuotes_MADRID)
+gListSymbolRegistry.register('MADRID EXCHANGE', 'MAD', QList.any, QTag.list, Import_ListOfQuotes_MADRID)
 
 # ============================================================================
 # Test ME
@@ -150,7 +150,7 @@ if __name__ == '__main__':
 
     from itrade_quotes import quotes
 
-    Import_ListOfQuotes_MADRID(quotes,'MADRID EXCHANGE')
+    Import_ListOfQuotes_MADRID(quotes, 'MADRID EXCHANGE')
 
     quotes.saveListOfQuotes()
 

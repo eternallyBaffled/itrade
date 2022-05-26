@@ -70,10 +70,10 @@ def splitLines(buf):
     return lines
 
 
-def Import_ListOfQuotes_SAO(quotes,market='SAO PAULO EXCHANGE',dlg=None,x=0):
+def Import_ListOfQuotes_SAO(quotes, market='SAO PAULO EXCHANGE', dlg=None, x=0):
     if itrade_config.verbose:
-        print('Update %s list of symbols' % market)
-    connection=ITradeConnection(cookies=None,
+        print(u'Update {} list of symbols'.format(market))
+    connection = ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
 
@@ -85,10 +85,10 @@ def Import_ListOfQuotes_SAO(quotes,market='SAO PAULO EXCHANGE',dlg=None,x=0):
     else:
         return False
 
-    info('Import_ListOfQuotes_BOVESPA_%s:connect to %s' % (market,url))
+    info(u'Import_ListOfQuotes_BOVESPA_{}:connect to {}'.format(market, url))
 
     try:
-        urllib.urlretrieve(url,'Securities_Traded.zip')
+        urllib.urlretrieve(url, 'Securities_Traded.zip')
         zfile = zipfile.ZipFile('Securities_Traded.zip')
         data = zfile.read('SECURITIES_TRADED.TXT')
     except Exception:
@@ -117,10 +117,10 @@ def Import_ListOfQuotes_SAO(quotes,market='SAO PAULO EXCHANGE',dlg=None,x=0):
             specific_code = line[133:136]
             specific_code = specific_code.strip()
             if bdi_code == '002':
-                n= n + 1
-                quotes.addQuote(isin = isin,name = short_name+'-'+specific_code,ticker = ticker,market = market,currency = currency,place = place,country = country)
+                n = n + 1
+                quotes.addQuote(isin=isin, name=short_name+'-'+specific_code, ticker=ticker, market=market, currency=currency, place=place, country=country)
     if itrade_config.verbose:
-        print('Imported %d lines from %s data.' % (n,market))
+        print(u'Imported {:d} lines from {} data.'.format(n, market))
 
     zfile.close()
     os.remove('Securities_Traded.zip')

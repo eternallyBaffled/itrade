@@ -54,16 +54,16 @@ from itrade_connection import ITradeConnection
 # ============================================================================
 
 
-def Import_ListOfQuotes_HKG(quotes,market='HONG KONG EXCHANGE',dlg=None,x=0):
+def Import_ListOfQuotes_HKG(quotes, market='HONG KONG EXCHANGE', dlg=None, x=0):
     if itrade_config.verbose:
-        print('Update %s list of symbols' % market)
+        print(u'Update {} list of symbols'.format(market))
     connection=ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
 
     import xlrd
 
-    if market=='HONG KONG EXCHANGE':
+    if market == 'HONG KONG EXCHANGE':
         # Two urls for download list of HONG KONG EXCHANGE
         urls = ['https://www.hkex.com.hk/eng/market/sec_tradinfo/isincode/documents/isino.xls',
                 'https://www.hkex.com.hk/eng/market/sec_tradinfo/isincode/documents/isinsehk.xls']
@@ -75,7 +75,7 @@ def Import_ListOfQuotes_HKG(quotes,market='HONG KONG EXCHANGE',dlg=None,x=0):
         lines = string.split(buf, '\n')
         lines = filter(lambda x:x, lines)
         def removeCarriage(s):
-            if s[-1]=='\r':
+            if s[-1] == '\r':
                 return s[:-1]
             else:
                 return s
@@ -83,27 +83,27 @@ def Import_ListOfQuotes_HKG(quotes,market='HONG KONG EXCHANGE',dlg=None,x=0):
         return lines
 
     for url in urls:
-        info('Import_ListOfQuotes_HKG_%s:connect to %s' % (market,url))
+        info(u'Import_ListOfQuotes_HKG_{}:connect to {}'.format(market, url))
 
         try:
             data = connection.getDataFromUrl(url)
         except Exception:
-            info('Import_ListOfQuotes_HKG_%s:unable to connect :-(' % market)
+            info(u'Import_ListOfQuotes_HKG_{}:unable to connect :-('.format(market))
             return False
 
         # returns the data
-        book = itrade_excel.open_excel(file=None,content=data)
+        book = itrade_excel.open_excel(file=None, content=data)
         sh = book.sheet_by_index(0)
 
-        #print('Import_ListOfQuotes_HKG_%s:' % market,'book',book,'sheet',sh,'nrows=',sh.nrows)
+        #print(u'Import_ListOfQuotes_HKG_{}:'.format(market), 'book', book, 'sheet', sh, 'nrows=', sh.nrows)
 
         for line in range(sh.nrows):
-            if sh.cell_type(line,1) != xlrd.XL_CELL_EMPTY:
-                if sh.cell_value(line,3) in ('ORD SH','PREF SH','TRT','RTS'):
-                    isin=sh.cell_value(line,1)
+            if sh.cell_type(line, 1) != xlrd.XL_CELL_EMPTY:
+                if sh.cell_value(line, 3) in ('ORD SH', 'PREF SH', 'TRT', 'RTS'):
+                    isin=sh.cell_value(line, 1)
 
-                    ticker = sh.cell_value(line,2)
-                    if type(ticker)==float: ticker=int(ticker);ticker='%s' % ticker
+                    ticker = sh.cell_value(line, 2)
+                    if type(ticker)==float: ticker=int(ticker); ticker=u'{}'.format(ticker)
                     if len(ticker) == 1 : ticker='000'+ticker
                     if len(ticker) == 2 : ticker='00'+ticker
                     if len(ticker) == 3 : ticker='0'+ticker
@@ -114,18 +114,18 @@ def Import_ListOfQuotes_HKG(quotes,market='HONG KONG EXCHANGE',dlg=None,x=0):
                         name = 'G-VISION INTERNATIONAL (HOLDINGS) LTD'
 
                     name = name.decode().encode('utf8')
-                    name = name.replace(',',' ')
+                    name = name.replace(',', ' ')
 
                     currency='HKD'
                     place='HKG'
                     country='HK'
 
-                    quotes.addQuote(isin = isin,name = name,ticker = ticker,market = 'HONG KONG EXCHANGE',currency = currency,place = place,country = country)
+                    quotes.addQuote(isin=isin, name=name, ticker=ticker, market='HONG KONG EXCHANGE', currency=currency, place=place, country=country)
 
                     n = n + 1
 
     if itrade_config.verbose:
-        print('Imported %d lines from %s ' % (n,market))
+        print(u'Imported {:d} lines from {} '.format(n, market))
 
     return True
 
@@ -134,7 +134,7 @@ def Import_ListOfQuotes_HKG(quotes,market='HONG KONG EXCHANGE',dlg=None,x=0):
 # ============================================================================
 
 if itrade_excel.canReadExcel:
-    gListSymbolRegistry.register('HONG KONG EXCHANGE','HKG',QList.any,QTag.list,Import_ListOfQuotes_HKG)
+    gListSymbolRegistry.register('HONG KONG EXCHANGE', 'HKG', QList.any, QTag.list, Import_ListOfQuotes_HKG)
 
 # ============================================================================
 # Test ME

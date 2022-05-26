@@ -71,19 +71,19 @@ def splitLines(buf):
     return lines
 
 
-def Import_ListOfQuotes_KRX(quotes,market='KOREA STOCK EXCHANGE',dlg=None,x=0):
+def Import_ListOfQuotes_KRX(quotes, market='KOREA STOCK EXCHANGE', dlg=None, x=0):
     if itrade_config.verbose:
-        print('Update %s list of symbols' % market)
-    connection = ITradeConnection(cookies = None,
-                               proxy = itrade_config.proxyHostname,
-                               proxyAuth = itrade_config.proxyAuthentication,
-                               connectionTimeout = itrade_config.connectionTimeout
+        print(u'Update {} list of symbols'.format(market))
+    connection = ITradeConnection(cookies=None,
+                               proxy=itrade_config.proxyHostname,
+                               proxyAuth=itrade_config.proxyAuthentication,
+                               connectionTimeout=itrade_config.connectionTimeout
                                )
 
-    if market=='KOREA STOCK EXCHANGE':
+    if market == 'KOREA STOCK EXCHANGE':
         params = "isu_cd=&gbn=1&market_gubun=1&isu_nm=&sort=&std_ind_cd=&std_ind_cd1=&par_pr=&cpta_scl=&sttl_trm=&lst_stk_vl=1&in_lst_stk_vl=&in_lst_stk_vl2=&cpt=1&in_cpt=&in_cpt2=&nat_tot_amt=1&in_nat_tot_amt=&in_nat_tot_amt2="
         place = 'KRX'
-    elif market=='KOREA KOSDAQ EXCHANGE':
+    elif market == 'KOREA KOSDAQ EXCHANGE':
         params = "isu_cd=&gbn=2&market_gubun=2&isu_nm=&sort=&std_ind_cd=&std_ind_cd1=&par_pr=&cpta_scl=&sttl_trm=&lst_stk_vl=1&in_lst_stk_vl=&in_lst_stk_vl2=&cpt=1&in_cpt=&in_cpt2=&nat_tot_amt=1&in_nat_tot_amt=&in_nat_tot_amt2="
         place = 'KOS'
     else:
@@ -91,12 +91,12 @@ def Import_ListOfQuotes_KRX(quotes,market='KOREA STOCK EXCHANGE',dlg=None,x=0):
 
     url = 'https://eng.krx.co.kr'
 
-    info('Import_ListOfQuotes_KRX_%s:connect to %s' % (market,url))
+    info(u'Import_ListOfQuotes_KRX_{}:connect to {}'.format(market, url))
 
     try:
         data = connection.getDataFromUrl(url)
     except Exception:
-        info('Import_ListOfQuotes_KRX_%s:unable to connect :-(' % market)
+        info(u'Import_ListOfQuotes_KRX_{}:unable to connect :-('.format(market))
         return False
 
     cj = None
@@ -143,7 +143,7 @@ def Import_ListOfQuotes_KRX(quotes,market='KOREA STOCK EXCHANGE',dlg=None,x=0):
         debug('Import_ListOfQuotes_KRX unable to connect :-(')
         return False
 
-    debug("status:%s reason:%s" %(response.status, response.reason))
+    debug(u"status:{} reason:{}".format(response.status, response.reason))
     if response.status != 200:
         debug('Import_ListOfQuotes_KRX:status!=200')
         return False
@@ -155,7 +155,7 @@ def Import_ListOfQuotes_KRX(quotes,market='KOREA STOCK EXCHANGE',dlg=None,x=0):
     lines = splitLines(data)
     n = 0
     isin = ''
-    print('Import_ListOfQuotes_KRX_%s:' % market)
+    print(u'Import_ListOfQuotes_KRX_{}:'.format(market))
 
     for line in lines:
         ticker = line[8:line.index('</td><td>')]
@@ -174,7 +174,7 @@ def Import_ListOfQuotes_KRX(quotes,market='KOREA STOCK EXCHANGE',dlg=None,x=0):
         quotes.addQuote(isin=isin, name=name, ticker=ticker,
                         market=market, currency='KRW', place=place, country='KR')
     if itrade_config.verbose:
-        print('Imported %d lines from %s data.' % (n,market))
+        print(u'Imported {:d} lines from {} data.'.format(n, market))
 
     return True
 
@@ -182,8 +182,8 @@ def Import_ListOfQuotes_KRX(quotes,market='KOREA STOCK EXCHANGE',dlg=None,x=0):
 # Export me
 # ============================================================================
 
-gListSymbolRegistry.register('KOREA STOCK EXCHANGE','KRX',QList.any,QTag.list,Import_ListOfQuotes_KRX)
-gListSymbolRegistry.register('KOREA KOSDAQ EXCHANGE','KOS',QList.any,QTag.list,Import_ListOfQuotes_KRX)
+gListSymbolRegistry.register('KOREA STOCK EXCHANGE', 'KRX', QList.any, QTag.list, Import_ListOfQuotes_KRX)
+gListSymbolRegistry.register('KOREA KOSDAQ EXCHANGE', 'KOS', QList.any, QTag.list, Import_ListOfQuotes_KRX)
 
 # ============================================================================
 # Test ME
@@ -194,8 +194,8 @@ if __name__ == '__main__':
 
     from itrade_quotes import quotes
 
-    Import_ListOfQuotes_KRX(quotes,'KOREA STOCK EXCHANGE')
-    Import_ListOfQuotes_KRX(quotes,'KOREA KOSDAQ EXCHANGE')
+    Import_ListOfQuotes_KRX(quotes, 'KOREA STOCK EXCHANGE')
+    Import_ListOfQuotes_KRX(quotes, 'KOREA KOSDAQ EXCHANGE')
     quotes.saveListOfQuotes()
 
 # ============================================================================

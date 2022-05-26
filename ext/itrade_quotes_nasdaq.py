@@ -53,15 +53,16 @@ from itrade_connection import ITradeConnection
 # Import_ListOfQuotes_NASDAQ()
 # ============================================================================
 
-def Import_ListOfQuotes_NASDAQ(quotes,market='NASDAQ',dlg=None,x=0):
+
+def Import_ListOfQuotes_NASDAQ(quotes, market='NASDAQ', dlg=None, x=0):
     if itrade_config.verbose:
-        print('Update %s list of symbols' % market)
-    connection = ITradeConnection(cookies = None,
-                               proxy = itrade_config.proxyHostname,
-                               proxyAuth = itrade_config.proxyAuthentication,
-                               connectionTimeout = itrade_config.connectionTimeout
+        print(u'Update {} list of symbols'.format(market))
+    connection = ITradeConnection(cookies=None,
+                               proxy=itrade_config.proxyHostname,
+                               proxyAuth=itrade_config.proxyAuthentication,
+                               connectionTimeout=itrade_config.connectionTimeout
                                )
-    if market=='NYSE':
+    if market == 'NYSE':
         url = 'https://www.nasdaq.com/screening/companies-by-industry.aspx?&exchange=nyse&render=download'
     elif market == 'NASDAQ':
         url = 'https://www.nasdaq.com/screening/companies-by-industry.aspx?&exchange=nasdaq&render=download'
@@ -85,25 +86,25 @@ def Import_ListOfQuotes_NASDAQ(quotes,market='NASDAQ',dlg=None,x=0):
 
     for line in reader:
         count = count+1
-        if count >0:
+        if count > 0:
             name = line[1]
             name = name.strip()
             name =name.replace(',','').replace('&quot;','"').replace('&#39;',"'")
             ticker = line[0]
             ticker = ticker.strip()
             ticker = ticker.replace('/','-').replace('^','-P')
-            quotes.addQuote(isin=isin,name=name,ticker=ticker,market=market,currency='USD',place='NYC',country='US')
+            quotes.addQuote(isin=isin, name=name, ticker=ticker, market=market, currency='USD', place='NYC', country='US')
     if itrade_config.verbose:
-        print('Imported %d lines from NASDAQ data.' % count)
+        print(u'Imported {:d} lines from NASDAQ data.'.format(count))
 
     return True
 
 # ============================================================================
 # Export me
 # ============================================================================
-gListSymbolRegistry.register('NASDAQ','NYC',QList.any,QTag.list,Import_ListOfQuotes_NASDAQ)
-gListSymbolRegistry.register('AMEX','NYC',QList.any,QTag.list,Import_ListOfQuotes_NASDAQ)
-gListSymbolRegistry.register('NYSE','NYC',QList.any,QTag.list,Import_ListOfQuotes_NASDAQ)
+gListSymbolRegistry.register('NASDAQ', 'NYC', QList.any, QTag.list, Import_ListOfQuotes_NASDAQ)
+gListSymbolRegistry.register('AMEX', 'NYC', QList.any, QTag.list, Import_ListOfQuotes_NASDAQ)
+gListSymbolRegistry.register('NYSE', 'NYC', QList.any, QTag.list, Import_ListOfQuotes_NASDAQ)
 
 # ============================================================================
 # Test ME
@@ -114,9 +115,9 @@ if __name__ == '__main__':
 
     from itrade_quotes import quotes
 
-    Import_ListOfQuotes_NASDAQ(quotes,'NASDAQ')
-    Import_ListOfQuotes_NASDAQ(quotes,'NYSE')
-    Import_ListOfQuotes_NASDAQ(quotes,'AMEX')
+    Import_ListOfQuotes_NASDAQ(quotes, 'NASDAQ')
+    Import_ListOfQuotes_NASDAQ(quotes, 'NYSE')
+    Import_ListOfQuotes_NASDAQ(quotes, 'AMEX')
     quotes.saveListOfQuotes()
 
 # ============================================================================

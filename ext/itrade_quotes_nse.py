@@ -69,21 +69,21 @@ def splitLines(buf):
     return lines
 
 
-def Import_ListOfQuotes_NSE(quotes,market='NATIONAL EXCHANGE OF INDIA',dlg=None,x=0):
+def Import_ListOfQuotes_NSE(quotes, market='NATIONAL EXCHANGE OF INDIA', dlg=None, x=0):
     if itrade_config.verbose:
-        print('Update %s list of symbols' % market)
-    connection = ITradeConnection(cookies = None,
-                               proxy = itrade_config.proxyHostname,
-                               proxyAuth = itrade_config.proxyAuthentication,
-                               connectionTimeout = itrade_config.connectionTimeout
+        print(u'Update {} list of symbols'.format(market))
+    connection = ITradeConnection(cookies=None,
+                               proxy=itrade_config.proxyHostname,
+                               proxyAuth=itrade_config.proxyAuthentication,
+                               connectionTimeout=itrade_config.connectionTimeout
                                )
 
-    if market=='NATIONAL EXCHANGE OF INDIA':
+    if market == 'NATIONAL EXCHANGE OF INDIA':
         url = "https://www.nseindia.com/content/equities/EQUITY_L.csv"
     else:
         return False
 
-    info('Import_ListOfQuotes_NSE:connect to %s' % url)
+    info(u'Import_ListOfQuotes_NSE:connect to {}'.format(url))
 
     url = 'https://www.nseindia.com/content/equities/EQUITY_L.csv'
 
@@ -100,14 +100,14 @@ def Import_ListOfQuotes_NSE(quotes,market='NATIONAL EXCHANGE OF INDIA',dlg=None,
                 }
 
     try:
-        conn = httplib.HTTPConnection(host,80)
-        conn.request("GET",url,None,headers)
+        conn = httplib.HTTPConnection(host, 80)
+        conn.request("GET", url, None, headers)
         response = conn.getresponse()
     except Exception:
         debug('Import_ListOfQuotes_NSE unable to connect :-(')
         return False
 
-    debug("status:%s reason:%s" %(response.status, response.reason))
+    debug(u"status:{} reason:{}".format(response.status, response.reason))
     if response.status != 200:
         debug('Import_ListOfQuotes_NSE:status!=200')
         return False
@@ -125,17 +125,17 @@ def Import_ListOfQuotes_NSE(quotes,market='NATIONAL EXCHANGE OF INDIA',dlg=None,
         data = string.split (line, ',')
         if len(data) == 8:
             name = data[1]
-            name = name.replace('Limited','LTD')
+            name = name.replace('Limited', 'LTD')
             ticker = data[0]
-            if len(ticker)>9:
+            if len(ticker) > 9:
                 ticker = ticker[:9]
             isin = data[6]
             if isin != 'INE195A01028':
-                quotes.addQuote(isin=isin,name=name,ticker=ticker,
-                market='NATIONAL EXCHANGE OF INDIA',currency='INR',place='NSE',country='IN')
+                quotes.addQuote(isin=isin, name=name, ticker=ticker,
+                market='NATIONAL EXCHANGE OF INDIA', currency='INR', place='NSE', country='IN')
                 nlines = nlines + 1
     if itrade_config.verbose:
-        print('Imported %d lines from %s data.' % (nlines,market))
+        print(u'Imported {:d} lines from {} data.'.format(nlines, market))
 
     return True
 

@@ -75,7 +75,7 @@ class Login_boursorama(object):
                                            proxyAuth = itrade_config.proxyAuthentication,
                                            connectionTimeout = itrade_config.connectionTimeout
                                            )
-        debug('Boursorama login (%s) - ready to run' % self.m_default_host)
+        debug(u'Boursorama login ({}) - ready to run'.format(self.m_default_host))
 
     # ---[ properties ] ---
 
@@ -122,7 +122,7 @@ class Login_boursorama(object):
                    "submit2" : "Valider"}
             buf=self.m_connection.getDataFromUrl(self.m_login_url, data=param)
         except IOError as e:
-            print("Exception occured while requesting Boursorama login page : %s" % e)
+            print(u"Exception occurred while requesting Boursorama login page : {}".format(e))
             return False
 
         print("bourso login response :saved to bourso.html")

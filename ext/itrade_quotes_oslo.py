@@ -69,7 +69,7 @@ def splitLines(buf):
 
 def Import_ListOfQuotes_OSLO(quotes,market='OSLO EXCHANGE',dlg=None,x=0):
     if itrade_config.verbose:
-        print('Update %s list of symbols' % market)
+        print('Update %s list of symbols'.format(market))
     connection=ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
@@ -103,11 +103,11 @@ def Import_ListOfQuotes_OSLO(quotes,market='OSLO EXCHANGE',dlg=None,x=0):
         for line in lines:
             if line.find('newt__ticker=') != -1:
                 #partial activation of Progressbar
-                dlg.Update(x,'%s : %s / %s'%(market,page,endpage))
+                dlg.Update(x, u'{} : {} / {}'.format(market, page, endpage))
 
                 ticker = line[line.index('newt__ticker=')+13:line.index('" title="">')]
 
-                if ticker == 'SAS+NOK' : ticker = 'SAS'
+                if ticker == 'SAS+NOK': ticker = 'SAS'
 
                 name = line[line.index(' title="">')+10:line.index('</a></td><td')]
 
@@ -126,7 +126,7 @@ def Import_ListOfQuotes_OSLO(quotes,market='OSLO EXCHANGE',dlg=None,x=0):
 
                 nlines = nlines + 1
     if itrade_config.verbose:
-        print('Imported %d lines from OSLO EXCHANGE' % nlines)
+        print(u'Imported {:d} lines from OSLO EXCHANGE'.format(nlines))
 
     return True
 
@@ -134,7 +134,7 @@ def Import_ListOfQuotes_OSLO(quotes,market='OSLO EXCHANGE',dlg=None,x=0):
 # Export me
 # ============================================================================
 
-gListSymbolRegistry.register('OSLO EXCHANGE','OSL',QList.any,QTag.list,Import_ListOfQuotes_OSLO)
+gListSymbolRegistry.register('OSLO EXCHANGE', 'OSL', QList.any, QTag.list, Import_ListOfQuotes_OSLO)
 
 # ============================================================================
 # Test ME
