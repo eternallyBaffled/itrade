@@ -57,33 +57,33 @@ from itrade_candle import Candle, CANDLE_VOLUME_AVERAGE, CANDLE_VOLUME_TREND_NOT
 # ============================================================================
 
 class Trade(object):
-    def __init__(self,trades,d,open,high,low,close,volume,idx):
-        if d[4]=='-':
-            debug('Trade::__init__():%s: %d %d %d' % (d,int(d[0:4]),int(d[5:7]),int(d[8:10])))
-            self.m_date = date(int(d[0:4]),int(d[5:7]),int(d[8:10]))
+    def __init__(self, trades, d, open, high, low, close, volume, idx):
+        if d[4] == '-':
+            debug(u'Trade::__init__():{}: {:d} {:d} {:d}'.format(d, int(d[0:4]), int(d[5:7]), int(d[8:10])))
+            self.m_date = date(int(d[0:4]), int(d[5:7]), int(d[8:10]))
         else:
-            debug('Trade::__init__():%s: %d %d %d' % (d,int(d[0:4]),int(d[4:6]),int(d[6:8])))
-            self.m_date = date(int(d[0:4]),int(d[4:6]),int(d[6:8]))
+            debug(u'Trade::__init__():{}: {:d} {:d} {:d}'.format(d, int(d[0:4]), int(d[4:6]), int(d[6:8])))
+            self.m_date = date(int(d[0:4]), int(d[4:6]), int(d[6:8]))
         self.m_open = float(open)
-        if self.m_open<0.0:
-            self.m_open=0.0
+        if self.m_open < 0.0:
+            self.m_open = 0.0
         self.m_close = float(close)
-        if self.m_close<0.0:
-            self.m_close=0.0
+        if self.m_close < 0.0:
+            self.m_close = 0.0
         self.m_low = float(low)
-        if self.m_low<0.0:
-            self.m_low=0.0
+        if self.m_low < 0.0:
+            self.m_low = 0.0
         self.m_high = float(high)
-        if self.m_high<0.0:
-            self.m_high=0.0
+        if self.m_high < 0.0:
+            self.m_high = 0.0
         self.m_volume = long(volume)
-        if self.m_volume<0:
-            self.m_volume=0
+        if self.m_volume < 0:
+            self.m_volume = 0
         self.m_trades = trades
         self.m_index = idx
 
     def __repr__(self):
-        return '%s;%s;%f;%f;%f;%f;%d' % (self.m_trades.quote().key(),self.m_date, self.m_open, self.m_high, self.m_low, self.m_close, self.m_volume)
+        return u'{};{};{:f};{:f};{:f};{:f};{:d}'.format(self.m_trades.quote().key(),self.m_date, self.m_open, self.m_high, self.m_low, self.m_close, self.m_volume)
 
     def date(self):
         return self.m_date
@@ -126,7 +126,7 @@ def create_array(defval):
 
 class Trades(object):
     def __init__(self,quote):
-        debug('Trades:__init__(%s)' % quote)
+        debug(u'Trades:__init__({})'.format(quote))
         self.m_quote = quote
         self._init_()
 
@@ -173,47 +173,47 @@ class Trades(object):
     def candles(self):
         return self.m_candles
 
-    def reset(self,infile=None):
+    def reset(self, infile=None):
         self._init_()
         if not infile:
-            idfile = os.path.join(itrade_config.dirCacheData,'%s.id' % self.m_quote.key())
+            idfile = os.path.join(itrade_config.dirCacheData, u'{}.id'.format(self.m_quote.key()))
             try:
                 os.remove(idfile)
             except OSError:
                 pass
-            infile = os.path.join(itrade_config.dirCacheData,'%s.txt' % self.m_quote.key())
+            infile = os.path.join(itrade_config.dirCacheData, u'{}.txt'.format(self.m_quote.key()))
         try:
             os.remove(infile)
         except OSError:
             pass
 
     def load(self, infile=None):
-        infile = itrade_csv.read(infile, os.path.join(itrade_config.dirCacheData, '%s.txt' % self.m_quote.key()))
+        infile = itrade_csv.read(infile, os.path.join(itrade_config.dirCacheData, u'{}.txt'.format(self.m_quote.key())))
         #print 'Trades:load::',infile
         # scan each line to read each trade
-        debug('Trades::load %s %s' % (self.m_quote.ticker(),self.m_quote.key()))
+        debug(u'Trades::load {} {}'.format(self.m_quote.ticker(), self.m_quote.key()))
         for eachLine in infile:
-            item = itrade_csv.parse(eachLine,7)
+            item = itrade_csv.parse(eachLine, 7)
             if item:
                 if (item[0]==self.m_quote.key()) or (item[0]==self.m_quote.isin() and item[0]!=''):
                     #print item
-                    debug('Trades::load %s on %s' % (item[5],item[1]))
-                    self.add(item,bImporting=True)
+                    debug(u'Trades::load {} on {}'.format(item[5], item[1]))
+                    self.add(item, bImporting=True)
 
-    def imp(self,data,bLive):
-        #debug('Trades::imp %s : %s : bLive=%s' % (self.m_quote.ticker(),data,bLive))
+    def imp(self, data, bLive):
+        #debug(u'Trades::imp {} : {} : bLive={}'.format(self.m_quote.ticker(), data, bLive))
         #print data
         if data:
             # scan each line to read each trade
             for eachLine in data:
-                item = itrade_csv.parse(eachLine,7)
+                item = itrade_csv.parse(eachLine, 7)
                 if item:
                     if (item[0]==self.m_quote.key()) or (item[0]==self.m_quote.isin() and item[0]!=''):
                         #print item
-                        self.add(item,bImporting=not bLive)
+                        self.add(item, bImporting=not bLive)
 
-    def save(self,outfile=None):
-        #debug('Trades::save %s %s' % (self.m_quote.ticker(),self.m_quote.key()))
+    def save(self, outfile=None):
+        #debug(u'Trades::save {} {}'.format(self.m_quote.ticker(), self.m_quote.key()))
         if self.m_trades.keys():
             # do not save today trade
             ajd = date.today()
@@ -221,29 +221,29 @@ class Trades(object):
                 tr = self.m_trades[ajd]
                 del self.m_trades[ajd]
                 if itrade_config.verbose:
-                    info('Do not save ajd=%s:%s' % (ajd,tr))
+                    info(u'Do not save ajd={}:{}'.format(ajd, tr))
             else:
                 tr = None
 
             # save all trades (except today)
-            itrade_csv.write(outfile,os.path.join(itrade_config.dirCacheData,'%s.txt' % self.m_quote.key()),self.m_trades.values())
+            itrade_csv.write(outfile, os.path.join(itrade_config.dirCacheData, u'{}.txt'.format(self.m_quote.key())), self.m_trades.values())
             self.m_dirty = False
 
             # restore today trade
             if tr:
                 self.m_trades[ajd] = tr
 
-    def add(self,item,bImporting):
-        debug('Trades::add() before: %s : bImporting=%s' % (item,bImporting))
+    def add(self, item, bImporting):
+        debug(u'Trades::add() before: {} : bImporting={}'.format(item, bImporting))
 
         idx = gCal.index(Datation(item[1]).date())
-        if idx==-1:
-            debug('invalid date in: %s' % item)
+        if idx == -1:
+            debug(u'invalid date in: {}'.format(item))
             # __x need to save file
             self.m_dirty = True
             return False
 
-        tr = Trade(self,item[1],item[2],item[3],item[4],item[5],item[6],idx)
+        tr = Trade(self, item[1], item[2], item[3], item[4], item[5], item[6], idx)
 
         # NB: replace existing date ('cause live update)
         self.m_trades[tr.date()] = tr
@@ -255,7 +255,7 @@ class Trades(object):
         #self.m_date[idx] = tr.date()
 
         #if not bImporting:
-        #    print 'lasttrade: %s   new trade : %s' %(self.m_lasttrade.date(),tr.date())
+        #    print u'lasttrade: {}   new trade : {}'.format(self.m_lasttrade.date(), tr.date())
 
         # update firt and last trade
         if self.m_firsttrade is None:
@@ -270,10 +270,10 @@ class Trades(object):
         if bImporting:
             if self.m_lastimport is None:
                 self.m_lastimport = tr
-            if tr.date()>=self.m_lastimport.date():
+            if tr.date() >= self.m_lastimport.date():
                 self.m_lastimport = tr
 
-        #debug('Trades::add() after: %s' % tr);
+        #debug(u'Trades::add() after: {}'.format(tr))
         return True
 
     def lastimport(self):
@@ -282,7 +282,7 @@ class Trades(object):
     def lasttrade(self):
         return self.m_lasttrade
 
-    def prevtrade(self,d=None):
+    def prevtrade(self, d=None):
         if d is None:
             tc = self.m_lasttrade
         else:
@@ -294,18 +294,18 @@ class Trades(object):
             idx = tc.index()
             while idx > 0:
                 idx = idx - 1
-                if self.m_inClose[idx]>=0.0:
+                if self.m_inClose[idx] >= 0.0:
                     return self.m_trades[gCal.date(idx)]
         return None
 
     def firsttrade(self):
         return self.m_firsttrade
 
-    def trade(self,d):
+    def trade(self, d):
         if d in self.m_trades:
             return self.m_trades[d]
         else:
-            info('trades:trade() not found: %s' % d)
+            info(u'trades:trade() not found: {}'.format(d))
             return None
 
     def has_trade(self,idx):
@@ -421,18 +421,18 @@ class Trades(object):
             return 0.0
         return self.m_inClose[idx]
 
-    def candle(self,d):
+    def candle(self, d):
         if d in self.m_candles:
             return self.m_candles[d]
         else:
-            print('trades:candle() not found: %s' % d)
+            print(u'trades:candle() not found: {}'.format(d))
             return None
 
-    def compute(self,d=None):
+    def compute(self, d=None):
         # default date == last trade
         if d is None:
             if not self.m_lasttrade:
-                print('%s : no trade' % self.m_quote.key())
+                print(u'{} : no trade'.format(self.m_quote.key()))
                 return
             d = self.m_lasttrade.date()
 
@@ -443,7 +443,7 @@ class Trades(object):
             return False
 
         # create candle
-        ca = Candle(tr.nv_open(),tr.nv_high(),tr.nv_low(),tr.nv_close(),CANDLE_VOLUME_AVERAGE,CANDLE_VOLUME_TREND_NOTREND)
+        ca = Candle(tr.nv_open(), tr.nv_high(), tr.nv_low(), tr.nv_close(), CANDLE_VOLUME_AVERAGE, CANDLE_VOLUME_TREND_NOTREND)
         self.m_candles[tr.date()] = ca
 
         # get index given date
@@ -465,8 +465,8 @@ class Trades(object):
 
         return True
 
-    def compute_ma150(self,i):
-        #debug('%s: compute MA150 [%d]' % (self.m_quote.ticker(),i))
+    def compute_ma150(self, i):
+        #debug(u'{}: compute MA150 [{:d}]'.format(self.m_quote.ticker(), i))
         s = 0.0
         n = 0
         j = i
@@ -672,14 +672,14 @@ def main():
     quotes.loadMarket('EURONEXT')
     quotes.loadMarket('NASDAQ')
     quote = quotes.lookupTicker('AAPL', 'NASDAQ')
-    info('test1 %s' % quote)
+    info(u'test1 {}'.format(quote))
     quote = quotes.lookupTicker('OSI', 'EURONEXT')
-    info('test2 %s' % quote)
+    info(u'test2 {}'.format(quote))
     trades = Trades(quote)
     trades.load('import/Cortal-2005-01-07.txt')
     trades.load('import/Cortal-2005-01-14.txt')
     trades.load('import/Cortal-2005-01-21.txt')
-    info('test3 %s' % trades.trade(date(2005, 1, 4)))
+    info(u'test3 {}'.format(trades.trade(date(2005, 1, 4))))
 
 
 if __name__ == '__main__':

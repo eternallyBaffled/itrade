@@ -307,13 +307,13 @@ class Quote(object):
         # return PR in the default currency (i.e. portfolio currency)
         return self.nv_pru(box) * self.nv_number(box)
 
-    def sv_pru(self, box=QuoteType.both, fmt="{:.3f}", bDispCurrency=False):
+    def sv_pru(self, box=QuoteType.both, fmt="u{:.3f}", bDispCurrency=False):
         # return PRU in the default currency (i.e. portfolio currency)
         if bDispCurrency:
             sc = ''.join((' ', self.currency_symbol(), ' '))
         else:
             sc = ''
-        fmt = fmt + "{}"
+        fmt = fmt + u"{}"
         return fmt.format(self.nv_pru(box), sc)
 
     def sv_pr(self, box=QuoteType.both, fmt=u"{:.2f}", bDispCurrency=False):
@@ -363,7 +363,7 @@ class Quote(object):
     def sv_profitPercent(self, currency, box=QuoteType.both):
         # profit performance should be calculated after conversion to the portfolio currency !
         if self.nv_pr(box) > 0:
-            return "{:3.2f} %".format(self.nv_profitPercent(currency, box))
+            return u"{:3.2f} %".format(self.nv_profitPercent(currency, box))
         else:
             return "---.-- %"
 

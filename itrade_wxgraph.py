@@ -317,7 +317,7 @@ class GObject(object):
 # ============================================================================
 
 def fmtVolumeFunc(x, pos):
-    if pos%3 == 1:
+    if pos % 3 == 1:
         if abs(x) >= 1000:
             if abs(x) >= 1e6:
                 return '{:.1f} M'.format(x*1e-6)

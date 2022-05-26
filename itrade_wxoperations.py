@@ -1054,7 +1054,7 @@ class iTradeOperationsWindow(wx.Frame, iTrade_wxFrame, wxl.ColumnSorterMixin):
     def OnRightDown(self, event):
         self.x = event.GetX()
         self.y = event.GetY()
-        debug("x, y = %s" % str((self.x, self.y)))
+        debug(u"x, y = {}".format(str((self.x, self.y))))
         item, flags = self.m_list.HitTest((self.x, self.y))
         if flags & wx.LIST_HITTEST_ONITEM:
             pass
@@ -1067,15 +1067,15 @@ class iTradeOperationsWindow(wx.Frame, iTrade_wxFrame, wxl.ColumnSorterMixin):
         self.m_currentItem = event.m_itemIndex
         self.updateMenuItems()
         if self.m_currentItem >= 0:
-            debug("OnItemActivated: %s" % self.m_list.GetItemText(self.m_currentItem))
+            debug(u"OnItemActivated: {}".format(self.m_list.GetItemText(self.m_currentItem)))
             self.OnModify(event)
 
     def OnItemSelected(self, event):
         self.m_currentItem = event.m_itemIndex
         self.updateMenuItems()
         if self.m_currentItem >= 0:
-            debug("OnItemSelected: %s, %s, %s, %s\n" %
-                           (self.m_currentItem,
+            debug(u"OnItemSelected: {}, {}, {}, {}\n".format(
+                            self.m_currentItem,
                             self.m_list.GetItemText(self.m_currentItem),
                             self.getColumnText(self.m_currentItem, 1),
                             self.getColumnText(self.m_currentItem, 2)))
@@ -1085,7 +1085,7 @@ class iTradeOperationsWindow(wx.Frame, iTrade_wxFrame, wxl.ColumnSorterMixin):
         if self.m_currentItem < 0:
             inList = False
         else:
-            debug("OnRightClick %s\n" % self.m_list.GetItemText(self.m_currentItem))
+            debug(u"OnRightClick {}\n".format(self.m_list.GetItemText(self.m_currentItem)))
             inList = True
 
         # only do this part the first time so the events are only bound once
@@ -1119,7 +1119,7 @@ class iTradeOperationsWindow(wx.Frame, iTrade_wxFrame, wxl.ColumnSorterMixin):
 
         aRet = edit_iTradeOperation(self, self.m_port.getOperation(ind), OPERATION_MODIFY, currency=self.m_port.currency())
         if aRet:
-            info('OnModify: date=%s type=%s name=%s value=%12.2f expenses=%12.2f number=%d ref=%d' %(str(aRet[0]), aRet[1], aRet[2], aRet[3], aRet[4], aRet[5], aRet[6]))
+            info(u'OnModify: date={} type={} name={} value={:12.2f} expenses={:12.2f} number={:d} ref={:d}'.format(str(aRet[0]), aRet[1], aRet[2], aRet[3], aRet[4], aRet[5], aRet[6]))
             self.m_port.delOperation(ind)
             self.m_port.addOperation(aRet)
             self.RebuildList()
@@ -1131,15 +1131,15 @@ class iTradeOperationsWindow(wx.Frame, iTrade_wxFrame, wxl.ColumnSorterMixin):
 
         aRet = edit_iTradeOperation(self, self.m_port.getOperation(ind), OPERATION_DELETE, currency=self.m_port.currency())
         if aRet:
-            info('OnDelete: date=%s type=%s name=%s value=%12.2f expenses=%12.2f number=%d ref=%d' %(str(aRet[0]),aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6]))
+            info(u'OnDelete: date={} type={} name={} value={:12.2f} expenses={:12.2f} number={:d} ref={:d}'.format(str(aRet[0]), aRet[1], aRet[2], aRet[3], aRet[4], aRet[5], aRet[6]))
             self.m_port.delOperation(ind)
             self.RebuildList()
 
     def OnAdd(self, event):
         info("OnAdd")
-        aRet = edit_iTradeOperation(self,None,OPERATION_ADD,market=self.m_port.market(),currency=self.m_port.currency())
+        aRet = edit_iTradeOperation(self, None, OPERATION_ADD, market=self.m_port.market(), currency=self.m_port.currency())
         if aRet:
-            info('OnAdd: date=%s type=%s name=%s value=%12.2f expenses=%12.2f number=%d ref=%d' %(str(aRet[0]),aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6]))
+            info(u'OnAdd: date={} type={} name={} value={:12.2f} expenses={:12.2f} number={:d} ref={:d}'.format(str(aRet[0]), aRet[1], aRet[2], aRet[3], aRet[4], aRet[5], aRet[6]))
             self.m_port.addOperation(aRet)
             self.RebuildList()
 
@@ -1155,15 +1155,15 @@ class iTradeOperationsWindow(wx.Frame, iTrade_wxFrame, wxl.ColumnSorterMixin):
 # open_iTradeOperations
 # ============================================================================
 
-def open_iTradeOperations(win,port=None):
+def open_iTradeOperations(win, port=None):
     debug('open_iTradeOperations')
     if win and win.m_hOperation:
         # set focus
         win.m_hOperation.SetFocus()
     else:
-        if not isinstance(port,Portfolio):
+        if not isinstance(port, Portfolio):
             port = loadPortfolio()
-        frame = iTradeOperationsWindow(win, -1, "%s - %s" %(message('portfolio_title'),port.name()),port)
+        frame = iTradeOperationsWindow(win, -1, u"{} - {}".format(message('portfolio_title'), port.name()), port)
         if win:
             win.m_hOperation = frame
         frame.Show()
@@ -1176,8 +1176,8 @@ def open_iTradeOperations(win,port=None):
 #   market  default market (add only)
 # ============================================================================
 
-def edit_iTradeOperation(win,op,opmode,market=None,currency='EUR'):
-    with iTradeOperationDialog(win,op,opmode,market,currency) as dlg:
+def edit_iTradeOperation(win, op, opmode, market=None, currency='EUR'):
+    with iTradeOperationDialog(win, op, opmode, market, currency) as dlg:
         if dlg.ShowModal() == wx.ID_OK:
             aRet = dlg.aRet
         else:
@@ -1197,15 +1197,15 @@ def edit_iTradeOperation(win,op,opmode,market=None,currency='EUR'):
 # returns True if operation has been added
 # ============================================================================
 
-def add_iTradeOperation(win,portfolio,quote,type):
+def add_iTradeOperation(win, portfolio, quote, type):
     if quote:
         key = quote.key()
     else:
         key = None
-    op = Operation(d=datetime.now(),t=type,m=key,v='0.0',e='0.0',n='0',vat=portfolio.vat(),ref=-1)
-    aRet = edit_iTradeOperation(win,op,OPERATION_ADD,market=portfolio.market(),currency=portfolio.currency())
+    op = Operation(d=datetime.now(), t=type, m=key, v='0.0', e='0.0', n='0', vat=portfolio.vat(), ref=-1)
+    aRet = edit_iTradeOperation(win, op, OPERATION_ADD, market=portfolio.market(), currency=portfolio.currency())
     if aRet:
-        info('add_iTradeOperation: date=%s type=%s name=%s value=%12.2f expenses=%12.2f number=%d ref=%d' %(str(aRet[0]),aRet[1],aRet[2],aRet[3],aRet[4],aRet[5],aRet[6]))
+        info(u'add_iTradeOperation: date={} type={} name={} value={:12.2f} expenses={:12.2f} number={:d} ref={:d}'.format(str(aRet[0]), aRet[1], aRet[2], aRet[3], aRet[4], aRet[5], aRet[6]))
         portfolio.addOperation(aRet)
         portfolio.saveOperations()
         return True

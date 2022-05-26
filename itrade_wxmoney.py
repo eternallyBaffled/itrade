@@ -121,8 +121,8 @@ class iTradeComputePanel(wx.Window):
 
 class iTradeEvaluationPanel(wx.Window):
 
-    def __init__(self, parent, id, port):
-        wx.Window.__init__(self, parent, id)
+    def __init__(self, parent, id, port, *args, **kwargs):
+        wx.Window.__init__(self, parent, id, *args, **kwargs)
         self.m_parent = parent
         self.m_port = port
         self.m_currentItem = -1
@@ -137,7 +137,7 @@ class iTradeEvaluationPanel(wx.Window):
     # ---[ Default OnLinkClick handler ] --------------------------------------
 
     def OnLinkClick(self, event):
-        info('iTradeEvaluationPanel::OnLinkClick: %s - ignore it' % event.linkinfo[0])
+        info(u'iTradeEvaluationPanel::OnLinkClick: {} - ignore it'.format(event.linkinfo[0]))
         #clicked = event.linkinfo[0]
         pass
 
@@ -225,10 +225,10 @@ class iTradeEvaluationPanel(wx.Window):
         self.m_html.AppendToPage('<br>')
         self.m_html.AppendToPage('<table border="1" cellpadding="2" cellspacing="1" width="320" class="bright">')
         self.m_html.AppendToPage(' <tr align="right" class="T20">')
-        self.m_html.AppendToPage('   <td align="left" nowrap><b>%s</b></td>' % message('money_fiscal_year'))
-        self.m_html.AppendToPage('   <td align="right" class="percent" nowrap><b>%d</b></td>' % (date.today().year-2))
-        self.m_html.AppendToPage('   <td align="right" class="percent" nowrap><b>%d</b></td>' % (date.today().year-1))
-        self.m_html.AppendToPage('   <td align="right" class="percent" nowrap><b>%d</b></td>' % date.today().year)
+        self.m_html.AppendToPage(u'   <td align="left" nowrap><b>{}</b></td>'.format(message('money_fiscal_year')))
+        self.m_html.AppendToPage(u'   <td align="right" class="percent" nowrap><b>{:d}</b></td>'.format(date.today().year-2))
+        self.m_html.AppendToPage(u'   <td align="right" class="percent" nowrap><b>{:d}</b></td>'.format(date.today().year-1))
+        self.m_html.AppendToPage(u'   <td align="right" class="percent" nowrap><b>{:d}</b></td>'.format(date.today().year))
         self.m_html.AppendToPage(' </tr>')
 
         expenses0,transfer0,appr0,taxable0,taxes0 = self.compute(date.today().year-2)
@@ -236,34 +236,34 @@ class iTradeEvaluationPanel(wx.Window):
         expenses2,transfer2,appr2,taxable2,taxes2 = self.compute(date.today().year)
 
         self.m_html.AppendToPage(' <tr align="right" class="T20">')
-        self.m_html.AppendToPage('   <td align="left" nowrap>%s</td>' % message('money_expenses_vat'))
-        self.m_html.AppendToPage(u'   <td align="right" nowrap>%.2f %s</td>' % (expenses0,self.m_port.currency_symbol()))
-        self.m_html.AppendToPage(u'   <td align="right" nowrap>%.2f %s</td>' % (expenses1,self.m_port.currency_symbol()))
-        self.m_html.AppendToPage(u'   <td align="right" nowrap>%.2f %s</td>' % (expenses2,self.m_port.currency_symbol()))
+        self.m_html.AppendToPage(u'   <td align="left" nowrap>{}</td>'.format(message('money_expenses_vat')))
+        self.m_html.AppendToPage(u'   <td align="right" nowrap>{:.2f} {}</td>'.format(expenses0, self.m_port.currency_symbol()))
+        self.m_html.AppendToPage(u'   <td align="right" nowrap>{:.2f} {}</td>'.format(expenses1, self.m_port.currency_symbol()))
+        self.m_html.AppendToPage(u'   <td align="right" nowrap>{:.2f} {}</td>'.format(expenses2, self.m_port.currency_symbol()))
         self.m_html.AppendToPage(' </tr>')
         self.m_html.AppendToPage(' <tr align="right" class="T20">')
-        self.m_html.AppendToPage('   <td align="left" nowrap>%s</td>' % message('money_total_of_transfers'))
-        self.m_html.AppendToPage(u'   <td align="right" nowrap>%.2f %s</td>' % (transfer0,self.m_port.currency_symbol()))
-        self.m_html.AppendToPage(u'   <td align="right" nowrap>%.2f %s</td>' % (transfer1,self.m_port.currency_symbol()))
-        self.m_html.AppendToPage(u'   <td align="right" nowrap>%.2f %s</td>' % (transfer2,self.m_port.currency_symbol()))
+        self.m_html.AppendToPage(u'   <td align="left" nowrap>{}</td>'.format(message('money_total_of_transfers')))
+        self.m_html.AppendToPage(u'   <td align="right" nowrap>{:.2f} {}</td>'.format(transfer0, self.m_port.currency_symbol()))
+        self.m_html.AppendToPage(u'   <td align="right" nowrap>{:.2f} {}</td>'.format(transfer1, self.m_port.currency_symbol()))
+        self.m_html.AppendToPage(u'   <td align="right" nowrap>{:.2f} {}</td>'.format(transfer2, self.m_port.currency_symbol()))
         self.m_html.AppendToPage(' </tr>')
         self.m_html.AppendToPage(' <tr align="right" class="T20">')
-        self.m_html.AppendToPage('   <td align="left" nowrap>%s</td>' % message('money_financial_appreciation'))
-        self.m_html.AppendToPage(u'   <td align="right" nowrap>%.2f %s</td>' % (appr0,self.m_port.currency_symbol()))
-        self.m_html.AppendToPage(u'   <td align="right" nowrap>%.2f %s</td>' % (appr1,self.m_port.currency_symbol()))
-        self.m_html.AppendToPage(u'   <td align="right" nowrap>%.2f %s</td>' % (appr2,self.m_port.currency_symbol()))
+        self.m_html.AppendToPage(u'   <td align="left" nowrap>{}</td>'.format(message('money_financial_appreciation')))
+        self.m_html.AppendToPage(u'   <td align="right" nowrap>{:.2f} {}</td>'.format(appr0, self.m_port.currency_symbol()))
+        self.m_html.AppendToPage(u'   <td align="right" nowrap>{:.2f} {}</td>'.format(appr1, self.m_port.currency_symbol()))
+        self.m_html.AppendToPage(u'   <td align="right" nowrap>{:.2f} {}</td>'.format(appr2, self.m_port.currency_symbol()))
         self.m_html.AppendToPage(' </tr>')
         self.m_html.AppendToPage(' <tr align="right" class="T20">')
-        self.m_html.AppendToPage('   <td align="left" nowrap>%s</td>' % message('money_taxable_amounts'))
-        self.m_html.AppendToPage(u'   <td align="right" nowrap>%.2f %s</td>' % (taxable0,self.m_port.currency_symbol()))
-        self.m_html.AppendToPage(u'   <td align="right" nowrap>%.2f %s</td>' % (taxable1,self.m_port.currency_symbol()))
-        self.m_html.AppendToPage(u'   <td align="right" nowrap>%.2f %s</td>' % (taxable2,self.m_port.currency_symbol()))
+        self.m_html.AppendToPage(u'   <td align="left" nowrap>{}</td>'.format(message('money_taxable_amounts')))
+        self.m_html.AppendToPage(u'   <td align="right" nowrap>{:.2f} {}</td>'.format(taxable0, self.m_port.currency_symbol()))
+        self.m_html.AppendToPage(u'   <td align="right" nowrap>{:.2f} {}</td>'.format(taxable1, self.m_port.currency_symbol()))
+        self.m_html.AppendToPage(u'   <td align="right" nowrap>{:.2f} {}</td>'.format(taxable2, self.m_port.currency_symbol()))
         self.m_html.AppendToPage(' </tr>')
         self.m_html.AppendToPage(' <tr align="right" class="T20">')
-        self.m_html.AppendToPage('   <td align="left" nowrap>%s</td>' % message('money_amount_of_taxes'))
-        self.m_html.AppendToPage(u'   <td align="right" nowrap>%.2f %s</td>' % (taxes0,self.m_port.currency_symbol()))
-        self.m_html.AppendToPage(u'   <td align="right" nowrap>%.2f %s</td>' % (taxes1,self.m_port.currency_symbol()))
-        self.m_html.AppendToPage(u'   <td align="right" nowrap>%.2f %s</td>' % (taxes2,self.m_port.currency_symbol()))
+        self.m_html.AppendToPage(u'   <td align="left" nowrap>{}</td>'.format(message('money_amount_of_taxes')))
+        self.m_html.AppendToPage(u'   <td align="right" nowrap>{:.2f} {}</td>'.format(taxes0, self.m_port.currency_symbol()))
+        self.m_html.AppendToPage(u'   <td align="right" nowrap>{:.2f} {}</td>'.format(taxes1, self.m_port.currency_symbol()))
+        self.m_html.AppendToPage(u'   <td align="right" nowrap>{:.2f} {}</td>'.format(taxes2, self.m_port.currency_symbol()))
         self.m_html.AppendToPage(' </tr>')
         self.m_html.AppendToPage('</table>')
         self.m_html.AppendToPage("</body></html>")
@@ -279,8 +279,8 @@ class iTradeMoneyNotebookWindow(wx.Notebook):
     ID_PAGE_EVALCHART = 2
     ID_PAGE_MONEY = 3
 
-    def __init__(self, parent, id, page, port, quote):
-        wx.Notebook.__init__(self, parent, id=id, pos=wx.DefaultPosition, style=wx.SIMPLE_BORDER|wx.NB_TOP)
+    def __init__(self, parent, id, page, port, quote, *args, **kwargs):
+        wx.Notebook.__init__(self, parent, id=id, pos=wx.DefaultPosition, style=wx.SIMPLE_BORDER|wx.NB_TOP, *args, **kwargs)
         self.m_port = port
         self.m_quote = quote
         self.init()
@@ -310,7 +310,7 @@ class iTradeMoneyNotebookWindow(wx.Notebook):
         old = event.GetOldSelection()
         new = event.GetSelection()
         sel = self.GetSelection()
-        info('OnPageChanged,  old:%d, new:%d, sel:%d\n' % (old, new, sel))
+        info(u'OnPageChanged,  old:{:d}, new:{:d}, sel:{:d}\n'.format(old, new, sel))
         if old != new:
             self.win[new].refresh()
         event.Skip()
@@ -319,7 +319,7 @@ class iTradeMoneyNotebookWindow(wx.Notebook):
         old = event.GetOldSelection()
         new = event.GetSelection()
         sel = self.GetSelection()
-        info('OnPageChanging, old:%d, new:%d, sel:%d\n' % (old, new, sel))
+        info(u'OnPageChanging, old:{:d}, new:{:d}, sel:{:d}\n'.format(old, new, sel))
         event.Skip()
 
 # ============================================================================
@@ -327,9 +327,9 @@ class iTradeMoneyNotebookWindow(wx.Notebook):
 # ============================================================================
 
 class iTradeMoneyWindow(wx.Frame, iTrade_wxFrame):
-    def __init__(self, parent, id, title, page, port, quote):
-        wx.Frame.__init__(self, parent=None, id=id, title=title, size=(640,480), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE, name='money')
-        iTrade_wxFrame.__init__(self, parent=None, name='money')
+    def __init__(self, parent, id, title, page, port, quote, *args, **kwargs):
+        wx.Frame.__init__(self, parent=None, id=id, title=title, size=(640,480), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE, name='money', *args, **kwargs)
+        iTrade_wxFrame.__init__(self, parent=None, name='money', *args, **kwargs)
         self.m_port = port
         self.m_quote = quote
         self.m_page = page
@@ -359,7 +359,7 @@ def open_iTradeMoney(win, page=0, port=None, quote=None):
     else:
         if not isinstance(port,  Portfolio):
             port = loadPortfolio()
-        frame = iTradeMoneyWindow(win, wx.ID_ANY, "%s - %s" % (message('money_title'), port.name()), page, port, quote)
+        frame = iTradeMoneyWindow(win, wx.ID_ANY, u"{} - {}".format(message('money_title'), port.name()), page, port, quote)
         if win:
             win.m_hMoney = frame
         frame.Show()

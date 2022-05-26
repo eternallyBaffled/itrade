@@ -96,7 +96,7 @@ class TradingMatrix(object):
 
     # save 'matrix.txt'
     def save(self, fn):
-        itrade_csv.write(None, os.path.join(itrade_config.dirUserData, u'%s.matrix.txt'.format(fn)), self.m_quotes.values())
+        itrade_csv.write(None, os.path.join(itrade_config.dirUserData, u'{}.matrix.txt'.format(fn)), self.m_quotes.values())
 
     # save all trades of the matrix
     def saveTrades(self):
