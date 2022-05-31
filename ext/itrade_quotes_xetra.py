@@ -60,7 +60,7 @@ def removeCarriage(s):
 
 
 def splitLines(buf):
-    lines = string.split(buf, '\n')
+    lines = buf.split('\n')
     lines = filter(lambda x: x, lines)
 
     lines = [removeCarriage(l) for l in lines]
@@ -91,7 +91,7 @@ def Import_ListOfQuotes_Xetra(quotes, market='FRANKFURT EXCHANGE', dlg=None, x=0
     lines = splitLines(data)
     n = 0
     for line in lines[6:]:
-        data = string.split(line, ';')    # ; delimited
+        data = line.split(';')  # ; delimited
 
         if len(data) > 5:
             if data[8] == 'EQUITIES FFM2':

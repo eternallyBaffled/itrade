@@ -59,7 +59,7 @@ def removeCarriage(s):
         return s
 
 def splitLines(buf):
-    lines = string.split(buf, '\r\n')
+    lines = buf.split('\r\n')
     lines = filter(lambda x: x, lines)
 
     lines = [removeCarriage(l) for l in lines]
@@ -84,10 +84,10 @@ def Import_ListOfQuotes_BSE(quotes, market='BOMBAY EXCHANGE', dlg=None, x=0):
     isin = ''
 
     for letter in select_alpha:
-        url = starturl+letter
+        url = starturl + letter
 
         try:
-            data=connection.getDataFromUrl(url)
+            data = connection.getDataFromUrl(url)
         except Exception:
             debug('Import_ListOfQuotes_BSE unable to connect :-(')
             return False
@@ -102,13 +102,13 @@ def Import_ListOfQuotes_BSE(quotes, market='BOMBAY EXCHANGE', dlg=None, x=0):
                 name = name.upper()
                 ticker = line[(line.find('<u>')+3):(line.find ('</u>'))]
 
-                if 'FUND' in name or 'MATURITY' in name :
+                if 'FUND' in name or 'MATURITY' in name:
                     pass
-                if '>#<' in line or '>@</' in line :
+                if '>#<' in line or '>@</' in line:
                     #Suspended due to penal reasons
                     #Suspended due to procedural reasons
                     pass
-                else :
+                else:
                     #print name,ticker
                     n = n + 1
                     #Partial activation of the Progressbar

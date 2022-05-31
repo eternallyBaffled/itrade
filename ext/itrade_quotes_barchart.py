@@ -65,7 +65,7 @@ def Import_ListOfQuotes_BARCHART(quotes, market='TOTRONTO EXCHANGE', dlg=None, x
                                connectionTimeout=itrade_config.connectionTimeout
                                )
 
-    if market=='TORONTO EXCHANGE' or market=='TORONTO VENTURE':
+    if market == 'TORONTO EXCHANGE' or market == 'TORONTO VENTURE':
         url = u'https://www.barchart.com/lookup.php?field=name&string={}&search=begins&type[]=CAN&_dtp1=0'
 
         m_currency = 'CAD'
@@ -79,10 +79,10 @@ def Import_ListOfQuotes_BARCHART(quotes, market='TOTRONTO EXCHANGE', dlg=None, x
         return False
 
     def splitLines(buf):
-        lines = string.split(buf, '<tr id="dt1_')
-        lines = filter(lambda x:x, lines)
+        lines = buf.split('<tr id="dt1_')
+        lines = filter(lambda x: x, lines)
         def removeCarriage(s):
-            if s[-1]=='\r':
+            if s[-1] == '\r':
                 return s[:-1]
             else:
                 return s

@@ -128,7 +128,7 @@ class LiveUpdate_Euronext(object):
     # ---[ code to get data ] ---
 
     def splitLines(self, buf):
-        lines = string.split(buf, '\n')
+        lines = buf.split('\n')
         lines = filter(lambda x: x, lines)
         def removeCarriage(s):
             if s[-1] == '\r':
@@ -138,8 +138,8 @@ class LiveUpdate_Euronext(object):
         lines = [removeCarriage(l) for l in lines]
         return lines
 
-    def euronextDate(self,date):
-        sp = string.split(date,' ')
+    def euronextDate(self, date):
+        sp = date.split(' ')
         #print 'euronextDate:',sp
 
         # Date part is easy
@@ -164,23 +164,24 @@ class LiveUpdate_Euronext(object):
 
         return u"{:d}:{:02d}".format(mdatetime.hour, mdatetime.minute)
 
-    def parseFValue(self,d):
-        val = string.split(d,',')
+    def parseFValue(self, d):
+        val = d.split(',')
         ret = ''
         for val in val:
-            ret = ret+val
+            ret = ret + val
         return float(ret)
 
-    def parseLValue(self,d):
-        if d=='-': return 0
+    def parseLValue(self, d):
+        if d == '-':
+            return 0
         if ',' in d:
             s = ','
         else:
             s = '\xA0'
-        val = string.split(d,s)
+        val = d.split(s)
         ret = ''
         for val in val:
-            ret = ret+val
+            ret = ret + val
         return long(ret)
 
     def getdata(self, quote):
@@ -377,36 +378,36 @@ class LiveUpdate_Euronext(object):
 gLiveEuronext = LiveUpdate_Euronext('euronext')
 gLiveAlternext = LiveUpdate_Euronext('alternext')
 
-gLiveRegistry.register('EURONEXT','PAR',QList.bonds,QTag.differed,gLiveEuronext,bDefault=True)
-gLiveRegistry.register('EURONEXT','BRU',QList.bonds,QTag.differed,gLiveEuronext,bDefault=True)
-gLiveRegistry.register('EURONEXT','AMS',QList.bonds,QTag.differed,gLiveEuronext,bDefault=True)
-gLiveRegistry.register('EURONEXT','LIS',QList.bonds,QTag.differed,gLiveEuronext,bDefault=True)
+gLiveRegistry.register('EURONEXT', 'PAR', QList.bonds, QTag.differed, gLiveEuronext, bDefault=True)
+gLiveRegistry.register('EURONEXT', 'BRU', QList.bonds, QTag.differed, gLiveEuronext, bDefault=True)
+gLiveRegistry.register('EURONEXT', 'AMS', QList.bonds, QTag.differed, gLiveEuronext, bDefault=True)
+gLiveRegistry.register('EURONEXT', 'LIS', QList.bonds, QTag.differed, gLiveEuronext, bDefault=True)
 
-gLiveRegistry.register('EURONEXT','PAR',QList.indices,QTag.differed,gLiveEuronext,bDefault=True)
-gLiveRegistry.register('EURONEXT','AMS',QList.indices,QTag.differed,gLiveEuronext,bDefault=True)
-gLiveRegistry.register('EURONEXT','BRU',QList.indices,QTag.differed,gLiveEuronext,bDefault=True)
-gLiveRegistry.register('EURONEXT','LIS',QList.indices,QTag.differed,gLiveEuronext,bDefault=True)
-
-
-gLiveRegistry.register('EURONEXT','PAR',QList.any,QTag.differed,gLiveEuronext,bDefault=False)
-gLiveRegistry.register('EURONEXT','BRU',QList.any,QTag.differed,gLiveEuronext,bDefault=False)
-gLiveRegistry.register('EURONEXT','AMS',QList.any,QTag.differed,gLiveEuronext,bDefault=False)
-gLiveRegistry.register('EURONEXT','LIS',QList.any,QTag.differed,gLiveEuronext,bDefault=False)
+gLiveRegistry.register('EURONEXT', 'PAR', QList.indices, QTag.differed, gLiveEuronext, bDefault=True)
+gLiveRegistry.register('EURONEXT', 'AMS', QList.indices, QTag.differed, gLiveEuronext, bDefault=True)
+gLiveRegistry.register('EURONEXT', 'BRU', QList.indices, QTag.differed, gLiveEuronext, bDefault=True)
+gLiveRegistry.register('EURONEXT', 'LIS', QList.indices, QTag.differed, gLiveEuronext, bDefault=True)
 
 
-gLiveRegistry.register('ALTERNEXT','PAR',QList.any,QTag.differed,gLiveAlternext,bDefault=False)
-gLiveRegistry.register('ALTERNEXT','BRU',QList.any,QTag.differed,gLiveAlternext,bDefault=False)
-gLiveRegistry.register('ALTERNEXT','AMS',QList.any,QTag.differed,gLiveAlternext,bDefault=False)
-gLiveRegistry.register('ALTERNEXT','LIS',QList.any,QTag.differed,gLiveAlternext,bDefault=False)
+gLiveRegistry.register('EURONEXT', 'PAR', QList.any, QTag.differed, gLiveEuronext, bDefault=False)
+gLiveRegistry.register('EURONEXT', 'BRU', QList.any, QTag.differed, gLiveEuronext, bDefault=False)
+gLiveRegistry.register('EURONEXT', 'AMS', QList.any, QTag.differed, gLiveEuronext, bDefault=False)
+gLiveRegistry.register('EURONEXT', 'LIS', QList.any, QTag.differed, gLiveEuronext, bDefault=False)
 
-gLiveRegistry.register('ALTERNEXT','PAR',QList.indices,QTag.differed,gLiveAlternext,bDefault=True)
-gLiveRegistry.register('ALTERNEXT','BRU',QList.indices,QTag.differed,gLiveAlternext,bDefault=True)
-gLiveRegistry.register('ALTERNEXT','AMS',QList.indices,QTag.differed,gLiveAlternext,bDefault=True)
-gLiveRegistry.register('ALTERNEXT','LIS',QList.indices,QTag.differed,gLiveAlternext,bDefault=True)
 
-gLiveRegistry.register('PARIS MARCHE LIBRE','PAR',QList.any,QTag.differed,gLiveEuronext,bDefault=False)
+gLiveRegistry.register('ALTERNEXT', 'PAR', QList.any, QTag.differed, gLiveAlternext, bDefault=False)
+gLiveRegistry.register('ALTERNEXT', 'BRU', QList.any, QTag.differed, gLiveAlternext, bDefault=False)
+gLiveRegistry.register('ALTERNEXT', 'AMS', QList.any, QTag.differed, gLiveAlternext, bDefault=False)
+gLiveRegistry.register('ALTERNEXT', 'LIS', QList.any, QTag.differed, gLiveAlternext, bDefault=False)
 
-gLiveRegistry.register('BRUXELLES MARCHE LIBRE','BRU',QList.any,QTag.differed,gLiveEuronext,bDefault=False)
+gLiveRegistry.register('ALTERNEXT', 'PAR', QList.indices, QTag.differed, gLiveAlternext, bDefault=True)
+gLiveRegistry.register('ALTERNEXT', 'BRU', QList.indices, QTag.differed, gLiveAlternext, bDefault=True)
+gLiveRegistry.register('ALTERNEXT', 'AMS', QList.indices, QTag.differed, gLiveAlternext, bDefault=True)
+gLiveRegistry.register('ALTERNEXT', 'LIS', QList.indices, QTag.differed, gLiveAlternext, bDefault=True)
+
+gLiveRegistry.register('PARIS MARCHE LIBRE', 'PAR', QList.any, QTag.differed, gLiveEuronext, bDefault=False)
+
+gLiveRegistry.register('BRUXELLES MARCHE LIBRE', 'BRU', QList.any, QTag.differed, gLiveEuronext, bDefault=False)
 
 # ============================================================================
 # Test ME

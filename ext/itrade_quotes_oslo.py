@@ -60,21 +60,21 @@ def removeCarriage(s):
 
 
 def splitLines(buf):
-    lines = string.split(buf, 'Overview?')
+    lines = buf.split('Overview?')
     lines = filter(lambda x: x, lines)
 
     lines = [removeCarriage(l) for l in lines]
     return lines
 
 
-def Import_ListOfQuotes_OSLO(quotes,market='OSLO EXCHANGE',dlg=None,x=0):
+def Import_ListOfQuotes_OSLO(quotes, market='OSLO EXCHANGE', dlg=None, x=0):
     if itrade_config.verbose:
-        print('Update %s list of symbols'.format(market))
-    connection=ITradeConnection(cookies=None,
+        print(u'Update {} list of symbols'.format(market))
+    connection = ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
 
-    if market=='OSLO EXCHANGE':
+    if market == 'OSLO EXCHANGE':
         starturl = 'https://www.oslobors.no/markedsaktivitet/stockIsinList?newt_isinList-stock_exch=ose&newt_isinList-stock_sort=aLONG_NAME&newt_isinList-stock_page='
         endurl = '&newt__menuCtx=1.12'
     else:
@@ -83,13 +83,13 @@ def Import_ListOfQuotes_OSLO(quotes,market='OSLO EXCHANGE',dlg=None,x=0):
     nlines = 0
     endpage = 8
 
-    select_page = ['1','2','3','4','5','6','7','8']
+    select_page = ['1', '2', '3', '4', '5', '6', '7', '8']
 
     for page in select_page:
         url = starturl + page + endurl
 
         try:
-            data=connection.getDataFromUrl(url)
+            data = connection.getDataFromUrl(url)
         except Exception:
             debug('Import_ListOfQuotes_OSLO:unable to connect :-(')
             return False
@@ -107,14 +107,15 @@ def Import_ListOfQuotes_OSLO(quotes,market='OSLO EXCHANGE',dlg=None,x=0):
 
                 ticker = line[line.index('newt__ticker=')+13:line.index('" title="">')]
 
-                if ticker == 'SAS+NOK': ticker = 'SAS'
+                if ticker == 'SAS+NOK':
+                    ticker = 'SAS'
 
                 name = line[line.index(' title="">')+10:line.index('</a></td><td')]
 
-                name = name.replace('&amp;','&')
-                name = name.replace('ö','o')
-                name = name.replace('æ','ae')
-                name = name.replace('ø','o')
+                name = name.replace('&amp;', '&')
+                name = name.replace('ö', 'o')
+                name = name.replace('æ', 'ae')
+                name = name.replace('ø', 'o')
 
                 isin = line[line.index('class="c2">')+11:line.index('</td><td class="c3 o l">')]
 
@@ -145,7 +146,7 @@ if __name__ == '__main__':
 
     from itrade_quotes import quotes
 
-    Import_ListOfQuotes_OSLO(quotes,'OSLO EXCHANGE')
+    Import_ListOfQuotes_OSLO(quotes, 'OSLO EXCHANGE')
     quotes.saveListOfQuotes()
 
 # ============================================================================

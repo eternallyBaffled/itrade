@@ -60,7 +60,7 @@ def removeCarriage(s):
 
 
 def splitLines(buf):
-    lines = string.split(buf, '\n')
+    lines = buf.split('\n')
     lines = filter(lambda x: x, lines)
 
     lines = [removeCarriage(l) for l in lines]
@@ -113,22 +113,22 @@ def Import_ListOfQuotes_IE(quotes, market='IRISH EXCHANGE', dlg=None, x=0):
                 data = data.upper()
 
                 # fill the next field
-                if sedol=='':
+                if sedol == '':
                     sedol = data
-                elif isin=='':
+                elif isin == '':
                     isin = data
-                elif name=='':
+                elif name == '':
                     name = data
-                elif inst=='':
+                elif inst == '':
                     inst = data
                 else:
                     tick = data
 
                     # ok to proceed
-                    name = name.replace('&AMP;','&')
-                    name = name.replace(',',' ')
+                    name = name.replace('&AMP;', '&')
+                    name = name.replace(',', ' ')
 
-                    if inst[0:3]=='ORD':  # only want ordinary shares
+                    if inst[0:3] == 'ORD':  # only want ordinary shares
                         quotes.addQuote(isin=isin, name=name,
                         ticker=tick, market='IRISH EXCHANGE', currency='EUR', place='DUB', country='IE')
                         count = count + 1

@@ -116,7 +116,7 @@ class LiveUpdate_yahoo(object):
     # ---[ code to get data ] ---
     def yahooDate (self, date):
         # Date part is easy.
-        sdate = string.split(date[1:-1], '/')
+        sdate = date[1:-1].split('/')
         month = int(sdate[0])
         day = int(sdate[1])
         year = int(sdate[2])
@@ -191,7 +191,7 @@ class LiveUpdate_yahoo(object):
                 info(u'unknown {} quote (400 Bad Request) from Yahoo'.format(quote.ticker()))
             return None
 
-        sdata = string.split(data, ',')
+        sdata = data.split(',')
         if len (sdata) < 9:
             if itrade_config.verbose:
                 info(u'invalid data (bad answer length) for {} quote'.format(quote.ticker()))

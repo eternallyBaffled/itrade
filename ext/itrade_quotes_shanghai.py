@@ -62,7 +62,7 @@ def removeCarriage(s):
 
 
 def splitLines(buf):
-    lines = string.split(buf, '\n')
+    lines = buf.split('\n')
     lines = filter(lambda x: x, lines)
 
     lines = [removeCarriage(l) for l in lines]
@@ -72,7 +72,7 @@ def splitLines(buf):
 def Import_ListOfQuotes_SHG(quotes, market='SHANGHAI EXCHANGE', dlg=None, x=0):
     if itrade_config.verbose:
         print(u'Update {} list of symbols'.format(market))
-    connection=ITradeConnection(cookies=None,
+    connection = ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
 
@@ -83,8 +83,8 @@ def Import_ListOfQuotes_SHG(quotes, market='SHANGHAI EXCHANGE', dlg=None, x=0):
     cursor = 1
     count = 0
 
-    for cursor in range(1,921,20):
-        url = urlA+str(cursor)
+    for cursor in range(1, 921, 20):
+        url = urlA + str(cursor)
 
         info(u'Import_ListOfQuotes_SSE A SHARE:connect to {}'.format(url))
         req = urllib2.Request(url)
@@ -106,13 +106,13 @@ def Import_ListOfQuotes_SHG(quotes, market='SHANGHAI EXCHANGE', dlg=None, x=0):
                 ticker = line[(line.find(ch)+len(ch)): line.find('&PRODUCTID=')]
                 name = line[(line.find('">')+2): line.find('</a>&nbsp;</TD>')]
                 if ticker == '600717': name = 'TIANJIN PORT CO. LTD.'
-                name = name.replace('&amp;','&')
-                name = name.replace('&amp;nbsp;','& ')
-                name = name.replace('&nbsp;','')
-                name = name.replace(',',' ')
-                name = name.replace(';',' ')
-                name = name.replace('£¦','&')
-                name = name.replace('£­','-')
+                name = name.replace('&amp;', '&')
+                name = name.replace('&amp;nbsp;', '& ')
+                name = name.replace('&nbsp;', '')
+                name = name.replace(',', ' ')
+                name = name.replace(';', ' ')
+                name = name.replace('£¦', '&')
+                name = name.replace('£­', '-')
                 name = name.replace('£¬',' ')
                 name = name.replace('£¨',' (')
                 name = name.replace('£©',' )')
@@ -172,31 +172,31 @@ def Import_ListOfQuotes_SHG(quotes, market='SHANGHAI EXCHANGE', dlg=None, x=0):
     n = 1
     i = 0
 
-    dlg.Update(x,'SHANGHAI B SHARE')
+    dlg.Update(x, 'SHANGHAI B SHARE')
     for line in lines:
         if '<td class="table_title2" bgcolor="#337fb2"  >Post Code</td>' in line : n = 0
-        if n == 0 :
+        if n == 0:
             if ('<td class="table3" bgcolor="#dbedf8"  > ' in line or
                '<td class="table3" bgcolor="white"  > ' in line):
                 i = i + 1
-                ch = line[(line.find('>')+2):(line.find ('</td>'))]
-                if i == 2 :
+                ch = line[(line.find('>')+2):(line.find('</td>'))]
+                if i == 2:
                     ticker = ch
-                elif i == 3 :
+                elif i == 3:
                     name = ch
-                elif i == 5 :
+                elif i == 5:
                     i = 0
-                    name = name.replace('&nbsp;','')
-                    name = name.replace('&amp;','&')
-                    name = name.replace(',','')
+                    name = name.replace('&nbsp;', '')
+                    name = name.replace('&amp;', '&')
+                    name = name.replace(',', '')
 
                     count = count + 1
 
-                    quotes.addQuote(isin='',name=name,
-                            ticker=ticker,market='SHANGHAI EXCHANGE',
-                            currency='CNY',place='SHG',country='CN')
+                    quotes.addQuote(isin='', name=name,
+                            ticker=ticker, market='SHANGHAI EXCHANGE',
+                            currency='CNY', place='SHG', country='CN')
             elif i == 3:
-                name = name +' '+ line.strip()
+                name = name + ' ' + line.strip()
                 if name.find('</td>'):
                     name = name[:-5]
 
@@ -210,7 +210,7 @@ def Import_ListOfQuotes_SHG(quotes, market='SHANGHAI EXCHANGE', dlg=None, x=0):
 # Export me
 # ============================================================================
 
-gListSymbolRegistry.register('SHANGHAI EXCHANGE','SHG',QList.any,QTag.list,Import_ListOfQuotes_SHG)
+gListSymbolRegistry.register('SHANGHAI EXCHANGE', 'SHG', QList.any, QTag.list, Import_ListOfQuotes_SHG)
 
 # ============================================================================
 # Test ME
@@ -221,7 +221,7 @@ if __name__ == '__main__':
 
     from itrade_quotes import quotes
 
-    Import_ListOfQuotes_SHG(quotes,'SHANGHAI EXCHANGE')
+    Import_ListOfQuotes_SHG(quotes, 'SHANGHAI EXCHANGE')
     quotes.saveListOfQuotes()
 
 # ============================================================================

@@ -50,7 +50,7 @@ from itrade_logging import setLevel, debug, info
 from itrade_quotes import quotes, Quote
 from itrade_defs import QList, QTag
 from itrade_ext import gLiveRegistry
-from itrade_market import yahooTicker,yahooUrlJapan,convertConnectorTimeToPlaceTime
+from itrade_market import yahooTicker, yahooUrlJapan, convertConnectorTimeToPlaceTime
 from itrade_connection import ITradeConnection
 
 # ============================================================================
@@ -59,7 +59,7 @@ from itrade_connection import ITradeConnection
 # ============================================================================
 
 class LiveUpdate_yahoojp(object):
-    def __init__(self,market='TOKYO EXCHANGE'):
+    def __init__(self, market='TOKYO EXCHANGE'):
         debug('LiveUpdate_yahoojp:__init__')
         self.m_connected = False
         self.m_livelock = thread.allocate_lock()
@@ -69,19 +69,19 @@ class LiveUpdate_yahoojp(object):
         self.m_lastclock = 0
         self.m_lastdate = "20070101"
 
-        self.m_connection = ITradeConnection(cookies = None,
-                                           proxy = itrade_config.proxyHostname,
-                                           proxyAuth = itrade_config.proxyAuthentication,
-                                           connectionTimeout = itrade_config.connectionTimeout
+        self.m_connection = ITradeConnection(cookies=None,
+                                           proxy=itrade_config.proxyHostname,
+                                           proxyAuth=itrade_config.proxyAuthentication,
+                                           connectionTimeout=itrade_config.connectionTimeout
                                            )
 
 
-    def splitLines(self,buf):
-        lines = string.split(buf, '\n')
-        lines = filter(lambda x:x, lines)
+    def splitLines(self, buf):
+        lines = buf.split('\n')
+        lines = filter(lambda x: x, lines)
 
         def removeCarriage(s):
-            if s[-1]=='\r':
+            if s[-1] == '\r':
                 return s[:-1]
             else:
                 return s
@@ -132,7 +132,7 @@ class LiveUpdate_yahoojp(object):
 
     def yahooDate (self, date):
         # Date part is easy.
-        sdate = string.split(date[1:-1], '/')
+        sdate = date[1:-1].split('/')
         month = int(sdate[0])
         day = int(sdate[1])
         year = int(sdate[2])
@@ -272,7 +272,7 @@ class LiveUpdate_yahoojp(object):
 
                         break
 
-            sdata = string.split(data, ',')
+            sdata = data.split(',')
 
             if len(sdata) < 9:
                 if itrade_config.verbose:

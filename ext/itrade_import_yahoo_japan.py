@@ -87,17 +87,17 @@ class ImportYahoojp(object):
         return (d.year, d.month, d.day)
 
     def splitLines(self, buf):
-        lines = string.split(buf, '\n')
-        lines = filter(lambda x:x, lines)
+        lines = buf.split('\n')
+        lines = filter(lambda x: x, lines)
         def removeCarriage(s):
-            if s[-1]=='\r':
+            if s[-1] == '\r':
                 return s[:-1]
             else:
                 return s
         lines = [removeCarriage(l) for l in lines]
         return lines
 
-    def getdata(self,quote,datedebut=None,datefin=None):
+    def getdata(self, quote, datedebut=None, datefin=None):
         # specific numTradeYears
         itrade_config.numTradeYears = 2
 
@@ -198,33 +198,33 @@ class ImportYahoojp(object):
 
                             if ss == '998405' or ss == '998407' or ss =='23337' :
                                 volume = '0'
-                                open = open.replace(',','')
-                                high = high.replace(',','')
-                                low = low.replace(',','')
-                                close = close.replace(',','')
+                                open = open.replace(',', '')
+                                high = high.replace(',', '')
+                                low = low.replace(',', '')
+                                close = close.replace(',', '')
                                 adjustclose = close
                                 i = 0
                                 n = 0
-                                ligne = ','.join([sdate,open,high,low,close,volume,adjustclose])
+                                ligne = ','.join([sdate, open, high, low, close, volume, adjustclose])
                                 # print(ligne)
                                 lines.append(ligne)
 
-                        elif i == 6 :
+                        elif i == 6:
                             volume = data
-                            volume = volume.replace(',','')
-                        elif i == 7 :
+                            volume = volume.replace(',', '')
+                        elif i == 7:
                             i = 0
                             n = 0
                             adjustclose = data
-                            adjustclose = adjustclose.replace(',','')
-                            ligne = ','.join([date,open,high,low,close,volume,adjustclose])
+                            adjustclose = adjustclose.replace(',', '')
+                            ligne = ','.join([date, open, high, low, close, volume, adjustclose])
                             #print ligne
                             lines.append(ligne)
             if q == 0:
                 break
         data = ""
         for eachLine in lines:
-            sdata = string.split (eachLine, ',')
+            sdata = eachLine.split (',')
             sdate = sdata[0]
             open = float(sdata[1])
             high = float(sdata[2])

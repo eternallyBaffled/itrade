@@ -122,9 +122,9 @@ class LiveUpdate_Euronext_bonds(object):
         return True
 
     # ---[ code to get data ] ---
-    def splitLines(self,buf):
-        lines = string.split(buf, '\n')
-        lines = filter(lambda x:x, lines)
+    def splitLines(self, buf):
+        lines = buf.split('\n')
+        lines = filter(lambda x: x, lines)
         def removeCarriage(s):
             if s[-1]=='\r':
                 return s[:-1]
@@ -133,18 +133,18 @@ class LiveUpdate_Euronext_bonds(object):
         lines = [removeCarriage(l) for l in lines]
         return lines
 
-    def euronextDate(self,date):
-        sp = string.split(date,' ')
-        #print 'euronextDate:',sp
+    def euronextDate(self, date):
+        sp = date.split(' ')
+        #print('euronextDate:', sp)
 
         # Date part is easy
         sdate = jjmmaa2yyyymmdd(sp[0])
 
-        if len(sp)==1:
-            return sdate,"00:00"
-        return sdate,sp[1]
+        if len(sp) == 1:
+            return sdate, "00:00"
+        return sdate, sp[1]
 
-    def convertClock(self,place,clock,date):
+    def convertClock(self, place, clock, date):
         min = clock[3:5]
         hour = clock[:2]
         val = (int(hour)*60) + int(min)
@@ -160,7 +160,7 @@ class LiveUpdate_Euronext_bonds(object):
         return u"{:d}:{:02d}".format(mdatetime.hour, mdatetime.minute)
 
     def parseFValue(self, d):
-        val = string.split(d, ',')
+        val = d.split(',')
         ret = ''
         for val in val:
             ret = ret + val
@@ -173,7 +173,7 @@ class LiveUpdate_Euronext_bonds(object):
             s = ','
         else:
             s = '\xA0'
-        val = string.split(d, s)
+        val = d.split(s)
         ret = ''
         for val in val:
             ret = ret + val

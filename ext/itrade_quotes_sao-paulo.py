@@ -63,7 +63,7 @@ def removeCarriage(s):
 
 
 def splitLines(buf):
-    lines = string.split(buf, '\n')
+    lines = buf.split('\n')
     lines = filter(lambda x: x, lines)
 
     lines = [removeCarriage(l) for l in lines]
@@ -131,7 +131,7 @@ def Import_ListOfQuotes_SAO(quotes, market='SAO PAULO EXCHANGE', dlg=None, x=0):
 # Export me
 # ============================================================================
 
-gListSymbolRegistry.register('SAO PAULO EXCHANGE','SAO',QList.any,QTag.list,Import_ListOfQuotes_SAO)
+gListSymbolRegistry.register('SAO PAULO EXCHANGE', 'SAO', QList.any, QTag.list, Import_ListOfQuotes_SAO)
 
 # ============================================================================
 # Test ME
@@ -142,7 +142,7 @@ if __name__ == '__main__':
 
     from itrade_quotes import quotes
 
-    Import_ListOfQuotes_SAO(quotes,'SAO PAULO EXCHANGE')
+    Import_ListOfQuotes_SAO(quotes, 'SAO PAULO EXCHANGE')
     quotes.saveListOfQuotes()
 
 # ============================================================================

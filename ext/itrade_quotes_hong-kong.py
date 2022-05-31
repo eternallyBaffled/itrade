@@ -72,8 +72,8 @@ def Import_ListOfQuotes_HKG(quotes, market='HONG KONG EXCHANGE', dlg=None, x=0):
         return False
 
     def splitLines(buf):
-        lines = string.split(buf, '\n')
-        lines = filter(lambda x:x, lines)
+        lines = buf.split('\n')
+        lines = filter(lambda x: x, lines)
         def removeCarriage(s):
             if s[-1] == '\r':
                 return s[:-1]
@@ -103,12 +103,17 @@ def Import_ListOfQuotes_HKG(quotes, market='HONG KONG EXCHANGE', dlg=None, x=0):
                     isin=sh.cell_value(line, 1)
 
                     ticker = sh.cell_value(line, 2)
-                    if type(ticker)==float: ticker=int(ticker); ticker=u'{}'.format(ticker)
-                    if len(ticker) == 1 : ticker='000'+ticker
-                    if len(ticker) == 2 : ticker='00'+ticker
-                    if len(ticker) == 3 : ticker='0'+ticker
+                    if type(ticker) == float:
+                        ticker = int(ticker)
+                        ticker = u'{}'.format(ticker)
+                    if len(ticker) == 1:
+                        ticker = '000' + ticker
+                    if len(ticker) == 2:
+                        ticker = '00' + ticker
+                    if len(ticker) == 3:
+                        ticker = '0' + ticker
 
-                    name = sh.cell_value(line,0)
+                    name = sh.cell_value(line, 0)
 
                     if ticker == '0657':
                         name = 'G-VISION INTERNATIONAL (HOLDINGS) LTD'
@@ -116,9 +121,9 @@ def Import_ListOfQuotes_HKG(quotes, market='HONG KONG EXCHANGE', dlg=None, x=0):
                     name = name.decode().encode('utf8')
                     name = name.replace(',', ' ')
 
-                    currency='HKD'
-                    place='HKG'
-                    country='HK'
+                    currency = 'HKD'
+                    place = 'HKG'
+                    country = 'HK'
 
                     quotes.addQuote(isin=isin, name=name, ticker=ticker, market='HONG KONG EXCHANGE', currency=currency, place=place, country=country)
 
@@ -146,7 +151,7 @@ if __name__ == '__main__':
     from itrade_quotes import quotes
 
     if itrade_excel.canReadExcel:
-        Import_ListOfQuotes_HKG(quotes,'HKG')
+        Import_ListOfQuotes_HKG(quotes, 'HKG')
 
         quotes.saveListOfQuotes()
     else:

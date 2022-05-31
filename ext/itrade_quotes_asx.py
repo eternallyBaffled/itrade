@@ -71,8 +71,8 @@ def Import_ListOfQuotes_ASX(quotes, market='ASX', dlg=None, x=0):
         return False
 
     def splitLines(buf):
-        lines = string.split(buf, '\n')
-        lines = filter(lambda x:x, lines)
+        lines = buf.split('\n')
+        lines = filter(lambda x: x, lines)
 
         def removeCarriage(s):
             if s[-1] == '\r':
@@ -91,10 +91,10 @@ def Import_ListOfQuotes_ASX(quotes, market='ASX', dlg=None, x=0):
     lines = splitLines(data)
     isin = ''
     for line in lines[3:]:
-        line = line.replace('"','')
-        data = string.split (line, ',')
-        name=data[0]
-        ticker=data[1]
+        line = line.replace('"', '')
+        data = line.split(',')
+        name = data[0]
+        ticker = data[1]
         quotes.addQuote(isin=isin, name=name,
                 ticker=ticker, market='ASX', currency='AUD', place='SYD', country='AU')
 

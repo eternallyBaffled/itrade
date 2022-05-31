@@ -59,7 +59,7 @@ def removeCarriage(s):
 
 
 def splitLines(buf):
-    lines = string.split(buf, '\n')
+    lines = buf.split('\n')
     lines = filter(lambda x: x, lines)
 
     lines = [removeCarriage(l) for l in lines]
@@ -100,7 +100,7 @@ def Import_ListOfQuotes_SWX(quotes, market='SWISS EXCHANGE', dlg=None, x=0):
         line = line.replace('è', 'e')
         line = line.replace('+', ' ')
 
-        data = string.split(line, ';')  # csv line
+        data = line.split(';')  # csv line
         name = data[0].strip()
         ticker = data[1].strip()
         country = data[3].strip()

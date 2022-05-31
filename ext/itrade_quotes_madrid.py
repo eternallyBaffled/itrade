@@ -70,10 +70,10 @@ def Import_ListOfQuotes_MADRID(quotes, market='MADRID EXCHANGE', dlg=None, x=0):
         return False
 
     def splitLines(buf):
-        lines = string.split(buf, cr)
-        lines = filter(lambda x:x, lines)
+        lines = buf.split(cr)
+        lines = filter(lambda x: x, lines)
         def removeCarriage(s):
-            if s[-1]=='\r':
+            if s[-1] == '\r':
                 return s[:-1]
             else:
                 return s
@@ -109,19 +109,19 @@ def Import_ListOfQuotes_MADRID(quotes, market='MADRID EXCHANGE', dlg=None, x=0):
                 line = line[:line.find('<')]
                 line = line[:line.find('0,0')]
                 ticker = line[:8].strip()
-                if 'BBVA' in ticker and len(ticker)== 5:
+                if 'BBVA' in ticker and len(ticker) == 5:
                     pass
                 else:
-                    ticker = ticker.replace('.','-')
+                    ticker = ticker.replace('.', '-')
 
                 isin = line[8:21]
                 name = line[21:].strip()
                 if not 'LYX' in name and not 'TRACKERS' in name:
                     name = name.encode('cp1252')
-                    name = name.replace(',',' ')
-                    name = name.replace('Ó','O')
-                    name = name.replace('Ñ','N')
-                    name = name.replace('Ç','C')
+                    name = name.replace(',', ' ')
+                    name = name.replace('Ó', 'O')
+                    name = name.replace('Ñ', 'N')
+                    name = name.replace('Ç', 'C')
 
                     #print isin,name,ticker,market
 

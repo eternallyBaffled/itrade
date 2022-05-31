@@ -86,41 +86,41 @@ class Import_euronext_bonds(object):
     def getstate(self):
         return True
 
-    def parseDate(self,d):
+    def parseDate(self, d):
         return (d.year, d.month, d.day)
 
-    def parseFValue(self,d):
-        val = string.split(d,',')
+    def parseFValue(self, d):
+        val = d.split(',')
         ret = ''
         for val in val:
-            ret = ret+val
+            ret = ret + val
         return float(ret)
 
-    def parseLValue(self,d):
-        if d=='-': return 0
+    def parseLValue(self, d):
+        if d == '-':
+            return 0
         if ',' in d:
             s = ','
         else:
             s = '\xA0'
-        val = string.split(d,s)
+        val = d.split(s)
         ret = ''
         for val in val:
-            ret = ret+val
+            ret = ret + val
         return long(ret)
 
-    def splitLines(self,buf):
-        lines = string.split(buf, '\n')
-        lines = filter(lambda x:x, lines)
+    def splitLines(self, buf):
+        lines = buf.split('\n')
+        lines = filter(lambda x: x, lines)
         def removeCarriage(s):
-            if s[-1]=='\r':
+            if s[-1] == '\r':
                 return s[:-1]
             else:
                 return s
         lines = [removeCarriage(l) for l in lines]
         return lines
 
-    def getdata(self,quote,datedebut=None,datefin=None):
-
+    def getdata(self, quote, datedebut=None, datefin=None):
         #IdInstrument = euronext_InstrumentId(quote)
         #if IdInstrument == None: return None
 
@@ -131,16 +131,16 @@ class Import_euronext_bonds(object):
         if not datedebut:
             datedebut = date.today()
 
-        if isinstance(datedebut,Datation):
+        if isinstance(datedebut, Datation):
             datedebut = datedebut.date()
 
-        if isinstance(datefin,Datation):
+        if isinstance(datefin, Datation):
             datefin = datefin.date()
 
         d1 = self.parseDate(datedebut)
         d2 = self.parseDate(datefin)
 
-        mic = euronextmic(quote.market(),quote.place())
+        mic = euronextmic(quote.market(), quote.place())
 
         format = '%Y-%m-%d %H:%M:%S'
         #origin = "1970-01-01 00:00:00"
@@ -169,7 +169,7 @@ class Import_euronext_bonds(object):
             ('base', '0'),
         )
 
-        query = map(lambda var_val: '{}={}'.format(var_val[0], str(var_val[1])), query)
+        query = map(lambda var_val: u'{}={}'.format(var_val[0], str(var_val[1])), query)
         query = string.join(query, '&')
         url = self.m_url + '?' + query
         #print(url)
@@ -194,7 +194,7 @@ class Import_euronext_bonds(object):
         for eachLine in lines[4:]:
             eachLine = eachLine.replace('","', ';')
             eachLine = eachLine.replace('"', '')
-            sdata = string.split(eachLine, ';')
+            sdata = eachLine.split(';')
 
             if len(sdata) == 11:
                 #print(sdata)

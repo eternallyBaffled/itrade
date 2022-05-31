@@ -60,7 +60,7 @@ def removeCarriage(s):
 
 
 def splitLines(buf):
-    lines = string.split(buf, '\n')
+    lines = buf.split('\n')
     lines = filter(lambda x: x, lines)
 
     lines = [removeCarriage(l) for l in lines]
@@ -79,7 +79,7 @@ def Import_ListOfQuotes_NZE(quotes, market='NEW ZEALAND EXCHANGE', dlg=None, x=0
     else:
         return False
 
-    select_alpha = map(chr,range(65,91)) # A to Z
+    select_alpha = map(chr, range(65, 91))  # A to Z
 
     count = 0
     isin = ''
@@ -98,7 +98,6 @@ def Import_ListOfQuotes_NZE(quotes, market='NEW ZEALAND EXCHANGE', dlg=None, x=0
         lines = splitLines(data)
 
         for line in lines:
-
             if '"hideInfo();">' in line:
                 tickername = line[line.find('"hideInfo();">')+14:line.find('</td><td align=right>')]
                 if not 'Index' in tickername:

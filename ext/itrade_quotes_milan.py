@@ -61,14 +61,14 @@ def removeCarriage(s):
 
 
 def splitLines(buf):
-    lines = string.split(buf, '\n')
+    lines = buf.split('\n')
     lines = filter(lambda x: x, lines)
 
     lines = [removeCarriage(l) for l in lines]
     return lines
 
 
-def Import_ListOfQuotes_MIL(quotes,market='MILAN EXCHANGE', dlg=None, x=0):
+def Import_ListOfQuotes_MIL(quotes, market='MILAN EXCHANGE', dlg=None, x=0):
     if itrade_config.verbose:
         print(u'Update {} list of symbols'.format(market))
     connection = ITradeConnection(cookies=None,

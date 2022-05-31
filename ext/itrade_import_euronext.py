@@ -85,41 +85,41 @@ class Import_euronext(object):
     def getstate(self):
         return True
 
-    def parseDate(self,d):
+    def parseDate(self, d):
         return (d.year, d.month, d.day)
 
-    def parseFValue(self,d):
-        val = string.split(d,',')
+    def parseFValue(self, d):
+        val = d.split(',')
         ret = ''
         for val in val:
-            ret = ret+val
+            ret = ret + val
         return float(ret)
 
-    def parseLValue(self,d):
-        if d=='-': return 0
+    def parseLValue(self, d):
+        if d == '-':
+            return 0
         if ',' in d:
             s = ','
         else:
             s = '\xA0'
-        val = string.split(d,s)
+        val = d.split(s)
         ret = ''
         for val in val:
-            ret = ret+val
+            ret = ret + val
         return long(ret)
 
-    def splitLines(self,buf):
-        lines = string.split(buf, '\n')
-        lines = filter(lambda x:x, lines)
+    def splitLines(self, buf):
+        lines = buf.split('\n')
+        lines = filter(lambda x: x, lines)
         def removeCarriage(s):
-            if s[-1]=='\r':
+            if s[-1] == '\r':
                 return s[:-1]
             else:
                 return s
         lines = [removeCarriage(l) for l in lines]
         return lines
 
-    def getdata(self,quote,datedebut=None,datefin=None):
-
+    def getdata(self, quote, datedebut=None, datefin=None):
         # get historic data itself !
         if not datefin:
             datefin = date.today()
@@ -127,28 +127,28 @@ class Import_euronext(object):
         if not datedebut:
             datedebut = date.today()
 
-        if isinstance(datedebut,Datation):
+        if isinstance(datedebut, Datation):
             datedebut = datedebut.date()
 
-        if isinstance(datefin,Datation):
+        if isinstance(datefin, Datation):
             datefin = datefin.date()
 
         d1 = self.parseDate(datedebut)
         d2 = self.parseDate(datefin)
 
-        mic = euronextmic(quote.market(),quote.place())
+        mic = euronextmic(quote.market(), quote.place())
 
         format = '%Y-%m-%d %H:%M:%S'
         #origin = "1970-01-01 00:00:00"
         datefrom = str(datedebut) + " 02:00:00"
         dateto = str(datefin) + " 23:00:00"
         datefrom = time.mktime(time.strptime(datefrom, format))
-        datefromurl =str(int(datefrom/100))+'00000'
+        datefromurl = str(int(datefrom/100))+'00000'
         dateto = time.mktime(time.strptime(dateto, format))
-        datefinurl =str(int(dateto)/100)+'00000'
+        datefinurl = str(int(dateto)/100)+'00000'
         endurl = 'typefile=csv&layout=vertical&typedate=dmy&separator=comma&mic={}&isin={}&name=&namefile=Price_Data_Historical&from={}&to={}&adjusted=1&base=0'.format(mic, quote.isin(), datefromurl, datefinurl)
 
-        debug("Import_euronext:getdata quote:{} begin:{} end:{}".format(quote, d1, d2))
+        debug(u"Import_euronext:getdata quote:{} begin:{} end:{}".format(quote, d1, d2))
 
         query = (
             ('typefile', 'csv'),
@@ -165,12 +165,12 @@ class Import_euronext(object):
             ('base', '0'),
         )
 
-        query = map(lambda var_val: '{}={}'.format(var_val[0], str(var_val[1])), query)
+        query = map(lambda var_val: u'{}={}'.format(var_val[0], str(var_val[1])), query)
         query = string.join(query, '&')
         url = self.m_url + '?' + query
 
         #print(url)
-        debug("Import_euronext:getdata: url=%s ",url)
+        debug("Import_euronext:getdata: url=%s ", url)
         try:
             req = urllib2.Request(url)
             req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
@@ -189,18 +189,18 @@ class Import_euronext(object):
         #print(lines)
 
         for eachLine in lines[4:]:
-            eachLine = eachLine.replace('","',';')
-            eachLine = eachLine.replace('"','')
-            sdata = string.split(eachLine,';')
+            eachLine = eachLine.replace('","', ';')
+            eachLine = eachLine.replace('"', '')
+            sdata = eachLine.split(';')
 
-            if len(sdata)== 11:
+            if len(sdata) == 11:
                 #print sdata
                 #if (sdata[0] != "Date") and (quote.list() == QList.indices):
                 sdate = jjmmaa2yyyymmdd(sdata[2])
-                open = self.parseFValue(sdata[3].replace(',','.'))
-                high = self.parseFValue(sdata[4].replace(',','.'))
-                low = self.parseFValue(sdata[5].replace(',','.'))
-                value = self.parseFValue(sdata[6].replace(',','.'))
+                open = self.parseFValue(sdata[3].replace(',', '.'))
+                high = self.parseFValue(sdata[4].replace(',', '.'))
+                low = self.parseFValue(sdata[5].replace(',', '.'))
+                value = self.parseFValue(sdata[6].replace(',', '.'))
                 volume = self.parseLValue(sdata[7])
                 #print quote.key(),sdate,open,high,low,value,volume
 
@@ -229,55 +229,53 @@ class Import_euronext(object):
 
 gImportEuronext = Import_euronext()
 
+gImportRegistry.register('EURONEXT', 'PAR', QList.any, QTag.imported, gImportEuronext, bDefault=False)
+#gImportRegistry.register('EURONEXT', 'PAR', QList.system, QTag.imported, gImportEuronext, bDefault=True)
+gImportRegistry.register('EURONEXT', 'PAR', QList.indices, QTag.imported, gImportEuronext, bDefault=True)
+gImportRegistry.register('EURONEXT', 'PAR', QList.trackers, QTag.imported, gImportEuronext, bDefault=True)
+gImportRegistry.register('EURONEXT', 'PAR', QList.bonds, QTag.imported, gImportEuronext, bDefault=True)
 
+gImportRegistry.register('EURONEXT', 'BRU', QList.any, QTag.imported, gImportEuronext, bDefault=False)
+#gImportRegistry.register('EURONEXT', 'BRU', QList.system, QTag.imported, gImportEuronext, bDefault=True)
+gImportRegistry.register('EURONEXT', 'BRU', QList.indices, QTag.imported, gImportEuronext, bDefault=True)
+gImportRegistry.register('EURONEXT', 'BRU', QList.trackers, QTag.imported, gImportEuronext, bDefault=True)
+gImportRegistry.register('EURONEXT', 'BRU', QList.bonds, QTag.imported, gImportEuronext, bDefault=True)
 
-gImportRegistry.register('EURONEXT','PAR',QList.any,QTag.imported,gImportEuronext,bDefault=False)
-#gImportRegistry.register('EURONEXT','PAR',QList.system,QTag.imported,gImportEuronext,bDefault=True)
-gImportRegistry.register('EURONEXT','PAR',QList.indices,QTag.imported,gImportEuronext,bDefault=True)
-gImportRegistry.register('EURONEXT','PAR',QList.trackers,QTag.imported,gImportEuronext,bDefault=True)
-gImportRegistry.register('EURONEXT','PAR',QList.bonds,QTag.imported,gImportEuronext,bDefault=True)
+gImportRegistry.register('EURONEXT', 'AMS', QList.any, QTag.imported, gImportEuronext, bDefault=False)
+#gImportRegistry.register('EURONEXT', 'AMS', QList.system, QTag.imported, gImportEuronext, bDefault=True)
+gImportRegistry.register('EURONEXT', 'AMS', QList.indices, QTag.imported, gImportEuronext, bDefault=True)
+gImportRegistry.register('EURONEXT', 'AMS', QList.trackers, QTag.imported, gImportEuronext, bDefault=True)
+gImportRegistry.register('EURONEXT', 'AMS', QList.bonds, QTag.imported, gImportEuronext, bDefault=True)
 
-gImportRegistry.register('EURONEXT','BRU',QList.any,QTag.imported,gImportEuronext,bDefault=False)
-#gImportRegistry.register('EURONEXT','BRU',QList.system,QTag.imported,gImportEuronext,bDefault=True)
-gImportRegistry.register('EURONEXT','BRU',QList.indices,QTag.imported,gImportEuronext,bDefault=True)
-gImportRegistry.register('EURONEXT','BRU',QList.trackers,QTag.imported,gImportEuronext,bDefault=True)
-gImportRegistry.register('EURONEXT','BRU',QList.bonds,QTag.imported,gImportEuronext,bDefault=True)
+gImportRegistry.register('EURONEXT', 'LIS', QList.any, QTag.imported, gImportEuronext, bDefault=False)
+#gImportRegistry.register('EURONEXT', 'LIS', QList.system, QTag.imported, gImportEuronext, bDefault=True)
+gImportRegistry.register('EURONEXT', 'LIS', QList.indices, QTag.imported, gImportEuronext, bDefault=True)
+gImportRegistry.register('EURONEXT', 'LIS', QList.trackers, QTag.imported, gImportEuronext, bDefault=True)
+gImportRegistry.register('EURONEXT', 'LIS', QList.bonds, QTag.imported, gImportEuronext, bDefault=True)
 
-gImportRegistry.register('EURONEXT','AMS',QList.any,QTag.imported,gImportEuronext,bDefault=False)
-#gImportRegistry.register('EURONEXT','AMS',QList.system,QTag.imported,gImportEuronext,bDefault=True)
-gImportRegistry.register('EURONEXT','AMS',QList.indices,QTag.imported,gImportEuronext,bDefault=True)
-gImportRegistry.register('EURONEXT','AMS',QList.trackers,QTag.imported,gImportEuronext,bDefault=True)
-gImportRegistry.register('EURONEXT','AMS',QList.bonds,QTag.imported,gImportEuronext,bDefault=True)
+gImportRegistry.register('ALTERNEXT', 'PAR', QList.any, QTag.imported, gImportEuronext, bDefault=False)
+#gImportRegistry.register('ALTERNEXT', 'PAR', QList.system, QTag.imported, gImportEuronext, bDefault=True)
+gImportRegistry.register('ALTERNEXT', 'PAR', QList.indices, QTag.imported, gImportEuronext, bDefault=True)
 
-gImportRegistry.register('EURONEXT','LIS',QList.any,QTag.imported,gImportEuronext,bDefault=False)
-#gImportRegistry.register('EURONEXT','LIS',QList.system,QTag.imported,gImportEuronext,bDefault=True)
-gImportRegistry.register('EURONEXT','LIS',QList.indices,QTag.imported,gImportEuronext,bDefault=True)
-gImportRegistry.register('EURONEXT','LIS',QList.trackers,QTag.imported,gImportEuronext,bDefault=True)
-gImportRegistry.register('EURONEXT','LIS',QList.bonds,QTag.imported,gImportEuronext,bDefault=True)
+gImportRegistry.register('ALTERNEXT', 'BRU', QList.any, QTag.imported, gImportEuronext, bDefault=False)
+gImportRegistry.register('ALTERNEXT', 'AMS', QList.any, QTag.imported, gImportEuronext, bDefault=False)
+gImportRegistry.register('ALTERNEXT', 'LIS', QList.any, QTag.imported, gImportEuronext, bDefault=False)
 
-gImportRegistry.register('ALTERNEXT','PAR',QList.any,QTag.imported,gImportEuronext,bDefault=False)
-#gImportRegistry.register('ALTERNEXT','PAR',QList.system,QTag.imported,gImportEuronext,bDefault=True)
-gImportRegistry.register('ALTERNEXT','PAR',QList.indices,QTag.imported,gImportEuronext,bDefault=True)
-
-gImportRegistry.register('ALTERNEXT','BRU',QList.any,QTag.imported,gImportEuronext,bDefault=False)
-gImportRegistry.register('ALTERNEXT','AMS',QList.any,QTag.imported,gImportEuronext,bDefault=False)
-gImportRegistry.register('ALTERNEXT','LIS',QList.any,QTag.imported,gImportEuronext,bDefault=False)
-
-gImportRegistry.register('PARIS MARCHE LIBRE','PAR',QList.any,QTag.imported,gImportEuronext,bDefault=False)
-#gImportRegistry.register('PARIS MARCHE LIBRE','PAR',QList.system,QTag.imported,gImportEuronext,bDefault=True)
-#gImportRegistry.register('PARIS MARCHE LIBRE','PAR',QList.indices,QTag.imported,gImportEuronext,bDefault=True)
-gImportRegistry.register('BRUXELLES MARCHE LIBRE','BRU',QList.any,QTag.imported,gImportEuronext,bDefault=False)
+gImportRegistry.register('PARIS MARCHE LIBRE', 'PAR', QList.any, QTag.imported, gImportEuronext, bDefault=False)
+#gImportRegistry.register('PARIS MARCHE LIBRE', 'PAR', QList.system, QTag.imported, gImportEuronext, bDefault=True)
+#gImportRegistry.register('PARIS MARCHE LIBRE', 'PAR', QList.indices, QTag.imported, gImportEuronext, bDefault=True)
+gImportRegistry.register('BRUXELLES MARCHE LIBRE', 'BRU', QList.any, QTag.imported, gImportEuronext, bDefault=False)
 
 # ============================================================================
 # Test ME
 #
 # ============================================================================
 
-def test(ticker,d):
+def test(ticker, d):
     if gImportEuronext.connect():
         state = gImportEuronext.getstate()
         if state:
-            debug("state={}".format(state))
+            debug(u"state={}".format(state))
 
             quote = quotes.lookupTicker(ticker, 'EURONEXT')
             data = gImportEuronext.getdata(quote, d)

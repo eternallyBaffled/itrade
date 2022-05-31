@@ -64,7 +64,7 @@ def removeCarriage(s):
 
 
 def splitLines(buf):
-    lines = string.split(buf, '</td></tr>')
+    lines = buf.split('</td></tr>')
     lines = filter(lambda x: x, lines)
 
     lines = [removeCarriage(l) for l in lines]

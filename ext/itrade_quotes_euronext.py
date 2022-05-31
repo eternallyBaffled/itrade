@@ -57,13 +57,13 @@ from itrade_connection import ITradeConnection
 #
 # ============================================================================
 
-def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT',dlg=None,x=0):
+def Import_ListOfQuotes_Euronext(quotes, market='EURONEXT', dlg=None, x=0):
     if itrade_config.verbose:
         print('Update {} list of symbols'.format(market))
-    connection = ITradeConnection(cookies = None,
-                               proxy = itrade_config.proxyHostname,
-                               proxyAuth = itrade_config.proxyAuthentication,
-                               connectionTimeout = max(45,itrade_config.connectionTimeout)
+    connection = ITradeConnection(cookies=None,
+                               proxy=itrade_config.proxyHostname,
+                               proxyAuth=itrade_config.proxyAuthentication,
+                               connectionTimeout=max(45, itrade_config.connectionTimeout)
                                )
 
     nyse_euronext_market = {
@@ -91,16 +91,16 @@ def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT',dlg=None,x=0):
         'NYSE Euronext Paris,London': ('EURONEXT','PAR','FR'),
         }
 
-    if market=='EURONEXT' or market == 'ALTERNEXT' or market =='PARIS MARCHE LIBRE' or market =='BRUXELLES MARCHE LIBRE':
+    if market == 'EURONEXT' or market == 'ALTERNEXT' or market == 'PARIS MARCHE LIBRE' or market == 'BRUXELLES MARCHE LIBRE':
         url = 'https://europeanequities.nyx.com/fr/popup/data/download?ml=nyx_pd_stocks&cmd=default&formKey=nyx_pd_filter_values%3Aa4eb918a59a5b507707ea20eb38f530f'
     else:
         return False
 
     def splitLines(buf):
-        lines = string.split(buf, '\n')
-        lines = filter(lambda x:x, lines)
+        lines = buf.split('\n')
+        lines = filter(lambda x: x, lines)
         def removeCarriage(s):
-            if s[-1]=='\r':
+            if s[-1] == '\r':
                 return s[:-1]
             else:
                 return s
@@ -143,8 +143,8 @@ def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT',dlg=None,x=0):
 
     try:
         # POST the request
-        conn = httplib.HTTPConnection(host,80)
-        conn.request("POST",url,params,headers)
+        conn = httplib.HTTPConnection(host, 80)
+        conn.request("POST", url, params, headers)
         response = conn.getresponse()
         data = response.read()
     except Exception:
@@ -157,11 +157,11 @@ def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT',dlg=None,x=0):
 
     count = 0
     for line in lines[5:]:
-        data = line.replace('"','')
-        data = string.split (data, ';')
+        data = line.replace('"', '')
+        data = data.split(';')
         nysemarket = data[3]
 
-        if nysemarket in nyse_euronext_market :
+        if nysemarket in nyse_euronext_market:
             if nyse_euronext_market[nysemarket][0] == market:
                 name = data[0]
                 isin = data[1]
@@ -170,7 +170,7 @@ def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT',dlg=None,x=0):
                 place = nyse_euronext_market[nysemarket][1]
 
                 count = count + 1
-                quotes.addQuote(isin=isin,name=name,ticker=ticker,market=market,currency=currency,place=place,country=None)
+                quotes.addQuote(isin=isin, name=name, ticker=ticker, market=market, currency=currency, place=place, country=None)
         else:
             pass
 
@@ -183,18 +183,18 @@ def Import_ListOfQuotes_Euronext(quotes,market='EURONEXT',dlg=None,x=0):
 # Export me
 # ============================================================================
 
-gListSymbolRegistry.register('EURONEXT','PAR',QList.any,QTag.list,Import_ListOfQuotes_Euronext)
-gListSymbolRegistry.register('EURONEXT','AMS',QList.any,QTag.list,Import_ListOfQuotes_Euronext)
-gListSymbolRegistry.register('EURONEXT','BRU',QList.any,QTag.list,Import_ListOfQuotes_Euronext)
-gListSymbolRegistry.register('EURONEXT','LIS',QList.any,QTag.list,Import_ListOfQuotes_Euronext)
+gListSymbolRegistry.register('EURONEXT', 'PAR', QList.any, QTag.list, Import_ListOfQuotes_Euronext)
+gListSymbolRegistry.register('EURONEXT', 'AMS', QList.any, QTag.list, Import_ListOfQuotes_Euronext)
+gListSymbolRegistry.register('EURONEXT', 'BRU', QList.any, QTag.list, Import_ListOfQuotes_Euronext)
+gListSymbolRegistry.register('EURONEXT', 'LIS', QList.any, QTag.list, Import_ListOfQuotes_Euronext)
 
-gListSymbolRegistry.register('ALTERNEXT','PAR',QList.any,QTag.list,Import_ListOfQuotes_Euronext)
-gListSymbolRegistry.register('ALTERNEXT','AMS',QList.any,QTag.list,Import_ListOfQuotes_Euronext)
-gListSymbolRegistry.register('ALTERNEXT','BRU',QList.any,QTag.list,Import_ListOfQuotes_Euronext)
-gListSymbolRegistry.register('ALTERNEXT','LIS',QList.any,QTag.list,Import_ListOfQuotes_Euronext)
+gListSymbolRegistry.register('ALTERNEXT', 'PAR', QList.any, QTag.list, Import_ListOfQuotes_Euronext)
+gListSymbolRegistry.register('ALTERNEXT', 'AMS', QList.any, QTag.list, Import_ListOfQuotes_Euronext)
+gListSymbolRegistry.register('ALTERNEXT', 'BRU', QList.any, QTag.list, Import_ListOfQuotes_Euronext)
+gListSymbolRegistry.register('ALTERNEXT', 'LIS', QList.any, QTag.list, Import_ListOfQuotes_Euronext)
 
-gListSymbolRegistry.register('PARIS MARCHE LIBRE','PAR',QList.any,QTag.list,Import_ListOfQuotes_Euronext)
-gListSymbolRegistry.register('BRUXELLES MARCHE LIBRE','BRU',QList.any,QTag.list,Import_ListOfQuotes_Euronext)
+gListSymbolRegistry.register('PARIS MARCHE LIBRE', 'PAR', QList.any, QTag.list, Import_ListOfQuotes_Euronext)
+gListSymbolRegistry.register('BRUXELLES MARCHE LIBRE', 'BRU', QList.any, QTag.list, Import_ListOfQuotes_Euronext)
 
 # ============================================================================
 # Test ME
@@ -205,10 +205,10 @@ if __name__ == '__main__':
 
     from itrade_quotes import quotes
 
-    Import_ListOfQuotes_Euronext(quotes,'EURONEXT')
-    Import_ListOfQuotes_Euronext(quotes,'ALTERNEXT')
-    Import_ListOfQuotes_Euronext(quotes,'PARIS MARCHE LIBRE')
-    Import_ListOfQuotes_Euronext(quotes,'BRUXELLES MARCHE LIBRE')
+    Import_ListOfQuotes_Euronext(quotes, 'EURONEXT')
+    Import_ListOfQuotes_Euronext(quotes, 'ALTERNEXT')
+    Import_ListOfQuotes_Euronext(quotes, 'PARIS MARCHE LIBRE')
+    Import_ListOfQuotes_Euronext(quotes, 'BRUXELLES MARCHE LIBRE')
     quotes.saveListOfQuotes()
 
 # ============================================================================

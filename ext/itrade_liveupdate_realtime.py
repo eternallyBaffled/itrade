@@ -178,9 +178,9 @@ class LiveUpdate_RealTime(object):
 
     # ---[ code to get data ] ---
 
-    def splitLines(self,data):
-        lines = string.split(data, '\n')
-        lines = filter(lambda x:x, lines)
+    def splitLines(self, data):
+        lines = data.split('\n')
+        lines = filter(lambda x: x, lines)
         def removeCarriage(s):
             if s[-1] == '\r':
                 return s[:-1]
@@ -190,23 +190,21 @@ class LiveUpdate_RealTime(object):
         return lines
 
     def BoursoDate(self, date):
-        sp = string.split(date, ' ')
+        sp = date.split(' ')
 
         # Date part is easy
         sdate = jjmmaa2yyyymmdd(sp[0])
 
-        if len(sp)==1:
-            return sdate,"00:00"
+        if len(sp) == 1:
+            return sdate, "00:00"
         return sdate, sp[1]
-
-
 
     def convertClock(self, place, clock, date):
         min = clock[3:5]
         hour = clock[:2]
         val = (int(hour)*60) + int(min)
 
-        if val>self.m_lastclock and date>=self.m_lastdate:
+        if val > self.m_lastclock and date >= self.m_lastdate:
             self.m_lastdate = date
             self.m_lastclock = val
 
@@ -215,7 +213,6 @@ class LiveUpdate_RealTime(object):
         mdatetime = convertConnectorTimeToPlaceTime(mdatetime, self.timezone(), place)
 
         return u"{:d}:{:02d}".format(mdatetime.hour, mdatetime.minute)
-
 
     def getdata(self, quote):
         self.m_connected = False
@@ -226,7 +223,7 @@ class LiveUpdate_RealTime(object):
         # add a value, default is yahoo connector
         # with boursorama realtime connector, must have pre_symbol to extract quote
 
-        if isin != '' :
+        if isin != '':
             if not isin in self.m_isinsymbol:
                 req = urllib2.Request('https://www.boursorama.com/recherche/index.phtml?search%5Bquery%5D=' + isin)
                 req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
@@ -239,7 +236,7 @@ class LiveUpdate_RealTime(object):
 
                     if data.find(ch) != -1:
                         b = data.find(ch)
-                        if data.find('>Valeurs<',b) != - 1:
+                        if data.find('>Valeurs<', b) != - 1:
                             if data.find('class="exchange">Nyse Euro<', b) != -1:
                                 c = data.find('class="exchange">Nyse Euro<', b)
                                 a = data.rfind('href="/cours.phtml?symbole=', 0, c)
@@ -247,7 +244,7 @@ class LiveUpdate_RealTime(object):
                                 symbol = symbol[:symbol.find('" >')]
                                 self.m_isinsymbol [isin] = symbol
                                 debug(u'{} found and added in dictionary ({})'.format(isin, symbol))
-                                dic = open(os.path.join(itrade_config.dirUserData,'ticker_bourso.txt'), 'w')
+                                dic = open(os.path.join(itrade_config.dirUserData, 'ticker_bourso.txt'), 'w')
                                 cPickle.dump(self.m_isinsymbol, dic)
                                 dic.close()
                             else:
@@ -284,17 +281,17 @@ class LiveUpdate_RealTime(object):
             debug('LiveUpdate_Boursorama:unable to connect :-(')
             return None
 
-        data = data.replace('\t','').replace ('</span>','')
+        data = data.replace('\t', '').replace('</span>', '')
         lines = self.splitLines(data)
         n = -1
         for line in lines:
-            n=n+1
+            n = n + 1
             if '<table class="info-valeur list">' in line:
                 line = lines[n+6]
                 value = line[line.find('"cotation">')+11:line.find('</b>')]
                 if '(' in value:
                     stat = value[value.find('(')+1:value.find(')')]
-                else :
+                else:
                     stat = ''
                 if ('USD' in value or
                    'GBX' in value or
@@ -303,35 +300,36 @@ class LiveUpdate_RealTime(object):
                    'CHF' in value):
                     pass
                 else:
-                    last = value.replace(' ','').replace('EUR','').replace('Pts','').replace('(s)','').replace('(c)','').replace('(h)','').replace('(u)','')
-                    last = last.replace('%','')
+                    last = value.replace(' ', '').replace('EUR', '').replace('Pts', '').replace('(s)', '').replace('(c)', '').replace('(h)', '').replace('(u)', '')
+                    last = last.replace('%', '')
                     line = lines[n+11]
-                    percent = line[line.rfind('">')+2:line.find('%</td>')].replace(' ','')
+                    percent = line[line.rfind('">')+2:line.find('%</td>')].replace(' ', '')
 
                     line = lines[n+15]
                     date_time = line[line.find('<td>')+4:line.find('</td>')]
                     date_time = date_time[:8]+' '+date_time[-8:]
 
                     line = lines[n+19]
-                    volume = line[line.rfind('">')+2:line.find('</td>')].replace(' ','').replace('<td>','').replace('td>','')
-                    if 'M' in line : volume  = '0'
-                    if volume == '0' and quote.list()!=QList.indices:
-                        #info('volume : no trade to day %s' % symbol)
+                    volume = line[line.rfind('">')+2:line.find('</td>')].replace(' ', '').replace('<td>', '').replace('td>', '')
+                    if 'M' in line:
+                        volume = '0'
+                    if volume == '0' and quote.list() != QList.indices:
+                        #info(u'volume : no trade to day {}'.format(symbol))
                         return None
                     line = lines[n+23]
-                    first = line[line.find('"cotation">')+11:line.find('</td>')].replace(' ','')
+                    first = line[line.find('"cotation">')+11:line.find('</td>')].replace(' ', '')
 
                     line = lines[n+27]
-                    high = (line[line.find('"cotation">')+11:line.find('</td>')]).replace(' ','')
+                    high = (line[line.find('"cotation">')+11:line.find('</td>')]).replace(' ', '')
 
                     line = lines[n+31]
-                    low = line[line.find('"cotation">')+11:line.find('</td>')].replace(' ','')
+                    low = line[line.find('"cotation">')+11:line.find('</td>')].replace(' ', '')
 
                     line = lines[n+35]
                     previous = line[line.find('"cotation">')+11:line.find('</td>')].replace(' ', '')
 
                     c_datetime = datetime.today()
-                    c_date = "{:04d}{:02d}{:02d}".format(c_datetime.year, c_datetime.month, c_datetime.day)
+                    c_date = u"{:04d}{:02d}{:02d}".format(c_datetime.year, c_datetime.month, c_datetime.day)
 
                     sdate, sclock = self.BoursoDate(date_time)
 
@@ -339,11 +337,11 @@ class LiveUpdate_RealTime(object):
                     if (c_date == sdate) or (quote.list() == QList.indices):
                         key = quote.key()
                         self.m_dcmpd[key] = sdate
-                        self.m_dateindice[key] = str(sdate[6:8]) + '/' + str(sdate[4:6]) + '/' +str(sdate[0:4])
+                        self.m_dateindice[key] = str(sdate[6:8]) + '/' + str(sdate[4:6]) + '/' + str(sdate[0:4])
                         self.m_clock[key] = self.convertClock(quote.place(), sclock, sdate)
 
                     data = ';'.join([quote.key(), sdate, first, high, low, last, volume, percent])
-                    #print "connect to Boursorama", quote.key()
+                    #print("connect to Boursorama", quote.key())
                     return data
         return None
 
@@ -375,10 +373,10 @@ class LiveUpdate_RealTime(object):
         d = self.m_dcmpd[key]
 
         buy = []
-        #buy.append([0,0,'-'])
+        #buy.append([0, 0, '-'])
 
         sell = []
-        #sell.append([0,0,'-'])
+        #sell.append([0, 0, '-'])
 
         return buy, sell
 
@@ -424,7 +422,7 @@ class LiveUpdate_RealTime(object):
         return None
 
     def currentMeans(self, quote):
-        # means: sell,buy,last
+        # means: sell, buy, last
         return "-", "-", "-"
 
 
@@ -437,22 +435,22 @@ if __name__ == '__main__':
 gLiveRealTime = LiveUpdate_RealTime()
 gLiveAlternext = LiveUpdate_RealTime()
 
-gLiveRegistry.register('EURONEXT','PAR',QList.any,QTag.live,gLiveRealTime,bDefault=False)
-#gLiveRegistry.register('EURONEXT','BRU',QList.any,QTag.live,gLiveRealTime,bDefault=False)
-#gLiveRegistry.register('EURONEXT','AMS',QList.any,QTag.live,gLiveRealTime,bDefault=False)
-#gLiveRegistry.register('EURONEXT','LIS',QList.any,QTag.live,gLiveRealTime,bDefault=False)
-gLiveRegistry.register('EURONEXT','PAR',QList.indices,QTag.live,gLiveRealTime,bDefault=False)
-gLiveRegistry.register('EURONEXT','BRU',QList.indices,QTag.live,gLiveRealTime,bDefault=False)
-gLiveRegistry.register('EURONEXT','AMS',QList.indices,QTag.live,gLiveRealTime,bDefault=False)
-gLiveRegistry.register('EURONEXT','LIS',QList.indices,QTag.live,gLiveRealTime,bDefault=False)
-gLiveRegistry.register('ALTERNEXT','PAR',QList.any,QTag.live,gLiveRealTime,bDefault=False)
+gLiveRegistry.register('EURONEXT', 'PAR', QList.any, QTag.live, gLiveRealTime, bDefault=False)
+#gLiveRegistry.register('EURONEXT', 'BRU', QList.any, QTag.live, gLiveRealTime, bDefault=False)
+#gLiveRegistry.register('EURONEXT', 'AMS', QList.any, QTag.live, gLiveRealTime, bDefault=False)
+#gLiveRegistry.register('EURONEXT', 'LIS', QList.any, QTag.live, gLiveRealTime, bDefault=False)
+gLiveRegistry.register('EURONEXT', 'PAR', QList.indices, QTag.live, gLiveRealTime, bDefault=False)
+gLiveRegistry.register('EURONEXT', 'BRU', QList.indices, QTag.live, gLiveRealTime, bDefault=False)
+gLiveRegistry.register('EURONEXT', 'AMS', QList.indices, QTag.live, gLiveRealTime, bDefault=False)
+gLiveRegistry.register('EURONEXT', 'LIS', QList.indices, QTag.live, gLiveRealTime, bDefault=False)
+gLiveRegistry.register('ALTERNEXT', 'PAR', QList.any, QTag.live, gLiveRealTime, bDefault=False)
 
-#gLiveRegistry.register('ALTERNEXT','AMS',QList.any,QTag.live,gLiveRealTime,bDefault=False)
-#gLiveRegistry.register('ALTERNEXT','BRU',QList.any,QTag.live,gLiveRealTime,bDefault=False)
-#gLiveRegistry.register('ALTERNEXT','LIS',QList.any,QTag.live,gLiveRealTime,bDefault=False)
+#gLiveRegistry.register('ALTERNEXT', 'AMS', QList.any, QTag.live, gLiveRealTime, bDefault=False)
+#gLiveRegistry.register('ALTERNEXT', 'BRU', QList.any, QTag.live, gLiveRealTime, bDefault=False)
+#gLiveRegistry.register('ALTERNEXT', 'LIS', QList.any, QTag.live, gLiveRealTime, bDefault=False)
 
-gLiveRegistry.register('PARIS MARCHE LIBRE','PAR',QList.any,QTag.live,gLiveRealTime,bDefault=False)
-#gLiveRegistry.register('BRUXELLES MARCHE LIBRE','BRU',QList.any,QTag.live,gLiveRealTime,bDefault=False)
+gLiveRegistry.register('PARIS MARCHE LIBRE', 'PAR', QList.any, QTag.live, gLiveRealTime, bDefault=False)
+#gLiveRegistry.register('BRUXELLES MARCHE LIBRE', 'BRU', QList.any, QTag.live, gLiveRealTime, bDefault=False)
 
 # ============================================================================
 # Test ME

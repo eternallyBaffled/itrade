@@ -61,14 +61,14 @@ def removeCarriage(s):
 
 
 def splitLines(buf):
-    lines = string.split(buf, '\n')
+    lines = buf.split('\n')
     lines = filter(lambda x: x, lines)
 
     lines = [removeCarriage(l) for l in lines]
     return lines
 
 
-def Import_ListOfQuotes_OMX(quotes,market='STOCKHOLM EXCHANGE',dlg=None,x=0):
+def Import_ListOfQuotes_OMX(quotes, market='STOCKHOLM EXCHANGE', dlg=None, x=0):
     if itrade_config.verbose:
         print(u'Update {} list of symbols'.format(market))
     connection=ITradeConnection(cookies=None,
@@ -86,20 +86,20 @@ def Import_ListOfQuotes_OMX(quotes,market='STOCKHOLM EXCHANGE',dlg=None,x=0):
         return False
 
     if url.find(ch):
-        a = url.find(ch)+len(ch)
-        endurl = url[a:url.index('"',a)]
+        a = url.find(ch) + len(ch)
+        endurl = url[a:url.index('"', a)]
     else:
         info(u'Import_ListOfQuotes_OMX_{}:unable to parse XLS file name :-('.format(market))
         return False
 
     url = "https://www.nasdaqomxnordic.com/digitalAssets/" + endurl
-    if market=='STOCKHOLM EXCHANGE':
-        m_place='STO'
-        country='SE'
-    elif market=='COPENHAGEN EXCHANGE':
-        #m_place='CSE'
-        m_place='CPH'
-        country='DK'
+    if market == 'STOCKHOLM EXCHANGE':
+        m_place = 'STO'
+        country = 'SE'
+    elif market == 'COPENHAGEN EXCHANGE':
+        #m_place = 'CSE'
+        m_place = 'CPH'
+        country = 'DK'
     else:
         return False
 
@@ -118,36 +118,39 @@ def Import_ListOfQuotes_OMX(quotes,market='STOCKHOLM EXCHANGE',dlg=None,x=0):
     indice = {}
     country = ''
 
-    #print 'Import_ListOfQuotes_OMX_%s:' % market,'book',book,'sheet',sh,'nrows=',sh.nrows
+    #print(u'Import_ListOfQuotes_OMX_{}:'.format(market), 'book', book, 'sheet', sh, 'nrows=', sh.nrows)
 
     for line in range(sh.nrows):
-        if sh.cell_type(line,1) != xlrd.XL_CELL_EMPTY:
-            if n==0:
+        if sh.cell_type(line, 1) != xlrd.XL_CELL_EMPTY:
+            if n == 0:
                 for i in range(sh.ncols):
-                    val = sh.cell_value(line,i)
+                    val = sh.cell_value(line, i)
                     indice[val] = i
 
                     # be sure we have detected the title
-                    if val=='ISIN': n = n + 1
+                    if val == 'ISIN':
+                        n = n + 1
 
-                if n==1:
+                if n == 1:
                     iISIN = indice['ISIN']
                     iTicker = indice['Short Name']
                     iCurrency = indice['Currency']
                     iPlace = indice['Exchange']
             else:
-                place=sh.cell_value(line,iPlace)
+                place = sh.cell_value(line, iPlace)
 
-                if place == m_place :
-                    if place == 'CPH' : place = 'CSE'
+                if place == m_place:
+                    if place == 'CPH':
+                        place = 'CSE'
 
-                    isin=sh.cell_value(line,iISIN)
+                    isin = sh.cell_value(line, iISIN)
 
-                    ticker = sh.cell_value(line,iTicker)
-                    if type(ticker)==float: ticker = u'{}'.format(ticker)
-                    ticker=ticker.replace(' ','-')
+                    ticker = sh.cell_value(line, iTicker)
+                    if type(ticker) == float:
+                        ticker = u'{}'.format(ticker)
+                    ticker = ticker.replace(' ', '-')
 
-                    name = sh.cell_value(line,0)
+                    name = sh.cell_value(line, 0)
                     name = name.strip()
                     # caractere error in this name
                     # Black Earth Farming Ltd. SDB ('á' is between Farming and Ltd)
@@ -156,21 +159,21 @@ def Import_ListOfQuotes_OMX(quotes,market='STOCKHOLM EXCHANGE',dlg=None,x=0):
 
                     name = name.encode('cp1252')
 
-                    name = name.replace('æ','ae')
-                    name = name.replace('ä','a')
-                    name = name.replace('å','a')
-                    #name = name.replace('á',' ')not valid
-                    name = name.replace('Å','A')
-                    name = name.replace('ø','o')
-                    name = name.replace('Ø','O')
-                    name = name.replace('ó','o')
-                    name = name.replace('ö','o')
-                    name = name.replace('Ö','O')
-                    name = name.replace('ü','u')
-                    name = name.replace(',',' ')
+                    name = name.replace('æ', 'ae')
+                    name = name.replace('ä', 'a')
+                    name = name.replace('å', 'a')
+                    #name = name.replace('á', ' ')not valid
+                    name = name.replace('Å', 'A')
+                    name = name.replace('ø', 'o')
+                    name = name.replace('Ø', 'O')
+                    name = name.replace('ó', 'o')
+                    name = name.replace('ö', 'o')
+                    name = name.replace('Ö', 'O')
+                    name = name.replace('ü', 'u')
+                    name = name.replace(',', ' ')
 
-                    currency=sh.cell_value(line,iCurrency)
-                    quotes.addQuote(isin = isin,name = name,ticker = ticker,market = market,currency=currency,place=place,country=country)
+                    currency = sh.cell_value(line, iCurrency)
+                    quotes.addQuote(isin=isin, name=name, ticker=ticker, market=market, currency=currency, place=place, country=country)
 
                     n = n + 1
     if itrade_config.verbose:
@@ -183,8 +186,8 @@ def Import_ListOfQuotes_OMX(quotes,market='STOCKHOLM EXCHANGE',dlg=None,x=0):
 # ============================================================================
 
 if itrade_excel.canReadExcel:
-    gListSymbolRegistry.register('STOCKHOLM EXCHANGE','STO',QList.any,QTag.list,Import_ListOfQuotes_OMX)
-    gListSymbolRegistry.register('COPENHAGEN EXCHANGE','CSE',QList.any,QTag.list,Import_ListOfQuotes_OMX)
+    gListSymbolRegistry.register('STOCKHOLM EXCHANGE', 'STO', QList.any, QTag.list, Import_ListOfQuotes_OMX)
+    gListSymbolRegistry.register('COPENHAGEN EXCHANGE', 'CSE', QList.any, QTag.list, Import_ListOfQuotes_OMX)
 
 # ============================================================================
 # Test ME
@@ -196,8 +199,8 @@ if __name__ == '__main__':
     from itrade_quotes import quotes
 
     if itrade_excel.canReadExcel:
-        Import_ListOfQuotes_OMX(quotes,'STO')
-        #Import_ListOfQuotes_OMX(quotes,'CSE')
+        Import_ListOfQuotes_OMX(quotes, 'STO')
+        #Import_ListOfQuotes_OMX(quotes, 'CSE')
 
         quotes.saveListOfQuotes()
     else:

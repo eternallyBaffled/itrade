@@ -59,7 +59,7 @@ def removeCarriage(s):
 
 
 def splitLines(buf):
-    lines = string.split(buf, '\n')
+    lines = buf.split('\n')
     lines = filter(lambda x: x, lines)
 
     lines = [removeCarriage(l) for l in lines]
@@ -91,14 +91,14 @@ def Import_ListOfQuotes_OTCBB(quotes, market='OTCBB', dlg=None, x=0):
     isin = ''
     for line in lines[1:]:
         if '|' in line:
-            data = string.split (line, '|')
-            if data[3]== 'ACTIVE':
+            data = line.split('|')
+            if data[3] == 'ACTIVE':
                 count = count + 1
                 name = data[2]
                 name = name.strip()
-                name =name.replace(',','')
+                name = name.replace(',', '')
                 ticker = data[0]
-                quotes.addQuote(isin=isin,name=name,ticker=ticker,market='OTCBB',currency='USD',place='NYC',country='US')
+                quotes.addQuote(isin=isin, name=name, ticker=ticker, market='OTCBB', currency='USD', place='NYC', country='US')
     if itrade_config.verbose:
         print(u'Imported {:d} lines from OTCBB data.'.format(count))
 
@@ -108,7 +108,7 @@ def Import_ListOfQuotes_OTCBB(quotes, market='OTCBB', dlg=None, x=0):
 # Export me
 # ============================================================================
 
-gListSymbolRegistry.register('OTCBB','NYC',QList.any,QTag.list,Import_ListOfQuotes_OTCBB)
+gListSymbolRegistry.register('OTCBB', 'NYC', QList.any, QTag.list, Import_ListOfQuotes_OTCBB)
 
 # ============================================================================
 # Test ME
@@ -119,7 +119,7 @@ if __name__ == '__main__':
 
     from itrade_quotes import quotes
 
-    Import_ListOfQuotes_OTCBB(quotes,'OTCBB')
+    Import_ListOfQuotes_OTCBB(quotes, 'OTCBB')
     quotes.saveListOfQuotes()
 
 # ============================================================================

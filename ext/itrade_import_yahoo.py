@@ -81,30 +81,30 @@ class Import_yahoo(object):
     def getstate(self):
         return True
 
-    def parseDate(self,d):
+    def parseDate(self, d):
         return (d.year, d.month, d.day)
 
-    def splitLines(self,buf):
-        lines = string.split(buf, '\n')
-        lines = filter(lambda x:x, lines)
+    def splitLines(self, buf):
+        lines = buf.split('\n')
+        lines = filter(lambda x: x, lines)
         def removeCarriage(s):
-            if s[-1]=='\r':
+            if s[-1] == '\r':
                 return s[:-1]
             else:
                 return s
         lines = [removeCarriage(l) for l in lines]
         return lines
 
-    def getdata(self,quote,datedebut=None,datefin=None):
+    def getdata(self, quote, datedebut=None, datefin=None):
         if not datefin:
             datefin = date.today()
 
         if not datedebut:
             datedebut = date.today()
-        if isinstance(datedebut,Datation):
+        if isinstance(datedebut, Datation):
             datedebut = datedebut.date()
 
-        if isinstance(datefin,Datation):
+        if isinstance(datefin, Datation):
             datefin = datefin.date()
 
         d1 = self.parseDate(datedebut)
@@ -132,9 +132,9 @@ class Import_yahoo(object):
         )
         query = map(lambda var_val: u'{}={}'.format(var_val[0], str(var_val[1])), query)
         query = string.join(query, '&')
-        url = yahooUrl(quote.market(),live=False) + '?' + query
+        url = yahooUrl(quote.market(), live=False) + '?' + query
 
-        debug("Import_yahoo:getdata: url=%s ",url)
+        debug("Import_yahoo:getdata: url=%s ", url)
         try:
             buf = self.m_connection.getDataFromUrl(url)
         except Exception:
@@ -143,10 +143,10 @@ class Import_yahoo(object):
 
         # pull data
         lines = self.splitLines(buf)
-        if len(lines)<=0:
+        if len(lines) <= 0:
             # empty content
             return None
-        header = string.split(lines[0],',')
+        header = lines[0].split(',')
         data = ""
 
         if header[0] != "Date":
@@ -154,18 +154,18 @@ class Import_yahoo(object):
             return None
 
         for eachLine in lines:
-            sdata = string.split (eachLine, ',')
+            sdata = eachLine.split(',')
             sdate = sdata[0]
             if sdate != "Date":
                 if re_p3_1.match(sdate):
-                    #print 'already good format ! ',sdate,sdata
+                    #print('already good format ! ', sdate, sdata)
                     pass
                 else:
                     sdate = dd_mmm_yy2yyyymmdd(sdate)
                 open = float(sdata[1])
                 high = float(sdata[2])
                 low = float(sdata[3])
-                value = float(sdata[6])   #   Adj. Close*
+                value = float(sdata[6])   # Adj. Close*
                 volume = int(sdata[5])
 
                 if volume >= 0:
@@ -195,45 +195,45 @@ class Import_yahoo(object):
 gImportYahoo = Import_yahoo()
 
 
-gImportRegistry.register('NASDAQ','NYC',QList.any,QTag.imported,gImportYahoo,bDefault=True)
-gImportRegistry.register('NYSE','NYC',QList.any,QTag.imported,gImportYahoo,bDefault=True)
-gImportRegistry.register('AMEX','NYC',QList.any,QTag.imported,gImportYahoo,bDefault=True)
-gImportRegistry.register('OTCBB','NYC',QList.any,QTag.imported,gImportYahoo,bDefault=True)
-gImportRegistry.register('LSE','LON',QList.any,QTag.imported,gImportYahoo,bDefault=True)
+gImportRegistry.register('NASDAQ', 'NYC', QList.any, QTag.imported, gImportYahoo, bDefault=True)
+gImportRegistry.register('NYSE', 'NYC', QList.any, QTag.imported, gImportYahoo, bDefault=True)
+gImportRegistry.register('AMEX', 'NYC', QList.any, QTag.imported, gImportYahoo, bDefault=True)
+gImportRegistry.register('OTCBB', 'NYC', QList.any, QTag.imported, gImportYahoo, bDefault=True)
+gImportRegistry.register('LSE', 'LON', QList.any, QTag.imported, gImportYahoo, bDefault=True)
 
-gImportRegistry.register('ASX','SYD',QList.any,QTag.imported,gImportYahoo,bDefault=True)
+gImportRegistry.register('ASX', 'SYD', QList.any, QTag.imported, gImportYahoo, bDefault=True)
 
-gImportRegistry.register('TORONTO VENTURE','TOR',QList.any,QTag.imported,gImportYahoo,bDefault=True)
-gImportRegistry.register('TORONTO EXCHANGE','TOR',QList.any,QTag.imported,gImportYahoo,bDefault=True)
+gImportRegistry.register('TORONTO VENTURE', 'TOR', QList.any, QTag.imported, gImportYahoo, bDefault=True)
+gImportRegistry.register('TORONTO EXCHANGE', 'TOR', QList.any, QTag.imported, gImportYahoo, bDefault=True)
 
-gImportRegistry.register('LSE SETS','LON',QList.any,QTag.imported,gImportYahoo,bDefault=True)
-gImportRegistry.register('LSE SETSqx','LON',QList.any,QTag.imported,gImportYahoo,bDefault=True)
-gImportRegistry.register('LSE SEAQ','LON',QList.any,QTag.imported,gImportYahoo,bDefault=True)
+gImportRegistry.register('LSE SETS', 'LON', QList.any, QTag.imported, gImportYahoo, bDefault=True)
+gImportRegistry.register('LSE SETSqx', 'LON', QList.any, QTag.imported, gImportYahoo, bDefault=True)
+gImportRegistry.register('LSE SEAQ', 'LON', QList.any, QTag.imported, gImportYahoo, bDefault=True)
 
-gImportRegistry.register('MILAN EXCHANGE','MIL',QList.any,QTag.imported,gImportYahoo,bDefault=True)
+gImportRegistry.register('MILAN EXCHANGE', 'MIL',QList.any,QTag.imported,gImportYahoo,bDefault=True)
 
-gImportRegistry.register('SWISS EXCHANGE','XSWX',QList.any,QTag.imported,gImportYahoo,bDefault=True)
-gImportRegistry.register('SWISS EXCHANGE','XVTX',QList.any,QTag.imported,gImportYahoo,bDefault=True)
+gImportRegistry.register('SWISS EXCHANGE', 'XSWX',QList.any,QTag.imported,gImportYahoo,bDefault=True)
+gImportRegistry.register('SWISS EXCHANGE', 'XVTX',QList.any,QTag.imported,gImportYahoo,bDefault=True)
 
-gImportRegistry.register('EURONEXT','PAR',QList.system,QTag.imported,gImportYahoo,bDefault=True)
-gImportRegistry.register('EURONEXT','PAR',QList.user,QTag.imported,gImportYahoo,bDefault=True)
-gImportRegistry.register('EURONEXT','PAR',QList.indices,QTag.imported,gImportYahoo,bDefault=False)
+gImportRegistry.register('EURONEXT', 'PAR',QList.system,QTag.imported,gImportYahoo,bDefault=True)
+gImportRegistry.register('EURONEXT', 'PAR',QList.user,QTag.imported,gImportYahoo,bDefault=True)
+gImportRegistry.register('EURONEXT', 'PAR',QList.indices,QTag.imported,gImportYahoo,bDefault=False)
 
-gImportRegistry.register('EURONEXT','AMS',QList.system,QTag.imported,gImportYahoo,bDefault=True)
-gImportRegistry.register('EURONEXT','AMS',QList.user,QTag.imported,gImportYahoo,bDefault=True)
-gImportRegistry.register('EURONEXT','AMS',QList.indices,QTag.imported,gImportYahoo,bDefault=False)
+gImportRegistry.register('EURONEXT', 'AMS',QList.system,QTag.imported,gImportYahoo,bDefault=True)
+gImportRegistry.register('EURONEXT', 'AMS',QList.user,QTag.imported,gImportYahoo,bDefault=True)
+gImportRegistry.register('EURONEXT', 'AMS',QList.indices,QTag.imported,gImportYahoo,bDefault=False)
 
-gImportRegistry.register('EURONEXT','BRU',QList.system,QTag.imported,gImportYahoo,bDefault=True)
-gImportRegistry.register('EURONEXT','BRU',QList.user,QTag.imported,gImportYahoo,bDefault=True)
-gImportRegistry.register('EURONEXT','BRU',QList.indices,QTag.imported,gImportYahoo,bDefault=False)
+gImportRegistry.register('EURONEXT', 'BRU',QList.system,QTag.imported,gImportYahoo,bDefault=True)
+gImportRegistry.register('EURONEXT', 'BRU',QList.user,QTag.imported,gImportYahoo,bDefault=True)
+gImportRegistry.register('EURONEXT', 'BRU',QList.indices,QTag.imported,gImportYahoo,bDefault=False)
 
-gImportRegistry.register('EURONEXT','LIS',QList.system,QTag.imported,gImportYahoo,bDefault=True)
-gImportRegistry.register('EURONEXT','LIS',QList.user,QTag.imported,gImportYahoo,bDefault=True)
-gImportRegistry.register('EURONEXT','LIS',QList.indices,QTag.imported,gImportYahoo,bDefault=False)
+gImportRegistry.register('EURONEXT', 'LIS',QList.system,QTag.imported,gImportYahoo,bDefault=True)
+gImportRegistry.register('EURONEXT', 'LIS',QList.user,QTag.imported,gImportYahoo,bDefault=True)
+gImportRegistry.register('EURONEXT', 'LIS',QList.indices,QTag.imported,gImportYahoo,bDefault=False)
 
-gImportRegistry.register('ALTERNEXT','PAR',QList.system,QTag.imported,gImportYahoo,bDefault=True)
-gImportRegistry.register('ALTERNEXT','PAR',QList.user,QTag.imported,gImportYahoo,bDefault=True)
-gImportRegistry.register('ALTERNEXT','PAR',QList.indices,QTag.imported,gImportYahoo,bDefault=False)
+gImportRegistry.register('ALTERNEXT', 'PAR',QList.system,QTag.imported,gImportYahoo,bDefault=True)
+gImportRegistry.register('ALTERNEXT', 'PAR',QList.user,QTag.imported,gImportYahoo,bDefault=True)
+gImportRegistry.register('ALTERNEXT', 'PAR',QList.indices,QTag.imported,gImportYahoo,bDefault=False)
 
 gImportRegistry.register('ALTERNEXT','BRU',QList.system,QTag.imported,gImportYahoo,bDefault=True)
 gImportRegistry.register('ALTERNEXT','BRU',QList.user,QTag.imported,gImportYahoo,bDefault=True)
@@ -300,15 +300,15 @@ gImportRegistry.register('TAIWAN STOCK EXCHANGE','TAI',QList.any,QTag.imported,g
 #
 # ============================================================================
 
-def test(ticker,d):
+def test(ticker, d):
     if gImportYahoo.connect():
 
         state = gImportYahoo.getstate()
         if state:
             debug(u"state={}".format(state))
 
-            quote = quotes.lookupTicker(ticker,'NASDAQ')
-            data = gImportYahoo.getdata(quote,d)
+            quote = quotes.lookupTicker(ticker, 'NASDAQ')
+            data = gImportYahoo.getdata(quote, d)
             if data is not None:
                 if data:
                     debug(data)
@@ -328,15 +328,15 @@ if __name__ == '__main__':
 
     # never failed - fixed date
     print("15/03/2005")
-    test('AAPL',date(2005,3,15))
+    test('AAPL', date(2005, 3, 15))
 
     # never failed except week-end
     print("yesterday-today :-(")
-    test('AAPL',date.today()-timedelta(1))
+    test('AAPL', date.today() - timedelta(1))
 
     # always failed
     print("tomorrow :-)")
-    test('AAPL',date.today()+timedelta(1))
+    test('AAPL', date.today() + timedelta(1))
 
 # ============================================================================
 # That's all folks !

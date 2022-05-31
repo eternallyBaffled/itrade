@@ -63,7 +63,7 @@ def removeCarriage(s):
 
 
 def splitLines(buf):
-    lines = string.split(buf, '\n')
+    lines = buf.split('\n')
     lines = filter(lambda x: x, lines)
 
     lines = [removeCarriage(l) for l in lines]
@@ -82,7 +82,7 @@ def Import_ListOfQuotes_MEX(quotes, market='MEXICO EXCHANGE', dlg=None, x=0):
         return False
 
     try:
-        data=connection.getDataFromUrl(url)
+        data = connection.getDataFromUrl(url)
     except Exception:
         debug('Import_ListOfQuotes_MEX unable to connect :-(')
         return False
@@ -133,7 +133,7 @@ def Import_ListOfQuotes_MEX(quotes, market='MEXICO EXCHANGE', dlg=None, x=0):
         endpage = '27'
 
         if page == 0:
-            params='tab1%3AformaListaEmisoras%3AletraActual=&tab1%3AformaListaEmisoras%3AtipoActual=1&tab1%3AformaListaEmisoras%3AsectorActualKey=0%2C0%2C0%2C0&tab1%3AformaListaEmisoras%3AbotonSubmit=Buscar+un+valor&tab1%3AformaListaEmisoras=tab1%3AformaLista'
+            params = 'tab1%3AformaListaEmisoras%3AletraActual=&tab1%3AformaListaEmisoras%3AtipoActual=1&tab1%3AformaListaEmisoras%3AsectorActualKey=0%2C0%2C0%2C0&tab1%3AformaListaEmisoras%3AbotonSubmit=Buscar+un+valor&tab1%3AformaListaEmisoras=tab1%3AformaLista'
         else:
             params = 'tab1%3AformaListaPaginas=tab1%3AformaListaPaginas&indice='+indice+'&tab1%3AformaListaPaginas%3A_idcl=tab1%3AformaListaPaginas%3Apagina%3A'+previouspage+'%3A_id85'
 
@@ -199,9 +199,10 @@ def Import_ListOfQuotes_MEX(quotes, market='MEXICO EXCHANGE', dlg=None, x=0):
                 if lineserie in line:
                     serie = line[line.index(lineserie)+21:line.index('</span>')]
                     if serie != 'Series':
-                        newticker = ticker+serie
-                        if serie == '*' : newticker = ticker
-                        newticker = newticker.replace('&amp;','&')
+                        newticker = ticker + serie
+                        if serie == '*':
+                            newticker = ticker
+                        newticker = newticker.replace('&amp;', '&')
                         countserie = countserie + 1
 
                         quotes.addQuote(isin='', name=name, ticker=newticker, market='MEXICO EXCHANGE', currency='MXN', place='MEX', country='MX')

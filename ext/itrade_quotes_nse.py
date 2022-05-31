@@ -62,7 +62,7 @@ def removeCarriage(s):
 
 
 def splitLines(buf):
-    lines = string.split(buf, '\n')
+    lines = buf.split('\n')
     lines = filter(lambda x: x, lines)
 
     lines = [removeCarriage(l) for l in lines]
@@ -122,7 +122,7 @@ def Import_ListOfQuotes_NSE(quotes, market='NATIONAL EXCHANGE OF INDIA', dlg=Non
     nlines = 0
 
     for line in lines[1:]:
-        data = string.split (line, ',')
+        data = line.split(',')
         if len(data) == 8:
             name = data[1]
             name = name.replace('Limited', 'LTD')
@@ -132,7 +132,7 @@ def Import_ListOfQuotes_NSE(quotes, market='NATIONAL EXCHANGE OF INDIA', dlg=Non
             isin = data[6]
             if isin != 'INE195A01028':
                 quotes.addQuote(isin=isin, name=name, ticker=ticker,
-                market='NATIONAL EXCHANGE OF INDIA', currency='INR', place='NSE', country='IN')
+                market = 'NATIONAL EXCHANGE OF INDIA', currency='INR', place='NSE', country='IN')
                 nlines = nlines + 1
     if itrade_config.verbose:
         print(u'Imported {:d} lines from {} data.'.format(nlines, market))
@@ -143,7 +143,7 @@ def Import_ListOfQuotes_NSE(quotes, market='NATIONAL EXCHANGE OF INDIA', dlg=Non
 # Export me
 # ============================================================================
 
-gListSymbolRegistry.register('NATIONAL EXCHANGE OF INDIA','NSE',QList.any,QTag.list,Import_ListOfQuotes_NSE)
+gListSymbolRegistry.register('NATIONAL EXCHANGE OF INDIA', 'NSE', QList.any, QTag.list, Import_ListOfQuotes_NSE)
 
 # ============================================================================
 # Test ME
@@ -154,7 +154,7 @@ if __name__ == '__main__':
 
     from itrade_quotes import quotes
 
-    Import_ListOfQuotes_NSE(quotes,'NSE')
+    Import_ListOfQuotes_NSE(quotes, 'NSE')
     quotes.saveListOfQuotes()
 
 # ============================================================================
