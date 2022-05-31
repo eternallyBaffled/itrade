@@ -38,7 +38,6 @@
 # python system
 from __future__ import print_function
 import logging
-import string
 from datetime import date, timedelta
 
 # iTrade system

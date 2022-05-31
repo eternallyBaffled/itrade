@@ -42,7 +42,6 @@ from __future__ import print_function
 from datetime import date, datetime
 import logging
 import thread
-import string
 
 # iTrade system
 import itrade_config

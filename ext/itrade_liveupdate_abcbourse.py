@@ -213,9 +213,9 @@ class LiveUpdate_ABCBourse(object):
         if not self.m_datatime:
             debug('iscacheddataenoughfreshq : no data time !')
             return False
-        delta = timedelta(0,itrade_config.cachedDataFreshDelay)
+        delta = timedelta(0, itrade_config.cachedDataFreshDelay)
         newtime = self.m_datatime + delta
-        if datetime.today()>newtime:
+        if datetime.today() > newtime:
             debug(u'datatime = {}  currentdatatime = {}  newtime = {} delta = {} : False'.format(self.m_datatime, datetime.today(), newtime, delta))
             return False
         debug(u'datatime = {}  currentdatatime = {}  newtime = {} delta = {} : True'.format(self.m_datatime, datetime.today(), newtime,delta))
@@ -245,9 +245,9 @@ class LiveUpdate_ABCBourse(object):
 
     def currentMeans(self,quote):
         # means: sell,buy,last
-        return "-","-","-"
+        return "-", "-", "-"
 
-    def currentClock(self,quote=None):
+    def currentClock(self, quote=None):
         return self.m_clock
 
 # ============================================================================

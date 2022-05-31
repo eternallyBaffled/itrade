@@ -41,7 +41,6 @@
 from __future__ import print_function
 from datetime import date, timedelta
 import logging
-import string
 
 # iTrade system
 from itrade_logging import setLevel, debug

@@ -40,7 +40,6 @@ from __future__ import print_function
 from contextlib import closing
 from datetime import date, timedelta
 import logging
-import string
 import time
 import urllib2
 

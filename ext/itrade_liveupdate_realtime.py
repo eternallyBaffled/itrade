@@ -44,7 +44,6 @@ from datetime import date, datetime
 import logging
 import thread
 import os
-import string
 import urllib2
 import cPickle
 

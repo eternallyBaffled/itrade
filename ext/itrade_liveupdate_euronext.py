@@ -39,7 +39,6 @@
 # python system
 from __future__ import print_function
 import logging
-import string
 import thread
 import urllib2
 from contextlib import closing

@@ -40,7 +40,6 @@
 from __future__ import print_function
 import logging
 import re
-import string
 
 # iTrade system
 import itrade_config

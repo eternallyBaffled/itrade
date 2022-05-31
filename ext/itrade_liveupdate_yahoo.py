@@ -41,7 +41,6 @@ import logging
 from datetime import date, datetime
 import re
 import thread
-import string
 import time
 from pytz import timezone
 

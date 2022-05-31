@@ -165,8 +165,8 @@ def encrypt(filename,key=5333772633003566340333184962382):
     (set above as long decimal integer) -- 13 bytes = 104 bits
     """
 
-    encfile = filename[:string.rfind(filename,".")]+".cpt"
-    keyfile = filename[:string.rfind(filename,".")]+".key"
+    encfile = filename[:filename.rfind(".")]+".cpt"
+    keyfile = filename[:filename.rfind(".")]+".key"
 
     encfilesize = os.stat(filename)[6]
     print("File size: %s bytes" % encfilesize)
@@ -206,8 +206,8 @@ def decrypt(filename):
     Use a codekey to decrypt a file (see encrypt)
     """
 
-    plnfile  = filename[:string.rfind(filename,".")]+".dcp"
-    keyfile  = filename[:string.rfind(filename,".")]+".key"
+    plnfile  = filename[:filename.rfind(".")]+".dcp"
+    keyfile  = filename[:filename.rfind(".")]+".key"
 
     encfileobj = open(filename,'rb')
     plnfileobj = open(plnfile,'wb')
