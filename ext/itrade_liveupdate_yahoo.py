@@ -138,7 +138,7 @@ class LiveUpdate_yahoo(object):
 
         # yahoo return EDT OR EST time
         eastern = timezone('US/Eastern')
-        mdatetime = datetime(int(date[0:4]), int(date[4:6]), int(date[6:8]), val/60, val%60)
+        mdatetime = datetime(int(date[0:4]), int(date[4:6]), int(date[6:8]), val//60, val%60)
         loc_dt = eastern.localize(mdatetime)
         if str(loc_dt.strftime('%Z')) == 'EDT':
             val = val-60
@@ -152,7 +152,7 @@ class LiveUpdate_yahoo(object):
             self.m_lastclock = val
 
         # convert from connector timezone to market place timezone
-        mdatetime = datetime(int(date[0:4]), int(date[4:6]), int(date[6:8]), val/60, val%60)
+        mdatetime = datetime(int(date[0:4]), int(date[4:6]), int(date[6:8]), val//60, val%60)
         mdatetime = convertConnectorTimeToPlaceTime(mdatetime, self.timezone(), place)
         return u"{:d}:{:02d}".format(mdatetime.hour, mdatetime.minute)
 
@@ -348,7 +348,7 @@ class LiveUpdate_yahoo(object):
             if self.m_lastclock == 0:
                 return "::"
             # hh:mm
-            return u"{:d}:{:02d}".format(self.m_lastclock/60, self.m_lastclock%60)
+            return u"{:d}:{:02d}".format(self.m_lastclock//60, self.m_lastclock%60)
 
         key = quote.key()
         if key not in self.m_clock:

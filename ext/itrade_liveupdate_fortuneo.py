@@ -444,9 +444,9 @@ def encode_topic(topic, key):
     for i in range(0, len(outstring), 2):
         if i > 0:
             topic = topic + "%3B"
-        topic = topic + '%d' % hex2num(outstring[i:i+2])
+        topic = topic + u'{:d}'.format(hex2num(outstring[i:i+2]))
 
-    return '%5B'+topic+'%5D'
+    return '%5B' + topic + '%5D'
 
 def encode_topics(topics, key):
     key = blowfish.mkchunk(key)
@@ -572,7 +572,7 @@ class LiveUpdate_fortuneo(object):
         if val > self.m_lastclock:
             #print("lastclock was :", self.m_lastclock, " then is : ", val)
             self.m_lastclock = val
-        return u"{:d}:{:02d}".format(val/60, val%60)
+        return u"{:d}:{:02d}".format(val//60, val%60)
 
     def getdata(self, quote):
         # check we have a connection
@@ -785,7 +785,7 @@ class LiveUpdate_fortuneo(object):
             if self.m_lastclock == 0:
                 return "::"
             # hh:mm
-            return u"{:d}:{:02d}".format(self.m_lastclock/60, self.m_lastclock%60)
+            return u"{:d}:{:02d}".format(self.m_lastclock//60, self.m_lastclock%60)
         #
         isin = quote.isin()
         if isin not in self.m_clock:

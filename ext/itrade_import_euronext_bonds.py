@@ -147,12 +147,12 @@ class Import_euronext_bonds(object):
         datefrom = str(datedebut) + " 02:00:00"
         dateto = str(datefin) + " 23:00:00"
         datefrom = time.mktime(time.strptime(datefrom, format))
-        datefromurl =str(int(datefrom/100))+'00000'
+        datefromurl = str(int(datefrom/100))+'00000'
         dateto = time.mktime(time.strptime(dateto, format))
-        datefinurl =str(int(dateto)/100)+'00000'
+        datefinurl = str(int(dateto)/100)+'00000'
         endurl = 'typefile=csv&layout=vertical&typedate=dmy&separator=comma&mic={}&isin={}&name=&namefile=Price_Data_Historical&from={}&to={}&adjusted=1&base=0'.format(mic, quote.isin(), datefromurl, datefinurl)
 
-        debug("Import_euronext_bonds:getdata quote:{} begin:{} end:{}".format(quote, d1, d2))
+        debug(u"Import_euronext_bonds:getdata quote:{} begin:{} end:{}".format(quote, d1, d2))
 
         query = (
             ('typefile', 'csv'),
@@ -192,19 +192,19 @@ class Import_euronext_bonds(object):
         #print(lines)
 
         for eachLine in lines[4:]:
-            eachLine = eachLine.replace('","',';')
-            eachLine = eachLine.replace('"','')
-            sdata = string.split(eachLine,';')
+            eachLine = eachLine.replace('","', ';')
+            eachLine = eachLine.replace('"', '')
+            sdata = string.split(eachLine, ';')
 
-            if len(sdata)== 11:
+            if len(sdata) == 11:
                 #print(sdata)
                 #if (sdata[0] != "Date") and (quote.list() == QList.indices):
                 sdate = jjmmaa2yyyymmdd(sdata[2])
-                open = self.parseFValue(sdata[3].replace(',','.'))
+                open = self.parseFValue(sdata[3].replace(',', '.'))
                 print('open:',open)
-                high = self.parseFValue(sdata[4].replace(',','.'))
-                low = self.parseFValue(sdata[5].replace(',','.'))
-                value = self.parseFValue(sdata[6].replace(',','.'))
+                high = self.parseFValue(sdata[4].replace(',', '.'))
+                low = self.parseFValue(sdata[5].replace(',', '.'))
+                value = self.parseFValue(sdata[6].replace(',', '.'))
                 volume = self.parseLValue(sdata[7])
                 #print quote.key(),sdate,open,high,low,value,volume
 
@@ -235,10 +235,10 @@ class Import_euronext_bonds(object):
 gImportEuronext = Import_euronext_bonds()
 
 
-gImportRegistry.register('EURONEXT','PAR',QList.bonds,QTag.imported,gImportEuronext,bDefault=True)
-gImportRegistry.register('EURONEXT','BRU',QList.bonds,QTag.imported,gImportEuronext,bDefault=True)
-gImportRegistry.register('EURONEXT','AMS',QList.bonds,QTag.imported,gImportEuronext,bDefault=True)
-gImportRegistry.register('EURONEXT','LIS',QList.bonds,QTag.imported,gImportEuronext,bDefault=True)
+gImportRegistry.register('EURONEXT', 'PAR', QList.bonds, QTag.imported, gImportEuronext, bDefault=True)
+gImportRegistry.register('EURONEXT', 'BRU', QList.bonds, QTag.imported, gImportEuronext, bDefault=True)
+gImportRegistry.register('EURONEXT', 'AMS', QList.bonds, QTag.imported, gImportEuronext, bDefault=True)
+gImportRegistry.register('EURONEXT', 'LIS', QList.bonds, QTag.imported, gImportEuronext, bDefault=True)
 
 
 # ============================================================================
@@ -246,15 +246,14 @@ gImportRegistry.register('EURONEXT','LIS',QList.bonds,QTag.imported,gImportEuron
 #
 # ============================================================================
 
-def test(ticker,d):
+def test(ticker, d):
     if gImportEuronext.connect():
-
         state = gImportEuronext.getstate()
         if state:
-            debug("state={}".format(state))
+            debug(u"state={}".format(state))
 
-            quote = quotes.lookupTicker(ticker,'EURONEXT')
-            data = gImportEuronext.getdata(quote,d)
+            quote = quotes.lookupTicker(ticker, 'EURONEXT')
+            data = gImportEuronext.getdata(quote, d)
             if data is not None:
                 if data:
                     debug(data)
@@ -276,15 +275,15 @@ if __name__ == '__main__':
 
     # never failed - fixed date
     print("15/03/2005")
-    test('OSI',date(2005,3,15))
+    test('OSI', date(2005, 3, 15))
 
     # never failed except week-end
     print("yesterday-today :-(")
-    test('OSI',date.today()-timedelta(1))
+    test('OSI', date.today() - timedelta(1))
 
     # always failed
     print("tomorrow :-)")
-    test('OSI',date.today()+timedelta(1))
+    test('OSI', date.today() + timedelta(1))
 
 
 # ============================================================================

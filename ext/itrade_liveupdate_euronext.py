@@ -159,7 +159,7 @@ class LiveUpdate_Euronext(object):
             self.m_lastclock = val
 
         # convert from connector timezone to market place timezone
-        mdatetime = datetime(int(date[0:4]), int(date[4:6]), int(date[6:8]), val/60, val%60)
+        mdatetime = datetime(int(date[0:4]), int(date[4:6]), int(date[6:8]), val//60, val%60)
         mdatetime = convertConnectorTimeToPlaceTime(mdatetime, self.timezone(), place)
 
         return u"{:d}:{:02d}".format(mdatetime.hour, mdatetime.minute)
@@ -344,17 +344,17 @@ class LiveUpdate_Euronext(object):
         # clock,volume,value
         return None
 
-    def currentMeans(self,quote):
+    def currentMeans(self, quote):
         # means: sell,buy,last
-        return "-","-","-"
+        return "-", "-", "-"
 
-    def currentClock(self,quote=None):
+    def currentClock(self, quote=None):
         if quote is None:
-            if self.m_lastclock==0:
+            if self.m_lastclock == 0:
                 return "::"
             # hh:mm
-            return u"{:d}:{:02d}".format(self.m_lastclock/60, self.m_lastclock%60)
-        #
+            return u"{:d}:{:02d}".format(self.m_lastclock//60, self.m_lastclock%60)
+
         key = quote.key()
         if key not in self.m_clock:
             # no data for this quote !
@@ -362,7 +362,7 @@ class LiveUpdate_Euronext(object):
         else:
             return self.m_clock[key]
 
-    def currentDate(self,quote=None):
+    def currentDate(self, quote=None):
         key = quote.key()
         if key not in self.m_dateindice:
             # no date for this quote !
