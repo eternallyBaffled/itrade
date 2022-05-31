@@ -34,7 +34,7 @@ def testbf():
     for testdata in testvectors.readlines():
         if testdata[0]=="#": continue
         key,plaintext,ciphertext = map(lambda x: eval('0x'+x+'L'),
-                                       string.split(testdata))
+                                       testdata.split())
         print("Key      : %s " % (hex(key)[2:-1]))
         initialize(key)
         computext = bfencrypt(plaintext)
@@ -220,7 +220,7 @@ def decrypt(filename):
     print("Using key " + keyfile)
 
     line = keyfileobj.readline()  # this file is a one-liner
-    values = string.split(line,",")
+    values = line.split(",")
     key = eval(values[0])
     keylen = int(values[1])
 

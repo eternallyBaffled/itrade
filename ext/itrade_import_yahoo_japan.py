@@ -245,7 +245,7 @@ class ImportYahoojp(object):
                     volume
                 )
                 line = map(lambda val: str(val), line)
-                line = string.join(line, ';')
+                line = ';'.join(line)
 
                 # append
                 data = data + line + '\r\n'

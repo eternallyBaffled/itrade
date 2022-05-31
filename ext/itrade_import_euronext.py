@@ -166,7 +166,7 @@ class Import_euronext(object):
         )
 
         query = map(lambda var_val: u'{}={}'.format(var_val[0], str(var_val[1])), query)
-        query = string.join(query, '&')
+        query = '&'.join(query)
         url = self.m_url + '?' + query
 
         #print(url)
@@ -216,7 +216,7 @@ class Import_euronext(object):
                     volume
                     )
                 line = map(lambda val: str(val), line)
-                line = string.join(line, ';')
+                line = ';'.join(line)
                 #print line
 
                 # append

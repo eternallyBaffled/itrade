@@ -174,7 +174,7 @@ class LiveUpdate_yahoo(object):
             ('e', '.csv'),
         )
         query = map(lambda var_val: u'{}={}'.format(var_val[0], str(var_val[1])), query)
-        query = string.join(query, '&')
+        query = '&'.join(query)
         url = yahooUrl(quote.market(), live=True) + '?' + query
 
         debug("LiveUpdate_yahoo:getdata: url=%s", url)
@@ -284,7 +284,7 @@ class LiveUpdate_yahoo(object):
           (value-change)
         )
         data = map(lambda val: u'{}'.format(str(val)), data)
-        data = string.join(data, ';')
+        data = ';'.join(data)
 
         # temp: hunting an issue (SF bug 1848473)
         # if itrade_config.verbose:

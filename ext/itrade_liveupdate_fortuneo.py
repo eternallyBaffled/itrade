@@ -725,7 +725,7 @@ class LiveUpdate_fortuneo(object):
           dcmpd['CSA_VOL_JOUR']
         )
         data = map(lambda val: u'{}'.format(str(val)), data)
-        data = string.join(data, ';')
+        data = ';'.join(data)
         return data
 
     # ---[ cache management on data ] ---

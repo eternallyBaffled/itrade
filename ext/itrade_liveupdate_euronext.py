@@ -195,7 +195,7 @@ class LiveUpdate_Euronext(object):
             ('mic', mic),
         )
         query = map(lambda var_val: u'{}={}'.format(var_val[0], str(var_val[1])), query)
-        query = string.join(query, '&')
+        query = '&'.join(query)
 
         url = self.m_url + query
         #print('url:', url)

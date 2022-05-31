@@ -131,7 +131,7 @@ class Import_yahoo(object):
             ('ignore', '.csv'),
         )
         query = map(lambda var_val: u'{}={}'.format(var_val[0], str(var_val[1])), query)
-        query = string.join(query, '&')
+        query = '&'.join(query)
         url = yahooUrl(quote.market(), live=False) + '?' + query
 
         debug("Import_yahoo:getdata: url=%s ", url)
@@ -181,7 +181,7 @@ class Import_yahoo(object):
                        volume
                     )
                     line = map(lambda val: u'{}'.format(str(val)), line)
-                    line = string.join(line, ';')
+                    line = ';'.join(line)
                     # append
                     data = data + line + '\r\n'
 

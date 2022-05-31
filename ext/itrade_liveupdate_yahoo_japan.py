@@ -364,7 +364,7 @@ class LiveUpdate_yahoojp(object):
               (value-change)
             )
             data = map(lambda val: u'{}'.format(str(val)), data)
-            data = string.join(data, ';')
+            data = ';'.join(data)
 
             # temp: hunting an issue (SF bug 1848473)
             #if itrade_config.verbose:
