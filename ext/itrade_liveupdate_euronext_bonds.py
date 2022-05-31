@@ -154,46 +154,47 @@ class LiveUpdate_Euronext_bonds(object):
             self.m_lastclock = val
 
         # convert from connector timezone to market place timezone
-        mdatetime = datetime(int(date[0:4]),int(date[4:6]),int(date[6:8]),val/60,val%60)
-        mdatetime = convertConnectorTimeToPlaceTime(mdatetime,self.timezone(),place)
+        mdatetime = datetime(int(date[0:4]), int(date[4:6]), int(date[6:8]), val/60, val%60)
+        mdatetime = convertConnectorTimeToPlaceTime(mdatetime, self.timezone(), place)
 
-        return "%d:%02d" % (mdatetime.hour,mdatetime.minute)
+        return u"{:d}:{:02d}".format(mdatetime.hour, mdatetime.minute)
 
-    def parseFValue(self,d):
-        val = string.split(d,',')
+    def parseFValue(self, d):
+        val = string.split(d, ',')
         ret = ''
         for val in val:
-            ret = ret+val
+            ret = ret + val
         return float(ret)
 
-    def parseLValue(self,d):
-        if d=='-': return 0
+    def parseLValue(self, d):
+        if d == '-':
+            return 0
         if ',' in d:
             s = ','
         else:
             s = '\xA0'
-        val = string.split(d,s)
+        val = string.split(d, s)
         ret = ''
         for val in val:
-            ret = ret+val
+            ret = ret + val
         return long(ret)
 
-    def getdata(self,quote):
+    def getdata(self, quote):
         self.m_connected = False
-        debug("LiveUpdate_Euronext_bonds:getdata quote:%s market:%s" % (quote,self.m_market))
+        debug(u"LiveUpdate_Euronext_bonds:getdata quote:{} market:{}".format(quote, self.m_market))
 
-        mic = euronextmic(quote.market(),quote.place())
+        mic = euronextmic(quote.market(), quote.place())
 
         query = (
             ('isin', quote.isin()),
             ('mic', mic),
         )
-        query = map(lambda var_val: '%s=%s' % (var_val[0], str(var_val[1])), query)
+        query = map(lambda var_val: u'{}={}'.format(var_val[0], str(var_val[1])), query)
         query = string.join(query, '&')
 
         url = self.m_url + query
-        print('url_liveupdate:',url)
-        debug("LiveUpdate_Euronext_bonds:getdata: url=%s ",url)
+        print('url_liveupdate:', url)
+        debug("LiveUpdate_Euronext_bonds:getdata: url=%s ", url)
 
         try:
             req = urllib2.Request(url)
@@ -266,28 +267,27 @@ class LiveUpdate_Euronext_bonds(object):
                 count = 0
                 i = 0
                 c_datetime = datetime.today()
-                c_date = "%04d%02d%02d" % (c_datetime.year,c_datetime.month,c_datetime.day)
+                c_date = u"{:04d}{:02d}{:02d}".format(c_datetime.year, c_datetime.month, c_datetime.day)
                 #print 'Today is :', c_date
 
-                sdate,sclock = self.euronextDate(iDate)
+                sdate, sclock = self.euronextDate(iDate)
 
                 # be sure we have volume (or indices)
                 if quote.list() == QList.indices or iVolume != '':
-
                     # be sure not an oldest day !
-                    if (c_date==sdate) or (quote.list() == QList.indices):
+                    if (c_date == sdate) or (quote.list() == QList.indices):
                         key = quote.key()
                         self.m_dcmpd[key] = sdate
-                        self.m_dateindice[key] = str(sdate[6:8]) + '/' + str(sdate[4:6]) + '/' +str(sdate[0:4])
-                        self.m_clock[key] = self.convertClock(quote.place(),sclock,sdate)
+                        self.m_dateindice[key] = str(sdate[6:8]) + '/' + str(sdate[4:6]) + '/' + str(sdate[0:4])
+                        self.m_clock[key] = self.convertClock(quote.place(), sclock, sdate)
 
                     # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME;PERCENT
-                    data = ';'.join([quote.key(),sdate,iOpen,iHigh,iLow,iLast,iVolume,iPercent])
+                    data = ';'.join([quote.key(), sdate, iOpen, iHigh, iLow, iLast, iVolume, iPercent])
                     return data
         return None
 
     # ---[ cache management on data ] ---
-    def getcacheddata(self,quote):
+    def getcacheddata(self, quote):
         return None
 
     def iscacheddataenoughfreshq(self):
@@ -305,31 +305,30 @@ class LiveUpdate_Euronext_bonds(object):
     def hasStatus(self):
         return itrade_config.isConnected()
 
-    def currentStatus(self,quote):
-        #
+    def currentStatus(self, quote):
         key = quote.key()
         if key not in self.m_dcmpd:
             # no data for this quote !
-            return "UNKNOWN","::","0.00","0.00","::"
+            return "UNKNOWN", "::", "0.00", "0.00", "::"
 
         st = 'OK'
         cl = '::'
-        return st,cl,"-","-",self.m_clock[key]
+        return st, cl, "-", "-", self.m_clock[key]
 
-    def currentTrades(self,quote):
+    def currentTrades(self, quote):
         # clock,volume,value
         return None
 
-    def currentMeans(self,quote):
-        # means: sell,buy,last
-        return "-","-","-"
+    def currentMeans(self, quote):
+        # means: sell, buy, last
+        return "-", "-", "-"
 
-    def currentClock(self,quote=None):
+    def currentClock(self, quote=None):
         if quote is None:
-            if self.m_lastclock==0:
+            if self.m_lastclock == 0:
                 return "::"
             # hh:mm
-            return "%d:%02d" % (self.m_lastclock/60,self.m_lastclock%60)
+            return u"{:d}:{:02d}".format(self.m_lastclock/60, self.m_lastclock%60)
         #
         key = quote.key()
         if key not in self.m_clock:
@@ -338,7 +337,7 @@ class LiveUpdate_Euronext_bonds(object):
         else:
             return self.m_clock[key]
 
-    def currentDate(self,quote=None):
+    def currentDate(self, quote=None):
         key = quote.key()
         if key not in self.m_dateindice:
             # no date for this quote !
@@ -354,10 +353,10 @@ class LiveUpdate_Euronext_bonds(object):
 gLiveEuronextBonds = LiveUpdate_Euronext_bonds()
 
 
-gLiveRegistry.register('EURONEXT','PAR',QList.bonds,QTag.live,gLiveEuronextBonds,bDefault=True)
-gLiveRegistry.register('EURONEXT','BRU',QList.bonds,QTag.live,gLiveEuronextBonds,bDefault=True)
-gLiveRegistry.register('EURONEXT','AMS',QList.bonds,QTag.live,gLiveEuronextBonds,bDefault=True)
-gLiveRegistry.register('EURONEXT','LIS',QList.bonds,QTag.live,gLiveEuronextBonds,bDefault=True)
+gLiveRegistry.register('EURONEXT', 'PAR', QList.bonds, QTag.live, gLiveEuronextBonds, bDefault=True)
+gLiveRegistry.register('EURONEXT', 'BRU', QList.bonds, QTag.live, gLiveEuronextBonds, bDefault=True)
+gLiveRegistry.register('EURONEXT', 'AMS', QList.bonds, QTag.live, gLiveEuronextBonds, bDefault=True)
+gLiveRegistry.register('EURONEXT', 'LIS', QList.bonds, QTag.live, gLiveEuronextBonds, bDefault=True)
 
 # ============================================================================
 # Test ME
@@ -375,9 +374,9 @@ def test(ticker):
     elif gLiveEuronextBonds.connect():
         state = gLiveEuronextBonds.getstate()
         if state:
-            debug("state=%s" % state)
+            debug(u"state={}".format(state))
 
-            quote = quotes.lookupTicker(ticker,'EURONEXT')
+            quote = quotes.lookupTicker(ticker, 'EURONEXT')
             if quote:
                 data = gLiveEuronextBonds.getdata(quote)
                 if data is not None:
@@ -388,7 +387,7 @@ def test(ticker):
                 else:
                     print("getdata() failure :-(")
             else:
-                print("Unknown ticker %s on EURONEXT" % ticker)
+                print(u"Unknown ticker {} on EURONEXT".format(ticker))
         else:
             print("getstate() failure :-(")
 
@@ -399,11 +398,11 @@ def test(ticker):
 if __name__ == '__main__':
     setLevel(logging.DEBUG)
 
-    print('live %s' % date.today())
+    print(u'live {}'.format(date.today()))
 
    # load euronext import extension
     import itrade_ext
-    itrade_ext.loadOneExtension('itrade_import_euronext.py',itrade_config.dirExtData)
+    itrade_ext.loadOneExtension('itrade_import_euronext.py', itrade_config.dirExtData)
     quotes.loadMarket('EURONEXT')
 
     test('OSI')

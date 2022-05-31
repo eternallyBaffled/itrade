@@ -66,20 +66,20 @@ def splitLines(buf):
     return lines
 
 
-def Import_ListOfQuotes_SWX(quotes,market='SWISS EXCHANGE',dlg=None,x=0):
+def Import_ListOfQuotes_SWX(quotes, market='SWISS EXCHANGE', dlg=None, x=0):
     if itrade_config.verbose:
-        print('Update %s list of symbols' % market)
-    connection = ITradeConnection(cookies = None,
-                               proxy = itrade_config.proxyHostname,
-                               proxyAuth = itrade_config.proxyAuthentication,
-                               connectionTimeout = itrade_config.connectionTimeout
+        print(u'Update {} list of symbols'.format(market))
+    connection = ITradeConnection(cookies=None,
+                               proxy=itrade_config.proxyHostname,
+                               proxyAuth=itrade_config.proxyAuthentication,
+                               connectionTimeout=itrade_config.connectionTimeout
                                )
-    if market=='SWISS EXCHANGE':
+    if market == 'SWISS EXCHANGE':
         url = 'https://www.six-swiss-exchange.com/shares/companies/download/issuers_all_fr.csv'
         try:
             data = connection.getDataFromUrl(url)
         except Exception:
-            info('Import_ListOfQuotes_SWX_%s:unable to get file name :-(' % market)
+            info(u'Import_ListOfQuotes_SWX_{}:unable to get file name :-('.format(market))
             return False
     else:
         return False
@@ -88,30 +88,29 @@ def Import_ListOfQuotes_SWX(quotes,market='SWISS EXCHANGE',dlg=None,x=0):
     lines = splitLines(data)
     n = 0
     isin = ''
-    for line in lines[1:]:
-        line = line.replace('!',' ')
-        line = line.replace(',',' ')
-        line = line.replace('à','a')
-        line = line.replace('ä','a')
-        line = line.replace('â','a')
-        line = line.replace('ö','o')
-        line = line.replace('ü','u')
-        line = line.replace('é','e')
-        line = line.replace('è','e')
-        line = line.replace('+',' ')
+    for n, line in enumerate(lines[1:]):
+        line = line.replace('!', ' ')
+        line = line.replace(',', ' ')
+        line = line.replace('à', 'a')
+        line = line.replace('ä', 'a')
+        line = line.replace('â', 'a')
+        line = line.replace('ö', 'o')
+        line = line.replace('ü', 'u')
+        line = line.replace('é', 'e')
+        line = line.replace('è', 'e')
+        line = line.replace('+', ' ')
 
-        data = string.split(line,';') # csv line
+        data = string.split(line, ';')  # csv line
         name = data[0].strip()
         ticker = data[1].strip()
         country = data[3].strip()
         currency = data[4].strip()
         exchange = data[5].strip()
 
-        quotes.addQuote(isin=isin,name=name, ticker=ticker,market='SWISS EXCHANGE',
-                    currency=currency,place=exchange,country=country)
-        n = n + 1
+        quotes.addQuote(isin=isin, name=name, ticker=ticker, market='SWISS EXCHANGE',
+                    currency=currency, place=exchange, country=country)
     if itrade_config.verbose:
-        print('Imported %d lines from %s' % (n,market))
+        print(u'Imported {:d} lines from {}'.format(n, market))
 
     return True
 
@@ -119,8 +118,8 @@ def Import_ListOfQuotes_SWX(quotes,market='SWISS EXCHANGE',dlg=None,x=0):
 # Export me
 # ============================================================================
 
-gListSymbolRegistry.register('SWISS EXCHANGE','XSWX',QList.any,QTag.list,Import_ListOfQuotes_SWX)
-gListSymbolRegistry.register('SWISS EXCHANGE','XVTX',QList.any,QTag.list,Import_ListOfQuotes_SWX)
+gListSymbolRegistry.register('SWISS EXCHANGE', 'XSWX', QList.any, QTag.list, Import_ListOfQuotes_SWX)
+gListSymbolRegistry.register('SWISS EXCHANGE', 'XVTX', QList.any, QTag.list, Import_ListOfQuotes_SWX)
 
 # ============================================================================
 # Test ME
@@ -131,8 +130,8 @@ if __name__ == '__main__':
 
     from itrade_quotes import quotes
 
-    Import_ListOfQuotes_SWX(quotes,'XSWX')
-    Import_ListOfQuotes_SWX(quotes,'XVTX')
+    Import_ListOfQuotes_SWX(quotes, 'XSWX')
+    Import_ListOfQuotes_SWX(quotes, 'XVTX')
     quotes.saveListOfQuotes()
 
 # ============================================================================

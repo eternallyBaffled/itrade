@@ -67,10 +67,10 @@ def splitLines(buf):
     return lines
 
 
-def Import_ListOfQuotes_SGX(quotes,market='SINGAPORE EXCHANGE',dlg=None,x=0):
+def Import_ListOfQuotes_SGX(quotes, market='SINGAPORE EXCHANGE', dlg=None, x=0):
     if itrade_config.verbose:
-        print('Update %s list of symbols' % market)
-    connection=ITradeConnection(cookies=None,
+        print(u'Update {} list of symbols'.format(market))
+    connection = ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
 
@@ -78,12 +78,12 @@ def Import_ListOfQuotes_SGX(quotes,market='SINGAPORE EXCHANGE',dlg=None,x=0):
     try:
         data = connection.getDataFromUrl('https://info.sgx.com/webstocks.nsf/isincodedownload/')
     except Exception:
-        info('Import_ListOfQuotes_SGX_%s:unable to get file name :-(' % market)
+        info(u'Import_ListOfQuotes_SGX_{}:unable to get file name :-('.format(market))
         return False
 
     date = data[data.find('/ISINCODEDOWNLOAD/')+18:data.find('/$File/ISINCODE.txt')]
     url = 'https://info.sgx.com/webstocks.nsf/ISINCODEDOWNLOAD/'+date+'/%24File/ISINCODE.txt'
-    #info('Import_ListOfQuotes_SGX_%s:connect to %s' % (market,url))
+    #info(u'Import_ListOfQuotes_SGX_%s:connect to {}'.format(market, url))
 
     if market == 'SINGAPORE EXCHANGE':
         currency = 'SGD'
@@ -95,7 +95,7 @@ def Import_ListOfQuotes_SGX(quotes,market='SINGAPORE EXCHANGE',dlg=None,x=0):
     try:
         data = connection.getDataFromUrl(url)
     except Exception:
-        info('Import_ListOfQuotes_SGX_%s:unable to connect :-(' % market)
+        info(u'Import_ListOfQuotes_SGX_{}:unable to connect :-('.format(market))
         return False
 
     # returns the data
@@ -103,9 +103,7 @@ def Import_ListOfQuotes_SGX(quotes,market='SINGAPORE EXCHANGE',dlg=None,x=0):
     lines = splitLines(data)
 
     n = 0
-
-    for line in lines[1:]:
-        n = n + 1
+    for n, line in enumerate(lines[1:]):
         name = line[:50]
         isin = line[60:72]
         ticker = line[80:89]
@@ -114,10 +112,9 @@ def Import_ListOfQuotes_SGX(quotes,market='SINGAPORE EXCHANGE',dlg=None,x=0):
         isin = isin.strip()
         ticker = ticker.strip()
 
-
-        quotes.addQuote(isin = isin,name = name,ticker = ticker,market = market,currency = currency,place = place,country = country)
+        quotes.addQuote(isin=isin, name=name, ticker=ticker, market=market, currency=currency, place=place, country=country)
     if itrade_config.verbose:
-        print('Imported %d lines from %s' % (n,market))
+        print(u'Imported {:d} lines from {}'.format(n, market))
 
     return True
 
@@ -125,7 +122,7 @@ def Import_ListOfQuotes_SGX(quotes,market='SINGAPORE EXCHANGE',dlg=None,x=0):
 # Export me
 # ============================================================================
 
-gListSymbolRegistry.register('SINGAPORE EXCHANGE','SGX',QList.any,QTag.list,Import_ListOfQuotes_SGX)
+gListSymbolRegistry.register('SINGAPORE EXCHANGE', 'SGX', QList.any, QTag.list, Import_ListOfQuotes_SGX)
 
 # ============================================================================
 # Test ME
@@ -136,7 +133,7 @@ if __name__ == '__main__':
 
     from itrade_quotes import quotes
 
-    Import_ListOfQuotes_SGX(quotes,'SINGAPORE EXCHANGE')
+    Import_ListOfQuotes_SGX(quotes, 'SINGAPORE EXCHANGE')
     quotes.saveListOfQuotes()
 
 # ============================================================================

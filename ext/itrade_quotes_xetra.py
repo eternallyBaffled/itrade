@@ -67,22 +67,22 @@ def splitLines(buf):
     return lines
 
 
-def Import_ListOfQuotes_Xetra(quotes,market='FRANKFURT EXCHANGE',dlg=None,x=0):
+def Import_ListOfQuotes_Xetra(quotes, market='FRANKFURT EXCHANGE', dlg=None, x=0):
     if itrade_config.verbose:
-        print('Update %s list of symbols' % market)
-    connection = ITradeConnection(cookies = None,
-                               proxy = itrade_config.proxyHostname,
-                               proxyAuth = itrade_config.proxyAuthentication,
-                               connectionTimeout = itrade_config.connectionTimeout
+        print(u'Update {} list of symbols'.format(market))
+    connection = ITradeConnection(cookies=None,
+                               proxy=itrade_config.proxyHostname,
+                               proxyAuth=itrade_config.proxyAuthentication,
+                               connectionTimeout=itrade_config.connectionTimeout
                                )
 
-    if market=='FRANKFURT EXCHANGE':
+    if market == 'FRANKFURT EXCHANGE':
         url = 'https://deutsche-boerse.com/dbag/dispatch/en/xetraCSV/gdb_navigation/trading/20_tradable_instruments/900_tradable_instruments/100_xetra'
     else:
         return False
 
     try:
-        data=connection.getDataFromUrl(url)
+        data = connection.getDataFromUrl(url)
     except Exception:
         debug('Import_ListOfQuotes_Deutsche Borse AG :unable to connect :-(')
         return False
@@ -90,18 +90,17 @@ def Import_ListOfQuotes_Xetra(quotes,market='FRANKFURT EXCHANGE',dlg=None,x=0):
     # returns the data
     lines = splitLines(data)
     n = 0
-
     for line in lines[6:]:
-        data = string.split (line, ';')    # ; delimited
+        data = string.split(line, ';')    # ; delimited
 
-        if len(data) >5:
+        if len(data) > 5:
             if data[8] == 'EQUITIES FFM2':
                 if data[2][:2] == 'DE':
-                    name = data[1].replace(',','').replace('  ','').replace (' -','-').replace ('. ','.').replace(' + ','&').replace('+','&')
-                    quotes.addQuote(isin=data[2],name=name,ticker=data[5],market='FRANKFURT EXCHANGE',currency=data[73],place='FRA',country='DE')
+                    name = data[1].replace(',', '').replace('  ', '').replace (' -', '-').replace ('. ', '.').replace(' + ', '&').replace('+', '&')
+                    quotes.addQuote(isin=data[2], name=name, ticker=data[5], market='FRANKFURT EXCHANGE', currency=data[73], place='FRA', country='DE')
                     n = n + 1
     if itrade_config.verbose:
-        print('Imported %d/%d lines from %s' % (n,len(lines),market))
+        print(u'Imported {:d}/{:d} lines from {}'.format(n, len(lines), market))
 
     return True
 
@@ -109,7 +108,7 @@ def Import_ListOfQuotes_Xetra(quotes,market='FRANKFURT EXCHANGE',dlg=None,x=0):
 # Export me
 # ============================================================================
 
-gListSymbolRegistry.register('FRANKFURT EXCHANGE','FRA',QList.any,QTag.list,Import_ListOfQuotes_Xetra)
+gListSymbolRegistry.register('FRANKFURT EXCHANGE', 'FRA', QList.any, QTag.list, Import_ListOfQuotes_Xetra)
 
 # ============================================================================
 # Test ME
@@ -120,7 +119,7 @@ if __name__ == '__main__':
 
     from itrade_quotes import quotes
 
-    Import_ListOfQuotes_Xetra(quotes,'FRA')
+    Import_ListOfQuotes_Xetra(quotes, 'FRA')
     quotes.saveListOfQuotes()
 
 # ============================================================================

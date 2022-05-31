@@ -66,41 +66,41 @@ def splitLines(buf):
     return lines
 
 
-def Import_ListOfQuotes_SHE(quotes,market='SHENZHEN EXCHANGE',dlg=None,x=0):
+def Import_ListOfQuotes_SHE(quotes, market='SHENZHEN EXCHANGE', dlg=None, x=0):
     if itrade_config.verbose:
-        print('Update %s list of symbols' % market)
-    connection=ITradeConnection(cookies=None,
+        print(u'Update {} list of symbols'.format(market))
+    connection = ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
 
-    if market=='SHENZHEN EXCHANGE':
+    if market == 'SHENZHEN EXCHANGE':
         url = 'https://www.szse.cn/szseWeb/FrontController.szse?ACTIONID=8&CATALOGID=1693&TABKEY=tab1&ENCODE=1'
     else:
         return False
 
-    info('Import_ListOfQuotes_SHE_%s:connect to %s' % (market,url))
+    info(u'Import_ListOfQuotes_SHE_%s:connect to {}'.format(market, url))
 
     try:
         data = connection.getDataFromUrl(url)
     except Exception:
-        info('Import_ListOfQuotes_SHE_%s:unable to connect :-(' % market)
+        info(u'Import_ListOfQuotes_SHE_{}:unable to connect :-('.format(market))
         return False
 
-    data = data.replace("style='mso-number-format:\@' align='center' >",'\n')
+    data = data.replace("style='mso-number-format:\@' align='center' >", '\n')
 
     # returns the data
     lines = splitLines(data)
 
     currency = 'CNY'
     nlines = 0
-    #print 'Import_ListOfQuotes_SHE_%s:' % market,'book',book,'sheet',sh,'nrows=',sh.nrows
+    #print u'Import_ListOfQuotes_SHE_{}:'.format(market), 'book', book, 'sheet', sh, 'nrows=', sh.nrows
 
     for line in lines[2:]:
         if line.find("</td><td  class='cls-data-td'  align='left' >"):
             ticker = line[:line.index('<')]
 
-            name = line[51:line.index('<',51)]
-            name = name.replace(',',' ')
+            name = line[51:line.index('<', 51)]
+            name = name.replace(',', ' ')
 
             if name[-2:] == '-B':
                 currency = 'HKD'
@@ -108,14 +108,17 @@ def Import_ListOfQuotes_SHE(quotes,market='SHENZHEN EXCHANGE',dlg=None,x=0):
             else:
                 currency = 'CNY'
 
-            if ticker=='000517': name = 'RONGAN PROPERTY CO'
-            if ticker=='000529': name = 'GUANGDONG MEIYA'
-            if ticker=='000650': name = 'RHENE PHARMACY CO'
-            quotes.addQuote(isin = '',name = name,ticker = ticker,market = 'SHENZHEN EXCHANGE',currency = currency,place = 'SHE',country = 'CN')
+            if ticker == '000517':
+                name = 'RONGAN PROPERTY CO'
+            if ticker == '000529':
+                name = 'GUANGDONG MEIYA'
+            if ticker == '000650':
+                name = 'RHENE PHARMACY CO'
+            quotes.addQuote(isin='', name=name, ticker=ticker, market='SHENZHEN EXCHANGE', currency=currency, place='SHE', country='CN')
             nlines = nlines + 1
 
     if itrade_config.verbose:
-        print('Imported %d lines from %s data.' % (nlines,market))
+        print(u'Imported {:d} lines from {} data.'.format(nlines, market))
 
     return True
 
@@ -123,7 +126,7 @@ def Import_ListOfQuotes_SHE(quotes,market='SHENZHEN EXCHANGE',dlg=None,x=0):
 # Export me
 # ============================================================================
 
-gListSymbolRegistry.register('SHENZHEN EXCHANGE','SHE',QList.any,QTag.list,Import_ListOfQuotes_SHE)
+gListSymbolRegistry.register('SHENZHEN EXCHANGE', 'SHE', QList.any, QTag.list, Import_ListOfQuotes_SHE)
 
 # ============================================================================
 # Test ME
@@ -134,7 +137,7 @@ if __name__ == '__main__':
 
     from itrade_quotes import quotes
 
-    Import_ListOfQuotes_SHE(quotes,'SHE')
+    Import_ListOfQuotes_SHE(quotes, 'SHE')
 
     quotes.saveListOfQuotes()
 

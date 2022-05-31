@@ -128,7 +128,7 @@ class LiveUpdate_ABCBourse(object):
             debug('LiveUpdate_ABCBourse:GET failure')
             return None
 
-        debug("status:%s reason:%s" %(response.status, response.reason))
+        debug(u"status:{} reason:{}".format(response.status, response.reason))
         if response.status != 200:
             debug('LiveUpdate_ABCBourse:status!=200')
             return None
@@ -156,7 +156,7 @@ class LiveUpdate_ABCBourse(object):
         if not self.m_viewstate:
             raise Exception('LiveUpdate_ABCBourse:no viewstate / missing getstate() call !')
 
-        debug("LiveUpdate_ABCBourse:getdata quote:%s " % quote)
+        debug(u"LiveUpdate_ABCBourse:getdata quote:{} ".format(quote))
 
         # init params and headers
         params = urlencode({'f': 'ebp', '__VIEWSTATE': self.m_viewstate, 'm': 'complet', 'ImageButton1.x': 4, 'ImageButton1.y': 13 })
@@ -171,7 +171,7 @@ class LiveUpdate_ABCBourse(object):
             debug('LiveUpdate_ABCBourse:POST failure')
             return None
 
-        debug("status:%s reason:%s" %(response.status, response.reason))
+        debug(u"status:{} reason:{}".format(response.status, response.reason))
         if response.status != 200:
             debug('LiveUpdate_ABCBourse:status!=200')
             return None
@@ -179,12 +179,12 @@ class LiveUpdate_ABCBourse(object):
         # returns the data
         data = response.read()
         self.m_datatime = datetime.today()
-        self.m_clock = "%d:%02d" % (self.m_datatime.hour,self.m_datatime.minute)
+        self.m_clock = u"{:d}:{:02d}".format(self.m_datatime.hour, self.m_datatime.minute)
 
-        debug('!!! datatime = %s clock=%s' % (self.m_datatime,self.m_clock))
+        debug(u'!!! datatime = {} clock={}'.format(self.m_datatime, self.m_clock))
 
         # detect EBP file then split by line
-        if data[:8]!="30111998":
+        if data[:8] != "30111998":
             self.m_data = ""
             return ""
         self.m_data = data[8:].split('\r\n')
@@ -194,15 +194,15 @@ class LiveUpdate_ABCBourse(object):
 
     # ---[ cache management on data ] ---
 
-    def getcacheddata(self,quote):
-        debug('getcacheddata %s' % self.m_data)
+    def getcacheddata(self, quote):
+        debug(u'getcacheddata {}'.format(self.m_data))
         for eachLine in self.m_data:
-            item = itrade_csv.parse(eachLine,7)
+            item = itrade_csv.parse(eachLine, 7)
             if item:
-                if item[0]==quote.isin():
+                if item[0] == quote.isin():
                     #print item
                     # convert to string format :-(
-                    return '%s;%s;%s;%s;%s;%s;%s' % (item[0],item[1],item[2],item[3],item[4],item[5],item[6])
+                    return u'{};{};{};{};{};{};{}'.format(item[0], item[1], item[2], item[3], item[4], item[5], item[6])
         return ""
 
     def iscacheddataenoughfreshq(self):
@@ -216,9 +216,9 @@ class LiveUpdate_ABCBourse(object):
         delta = timedelta(0,itrade_config.cachedDataFreshDelay)
         newtime = self.m_datatime + delta
         if datetime.today()>newtime:
-            debug('datatime = %s  currentdatatime = %s  newtime = %s delta = %s : False' %(self.m_datatime,datetime.today(),newtime,delta))
+            debug(u'datatime = {}  currentdatatime = {}  newtime = {} delta = {} : False'.format(self.m_datatime, datetime.today(), newtime, delta))
             return False
-        debug('datatime = %s  currentdatatime = %s  newtime = %s delta = %s : True' %(self.m_datatime,datetime.today(),newtime,delta))
+        debug(u'datatime = {}  currentdatatime = {}  newtime = {} delta = {} : True'.format(self.m_datatime, datetime.today(), newtime,delta))
         return True
 
     def cacheddatanotfresh(self):
@@ -234,12 +234,12 @@ class LiveUpdate_ABCBourse(object):
     def hasStatus(self):
         return itrade_config.isConnected()
 
-    def currentStatus(self,quote):
+    def currentStatus(self, quote):
         st = 'OK'
         cl = '::'
-        return st,cl,"-","-",self.m_clock
+        return st, cl, "-", "-", self.m_clock
 
-    def currentTrades(self,quote):
+    def currentTrades(self, quote):
         # clock,volume,value
         return None
 
@@ -277,9 +277,9 @@ def test(ticker):
     elif gLiveABC.connect():
         state = gLiveABC.getstate()
         if state:
-            debug("state=%s" % state)
+            debug("state=u".format(state))
 
-            quote = quotes.lookupTicker(ticker,'EURONEXT')
+            quote = quotes.lookupTicker(ticker, 'EURONEXT')
             data = gLiveABC.getdata(quote)
             if data is not None:
                 if data:
@@ -298,7 +298,7 @@ def test(ticker):
 if __name__ == '__main__':
     setLevel(logging.INFO)
 
-    print('live %s' % date.today())
+    print(u'live {}'.format(date.today()))
     test('OSI')
     test('EADT')
     gLiveABC.cacheddatanotfresh()

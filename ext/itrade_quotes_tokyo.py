@@ -68,18 +68,18 @@ def splitLines(buf):
     return lines
 
 
-def Import_ListOfQuotes_TKS(quotes,market='TOKYO EXCHANGE',dlg=None,x=0):
+def Import_ListOfQuotes_TKS(quotes, market='TOKYO EXCHANGE', dlg=None, x=0):
     if itrade_config.verbose:
-        print('Update %s list of symbols' % market)
-    connection=ITradeConnection(cookies=None,
+        print(u'Update {} list of symbols'.format(market))
+    connection = ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
-    if market=='TOKYO EXCHANGE':
+    if market == 'TOKYO EXCHANGE':
         url = "https://www.tse.or.jp/english/index.html"
     else:
         return False
 
-    info('Import_ListOfQuotes_tks_%s:connect to %s' % (market,url))
+    info(u'Import_ListOfQuotes_tks_{}:connect to {}'.format(market, url))
 
     ch = '<td valign="top" bgcolor="#FFFFE0"><font size="2"'
     count = 0
@@ -98,14 +98,13 @@ def Import_ListOfQuotes_TKS(quotes,market='TOKYO EXCHANGE',dlg=None,x=0):
                 , "Referer": "https://quote.tse.or.jp/tse/quote.cgi?F=listing/Ecs00"
                    }
 
-    for cursor in range(0,2400,100):
-        if cursor == 0:
-            url ='/tse/qsearch.exe?F=listing%2Fecslist&KEY1=&KEY5=&shijyo0=1stSec&shijyo1=2ndSec&shijyo2=Mothers&KEY3=&kind=TTCODE&sort=%2B&MAXDISP=100&KEY2=1stSec%2C2ndSec%2CMothers&REFINDEX=%2BTTCODE'
-        else:
-            url = '/tse/qsearch.exe?F=listing%2Fecslist&KEY1=&KEY5=&shijyo0=1stSec&shijyo1=2ndSec&shijyo2=Mothers&KEY3=&kind=TTCODE&sort=%2B&MAXDISP=100&KEY2=1stSec%2C2ndSec%2CMothers&REFINDEX=%2BTTCODE&GO_BEFORE=&BEFORE='+str(cursor)
+    for cursor in range(0, 2400, 100):
+        url = '/tse/qsearch.exe?F=listing%2Fecslist&KEY1=&KEY5=&shijyo0=1stSec&shijyo1=2ndSec&shijyo2=Mothers&KEY3=&kind=TTCODE&sort=%2B&MAXDISP=100&KEY2=1stSec%2C2ndSec%2CMothers&REFINDEX=%2BTTCODE'
+        if cursor != 0:
+            url += '&GO_BEFORE=&BEFORE='+str(cursor)
 
-        conn = httplib.HTTPConnection(host,80)
-        conn.request("GET",url,None,headers)
+        conn = httplib.HTTPConnection(host, 80)
+        conn.request("GET", url, None, headers)
         response = conn.getresponse()
         data = response.read()
         lines = splitLines(data)
@@ -116,27 +115,26 @@ def Import_ListOfQuotes_TKS(quotes,market='TOKYO EXCHANGE',dlg=None,x=0):
         #<td valign="top" bgcolor="#FFFFE0"><font size="2"><a href="quote.cgi?F=listing/EDetail1&MKTN=T&QCODE=3086" target="_top" class="lst">J.FRONT RETAILING CO., LTD.</a></font></td>
 
         q = 0
-
         for line in lines:
-            if ch in line :
+            if ch in line:
                 q = 1
-                count = count +1
-                ticker = line[(line.find('QCODE=')+6):(line.find ('" target="_top"'))]
-                name = line[(line.find('"lst">')+6):(line.find ('</a>'))]
-                name = name.replace(',','')
-                name = name.replace('  ',' ')
-                name = name.replace('¥',' - ')
+                count = count + 1
+                ticker = line[(line.find('QCODE=')+6):(line.find('" target="_top"'))]
+                name = line[(line.find('"lst">')+6):(line.find('</a>'))]
+                name = name.replace(',', '')
+                name = name.replace('  ', ' ')
+                name = name.replace('¥', ' - ')
                 # ok to proceed
 
-                dlg.Update(x,'TSE : %s /~2370'%cursor)
+                dlg.Update(x, u'TSE : {} /~2370'.format(cursor))
 
-                quotes.addQuote(isin = '',name = name,
-                        ticker = ticker,market= 'TOKYO EXCHANGE',currency = 'JPY',
-                        place = 'TKS',country = 'JP')
+                quotes.addQuote(isin='', name=name,
+                        ticker=ticker, market='TOKYO EXCHANGE', currency='JPY',
+                        place='TKS', country='JP')
         if q == 0:
             break
     if itrade_config.verbose:
-        print('Imported %d lines from TOKYO EXCHANGE' % count)
+        print(u'Imported {:d} lines from TOKYO EXCHANGE'.format(count))
 
     return True
 
@@ -144,7 +142,7 @@ def Import_ListOfQuotes_TKS(quotes,market='TOKYO EXCHANGE',dlg=None,x=0):
 # Export me
 # ============================================================================
 
-gListSymbolRegistry.register('TOKYO EXCHANGE','TKS',QList.any,QTag.list,Import_ListOfQuotes_TKS)
+gListSymbolRegistry.register('TOKYO EXCHANGE', 'TKS', QList.any, QTag.list, Import_ListOfQuotes_TKS)
 
 # ============================================================================
 # Test ME
@@ -155,7 +153,7 @@ if __name__ == '__main__':
 
     from itrade_quotes import quotes
 
-    Import_ListOfQuotes_TKS(quotes,'TOKYO EXCHANGE')
+    Import_ListOfQuotes_TKS(quotes, 'TOKYO EXCHANGE')
     quotes.saveListOfQuotes()
 
 # ============================================================================

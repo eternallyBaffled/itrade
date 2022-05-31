@@ -114,22 +114,22 @@ class LiveUpdate_yahoo(object):
         return True
 
     # ---[ code to get data ] ---
-    def yahooDate (self,date):
+    def yahooDate (self, date):
         # Date part is easy.
-        sdate = string.split (date[1:-1], '/')
+        sdate = string.split(date[1:-1], '/')
         month = int(sdate[0])
         day = int(sdate[1])
         year = int(sdate[2])
 
-        return "%4d%02d%02d" % (year,month,day)
+        return u"{:4d}{:02d}{:02d}".format(year, month, day)
 
-    def convertClock(self,place,clock,date):
+    def convertClock(self, place, clock, date):
         clo = clock[:-2]
         min = clo[-2:]
         hour = clo[:-3]
         val = (int(hour)*60) + int(min)
         per = clock[-2:]
-        if per=='pm':
+        if per == 'pm':
             if int(hour) < 12:
                 val = val + 12*60
         elif per == 'am':
@@ -138,31 +138,31 @@ class LiveUpdate_yahoo(object):
 
         # yahoo return EDT OR EST time
         eastern = timezone('US/Eastern')
-        mdatetime = datetime(int(date[0:4]),int(date[4:6]),int(date[6:8]),val/60,val%60)
+        mdatetime = datetime(int(date[0:4]), int(date[4:6]), int(date[6:8]), val/60, val%60)
         loc_dt = eastern.localize(mdatetime)
         if str(loc_dt.strftime('%Z')) == 'EDT':
             val = val-60
             if val <= 0:
                 val = (12*60)-60
 
-        #print clock,clo,hour,min,val,per,date
+        #print(clock, clo, hour, min, val, per, date)
 
-        if val>self.m_lastclock and date>=self.m_lastdate:
+        if val > self.m_lastclock and date >= self.m_lastdate:
             self.m_lastdate = date
             self.m_lastclock = val
 
         # convert from connector timezone to market place timezone
-        mdatetime = datetime(int(date[0:4]),int(date[4:6]),int(date[6:8]),val/60,val%60)
-        mdatetime = convertConnectorTimeToPlaceTime(mdatetime,self.timezone(),place)
-        return "%d:%02d" % (mdatetime.hour,mdatetime.minute)
+        mdatetime = datetime(int(date[0:4]), int(date[4:6]), int(date[6:8]), val/60, val%60)
+        mdatetime = convertConnectorTimeToPlaceTime(mdatetime, self.timezone(), place)
+        return u"{:d}:{:02d}".format(mdatetime.hour, mdatetime.minute)
 
-    def getdata(self,quote):
-        debug("LiveUpdate_yahoo:getdata quote:%s " % quote)
+    def getdata(self, quote):
+        debug(u"LiveUpdate_yahoo:getdata quote:{} ".format(quote))
         self.m_connected = False
 
-        sname = yahooTicker(quote.ticker(),quote.market(),quote.place())
+        sname = yahooTicker(quote.ticker(), quote.market(), quote.place())
 
-        if sname[0]=='^':
+        if sname[0] == '^':
             ss = "%5E" + sname[1:]
         else:
             ss = sname
@@ -173,13 +173,13 @@ class LiveUpdate_yahoo(object):
             ('f', 'sl1d1t1c1ohgv'),
             ('e', '.csv'),
         )
-        query = map(lambda var_val: '%s=%s' % (var_val[0], str(var_val[1])), query)
+        query = map(lambda var_val: u'{}={}'.format(var_val[0], str(var_val[1])), query)
         query = string.join(query, '&')
-        url = yahooUrl(quote.market(),live=True) + '?' + query
+        url = yahooUrl(quote.market(), live=True) + '?' + query
 
-        debug("LiveUpdate_yahoo:getdata: url=%s",url)
+        debug("LiveUpdate_yahoo:getdata: url=%s", url)
         try:
-            data=self.m_connection.getDataFromUrl(url)[:-2] # Get rid of CRLF
+            data = self.m_connection.getDataFromUrl(url)[:-2]  # Get rid of CRLF
         except Exception:
             debug('LiveUpdate_yahoo:unable to connect :-(')
             return None
@@ -188,14 +188,13 @@ class LiveUpdate_yahoo(object):
         s400 = re.search(r"400 Bad Request", data, re.IGNORECASE|re.MULTILINE)
         if s400:
             if itrade_config.verbose:
-                info('unknown %s quote (400 Bad Request) from Yahoo' % (quote.ticker()))
+                info(u'unknown {} quote (400 Bad Request) from Yahoo'.format(quote.ticker()))
             return None
 
-
-        sdata = string.split (data, ',')
+        sdata = string.split(data, ',')
         if len (sdata) < 9:
             if itrade_config.verbose:
-                info('invalid data (bad answer length) for %s quote' % (quote.ticker()))
+                info(u'invalid data (bad answer length) for {} quote'.format(quote.ticker()))
             return None
 
         #print sdata
@@ -207,9 +206,9 @@ class LiveUpdate_yahoo(object):
         key = quote.key()
 
         sclock = sdata[3][1:-1]
-        if sclock=="N/A" or sdata[2]=='"N/A"' or len(sclock)<5:
+        if sclock == "N/A" or sdata[2] == '"N/A"' or len(sclock) < 5:
             if itrade_config.verbose:
-                info('invalid datation for %s : %s %s' % (quote.ticker(),sclock,sdata[2]))
+                info(u'invalid datation for {} : {} {}'.format(quote.ticker(), sclock, sdata[2]))
                 #print sdata
             return None
 
@@ -217,42 +216,42 @@ class LiveUpdate_yahoo(object):
         symbol = sdata[0][1:-1]
         if symbol != sname:
             if itrade_config.verbose:
-                info('invalid ticker : ask for %s and receive %s' % (sname,symbol))
+                info(u'invalid ticker : ask for {} and receive {}'.format(sname, symbol))
             return None
 
         # date
         try:
             date = self.yahooDate(sdata[2])
             self.m_dcmpd[key] = sdata
-            self.m_clock[key] = self.convertClock(quote.place(),sclock,date)
-            self.m_dateindice[key] = sdata[2].replace('"','')
+            self.m_clock[key] = self.convertClock(quote.place(), sclock, date)
+            self.m_dateindice[key] = sdata[2].replace('"', '')
         except ValueError:
             if itrade_config.verbose:
-                info('invalid datation for %s : %s %s' % (quote.ticker(),sclock,sdata[2]))
+                info(u'invalid datation for {} : {} {}'.format(quote.ticker(), sclock, sdata[2]))
             return None
 
         # decode data
-        value = float (sdata[1])
+        value = float(sdata[1])
 
-        if sdata[4]=='N/A':
+        if sdata[4] == 'N/A':
             debug('invalid change : N/A')
             change = 0.0
             return None
         else:
             change = float(sdata[4])
-        if sdata[5]=='N/A':
+        if sdata[5] == 'N/A':
             debug('invalid open : N/A')
             open = 0.0
             return None
         else:
             open = float(sdata[5])
-        if sdata[6]=='N/A':
+        if sdata[6] == 'N/A':
             debug('invalid high : N/A')
             high = 0.0
             return None
         else:
             high = float(sdata[6])
-        if sdata[7]=='N/A':
+        if sdata[7] == 'N/A':
             debug('invalid low : N/A')
             low = 0.0
             return None
@@ -260,11 +259,11 @@ class LiveUpdate_yahoo(object):
             low = float(sdata[7])
 
         volume = int(sdata[8])
-        if volume<0:
-            debug('volume : invalid negative %d' % volume)
+        if volume < 0:
+            debug(u'volume : invalid negative {:d}'.format(volume))
             return None
-        if volume==0 and quote.list()!=QList.indices:
-            debug('volume : invalid zero value %d' % volume)
+        if volume == 0 and quote.list() != QList.indices:
+            debug(u'volume : invalid zero value {:d}'.format(volume))
             return None
         else:
             if value-change <= 0:
@@ -284,7 +283,7 @@ class LiveUpdate_yahoo(object):
           percent,
           (value-change)
         )
-        data = map(lambda val: '%s' % str(val), data)
+        data = map(lambda val: u'{}'.format(str(val)), data)
         data = string.join(data, ';')
 
         # temp: hunting an issue (SF bug 1848473)
@@ -295,7 +294,7 @@ class LiveUpdate_yahoo(object):
 
     # ---[ cache management on data ] ---
 
-    def getcacheddata(self,quote):
+    def getcacheddata(self, quote):
         # no cache
         return None
 
@@ -312,46 +311,44 @@ class LiveUpdate_yahoo(object):
     def hasNotebook(self):
         return True
 
-    def currentNotebook(self,quote):
-        #
+    def currentNotebook(self, quote):
         key = quote.key()
 
         if key not in self.m_dcmpd:
             # no data for this quote !
-            return [],[]
+            return [], []
         d = self.m_dcmpd[key]
 
         #buy = []
-        #buy.append([0,0,d[9]])
+        #buy.append([0, 0, d[9]])
 
         #sell = []
-        #sell.append([0,0,d[10]])
+        #sell.append([0, 0, d[10]])
 
-        #return buy,sell
-        return [],[]
+        #return buy, sell
+        return [], []
 
     # ---[ status of quote ] ---
     def hasStatus(self):
         return itrade_config.isConnected()
 
-    def currentStatus(self,quote):
-        #
+    def currentStatus(self, quote):
         key = quote.key()
         if key not in self.m_dcmpd:
             # no data for this quote !
-            return "UNKNOWN","::","0.00","0.00","::"
+            return "UNKNOWN", "::", "0.00", "0.00", "::"
         d = self.m_dcmpd[key]
 
         st = 'OK'
         cl = '::'
-        return st,cl,"-","-",self.m_clock[key]
+        return st, cl, "-", "-", self.m_clock[key]
 
-    def currentClock(self,quote=None):
+    def currentClock(self, quote=None):
         if quote is None:
             if self.m_lastclock == 0:
                 return "::"
             # hh:mm
-            return "%d:%02d" % (self.m_lastclock/60,self.m_lastclock%60)
+            return u"{:d}:{:02d}".format(self.m_lastclock/60, self.m_lastclock%60)
 
         key = quote.key()
         if key not in self.m_clock:
@@ -360,23 +357,23 @@ class LiveUpdate_yahoo(object):
         else:
             return self.m_clock[key]
 
-    def currentDate(self,quote=None):
+    def currentDate(self, quote=None):
         key = quote.key()
         if key not in self.m_dateindice:
             # no date for this quote !
             return "----"
         else:
             # convert yahoo date
-            conv=time.strptime(self.m_dateindice[key],"%m/%d/%Y")
-            return time.strftime("%d/%m/%Y",conv)
+            conv = time.strptime(self.m_dateindice[key], "%m/%d/%Y")
+            return time.strftime("%d/%m/%Y", conv)
 
-    def currentTrades(self,quote):
+    def currentTrades(self, quote):
         # clock,volume,value
         return None
 
-    def currentMeans(self,quote):
-        # means: sell,buy,last
-        return "-","-","-"
+    def currentMeans(self, quote):
+        # means: sell, buy, last
+        return "-", "-", "-"
 
 # ============================================================================
 # Export me
@@ -384,7 +381,6 @@ class LiveUpdate_yahoo(object):
 
 
 gLiveYahoo = LiveUpdate_yahoo()
-
 
 gLiveRegistry.register('NASDAQ','NYC',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
 gLiveRegistry.register('NYSE','NYC',QList.any,QTag.differed,gLiveYahoo,bDefault=True)
@@ -481,9 +477,9 @@ def test(ticker):
     elif gLiveYahoo.connect():
         state = gLiveYahoo.getstate()
         if state:
-            debug("state=%s" % state)
+            debug(u"state={}".format(state))
 
-            quote = quotes.lookupTicker(ticker,'NASDAQ')
+            quote = quotes.lookupTicker(ticker, 'NASDAQ')
             data = gLiveYahoo.getdata(Quote)
             if data is not None:
                 if data:
@@ -502,7 +498,7 @@ def test(ticker):
 if __name__ == '__main__':
     setLevel(logging.INFO)
 
-    print('live %s' % date.today())
+    print(u'live {}'.format(date.today()))
     test('AAPL')
 
 # ============================================================================

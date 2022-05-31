@@ -127,11 +127,11 @@ class LiveUpdate_Euronext(object):
 
     # ---[ code to get data ] ---
 
-    def splitLines(self,buf):
+    def splitLines(self, buf):
         lines = string.split(buf, '\n')
-        lines = filter(lambda x:x, lines)
+        lines = filter(lambda x: x, lines)
         def removeCarriage(s):
-            if s[-1]=='\r':
+            if s[-1] == '\r':
                 return s[:-1]
             else:
                 return s
@@ -145,24 +145,24 @@ class LiveUpdate_Euronext(object):
         # Date part is easy
         sdate = jjmmaa2yyyymmdd(sp[0])
 
-        if len(sp)==1:
-            return sdate,"00:00"
-        return sdate,sp[1]
+        if len(sp) == 1:
+            return sdate, "00:00"
+        return sdate, sp[1]
 
-    def convertClock(self,place,clock,date):
+    def convertClock(self, place, clock, date):
         min = clock[3:5]
         hour = clock[:2]
         val = (int(hour)*60) + int(min)
         #print 'clock:',clock,hour,min,val
-        if val>self.m_lastclock and date>=self.m_lastdate:
+        if val > self.m_lastclock and date >= self.m_lastdate:
             self.m_lastdate = date
             self.m_lastclock = val
 
         # convert from connector timezone to market place timezone
-        mdatetime = datetime(int(date[0:4]),int(date[4:6]),int(date[6:8]),val/60,val%60)
-        mdatetime = convertConnectorTimeToPlaceTime(mdatetime,self.timezone(),place)
+        mdatetime = datetime(int(date[0:4]), int(date[4:6]), int(date[6:8]), val/60, val%60)
+        mdatetime = convertConnectorTimeToPlaceTime(mdatetime, self.timezone(), place)
 
-        return "%d:%02d" % (mdatetime.hour,mdatetime.minute)
+        return u"{:d}:{:02d}".format(mdatetime.hour, mdatetime.minute)
 
     def parseFValue(self,d):
         val = string.split(d,',')
@@ -183,22 +183,22 @@ class LiveUpdate_Euronext(object):
             ret = ret+val
         return long(ret)
 
-    def getdata(self,quote):
+    def getdata(self, quote):
         self.m_connected = False
-        debug("LiveUpdate_Euronext:getdata quote:%s market:%s" % (quote,self.m_market))
+        debug(u"LiveUpdate_Euronext:getdata quote:{} market:{}".format(quote, self.m_market))
 
-        mic = euronextmic(quote.market(),quote.place())
+        mic = euronextmic(quote.market(), quote.place())
 
         query = (
             ('isin', quote.isin()),
             ('mic', mic),
         )
-        query = map(lambda var_val: '%s=%s' % (var_val[0], str(var_val[1])), query)
+        query = map(lambda var_val: u'{}={}'.format(var_val[0], str(var_val[1])), query)
         query = string.join(query, '&')
 
         url = self.m_url + query
-        #print('url:',url)
-        debug("LiveUpdate_Euronext:getdata: url=%s ",url)
+        #print('url:', url)
+        debug("LiveUpdate_Euronext:getdata: url=%s ", url)
 
         try:
             req = urllib2.Request(url)
@@ -218,12 +218,11 @@ class LiveUpdate_Euronext(object):
         for eachLine in lines:
             count = count + 1
 
-
             if '"datetimeLastvalue">' in eachLine:
-                iDate = eachLine[eachLine.find('"datetimeLastvalue">')+20:eachLine.find('</span>')].replace('CET','').replace('BST','')
+                iDate = eachLine[eachLine.find('"datetimeLastvalue">')+20:eachLine.find('</span>')].replace('CET', '').replace('BST', '')
                 iDate = iDate.rstrip()
                 #print count,'iDate:',iDate
-                i = i +1
+                i = i + 1
 
             if '"lastPriceint">' in eachLine:
                 lastPriceint = eachLine[eachLine.find('"lastPriceint">')+15:eachLine.find('</span>')].replace(',','.')
@@ -287,7 +286,7 @@ class LiveUpdate_Euronext(object):
                 count = 0
                 i = 0
                 c_datetime = datetime.today()
-                c_date = "%04d%02d%02d" % (c_datetime.year,c_datetime.month,c_datetime.day)
+                c_date = "{:04d}{:02d}{:02d}".format(c_datetime.year, c_datetime.month, c_datetime.day)
                 #print 'Today is :', c_date
 
 
@@ -311,7 +310,7 @@ class LiveUpdate_Euronext(object):
 
     # ---[ cache management on data ] ---
 
-    def getcacheddata(self,quote):
+    def getcacheddata(self, quote):
         return None
 
     def iscacheddataenoughfreshq(self):
@@ -331,8 +330,7 @@ class LiveUpdate_Euronext(object):
     def hasStatus(self):
         return itrade_config.isConnected()
 
-    def currentStatus(self,quote):
-        #
+    def currentStatus(self, quote):
         key = quote.key()
         if key not in self.m_dcmpd:
             # no data for this quote !
@@ -340,9 +338,9 @@ class LiveUpdate_Euronext(object):
 
         st = 'OK'
         cl = '::'
-        return st,cl,"-","-",self.m_clock[key]
+        return st, cl, "-", "-", self.m_clock[key]
 
-    def currentTrades(self,quote):
+    def currentTrades(self, quote):
         # clock,volume,value
         return None
 
@@ -355,7 +353,7 @@ class LiveUpdate_Euronext(object):
             if self.m_lastclock==0:
                 return "::"
             # hh:mm
-            return "%d:%02d" % (self.m_lastclock/60,self.m_lastclock%60)
+            return u"{:d}:{:02d}".format(self.m_lastclock/60, self.m_lastclock%60)
         #
         key = quote.key()
         if key not in self.m_clock:
@@ -427,9 +425,9 @@ def test(ticker):
 
         state = gLiveEuronext.getstate()
         if state:
-            debug("state=%s" % state)
+            debug(u"state={}".format(state))
 
-            quote = quotes.lookupTicker(ticker,'EURONEXT')
+            quote = quotes.lookupTicker(ticker, 'EURONEXT')
             if quote:
                 data = gLiveEuronext.getdata(quote)
                 if data is not None:
@@ -440,7 +438,7 @@ def test(ticker):
                 else:
                     print("getdata() failure :-(")
             else:
-                print("Unknown ticker %s on EURONEXT" % ticker)
+                print(u"Unknown ticker {} on EURONEXT".format(ticker))
         else:
             print("getstate() failure :-(")
 
@@ -451,11 +449,11 @@ def test(ticker):
 if __name__ == '__main__':
     setLevel(logging.DEBUG)
 
-    print('live %s' % date.today())
+    print(u'live {}'.format(date.today()))
 
    # load euronext import extension
     import itrade_ext
-    itrade_ext.loadOneExtension('itrade_import_euronext.py',itrade_config.dirExtData)
+    itrade_ext.loadOneExtension('itrade_import_euronext.py', itrade_config.dirExtData)
     quotes.loadMarket('EURONEXT')
 
     test('OSI')

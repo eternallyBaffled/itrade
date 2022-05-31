@@ -67,21 +67,21 @@ def splitLines(buf):
     return lines
 
 
-def Import_ListOfQuotes_WBO(quotes,market='WIENER BORSE',dlg=None,x=0):
+def Import_ListOfQuotes_WBO(quotes, market='WIENER BORSE', dlg=None, x=0):
     if itrade_config.verbose:
-        print('Update %s list of symbols' % market)
-    connection=ITradeConnection(cookies=None,
+        print('Update {} list of symbols'.format(market))
+    connection = ITradeConnection(cookies=None,
                                 proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
-    if market=='WIENER BORSE':
+    if market == 'WIENER BORSE':
         url = "https://en.wienerborse.at/marketplace_products/trading/auction/?query=&markets=A_G_D&market=all"
     else:
         return False
 
-    info('Import_ListOfQuotes_WBO_%s:connect to %s' % (market,url))
+    info(u'Import_ListOfQuotes_WBO_{}:connect to {}'.format(market, url))
 
     try:
-        data=connection.getDataFromUrl(url)
+        data = connection.getDataFromUrl(url)
     except Exception:
         debug('Import_ListOfQuotes_WBO:unable to connect :-(')
         return False
@@ -104,38 +104,39 @@ def Import_ListOfQuotes_WBO(quotes,market='WIENER BORSE',dlg=None,x=0):
 
         # extract data
 
-        if '<th colspan="6"><b>Prime Market.at</b></th>' in line : n = 0
+        if '<th colspan="6"><b>Prime Market.at</b></th>' in line:
+            n = 0
 
-        if n == 0 :
-            if '<td class="left">' in line :
+        if n == 0:
+            if '<td class="left">' in line:
                 i = i + 1
-                ch = line[(line.find('>')+1):(line.find ('</td>'))]
-                if i == 1 :
+                ch = line[(line.find('>')+1):(line.find('</td>'))]
+                if i == 1:
                     isin = ch
-                elif i == 2 :
+                elif i == 2:
                     ticker = ch
-                elif i == 3 :
+                elif i == 3:
                     name = ch
-                    name = name.replace('ä','a')#\xe4
-                    name = name.replace('ö','o')#\xf6
-                    name = name.replace('Ö','O')#\xd6
-                    name = name.replace('ü','u')#\xfc
-                    name = name.replace('ß','?')#\xdf
-                elif i == 6 :
+                    name = name.replace('ä', 'a')#\xe4
+                    name = name.replace('ö', 'o')#\xf6
+                    name = name.replace('Ö', 'O')#\xd6
+                    name = name.replace('ü', 'u')#\xfc
+                    name = name.replace('ß', '?')#\xdf
+                elif i == 6:
                     i = 0
 
                     #print isin, name, ticker
 
                     # ok to proceed
 
-                    quotes.addQuote(isin = isin,name = name,
-                            ticker = ticker,market= market,currency = 'EUR',
-                            place = 'WBO',country = 'AT')
+                    quotes.addQuote(isin = isin, name=name,
+                            ticker=ticker, market=market, currency='EUR',
+                            place='WBO', country='AT')
 
                     count = count + 1
 
     if itrade_config.verbose:
-        print('Imported %d lines from WIENER BORSE' % count)
+        print(u'Imported {:d} lines from WIENER BORSE'.format(count))
 
     return True
 
@@ -143,7 +144,7 @@ def Import_ListOfQuotes_WBO(quotes,market='WIENER BORSE',dlg=None,x=0):
 # Export me
 # ============================================================================
 
-gListSymbolRegistry.register('WIENER BORSE','WBO',QList.any,QTag.list,Import_ListOfQuotes_WBO)
+gListSymbolRegistry.register('WIENER BORSE', 'WBO', QList.any, QTag.list, Import_ListOfQuotes_WBO)
 
 # ============================================================================
 # Test ME
@@ -154,7 +155,7 @@ if __name__ == '__main__':
 
     from itrade_quotes import quotes
 
-    Import_ListOfQuotes_WBO(quotes,'WIENER BORSE')
+    Import_ListOfQuotes_WBO(quotes, 'WIENER BORSE')
     quotes.saveListOfQuotes()
 
 # ============================================================================

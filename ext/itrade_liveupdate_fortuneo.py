@@ -215,14 +215,14 @@ full_subscriptions = (
     )
 
 def isin2sub(isin,sub,flux):
-    return "%s%s.%s.%s" % (flux2place(flux),flux,isin.strip().upper(),sub.strip().upper())
+    return u"{}{}.{}.{}".format(flux2place(flux), flux, isin.strip().upper(), sub.strip().upper())
 
-def isin2subscriptions(isin,flux):
+def isin2subscriptions(isin, flux):
     str = ""
     for each in full_subscriptions:
-        if str!="":
-            str = str+","
-        str = str + isin2sub(isin,each,flux)
+        if str != "":
+            str = str + ","
+        str = str + isin2sub(isin, each, flux)
     return str
 
 indice_subscriptions = (
@@ -231,75 +231,75 @@ indice_subscriptions = (
     "CSA_VAR_VEILLE"
     )
 
-def indice2subscriptions(isin,flux):
+def indice2subscriptions(isin, flux):
     str = ""
     for each in indice_subscriptions:
-        if str!="":
-            str = str+","
-        str = str + isin2sub(isin,each,flux)
+        if str != "":
+            str = str + ","
+        str = str + isin2sub(isin, each, flux)
     return str
 
 index2field = {
-    '000' : 0,
-    '001' : 1,
-    '002' : 2,
-    '003' : 3,
-    '004' : 4,
-    '005' : 5,
-    '006' : 6,
-    '007' : 7,
-    '008' : 8,
-    '009' : 9,
-    '00A' : 10,
-    '00B' : 11,
-    '00C' : 12,
-    '00D' : 13,
-    '00E' : 14,
-    '00F' : 15,
-    '00G' : 16,
-    '00H' : 17,
-    '00I' : 18,
-    '00J' : 19,
-    '00K' : 20,
-    '00L' : 21,
-    '00M' : 22,
-    '00N' : 23,
-    '00O' : 24,
-    '00P' : 25,
-    '00Q' : 26,
-    '00R' : 27,
-    '00S' : 28,
-    '00T' : 29,
-    '00U' : 30,
-    '00V' : 31,
-    '00W' : 32,
-    '00X' : 33,
-    '00Y' : 34,
-    '00Z' : 35,
-    '010' : 36,
-    '011' : 37,
-    '012' : 38,
-    '013' : 39,
-    '014' : 40,
-    '015' : 41,
-    '016' : 42,
-    '017' : 43,
-    '018' : 44,
-    '019' : 45,
-    '01A' : 46,
-    '01B' : 47,
-    '01C' : 48,
-    '01D' : 49,
-    '01E' : 50,
-    '01F' : 51,
-    '01G' : 52,
-    '01H' : 53,
-    '01I' : 54,
-    '01J' : 55,
-    '01K' : 56,     # last of quote
-    '01L' : 57,
-    '01M' : 58,
-    '01N' : 59
+    '000': 0,
+    '001': 1,
+    '002': 2,
+    '003': 3,
+    '004': 4,
+    '005': 5,
+    '006': 6,
+    '007': 7,
+    '008': 8,
+    '009': 9,
+    '00A': 10,
+    '00B': 11,
+    '00C': 12,
+    '00D': 13,
+    '00E': 14,
+    '00F': 15,
+    '00G': 16,
+    '00H': 17,
+    '00I': 18,
+    '00J': 19,
+    '00K': 20,
+    '00L': 21,
+    '00M': 22,
+    '00N': 23,
+    '00O': 24,
+    '00P': 25,
+    '00Q': 26,
+    '00R': 27,
+    '00S': 28,
+    '00T': 29,
+    '00U': 30,
+    '00V': 31,
+    '00W': 32,
+    '00X': 33,
+    '00Y': 34,
+    '00Z': 35,
+    '010': 36,
+    '011': 37,
+    '012': 38,
+    '013': 39,
+    '014': 40,
+    '015': 41,
+    '016': 42,
+    '017': 43,
+    '018': 44,
+    '019': 45,
+    '01A': 46,
+    '01B': 47,
+    '01C': 48,
+    '01D': 49,
+    '01E': 50,
+    '01F': 51,
+    '01G': 52,
+    '01H': 53,
+    '01I': 54,
+    '01J': 55,
+    '01K': 56,     # last of quote
+    '01L': 57,
+    '01M': 58,
+    '01N': 59
 }
 
 # ============================================================================
@@ -307,65 +307,65 @@ index2field = {
 # ============================================================================
 
 place_code = {
-    "004" : "004",
-    "SUISSE" : "004",
+    "004": "004",
+    "SUISSE": "004",
 
-    "006" : "006",
-    "BRUXELLES" : "006",
+    "006": "006",
+    "BRUXELLES": "006",
 
-    "025" : "025",
+    "025": "025",
     "PARIS": "025",
 
-    "027" : "027",
-    "LYON" : "027",
+    "027": "027",
+    "LYON": "027",
 
-    "028" : "028",
-    "MARSEILLE" : "028",
+    "028": "028",
+    "MARSEILLE": "028",
 
-    "029" : "029",
-    "NANCY" : "029",
+    "029": "029",
+    "NANCY": "029",
 
-    "030" : "030",
-    "LYON" : "030",
+    "030": "030",
+    "LYON": "030",
 
-    "031" : "031",
-    "NANTES" : "031",
+    "031": "031",
+    "NANTES": "031",
 
-    "032" : "032",
-    "LILLE" : "032",
+    "032": "032",
+    "LILLE": "032",
 
-    "036" : "036",
-    "361" : "361",
-    "LONDON" : "036",
+    "036": "036",
+    "361": "361",
+    "LONDON": "036",
 
-    "038" : "038",
-    "AMSTERDAM" : "038",
+    "038": "038",
+    "AMSTERDAM": "038",
 
-    "044" : "044",
-    "863" : "863",
-    "XETRA" : "044",
+    "044": "044",
+    "863": "863",
+    "XETRA": "044",
 
-    "046" : "046",
-    "ITALIE" : "046",
+    "046": "046",
+    "ITALIE": "046",
 
-    "054" : "054",
-    "ESPAGNE" : "054",
+    "054": "054",
+    "ESPAGNE": "054",
 
-    "065" : "065",
-    "NYSE" : "065",
+    "065": "065",
+    "NYSE": "065",
 
-    "066" : "066",
-    "ASE" : "066",
-    "NYSE" : "066",
+    "066": "066",
+    "ASE": "066",
+    "NYSE": "066",
 
-    "067" : "067",
-    "NASDAQ" : "067",
+    "067": "067",
+    "NASDAQ": "067",
 
-    "260" : "260",
-    "OPCVM" : "260",
+    "260": "260",
+    "OPCVM": "260",
 
-    "046" : "046",
-    "220" : "220",
+    "046": "046",
+    "220": "220",
 }
 
 def place2code(place):
@@ -379,17 +379,17 @@ def place2code(place):
 #
 # ============================================================================
 
-def convert(n,v,s):
+def convert(n, v, s):
     n = int(n)
     v = int(v)
-    if s=='-2':
+    if s == '-2':
         s = 'ATP'
-    if s=='0' or s=='0.00':
-        if v>0:
+    if s == '0' or s == '0.00':
+        if v > 0:
             s = 'APM'
         else:
             s = '-'
-    return n,v,s
+    return n, v, s
 
 # ============================================================================
 # encode_topics
@@ -416,18 +416,18 @@ h2n = {
 
 def hex2num(hex):
     d = h2n[hex[0]]*16 + h2n[hex[1]]
-    if d>127:
+    if d > 127:
         d = d - 256
     return d
 
-def encode_topic(topic,key):
+def encode_topic(topic, key):
     blowfish.initialize(key)
 
     instring = topic
     blocks = len(instring)/8
     padding = (blocks + 1)*8 - len(instring)
     instring = instring + padding * chr(padding)
-    print("Padding with %s bytes" % padding)
+    print(u"Padding with {} bytes".format(padding))
 
     outstring = ""
 
@@ -439,26 +439,25 @@ def encode_topic(topic,key):
         outstring = outstring + outbytes                    # and appended
 
     topic = ""
-    print("Size: %s / %s" % (len(instring),len(outstring)))
-    print('"%s"' % outstring)
-    for i in range(0,len(outstring),2):
-        if i>0:
+    print(u"Size: {} / {}".format(len(instring), len(outstring)))
+    print(u'"{}"'.format(outstring))
+    for i in range(0, len(outstring), 2):
+        if i > 0:
             topic = topic + "%3B"
         topic = topic + '%d' % hex2num(outstring[i:i+2])
 
     return '%5B'+topic+'%5D'
 
-def encode_topics(topics,key):
+def encode_topics(topics, key):
     key = blowfish.mkchunk(key)
     topics = topics.split(',')
     ret = ""
 
-    j=0
-    for topic in topics:
-        if j>0:
+    j = 0
+    for j, topic in enumerate(topics):
+        if j > 0:
             ret = ret + '%2C'
-        ret = ret + encode_topic(topic.encode("ISO-8859-1"),key)
-        j = j + 1
+        ret = ret + encode_topic(topic.encode("ISO-8859-1"), key)
 
     return ret
 
@@ -518,16 +517,16 @@ class LiveUpdate_fortuneo(object):
     # ---[ connexion ] ---
 
     def connect(self):
-        self.m_conn = httplib.HTTPConnection(self.m_default_host,80)
+        self.m_conn = httplib.HTTPConnection(self.m_default_host, 80)
         if self.m_conn is None:
-            print('live: not connected on %s:80' % self.m_default_host)
+            print(u'live: not connected on {}:80'.format(self.m_default_host))
             return False
 
         self.readCookie()
         self.loadPlaces()
 
         #if itrade_config.verbose:
-        #    print 'live: connected on %s:80' % self.m_default_host
+        #    print u'live: connected on {}:80'.format(self.m_default_host)
         return True
 
     def disconnect(self):
@@ -569,18 +568,18 @@ class LiveUpdate_fortuneo(object):
         min = clo[-2:]
         hour = clo[:-3]
         val = (int(hour)*60) + int(min)
-        #print clo,hour,min,val
-        if val>self.m_lastclock:
-            #print "lastclock was :",self.m_lastclock," then is : ",val
+        #print(clo, hour, min, val)
+        if val > self.m_lastclock:
+            #print("lastclock was :", self.m_lastclock, " then is : ", val)
             self.m_lastclock = val
-        return "%d:%02d" % (val/60,val%60)
+        return u"{:d}:{:02d}".format(val/60, val%60)
 
-    def getdata(self,quote):
+    def getdata(self, quote):
         # check we have a connection
         if not self.m_conn:
             raise Exception('LiveUpdate_fortuneo:no connection / missing connect() call !')
 
-        #info("LiveUpdate_fortuneo:getdata quote:%s " % quote)
+        #info(u"LiveUpdate_fortuneo:getdata quote:{} ".format(quote))
 
         isin = quote.isin()
 
@@ -588,22 +587,22 @@ class LiveUpdate_fortuneo(object):
 
         # init params and headers
         headers = {
-                    "Connection":"keep-alive",
-                    "Accept":"text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
-                    "Host":self.m_default_host,
-                    "User-Agent":"Mozilla/4.0 (Windows XP 5.1) Java/1.5.0_06",
-                    "Pragma":"no-cache",
-                    "Cache-Control":"no-cache",
-                    "Content-Type":"application/x-www-form-urlencoded"
+                    "Connection": "keep-alive",
+                    "Accept": "text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
+                    "Host": self.m_default_host,
+                    "User-Agent": "Mozilla/4.0 (Windows XP 5.1) Java/1.5.0_06",
+                    "Pragma": "no-cache",
+                    "Cache-Control": "no-cache",
+                    "Content-Type": "application/x-www-form-urlencoded"
                     }
 
         cac = "FR0003500008"
-        #topics = "%s,%s" % (isin2subscriptions(isin,self.place(isin)),indice2subscriptions(cac,self.place(cac)))
-        topics = indice2subscriptions(cac,self.place(cac))
-        topics = encode_topics(topics,self.m_blowfish)
+        #topics = u"{},{}".format(isin2subscriptions(isin, self.place(isin)), indice2subscriptions(cac, self.place(cac)))
+        topics = indice2subscriptions(cac, self.place(cac))
+        topics = encode_topics(topics, self.m_blowfish)
 
-        params = "subscriptions%%3D%%7B%s%%7D%%26userinfo%%3D%s\r\n" % (topics,self.m_cookie)
-        print('params:',params)
+        params = u"subscriptions%3D%7B{}%7D%26userinfo%3D{}\r\n".format(topics, self.m_cookie)
+        print('params:', params)
 
         # POST quote request
         try:
@@ -614,12 +613,12 @@ class LiveUpdate_fortuneo(object):
             return None
 
         if flux.status != 200:
-            info('LiveUpdate_fortuneo: status==%d!=200 reason:%s headers:%s' % (flux.status,flux.reason,flux.getheaders()))
+            info(u'LiveUpdate_fortuneo: status=={:d}!=200 reason:{} headers:{}'.format(flux.status, flux.reason, flux.getheaders()))
             return None
 
         self.m_connected = True
 
-        # init some defaut values (just in case not in the server answer ...)
+        # init some default values (just in case not in the server answer ...)
         dcmpd = {}
 
         dcmpd['CSA_H_TRANS_2'] = '0:00:00'
@@ -694,9 +693,9 @@ class LiveUpdate_fortuneo(object):
         # close the stream
         flux.close()
 
-        # usefull information ?
+        # useful information ?
         if 'CSA_IND_ETAT' not in dcmpd:
-            info("LiveUpdate_fortuneo:getdata quote:%s UNKNOWN QUOTE? or WRONG PLACE?" % quote)
+            info(u"LiveUpdate_fortuneo:getdata quote:{} UNKNOWN QUOTE? or WRONG PLACE?".format(quote))
             return None
 
         # store in cache
@@ -704,7 +703,7 @@ class LiveUpdate_fortuneo(object):
 
         # extrack date
         if 'CSA_HD_COURS' not in dcmpd or 'CSA_CRS_PREMIER' not in dcmpd:
-            info("LiveUpdate_fortuneo:getdata quote:%s CLOSED" % quote)
+            info(u"LiveUpdate_fortuneo:getdata quote:{} CLOSED".format(quote))
             return None
 
         cl = dcmpd['CSA_HD_COURS']
@@ -713,7 +712,7 @@ class LiveUpdate_fortuneo(object):
 
         # extract clock
         self.m_clock[isin] = self.convertClock(cl[8:])
-        #print 'clock:',self.m_clock[isin]
+        #print('clock:', self.m_clock[isin])
 
         # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME
         data = (
@@ -725,13 +724,13 @@ class LiveUpdate_fortuneo(object):
           dcmpd['CSA_CRS_DERNIER'],
           dcmpd['CSA_VOL_JOUR']
         )
-        data = map(lambda val: '%s' % str(val), data)
+        data = map(lambda val: u'{}'.format(str(val)), data)
         data = string.join(data, ';')
         return data
 
     # ---[ cache management on data ] ---
 
-    def getcacheddata(self,quote):
+    def getcacheddata(self, quote):
         # no cache
         return None
 
@@ -748,47 +747,45 @@ class LiveUpdate_fortuneo(object):
     def hasNotebook(self):
         return True
 
-    def currentNotebook(self,quote):
-        #
+    def currentNotebook(self, quote):
         isin = quote.isin()
         if isin not in self.m_dcmpd:
             # no data for this quote !
-            return [],[]
+            return [], []
         d = self.m_dcmpd[isin]
 
-        #
         buy = []
         if d['CSA_NBL_DEM1'] != "0":
-            buy.append(convert(d['CSA_NBL_DEM1'],d['CSA_VOL_DEM1'],d['CSA_CRS_DEM1']))
+            buy.append(convert(d['CSA_NBL_DEM1'], d['CSA_VOL_DEM1'], d['CSA_CRS_DEM1']))
             if d['CSA_NBL_DEM2'] != "0":
-                buy.append(convert(d['CSA_NBL_DEM2'],d['CSA_VOL_DEM2'],d['CSA_CRS_DEM2']))
+                buy.append(convert(d['CSA_NBL_DEM2'], d['CSA_VOL_DEM2'], d['CSA_CRS_DEM2']))
                 if d['CSA_NBL_DEM3'] != "0":
-                    buy.append(convert(d['CSA_NBL_DEM3'],d['CSA_VOL_DEM3'],d['CSA_CRS_DEM3']))
+                    buy.append(convert(d['CSA_NBL_DEM3'], d['CSA_VOL_DEM3'], d['CSA_CRS_DEM3']))
                     if d['CSA_NBL_DEM4'] != "0":
-                        buy.append(convert(d['CSA_NBL_DEM4'],d['CSA_VOL_DEM4'],d['CSA_CRS_DEM4']))
+                        buy.append(convert(d['CSA_NBL_DEM4'], d['CSA_VOL_DEM4'], d['CSA_CRS_DEM4']))
                         if d['CSA_NBL_DEM5'] != "0":
-                            buy.append(convert(d['CSA_NBL_DEM5'],d['CSA_VOL_DEM5'],d['CSA_CRS_DEM5']))
+                            buy.append(convert(d['CSA_NBL_DEM5'], d['CSA_VOL_DEM5'], d['CSA_CRS_DEM5']))
 
         sell = []
         if d['CSA_NBL_OFF1'] != "0":
-            sell.append(convert(d['CSA_NBL_OFF1'],d['CSA_VOL_OFF1'],d['CSA_CRS_OFF1']))
+            sell.append(convert(d['CSA_NBL_OFF1'], d['CSA_VOL_OFF1'], d['CSA_CRS_OFF1']))
             if d['CSA_NBL_OFF2'] != "0":
-                sell.append(convert(d['CSA_NBL_OFF2'],d['CSA_VOL_OFF2'],d['CSA_CRS_OFF2']))
+                sell.append(convert(d['CSA_NBL_OFF2'], d['CSA_VOL_OFF2'], d['CSA_CRS_OFF2']))
                 if d['CSA_NBL_OFF3'] != "0":
-                    sell.append(convert(d['CSA_NBL_OFF3'],d['CSA_VOL_OFF3'],d['CSA_CRS_OFF3']))
+                    sell.append(convert(d['CSA_NBL_OFF3'], d['CSA_VOL_OFF3'], d['CSA_CRS_OFF3']))
                     if d['CSA_NBL_OFF4'] != "0":
-                        sell.append(convert(d['CSA_NBL_OFF4'],d['CSA_VOL_OFF4'],d['CSA_CRS_OFF4']))
+                        sell.append(convert(d['CSA_NBL_OFF4'], d['CSA_VOL_OFF4'], d['CSA_CRS_OFF4']))
                         if d['CSA_NBL_OFF5'] != "0":
-                            sell.append(convert(d['CSA_NBL_OFF5'],d['CSA_VOL_OFF5'],d['CSA_CRS_OFF5']))
+                            sell.append(convert(d['CSA_NBL_OFF5'], d['CSA_VOL_OFF5'], d['CSA_CRS_OFF5']))
 
-        return buy,sell
+        return buy, sell
 
-    def currentClock(self,quote=None):
+    def currentClock(self, quote=None):
         if quote is None:
-            if self.m_lastclock==0:
+            if self.m_lastclock == 0:
                 return "::"
             # hh:mm
-            return "%d:%02d" % (self.m_lastclock/60,self.m_lastclock%60)
+            return u"{:d}:{:02d}".format(self.m_lastclock/60, self.m_lastclock%60)
         #
         isin = quote.isin()
         if isin not in self.m_clock:
@@ -797,80 +794,77 @@ class LiveUpdate_fortuneo(object):
         else:
             return self.m_clock[isin]
 
-    def currentTrades(self,quote):
-        #
+    def currentTrades(self, quote):
         isin = quote.isin()
         if isin not in self.m_dcmpd:
             # no data for this quote !
             return None
         d = self.m_dcmpd[isin]
 
-        # clock,volume,value
+        # clock, volume, value
         if 'CSA_HD_COURS' not in d:
             return None
 
         last = []
         cl = d['CSA_HD_COURS'][8:]
         if cl != "0:00:00":
-            last.append((cl,int(d['CSA_VOL_DERNIER']),d['CSA_CRS_DERNIER']))
+            last.append((cl, int(d['CSA_VOL_DERNIER']), d['CSA_CRS_DERNIER']))
             if d['CSA_H_TRANS_2'] != "0:00:00":
-                last.append((d['CSA_H_TRANS_2'],int(d['CSA_VOL_TRANS_2']),d['CSA_CRS_TRANS_2']))
+                last.append((d['CSA_H_TRANS_2'], int(d['CSA_VOL_TRANS_2']), d['CSA_CRS_TRANS_2']))
                 if d['CSA_H_TRANS_3'] != "0:00:00":
-                    last.append((d['CSA_H_TRANS_3'],int(d['CSA_VOL_TRANS_3']),d['CSA_CRS_TRANS_3']))
+                    last.append((d['CSA_H_TRANS_3'], int(d['CSA_VOL_TRANS_3']), d['CSA_CRS_TRANS_3']))
                     if d['CSA_H_TRANS_4'] != "0:00:00":
-                        last.append((d['CSA_H_TRANS_4'],int(d['CSA_VOL_TRANS_4']),d['CSA_CRS_TRANS_4']))
+                        last.append((d['CSA_H_TRANS_4'], int(d['CSA_VOL_TRANS_4']), d['CSA_CRS_TRANS_4']))
                         if d['CSA_H_TRANS_5'] != "0:00:00":
-                            last.append((d['CSA_H_TRANS_5'],int(d['CSA_VOL_TRANS_5']),d['CSA_CRS_TRANS_5']))
+                            last.append((d['CSA_H_TRANS_5'], int(d['CSA_VOL_TRANS_5']), d['CSA_CRS_TRANS_5']))
 
         return last
 
-    def currentMeans(self,quote):
-        #
+    def currentMeans(self, quote):
         isin = quote.isin()
         if isin not in self.m_dcmpd:
             # no data for this quote !
-            return "-","-","-"
+            return "-", "-", "-"
         d = self.m_dcmpd[isin]
 
         s = d['CSA_FMP_DEM']
-        if s=='0.00':
+        if s == '0.00':
             s = '-'
 
         b = d['CSA_FMP_OFF']
-        if b=='0.00':
+        if b == '0.00':
             b = '-'
 
         tcmp = float(d['CSA_CRS_CMP'])
-        if tcmp<=0.0:
+        if tcmp <= 0.0:
             tcmp = '-'
         else:
-            tcmp = "%.2f" % tcmp
+            tcmp = "{:.2f}".format(tcmp)
 
-        # means: sell,buy,last
-        return s,b,tcmp
+        # means: sell, buy, last
+        return s, b, tcmp
 
-    def currentStatus(self,quote):
-        #
+    def currentStatus(self, quote):
         isin = quote.isin()
         if isin not in self.m_dcmpd:
             # no data for this quote !
-            return "UNKNOWN","::","0.00","0.00","::"
+            return "UNKNOWN", "::", "0.00", "0.00", "::"
         d = self.m_dcmpd[isin]
 
         st = d['CSA_IND_ETAT']
-        if st==' ' or st=='':
+        if st == ' ' or st == '':
             st = 'OK'
-        elif st=='H':
+        elif st == 'H':
             st = 'SUSPEND+'
-        elif st=='B':
+        elif st == 'B':
             st = 'SUSPEND-'
-        elif st=='P':
+        elif st == 'P':
             st = 'SUSPEND'
-        elif st=='S':
+        elif st == 'S':
             st = 'SUSPEND'
 
         cl = d['CSA_H_REPRIS_COT']
-        if cl=='':
+        if cl == '':
             cl = "::"
 
         if 'CSA_RESERV_BAS' in d:
@@ -888,7 +882,7 @@ class LiveUpdate_fortuneo(object):
         else:
             clo = "::"
 
-        return st,cl,bas,haut,clo
+        return st, cl, bas, haut, clo
 
     # ---[ status of quote ] ---
 
@@ -901,9 +895,9 @@ class LiveUpdate_fortuneo(object):
 
 gLiveFortuneo = LiveUpdate_fortuneo()
 
-gLiveRegistry.register('EURONEXT','PAR',QList.any,QTag.live,gLiveFortuneo,bDefault=True)
-gLiveRegistry.register('ALTERNEXT','PAR',QList.any,QTag.live,gLiveFortuneo,bDefault=True)
-gLiveRegistry.register('PARIS MARCHE LIBRE','PAR',QList.any,QTag.live,gLiveFortuneo,bDefault=True)
+gLiveRegistry.register('EURONEXT', 'PAR', QList.any, QTag.live, gLiveFortuneo, bDefault=True)
+gLiveRegistry.register('ALTERNEXT', 'PAR', QList.any, QTag.live, gLiveFortuneo, bDefault=True)
+gLiveRegistry.register('PARIS MARCHE LIBRE', 'PAR', QList.any, QTag.live, gLiveFortuneo, bDefault=True)
 
 # ============================================================================
 # Test ME
@@ -922,9 +916,9 @@ def test(ticker):
 
         state = gLiveFortuneo.getstate()
         if state:
-            debug("state=%s" % state)
+            debug(u"state={}".format(state))
 
-            quote = quotes.lookupTicker(ticker,'EURONEXT')
+            quote = quotes.lookupTicker(ticker, 'EURONEXT')
             data = gLiveFortuneo.getdata(quote)
             if data:
                 info(data)

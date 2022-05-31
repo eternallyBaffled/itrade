@@ -120,14 +120,12 @@ class iTradeAlertsPanel(wx.Window):
         self.m_list.InsertColumn(IDC_TITLE, message('title'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
 
         x = 0
-        for eachAlert in alerts.listAlerts():
-            self.m_list.InsertImageStringItem(x, "{}".format(eachAlert.date()), self.idx_tbref)
-            self.m_list.SetStringItem(x, IDC_TYPE,eachAlert.type_desc())
-            self.m_list.SetStringItem(x, IDC_SOURCE,eachAlert.source())
-            self.m_list.SetStringItem(x, IDC_ISIN,eachAlert.isin())
-            self.m_list.SetStringItem(x, IDC_TITLE,eachAlert.title())
-
-            x = x + 1
+        for x, eachAlert in enumerate(alerts.listAlerts()):
+            self.m_list.InsertImageStringItem(x, u"{}".format(eachAlert.date()), self.idx_tbref)
+            self.m_list.SetStringItem(x, IDC_TYPE, eachAlert.type_desc())
+            self.m_list.SetStringItem(x, IDC_SOURCE, eachAlert.source())
+            self.m_list.SetStringItem(x, IDC_ISIN, eachAlert.isin())
+            self.m_list.SetStringItem(x, IDC_TITLE, eachAlert.title())
 
         # adjust columns
         self.m_list.SetColumnWidth(IDC_DATE, wx.LIST_AUTOSIZE)

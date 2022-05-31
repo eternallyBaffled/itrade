@@ -130,52 +130,47 @@ class LiveUpdate_yahoojp(object):
 
     # ---[ code to get data ] ---
 
-    def yahooDate (self,date):
+    def yahooDate (self, date):
         # Date part is easy.
-        sdate = string.split (date[1:-1], '/')
+        sdate = string.split(date[1:-1], '/')
         month = int(sdate[0])
         day = int(sdate[1])
         year = int(sdate[2])
 
-        return "%4d%02d%02d" % (year,month,day)
+        return u"{:4d}{:02d}{:02d}".format(year, month, day)
 
-    def convertClock(self,place,clock,date):
+    def convertClock(self, place, clock, date):
         min = clock[-2:]
         hour = clock[:-3]
         val = (int(hour)*60) + int(min)
 
-        if val>self.m_lastclock and date>=self.m_lastdate:
+        if val > self.m_lastclock and date >= self.m_lastdate:
             self.m_lastdate = date
             self.m_lastclock = val
 
         # convert from connector timezone to market place timezone
-        mdatetime = datetime(int(date[0:4]),int(date[4:6]),int(date[6:8]),val/60,val%60)
-        mdatetime = convertConnectorTimeToPlaceTime(mdatetime,self.timezone(),place)
-        return "%d:%02d" % (mdatetime.hour,mdatetime.minute)
+        mdatetime = datetime(int(date[0:4]), int(date[4:6]), int(date[6:8]), val/60, val%60)
+        mdatetime = convertConnectorTimeToPlaceTime(mdatetime, self.timezone(), place)
+        return u"{:d}:{:02d}".format(mdatetime.hour, mdatetime.minute)
 
-    def getdata(self,quote):
-
-        sname = yahooTicker(quote.ticker(),quote.market(),quote.place())
+    def getdata(self, quote):
+        sname = yahooTicker(quote.ticker(), quote.market(), quote.place())
         ss = sname
-        url = yahooUrlJapan(quote.market(),live=True) + '?' +'s=%s&d=v2' % ss
+        url = yahooUrlJapan(quote.market(), live=True) + '?' + u's={}&d=v2'.format(ss)
 
-        debug("LiveUpdate_yahoojp:getdata: url=%s",url)
+        debug("LiveUpdate_yahoojp:getdata: url=%s", url)
 
         try:
-
-            data=self.m_connection.getDataFromUrl(url)
-            data = data.replace('</td>','\n')
+            data = self.m_connection.getDataFromUrl(url)
+            data = data.replace('</td>', '\n')
             lines = self.splitLines(data)
 
             # returns the data
-
             for line in lines:
                 if 'uncompressed' in line:
                     year = line[line.find('JST ')+4:line.find(' -->')]
-                else : year = '0000'
-
-
-
+                else:
+                    year = '0000'
 
             #sdata =[]
             ch = '<td nowrap align=center>'
@@ -194,27 +189,27 @@ class LiveUpdate_yahoojp(object):
                 #8 low   <td nowrap>221
 
             for line in lines:
-
-
                 if '§<strong>' in line:
                     local_time = line[line.find(':')-2:line.find(':')+3]
                     local_date = line[line.find('§<strong>')+9:line.find('Æü ')]
-                    local_date = local_date.replace('·î ',' ').split()
+                    local_date = local_date.replace('·î ', ' ').split()
                     month = local_date[0]
-                    if len(month)== 1 : month = '0' + month
+                    if len(month) == 1:
+                        month = '0' + month
                     day = local_date[1]
-                    if len(day)== 1 : day = '0' + day
-                    local_date = '"'+month+'/'+day+'/'+year+'"'
+                    if len(day) == 1:
+                        day = '0' + day
+                    local_date = '"' + month + '/' + day + '/' + year + '"'
 
                 if ch in line:
                     n = 1
                 if n == 1:
-                    i=i+1
+                    i = i + 1
                     if i == 1:
                         date_time = line[len(ch):]
                         if date_time.find(':') != -1:
                             #print "last clock"
-                            sclock = '"'+date_time+'"'
+                            sclock = '"' + date_time + '"'
                             date = local_date
                         else :
                             #print "last date"
@@ -227,15 +222,17 @@ class LiveUpdate_yahoojp(object):
                         #print 'date,hour',date,sclock
                     if i == 2:
                         last = line[line.find('<b>')+3:line.find('</b>')]
-                        if last == '---': last = '0.0'
-                        last = last.replace(',','')
-                        #print 'last:',last
+                        if last == '---':
+                            last = '0.0'
+                        last = last.replace(',', '')
+                        #print 'last:', last
                     if i == 3:
                         if '<td nowrap><font color=ff0020>' in line:
                             change = line[line.find('ff0020>')+7:line.find('</font>')]
                         else:
                             change = line[line.find('<td nowrap>')+11:]
-                        if change == '---': change = 'N/A'
+                        if change == '---':
+                            change = 'N/A'
                     if i == 4:
                         if '<td nowrap><font color=ff0020>' in line:
                             change_percent = line[line.find('ff0020>')+7:line.find('</font>')]
@@ -243,23 +240,27 @@ class LiveUpdate_yahoojp(object):
                             change_percent = line[line.find('<td nowrap>')+11:]
                     if i == 5:
                         volume = line[line.find('<td nowrap>')+11:]
-                        volume = volume.replace(',','')
-                        if volume == '---': volume = '0'
+                        volume = volume.replace(',', '')
+                        if volume == '---':
+                            volume = '0'
 
                     if i == 6:
                         open = line[line.find('<td nowrap>')+11:]
-                        if open == '---': open = 'N/A'
-                        open = open.replace(',','')
+                        if open == '---':
+                            open = 'N/A'
+                        open = open.replace(',', '')
 
                     if i == 7:
                         high = line[line.find('<td nowrap>')+11:]
-                        if high == '---': high = 'N/A'
-                        high = high.replace(',','')
+                        if high == '---':
+                            high = 'N/A'
+                        high = high.replace(',', '')
 
                     if i == 8:
                         low = line[line.find('<td nowrap>')+11:]
-                        if low == '---': low = 'N/A'
-                        low = low.replace(',','')
+                        if low == '---':
+                            low = 'N/A'
+                        low = low.replace(',', '')
 
                         n = 0
                         i = 0
@@ -267,18 +268,15 @@ class LiveUpdate_yahoojp(object):
                         colors = ['red', 'blue', 'green', 'yellow']
                         result = ''.join(colors)
 
-
-                        data = ','.join(['"'+ss+'"',last,date,sclock,change,open,high,low,volume])
+                        data = ','.join(['"' + ss + '"', last, date, sclock, change, open, high, low, volume])
 
                         break
 
+            sdata = string.split(data, ',')
 
-
-            sdata = string.split (data, ',')
-
-            if len (sdata) < 9:
+            if len(sdata) < 9:
                 if itrade_config.verbose:
-                    info('invalid data (bad answer length) for %s quote' % (quote.ticker()))
+                    info(u'invalid data (bad answer length) for {} quote'.format(quote.ticker()))
                 return None
 
             # connexion / clock
@@ -288,52 +286,52 @@ class LiveUpdate_yahoojp(object):
             key = quote.key()
 
             sclock = sdata[3][1:-1]
-            if sclock=="N/A" or sdata[2]=='"N/A"' or len(sclock)<5:
+            if sclock == "N/A" or sdata[2] == '"N/A"' or len(sclock) < 5:
                 if itrade_config.verbose:
-                    info('invalid datation for %s : %s : %s' % (quote.ticker(),sclock,sdata[2]))
+                    info(u'invalid datation for {} : {} : {}'.format(quote.ticker(), sclock, sdata[2]))
                 return None
 
             # start decoding
             symbol = sdata[0][1:-1]
             if symbol != sname:
                 if itrade_config.verbose:
-                    info('invalid ticker : ask for %s and receive %s' % (sname,symbol))
+                    info(u'invalid ticker : ask for {} and receive {}'.format(sname, symbol))
                 return None
 
             # date
             try:
                 date = self.yahooDate(sdata[2])
                 self.m_dcmpd[key] = sdata
-                self.m_clock[key] = self.convertClock(quote.place(),sclock,date)
-                self.m_dateindice[key] = sdata[2].replace('"','')
+                self.m_clock[key] = self.convertClock(quote.place(), sclock, date)
+                self.m_dateindice[key] = sdata[2].replace('"', '')
 
             except ValueError:
                 if itrade_config.verbose:
-                    info('invalid datation for %s : %s : %s' % (quote.ticker(),sclock,sdata[2]))
+                    info(u'invalid datation for {} : {} : {}'.format(quote.ticker(), sclock, sdata[2]))
                 return None
 
             # decode data
             value = float(sdata[1])
 
-            if sdata[4]=='N/A':
+            if sdata[4] == 'N/A':
                 debug('invalid change : N/A')
                 change = 0.0
                 return None
             else:
                 change = float(sdata[4])
-            if sdata[5]=='N/A':
+            if sdata[5] == 'N/A':
                 debug('invalid open : N/A')
                 open = 0.0
                 return None
             else:
                 open = float(sdata[5])
-            if sdata[6]=='N/A':
+            if sdata[6] == 'N/A':
                 debug('invalid high : N/A')
                 high = 0.0
                 return None
             else:
                 high = float(sdata[6])
-            if sdata[7]=='N/A':
+            if sdata[7] == 'N/A':
                 debug('invalid low : N/A')
                 low = 0.0
                 return None
@@ -341,14 +339,14 @@ class LiveUpdate_yahoojp(object):
                 low = float(sdata[7])
 
             volume = int(sdata[8])
-            if volume<0:
-                debug('volume : invalid negative %d' % volume)
+            if volume < 0:
+                debug(u'volume : invalid negative {:d}'.format(volume))
                 return None
-            if volume==0 and quote.list()!=QList.indices:
-                debug('volume : invalid zero value %d' % volume)
+            if volume == 0 and quote.list() != QList.indices:
+                debug(u'volume : invalid zero value {:d}'.format(volume))
                 return None
             else:
-                if value-change <= 0:
+                if value - change <= 0:
                     return None
                 else:
                     percent = (change / (value - change))*100.0
@@ -365,7 +363,7 @@ class LiveUpdate_yahoojp(object):
               percent,
               (value-change)
             )
-            data = map(lambda val: '%s' % str(val), data)
+            data = map(lambda val: u'{}'.format(str(val)), data)
             data = string.join(data, ';')
 
             # temp: hunting an issue (SF bug 1848473)
@@ -380,7 +378,7 @@ class LiveUpdate_yahoojp(object):
 
     # ---[ cache management on data ] ---
 
-    def getcacheddata(self,quote):
+    def getcacheddata(self, quote):
         # no cache
         return None
 
@@ -397,44 +395,43 @@ class LiveUpdate_yahoojp(object):
     def hasNotebook(self):
         return True
 
-    def currentNotebook(self,quote):
+    def currentNotebook(self, quote):
         key = quote.key()
         if key not in self.m_dcmpd:
             # no data for this quote !
-            return [],[]
+            return [], []
         d = self.m_dcmpd[key]
 
         buy = []
-        #buy.append([0,0,'-'])
+        #buy.append([0, 0, '-'])
 
         sell = []
-        #sell.append([0,0,'-'])
+        #sell.append([0, 0, '-'])
 
-        return buy,sell
+        return buy, sell
 
     # ---[ status of quote ] ---
 
     def hasStatus(self):
         return itrade_config.isConnected()
 
-    def currentStatus(self,quote):
-        #
+    def currentStatus(self, quote):
         key = quote.key()
         if key not in self.m_dcmpd:
             # no data for this quote !
-            return "UNKNOWN","::","0.00","0.00","::"
+            return "UNKNOWN", "::", "0.00", "0.00", "::"
         d = self.m_dcmpd[key]
         st = 'OK'
         cl = '::'
-        return st,cl,"-","-",self.m_clock[key]
+        return st, cl, "-", "-", self.m_clock[key]
 
-    def currentClock(self,quote=None):
+    def currentClock(self, quote=None):
         if quote is None:
-            if self.m_lastclock==0:
+            if self.m_lastclock == 0:
                 return "::"
             # hh:mm
-            return "%d:%02d" % (self.m_lastclock/60,self.m_lastclock%60)
-        #
+            return u"{:d}:{:02d}".format(self.m_lastclock/60, self.m_lastclock%60)
+
         key = quote.key()
         if key not in self.m_clock:
             # no data for this quote !
@@ -442,7 +439,7 @@ class LiveUpdate_yahoojp(object):
         else:
             return self.m_clock[key]
 
-    def currentDate(self,quote=None):
+    def currentDate(self, quote=None):
         key = quote.key()
         if key not in self.m_dateindice:
             # no date for this quote !
@@ -450,13 +447,13 @@ class LiveUpdate_yahoojp(object):
         else:
             return self.m_dateindice[key]
 
-    def currentTrades(self,quote):
+    def currentTrades(self, quote):
         # clock,volume,value
         return None
 
-    def currentMeans(self,quote):
-        # means: sell,buy,last
-        return "-","-","-"
+    def currentMeans(self, quote):
+        # means: sell, buy, last
+        return "-", "-", "-"
 
 # ============================================================================
 # Export me
@@ -466,7 +463,7 @@ class LiveUpdate_yahoojp(object):
 gLiveYahoojp = LiveUpdate_yahoojp()
 
 
-gLiveRegistry.register('TOKYO EXCHANGE','TKS',QList.any,QTag.differed,gLiveYahoojp,bDefault=True)
+gLiveRegistry.register('TOKYO EXCHANGE', 'TKS', QList.any, QTag.differed, gLiveYahoojp, bDefault=True)
 
 # ============================================================================
 # Test ME
@@ -482,12 +479,11 @@ def test(ticker):
             debug("nodata")
 
     elif gLiveYahoojp.connect():
-
         state = gLiveYahoojp.getstate()
         if state:
-            debug("state=%s" % state)
+            debug(u"state={}".format(state))
 
-            quote = quotes.lookupTicker(ticker,'TOKYO EXCHANGE')
+            quote = quotes.lookupTicker(ticker, 'TOKYO EXCHANGE')
             data = gLiveYahoojp.getdata(Quote)
             if data is not None:
                 if data:
@@ -506,7 +502,7 @@ def test(ticker):
 if __name__ == '__main__':
     setLevel(logging.INFO)
 
-    print('live %s' % date.today())
+    print(u'live {}'.format(date.today()))
     test('AAPL')
 
 # ============================================================================
