@@ -164,8 +164,8 @@ class iTradeAlertsNotebookWindow(wx.Notebook):
     ID_PAGE_ALERTS = 0
     ID_PAGE_NEWS = 1
 
-    def __init__(self, parent, id, port):
-        wx.Notebook.__init__(self, parent=parent, id=id, pos=wx.DefaultPosition, style=wx.SIMPLE_BORDER|wx.NB_TOP)
+    def __init__(self, parent, port, *args, **kwargs):
+        wx.Notebook.__init__(self, parent=parent, style=wx.SIMPLE_BORDER|wx.NB_TOP, *args, **kwargs)
         self.m_port = port
         self.init()
 
@@ -176,17 +176,17 @@ class iTradeAlertsNotebookWindow(wx.Notebook):
         self.win = {}
         self.DeleteAllPages()
 
-        self.win[self.ID_PAGE_ALERTS] = iTradeAlertsPanel(self, wx.ID_ANY, self.m_port)
+        self.win[self.ID_PAGE_ALERTS] = iTradeAlertsPanel(parent=self, id=wx.ID_ANY, port=self.m_port)
         self.AddPage(self.win[self.ID_PAGE_ALERTS], message('alerts_alerts'))
 
-        self.win[self.ID_PAGE_NEWS] = iTradeNewsPanel(self, wx.ID_ANY, self.m_port)
+        self.win[self.ID_PAGE_NEWS] = iTradeNewsPanel(parent=self, id=wx.ID_ANY, port=self.m_port)
         self.AddPage(self.win[self.ID_PAGE_NEWS], message('alerts_news'))
 
     def OnPageChanged(self, event):
         old = event.GetOldSelection()
         new = event.GetSelection()
         sel = self.GetSelection()
-        info('OnPageChanged,  old:{:d}, new:{:d}, sel:{:d}\n'.format(old, new, sel))
+        info(u'OnPageChanged,  old:{:d}, new:{:d}, sel:{:d}\n'.format(old, new, sel))
         if old != new:
             self.win[new].refresh()
         event.Skip()
@@ -195,7 +195,7 @@ class iTradeAlertsNotebookWindow(wx.Notebook):
         old = event.GetOldSelection()
         new = event.GetSelection()
         sel = self.GetSelection()
-        info('OnPageChanging, old:{:d}, new:{:d}, sel:{:d}\n'.format(old, new, sel))
+        info(u'OnPageChanging, old:{:d}, new:{:d}, sel:{:d}\n'.format(old, new, sel))
         event.Skip()
 
 # ============================================================================
@@ -203,11 +203,11 @@ class iTradeAlertsNotebookWindow(wx.Notebook):
 # ============================================================================
 
 class iTradeAlertsWindow(wx.Frame, iTrade_wxFrame):
-    def __init__(self, parent, title, port):
-        wx.Frame.__init__(self, parent=None, id=wx.ID_ANY, title=title, size=(640, 480), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE, name='alerts')
-        iTrade_wxFrame.__init__(self, parent=None, name='alerts')
+    def __init__(self, parent, title, port, *args, **kwargs):
+        wx.Frame.__init__(self, parent=None, title=title, size=(640, 480), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE, name='alerts', *args, **kwargs)
+        iTrade_wxFrame.__init__(self, parent=None, name='alerts', *args, **kwargs)
         self.m_port = port
-        self.m_book = iTradeAlertsNotebookWindow(self, wx.ID_ANY, port=self.m_port)
+        self.m_book = iTradeAlertsNotebookWindow(parent=self, port=self.m_port)
 
         wx.EVT_WINDOW_DESTROY(self, self.OnDestroy)
         wx.EVT_SIZE(self, self.OnSize)
@@ -232,7 +232,7 @@ def open_iTradeAlerts(win, port=None):
     else:
         if not isinstance(port, Portfolio):
             port = loadPortfolio()
-        frame = iTradeAlertsWindow(win, u"{} - {}".format(message('alerts_title'), port.name()), port)
+        frame = iTradeAlertsWindow(parent=win, title=u"{} - {}".format(message('alerts_title'), port.name()), port=port)
         if win:
             win.m_hAlerts = frame
         frame.Show()

@@ -363,8 +363,8 @@ class iTradeMainToolbar(wx.ToolBar):
 # ============================================================================
 
 class iTradeMainNotebookWindow(wx.Notebook):
-    def __init__(self, parent, id, page, portfolio, matrix):
-        wx.Notebook.__init__(self, parent=parent, id=id, style=wx.SIMPLE_BORDER|wx.NB_TOP)
+    def __init__(self, parent, id, page, portfolio, matrix, *args, **kwargs):
+        wx.Notebook.__init__(self, parent=parent, id=id, style=wx.SIMPLE_BORDER|wx.NB_TOP, *args, **kwargs)
         self.m_portfolio = portfolio
         self.m_matrix = matrix
 #        self.m_parent = parent
@@ -410,7 +410,7 @@ class iTradeMainNotebookWindow(wx.Notebook):
         old = event.GetOldSelection()
         new = event.GetSelection()
         sel = self.GetSelection()
-        info('OnPageChanged,  old:{:d}, new:{:d}, sel:{:d}\n'.format(old, new, sel))
+        info(u'OnPageChanged,  old:{:d}, new:{:d}, sel:{:d}\n'.format(old, new, sel))
         if old != new:
             if old >= 0:
                 self.win[old].DoneCurrentPage()
@@ -423,7 +423,7 @@ class iTradeMainNotebookWindow(wx.Notebook):
         old = event.GetOldSelection()
         new = event.GetSelection()
         sel = self.GetSelection()
-        info('OnPageChanging, old:{:d}, new:{:d}, sel:{:d}\n'.format(old, new, sel))
+        info(u'OnPageChanging, old:{:d}, new:{:d}, sel:{:d}\n'.format(old, new, sel))
         event.Skip()
 
     def OnRefresh(self, event):
@@ -440,7 +440,7 @@ class iTradeMainNotebookWindow(wx.Notebook):
         self.win[ID_PAGE_TRADING].m_mustInit = True
         self.win[ID_PAGE_EVALUATION].m_mustInit = True
 
-    def InitCurrentPage(self,bReset,bInit):
+    def InitCurrentPage(self, bReset, bInit):
         if bInit:
             self.ChangeSelection(0)
         if bReset:
@@ -464,9 +464,9 @@ import wx.lib.newevent
 (PostInitEvent, EVT_POSTINIT) = wx.lib.newevent.NewEvent()
 
 class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
-    def __init__(self, parent, portfolio, matrix):
-        wx.Frame.__init__(self, parent=parent, size=(640, 480), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE, name='main')
-        iTrade_wxFrame.__init__(self, parent=parent, name='main')
+    def __init__(self, parent, portfolio, matrix, *args, **kwargs):
+        wx.Frame.__init__(self, parent=parent, size=(640, 480), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE, name='main', *args, **kwargs)
+        iTrade_wxFrame.__init__(self, parent=parent, name='main', *args, **kwargs)
 
         self.m_portfolio = portfolio
         self.m_matrix = matrix
@@ -1000,18 +1000,18 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
         quote = self.currentQuote()
         if quote and quote.list()==QList.indices:
             quote=None
-        if add_iTradeOperation(self,self.m_portfolio,quote,OPERATION_BUY):
+        if add_iTradeOperation(self, self.m_portfolio, quote, OPERATION_BUY):
             if self.m_hOperation:
                 self.m_hOperation.RebuildList()
                 # self will also RebuildList() from Operation View
             else:
                 self.RebuildList()
 
-    def OnSellQuote(self,e):
+    def OnSellQuote(self, e):
         quote = self.currentQuote()
         if quote and quote.list()==QList.indices:
             quote=None
-        if add_iTradeOperation(self,self.m_portfolio,quote,OPERATION_SELL):
+        if add_iTradeOperation(self, self.m_portfolio, quote, OPERATION_SELL):
             if self.m_hOperation:
                 self.m_hOperation.RebuildList()
                 # self will also RebuildList() from Operation View
@@ -1039,12 +1039,12 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
             quote = None
         return quote
 
-    def openCurrentQuote(self,page=0):
+    def openCurrentQuote(self, page=0):
         quote = self.currentQuote()
         if page==6:
-            open_iTradeQuoteProperty(self,quote)
+            open_iTradeQuoteProperty(self, quote)
         else:
-            open_iTradeQuote(self,self.m_portfolio,quote,page)
+            open_iTradeQuote(self, self.m_portfolio, quote, page)
 
     # --- [ Text font size management ] -------------------------------------
 
@@ -1056,21 +1056,21 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
         win.m_list.SetFont(FontFromSize(itrade_config.matrixFontSize))
         win.populate(bDuringInit=False)
 
-    def OnViewSmall(self,e):
+    def OnViewSmall(self, e):
         itrade_config.matrixFontSize = 1
         self.OnChangeViewText()
 
-    def OnViewNormal(self,e):
+    def OnViewNormal(self, e):
         itrade_config.matrixFontSize = 2
         self.OnChangeViewText()
 
-    def OnViewBig(self,e):
+    def OnViewBig(self, e):
         itrade_config.matrixFontSize = 3
         self.OnChangeViewText()
 
     # --- [ Access management ] -------------------------------------
 
-    def OnAccess(self,e):
+    def OnAccess(self, e):
         # get the connector
         m = self.accessmenu.FindItemById(e.GetId())
         m = m.GetText()
@@ -1078,14 +1078,14 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
         if c:
             # with the connector, load user info and open UI
             u,p = c.loadUserInfo()
-            u,p = login_UI(self,u,p,c)
+            u,p = login_UI(self, u, p, c)
 
             # now, save new user info
             wx.SetCursor(wx.HOURGLASS_CURSOR)
             c.saveUserInfo(u,p)
             if itrade_config.isConnected():
-                # and apply these ne login info
-                c.login(u,p)
+                # and apply this new login info
+                c.login(u, p)
             wx.SetCursor(wx.STANDARD_CURSOR)
 
     # --- [ Language management ] -------------------------------------
@@ -1126,72 +1126,72 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
         itrade_config.saveConfig()
         self.SetLang()
 
-    def OnLangDefault(self,e):
+    def OnLangDefault(self, e):
         itrade_config.lang = 0
         self.OnChangeLang()
 
-    def OnLangEnglish(self,e):
+    def OnLangEnglish(self, e):
         itrade_config.lang = 1
         self.OnChangeLang()
 
-    def OnLangFrench(self,e):
+    def OnLangFrench(self, e):
         itrade_config.lang = 2
         self.OnChangeLang()
 
-    def OnLangPortuguese(self,e):
+    def OnLangPortuguese(self, e):
         itrade_config.lang = 3
         self.OnChangeLang()
 
-    def OnLangDeutch(self,e):
+    def OnLangDeutch(self, e):
         itrade_config.lang = 4
         self.OnChangeLang()
 
-    def OnLangItalian(self,e):
+    def OnLangItalian(self, e):
         itrade_config.lang = 5
         self.OnChangeLang()
 
     # --- [ cache management ] -------------------------------------
 
-    def OnCacheEraseData(self,e):
+    def OnCacheEraseData(self, e):
         idRet = iTradeYesNo(self, message('cache_erase_confirm_data'), message('cache_erase_confirm_title'))
         if idRet == wx.ID_YES:
             self.m_matrix.flushTrades()
 
-    def OnCacheEraseNews(self,e):
+    def OnCacheEraseNews(self, e):
         idRet = iTradeYesNo(self, message('cache_erase_confirm_news'), message('cache_erase_confirm_title'))
         if idRet == wx.ID_YES:
             self.m_matrix.flushNews()
 
-    def OnCacheEraseAll(self,e):
+    def OnCacheEraseAll(self, e):
         idRet = iTradeYesNo(self, message('cache_erase_confirm_all'), message('cache_erase_confirm_title'))
         if idRet == wx.ID_YES:
             self.m_matrix.flushAll()
 
     # --- [ connexion management ] ---------------------------------------
 
-    def OnConnexion(self,e):
+    def OnConnexion(self, e):
         itrade_config.proxyHostname,itrade_config.proxyAuthentication,itrade_config.connectionTimeout = connection_UI(self,itrade_config.proxyHostname,itrade_config.proxyAuthentication,itrade_config.connectionTimeout)
         itrade_config.saveConfig()
 
     # --- [ autosize management ] -------------------------------------
 
-    def OnAutoSize(self,e):
+    def OnAutoSize(self, e):
         sel = self.m_book.GetSelection()
         win = self.m_book.win[sel]
         win.adjustColumns()
 
     # --- [ autorefresh management ] -------------------------------------
 
-    def OnAutoRefresh(self,e):
+    def OnAutoRefresh(self, e):
         self.DoneCurrentPage()
         itrade_config.bAutoRefreshMatrixView = not itrade_config.bAutoRefreshMatrixView
         itrade_config.saveConfig()
         self.updateCheckItems()
         self.m_toolbar.ClearIndicator()
-        self.InitCurrentPage(bReset=False,bInit=False)
+        self.InitCurrentPage(bReset=False, bInit=False)
 
     def refreshConnexion(self):
-        self.m_toolbar.SetIndicator(self.m_market,self.m_connector,self.m_indice)
+        self.m_toolbar.SetIndicator(self.m_market, self.m_connector, self.m_indice)
 
     # ---[ Quotes ] -----------------------------------------
 
@@ -1249,17 +1249,17 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
                 if self.m_indice:
                     self.m_connector = self.m_indice.liveconnector(bDebug=False)
                     #if itrade_config.verbose:
-                    #    print 'initIndice: indice %s use connector %s' % (indice,self.m_connector)
+                    #    print(u'initIndice: indice {} use connector {}'.format(indice, self.m_connector))
                 else:
                     if itrade_config.verbose:
-                        print('initIndice: indice {} not found'.format(indice))
+                        print(u'initIndice: indice {} not found'.format(indice))
             else:
                 if itrade_config.verbose:
-                    print('initIndice: indice {} not found'.format(indice))
+                    print(u'initIndice: indice {} not found'.format(indice))
                 self.m_indice = None
         else:
             if itrade_config.verbose:
-                print('initIndice: no indice sets up for this portfolio')
+                print(u'initIndice: no indice sets up for this portfolio')
             self.m_indice = None
 
 # ============================================================================
