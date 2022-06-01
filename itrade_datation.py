@@ -213,7 +213,7 @@ class Calendar(object):
             debug('Calendar::addClosed(): {} k={}: {} - added'.format(d, k, self.m_closed[k]))
             return True
 
-    def addSRD(self,d,market=None,title=None):
+    def addSRD(self, d, market=None, title=None):
         # default Market Entry Place
         if market is None:
             market = 'EURONEXT'
@@ -231,9 +231,10 @@ class Calendar(object):
             debug('Calendar::addSRD(): {} k={}: {} - added'.format(d, k, self.m_srd[k]))
             return True
 
-    def load(self, fn=None):
-        # open and read the file to load these closure information
-        infile = itrade_csv.read(fn, os.path.join(itrade_config.dirSysData, 'closed.txt'))
+    def load_closure(self, fn=None):
+        # open and read the file to load the closure information
+        #        infile = itrade_csv.read(fn, os.path.join(itrade_config.dirSysData, 'closed.txt'))
+        infile = itrade_csv.read(fn, itrade_config.default_closure_file())
         # scan each line to read each quote
         for eachLine in infile:
             item = itrade_csv.parse(eachLine, 3)
@@ -243,8 +244,10 @@ class Calendar(object):
                 else:
                     info("can't import item={}".format(item))
 
-        # open and read the file to load these SRD information
-        infile = itrade_csv.read(fn, os.path.join(itrade_config.dirSysData, 'srd.txt'))
+    def load_srd(self, fn=None):
+        # open and read the file to load the SRD information
+#        infile = itrade_csv.read(fn, os.path.join(itrade_config.dirSysData, 'srd.txt'))
+        infile = itrade_csv.read(fn, itrade_config.default_srd_file())
         # scan each line to read each quote
         for eachLine in infile:
             item = itrade_csv.parse(eachLine, 3)
@@ -253,6 +256,10 @@ class Calendar(object):
                     self.addSRD(item[0], item[1], item[2])
                 else:
                     info("can't import item={}".format(item))
+
+    def load(self):
+        self.load_closure()
+        self.load_srd()
 
     # --- [ index management ] ------------------------------------
 
