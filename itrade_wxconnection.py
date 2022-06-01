@@ -61,21 +61,20 @@ from itrade_wxutil import iTradeSizedDialog
 # ============================================================================
 
 class iTradeConnectionDialog(iTradeSizedDialog):
-    def __init__(self, parent, server, auth, timeout):
-        iTradeSizedDialog.__init__(self, parent=parent, id=wx.ID_ANY, title=message('connection_title'),
-                                   size=(420, 420), style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
-
+    def __init__(self, parent, server, auth, timeout, *args, **kwargs):
+        iTradeSizedDialog.__init__(self, parent=parent, title=message('connection_title'),
+                                   size=(420, 420), style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER, *args, **kwargs)
         if server != "":
             ip, self.m_port = server.split(':')
-            a,b,c,d = ip.split('.')
-            self.m_ip = '{:3i}.{:3i}.{:3i}.{:3i}'.format(int(a), int(b), int(c), int(d))
+            a, b, c, d = ip.split('.')
+            self.m_ip = u'{:3d}.{:3d}.{:3d}.{:3d}'.format(int(a), int(b), int(c), int(d))
             self.m_port = int(self.m_port)
         else:
             self.m_ip = "   .   .   .   "
             self.m_port = 0
 
         if auth != "":
-            self.m_user,self.m_pwd = auth.split(':')
+            self.m_user, self.m_pwd = auth.split(':')
         else:
             self.m_user = ""
             self.m_pwd = ""
@@ -93,7 +92,7 @@ class iTradeConnectionDialog(iTradeSizedDialog):
         # Row 1 : server / proxy="172.30.0.3:8080"
         label = wx.StaticText(pane, -1, message('proxy_server_ip'))
         label.SetSizerProps(valign='center')
-        self.wxIPCtrl = masked.Ctrl(pane, -1, controlType = masked.controlTypes.IPADDR, size=(120,-1))
+        self.wxIPCtrl = masked.Ctrl(pane, -1, controlType=masked.controlTypes.IPADDR, size=(120,-1))
         self.wxIPCtrl.SetValue(self.m_ip)
 
         label = wx.StaticText(pane, -1, message('proxy_server_port'))
@@ -143,13 +142,13 @@ class iTradeConnectionDialog(iTradeSizedDialog):
         self.Fit()
         self.SetMinSize(self.GetSize())
 
-    def OnValid(self,event):
+    def OnValid(self, event):
         self.m_ip = self.wxIPCtrl.GetValue().strip()
         self.m_port = self.wxPortCtrl.GetValue()
         self.m_user = self.wxUserCtrl.GetValue().strip()
         self.m_pwd = self.wxPwdCtrl.GetValue().strip()
 
-        if self.m_user!='':
+        if self.m_user != '':
             self.m_auth = self.m_user + ":" + self.m_pwd
         else:
             self.m_auth = ""
