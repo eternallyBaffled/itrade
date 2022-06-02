@@ -156,14 +156,14 @@ class iTradeQuoteInfoWindow(sc.SizedPanel):
         self.wxLine.SetSizerProps(expand=True)
 
         # resizable pane
-        pane = sc.SizedPanel(self, -1)
+        pane = sc.SizedPanel(self, wx.ID_ANY)
         pane.SetSizerType("horizontal")
         pane.SetSizerProps(expand=True)
 
         self.wxTicker = wx.StaticText(pane, wx.ID_ANY, "???")
         self.wxTicker.SetSizerProps(valign='center')
 
-        self.wxLogo = wx.StaticBitmap(pane, -1)
+        self.wxLogo = wx.StaticBitmap(pane, wx.ID_ANY)
         self.wxLogo.SetSizerProps(valign='center')
 
         # separator
@@ -173,7 +173,7 @@ class iTradeQuoteInfoWindow(sc.SizedPanel):
         self.wxDate = wx.StaticText(self, wx.ID_ANY, "???")
 
         # resizable pane
-        pane = sc.SizedPanel(self, -1)
+        pane = sc.SizedPanel(self, wx.ID_ANY)
         pane.SetSizerType("form")
         pane.SetSizerProps(expand=True)
 
@@ -206,7 +206,7 @@ class iTradeQuoteInfoWindow(sc.SizedPanel):
         line.SetSizerProps(expand=True)
 
         # resizable pane
-        pane = sc.SizedPanel(self, -1)
+        pane = sc.SizedPanel(self, wx.ID_ANY)
         pane.SetSizerType("form")
         pane.SetSizerProps(expand=True)
 
@@ -1202,7 +1202,7 @@ def open_iTradeQuote(win,port,quote,page=0):
         win.m_hView.SelectQuote(quote)
         win.m_hView.SetFocus()
     else:
-        frame = iTradeQuoteWindow(win, -1,port,quote,page)
+        frame = iTradeQuoteWindow(win, wx.ID_ANY, port, quote, page)
         if win:
             win.m_hView = frame
         # __w frame.plot_data()

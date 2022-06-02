@@ -146,7 +146,7 @@ class iTradeRSSPanel(wx.Panel):
                                              style=wx.TAB_TRAVERSAL|wx.CLIP_CHILDREN|wx.NO_FULL_REPAINT_ON_RESIZE)
         self.m_quote = quote
 
-        self.m_html = wxUrlClickHtmlWindow(self, -1)
+        self.m_html = wxUrlClickHtmlWindow(self, wx.ID_ANY)
         EVT_HTML_URL_CLICK(self.m_html, self.OnLinkClick)
 
         self.m_feed = None

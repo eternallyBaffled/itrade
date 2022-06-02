@@ -121,14 +121,14 @@ class iTradeCurrencyToolbar(wx.ToolBar):
 # ============================================================================
 
 class iTradeCurrenciesListCtrl(wx.ListCtrl, wxl.ListCtrlAutoWidthMixin):
-    def __init__(self, parent, ID, pos=wx.DefaultPosition, size=wx.DefaultSize, style=0):
-        wx.ListCtrl.__init__(self, parent=parent, id=ID, pos=pos, size=size, style=style)
-        wxl.ListCtrlAutoWidthMixin.__init__(self)
+    def __init__(self, parent, ID, style=0, *args, **kwargs):
+        wx.ListCtrl.__init__(self, parent=parent, id=ID, style=style, *args, **kwargs)
+        wxl.ListCtrlAutoWidthMixin.__init__(self, *args, **kwargs)
 
 
 class iTradeCurrenciesMatrix(gridlib.Grid):
-    def __init__(self, parent, ID, pos=wx.DefaultPosition, size=wx.DefaultSize, style=0, list=None):
-        gridlib.Grid.__init__(self, parent=parent, id=ID, pos=pos, size=size, style=style)
+    def __init__(self, parent, ID, style=0, list=None, *args, **kwargs):
+        gridlib.Grid.__init__(self, parent=parent, id=ID, style=style, *args, **kwargs)
         self.list = list
         count = len(list)
 
@@ -145,16 +145,15 @@ class iTradeCurrenciesMatrix(gridlib.Grid):
 
 
 class iTradeCurrenciesWindow(wx.Frame, iTrade_wxFrame, iTrade_wxLiveCurrencyMixin):
-    def __init__(self, parent, title):
+    def __init__(self, parent, title, *args, **kwargs):
         wx.Frame.__init__(self, parent=parent,
-                          id=wx.ID_ANY,
                           title=title,
                           size=(640, 480),
                           style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE,
-                          name='currencies')
+                          name='currencies', *args, **kwargs)
         iTrade_wxFrame.__init__(self, parent=parent,
-                                name='currencies')
-        iTrade_wxLiveCurrencyMixin.__init__(self)
+                                name='currencies', *args, **kwargs)
+        iTrade_wxLiveCurrencyMixin.__init__(self, *args, **kwargs)
         self.filemenu = wx.Menu()
         # self.filemenu.Append(ID_SAVE, message('main_save'), message('main_desc_save'))
         # self.filemenu.AppendSeparator()
@@ -278,7 +277,7 @@ class iTradeCurrenciesWindow(wx.Frame, iTrade_wxFrame, iTrade_wxLiveCurrencyMixi
                 cur_to = eachKey[:3]
                 cur_from = eachKey[3:]
                 if dlg:
-                    (keep_going, skip) = dlg.Update(x, "{} -> {}".format(cur_from, cur_to))
+                    (keep_going, skip) = dlg.Update(x, u"{} -> {}".format(cur_from, cur_to))
                 currencies.get(cur_to, cur_from)
                 self.refreshLine(eachKey, x, True)
             currencies.save()

@@ -62,12 +62,12 @@ from itrade_wxbook import iTradeMainWindow
 # ============================================================================
 
 class iTrade_SplashScreen(wx.SplashScreen):
-    def __init__(self,app):
+    def __init__(self, app):
         image = wx.Image(os.path.join(itrade_config.dirRes, "itrade.jpg"))
         wx.SplashScreen.__init__(self,
-                                image.ConvertToBitmap(),
-                                wx.SPLASH_CENTRE_ON_SCREEN|wx.SPLASH_NO_TIMEOUT,
-                                0, None, -1)
+                                bitmap=image.ConvertToBitmap(),
+                                splashStyle=wx.SPLASH_CENTRE_ON_SCREEN|wx.SPLASH_NO_TIMEOUT,
+                                milliseconds=0, parent=None, id=wx.ID_ANY)
 
 # ============================================================================
 # iTradeApp

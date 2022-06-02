@@ -651,7 +651,7 @@ class Quote(object):
         self.m_daytrades.load(fn)
 
     def importTrades(self, data, bLive):
-        # debug('Quote:importTrades {} {} bLive={}'.format(self.ticker, data, bLive))
+        # debug(u'Quote:importTrades {} {} bLive={}'.format(self.ticker, data, bLive))
         if self.m_daytrades is None:
             self.m_daytrades = itrade_trades.Trades(self)
 

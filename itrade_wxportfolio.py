@@ -93,7 +93,7 @@ class iTradePortfolioSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterM
         container.SetSizerType("vertical")
 
         # resizable pane
-        pane = sc.SizedPanel(container, -1)
+        pane = sc.SizedPanel(container, wx.ID_ANY)
         pane.SetSizerType("form")
         pane.SetSizerProps(expand=True)
 
@@ -128,7 +128,7 @@ class iTradePortfolioSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterM
         wx.EVT_LIST_ITEM_SELECTED(self, self.m_list.GetId(), self.OnItemSelected)
 
         # Last Row : OK and Cancel
-        btnpane = sc.SizedPanel(container, -1)
+        btnpane = sc.SizedPanel(container, wx.ID_ANY)
         btnpane.SetSizerType("horizontal")
         btnpane.SetSizerProps(expand=True)
 
@@ -316,7 +316,7 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
         container.SetSizerType("vertical")
 
         # resizable pane
-        pane = sc.SizedPanel(container, -1)
+        pane = sc.SizedPanel(container, wx.ID_ANY)
         pane.SetSizerType("form")
         pane.SetSizerProps(expand=True)
 
@@ -423,7 +423,7 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
         line.SetSizerProps(expand=True)
 
         # Last Row : OK and Cancel
-        btnpane = sc.SizedPanel(container, -1)
+        btnpane = sc.SizedPanel(container, wx.ID_ANY)
         btnpane.SetSizerType("horizontal")
         btnpane.SetSizerProps(expand=True)
 

@@ -65,7 +65,7 @@ class iTradeLoginDialog(wx.Dialog):
         # context help
         pre = wx.PreDialog()
         pre.SetExtraStyle(wx.DIALOG_EX_CONTEXTHELP)
-        pre.Create(parent, -1, message('login_title') + ' - ' + connector.name(), size=(420, 420))
+        pre.Create(parent, wx.ID_ANY, message('login_title') + ' - ' + connector.name(), size=(420, 420))
         self.PostCreate(pre)
 
         self.m_username = username
@@ -79,7 +79,7 @@ class iTradeLoginDialog(wx.Dialog):
         # info
         box = wx.BoxSizer(wx.HORIZONTAL)
 
-        label = wx.StaticText(self, -1, connector.desc())
+        label = wx.StaticText(self, wx.ID_ANY, connector.desc())
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
@@ -87,10 +87,10 @@ class iTradeLoginDialog(wx.Dialog):
         # username
         box = wx.BoxSizer(wx.HORIZONTAL)
 
-        label = wx.StaticText(self, -1, message('login_username'))
+        label = wx.StaticText(self, wx.ID_ANY, message('login_username'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.wxUsernameCtrl = wx.TextCtrl(self, -1, self.m_username, size=(180,-1))
+        self.wxUsernameCtrl = wx.TextCtrl(self, wx.ID_ANY, self.m_username, size=(180,-1))
         box.Add(self.wxUsernameCtrl, 1, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
@@ -98,10 +98,10 @@ class iTradeLoginDialog(wx.Dialog):
         # password
         box = wx.BoxSizer(wx.HORIZONTAL)
 
-        label = wx.StaticText(self, -1, message('login_password'))
+        label = wx.StaticText(self, wx.ID_ANY, message('login_password'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.wxPasswordCtrl = wx.TextCtrl(self, -1, self.m_password, size=(180,-1))
+        self.wxPasswordCtrl = wx.TextCtrl(self, wx.ID_ANY, self.m_password, size=(180,-1))
         box.Add(self.wxPasswordCtrl, 1, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)

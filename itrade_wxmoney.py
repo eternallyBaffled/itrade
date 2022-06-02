@@ -72,9 +72,8 @@ ID_CLOSE = 111
 # ============================================================================
 
 class iTradeMoneyPanel(wx.Window):
-
     def __init__(self, parent, id, port):
-        wx.Window.__init__(self, parent, id)
+        wx.Window.__init__(self, parent=parent, id=id)
         self.m_port = port
         self.m_currentItem = -1
 
@@ -127,7 +126,7 @@ class iTradeEvaluationPanel(wx.Window):
         self.m_port = port
         self.m_currentItem = -1
 
-        self.m_html = wxUrlClickHtmlWindow(self, -1)
+        self.m_html = wxUrlClickHtmlWindow(self, wx.ID_ANY)
         EVT_HTML_URL_CLICK(self.m_html, self.OnLinkClick)
 
         wx.EVT_SIZE(self, self.OnSize)

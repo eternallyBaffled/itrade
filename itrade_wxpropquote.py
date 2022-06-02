@@ -74,37 +74,37 @@ class iTradeQuotePropertiesPanel(wx.Panel):
         self._sizer = wx.BoxSizer(wx.VERTICAL)
 
         # ---[ info : ISIN / Ticker / Name : <Rename> <Reload> ... ]---
-        box = wx.StaticBox(self, -1, message('prop_reference'))
+        box = wx.StaticBox(self, wx.ID_ANY, message('prop_reference'))
         thebox = wx.StaticBoxSizer(box,wx.VERTICAL)
 
         box = wx.BoxSizer(wx.HORIZONTAL)
 
-        label = wx.StaticText(self, -1, message('prop_ref'))
+        label = wx.StaticText(self, wx.ID_ANY, message('prop_ref'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        label = wx.StaticText(self, -1, self.m_quote.key())
+        label = wx.StaticText(self, wx.ID_ANY, self.m_quote.key())
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        label = wx.StaticText(self, -1, message('prop_isin'))
+        label = wx.StaticText(self, wx.ID_ANY, message('prop_isin'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        label = wx.StaticText(self, -1, self.m_quote.isin())
+        label = wx.StaticText(self, wx.ID_ANY, self.m_quote.isin())
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         thebox.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
         box = wx.BoxSizer(wx.HORIZONTAL)
 
-        label = wx.StaticText(self, -1, message('prop_ticker'))
+        label = wx.StaticText(self, wx.ID_ANY, message('prop_ticker'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.editTicker = wx.TextCtrl(self, -1, self.m_quote.ticker(), size=wx.Size(80,-1), style = wx.TE_LEFT)
+        self.editTicker = wx.TextCtrl(self, wx.ID_ANY, self.m_quote.ticker(), size=wx.Size(80,-1), style = wx.TE_LEFT)
         box.Add(self.editTicker, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        label = wx.StaticText(self, -1, message('prop_name'))
+        label = wx.StaticText(self, wx.ID_ANY, message('prop_name'))
         box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.editName = wx.TextCtrl(self, -1, self.m_quote.name(), size=wx.Size(300,-1), style = wx.TE_LEFT)
+        self.editName = wx.TextCtrl(self, wx.ID_ANY, self.m_quote.name(), size=wx.Size(300,-1), style = wx.TE_LEFT)
         box.Add(self.editName, 0, wx.ALIGN_CENTRE_VERTICAL|wx.ALL, 5)
 
         thebox.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
@@ -465,7 +465,7 @@ class iTradeQuotePropertyDialog(wx.Dialog):
         self.m_parent = parent
 
         # post-init
-        pre.Create(parent, -1, "{} {} - {}".format(message('quote_title'), self.m_quote.ticker(), self.m_quote.market()), size=(560, 370))
+        pre.Create(parent, wx.ID_ANY, "{} {} - {}".format(message('quote_title'), self.m_quote.ticker(), self.m_quote.market()), size=(560, 370))
         self.PostCreate(pre)
 
         sizer = wx.BoxSizer(wx.VERTICAL)

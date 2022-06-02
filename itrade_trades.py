@@ -202,7 +202,7 @@ class Trades(object):
 
     def imp(self, data, bLive):
         #debug(u'Trades::imp {} : {} : bLive={}'.format(self.m_quote.ticker(), data, bLive))
-        #print data
+        #print(data)
         if data:
             # scan each line to read each trade
             for eachLine in data:

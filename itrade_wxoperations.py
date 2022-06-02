@@ -165,7 +165,6 @@ operation_ctrl = (
 # ============================================================================
 
 class iTradeOperationDialog(iTradeSizedDialog):
-
     def __init__(self, parent, op, opmode, market=None, currency='EUR'):
         # pre-init
         self.opmode = opmode
@@ -217,7 +216,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
         container.SetSizerType("vertical")
 
         # resizable pane
-        pane = sc.SizedPanel(container, -1)
+        pane = sc.SizedPanel(container, wx.ID_ANY)
         pane.SetSizerType("form")
         pane.SetSizerProps(expand=True)
 
@@ -255,7 +254,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
         self.wxTypeCtrl.SetSelection(idx)
 
         # Row 4 : quote
-        btnpane = sc.SizedPanel(container, -1)
+        btnpane = sc.SizedPanel(container, wx.ID_ANY)
         btnpane.SetSizerType("horizontal")
         btnpane.SetSizerProps(expand=True)
 
@@ -272,7 +271,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
         self.wxNameCtrl.SetSizerProps(expand=True)
 
         # Row 5 : value
-        btnpane = sc.SizedPanel(container, -1)
+        btnpane = sc.SizedPanel(container, wx.ID_ANY)
         btnpane.SetSizerType("horizontal")
         btnpane.SetSizerProps(expand=True)
 
@@ -300,7 +299,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
         self.wxExpPostTxt.SetSizerProps(valign='center')
 
         # resizable pane
-        pane = sc.SizedPanel(container, -1)
+        pane = sc.SizedPanel(container, wx.ID_ANY)
         pane.SetSizerType("form")
         pane.SetSizerProps(expand=True)
 
@@ -317,7 +316,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
         line.SetSizerProps(expand=True)
 
         # Last Row : OK and Cancel
-        btnpane = sc.SizedPanel(container, -1)
+        btnpane = sc.SizedPanel(container, wx.ID_ANY)
         btnpane.SetSizerType("horizontal")
         btnpane.SetSizerProps(expand=True)
 
@@ -1163,7 +1162,7 @@ def open_iTradeOperations(win, port=None):
     else:
         if not isinstance(port, Portfolio):
             port = loadPortfolio()
-        frame = iTradeOperationsWindow(win, -1, u"{} - {}".format(message('portfolio_title'), port.name()), port)
+        frame = iTradeOperationsWindow(win, wx.ID_ANY, u"{} - {}".format(message('portfolio_title'), port.name()), port)
         if win:
             win.m_hOperation = frame
         frame.Show()

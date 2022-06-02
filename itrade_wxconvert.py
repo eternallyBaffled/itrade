@@ -66,20 +66,20 @@ UpdateConvertEvent, EVT_UPDATE_CONVERT = wx.lib.newevent.NewEvent()
 
 
 class iTradeConverterDialog(iTradeSizedDialog):
-    def __init__(self, parent, curSelected=(0, 1)):
-        iTradeSizedDialog.__init__(self, parent=parent, id=wx.ID_ANY, title=message('converter_title'),
-                                   size=(420, 420), style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
+    def __init__(self, parent, curSelected=(0, 1), *args, **kwargs):
+        iTradeSizedDialog.__init__(self, parent=parent, title=message('converter_title'),
+                                   size=(420, 420), style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER, *args, **kwargs)
         # container
         container = self.GetContentsPane()
         container.SetSizerType("vertical")
 
         # resizable pane
-        pane = sc.SizedPanel(container, -1)
+        pane = sc.SizedPanel(container, wx.ID_ANY)
         pane.SetSizerType("form")
         pane.SetSizerProps(expand=True)
 
         # Row 1 : Org Currency Value
-        self.wxOrgVal = masked.Ctrl(pane, integerWidth=9, fractionWidth=2, controlType=masked.controlTypes.NUMBER, allowNegative = False, groupDigits = True, groupChar=getGroupChar(), decimalChar=getDecimalChar(), selectOnEntry=True )
+        self.wxOrgVal = masked.Ctrl(pane, integerWidth=9, fractionWidth=2, controlType=masked.controlTypes.NUMBER, allowNegative=False, groupDigits=True, groupChar=getGroupChar(), decimalChar=getDecimalChar(), selectOnEntry=True )
         self.wxOrgVal.SetValue(1)
         masked.EVT_NUM(self, self.wxOrgVal.GetId(), self.OnValueChange)
 

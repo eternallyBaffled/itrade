@@ -57,8 +57,8 @@ import wx.lib.sized_controls as sc
 # ============================================================================
 
 class iTrade_wxDecision(sc.SizedPanel):
-    def __init__(self, parent, quote, portfolio):
-        sc.SizedPanel.__init__(self, parent=parent, id=wx.ID_ANY)
+    def __init__(self, parent, quote, portfolio, *args, **kwargs):
+        sc.SizedPanel.__init__(self, parent=parent, *args, **kwargs)
 
         # keep back reference
         self.m_parent = parent
@@ -73,161 +73,161 @@ class iTrade_wxDecision(sc.SizedPanel):
         self.SetSizerType("horizontal")
 
         # --- resizable pane #1 : Cash Position on the value ------------------
-        pane1 = sc.SizedPanel(self, -1)
+        pane1 = sc.SizedPanel(self, wx.ID_ANY)
         pane1.SetSizerType("vertical")
         pane1.SetSizerProps(expand=True)
 
         # Pane#1 Row #1
-        label = wx.StaticText(pane1, -1, message('decision_positiononquote_cash'))
+        label = wx.StaticText(pane1, wx.ID_ANY, message('decision_positiononquote_cash'))
         label.SetSizerProps(valign='center')
 
         # Pane#1 Box #1
-        box1 = sc.SizedPanel(pane1, -1)
+        box1 = sc.SizedPanel(pane1, wx.ID_ANY)
         box1.SetSizerType("form")
         box1.SetSizerProps(expand=True)
 
         # Pane#1 Box #1 Row #1 : number of shares in portfolio
-        label = wx.StaticText(box1, -1, message('decision_numofshares'))
-        label.SetSizerProps(valign='center',halign='right')
+        label = wx.StaticText(box1, wx.ID_ANY, message('decision_numofshares'))
+        label.SetSizerProps(valign='center', halign='right')
 
-        self.wxCashNumOfShares = wx.StaticText(box1, -1, '')
+        self.wxCashNumOfShares = wx.StaticText(box1, wx.ID_ANY, '')
         self.wxCashNumOfShares.SetSizerProps(valign='center')
 
         # Pane#1 Box #1 Row #2 : PRU in portfolio
-        label = wx.StaticText(box1, -1, message('decision_upp'))
-        label.SetSizerProps(valign='center',halign='right')
+        label = wx.StaticText(box1, wx.ID_ANY, message('decision_upp'))
+        label.SetSizerProps(valign='center', halign='right')
 
-        self.wxCashPRU = wx.StaticText(box1, -1, '')
+        self.wxCashPRU = wx.StaticText(box1, wx.ID_ANY, '')
         self.wxCashPRU.SetSizerProps(valign='center')
 
         # Pane#1 Box #1 Row #3 : PR in portfolio
-        label = wx.StaticText(box1, -1, message('decision_pp'))
-        label.SetSizerProps(valign='center',halign='right')
+        label = wx.StaticText(box1, wx.ID_ANY, message('decision_pp'))
+        label.SetSizerProps(valign='center', halign='right')
 
-        self.wxCashPR = wx.StaticText(box1, -1, '')
+        self.wxCashPR = wx.StaticText(box1, wx.ID_ANY, '')
         self.wxCashPR.SetSizerProps(valign='center')
 
         # Pane#1 Box #1 Row #4 : Profit in portfolio
-        label = wx.StaticText(box1, -1, message('decision_profit').format(quote.currency_symbol()))
-        label.SetSizerProps(valign='center',halign='right')
+        label = wx.StaticText(box1, wx.ID_ANY, message('decision_profit').format(quote.currency_symbol()))
+        label.SetSizerProps(valign='center', halign='right')
 
-        self.wxCashProfit = wx.StaticText(box1, -1, '')
+        self.wxCashProfit = wx.StaticText(box1, wx.ID_ANY, '')
         self.wxCashProfit.SetSizerProps(valign='center')
 
         # Pane#1 Box #1 Row #5 : Profit Percent in portfolio
-        label = wx.StaticText(box1, -1, message('decision_profitpercent'))
-        label.SetSizerProps(valign='center',halign='right')
+        label = wx.StaticText(box1, wx.ID_ANY, message('decision_profitpercent'))
+        label.SetSizerProps(valign='center', halign='right')
 
-        self.wxCashProfitPercent = wx.StaticText(box1, -1, '')
+        self.wxCashProfitPercent = wx.StaticText(box1, wx.ID_ANY, '')
         self.wxCashProfitPercent.SetSizerProps(valign='center')
 
         # --- separator -------------------------------------------------------
 
-        line = wx.StaticLine(self, -1, size=(-1,20), style=wx.LI_VERTICAL)
+        line = wx.StaticLine(self, wx.ID_ANY, size=(-1,20), style=wx.LI_VERTICAL)
         line.SetSizerProps(expand=True)
 
         # --- resizable pane #2 : Marging Position on the value ---------------
 
-        pane2 = sc.SizedPanel(self, -1)
+        pane2 = sc.SizedPanel(self, wx.ID_ANY)
         pane2.SetSizerType("vertical")
         pane2.SetSizerProps(expand=True)
 
         # Pane#2 Row #2
-        label = wx.StaticText(pane2, -1, message('decision_positiononquote_credit'))
+        label = wx.StaticText(pane2, wx.ID_ANY, message('decision_positiononquote_credit'))
         label.SetSizerProps(valign='center')
 
         # Pane#2 Box #2
-        box2 = sc.SizedPanel(pane2, -1)
+        box2 = sc.SizedPanel(pane2, wx.ID_ANY)
         box2.SetSizerType("form")
         box2.SetSizerProps(expand=True)
 
         # Pane#2 Box #2 Row #1 : number of shares in portfolio
-        label = wx.StaticText(box2, -1, message('decision_numofshares'))
-        label.SetSizerProps(valign='center',halign='right')
+        label = wx.StaticText(box2, wx.ID_ANY, message('decision_numofshares'))
+        label.SetSizerProps(valign='center', halign='right')
 
-        self.wxCreditNumOfShares = wx.StaticText(box2, -1, '')
+        self.wxCreditNumOfShares = wx.StaticText(box2, wx.ID_ANY, '')
         self.wxCreditNumOfShares.SetSizerProps(valign='center')
 
         # Pane#2 Box #2 Row #2 : PRU in portfolio
-        label = wx.StaticText(box2, -1, message('decision_upp'))
-        label.SetSizerProps(valign='center',halign='right')
+        label = wx.StaticText(box2, wx.ID_ANY, message('decision_upp'))
+        label.SetSizerProps(valign='center', halign='right')
 
-        self.wxCreditPRU = wx.StaticText(box2, -1, '')
+        self.wxCreditPRU = wx.StaticText(box2, wx.ID_ANY, '')
         self.wxCreditPRU.SetSizerProps(valign='center')
 
         # Pane#2 Box #2 Row #3 : PR in portfolio
-        label = wx.StaticText(box2, -1, message('decision_pp'))
-        label.SetSizerProps(valign='center',halign='right')
+        label = wx.StaticText(box2, wx.ID_ANY, message('decision_pp'))
+        label.SetSizerProps(valign='center', halign='right')
 
-        self.wxCreditPR = wx.StaticText(box2, -1, '')
+        self.wxCreditPR = wx.StaticText(box2, wx.ID_ANY, '')
         self.wxCreditPR.SetSizerProps(valign='center')
 
         # Pane#2 Box #2 Row #4 : Profit in portfolio
-        label = wx.StaticText(box2, -1, message('decision_profit').format(quote.currency_symbol()))
-        label.SetSizerProps(valign='center',halign='right')
+        label = wx.StaticText(box2, wx.ID_ANY, message('decision_profit').format(quote.currency_symbol()))
+        label.SetSizerProps(valign='center', halign='right')
 
-        self.wxCreditProfit = wx.StaticText(box2, -1, '')
+        self.wxCreditProfit = wx.StaticText(box2, wx.ID_ANY, '')
         self.wxCreditProfit.SetSizerProps(valign='center')
 
         # Pane#2 Box #2 Row #5 : Profit Percent in portfolio
-        label = wx.StaticText(box2, -1, message('decision_profitpercent'))
-        label.SetSizerProps(valign='center',halign='right')
+        label = wx.StaticText(box2, wx.ID_ANY, message('decision_profitpercent'))
+        label.SetSizerProps(valign='center', halign='right')
 
-        self.wxCreditProfitPercent = wx.StaticText(box2, -1, '')
+        self.wxCreditProfitPercent = wx.StaticText(box2, wx.ID_ANY, '')
         self.wxCreditProfitPercent.SetSizerProps(valign='center')
 
         # --- separator -------------------------------------------------------
 
-        line = wx.StaticLine(self, -1, size=(-1,20), style=wx.LI_VERTICAL)
+        line = wx.StaticLine(self, wx.ID_ANY, size=(-1,20), style=wx.LI_VERTICAL)
         line.SetSizerProps(expand=True)
 
         # --- resizable pane #3 : Purchasing Power ----------------------------
-        pane3 = sc.SizedPanel(self, -1)
+        pane3 = sc.SizedPanel(self, wx.ID_ANY)
         pane3.SetSizerType("vertical")
         pane3.SetSizerProps(expand=True)
 
         # Pane#3 Row #1
-        label = wx.StaticText(pane3, -1, message('decision_purchasingpower'))
+        label = wx.StaticText(pane3, wx.ID_ANY, message('decision_purchasingpower'))
         label.SetSizerProps(valign='center')
 
         # Pane#3 Box #1
-        box1 = sc.SizedPanel(pane3, -1)
+        box1 = sc.SizedPanel(pane3, wx.ID_ANY)
         box1.SetSizerType("form")
         box1.SetSizerProps(expand=True)
 
         # Pane#3 Box #1 Row #1 : Available Cash in portfolio currency
-        label = wx.StaticText(box1, -1, message('decision_availablecash').format(portfolio.currency_symbol()))
+        label = wx.StaticText(box1, wx.ID_ANY, message('decision_availablecash').format(portfolio.currency_symbol()))
         label.SetSizerProps(valign='center', halign='right')
 
-        self.wxAvailableCash = wx.StaticText(box1, -1, '')
+        self.wxAvailableCash = wx.StaticText(box1, wx.ID_ANY, '')
         self.wxAvailableCash.SetSizerProps(valign='center')
 
         # Pane#3 Box #1 Row #2 : Available Cash in quote currency
-        self.wxLabelAvailableCashQC = wx.StaticText(box1, -1, message('decision_availablecash').format(quote.currency_symbol()))
+        self.wxLabelAvailableCashQC = wx.StaticText(box1, wx.ID_ANY, message('decision_availablecash').format(quote.currency_symbol()))
         self.wxLabelAvailableCashQC.SetSizerProps(valign='center', halign='right')
 
-        self.wxAvailableCashQC = wx.StaticText(box1, -1, '')
+        self.wxAvailableCashQC = wx.StaticText(box1, wx.ID_ANY, '')
         self.wxAvailableCashQC.SetSizerProps(valign='center')
 
         # Pane#3 Box #1 Row #3 : Committed Credit
-        label = wx.StaticText(box1, -1, message('decision_committedcredit').format(portfolio.currency_symbol()))
+        label = wx.StaticText(box1, wx.ID_ANY, message('decision_committedcredit').format(portfolio.currency_symbol()))
         label.SetSizerProps(valign='center', halign='right')
 
-        self.wxCommittedCredit = wx.StaticText(box1, -1, '')
+        self.wxCommittedCredit = wx.StaticText(box1, wx.ID_ANY, '')
         self.wxCommittedCredit.SetSizerProps(valign='center')
 
         # Pane#3 Box #1 Row #4 : Available Credit in portfolio currency
-        label = wx.StaticText(box1, -1, message('decision_availablecredit').format(portfolio.currency_symbol()))
+        label = wx.StaticText(box1, wx.ID_ANY, message('decision_availablecredit').format(portfolio.currency_symbol()))
         label.SetSizerProps(valign='center', halign='right')
 
-        self.wxAvailableCredit = wx.StaticText(box1, -1, '')
+        self.wxAvailableCredit = wx.StaticText(box1, wx.ID_ANY, '')
         self.wxAvailableCredit.SetSizerProps(valign='center')
 
         # Pane#3 Box #1 Row #5 : Available Credit in quote currency
-        self.wxLabelAvailableCreditQC = wx.StaticText(box1, -1, message('decision_availablecredit').format(quote.currency_symbol()))
+        self.wxLabelAvailableCreditQC = wx.StaticText(box1, wx.ID_ANY, message('decision_availablecredit').format(quote.currency_symbol()))
         self.wxLabelAvailableCreditQC.SetSizerProps(valign='center', halign='right')
 
-        self.wxAvailableCreditQC = wx.StaticText(box1, -1, '')
+        self.wxAvailableCreditQC = wx.StaticText(box1, wx.ID_ANY, '')
         self.wxAvailableCreditQC.SetSizerProps(valign='center')
 
         # refresh everything

@@ -76,7 +76,7 @@ import wx.lib.newevent
 class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin):
     def __init__(self, parent, quote, filter = False, market = None, filterEnabled=True, tradableOnly=False):
 
-        iTradeSizedDialog.__init__(self,parent,-1,message('quote_select_title'), size=(460, 460),style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
+        iTradeSizedDialog.__init__(self,parent,wx.ID_ANY,message('quote_select_title'), size=(460, 460),style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
 
         self.m_parent = parent
 
@@ -109,7 +109,7 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
         container.SetSizerType("vertical")
 
         # resizable pane
-        pane = sc.SizedPanel(container, -1)
+        pane = sc.SizedPanel(container, wx.ID_ANY)
         pane.SetSizerType("horizontal")
         pane.SetSizerProps(expand=True)
 
@@ -129,7 +129,7 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
         wx.EVT_TEXT(self, self.wxTickerCtrl.GetId(), self.OnTickerEdited)
 
         # resizable pane
-        pane = sc.SizedPanel(container, -1)
+        pane = sc.SizedPanel(container, wx.ID_ANY)
         pane.SetSizerType("horizontal")
         pane.SetSizerProps(expand=True)
 
@@ -185,7 +185,7 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
         wx.EVT_LIST_ITEM_SELECTED(self, self.wxFilterCtrl.GetId(), self.OnItemSelected)
 
         # Last Row : OK and Cancel
-        btnpane = sc.SizedPanel(container, -1)
+        btnpane = sc.SizedPanel(container, wx.ID_ANY)
         btnpane.SetSizerType("horizontal")
         btnpane.SetSizerProps(expand=True)
 

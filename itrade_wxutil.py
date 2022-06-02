@@ -299,7 +299,7 @@ class HTMLDialog(wx.Dialog):
         wx.Dialog.__init__(self, parent, wx.ID_ANY, caption, style=wx.TAB_TRAVERSAL|wx.DEFAULT_DIALOG_STYLE, size=size)
 
         # container
-        self.m_html = wxUrlClickHtmlWindow(self, -1, style=wx.CLIP_CHILDREN | wx.html.HW_SCROLLBAR_NEVER | wx.TAB_TRAVERSAL)
+        self.m_html = wxUrlClickHtmlWindow(self, wx.ID_ANY, style=wx.CLIP_CHILDREN | wx.html.HW_SCROLLBAR_NEVER | wx.TAB_TRAVERSAL)
         EVT_HTML_URL_CLICK(self.m_html, self.OnLinkClick)
 
         # set the content
@@ -472,7 +472,7 @@ class iTradeSizedDialog(sc.SizedDialog):
         self.PostCreate(pre)
 
         self.borderLen = 12
-        self.mainPanel = sc.SizedPanel(self, -1)
+        self.mainPanel = sc.SizedPanel(self, wx.ID_ANY)
 
         mysizer = wx.BoxSizer(wx.VERTICAL)
         mysizer.Add(self.mainPanel, 1, wx.EXPAND | wx.ALL, self.GetDialogBorder())
@@ -516,7 +516,7 @@ class iTradeDialog(iTradeSizedDialog):
         container.SetSizerType("vertical")
 
         # First Row : image + text
-        pane = sc.SizedPanel(container, -1)
+        pane = sc.SizedPanel(container, wx.ID_ANY)
         pane.SetSizerType("horizontal")
         pane.SetSizerProps(expand=True)
 
@@ -536,7 +536,7 @@ class iTradeDialog(iTradeSizedDialog):
         txt.SetSizerProps(expand=True, valign='center', halign='center')
 
         # Last Row : OK, ..., Cancel
-        btnpane = sc.SizedPanel(container, -1)
+        btnpane = sc.SizedPanel(container, wx.ID_ANY)
         btnpane.SetSizerType("horizontal")
         btnpane.SetSizerProps(halign='center')
 

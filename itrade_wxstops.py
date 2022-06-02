@@ -64,7 +64,7 @@ class iTradeStopsDialog(wx.Dialog):
             title = message('stops_add_caption').format(quote.name())
         else:
             title = message('stops_edit_caption').format(quote.name())
-        pre.Create(parent, -1, title, size=(420, 420))
+        pre.Create(parent, wx.ID_ANY, title, size=(420, 420))
         self.PostCreate(pre)
 
         # init

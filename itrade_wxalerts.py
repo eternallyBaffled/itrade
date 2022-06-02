@@ -213,7 +213,7 @@ class iTradeAlertsWindow(wx.Frame, iTrade_wxFrame):
         wx.EVT_SIZE(self, self.OnSize)
 
     def OnSize(self, event):
-        w,h = self.GetClientSizeTuple()
+        w, h = self.GetClientSizeTuple()
         self.m_book.SetDimensions(0, 0, w, h)
 
     def OnDestroy(self, evt):

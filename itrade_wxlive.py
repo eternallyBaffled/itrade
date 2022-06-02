@@ -356,19 +356,19 @@ class iTrade_wxLive(wx.Panel):
         self.SetFont(self.m_font)
 
         # column mapping
-        #    nb qt ach ven qt  nb  hou qte price clock
-        X = (10,60,130,190,250,320,380,450,520,  380)
-        W = (50,70, 60, 60, 70, 50, 70, 70, 60,  70)
+        #    nb  qt  ach  ven  qt   nb   hou  qte price clock
+        X = (10, 60, 130, 190, 250, 320, 380, 450, 520,  380)
+        W = (50, 70,  60,  60,  70,  50,  70,  70,  60,   70)
 
         # notebook
-        title = wx.StaticText(self, -1, message('live_notebook'), wx.Point(X[0],5), wx.Size(W[0]+W[1]+W[2]+W[3]+W[4]+W[5], 15), style=wx.ALIGN_CENTRE)
+        title = wx.StaticText(self, wx.ID_ANY, message('live_notebook'), wx.Point(X[0],5), wx.Size(W[0]+W[1]+W[2]+W[3]+W[4]+W[5], 15), style=wx.ALIGN_CENTRE)
         title.SetBackgroundColour('sea green')
-        nb = wx.StaticText(self, -1, message('live_number'), wx.Point(X[0],20), wx.Size(W[0], 15), style=wx.ALIGN_RIGHT)
-        qte = wx.StaticText(self, -1, message('live_qty'), wx.Point(X[1],20), wx.Size(W[1], 15), style=wx.ALIGN_RIGHT)
-        price = wx.StaticText(self, -1, message('live_buy'), wx.Point(X[2],20), wx.Size(W[2], 15), style=wx.ALIGN_RIGHT)
-        price = wx.StaticText(self, -1, message('live_sell'), wx.Point(X[3],20), wx.Size(W[3], 15), style=wx.ALIGN_RIGHT)
-        qte = wx.StaticText(self, -1, message('live_qty'), wx.Point(X[4],20), wx.Size(W[4], 15), style=wx.ALIGN_RIGHT)
-        nb = wx.StaticText(self, -1, message('live_number'), wx.Point(X[5],20), wx.Size(W[5], 15), style=wx.ALIGN_RIGHT)
+        nb = wx.StaticText(self, wx.ID_ANY, message('live_number'), wx.Point(X[0],20), wx.Size(W[0], 15), style=wx.ALIGN_RIGHT)
+        qte = wx.StaticText(self, wx.ID_ANY, message('live_qty'), wx.Point(X[1],20), wx.Size(W[1], 15), style=wx.ALIGN_RIGHT)
+        price = wx.StaticText(self, wx.ID_ANY, message('live_buy'), wx.Point(X[2],20), wx.Size(W[2], 15), style=wx.ALIGN_RIGHT)
+        price = wx.StaticText(self, wx.ID_ANY, message('live_sell'), wx.Point(X[3],20), wx.Size(W[3], 15), style=wx.ALIGN_RIGHT)
+        qte = wx.StaticText(self, wx.ID_ANY, message('live_qty'), wx.Point(X[4],20), wx.Size(W[4], 15), style=wx.ALIGN_RIGHT)
+        nb = wx.StaticText(self, wx.ID_ANY, message('live_number'), wx.Point(X[5],20), wx.Size(W[5], 15), style=wx.ALIGN_RIGHT)
 
         y = 35
         self.nba = {}
@@ -378,39 +378,39 @@ class iTrade_wxLive(wx.Panel):
         self.qtev = {}
         self.nbv = {}
         for i in range(0,NBLINES):
-            self.nba[i] = wx.StaticText(self, -1, "-", wx.Point(X[0],y), wx.Size(W[0], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
-            self.qtea[i] = wx.StaticText(self, -1, "-", wx.Point(X[1],y), wx.Size(W[1], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
-            self.pricea[i] = wx.StaticText(self, -1, "-", wx.Point(X[2],y), wx.Size(W[2], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
-            self.pricev[i] = wx.StaticText(self, -1, "-", wx.Point(X[3],y), wx.Size(W[3], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
-            self.qtev[i] = wx.StaticText(self, -1, "-", wx.Point(X[4],y), wx.Size(W[4], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
-            self.nbv[i] = wx.StaticText(self, -1, "-", wx.Point(X[5],y), wx.Size(W[5], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
+            self.nba[i] = wx.StaticText(self, wx.ID_ANY, "-", wx.Point(X[0],y), wx.Size(W[0], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
+            self.qtea[i] = wx.StaticText(self, wx.ID_ANY, "-", wx.Point(X[1],y), wx.Size(W[1], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
+            self.pricea[i] = wx.StaticText(self, wx.ID_ANY, "-", wx.Point(X[2],y), wx.Size(W[2], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
+            self.pricev[i] = wx.StaticText(self, wx.ID_ANY, "-", wx.Point(X[3],y), wx.Size(W[3], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
+            self.qtev[i] = wx.StaticText(self, wx.ID_ANY, "-", wx.Point(X[4],y), wx.Size(W[4], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
+            self.nbv[i] = wx.StaticText(self, wx.ID_ANY, "-", wx.Point(X[5],y), wx.Size(W[5], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
             y = y + 15
 
-        fmp = wx.StaticText(self, -1, message('live_FMP'), wx.Point(X[1],y), wx.Size(W[1], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
-        self.fmpa = wx.StaticText(self, -1, "-", wx.Point(X[2],y), wx.Size(W[2], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
-        self.fmpv = wx.StaticText(self, -1, "-", wx.Point(X[3],y), wx.Size(W[3], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
+        fmp = wx.StaticText(self, wx.ID_ANY, message('live_FMP'), wx.Point(X[1],y), wx.Size(W[1], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
+        self.fmpa = wx.StaticText(self, wx.ID_ANY, "-", wx.Point(X[2],y), wx.Size(W[2], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
+        self.fmpv = wx.StaticText(self, wx.ID_ANY, "-", wx.Point(X[3],y), wx.Size(W[3], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
 
         # last trades
-        title = wx.StaticText(self, -1, message('live_lasttrades'), wx.Point(X[6],5), wx.Size(W[6]+W[7]+W[8], 15), style=wx.ALIGN_CENTRE)
+        title = wx.StaticText(self, wx.ID_ANY, message('live_lasttrades'), wx.Point(X[6],5), wx.Size(W[6]+W[7]+W[8], 15), style=wx.ALIGN_CENTRE)
         title.SetBackgroundColour('sea green')
-        hours = wx.StaticText(self, -1, message('live_hours'), wx.Point(X[6],20), wx.Size(W[6], 15), style=wx.ALIGN_RIGHT)
-        qte = wx.StaticText(self, -1, message('live_qty'), wx.Point(X[7],20), wx.Size(W[7], 15), style=wx.ALIGN_RIGHT)
-        price = wx.StaticText(self, -1, message('live_price'), wx.Point(X[8],20), wx.Size(W[8], 15), style=wx.ALIGN_RIGHT)
+        hours = wx.StaticText(self, wx.ID_ANY, message('live_hours'), wx.Point(X[6],20), wx.Size(W[6], 15), style=wx.ALIGN_RIGHT)
+        qte = wx.StaticText(self, wx.ID_ANY, message('live_qty'), wx.Point(X[7],20), wx.Size(W[7], 15), style=wx.ALIGN_RIGHT)
+        price = wx.StaticText(self, wx.ID_ANY, message('live_price'), wx.Point(X[8],20), wx.Size(W[8], 15), style=wx.ALIGN_RIGHT)
 
         y = 35
         self.qtelt = {}
         self.hourlt = {}
         self.pricelt = {}
         for i in range(0,LTLINES):
-            self.hourlt[i] = wx.StaticText(self, -1, "::", wx.Point(X[6],y), wx.Size(W[6], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
-            self.qtelt[i] = wx.StaticText(self, -1, "-", wx.Point(X[7],y), wx.Size(W[7], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
-            self.pricelt[i] = wx.StaticText(self, -1, "-", wx.Point(X[8],y), wx.Size(W[8], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
+            self.hourlt[i] = wx.StaticText(self, wx.ID_ANY, "::", wx.Point(X[6],y), wx.Size(W[6], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
+            self.qtelt[i] = wx.StaticText(self, wx.ID_ANY, "-", wx.Point(X[7],y), wx.Size(W[7], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
+            self.pricelt[i] = wx.StaticText(self, wx.ID_ANY, "-", wx.Point(X[8],y), wx.Size(W[8], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
             y = y + 15
 
-        cmp = wx.StaticText(self, -1, message('live_CMP'), wx.Point(X[7],y), wx.Size(W[7], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
-        self.cmplt = wx.StaticText(self, -1, "-", wx.Point(X[8],y), wx.Size(W[8], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
+        cmp = wx.StaticText(self, wx.ID_ANY, message('live_CMP'), wx.Point(X[7],y), wx.Size(W[7], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
+        self.cmplt = wx.StaticText(self, wx.ID_ANY, "-", wx.Point(X[8],y), wx.Size(W[8], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
 
-        self.m_sclock = wx.StaticText(self, -1, " ", wx.Point(X[9],y), wx.Size(W[9], 15), style=wx.ALIGN_CENTRE|wx.ST_NO_AUTORESIZE)
+        self.m_sclock = wx.StaticText(self, wx.ID_ANY, " ", wx.Point(X[9],y), wx.Size(W[9], 15), style=wx.ALIGN_CENTRE|wx.ST_NO_AUTORESIZE)
 
         self.refresh()
 

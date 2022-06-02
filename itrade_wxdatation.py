@@ -56,8 +56,8 @@ from itrade_local import message
 # ============================================================================
 
 class iTradeDatePicker(wx.Dialog):
-    def __init__(self, parent, title, ddate=None):
-        wx.Dialog.__init__(self, parent=parent, id=wx.ID_ANY, title=title, size=(420, 420))
+    def __init__(self, parent, title, ddate=None, *args, **kwargs):
+        wx.Dialog.__init__(self, parent=parent, title=title, size=(420, 420), *args, **kwargs)
         self.dRet = ddate
 
         # calendar
@@ -66,13 +66,13 @@ class iTradeDatePicker(wx.Dialog):
 
         if ddate is None:
             dd = wx.DateTime_Now()
-            debug('iTradeDatePicker() today date = {}'.format(dd.__str__()))
+            debug(u'iTradeDatePicker() today date = {}'.format(dd.__str__()))
         else:
-            debug('iTradeDatePicker() default date = {:d} {:d} {:d}'.format(ddate.day, ddate.month, ddate.year))
+            debug(u'iTradeDatePicker() default date = {:d} {:d} {:d}'.format(ddate.day, ddate.month, ddate.year))
             dd = wx.DateTimeFromDMY(ddate.day, ddate.month-1, ddate.year)
-            debug('iTradeDatePicker() default date = {}'.format(dd.__str__()))
+            debug(u'iTradeDatePicker() default date = {}'.format(dd.__str__()))
 
-        self.cal = wxcal.CalendarCtrl(self, -1, dd, pos=(25, 50),
+        self.cal = wxcal.CalendarCtrl(self, wx.ID_ANY, dd, pos=(25, 50),
                              style=wxcal.CAL_SHOW_HOLIDAYS
                              | wxcal.CAL_MONDAY_FIRST
                              | wxcal.CAL_SEQUENTIAL_MONTH_SELECTION
@@ -103,15 +103,15 @@ class iTradeDatePicker(wx.Dialog):
         self.SetSizerAndFit(sizer)
 
     def OnSize(self, event):
-        w,h = self.GetClientSizeTuple()
+        w, h = self.GetClientSizeTuple()
 
     def OnValid(self, event):
         if self.Validate() and self.TransferDataFromWindow():
             wxD = self.cal.GetDate()
-            self.dRet = date(wxD.GetYear(),wxD.GetMonth()+1,wxD.GetDay())
+            self.dRet = date(wxD.GetYear(), wxD.GetMonth()+1, wxD.GetDay())
             self.EndModal(wx.ID_OK)
 
-    def OnCancel(self,event):
+    def OnCancel(self, event):
         self.dRet = None
         self.EndModal(wx.ID_CANCEL)
 
@@ -122,8 +122,8 @@ class iTradeDatePicker(wx.Dialog):
 #   opmode  operation mode (modify,add,delete)
 # ============================================================================
 
-def itrade_datePicker(win,title,ddate):
-    dlg = iTradeDatePicker(win,title,ddate)
+def itrade_datePicker(win, title, ddate):
+    dlg = iTradeDatePicker(win, title, ddate)
     dlg.ShowModal()
     dRet = dlg.dRet
     dlg.Destroy()
