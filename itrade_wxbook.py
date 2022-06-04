@@ -804,7 +804,7 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
         iTradeLaunchBrowser(url)
 
     def OnBug(self, e):
-        iTradeLaunchBrowser(itrade_config.bugTrackerURL)
+        iTradeLaunchBrowser(url=itrade_config.bugTrackerURL)
 
     def OnForum(self, e):
         id = gMessage.getLang()
@@ -815,7 +815,7 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
         iTradeLaunchBrowser(url)
 
     def OnDonors(self, e):
-        iTradeLaunchBrowser(itrade_config.donorsTrackerURL)
+        iTradeLaunchBrowser(url=itrade_config.donorsTrackerURL)
 
     def OnCheckSoftware(self, e):
         # can be long ...
@@ -840,7 +840,7 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
         list_iTradeQuote(self, self.m_portfolio.market())
 
     def OnAbout(self, e):
-        d = iTradeAboutBox(self)
+        d = iTradeAboutBox(parent=self)
         d.CentreOnParent()
         d.ShowModal()
         d.Destroy()

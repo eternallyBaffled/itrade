@@ -78,20 +78,19 @@ from itrade_market import yahoosuffix
 # ============================================================================
 
 class iTradeQuoteToolbar(wx.ToolBar):
-
     def __init__(self, parent, id, *args, **kwargs):
-        wx.ToolBar.__init__(self, parent, id, size=(120,32), style=wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT, *args, **kwargs)
+        wx.ToolBar.__init__(self, parent=parent, id=id, size=(120,32), style=wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT, *args, **kwargs)
         self.m_parent = parent
         self.m_Throbber = None
         self._init_toolbar()
 
     def _init_toolbar(self):
-        self.SetToolBitmapSize(wx.Size(24, 24))
-        exit_tool = self.AddSimpleTool(wx.ID_ANY, wx.ArtProvider.GetBitmap(wx.ART_CROSS_MARK, wx.ART_TOOLBAR),
-                           message('main_close'), message('main_desc_close'))
-        self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
-        select_tool = self.AddSimpleTool(wx.ID_ANY, wx.Bitmap(os.path.join(itrade_config.dirRes, 'quotes.png')),
-                           message('quote_select_title'), message('quote_select_title'))
+        self.SetToolBitmapSize(size=wx.Size(24, 24))
+        exit_tool = self.AddSimpleTool(id=wx.ID_ANY, bitmap=wx.ArtProvider.GetBitmap(wx.ART_CROSS_MARK, wx.ART_TOOLBAR),
+                           shortHelpString=message('main_close'), longHelpString=message('main_desc_close'))
+        self.AddControl(wx.StaticLine(parent=self, id=wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
+        select_tool = self.AddSimpleTool(id=wx.ID_ANY, bitmap=wx.Bitmap(os.path.join(itrade_config.dirRes, 'quotes.png')),
+                           shortHelpString=message('quote_select_title'), longHelpString=message('quote_select_title'))
         refresh_tool = self.AddSimpleTool(wx.ID_ANY, wx.Bitmap(os.path.join(itrade_config.dirRes, 'refresh.png')),
                            message('main_view_refresh'), message('main_view_desc_refresh'))
 
@@ -118,10 +117,10 @@ class iTradeQuoteToolbar(wx.ToolBar):
         if self.m_Throbber:
             self.m_Throbber.Start()
 
-    def select(self,event):
+    def select(self, event):
         self.m_parent.OnSelectQuote(event)
 
-    def exit(self,event):
+    def exit(self, event):
         self.m_parent.OnExit(event)
 
 # ============================================================================
@@ -138,7 +137,6 @@ def exists(filename):
         return False
 
 class iTradeQuoteInfoWindow(sc.SizedPanel):
-
     def __init__(self, parent, id, size, quote):
         sc.SizedPanel.__init__(self, parent, id, size=size, style=wx.SIMPLE_BORDER | wx.TAB_TRAVERSAL | wx.NO_FULL_REPAINT_ON_RESIZE)
 
@@ -238,7 +236,7 @@ class iTradeQuoteInfoWindow(sc.SizedPanel):
         self.m_parent.OnExit(evt)
 
     def suffixLogo(self, ext):
-        return '{}-{}.{}'.format(self.m_quote.ticker().lower(), self.m_quote.market().lower(), ext)
+        return u'{}-{}.{}'.format(self.m_quote.ticker().lower(), self.m_quote.market().lower(), ext)
 
     def paintLogo(self):
         if self.m_logo is None:
@@ -260,7 +258,7 @@ class iTradeQuoteInfoWindow(sc.SizedPanel):
 
         # paint fields
         self.wxTicker.SetLabel(self.m_quote.ticker())
-        self.wxDate.SetLabel("{} | {} | {}".format(self.m_quote.sv_date(bDisplayShort=True), self.m_quote.sv_clock(), self.m_quote.sv_type_of_clock()))
+        self.wxDate.SetLabel(u"{} | {} | {}".format(self.m_quote.sv_date(bDisplayShort=True), self.m_quote.sv_clock(), self.m_quote.sv_type_of_clock()))
 
         percent = self.m_quote.nv_percent()
         if percent == 0:
@@ -302,13 +300,13 @@ class iTradeQuoteInfoWindow(sc.SizedPanel):
         self.wxLow_threshold.SetLabel("{:.2f}".format(self.m_quote.low_threshold()))
 
     def refresh(self, nquote=None, live=False):
-        debug('QuoteInfoWindow::refresh {}'.format(self.m_quote.ticker()))
+        debug(u'QuoteInfoWindow::refresh {}'.format(self.m_quote.ticker()))
 
         # update the logo if needed
         fit = False
         if nquote and nquote != self.m_quote:
             if itrade_config.verbose:
-                print('QuoteInfoWindow::refresh New Quote {} - live={}'.format(nquote.ticker(), live))
+                print(u'QuoteInfoWindow::refresh New Quote {} - live={}'.format(nquote.ticker(), live))
             self.m_quote = nquote
             self.m_logo = None
             fit = True
@@ -321,7 +319,7 @@ class iTradeQuoteInfoWindow(sc.SizedPanel):
 
         # paint the content
         if itrade_config.verbose:
-            print('QuoteInfoWindow::refresh Paint Quote {} - live={}'.format(self.m_quote.ticker(), live))
+            print(u'QuoteInfoWindow::refresh Paint Quote {} - live={}'.format(self.m_quote.ticker(), live))
         self.paint()
 
         # fit but stay on the space given by the parent
@@ -962,13 +960,13 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
     ID_PAGE_TABLE = 5
     ID_PAGE_PROP = 6
 
-    def __init__(self,parent,id,size,quote,page=0, *args, **kwargs):
-        wx.Notebook.__init__(self,parent,id,wx.DefaultPosition, size, style=wx.SIMPLE_BORDER|wx.NB_TOP, *args, **kwargs)
+    def __init__(self, parent, id, size, quote, page=0, *args, **kwargs):
+        wx.Notebook.__init__(self, parent=parent, id=id, pos=wx.DefaultPosition, size=size, style=wx.SIMPLE_BORDER|wx.NB_TOP, *args, **kwargs)
         self.m_quote = None
         self.m_parent = parent
         self.m_port = parent.portfolio()
         self.m_curpage = page
-        page = self.init(quote,page,fromInit=True)
+        page = self.init(quote, page, fromInit=True)
         wx.EVT_NOTEBOOK_PAGE_CHANGED(self, self.GetId(), self.OnPageChanged)
         self.SetSelection(page)
 
@@ -981,7 +979,7 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
         sel = self.GetSelection()
         if itrade_config.verbose:
             print()
-            print('QuoteNotebookWindow::OnPageChanged: old={:d} new={:d} sel={:d}'.format(old, new, sel))
+            print(u'QuoteNotebookWindow::OnPageChanged: old={:d} new={:d} sel={:d}'.format(old, new, sel))
         if old != new:
             if old >= 0:
                 self.win[old].DonePage()
@@ -990,7 +988,7 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
                 self.win[new].InitPage()
         event.Skip()
 
-    def init(self,nquote=None,page=0,fromInit=False):
+    def init(self, nquote=None, page=0, fromInit=False):
         # check new quote
         if nquote != self.m_quote:
             self.m_quote = nquote
@@ -999,16 +997,16 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
             self.win = {}
             self.DeleteAllPages()
 
-            self.win[self.ID_PAGE_GRAPH] = iTradeQuoteGraphPanel(self, wx.ID_ANY, self.m_quote)
+            self.win[self.ID_PAGE_GRAPH] = iTradeQuoteGraphPanel(parent=self, id=wx.ID_ANY, quote=self.m_quote)
             self.AddPage(self.win[self.ID_PAGE_GRAPH], message('quote_graphdaily'))
 
-            self.win[self.ID_PAGE_LIVE] = iTradeQuoteLivePanel(self, self.m_parent, wx.ID_ANY, self.m_quote)
+            self.win[self.ID_PAGE_LIVE] = iTradeQuoteLivePanel(parent=self, gparent=self.m_parent, id=wx.ID_ANY, quote=self.m_quote)
             self.AddPage(self.win[self.ID_PAGE_LIVE], message('quote_live'))
 
             # found the right URL for intraday charting
             m = self.m_quote.market()
-            if yahoosuffix(self.m_quote.market(), self.m_quote.place()):
-                suffix = yahoosuffix(self.m_quote.market(),self.m_quote.place())
+            if yahoosuffix(market=self.m_quote.market(), place=self.m_quote.place()):
+                suffix = yahoosuffix(market=self.m_quote.market(), place=self.m_quote.place())
             else:
                 suffix = ''
             if '^' in self.m_quote.ticker():
@@ -1026,7 +1024,7 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
                 # chart not available because no url
                 url = ''
 
-            self.win[self.ID_PAGE_INTRADAY] = iTradeHtmlPanel(self, wx.ID_ANY, url)
+            self.win[self.ID_PAGE_INTRADAY] = iTradeHtmlPanel(parent=self, id=wx.ID_ANY, url=url)
             self.AddPage(self.win[self.ID_PAGE_INTRADAY], message('quote_intraday'))
 
             self.win[self.ID_PAGE_NEWS] = iTradeRSSPanel(self, wx.ID_ANY, self.m_quote)
@@ -1051,10 +1049,10 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
         if nquote:
             # refresh the new quote
             if itrade_config.verbose:
-                print('QuoteNotebookWindow::refresh Init New Quote : {} - page: {}'.format(nquote.ticker(), self.m_curpage))
-            page = self.init(nquote, self.m_curpage)
+                print(u'QuoteNotebookWindow::refresh Init New Quote : {} - page: {}'.format(nquote.ticker(), self.m_curpage))
+            page = self.init(nquote=nquote, page=self.m_curpage)
             if itrade_config.verbose:
-                print('QuoteNotebookWindow::refresh Internal Page : {} - page: {}'.format(nquote.ticker(), page))
+                print(u'QuoteNotebookWindow::refresh Internal Page : {} - page: {}'.format(nquote.ticker(), page))
             self.SetSelection(page)
         else:
             # refresh current page
@@ -1098,8 +1096,8 @@ class iTradeQuoteWindow(wx.Frame, iTrade_wxFrame, iTrade_wxLiveMixin):
         self.setTitle()
 
         # info + panels
-        self.m_infowindow = iTradeQuoteInfoWindow(self, wx.ID_ANY, size=wx.DefaultSize, quote=self.m_quote)
-        self.m_notewindow = iTradeQuoteNotebookWindow(self, wx.ID_ANY, size=wx.DefaultSize, quote=self.m_quote, page=dpage)
+        self.m_infowindow = iTradeQuoteInfoWindow(parent=self, id=wx.ID_ANY, size=wx.DefaultSize, quote=self.m_quote)
+        self.m_notewindow = iTradeQuoteNotebookWindow(parent=self, id=wx.ID_ANY, size=wx.DefaultSize, quote=self.m_quote, page=dpage)
 
         # handlers
         wx.EVT_WINDOW_DESTROY(self, self.OnDestroy)

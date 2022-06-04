@@ -443,12 +443,12 @@ class iTradeQuotePropertyWindow(wx.Frame):
 
     def OnSelectQuote(self, event, nquote=None):
         if not nquote:
-            nquote = select_iTradeQuote(self, self.m_quote, filter=True, market=None, filterEnabled=False)
+            nquote = select_iTradeQuote(win=self, dquote=self.m_quote, filter=True, filterEnabled=False)
         if nquote and nquote != self.m_quote:
-            info('SelectQuote: {} - {}'.format(nquote.ticker(), nquote.key()))
+            info(u'SelectQuote: {} - {}'.format(nquote.ticker(), nquote.key()))
             self.m_quote = nquote
             self.m_propwindow.Destroy()
-            self.m_propwindow = iTradeQuotePropertiesPanel(self, wx.ID_ANY, self.m_quote, self.m_parent)
+            self.m_propwindow = iTradeQuotePropertiesPanel(parent=self, id=wx.ID_ANY, quote=self.m_quote, root=self.m_parent)
 
     def OnExit(self, event):
         self.Close()
@@ -465,13 +465,13 @@ class iTradeQuotePropertyDialog(wx.Dialog):
         self.m_parent = parent
 
         # post-init
-        pre.Create(parent, wx.ID_ANY, "{} {} - {}".format(message('quote_title'), self.m_quote.ticker(), self.m_quote.market()), size=(560, 370))
+        pre.Create(parent, wx.ID_ANY, u"{} {} - {}".format(message('quote_title'), self.m_quote.ticker(), self.m_quote.market()), size=(560, 370))
         self.PostCreate(pre)
 
         sizer = wx.BoxSizer(wx.VERTICAL)
 
         # property panel
-        self.m_propwindow = iTradeQuotePropertiesPanel(self, wx.ID_ANY, self.m_quote, None)
+        self.m_propwindow = iTradeQuotePropertiesPanel(parent=self, id=wx.ID_ANY, quote=self.m_quote, root=None)
         sizer.Add(self.m_propwindow, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         box = wx.BoxSizer(wx.HORIZONTAL)
@@ -483,7 +483,7 @@ class iTradeQuotePropertyDialog(wx.Dialog):
 
         # CLOSE
         btn = wx.Button(self, wx.ID_CANCEL, message('close'))
-        btn.SetHelpText(message('close_desc'))
+        btn.SetHelpText(text=message('close_desc'))
         wx.EVT_BUTTON(self, wx.ID_CANCEL, self.OnClose)
         box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
@@ -507,7 +507,7 @@ def open_iTradeQuoteProperty(win, quote, bDialog=False):
     if not isinstance(quote, Quote):
         quote = quotes.lookupKey(quote)
     if bDialog:
-        dlg = iTradeQuotePropertyDialog(win, quote)
+        dlg = iTradeQuotePropertyDialog(parent=win, quote=quote)
         dlg.ShowModal()
         aRet = dlg.aRet
         dlg.Destroy()
@@ -515,10 +515,10 @@ def open_iTradeQuoteProperty(win, quote, bDialog=False):
     else:
         if win and win.m_hProperty:
             # set focus
-            win.m_hProperty.OnSelectQuote(None, quote)
+            win.m_hProperty.OnSelectQuote(event=None, nquote=quote)
             win.m_hProperty.SetFocus()
         else:
-            frame = iTradeQuotePropertyWindow(win, quote)
+            frame = iTradeQuotePropertyWindow(parent=win, quote=quote)
             if win:
                 win.m_hProperty = frame
             frame.Show()
@@ -538,12 +538,12 @@ def main():
     gMessage.load()
     # load extensions
     import itrade_ext
-    itrade_ext.loadExtensions(itrade_config.fileExtData, itrade_config.dirExtData)
+    itrade_ext.loadExtensions(file=itrade_config.fileExtData, folder=itrade_config.dirExtData)
     # init modules
     initQuotesModule()
-    q = select_iTradeQuote(None, None, filter=False)
+    q = select_iTradeQuote(win=None, dquote=None, filter=False)
     if q:
-        open_iTradeQuoteProperty(None, q)
+        open_iTradeQuoteProperty(win=None, quote=q)
         app.MainLoop()
 
 

@@ -444,9 +444,9 @@ class iTradeOperationDialog(iTradeSizedDialog):
 
     def OnQuote(self, evt):
         quote = quotes.lookupKey(self.m_name)
-        quote = select_iTradeQuote(self, quote, filter=True, market=self.m_market, filterEnabled=True, tradableOnly=True)
+        quote = select_iTradeQuote(win=self, dquote=quote, filter=True, market=self.m_market, tradableOnly=True)
         if quote:
-            debug('onQuote: {} - {}'.format(quote.ticker(), quote.key()))
+            debug(u'onQuote: {} - {}'.format(quote.ticker(), quote.key()))
             self.m_name = quote.key()
             self.m_market = quote.market()
             self.refreshPage()
@@ -454,13 +454,13 @@ class iTradeOperationDialog(iTradeSizedDialog):
     def OnValueChange(self, event):
         ctl = self.FindWindowById(event.GetId())
         if ctl.IsValid():
-            debug('new value value = {}\n'.format(ctl.GetValue()))
+            debug(u'new value value = {}\n'.format(ctl.GetValue()))
             self.m_value = float(ctl.GetValue())
 
     def OnNumberChange(self, event):
         ctl = self.FindWindowById(event.GetId())
         if ctl.IsValid():
-            debug('new number value = {}\n'.format(ctl.GetValue()))
+            debug(u'new number value = {}\n'.format(ctl.GetValue()))
             self.m_number = int(ctl.GetValue())
 
     def OnExpensesChange(self, event):

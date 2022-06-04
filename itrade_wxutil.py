@@ -140,19 +140,19 @@ def Button(label, id, makedefault=0):
     return [(label, id, makedefault)]
 
 def OKButton(makedefault=1):
-    return Button(message('ok'), wx.ID_OK, makedefault)
+    return Button(label=message('ok'), id=wx.ID_OK, makedefault=makedefault)
 
 def CancelButton(makedefault=0):
-    return Button(message('cancel'), wx.ID_CANCEL, makedefault)
+    return Button(label=message('cancel'), id=wx.ID_CANCEL, makedefault=makedefault)
 
 def ApplyButton(makedefault=0):
-    return Button(message('valid'), wx.ID_APPLY, makedefault)
+    return Button(label=message('valid'), id=wx.ID_APPLY, makedefault=makedefault)
 
 def YesButton(makedefault=1):
-    return Button(message('yes'), wx.ID_YES, makedefault)
+    return Button(label=message('yes'), id=wx.ID_YES, makedefault=makedefault)
 
 def NoButton(makedefault=0):
-    return Button(message('no'), wx.ID_NO, makedefault)
+    return Button(label=message('no'), id=wx.ID_NO, makedefault=makedefault)
 
 # ============================================================================
 # generate HTML for buttons

@@ -221,7 +221,7 @@ def addOrEditStops_iTradeQuote(win, quote, market, bAdd=True):
 
     # still a quote, open the dialog to manage the Stops
     if quote:
-        print('addOrEditStops_iTradeQuote() : Add?({:d}) quote : {}'.format(bAdd, quote))
+        print(u'addOrEditStops_iTradeQuote() : Add?({:d}) quote : {}'.format(bAdd, quote))
 
         with iTradeStopsDialog(win, quote, bAdd=bAdd) as dlg:
             id_ret = dlg.CentreOnParent()
@@ -233,7 +233,6 @@ def addOrEditStops_iTradeQuote(win, quote, market, bAdd=True):
 
 def removeStops_iTradeQuote(win, quote):
     """
-
     :param win: parent window
     :param quote: Quote object or ISIN reference
     :return:
@@ -242,7 +241,7 @@ def removeStops_iTradeQuote(win, quote):
         quote = quotes.lookupKey(quote)
     if quote:
         if quote.hasStops():
-            i_ret = iTradeYesNo(win, message('stops_remove_text').format(quote.name()), message('stops_remove_caption'))
+            i_ret = iTradeYesNo(parent=win, text=message('stops_remove_text').format(quote.name()), caption=message('stops_remove_caption'))
             if i_ret == wx.ID_YES:
                 quotes.removeStops(quote.key())
                 return True
@@ -259,7 +258,7 @@ def main():
     quotes.loadListOfQuotes()
     q = quotes.lookupTicker('SAF', 'EURONEXT')
     if q:
-        addOrEditStops_iTradeQuote(None, q, bAdd=(not q.hasStops()))
+        addOrEditStops_iTradeQuote(win=None, quote=q, bAdd=(not q.hasStops()))
     else:
         print('quote not found')
 

@@ -71,12 +71,12 @@ IDC_PLACE = 3
 IDC_MARKET = 4
 
 import wx.lib.newevent
-(PostInitEvent,EVT_POSTINIT) = wx.lib.newevent.NewEvent()
+(PostInitEvent, EVT_POSTINIT) = wx.lib.newevent.NewEvent()
 
 class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin):
-    def __init__(self, parent, quote, filter = False, market = None, filterEnabled=True, tradableOnly=False):
+    def __init__(self, parent, quote, filter=False, market=None, filterEnabled=True, tradableOnly=False):
 
-        iTradeSizedDialog.__init__(self,parent,wx.ID_ANY,message('quote_select_title'), size=(460, 460),style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
+        iTradeSizedDialog.__init__(self, parent, wx.ID_ANY, message('quote_select_title'), size=(460, 460), style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
 
         self.m_parent = parent
 
@@ -98,7 +98,7 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
 
         self.m_editing = True
 
-        self.m_imagelist = wx.ImageList(16,16)
+        self.m_imagelist = wx.ImageList(16, 16)
         self.sm_q = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'quote.png')))
         self.sm_i = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'invalid.png')))
         self.sm_up = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'sm_up.png')))
@@ -134,10 +134,10 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
         pane.SetSizerProps(expand=True)
 
         # pane : market & list filters
-        self.wxLabelMarketCtrl = wx.StaticText(pane, wx.ID_ANY, message('quote_select_market'))
+        self.wxLabelMarketCtrl = wx.StaticText(parent=pane, id=wx.ID_ANY, label=message('quote_select_market'))
         self.wxLabelMarketCtrl.SetSizerProps(valign='center')
 
-        self.wxMarketCtrl = wx.ComboBox(pane, wx.ID_ANY, "", style=wx.CB_DROPDOWN|wx.CB_READONLY)
+        self.wxMarketCtrl = wx.ComboBox(parent=pane, id=wx.ID_ANY, value="", style=wx.CB_DROPDOWN|wx.CB_READONLY)
         self.wxMarketCtrl.SetSizerProps(expand=True)
         wx.EVT_COMBOBOX(self, self.wxMarketCtrl.GetId(), self.OnMarket)
 
@@ -263,12 +263,12 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
                 # tradable
                 if (self.m_market is None) or (self.m_market == quote.market() or self.m_filter):
                     # good market
-                    if bDuringInit or ( quote.ticker().find(self.m_ticker,0)==0 and quote.isin().find(self.m_isin,0)==0 ):
+                    if bDuringInit or (quote.ticker().find(self.m_ticker, 0) == 0 and quote.isin().find(self.m_isin, 0) == 0 ):
                         # begin the same
                         return True
         return False
 
-    def PopulateList(self,bDuringInit=False):
+    def PopulateList(self, bDuringInit=False):
         wx.SetCursor(wx.HOURGLASS_CURSOR)
 
         # clear list
@@ -276,11 +276,11 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
         self.currentItem = -1
 
         # but since we want images on the column header we have to do it the hard way:
-        self.m_list.InsertColumn(IDC_ISIN, message('isin'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_TICKER, message('ticker'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_NAME, message('name'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_PLACE, message('place'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
-        self.m_list.InsertColumn(IDC_MARKET, message('market'), wx.LIST_FORMAT_LEFT, wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(col=IDC_ISIN, heading=message('isin'), format=wx.LIST_FORMAT_LEFT, width=wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_TICKER, message('ticker'), format=wx.LIST_FORMAT_LEFT, width=wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_NAME, message('name'), format=wx.LIST_FORMAT_LEFT, width=wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_PLACE, message('place'), format=wx.LIST_FORMAT_LEFT, width=wx.LIST_AUTOSIZE)
+        self.m_list.InsertColumn(IDC_MARKET, message('market'), format=wx.LIST_FORMAT_LEFT, width=wx.LIST_AUTOSIZE)
 
         x = 0
 
@@ -289,8 +289,8 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
         self.itemLineMap = {}
 
         for eachQuote in quotes.list():
-            if (not self.m_filter or eachQuote.isMatrix()) and self.isFiltered(eachQuote,bDuringInit):
-                self.itemDataMap[x] = (eachQuote.isin(),eachQuote.ticker(),eachQuote.name(),eachQuote.place(),eachQuote.market())
+            if (not self.m_filter or eachQuote.isMatrix()) and self.isFiltered(eachQuote, bDuringInit):
+                self.itemDataMap[x] = (eachQuote.isin(), eachQuote.ticker(), eachQuote.name(), eachQuote.place(), eachQuote.market())
                 self.itemQuoteMap[x] = eachQuote
                 x = x + 1
 
@@ -303,7 +303,7 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
                 self.m_list.InsertImageStringItem(line, data[0], self.sm_q)
             else:
                 self.m_list.InsertImageStringItem(line, data[0], self.sm_i)
-            if data[0] == self.m_isin and data[1]== self.m_ticker and data[3] == self.m_place and data[4] == self.m_market:
+            if data[0] == self.m_isin and data[1] == self.m_ticker and data[3] == self.m_place and data[4] == self.m_market:
                 # current selection
                 curline = line
             self.m_list.SetStringItem(line, IDC_TICKER, data[1])
@@ -314,25 +314,26 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
             self.itemLineMap[data[1]] = line
             line += 1
 
-        self.m_list.SetColumnWidth(IDC_ISIN, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_TICKER, wx.LIST_AUTOSIZE_USEHEADER)
-        self.m_list.SetColumnWidth(IDC_NAME, 16*10)
-        self.m_list.SetColumnWidth(IDC_PLACE, wx.LIST_AUTOSIZE)
-        self.m_list.SetColumnWidth(IDC_MARKET, wx.LIST_AUTOSIZE)
-        self.SetCurrentItem(curline)
+        self.m_list.SetColumnWidth(col=IDC_ISIN, width=wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(col=IDC_TICKER, width=wx.LIST_AUTOSIZE_USEHEADER)
+        self.m_list.SetColumnWidth(col=IDC_NAME, width=16*10)
+        self.m_list.SetColumnWidth(col=IDC_PLACE, width=wx.LIST_AUTOSIZE)
+        self.m_list.SetColumnWidth(col=IDC_MARKET, width=wx.LIST_AUTOSIZE)
+        self.SetCurrentItem(line=curline)
 
         wx.SetCursor(wx.STANDARD_CURSOR)
 
-    def SetCurrentItem(self,line):
-        #print 'SetCurrentItem: line=%d' % line
-        if self.currentItem==line: return
+    def SetCurrentItem(self, line):
+        #print(u'SetCurrentItem: line={:d}'.format(line))
+        if self.currentItem == line:
+            return
 
-        if self.currentItem>=0:
-            self.m_list.SetItemState(self.currentItem, 0, wx.LIST_STATE_SELECTED)
+        if self.currentItem >= 0:
+            self.m_list.SetItemState(item=self.currentItem, state=0, stateMask=wx.LIST_STATE_SELECTED)
         self.currentItem = line
-        if self.currentItem>=0:
-            self.m_list.SetItemState(self.currentItem, wx.LIST_STATE_SELECTED, wx.LIST_STATE_SELECTED)
-            self.m_list.EnsureVisible(self.currentItem)
+        if self.currentItem >= 0:
+            self.m_list.SetItemState(item=self.currentItem, state=wx.LIST_STATE_SELECTED, stateMask=wx.LIST_STATE_SELECTED)
+            self.m_list.EnsureVisible(item=self.currentItem)
 
     # --- [ wxl.ColumnSorterMixin management ] -------------------------------------
 
@@ -344,11 +345,11 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
     def GetSortImages(self):
         return (self.sm_dn, self.sm_up)
 
-    def getQuoteOnTheLine(self,x):
-        if x>=0:
+    def getQuoteOnTheLine(self, x):
+        if x >= 0:
             key = self.m_list.GetItemData(x)
             quote = self.itemQuoteMap[key]
-            #print 'getQuoteOnTheLine(%d) : returns key=%d quote=%s' % (x,key,quote.ticker())
+            #print(u'getQuoteOnTheLine({:d}) : returns key={:d} quote={}'.format(x, key, quote.ticker()))
             return quote
         else:
             return None
@@ -356,19 +357,19 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
     # --- [ On handlers management ] -------------------------------------
 
     def OnColClick(self, event):
-        #debug("OnColClick: %d\n" % event.GetColumn())
+        #debug(u"OnColClick: {:d}\n".format(event.GetColumn()))
         pass
 
-    def OnTickerEdited(self,event):
+    def OnTickerEdited(self, event):
         self.m_ticker = event.GetString().upper()
-        #print 'ticker: (editing=%d) :' % self.m_editing,self.m_ticker,' currentItem:',self.currentItem
+        #print(u'ticker: (editing={:d}) :'.format(self.m_editing), self.m_ticker, ' currentItem:', self.currentItem)
 
-        if self.m_ticker!='':
+        if self.m_ticker != '':
             if self.m_editing:
-                lst = quotes.lookupPartialTicker(self.m_ticker,self.m_market)
+                lst = quotes.lookupPartialTicker(ticker=self.m_ticker, market=self.m_market)
             else:
-                lst = [quotes.lookupTicker(self.m_ticker,self.m_market)]
-            if len(lst)==1:
+                lst = [quotes.lookupTicker(ticker=self.m_ticker, market=self.m_market)]
+            if len(lst) == 1:
                 quote = lst[0]
                 if quote and self.m_ticker == quote.ticker():
                     self.m_isin = quote.isin()
@@ -388,23 +389,23 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
         self.m_editing = True
         event.Skip()
 
-    def OnISINEdited(self,event):
+    def OnISINEdited(self, event):
         isin = event.GetString().upper()
-        if isin!='' and isin!=self.m_isin:
+        if isin != '' and isin != self.m_isin:
             self.m_isin = isin
-            lst = quotes.lookupISIN(self.m_isin, self.m_market)
-            if len(lst) >                                                                                                                                                                                                                                                                                                       0 and lst[0]:
+            lst = quotes.lookupISIN(isin=self.m_isin, market=self.m_market)
+            if len(lst) > 0 and lst[0]:
                 quote = lst[0]
                 self.m_isin = quote.isin()
                 self.m_ticker = quote.ticker()
                 self.m_place = quote.place()
                 v = self.wxTickerCtrl.GetValue()
-                #print 'isin:',isin,' label %s=?=%s' % (v,quote.ticker()), 'line=%d' % self.itemLineMap[quote.ticker()]
-                if v!= quote.ticker():
+                #print('isin:', isin, u' label {}=?={}'.format(v, quote.ticker()), u'line={:d}'.format(self.itemLineMap[quote.ticker()]))
+                if v != quote.ticker():
                     self.wxTickerCtrl.SetValue(quote.ticker())
             else:
                 self.wxTickerCtrl.SetValue('')
-        #print 'isin:',isin,' currentItem:',self.currentItem
+        #print('isin:', isin, ' currentItem:', self.currentItem)
         event.Skip()
 
     def OnItemActivated(self, event):
@@ -413,11 +414,11 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
         event.Skip()
 
     def OnItemSelected(self, event):
-        #print 'OnItemSelected --['
+        #print('OnItemSelected --[')
         # be sure we come from a click and not some editing in ticker/isin controls
         self.currentItem = event.m_itemIndex
         quote = self.getQuoteOnTheLine(self.currentItem)
-        #print 'OnItemSelected:',quote,' currentItem:',self.currentItem
+        #print('OnItemSelected:', quote, ' currentItem:', self.currentItem)
         self.m_editing = False
         self.m_isin = quote.isin()
         self.m_place = quote.place()
@@ -425,11 +426,11 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
         self.wxIsinCtrl.SetValue(self.m_isin)
         self.wxTickerCtrl.SetValue(self.m_ticker)
         event.Skip()
-        #print ']-- OnItemSelected'
+        #print(']-- OnItemSelected')
 
-    def OnValid(self,event):
+    def OnValid(self, event):
         self.quote = self.getQuoteOnTheLine(self.currentItem)
-        #print 'OnItemSelected:',self.quote,' item:',self.currentItem
+        #print('OnItemSelected:', self.quote, ' item:', self.currentItem)
         if self.quote:
             self.EndModal(wx.ID_OK)
 
@@ -444,9 +445,9 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
 # ============================================================================
 
 def select_iTradeQuote(win, dquote=None, filter=False, market=None, filterEnabled=True, tradableOnly=False):
-    dlg = iTradeQuoteSelectorListCtrlDialog(win, dquote, filter, market, filterEnabled, tradableOnly)
+    dlg = iTradeQuoteSelectorListCtrlDialog(parent=win, quote=dquote, filter=filter, market=market, filterEnabled=filterEnabled, tradableOnly=tradableOnly)
     if dlg.ShowModal() == wx.ID_OK:
-        info('select_iTradeQuote() : {}'.format(dlg.quote))
+        info(u'select_iTradeQuote() : {}'.format(dlg.quote))
         quote = dlg.quote
     else:
         quote = None
@@ -468,10 +469,10 @@ def main():
     gMessage.load()
     # load extensions
     import itrade_ext
-    itrade_ext.loadExtensions(itrade_config.fileExtData, itrade_config.dirExtData)
+    itrade_ext.loadExtensions(file=itrade_config.fileExtData, folder=itrade_config.dirExtData)
     # init modules
     initQuotesModule()
-    q = select_iTradeQuote(None, None, filter=False, market='EURONEXT')
+    q = select_iTradeQuote(win=None, dquote=None, filter=False, market='EURONEXT')
     if q:
         print(q.name())
 

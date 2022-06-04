@@ -108,7 +108,7 @@ Please see <i><a href="LICENSE">LICENSE</a></i> file for more information.</font
 # credits_html
 # ============================================================================
 
-credits_html = '''
+credits_html = u'''
 <html>
 <body bgcolor="#4488FF">
 <center>
@@ -176,15 +176,15 @@ license_html = u'''
 class iTradeAboutBox(wx.Dialog):
     border = 7
 
-    def __init__(self, parent, *args, **kwargs):
-        wx.Dialog.__init__(self, parent=parent, title=message('about_title'),
-                                             size=wx.Size(480, 525), style=wx.DEFAULT_DIALOG_STYLE,
-                                             name='AboutBox', *args, **kwargs)
+    def __init__(self, *args, **kwargs):
+        wx.Dialog.__init__(self, title=message('about_title'),
+                           size=wx.Size(480, 525),
+                           name='AboutBox', *args, **kwargs)
         self.blackback = wx.Window(parent=self, pos=(0, 0), size=self.GetClientSize(),
                                    style=wx.CLIP_CHILDREN)
         self.blackback.SetBackgroundColour(wx.BLACK)
 
-        self.m_html = wxUrlClickHtmlWindow(self.blackback, wx.ID_ANY, style=wx.CLIP_CHILDREN | wx.html.HW_NO_SELECTION)
+        self.m_html = wxUrlClickHtmlWindow(parent=self.blackback, id=wx.ID_ANY, style=wx.CLIP_CHILDREN | wx.html.HW_NO_SELECTION)
         EVT_HTML_URL_CLICK(self.m_html, self.OnLinkClick)
 
         self.setPage()
@@ -254,7 +254,7 @@ class iTradeAboutBox(wx.Dialog):
 def main():
     setLevel(logging.INFO)
     app = wx.App(False)
-    dlg = iTradeAboutBox(None)
+    dlg = iTradeAboutBox(parent=None)
     dlg.CentreOnParent()
     dlg.ShowModal()
     dlg.Destroy()
