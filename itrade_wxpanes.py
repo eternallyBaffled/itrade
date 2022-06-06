@@ -136,7 +136,7 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
 
     def __init__(self,parent,wm,id,portfolio,matrix, *args, **kwargs):
         wx.Panel.__init__(self, parent, id, *args, **kwargs)
-        iTrade_wxLiveMixin.__init__(self, *args, **kwargs)
+        iTrade_wxLiveMixin.__init__(self)
 
         self.m_parent = wm
         self.m_portfolio = portfolio
@@ -170,7 +170,7 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
         wx.EVT_LEFT_DOWN(self.m_list, self.OnLeftDown)
 
         self.m_list.SetImageList(self.m_imagelist, wx.IMAGE_LIST_SMALL)
-        self.m_list.SetFont(FontFromSize(itrade_config.matrixFontSize))
+        self.m_list.SetFont(font=FontFromSize(itrade_config.matrixFontSize))
 
         # Now that the list exists we can init the other base class,
         # see wxPython/lib/mixins/listctrl.py
@@ -470,7 +470,7 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
     # --- [ manage current page ] -------------------------------------
 
     def InitCurrentPage(self):
-        self.m_list.Show(True)
+        self.m_list.Show(show=True)
 
         if self.m_mustInit:
             # update portfolio and matrix (just in case)
@@ -490,7 +490,7 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
 
     def DoneCurrentPage(self):
         # be sure to stop the live (if any)
-        self.m_list.Show(False)
+        self.m_list.Show(show=False)
         self.stopLive(bBusy=False)
 
     # --- [ refresh lists ] -------------------------------------

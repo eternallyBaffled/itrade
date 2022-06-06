@@ -112,27 +112,27 @@ class iTradeQuotePropertiesPanel(wx.Panel):
         box = wx.BoxSizer(wx.HORIZONTAL)
 
         btn = wx.Button(self, wx.ID_ANY, message('prop_restore'))
-        btn.SetHelpText(message('prop_desc_restore'))
+        btn.SetHelpText(text=message('prop_desc_restore'))
         box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_BUTTON(self, btn.GetId(), self.OnRestoreReference)
 
         btn = wx.Button(self, wx.ID_ANY, message('prop_rename'))
-        btn.SetHelpText(message('prop_desc_rename'))
+        btn.SetHelpText(text=message('prop_desc_rename'))
         box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_BUTTON(self, btn.GetId(), self.OnRename)
 
         btn = wx.Button(self, wx.ID_ANY, message('prop_reload'))
-        btn.SetHelpText(message('prop_desc_reload'))
+        btn.SetHelpText(text=message('prop_desc_reload'))
         box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_BUTTON(self, btn.GetId(), self.OnReload)
 
         btn = wx.Button(self, wx.ID_ANY, message('prop_import'))
-        btn.SetHelpText(message('prop_desc_import'))
+        btn.SetHelpText(text=message('prop_desc_import'))
         box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_BUTTON(self, btn.GetId(), self.OnImport)
 
         btn = wx.Button(self, wx.ID_ANY, message('prop_export'))
-        btn.SetHelpText(message('prop_desc_export'))
+        btn.SetHelpText(text=message('prop_desc_export'))
         box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_BUTTON(self, btn.GetId(), self.OnExport)
 
@@ -209,12 +209,12 @@ class iTradeQuotePropertiesPanel(wx.Panel):
         box = wx.BoxSizer(wx.HORIZONTAL)
 
         btn = wx.Button(self, wx.ID_ANY, message('prop_restore'))
-        btn.SetHelpText(message('prop_desc_restore'))
+        btn.SetHelpText(text=message('prop_desc_restore'))
         box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_BUTTON(self, btn.GetId(), self.OnRestoreConnector)
 
         btn = wx.Button(self, wx.ID_ANY, message('prop_set'))
-        btn.SetHelpText(message('prop_desc_set'))
+        btn.SetHelpText(text=message('prop_desc_set'))
         box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_BUTTON(self, btn.GetId(), self.OnSetConnector)
 
@@ -222,8 +222,8 @@ class iTradeQuotePropertiesPanel(wx.Panel):
         self._sizer.AddSizer(thebox, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
         # auto layout
-        self.SetAutoLayout(True)
-        self.SetSizer(self._sizer)
+        self.SetAutoLayout(autoLayout=True)
+        self.SetSizer(sizer=self._sizer)
         self.Layout()
 
     # --- [ window management ] -----------------------------------------------
@@ -302,8 +302,8 @@ class iTradeQuotePropertiesPanel(wx.Panel):
                 iTradeInformation(self, message('exported_to_file').format(file), message('export_to_file'))
 
     def saveThenDisplayReference(self):
-        self.editTicker.SetLabel(self.m_quote.ticker())
-        self.editName.SetLabel(self.m_quote.name())
+        self.editTicker.SetLabel(label=self.m_quote.ticker())
+        self.editName.SetLabel(label=self.m_quote.name())
         quotes.saveProperties()
         self.m_parent.aRet = True
 
@@ -387,7 +387,7 @@ class iTradeQuotePropertyToolbar(wx.ToolBar):
         self._init_toolbar()
 
     def _init_toolbar(self):
-        self.SetToolBitmapSize(wx.Size(24, 24))
+        self.SetToolBitmapSize(size=wx.Size(24, 24))
         ex_tool = self.AddSimpleTool(wx.ID_ANY, wx.ArtProvider.GetBitmap(wx.ART_CROSS_MARK, wx.ART_TOOLBAR),
                            message('main_close'), message('main_desc_close'))
         self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1, 23), style=wx.LI_VERTICAL))
@@ -431,11 +431,11 @@ class iTradeQuotePropertyWindow(wx.Frame):
 
         self.m_framesizer.Add(self.m_toolbar, 0, wx.EXPAND)
         self.m_framesizer.Add(self.m_propwindow, 1, wx.EXPAND)
-        self.SetSizer(self.m_framesizer)
+        self.SetSizer(sizer=self.m_framesizer)
         self.Fit()
 
     def setTitle(self):
-        self.SetTitle(u"{} {} - {}".format(message('quote_title'), self.m_quote.ticker(), self.m_quote.market()))
+        self.SetTitle(title=u"{} {} - {}".format(message('quote_title'), self.m_quote.ticker(), self.m_quote.market()))
 
     def OnDestroy(self, evt):
         if self.m_parent and (self.GetId() == evt.GetId()):
@@ -489,7 +489,7 @@ class iTradeQuotePropertyDialog(wx.Dialog):
 
         sizer.AddSizer(box, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
-        self.SetAutoLayout(True)
+        self.SetAutoLayout(autoLayout=True)
         self.SetSizerAndFit(sizer)
 
     def OnClose(self, event):

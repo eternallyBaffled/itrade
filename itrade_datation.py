@@ -165,7 +165,7 @@ class Calendar(object):
         k = self.key(d, market)
         debug('issrd {} k={}: ? '.format(d, k))
 
-        # is it a SRD day ?
+        # is it an SRD day ?
         if k in self.m_srd:
             return True
 
@@ -180,7 +180,7 @@ class Calendar(object):
 
         k = self.key(d, market)
 
-        # is it a SRD day ?
+        # is it an SRD day ?
         return self.m_srd.get(k)
 
     # --- [ key management ] --------------------------------------
@@ -315,7 +315,7 @@ class Calendar(object):
 # ============================================================================
 # Datation
 #
-# this object encapsulate a date object with the following properties :
+# this object encapsulates a date object with the following properties :
 # - really read only object
 # - constructed by a date object or a string
 # - use calendar singleton object with prev / next

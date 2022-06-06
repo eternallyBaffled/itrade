@@ -237,73 +237,73 @@ class iTrade_wxDecision(sc.SizedPanel):
 
     def refresh(self):
         # refresh cash
-        self.wxCashNumOfShares.SetLabel(self.m_quote.sv_number(QuoteType.cash))
-        self.wxCashPRU.SetLabel(self.m_quote.sv_pru(QuoteType.cash,fmt="{:.2f}",bDispCurrency=True))
-        self.wxCashPR.SetLabel(self.m_quote.sv_pr(QuoteType.cash,bDispCurrency=True))
+        self.wxCashNumOfShares.SetLabel(label=self.m_quote.sv_number(QuoteType.cash))
+        self.wxCashPRU.SetLabel(label=self.m_quote.sv_pru(QuoteType.cash, fmt="{:.2f}", bDispCurrency=True))
+        self.wxCashPR.SetLabel(label=self.m_quote.sv_pr(QuoteType.cash, bDispCurrency=True))
 
-        profit = self.m_quote.nv_profit(self.m_quote.currency(),QuoteType.cash)
-        if profit==0:
-            self.wxCashProfit.SetForegroundColour(wx.BLACK)
-            self.wxCashProfitPercent.SetForegroundColour(wx.BLACK)
-        elif profit<0:
-            self.wxCashProfit.SetForegroundColour(wx.RED)
-            self.wxCashProfitPercent.SetForegroundColour(wx.RED)
+        profit = self.m_quote.nv_profit(self.m_quote.currency(), QuoteType.cash)
+        if profit == 0:
+            self.wxCashProfit.SetForegroundColour(colour=wx.BLACK)
+            self.wxCashProfitPercent.SetForegroundColour(colour=wx.BLACK)
+        elif profit < 0:
+            self.wxCashProfit.SetForegroundColour(colour=wx.RED)
+            self.wxCashProfitPercent.SetForegroundColour(colour=wx.RED)
         else:
-            self.wxCashProfit.SetForegroundColour(wx.BLUE)
-            self.wxCashProfitPercent.SetForegroundColour(wx.BLUE)
+            self.wxCashProfit.SetForegroundColour(colour=wx.BLUE)
+            self.wxCashProfitPercent.SetForegroundColour(colour=wx.BLUE)
 
-        self.wxCashProfit.SetLabel(u"{} {}".format(self.m_quote.sv_profit(self.m_quote.currency(), QuoteType.cash, fmt="{:.0f}"), self.m_quote.currency_symbol()))
-        self.wxCashProfitPercent.SetLabel(self.m_quote.sv_profitPercent(self.m_quote.currency(), QuoteType.cash))
+        self.wxCashProfit.SetLabel(label=u"{} {}".format(self.m_quote.sv_profit(self.m_quote.currency(), QuoteType.cash, fmt="{:.0f}"), self.m_quote.currency_symbol()))
+        self.wxCashProfitPercent.SetLabel(label=self.m_quote.sv_profitPercent(self.m_quote.currency(), QuoteType.cash))
 
         # refresh credit
-        self.wxCreditNumOfShares.SetLabel(self.m_quote.sv_number(QuoteType.credit))
-        self.wxCreditPRU.SetLabel(self.m_quote.sv_pru(QuoteType.credit, fmt="{:.2f}", bDispCurrency=True))
-        self.wxCreditPR.SetLabel(self.m_quote.sv_pr(QuoteType.credit, bDispCurrency=True))
+        self.wxCreditNumOfShares.SetLabel(label=self.m_quote.sv_number(QuoteType.credit))
+        self.wxCreditPRU.SetLabel(label=self.m_quote.sv_pru(QuoteType.credit, fmt="{:.2f}", bDispCurrency=True))
+        self.wxCreditPR.SetLabel(label=self.m_quote.sv_pr(QuoteType.credit, bDispCurrency=True))
 
         profit = self.m_quote.nv_profit(self.m_quote.currency(), QuoteType.credit)
-        if profit==0:
-            self.wxCreditProfit.SetForegroundColour(wx.BLACK)
-            self.wxCreditProfitPercent.SetForegroundColour(wx.BLACK)
-        elif profit<0:
-            self.wxCreditProfit.SetForegroundColour(wx.RED)
-            self.wxCreditProfitPercent.SetForegroundColour(wx.RED)
+        if profit == 0:
+            self.wxCreditProfit.SetForegroundColour(colour=wx.BLACK)
+            self.wxCreditProfitPercent.SetForegroundColour(colour=wx.BLACK)
+        elif profit < 0:
+            self.wxCreditProfit.SetForegroundColour(colour=wx.RED)
+            self.wxCreditProfitPercent.SetForegroundColour(colour=wx.RED)
         else:
-            self.wxCreditProfit.SetForegroundColour(wx.BLUE)
-            self.wxCreditProfitPercent.SetForegroundColour(wx.BLUE)
+            self.wxCreditProfit.SetForegroundColour(colour=wx.BLUE)
+            self.wxCreditProfitPercent.SetForegroundColour(colour=wx.BLUE)
 
-        self.wxCreditProfit.SetLabel(u"%s %s".format(self.m_quote.sv_profit(self.m_quote.currency(), QuoteType.credit, fmt="{:.0f}"), self.m_quote.currency_symbol()))
-        self.wxCreditProfitPercent.SetLabel(self.m_quote.sv_profitPercent(self.m_quote.currency(), QuoteType.credit))
+        self.wxCreditProfit.SetLabel(label=u"{} {}".format(self.m_quote.sv_profit(self.m_quote.currency(), QuoteType.credit, fmt="{:.0f}"), self.m_quote.currency_symbol()))
+        self.wxCreditProfitPercent.SetLabel(label=self.m_quote.sv_profitPercent(self.m_quote.currency(), QuoteType.credit))
 
         # Purchasing Power
         self.m_portfolio.computeOperations()
 
         cash = self.m_portfolio.nv_cash()
         if cash == 0:
-            self.wxAvailableCash.SetForegroundColour(wx.BLACK)
-            self.wxAvailableCashQC.SetForegroundColour(wx.BLACK)
+            self.wxAvailableCash.SetForegroundColour(colour=wx.BLACK)
+            self.wxAvailableCashQC.SetForegroundColour(colour=wx.BLACK)
         elif cash < 0:
-            self.wxAvailableCash.SetForegroundColour(wx.RED)
-            self.wxAvailableCashQC.SetForegroundColour(wx.RED)
+            self.wxAvailableCash.SetForegroundColour(colour=wx.RED)
+            self.wxAvailableCashQC.SetForegroundColour(colour=wx.RED)
         else:
-            self.wxAvailableCash.SetForegroundColour(wx.BLUE)
-            self.wxAvailableCashQC.SetForegroundColour(wx.BLUE)
-        self.wxAvailableCash.SetLabel(self.m_portfolio.sv_cash(currency=self.m_portfolio.currency(), fmt="{:.0f}", bDispCurrency=True))
-        self.wxAvailableCashQC.SetLabel(self.m_portfolio.sv_cash(currency=self.m_quote.currency(), fmt="{:.0f}", bDispCurrency=True))
+            self.wxAvailableCash.SetForegroundColour(colour=wx.BLUE)
+            self.wxAvailableCashQC.SetForegroundColour(colour=wx.BLUE)
+        self.wxAvailableCash.SetLabel(label=self.m_portfolio.sv_cash(currency=self.m_portfolio.currency(), fmt="{:.0f}", bDispCurrency=True))
+        self.wxAvailableCashQC.SetLabel(label=self.m_portfolio.sv_cash(currency=self.m_quote.currency(), fmt="{:.0f}", bDispCurrency=True))
 
-        self.wxCommittedCredit.SetLabel(self.m_portfolio.sv_credit(currency=self.m_portfolio.currency(), fmt="{:.0f}", bDispCurrency=True))
-        self.wxAvailableCredit.SetLabel('?')
-        self.wxAvailableCreditQC.SetLabel('?')
+        self.wxCommittedCredit.SetLabel(label=self.m_portfolio.sv_credit(currency=self.m_portfolio.currency(), fmt="{:.0f}", bDispCurrency=True))
+        self.wxAvailableCredit.SetLabel(label=u'?')
+        self.wxAvailableCreditQC.SetLabel(label=u'?')
 
-        show = self.m_portfolio.currency()!=self.m_quote.currency()
-        self.wxLabelAvailableCashQC.Show(show)
-        self.wxAvailableCashQC.Show(show)
-        self.wxLabelAvailableCreditQC.Show(show)
-        self.wxAvailableCreditQC.Show(show)
+        show = (self.m_portfolio.currency() != self.m_quote.currency())
+        self.wxLabelAvailableCashQC.Show(show=show)
+        self.wxAvailableCashQC.Show(show=show)
+        self.wxLabelAvailableCreditQC.Show(show=show)
+        self.wxAvailableCreditQC.Show(show=show)
 
         # a little trick to make sure that you can't resize the dialog to
         # less screen space than the controls need
         self.Fit()
-        self.SetMinSize(self.GetSize())
+        self.SetMinSize(minSize=self.GetSize())
 
 
 class WndTest(wx.Frame):
@@ -312,7 +312,7 @@ class WndTest(wx.Frame):
         self.m_decision = iTrade_wxDecision(self, quote, portfolio)
 
         self.Fit()
-        self.SetMinSize(self.GetSize())
+        self.SetMinSize(minSize=self.GetSize())
 
 # ============================================================================
 # Test me
@@ -340,7 +340,7 @@ def main():
     app = wx.App(False)
     frame = WndTest(None, quote, port)
     if frame:
-        frame.Show(True)
+        frame.Show(show=True)
         app.MainLoop()
 
 

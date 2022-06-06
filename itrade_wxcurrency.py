@@ -123,7 +123,7 @@ class iTradeCurrencyToolbar(wx.ToolBar):
 class iTradeCurrenciesListCtrl(wx.ListCtrl, wxl.ListCtrlAutoWidthMixin):
     def __init__(self, parent, ID, style=0, *args, **kwargs):
         wx.ListCtrl.__init__(self, parent=parent, id=ID, style=style, *args, **kwargs)
-        wxl.ListCtrlAutoWidthMixin.__init__(self, *args, **kwargs)
+        wxl.ListCtrlAutoWidthMixin.__init__(self)
 
 
 class iTradeCurrenciesMatrix(gridlib.Grid):
@@ -153,7 +153,7 @@ class iTradeCurrenciesWindow(wx.Frame, iTrade_wxFrame, iTrade_wxLiveCurrencyMixi
                           name='currencies', *args, **kwargs)
         iTrade_wxFrame.__init__(self, parent=parent,
                                 name='currencies', *args, **kwargs)
-        iTrade_wxLiveCurrencyMixin.__init__(self, *args, **kwargs)
+        iTrade_wxLiveCurrencyMixin.__init__(self)
         self.filemenu = wx.Menu()
         # self.filemenu.Append(ID_SAVE, message('main_save'), message('main_desc_save'))
         # self.filemenu.AppendSeparator()

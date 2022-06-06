@@ -167,9 +167,9 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
 
         # select traded or not
         self.wxFilterCtrl = wx.CheckBox(container, wx.ID_ANY, message('quote_select_filterfield'))
-        self.wxFilterCtrl.SetValue(self.m_filter)
+        self.wxFilterCtrl.SetValue(state=self.m_filter)
         wx.EVT_CHECKBOX(self, self.wxFilterCtrl.GetId(), self.OnFilter)
-        self.wxFilterCtrl.Enable(filterEnabled)
+        self.wxFilterCtrl.Enable(enable=filterEnabled)
 
         # List
         self.m_list = iTradeSelectorListCtrl(container, self.wxFilterCtrl.GetId(), style=wx.LC_REPORT | wx.SUNKEN_BORDER, size=(440, 380))
@@ -196,12 +196,12 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
         # OK
         self.wxOK = wx.Button(btnpane, wx.ID_OK, message('valid'))
         self.wxOK.SetDefault()
-        self.wxOK.SetHelpText(message('valid_desc'))
+        self.wxOK.SetHelpText(text=message('valid_desc'))
         wx.EVT_BUTTON(self, self.wxOK.GetId(), self.OnValid)
 
         # CANCEL
         btn = wx.Button(btnpane, wx.ID_CANCEL, message('cancel'))
-        btn.SetHelpText(message('cancel_desc'))
+        btn.SetHelpText(text=message('cancel_desc'))
 
         # set the right filter and fit everything
         self.OnFilter()
@@ -220,8 +220,8 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
     def resetFields(self):
         self.m_isin = ''
         self.m_ticker = ''
-        self.wxIsinCtrl.SetValue('')
-        self.wxTickerCtrl.SetValue('')
+        self.wxIsinCtrl.SetValue(value='')
+        self.wxTickerCtrl.SetValue(value='')
         self.m_list.SetFocus()
 
     def OnFilter(self, event=None):
@@ -230,18 +230,18 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
             self.resetFields()
 
         if self.m_filter:
-            self.wxMarketCtrl.Show(False)
-            self.wxLabelMarketCtrl.Show(False)
-            self.wxQListCtrl.Show(False)
-            self.wxLabelQListCtrl.Show(False)
+            self.wxMarketCtrl.Show(show=False)
+            self.wxLabelMarketCtrl.Show(show=False)
+            self.wxQListCtrl.Show(show=False)
+            self.wxLabelQListCtrl.Show(show=False)
         else:
-            self.wxMarketCtrl.Show(True)
-            self.wxLabelMarketCtrl.Show(True)
-            self.wxQListCtrl.Show(True)
-            self.wxLabelQListCtrl.Show(True)
+            self.wxMarketCtrl.Show(show=True)
+            self.wxLabelMarketCtrl.Show(show=True)
+            self.wxQListCtrl.Show(show=True)
+            self.wxLabelQListCtrl.Show(show=True)
 
         self.Fit()
-        self.SetMinSize(self.GetSize())
+        self.SetMinSize(minSize=self.GetSize())
 
         print('OnFilter : market=', self.m_market)
 

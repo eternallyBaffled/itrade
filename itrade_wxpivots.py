@@ -55,7 +55,7 @@ class iTrade_wxPivots(wx.Panel):
         self.m_quote = quote
 
         self.m_font = wx.Font(10, wx.FONTFAMILY_MODERN, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
-        self.SetFont(self.m_font)
+        self.SetFont(font=self.m_font)
 
         self.m_sizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -77,7 +77,7 @@ class iTrade_wxPivots(wx.Panel):
 
         wx.EVT_SIZE(self, self.OnSize)
 
-        self.SetAutoLayout(True)
+        self.SetAutoLayout(autoLayout=True)
         self.SetSizerAndFit(self.m_sizer)
         self.refresh()
 
@@ -88,7 +88,7 @@ class iTrade_wxPivots(wx.Panel):
         pivot = self.m_quote.ov_pivots()
         if pivot:
             s2, s1, pivot, r1, r2 = pivot
-            self.s_r2.SetLabel(':.2f'.format(r2))
+            self.s_r2.SetLabel(label=u':.2f'.format(r2))
             print('pivots:', s2, s1, pivot, r1, r2)
 
 
@@ -113,7 +113,7 @@ def main():
     app = wx.App(False)
     frame = WndTest(None, quote)
     if frame:
-        frame.Show(True)
+        frame.Show(show=True)
         app.MainLoop()
 
 

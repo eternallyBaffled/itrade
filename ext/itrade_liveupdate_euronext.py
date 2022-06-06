@@ -157,7 +157,7 @@ class LiveUpdate_Euronext(object):
             self.m_lastdate = date
             self.m_lastclock = val
 
-        # convert from connector timezone to market place timezone
+        # convert from connector timezone to marketplace timezone
         mdatetime = datetime(int(date[0:4]), int(date[4:6]), int(date[6:8]), val//60, val%60)
         mdatetime = convertConnectorTimeToPlaceTime(mdatetime, self.timezone(), place)
 
@@ -287,25 +287,23 @@ class LiveUpdate_Euronext(object):
                 i = 0
                 c_datetime = datetime.today()
                 c_date = "{:04d}{:02d}{:02d}".format(c_datetime.year, c_datetime.month, c_datetime.day)
-                #print 'Today is :', c_date
+                #print( )'Today is :', c_date)
 
-
-                sdate,sclock = self.euronextDate(iDate)
+                sdate, sclock = self.euronextDate(iDate)
 
                 # be sure we have volume (or indices)
                 if quote.list() == QList.indices or iVolume != '':
 
                     # be sure not an oldest day !
-                    if (c_date==sdate) or (quote.list() == QList.indices):
+                    if (c_date == sdate) or (quote.list() == QList.indices):
                         key = quote.key()
                         self.m_dcmpd[key] = sdate
-                        self.m_dateindice[key] = str(sdate[6:8]) + '/' + str(sdate[4:6]) + '/' +str(sdate[0:4])
-                        self.m_clock[key] = self.convertClock(quote.place(),sclock,sdate)
+                        self.m_dateindice[key] = str(sdate[6:8]) + '/' + str(sdate[4:6]) + '/' + str(sdate[0:4])
+                        self.m_clock[key] = self.convertClock(quote.place(), sclock, sdate)
 
                     # ISIN;DATE;OPEN;HIGH;LOW;CLOSE;VOLUME;PERCENT
-                    data = ';'.join([quote.key(),sdate,iOpen,iHigh,iLow,iLast,iVolume,iPercent])
+                    data = ';'.join([quote.key(), sdate, iOpen, iHigh, iLow, iLast, iVolume, iPercent])
                     return data
-
         return None
 
     # ---[ cache management on data ] ---

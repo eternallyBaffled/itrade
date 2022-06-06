@@ -327,12 +327,12 @@ class iTradeOperationDialog(iTradeSizedDialog):
         # OK
         btn = wx.Button(btnpane, wx.ID_OK, tb)
         btn.SetDefault()
-        btn.SetHelpText(message('ok_desc'))
+        btn.SetHelpText(text=message('ok_desc'))
         wx.EVT_BUTTON(self, wx.ID_OK, self.OnValid)
 
         # CANCEL
         btn = wx.Button(btnpane, wx.ID_CANCEL, message('cancel'))
-        btn.SetHelpText(message('cancel_desc'))
+        btn.SetHelpText(text=message('cancel_desc'))
         wx.EVT_BUTTON(self, wx.ID_CANCEL, self.OnCancel)
 
         self.refreshPage()
@@ -348,77 +348,77 @@ class iTradeOperationDialog(iTradeSizedDialog):
             self.EndModal(wx.ID_OK)
 
     def refreshPage(self):
-        self.wxDateCtrl.SetValue(wx.DateTimeFromDMY(self.m_datetime.day, self.m_datetime.month-1, self.m_datetime.year))
+        self.wxDateCtrl.SetValue(dt=wx.DateTimeFromDMY(self.m_datetime.day, self.m_datetime.month-1, self.m_datetime.year))
         self.wxValueCtrl.SetValue(self.m_value)
         self.wxExpensesCtrl.SetValue(self.m_expenses)
         self.wxNumberCtrl.SetValue(self.m_number)
-        self.wxNameCtrl.SetLabel(self.m_name)
+        self.wxNameCtrl.SetLabel(label=self.m_name)
 
         if isOperationTypeIncludeTaxes(self.m_type):
-            self.wxExpPreTxt.SetLabel(message('portfolio_pre_expenses1'))
+            self.wxExpPreTxt.SetLabel(label=message('portfolio_pre_expenses1'))
         else:
-            self.wxExpPreTxt.SetLabel(message('portfolio_pre_expenses2'))
+            self.wxExpPreTxt.SetLabel(label=message('portfolio_pre_expenses2'))
 
         sign = signOfOperationType(self.m_type)
         if sign == '+':
-            self.wxValueLabel.SetLabel(message('portfolio_field_credit'))
+            self.wxValueLabel.SetLabel(label=message('portfolio_field_credit'))
             self.wxExpensesCtrl.Show(True)
             self.wxValueCtrl.Show(True)
-            self.wxValueTxt.Show(True)
-            self.wxExpPreTxt.Show(True)
-            self.wxExpPostTxt.Show(True)
+            self.wxValueTxt.Show(show=True)
+            self.wxExpPreTxt.Show(show=True)
+            self.wxExpPostTxt.Show(show=True)
         elif sign == '-':
-            self.wxValueLabel.SetLabel(message('portfolio_field_debit'))
+            self.wxValueLabel.SetLabel(label=message('portfolio_field_debit'))
             self.wxExpensesCtrl.Show(True)
             self.wxValueCtrl.Show(True)
-            self.wxValueTxt.Show(True)
-            self.wxExpPreTxt.Show(True)
-            self.wxExpPostTxt.Show(True)
+            self.wxValueTxt.Show(show=True)
+            self.wxExpPreTxt.Show(show=True)
+            self.wxExpPostTxt.Show(show=True)
         elif sign == '~':
-            self.wxValueLabel.SetLabel(message('portfolio_field_valorization'))
+            self.wxValueLabel.SetLabel(label=message('portfolio_field_valorization'))
             self.wxValueCtrl.Show(True)
-            self.wxValueTxt.Show(True)
+            self.wxValueTxt.Show(show=True)
             self.wxExpensesCtrl.Show(False)
-            self.wxExpPreTxt.Show(False)
-            self.wxExpPostTxt.Show(False)
+            self.wxExpPreTxt.Show(show=False)
+            self.wxExpPostTxt.Show(show=False)
         else:
-            self.wxValueLabel.SetLabel(message('portfolio_field_freeofcharges'))
+            self.wxValueLabel.SetLabel(label=message('portfolio_field_freeofcharges'))
             self.wxExpensesCtrl.Show(False)
             self.wxValueCtrl.Show(False)
-            self.wxValueTxt.Show(False)
-            self.wxExpPreTxt.Show(False)
-            self.wxExpPostTxt.Show(False)
+            self.wxValueTxt.Show(show=False)
+            self.wxExpPreTxt.Show(show=False)
+            self.wxExpPostTxt.Show(show=False)
 
         if isOperationTypeAQuote(self.m_type):
-            self.wxNameLabel.SetLabel(message('portfolio_quote'))
-            self.wxNameButton.Enable(True)
-            self.wxNameButton.Show(True)
-            self.wxNameCtrl.Enable(False)
+            self.wxNameLabel.SetLabel(label=message('portfolio_quote'))
+            self.wxNameButton.Enable(enable=True)
+            self.wxNameButton.Show(show=True)
+            self.wxNameCtrl.Enable(enable=False)
             if isOperationTypeHasShareNumber(self.m_type):
                 self.wxNumberCtrl.Enable(True)
             else:
                 self.wxNumberCtrl.Enable(False)
         else:
-            self.wxNameLabel.SetLabel(message('portfolio_description'))
-            self.wxNameButton.Enable(False)
-            self.wxNameButton.Show(False)
-            self.wxNameCtrl.Enable(True)
+            self.wxNameLabel.SetLabel(label=message('portfolio_description'))
+            self.wxNameButton.Enable(enable=False)
+            self.wxNameButton.Show(show=False)
+            self.wxNameCtrl.Enable(enable=True)
             self.wxNumberCtrl.Enable(False)
 
         if self.opmode == OPERATION_DELETE:
             self.wxNumberCtrl.Enable(False)
-            self.wxNameCtrl.Enable(False)
-            self.wxNameButton.Enable(False)
+            self.wxNameCtrl.Enable(enable=False)
+            self.wxNameButton.Enable(enable=False)
             self.wxNumberCtrl.Enable(False)
             self.wxExpensesCtrl.Enable(False)
             self.wxValueCtrl.Enable(False)
-            self.wxDateCtrl.Enable(False)
-            self.wxTypeCtrl.Enable(False)
+            self.wxDateCtrl.Enable(enable=False)
+            self.wxTypeCtrl.Enable(enable=False)
 
         # a little trick to make sure that you can't resize the dialog to
         # less screen space than the controls need
         self.Fit()
-        self.SetMinSize(self.GetSize())
+        self.SetMinSize(minSize=self.GetSize())
 
     def OnDate(self, evt):
         dRet = self.wxDateCtrl.GetValue()
@@ -432,8 +432,8 @@ class iTradeOperationDialog(iTradeSizedDialog):
         dRet = self.wxTimeCtrl.GetValue(as_wxDateTime=True)
         if dRet:
             debug('OnTime: {}\n'.format(dRet))
-            self.m_datetime = self.m_datetime.combine(self.m_datetime.date(),
-                                                      datetime.time(dRet.GetHour(), dRet.GetMinute(), dRet.GetSecond()))
+            self.m_datetime = self.m_datetime.combine(date=self.m_datetime.date(),
+                                                      time=datetime.time(hour=dRet.GetHour(), minute=dRet.GetMinute(), second=dRet.GetSecond()))
             self.refreshPage()
 
     def OnType(self, evt):
@@ -478,7 +478,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
 class iTradeOperationsListCtrl(wx.ListCtrl, wxl.ListCtrlAutoWidthMixin):
     def __init__(self, parent, style=0, *args, **kwargs):
         wx.ListCtrl.__init__(self, parent=parent, style=style, *args, **kwargs)
-        wxl.ListCtrlAutoWidthMixin.__init__(self, *args, **kwargs)
+        wxl.ListCtrlAutoWidthMixin.__init__(self)
 
 
 class iTradeOperationToolbar(wx.ToolBar):
@@ -637,7 +637,7 @@ class iTradeOperationsWindow(wx.Frame, iTrade_wxFrame, wxl.ColumnSorterMixin):
         menuBar.Append(self.permenu, message('portfolio_menu_per'))
 
         # Adding the MenuBar to the Frame content
-        self.SetMenuBar(menuBar)
+        self.SetMenuBar(menubar=menuBar)
 
         # create an image list
         self.m_imagelist = wx.ImageList(16, 16)

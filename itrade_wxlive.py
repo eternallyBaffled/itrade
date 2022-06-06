@@ -353,7 +353,7 @@ class iTrade_wxLive(wx.Panel):
         self.m_live = quote.liveconnector()
 
         self.m_font = wx.Font(8, wx.FONTFAMILY_MODERN, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
-        self.SetFont(self.m_font)
+        self.SetFont(font=self.m_font)
 
         # column mapping
         #    nb  qt  ach  ven  qt   nb   hou  qte price clock
@@ -362,7 +362,7 @@ class iTrade_wxLive(wx.Panel):
 
         # notebook
         title = wx.StaticText(self, wx.ID_ANY, message('live_notebook'), wx.Point(X[0],5), wx.Size(W[0]+W[1]+W[2]+W[3]+W[4]+W[5], 15), style=wx.ALIGN_CENTRE)
-        title.SetBackgroundColour('sea green')
+        title.SetBackgroundColour(colour='sea green')
         nb = wx.StaticText(self, wx.ID_ANY, message('live_number'), wx.Point(X[0],20), wx.Size(W[0], 15), style=wx.ALIGN_RIGHT)
         qte = wx.StaticText(self, wx.ID_ANY, message('live_qty'), wx.Point(X[1],20), wx.Size(W[1], 15), style=wx.ALIGN_RIGHT)
         price = wx.StaticText(self, wx.ID_ANY, message('live_buy'), wx.Point(X[2],20), wx.Size(W[2], 15), style=wx.ALIGN_RIGHT)
@@ -392,7 +392,7 @@ class iTrade_wxLive(wx.Panel):
 
         # last trades
         title = wx.StaticText(self, wx.ID_ANY, message('live_lasttrades'), wx.Point(X[6],5), wx.Size(W[6]+W[7]+W[8], 15), style=wx.ALIGN_CENTRE)
-        title.SetBackgroundColour('sea green')
+        title.SetBackgroundColour(colour='sea green')
         hours = wx.StaticText(self, wx.ID_ANY, message('live_hours'), wx.Point(X[6],20), wx.Size(W[6], 15), style=wx.ALIGN_RIGHT)
         qte = wx.StaticText(self, wx.ID_ANY, message('live_qty'), wx.Point(X[7],20), wx.Size(W[7], 15), style=wx.ALIGN_RIGHT)
         price = wx.StaticText(self, wx.ID_ANY, message('live_price'), wx.Point(X[8],20), wx.Size(W[8], 15), style=wx.ALIGN_RIGHT)
@@ -628,7 +628,7 @@ def main():
     app = wx.App(False)
     frame = WndTest(None, quote)
     if frame:
-        frame.Show(True)
+        frame.Show(show=True)
         app.MainLoop()
 
 

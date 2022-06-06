@@ -257,47 +257,47 @@ class iTradeQuoteInfoWindow(sc.SizedPanel):
         self.paintLogo()
 
         # paint fields
-        self.wxTicker.SetLabel(self.m_quote.ticker())
-        self.wxDate.SetLabel(u"{} | {} | {}".format(self.m_quote.sv_date(bDisplayShort=True), self.m_quote.sv_clock(), self.m_quote.sv_type_of_clock()))
+        self.wxTicker.SetLabel(label=self.m_quote.ticker())
+        self.wxDate.SetLabel(label=u"{} | {} | {}".format(self.m_quote.sv_date(bDisplayShort=True), self.m_quote.sv_clock(), self.m_quote.sv_type_of_clock()))
 
         percent = self.m_quote.nv_percent()
         if percent == 0:
-            self.wxPercent.SetForegroundColour(wx.BLACK)
-            self.wxLast.SetForegroundColour(wx.BLACK)
+            self.wxPercent.SetForegroundColour(colour=wx.BLACK)
+            self.wxLast.SetForegroundColour(colour=wx.BLACK)
         elif percent < 0:
-            self.wxPercent.SetForegroundColour(wx.RED)
-            self.wxLast.SetForegroundColour(wx.RED)
+            self.wxPercent.SetForegroundColour(colour=wx.RED)
+            self.wxLast.SetForegroundColour(colour=wx.RED)
         else:
-            self.wxPercent.SetForegroundColour(wx.BLUE)
-            self.wxLast.SetForegroundColour(wx.BLUE)
-        self.wxPercent.SetLabel(self.m_quote.sv_percent())
+            self.wxPercent.SetForegroundColour(colour=wx.BLUE)
+            self.wxLast.SetForegroundColour(colour=wx.BLUE)
+        self.wxPercent.SetLabel(label=self.m_quote.sv_percent())
 
-        self.wxLast.SetLabel(self.m_quote.sv_close(bDispCurrency=True))
+        self.wxLast.SetLabel(label=self.m_quote.sv_close(bDispCurrency=True))
 
         if self.m_quote.hasTraded():
-            self.wxOpen.SetLabel(self.m_quote.sv_open())
-            self.wxHigh.SetLabel(self.m_quote.sv_high())
-            self.wxLow.SetLabel(self.m_quote.sv_low())
-            self.wxVolume.SetLabel(self.m_quote.sv_volume())
+            self.wxOpen.SetLabel(label=self.m_quote.sv_open())
+            self.wxHigh.SetLabel(label=self.m_quote.sv_high())
+            self.wxLow.SetLabel(label=self.m_quote.sv_low())
+            self.wxVolume.SetLabel(label=self.m_quote.sv_volume())
         else:
-            self.wxOpen.SetLabel(" ---.-- ")
-            self.wxHigh.SetLabel(" ---.-- ")
-            self.wxLow.SetLabel(" ---.-- ")
-            self.wxVolume.SetLabel(" ---------- ")
+            self.wxOpen.SetLabel(label=" ---.-- ")
+            self.wxHigh.SetLabel(label=" ---.-- ")
+            self.wxLow.SetLabel(label=" ---.-- ")
+            self.wxVolume.SetLabel(label=" ---------- ")
 
-        self.wxPrev.SetLabel(self.m_quote.sv_prevclose())
-        self.wxCmp.SetLabel(self.m_quote.sv_waq())
+        self.wxPrev.SetLabel(label=self.m_quote.sv_prevclose())
+        self.wxCmp.SetLabel(label=self.m_quote.sv_waq())
 
         status = self.m_quote.sv_status()
         if status == "OK":
-            self.wxStatus.SetForegroundColour(wx.BLUE)
+            self.wxStatus.SetForegroundColour(colour=wx.BLUE)
         else:
-            self.wxStatus.SetForegroundColour(wx.RED)
+            self.wxStatus.SetForegroundColour(colour=wx.RED)
 
-        self.wxStatus.SetLabel(status)
-        self.wxReopen.SetLabel(self.m_quote.sv_reopen())
-        self.wxHigh_threshold.SetLabel("{:.2f}".format(self.m_quote.high_threshold()))
-        self.wxLow_threshold.SetLabel("{:.2f}".format(self.m_quote.low_threshold()))
+        self.wxStatus.SetLabel(label=status)
+        self.wxReopen.SetLabel(label=self.m_quote.sv_reopen())
+        self.wxHigh_threshold.SetLabel(label=u"{:.2f}".format(self.m_quote.high_threshold()))
+        self.wxLow_threshold.SetLabel(label=u"{:.2f}".format(self.m_quote.low_threshold()))
 
     def refresh(self, nquote=None, live=False):
         debug(u'QuoteInfoWindow::refresh {}'.format(self.m_quote.ticker()))
@@ -326,8 +326,8 @@ class iTradeQuoteInfoWindow(sc.SizedPanel):
         if fit:
             size = self.GetSize()
             self.Fit()
-            self.SetMinSize(size)
-            self.SetSize(size)
+            self.SetMinSize(minSize=size)
+            self.SetSize(size=size)
 
 # ============================================================================
 # iTradeQuoteTablePanel
@@ -432,12 +432,9 @@ class CustTableGrid(gridlib.Grid):
     def __init__(self, parent, quote):
         gridlib.Grid.__init__(self, parent, wx.ID_ANY)
         table = CustomDataTable(quote)
-        # The second parameter means that the grid is to take ownership of the
-        # table and will destroy it when done.  Otherwise you would need to keep
-        # a reference to it and call it's Destroy method later.
-        self.SetTable(table, True)
-        self.SetRowLabelSize(0)
-        self.SetMargins(0,0)
+        self.SetTable(table=table, takeOwnership=True)
+        self.SetRowLabelSize(width=0)
+        self.SetMargins(0, 0)
         self.AutoSizeColumns(False)
         gridlib.EVT_GRID_CELL_LEFT_DCLICK(self, self.OnLeftDClick)
 
@@ -461,7 +458,7 @@ class iTradeQuoteTablePanel(wx.Panel):
         # --- vertical sizer
         bs = wx.BoxSizer(wx.VERTICAL)
         bs.Add(self.m_grid, 1, wx.GROW|wx.ALL, 5)
-        self.SetSizer(bs)
+        self.SetSizer(sizer=bs)
 
     #def paint(self):
     #    pass
@@ -471,10 +468,10 @@ class iTradeQuoteTablePanel(wx.Panel):
     #    self.paint()
 
     def DonePage(self):
-        self.m_grid.Show(False)
+        self.m_grid.Show(show=False)
 
     def InitPage(self):
-        self.m_grid.Show(True)
+        self.m_grid.Show(show=True)
 
 # ============================================================================
 # iTradeQuoteAnalysisPanel
@@ -497,11 +494,11 @@ class iTradeQuoteAnalysisPanel(wx.Window):
     #    self.m_candle.SetLabel(self.m_quote.ov_candle().__str__())
     #
     #def refresh(self):
-    #    info('QuoteAnalysisPanel::refresh %s' % self.m_quote.ticker())
+    #    info(u'QuoteAnalysisPanel::refresh {}'.format(self.m_quote.ticker()))
     #    self.paint()
 
     def InitPage(self):
-        self.m_candle.SetLabel(self.m_quote.ov_candle().__str__())
+        self.m_candle.SetLabel(label=self.m_quote.ov_candle().__str__())
 
     def DonePage(self):
         pass
@@ -542,9 +539,9 @@ class iTradeQuoteLivePanel(wx.Panel):
 # ============================================================================
 
 class iTradeQuoteGraphPanel(wx.Panel, iTrade_wxPanelGraph):
-    def __init__(self, parent, id, quote, *args, **kwargs):
-        wx.Panel.__init__(self, parent=parent, id=id, size=(5,4), *args, **kwargs)
-        iTrade_wxPanelGraph.__init__(self, parent=parent, id=id, size=(5,4), *args, **kwargs)
+    def __init__(self, parent, quote, *args, **kwargs):
+        wx.Panel.__init__(self, parent=parent, size=(5,4), *args, **kwargs)
+        iTrade_wxPanelGraph.__init__(self, parent=parent, size=(5,4), *args, **kwargs)
         self.m_quote = quote
         self.m_nIndex = self.m_quote.lastindex()
         # print('m_nIndex=', self.m_nIndex)
@@ -997,7 +994,7 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
             self.win = {}
             self.DeleteAllPages()
 
-            self.win[self.ID_PAGE_GRAPH] = iTradeQuoteGraphPanel(parent=self, id=wx.ID_ANY, quote=self.m_quote)
+            self.win[self.ID_PAGE_GRAPH] = iTradeQuoteGraphPanel(parent=self, quote=self.m_quote)
             self.AddPage(self.win[self.ID_PAGE_GRAPH], message('quote_graphdaily'))
 
             self.win[self.ID_PAGE_LIVE] = iTradeQuoteLivePanel(parent=self, gparent=self.m_parent, id=wx.ID_ANY, quote=self.m_quote)
@@ -1082,7 +1079,7 @@ class iTradeQuoteWindow(wx.Frame, iTrade_wxFrame, iTrade_wxLiveMixin):
     def __init__(self, parent, id, port, quote, dpage=0, *args, **kwargs):
         wx.Frame.__init__(self, parent=None, id=wx.ID_ANY, size=(800, 480), style=wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE, *args, **kwargs)
         iTrade_wxFrame.__init__(self, parent=parent, name='view', hasStatusBar=False, *args, **kwargs)
-        iTrade_wxLiveMixin.__init__(self, *args, **kwargs)
+        iTrade_wxLiveMixin.__init__(self)
 
         # store linked information
         self.m_quote = quote
@@ -1118,7 +1115,7 @@ class iTradeQuoteWindow(wx.Frame, iTrade_wxFrame, iTrade_wxLiveMixin):
     # ---[ Change the current window title ] ----------------------------------
 
     def setTitle(self):
-        self.SetTitle("{} {} - {} : {}".format(message('quote_title'), self.m_quote.key(), self.m_quote.ticker(), self.m_quote.name()))
+        self.SetTitle(title=u"{} {} - {} : {}".format(message('quote_title'), self.m_quote.key(), self.m_quote.ticker(), self.m_quote.name()))
 
     # ---[ Select a new quote ] -----------------------------------------------
 

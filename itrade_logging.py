@@ -113,11 +113,11 @@ class myColorFormatter(Formatter):
     def formatException(self, xxx_todo_changeme1):
         (E, e, tb) = xxx_todo_changeme1
         if itrade_config.useColors:
-            return ''.join([itrade_ansicolors.BOLD, itrade_ansicolors.RED,Formatter.formatException(self, (E, e, tb)),itrade_ansicolors.RESET])
+            return ''.join([itrade_ansicolors.BOLD, itrade_ansicolors.RED, Formatter.formatException(self, (E, e, tb)), itrade_ansicolors.RESET])
         else:
             return Formatter.formatException(self, (E, e, tb))
 
-    def format(self, record, *args, **kwargs):
+    def format(self, record):
         if itrade_config.useColors:
             color = itrade_ansicolors.WHITE
             if record.levelno == logging.CRITICAL:
@@ -126,9 +126,9 @@ class myColorFormatter(Formatter):
                 color = itrade_ansicolors.RED
             elif record.levelno == logging.WARNING:
                 color = itrade_ansicolors.YELLOW
-            return ''.join([color, Formatter.format(self, record, *args, **kwargs), itrade_ansicolors.RESET])
+            return ''.join([color, super(myColorFormatter, self).format(record), itrade_ansicolors.RESET])
         else:
-            return Formatter.format(self, record, *args, **kwargs)
+            return super(myColorFormatter, self).format(record)
 
 # ============================================================================
 # Install the logger

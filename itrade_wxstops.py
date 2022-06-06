@@ -166,18 +166,18 @@ class iTradeStopsDialog(wx.Dialog):
 
         btn = wx.Button(self, wx.ID_OK, msg)
         btn.SetDefault()
-        btn.SetHelpText(msgdesc)
+        btn.SetHelpText(text=msgdesc)
         box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_BUTTON(self, wx.ID_OK, self.OnValid)
 
         # CANCEL
         btn = wx.Button(self, wx.ID_CANCEL, message('cancel'))
-        btn.SetHelpText(message('cancel_desc'))
+        btn.SetHelpText(text=message('cancel_desc'))
         box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         sizer.AddSizer(box, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
-        self.SetAutoLayout(True)
+        self.SetAutoLayout(autoLayout=True)
         self.SetSizerAndFit(sizer)
 
     def OnValid(self, event):
@@ -196,7 +196,7 @@ class iTradeStopsDialog(wx.Dialog):
         self.EndModal(wx.ID_OK)
 
 
-def addOrEditStops_iTradeQuote(win, quote, market, bAdd=True):
+def addOrEditStops_iTradeQuote(win, quote, market=None, bAdd=True):
     """
 
     :param win: parent window

@@ -225,13 +225,13 @@ class iTrade_wxPanelPrint(object):
 
         self.m_pd = wx.PrintData()
         if gMessage.getLang()=='us':
-            self.m_pd.SetPaperId(wx.PAPER_LETTER)
+            self.m_pd.SetPaperId(sizeId=wx.PAPER_LETTER)
         else:
-            self.m_pd.SetPaperId(wx.PAPER_A4)
+            self.m_pd.SetPaperId(sizeId=wx.PAPER_A4)
 
-        self.m_pd.SetOrientation(orientation)
+        self.m_pd.SetOrientation(orient=orientation)
 
-        self.m_pd.SetPrintMode(wx.PRINT_MODE_PRINTER)
+        self.m_pd.SetPrintMode(printMode=wx.PRINT_MODE_PRINTER)
 
         self.m_po = po
 
@@ -270,12 +270,12 @@ class iTrade_wxPanelPrint(object):
 
         pfrm.Initialize()
         pfrm.SetPosition(self.m_parent.GetPosition())
-        pfrm.SetSize(self.m_parent.GetSize())
-        pfrm.Show(True)
+        pfrm.SetSize(size=self.m_parent.GetSize())
+        pfrm.Show(show=True)
 
     def OnDoPrint(self, event):
         pdd = wx.PrintDialogData(self.m_pd)
-        pdd.SetToPage(2)
+        pdd.SetToPage(v=2)
         printer = wx.Printer(pdd)
         printout = self.m_po(self.m_canvas)
 
@@ -318,8 +318,8 @@ class MyTestPanel(wx.Panel, iTrade_wxPanelPrint):
 
         self.box.Add(subbox, 0, wx.GROW)
 
-        self.SetAutoLayout(True)
-        self.SetSizer(self.box)
+        self.SetAutoLayout(autoLayout=True)
+        self.SetSizer(sizer=self.box)
 
 
 class MyTestFrame(wx.Frame):
@@ -337,7 +337,7 @@ class MyTestFrame(wx.Frame):
 class MyTestApp(wx.App):
     def OnInit(self):
         frame = MyTestFrame(None, wx.ID_ANY)
-        frame.Show(True)
+        frame.Show(show=True)
         self.SetTopWindow(frame)
         return True
 

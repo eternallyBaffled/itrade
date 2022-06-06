@@ -406,9 +406,9 @@ class iTradeMainNotebookWindow(wx.Notebook):
         self.AddPage(self.win[ID_PAGE_EVALUATION], message('page_evaluation'))
         # print(']-- book init')
 
-    def SetSelection(self, page):
+    def SetSelection(self, page, *args, **kwargs):
         if self.GetSelection() != page:
-            super(iTradeMainNotebookWindow, self).SetSelection(page)
+            super(iTradeMainNotebookWindow, self).SetSelection(page=page, *args, **kwargs)
 
     def OnPageChanged(self, event):
         old = event.GetOldSelection()

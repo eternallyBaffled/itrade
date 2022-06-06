@@ -117,24 +117,24 @@ class iTradeLoginDialog(wx.Dialog):
         # OK
         btn = wx.Button(self, wx.ID_OK, message('login_set'))
         btn.SetDefault()
-        btn.SetHelpText(message('login_setdesc'))
+        btn.SetHelpText(text=message('login_setdesc'))
         box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_BUTTON(self, wx.ID_OK, self.OnValid)
 
         # TEST
         btn = wx.Button(self, wx.ID_REFRESH, message('login_test'))
-        btn.SetHelpText(message('login_testdesc'))
+        btn.SetHelpText(text=message('login_testdesc'))
         box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_BUTTON(self, wx.ID_REFRESH, self.OnTest)
 
         # CANCEL
         btn = wx.Button(self, wx.ID_CANCEL, message('cancel'))
-        btn.SetHelpText(message('cancel_desc'))
+        btn.SetHelpText(text=message('cancel_desc'))
         box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         sizer.AddSizer(box, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
-        self.SetAutoLayout(True)
+        self.SetAutoLayout(autoLayout=True)
         self.SetSizerAndFit(sizer)
 
     def OnSize(self, event):

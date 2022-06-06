@@ -131,7 +131,7 @@ class iTradeEvaluationPanel(wx.Window):
 
         wx.EVT_SIZE(self, self.OnSize)
 
-        self.m_html.Show(False)
+        self.m_html.Show(show=False)
 
     # ---[ Default OnLinkClick handler ] --------------------------------------
 
@@ -154,10 +154,10 @@ class iTradeEvaluationPanel(wx.Window):
 
         # refresh page content
         self.refresh()
-        self.m_html.Show(True)
+        self.m_html.Show(show=True)
 
     def DoneCurrentPage(self):
-        self.m_html.Show(False)
+        self.m_html.Show(show=False)
 
     # ---[ Compute & Display Evaluation ]--------------------------------------
 

@@ -342,7 +342,7 @@ class HTMLDialog(wx.Dialog):
         try:
             import webbrowser
         except ImportError:
-            iTradeInformation(message('about_url').format(url))
+            iTradeInformation(parent=self, text=message('about_url').format(url))
         else:
             webbrowser.open(url)
 

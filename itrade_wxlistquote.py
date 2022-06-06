@@ -220,13 +220,13 @@ class iTradeQuoteListDialog(wx.Dialog):
         # OK
         btn = wx.Button(self, wx.ID_OK, tb)
         btn.SetDefault()
-        btn.SetHelpText(message('ok_desc'))
+        btn.SetHelpText(text=message('ok_desc'))
         box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_BUTTON(self, wx.ID_OK, self.OnValid)
 
         # CANCEL
         btn = wx.Button(self, wx.ID_CANCEL, message('cancel'))
-        btn.SetHelpText(message('cancel_desc'))
+        btn.SetHelpText(text=message('cancel_desc'))
         box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_BUTTON(self, wx.ID_CANCEL, self.OnCancel)
 
@@ -235,8 +235,8 @@ class iTradeQuoteListDialog(wx.Dialog):
         wx.EVT_SIZE(self, self.OnSize)
 
         self.checkEnability()
-        self.SetAutoLayout(True)
-        self.SetSizerAndFit(sizer)
+        self.SetAutoLayout(autoLayout=True)
+        self.SetSizerAndFit(sizer=sizer)
         self.Layout()
 
     def OnSize(self, event):
@@ -282,26 +282,26 @@ class iTradeQuoteListDialog(wx.Dialog):
 
     def checkEnability(self):
         if self.qmode == QLIST_DELETE:
-            self.editISIN.Enable(False)
-            self.editTicker.Enable(False)
-            self.editName.Enable(False)
-            self.editMarket.Enable(False)
-            self.editPlace.Enable(False)
-            self.editCurrency.Enable(False)
+            self.editISIN.Enable(enable=False)
+            self.editTicker.Enable(enable=False)
+            self.editName.Enable(enable=False)
+            self.editMarket.Enable(enable=False)
+            self.editPlace.Enable(enable=False)
+            self.editCurrency.Enable(enable=False)
         elif self.qmode == QLIST_ADD:
-            self.editISIN.Enable(True)
-            self.editTicker.Enable(True)
-            self.editName.Enable(True)
-            self.editMarket.Enable(True)
-            self.editPlace.Enable(True)
-            self.editCurrency.Enable(True)
+            self.editISIN.Enable(enable=True)
+            self.editTicker.Enable(enable=True)
+            self.editName.Enable(enable=True)
+            self.editMarket.Enable(enable=True)
+            self.editPlace.Enable(enable=True)
+            self.editCurrency.Enable(enable=True)
         elif self.qmode == QLIST_MODIFY:
-            self.editISIN.Enable(False)
-            self.editTicker.Enable(False)
-            self.editName.Enable(True)
-            self.editMarket.Enable(False)
-            self.editPlace.Enable(True)
-            self.editCurrency.Enable(True)
+            self.editISIN.Enable(enable=False)
+            self.editTicker.Enable(enable=False)
+            self.editName.Enable(enable=True)
+            self.editMarket.Enable(enable=False)
+            self.editPlace.Enable(enable=True)
+            self.editCurrency.Enable(enable=True)
 
     def OnMarket(self, evt):
         t = self.editMarket.GetClientData(self.editMarket.GetSelection())
@@ -324,8 +324,8 @@ class iTradeQuoteListDialog(wx.Dialog):
         self.m_place = t
 
     def refreshPage(self, evt):
-        self.editPlace.SetValue(self.m_place)
-        self.editCurrency.SetValue(self.m_currency)
+        self.editPlace.SetValue(value=self.m_place)
+        self.editCurrency.SetValue(value=self.m_currency)
         self.m_country = compute_country(self.m_isin, self.m_market, self.m_place)
         self.dispCountry.SetValue(self.m_country)
 
@@ -451,17 +451,17 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         box2 = wx.BoxSizer(wx.VERTICAL)
 
         self.wxNEW = wx.Button(self, wx.ID_NEW, message('listquote_new'))
-        self.wxNEW.SetHelpText(message('listquote_new_desc'))
+        self.wxNEW.SetHelpText(text=message('listquote_new_desc'))
         box2.Add(self.wxNEW, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_BUTTON(self, wx.ID_NEW, self.OnNewQuote)
 
         self.wxPROP = wx.Button(self, wx.ID_PROPERTIES, message('listquote_edit'))
-        self.wxPROP.SetHelpText(message('listquote_edit_desc'))
+        self.wxPROP.SetHelpText(text=message('listquote_edit_desc'))
         box2.Add(self.wxPROP, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_BUTTON(self, wx.ID_PROPERTIES, self.OnEditQuote)
 
         self.wxDELETE = wx.Button(self, wx.ID_DELETE, message('listquote_delete'))
-        self.wxDELETE.SetHelpText(message('listquote_delete_desc'))
+        self.wxDELETE.SetHelpText(text=message('listquote_delete_desc'))
         box2.Add(self.wxDELETE, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_BUTTON(self, wx.ID_DELETE, self.OnDeleteQuote)
 
@@ -476,32 +476,32 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
 
         # CANCEL
         btn = wx.Button(self, wx.ID_CANCEL, message('close'))
-        btn.SetHelpText(message('close_desc'))
+        btn.SetHelpText(text=message('close_desc'))
         wx.EVT_BUTTON(self, wx.ID_CANCEL, self.OnCancel)
         box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         # SAVE
         btn.SetDefault()
         self.wxSAVE = wx.Button(self, wx.ID_APPLY, message('listquote_save'))
-        self.wxSAVE.SetHelpText(message('listquote_save_desc'))
+        self.wxSAVE.SetHelpText(text=message('listquote_save_desc'))
         box.Add(self.wxSAVE, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_BUTTON(self, wx.ID_APPLY, self.OnSave)
 
         # DOWNLOAD
         self.wxOK = wx.Button(self, wx.ID_OK, '')
-        self.wxOK.SetHelpText('')
+        self.wxOK.SetHelpText(text='')
         box.Add(self.wxOK, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_BUTTON(self, wx.ID_OK, self.OnDownload)
 
         # CLEAR
         self.wxCLEAR = wx.Button(self, wx.ID_CLEAR, '')
-        self.wxCLEAR.SetHelpText('')
+        self.wxCLEAR.SetHelpText(text='')
         box.Add(self.wxCLEAR, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_BUTTON(self, wx.ID_CLEAR, self.OnClear)
 
         sizer.AddSizer(box, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
-        self.SetAutoLayout(True)
+        self.SetAutoLayout(autoLayout=True)
         self.SetSizerAndFit(sizer)
 
         EVT_POSTINIT(self, self.OnPostInit)
@@ -540,41 +540,41 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
 
     def checkEnablity(self):
         if self.m_qlist == QList.indices or self.m_qlist == QList.trackers or self.m_qlist == QList.bonds:
-            self.wxOK.Enable(False)
-            self.wxNEW.Enable(False)
-            # self.wxPROP.Enable(False)
-            self.wxDELETE.Enable(False)
-            self.wxCLEAR.Enable(False)
-            self.wxSAVE.Enable(False)
+            self.wxOK.Enable(enable=False)
+            self.wxNEW.Enable(enable=False)
+            # self.wxPROP.Enable(enable=False)
+            self.wxDELETE.Enable(enable=False)
+            self.wxCLEAR.Enable(enable=False)
+            self.wxSAVE.Enable(enable=False)
         else:
             if self.m_qlist == QList.user:
-                self.wxOK.Enable(False)
-                self.wxNEW.Enable(True)
-                # self.wxPROP.Enable(True)
-                self.wxDELETE.Enable(True)
+                self.wxOK.Enable(enable=False)
+                self.wxNEW.Enable(enable=True)
+                # self.wxPROP.Enable(enable=True)
+                self.wxDELETE.Enable(enable=True)
             else:
-                self.wxOK.Enable(True)
-                self.wxNEW.Enable(False)
-                # self.wxPROP.Enable(False)
-                self.wxDELETE.Enable(False)
+                self.wxOK.Enable(enable=True)
+                self.wxNEW.Enable(enable=False)
+                # self.wxPROP.Enable(enable=False)
+                self.wxDELETE.Enable(enable=False)
 
             if self.m_qlist == QList.all:
-                self.wxCLEAR.Enable(False)
+                self.wxCLEAR.Enable(enable=False)
             else:
-                self.wxCLEAR.Enable(True)
+                self.wxCLEAR.Enable(enable=True)
 
         if self.m_market is None:
-            self.wxOK.SetLabel(message('download_symbols_alllists'))
-            self.wxOK.SetHelpText(message('download_symbols_alldesc'))
+            self.wxOK.SetLabel(label=message('download_symbols_alllists'))
+            self.wxOK.SetHelpText(text=message('download_symbols_alldesc'))
 
-            self.wxCLEAR.SetLabel(message('clear_symbols_alllists'))
-            self.wxCLEAR.SetHelpText(message('clear_symbols_alldesc'))
+            self.wxCLEAR.SetLabel(label=message('clear_symbols_alllists'))
+            self.wxCLEAR.SetHelpText(text=message('clear_symbols_alldesc'))
         else:
-            self.wxOK.SetLabel(message('download_symbols_onelist'))
-            self.wxOK.SetHelpText(message('download_symbols_onedesc'))
+            self.wxOK.SetLabel(label=message('download_symbols_onelist'))
+            self.wxOK.SetHelpText(text=message('download_symbols_onedesc'))
 
-            self.wxCLEAR.SetLabel(message('clear_symbols_onelist'))
-            self.wxCLEAR.SetHelpText(message('clear_symbols_onedesc'))
+            self.wxCLEAR.SetLabel(label=message('clear_symbols_onelist'))
+            self.wxCLEAR.SetHelpText(text=message('clear_symbols_onedesc'))
 
         self.Layout()
 
@@ -635,11 +635,11 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
             self.SetCurrentItem(curline)
 
         if line == 0:
-            self.wxCount.SetLabel(message('listquote_items_zero'))
+            self.wxCount.SetLabel(label=message('listquote_items_zero'))
         elif line == 1:
-            self.wxCount.SetLabel(message('listquote_items_one'))
+            self.wxCount.SetLabel(label=message('listquote_items_one'))
         else:
-            self.wxCount.SetLabel(message('listquote_items_n').format(line))
+            self.wxCount.SetLabel(label=message('listquote_items_n').format(line))
 
         wx.SetCursor(wx.STANDARD_CURSOR)
 

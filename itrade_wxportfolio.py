@@ -149,17 +149,17 @@ class iTradePortfolioSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterM
         # OK
         btn = wx.Button(btnpane, wx.ID_OK, msg)
         btn.SetDefault()
-        btn.SetHelpText(msgdesc)
+        btn.SetHelpText(text=msgdesc)
         wx.EVT_BUTTON(self, wx.ID_OK, self.OnValid)
 
         # CANCEL
         btn = wx.Button(btnpane, wx.ID_CANCEL, message('cancel'))
-        btn.SetHelpText(message('cancel_desc'))
+        btn.SetHelpText(text=message('cancel_desc'))
 
         # a little trick to make sure that you can't resize the dialog to
         # less screen space than the controls need
         self.Fit()
-        self.SetMinSize(self.GetSize())
+        self.SetMinSize(minSize=self.GetSize())
 
         self.wxNameCtrl.SetFocus()
 
@@ -236,7 +236,7 @@ class iTradePortfolioSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterM
         self.currentItem = event.m_itemIndex
         # debug("OnItemSelected: %s\nTopItem: %s" % (self.m_list.GetItemText(self.currentItem), self.m_list.GetTopItem()))
         portfolio = portfolios.portfolio(self.m_list.GetItemText(self.currentItem))
-        self.wxNameCtrl.SetValue(portfolio.filename())
+        self.wxNameCtrl.SetValue(value=portfolio.filename())
         event.Skip()
 
     def OnValid(self, event):
@@ -288,7 +288,7 @@ def select_iTradePortfolio(win, dportfolio=None, operation='select'):
 class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
     def __init__(self, parent, portfolio, operation, *args, **kwargs):
         iTradeSizedDialog.__init__(self, None, wx.ID_ANY, message('portfolio_properties_{}'.format(operation)),
-                        style=wx.DEFAULT_DIALOG_STYLE, size=(420, 420), *args, **kwargs)
+                                   style=wx.DEFAULT_DIALOG_STYLE, size=(420, 420), *args, **kwargs)
         if portfolio:
             self.m_filename = portfolio.filename()
             self.m_name = portfolio.name()
@@ -427,19 +427,19 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
         btnpane.SetSizerType("horizontal")
         btnpane.SetSizerProps(expand=True)
 
-        if operation=='create':
+        if operation == 'create':
             msg = message('portfolio_properties_btncreate')
             msgdesc = message('portfolio_properties_btncreatedesc')
             fnt = self.OnValid
-        elif operation=='delete':
+        elif operation == 'delete':
             msg = message('portfolio_properties_btndelete')
             msgdesc = message('portfolio_properties_btndeletedesc')
             fnt = self.OnValid
-        elif operation=='edit':
+        elif operation == 'edit':
             msg = message('portfolio_properties_btnedit')
             msgdesc = message('portfolio_properties_btneditdesc')
             fnt = self.OnValid
-        elif operation=='rename':
+        elif operation == 'rename':
             msg = message('portfolio_properties_btnrename')
             msgdesc = message('portfolio_properties_btnrenamedesc')
             fnt = self.OnValid
@@ -455,42 +455,42 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
         # OK
         btn = wx.Button(btnpane, wx.ID_OK, msg)
         btn.SetDefault()
-        btn.SetHelpText(msgdesc)
+        btn.SetHelpText(text=msgdesc)
         wx.EVT_BUTTON(self, wx.ID_OK, fnt)
 
         # CANCEL
         btn = wx.Button(btnpane, wx.ID_CANCEL, message('cancel'))
-        btn.SetHelpText(message('cancel_desc'))
+        btn.SetHelpText(text=message('cancel_desc'))
 
         # enable some fields based on the operation
-        if operation=='edit':
+        if operation == 'edit':
             # edit: filename, market and currency can't be changed
-            self.wxFilenameCtrl.Enable(False)
-            self.wxMarketCtrl.Enable(False)
-            self.wxCurrencyCtrl.Enable(False)
+            self.wxFilenameCtrl.Enable(enable=False)
+            self.wxMarketCtrl.Enable(enable=False)
+            self.wxCurrencyCtrl.Enable(enable=False)
             #self.wxNameCtrl.SetFocus()
-        elif operation=='delete':
+        elif operation == 'delete':
             # display only
-            self.wxFilenameCtrl.Enable(False)
-            self.wxNameCtrl.Enable(False)
-            self.wxAccountRefCtrl.Enable(False)
-            self.wxMarketCtrl.Enable(False)
-            self.wxCurrencyCtrl.Enable(False)
-            self.wxVATCtrl.Enable(False)
-            self.wxTermCtrl.Enable(False)
-            self.wxRiskCtrl.Enable(False)
-            self.wxIndicatorCtrl.Enable(False)
+            self.wxFilenameCtrl.Enable(enable=False)
+            self.wxNameCtrl.Enable(enable=False)
+            self.wxAccountRefCtrl.Enable(enable=False)
+            self.wxMarketCtrl.Enable(enable=False)
+            self.wxCurrencyCtrl.Enable(enable=False)
+            self.wxVATCtrl.Enable(enable=False)
+            self.wxTermCtrl.Enable(enable=False)
+            self.wxRiskCtrl.Enable(enable=False)
+            self.wxIndicatorCtrl.Enable(enable=False)
             #self.btn.SetFocus()
-        elif operation=='rename':
+        elif operation == 'rename':
             # filename only
-            self.wxNameCtrl.Enable(False)
-            self.wxAccountRefCtrl.Enable(False)
-            self.wxMarketCtrl.Enable(False)
-            self.wxCurrencyCtrl.Enable(False)
-            self.wxVATCtrl.Enable(False)
-            self.wxTermCtrl.Enable(False)
-            self.wxRiskCtrl.Enable(False)
-            self.wxIndicatorCtrl.Enable(False)
+            self.wxNameCtrl.Enable(enable=False)
+            self.wxAccountRefCtrl.Enable(enable=False)
+            self.wxMarketCtrl.Enable(enable=False)
+            self.wxCurrencyCtrl.Enable(enable=False)
+            self.wxVATCtrl.Enable(enable=False)
+            self.wxTermCtrl.Enable(enable=False)
+            self.wxRiskCtrl.Enable(enable=False)
+            self.wxIndicatorCtrl.Enable(enable=False)
             #self.btn.SetFocus()
         else:
             # everything is editable
@@ -499,7 +499,7 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
         # a little trick to make sure that you can't resize the dialog to
         # less screen space than the controls need
         self.Fit()
-        self.SetMinSize(self.GetSize())
+        self.SetMinSize(minSize=self.GetSize())
 
     def OnValid(self, event):
         self.m_filename = self.wxFilenameCtrl.GetValue().lower().strip()
@@ -507,30 +507,30 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
         self.m_term = self.wxTermCtrl.GetValue()
         self.m_risk = self.wxRiskCtrl.GetValue()
 
-        if (self.m_operation=='create' or self.m_operation=='rename') and portfolios.existPortfolio(self.m_filename):
-            self.wxFilenameCtrl.SetValue('')
+        if (self.m_operation == 'create' or self.m_operation == 'rename') and portfolios.existPortfolio(self.m_filename):
+            self.wxFilenameCtrl.SetValue(value='')
             self.wxFilenameCtrl.SetFocus()
             iTradeError(self, message('portfolio_exist_info').format(self.m_filename), message('portfolio_exist_info_title'))
             return
 
         self.m_name = self.wxNameCtrl.GetValue().strip()
         self.m_accountref = self.wxAccountRefCtrl.GetValue().strip()
-        if self.m_operation=='delete':
+        if self.m_operation == 'delete':
             idRet = iTradeYesNo(self, message('portfolio_delete_confirm').format(self.m_name), message('portfolio_delete_confirm_title'))
             if idRet == wx.ID_NO:
                 return
-        if self.m_operation=='rename':
+        if self.m_operation == 'rename':
             idRet = iTradeYesNo(self, message('portfolio_rename_confirm').format(self.m_filename), message('portfolio_rename_confirm_title'))
             if idRet == wx.ID_NO:
                 return
         self.EndModal(wx.ID_OK)
 
-    def OnMarket(self,evt):
+    def OnMarket(self, evt):
         t = self.wxMarketCtrl.GetClientData(self.wxMarketCtrl.GetSelection())
         debug("OnMarket {}".format(t))
         self.m_market = t
 
-    def OnIndicator(self,evt):
+    def OnIndicator(self, evt):
         t = self.wxIndicatorCtrl.GetClientData(self.wxIndicatorCtrl.GetSelection())
         info("OnIndicator {}".format(t))
         self.m_indice = t
@@ -561,7 +561,7 @@ def properties_iTradePortfolio(win, portfolio, operation='create'):
                 portfolios.save()
                 retport = portfolios.portfolio(portfolio.filename())
         elif operation == 'create':
-            if portfolios.addPortfolio(dlg.m_filename,dlg.m_name,dlg.m_accountref,dlg.m_market,dlg.m_currency,dlg.m_vat,dlg.m_term,dlg.m_risk,dlg.m_indice):
+            if portfolios.addPortfolio(dlg.m_filename, dlg.m_name, dlg.m_accountref, dlg.m_market, dlg.m_currency, dlg.m_vat, dlg.m_term, dlg.m_risk, dlg.m_indice):
                 portfolios.save()
                 retport = loadPortfolio(dlg.m_filename)
         elif operation == 'rename':

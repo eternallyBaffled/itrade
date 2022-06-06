@@ -219,7 +219,7 @@ def importFromPath(moduleName, path):
         f = None
 
         # find the module
-        data = imp.find_module(moduleName,[path])
+        data = imp.find_module(moduleName, [path])
         if data:
             # import the module
             f, path, desc = data

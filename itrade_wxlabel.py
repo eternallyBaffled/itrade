@@ -183,10 +183,10 @@ def DrawRectLabel(dc, label, x, y, w, h, colorpen, colorbg, font, vert='top', ho
     bmp = wx.EmptyBitmap(w, h)
 
     memDC.SelectObject(bmp)
-    memDC.SetBackground(wx.Brush(colorbg, wx.PENSTYLE_SOLID))
+    memDC.SetBackground(brush=wx.Brush(colorbg, wx.PENSTYLE_SOLID))
     memDC.Clear()
-    memDC.SetTextForeground(colorpen)
-    memDC.SetFont(font)
+    memDC.SetTextForeground(colour=colorpen)
+    memDC.SetFont(font=font)
     memDC.BeginDrawing()
     memDC.DrawRectangle(0, 0, bmp.GetWidth(),bmp.GetHeight())
     memDC.DrawText(label, 0, 0)
