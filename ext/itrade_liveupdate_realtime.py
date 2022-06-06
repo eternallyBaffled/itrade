@@ -86,18 +86,17 @@ class LiveUpdate_RealTime(object):
             symbol = ''
 
             # try to open dictionary of ticker_bourso.txt
-            f = open(os.path.join(itrade_config.dirUserData, 'ticker_bourso.txt'), 'r')
-            self.m_isinsymbol = cPickle.load(f)
-            f.close()
+            with open(os.path.join(itrade_config.dirUserData, 'ticker_bourso.txt'), 'r') as f:
+                self.m_isinsymbol = cPickle.load(f)
 
         except Exception:
             print('Missing or invalid file: ticker_bourso.txt')
 
             # read isin codes of properties.txt file in directory usrdata
             try:
-                source = open(os.path.join(itrade_config.dirUserData, 'properties.txt'), 'r')
-                data = source.readlines()
-                source.close()
+                with open(os.path.join(itrade_config.dirUserData, 'properties.txt'), 'r') as source:
+                    data = source.readlines()
+
                 for linedata in data:
                     if 'live;realtime' in linedata:
                         isin = linedata[:linedata.find('.')]
@@ -128,9 +127,8 @@ class LiveUpdate_RealTime(object):
                     except Exception:
                         pass
 
-                dic = open(os.path.join(itrade_config.dirUserData,'ticker_bourso.txt'), 'w')
-                cPickle.dump(self.m_isinsymbol, dic)
-                dic.close()
+                with open(os.path.join(itrade_config.dirUserData,'ticker_bourso.txt'), 'w') as dic:
+                    cPickle.dump(self.m_isinsymbol, dic)
 
             except Exception:
                 pass
