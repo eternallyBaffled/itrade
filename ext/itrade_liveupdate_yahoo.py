@@ -97,7 +97,7 @@ class LiveUpdate_yahoo(object):
         # timezone of the livedata (see pytz all_timezones)
         return "EST"
 
-    # ---[ connexion ] ---
+    # ---[ connection ] ---
     def connect(self):
         return True
 
@@ -196,9 +196,9 @@ class LiveUpdate_yahoo(object):
                 info(u'invalid data (bad answer length) for {} quote'.format(quote.ticker()))
             return None
 
-        #print sdata
+        #print(sdata)
 
-        # connexion / clock
+        # connection / clock
         self.m_connected = True
 
         # store for later use

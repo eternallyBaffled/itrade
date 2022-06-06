@@ -513,7 +513,7 @@ class LiveUpdate_fortuneo(object):
         # timezone of the livedata (see pytz all_timezones)
         return "Europe/Paris"
 
-    # ---[ connexion ] ---
+    # ---[ connection ] ---
 
     def connect(self):
         self.m_conn = httplib.HTTPConnection(self.m_default_host, 80)

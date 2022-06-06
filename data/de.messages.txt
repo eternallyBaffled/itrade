@@ -107,8 +107,8 @@ main_cache_desc_erase_news;Erase all news from the cache folder
 main_cache_erase_all;Loschen &alles
 main_cache_desc_erase_all; Erase all data (news, historic, ...) from the cache folder
 
-main_options_connexion;&Verbindung
-main_options_desc_connexion;Verbidung Parameter  (Proxy)
+main_options_connection;&Verbindung
+main_options_desc_connection;Verbindung Parameter  (Proxy)
 
 main_help;&Help
 main_help_contents;&Contents
@@ -118,7 +118,7 @@ main_help_desc_support; How to get Technical Support ?
 main_help_bugs;&Programmfehler ...
 main_help_desc_bugs; Create bug report in the project bug tracker
 main_help_forum;&Forum
-main_help_desc_forum; Participate to the iTrade communauty forum (english / french)
+main_help_desc_forum; Participate in the iTrade community forum (english / french)
 main_help_donors;&Spengen ...
 main_help_desc_donors; How to Donate Money to support this project
 main_help_checksoftware;&Aktualisieren

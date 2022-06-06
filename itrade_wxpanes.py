@@ -510,7 +510,7 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
                     else:
                         if itrade_config.verbose:
                             print(u'pane::OnLive {}: {} - bad : other view'.format(evt.quote.key(), evt.param))
-            self.m_parent.refreshConnexion()
+            self.m_parent.refreshConnection()
         else:
             if itrade_config.verbose:
                 print(u'pane::OnLive {}: {} - bad : not running'.format(evt.quote.key(), evt.param))

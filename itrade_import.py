@@ -60,7 +60,7 @@ def import_from_internet(quote, fromdate=None, todate=None):
         #return bRet
 
     if not itrade_config.isConnected():
-        info(u"import_from_internet({}): no connexion".format(quote.ticker()))
+        info(u"import_from_internet({}): no connection".format(quote.ticker()))
         return bRet
 
     abc = quote.importconnector()
@@ -104,7 +104,7 @@ def liveupdate_from_internet(quote):
     bRet = False
 
     if not itrade_config.isConnected():
-        debug(u"liveupdate_from_internet({}): no connexion".format(quote.ticker()))
+        debug(u"liveupdate_from_internet({}): no connection".format(quote.ticker()))
         return bRet
 
     abc = quote.liveconnector()

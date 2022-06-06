@@ -633,7 +633,7 @@ def setDisconnected(status=True):
 
     gbDisconnected = status
     if gbDisconnected:
-        print('Network : No connexion')
+        print('Network : No connection')
     else:
         print('Network : Ready')
 

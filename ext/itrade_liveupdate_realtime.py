@@ -152,7 +152,7 @@ class LiveUpdate_RealTime(object):
         # timezone of the livedata (see pytz all_timezones)
         return "Europe/Paris"
 
-    # ---[ connexion ] ---
+    # ---[ connection ] ---
 
     def connect(self):
         return True

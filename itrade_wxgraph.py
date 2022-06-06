@@ -320,11 +320,11 @@ def fmtVolumeFunc(x, pos):
     if pos % 3 == 1:
         if abs(x) >= 1000:
             if abs(x) >= 1e6:
-                return '{:.1f} M'.format(x*1e-6)
+                return u'{:.1f} M'.format(x*1e-6)
             else:
-                return '{:d} K'.format(int(x*1e-3))
+                return u'{:d} K'.format(int(x*1e-3))
         else:
-            return '{:d}'.format(x)
+            return u'{:d}'.format(x)
     else:
         return ''
 
@@ -524,7 +524,7 @@ class FigureCanvasEx(FigureCanvas):
 
 
 class iTrade_wxPanelGraph(GObject, PanelPrint):
-    def __init__(self, parent, id, size):
+    def __init__(self, parent, size):
         self.m_parent = parent
 
         self.SetBackgroundColour("WHITE")

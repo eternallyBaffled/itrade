@@ -69,7 +69,7 @@ class ITradeConnection(object):
 
         self.m_proxy = proxy
 
-        # Set a default socket timeout to 20 second for all further connexions
+        # Set a default socket timeout to 20 second for all further connections
         socket.setdefaulttimeout(connectionTimeout)
 
         if proxyAuth:
@@ -90,7 +90,7 @@ class ITradeConnection(object):
                                 "Connection": "Keep-Alive"}  # Default HTTP header
 
     def getDataFromUrl(self, url, header=None, data=None):
-        """Thread safe method to get data from an URL. See put() and getData() method for details"""
+        """Thread safe method to get data from a URL. See put() and getData() method for details"""
         with self.m_locker:
             self.put(url, header, data)
             result = self.getData()
@@ -208,7 +208,7 @@ class ITradeConnection(object):
                             logging.info("Strange cookie header ({}). Ignoring.".format(cookieHeader))
 
             except socket.timeout:
-                msg = Exception("Connexion timeout while requesting the remote server : {}".format(url))
+                msg = Exception("Connection timeout while requesting the remote server : {}".format(url))
                 logging.error(msg)
                 self.m_responseData = ""
                 self.clearConnection(protocol, host)
@@ -218,7 +218,7 @@ class ITradeConnection(object):
                 self.clearConnection(protocol, host)
                 if not self.m_retrying:
                     # Retry one time because this kind of error can be "normal"
-                    # Eg. after a connection keep-alive timeout
+                    # E.g. after a connection keep-alive timeout
                     # logging.debug("An error occurred while requesting the remote server : {}. Retrying".format(e))
                     self.m_retrying = True
                     self.put(url, header, data)  # Retrying one time
@@ -231,7 +231,7 @@ class ITradeConnection(object):
 
         except Exception as e:
             self.clearConnections()  # Clean all connection
-            msg = Exception("Unhandled exception on ITrade_Connexion ({})".format(e))
+            msg = Exception(u"Unhandled exception on ITrade_Connection ({})".format(e))
             logging.error(msg)
             raise msg
 
@@ -251,7 +251,7 @@ class ITradeConnection(object):
         return self.m_duration
 
     def clearConnection(self, protocole, host):
-        """Clear connexion for given host and protocole
+        """Clear connection for given host and protocole
         @param protocole: protocole of connection to be cleared (http or https, not case sensitive)
         @param host: host of connection to be cleared"""
         if protocole.lower() == "http":
@@ -260,13 +260,13 @@ class ITradeConnection(object):
             del self.m_httpsConnection[host]
 
     def clearConnections(self):
-        """Clear all http and https connexion to start up on clean base"""
+        """Clear all http and https connection to start up on clean base"""
         logging.debug("Cleaning up http(s) connections")
         self.m_httpConnection = {}
         self.m_httpsConnection = {}
 
     def setProxy(self, proxy=None, proxy_auth=None):
-        """Use the given proxy for connexions. All connexions will be cleared to use proxy at next connextion.
+        """Use the given proxy for connections. All connections will be cleared to use proxy at next connection.
         This method is thread safe with getDataFromUrl()
         @param proxy: proxy hostname (IP:port). None means no proxy. Default is None
         @param proxy_auth: proxy authentication (user:password). None means no authentication. Default is None
@@ -280,7 +280,7 @@ class ITradeConnection(object):
             self.clearConnections()
 
     def setConnectionTimeout(self, connection_timeout):
-        # Set a default socket timeout to 20 second for all further connexions
+        # Set a default socket timeout to 20 second for all further connections
         socket.setdefaulttimeout(connection_timeout)
 
 

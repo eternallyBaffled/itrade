@@ -91,7 +91,7 @@ class LiveUpdate_ABCBourse(object):
         # timezone of the livedata (see pytz all_timezones)
         return "Europe/Paris"
 
-    # ---[ connexion ] ---
+    # ---[ connection ] ---
 
     def connect(self):
         debug('LiveUpdate_ABCBourse:connect to web site')

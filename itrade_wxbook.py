@@ -149,7 +149,7 @@ ID_CACHE_ERASE_DATA = 500
 ID_CACHE_ERASE_NEWS = 501
 ID_CACHE_ERASE_ALL = 510
 
-ID_CONNEXION = 599
+ID_CONNECTION = 599
 
 #ID_HELP_CONTENTS = 800
 ID_SUPPORT = 801
@@ -594,7 +594,7 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
         self.cachemenu.Append(ID_CACHE_ERASE_ALL, message('main_cache_erase_all'), message('main_cache_desc_erase_all'))
         self.optionsmenu.AppendMenu(ID_CACHE, message('main_options_cache'), self.cachemenu, message('main_options_desc_cache'))
 
-        self.optionsmenu.Append(ID_CONNEXION, message('main_options_connexion'), message('main_options_desc_connexion'))
+        self.optionsmenu.Append(ID_CONNECTION, message('main_options_connection'), message('main_options_desc_connection'))
 
         self.helpmenu = wx.Menu()
         self.helpmenu.Append(wx.ID_HELP_CONTENTS, message('main_help_contents'), message('main_help_desc_contents'))
@@ -673,7 +673,7 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
         wx.EVT_MENU(self, ID_CACHE_ERASE_NEWS, self.OnCacheEraseNews)
         wx.EVT_MENU(self, ID_CACHE_ERASE_ALL, self.OnCacheEraseAll)
 
-        wx.EVT_MENU(self, ID_CONNEXION, self.OnConnexion)
+        wx.EVT_MENU(self, ID_CONNECTION, self.OnConnection)
 
         wx.EVT_MENU(self, wx.ID_REFRESH, self.OnRefresh)
         wx.EVT_MENU(self, ID_AUTOREFRESH, self.OnAutoRefresh)
@@ -1165,9 +1165,9 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
         if idRet == wx.ID_YES:
             self.m_matrix.flushAll()
 
-    # --- [ connexion management ] ---------------------------------------
+    # --- [ connection management ] ---------------------------------------
 
-    def OnConnexion(self, e):
+    def OnConnection(self, e):
         itrade_config.proxyHostname, itrade_config.proxyAuthentication, itrade_config.connectionTimeout = connection_UI(self, itrade_config.proxyHostname, itrade_config.proxyAuthentication, itrade_config.connectionTimeout)
         itrade_config.saveConfig()
 
@@ -1188,7 +1188,7 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
         self.m_toolbar.ClearIndicator()
         self.InitCurrentPage(bReset=False, bInit=False)
 
-    def refreshConnexion(self):
+    def refreshConnection(self):
         self.m_toolbar.SetIndicator(self.m_market, self.m_connector, self.m_indice)
 
     # ---[ Quotes ] -----------------------------------------

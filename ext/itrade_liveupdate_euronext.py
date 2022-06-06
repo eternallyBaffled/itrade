@@ -107,7 +107,7 @@ class LiveUpdate_Euronext(object):
         # timezone of the livedata (see pytz all_timezones)
         return "CET"
 
-    # ---[ connexion ] ---
+    # ---[ connection ] ---
 
     def connect(self):
         return True
