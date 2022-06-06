@@ -182,7 +182,7 @@ class iTradeMainToolbar(wx.ToolBar):
     def _init_toolbar(self):
         self.ClearTools()
 
-        self.SetToolBitmapSize(wx.Size(24,24))
+        self.SetToolBitmapSize(size=wx.Size(24,24))
         exit_tool = self.AddSimpleTool(wx.ID_ANY, wx.ArtProvider.GetBitmap(wx.ART_CROSS_MARK, wx.ART_TOOLBAR),
                            message('main_exit'), message('main_desc_exit'))
         self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
@@ -296,7 +296,7 @@ class iTradeMainToolbar(wx.ToolBar):
             label = " " + message('indicator_autorefresh')
         else:
             label = " " + message('indicator_noautorefresh')
-        self.m_indicator.SetForegroundColour(wx.NullColour)
+        self.m_indicator.SetForegroundColour(colour=wx.NullColour)
         # self.m_indicator.ClearBackground()
         self.m_indicator.ChangeValue(label)
 
@@ -315,7 +315,7 @@ class iTradeMainToolbar(wx.ToolBar):
 
         if clock == "::":
             label = " " + indice.market() + " : " + message('indicator_disconnected')
-            self.m_indicator.SetForegroundColour(wx.BLACK)
+            self.m_indicator.SetForegroundColour(colour=wx.BLACK)
         else:
             label = " " + indice.market() + " - " + dateclock+ " - " + clock
             if indice:
@@ -332,7 +332,7 @@ class iTradeMainToolbar(wx.ToolBar):
             if label == self.m_indicator.GetValue():
                 # display indice red or blue
                 self.ClearIndicator()
-                self.m_indicator.SetForegroundColour(color)
+                self.m_indicator.SetForegroundColour(colour=color)
             else:
                 if indice.sv_percent()[0] == '-':
                     # Orange - FF7F00 Indice change
@@ -343,7 +343,7 @@ class iTradeMainToolbar(wx.ToolBar):
                     # green4 008B00 Indice change
                     color = wx.Colour(0, 139, 0)
                 self.ClearIndicator()
-                self.m_indicator.SetForegroundColour(color)
+                self.m_indicator.SetForegroundColour(colour=color)
 
         self.m_indicator.ChangeValue(label)
         # get indicator and toolbar positions and sizes
@@ -355,7 +355,7 @@ class iTradeMainToolbar(wx.ToolBar):
         computedwidth = toolbarsize.width + toolbarposition.x - indicatorposition.x - 2
         if indicatorsize.width != computedwidth:
             indicatorsize.SetWidth(computedwidth)
-            self.m_indicator.SetSize(indicatorsize)
+            self.m_indicator.SetSize(size=indicatorsize)
 
 
 # ============================================================================
@@ -382,7 +382,7 @@ class iTradeMainNotebookWindow(wx.Notebook):
 
     # --- [ page management ] -------------------------------------
 
-    def init(self,parent):
+    def init(self, parent):
         # print('book init --[')
         self.win = {}
         self.DeleteAllPages()
@@ -405,6 +405,10 @@ class iTradeMainNotebookWindow(wx.Notebook):
         self.win[ID_PAGE_EVALUATION] = iTradeEvaluationPanel(self, wx.ID_ANY, self.m_portfolio)
         self.AddPage(self.win[ID_PAGE_EVALUATION], message('page_evaluation'))
         # print(']-- book init')
+
+    def SetSelection(self, page):
+        if self.GetSelection() != page:
+            super(iTradeMainNotebookWindow, self).SetSelection(page)
 
     def OnPageChanged(self, event):
         old = event.GetOldSelection()
@@ -505,7 +509,7 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
         wx.PostEvent(self, PostInitEvent())
 
         # last
-        self.Show(True)
+        self.Show(show=True)
 
     # --- [ Menus ] ----------------------------------------------------------------
 
@@ -616,7 +620,7 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
         menuBar.Append(self.helpmenu, message('main_help'))
 
         # Adding the MenuBar to the Frame content
-        self.SetMenuBar(menuBar)
+        self.SetMenuBar(menubar=menuBar)
 
         wx.EVT_MENU(self, wx.ID_OPEN, self.OnOpen)
         wx.EVT_MENU(self, wx.ID_NEW, self.OnNew)
@@ -911,7 +915,7 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
             title = message('main_title_evaluation')
         else:
             title = u'??? {}:{}'
-        self.SetTitle(title.format(self.m_portfolio.name(), self.m_portfolio.accountref()))
+        self.SetTitle(title=title.format(self.m_portfolio.name(), self.m_portfolio.accountref()))
 
     def RebuildList(self):
         self.Save()
@@ -921,38 +925,32 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
 
     def OnPortfolio(self, e):
         # check current page
-        if self.m_book.GetSelection() != ID_PAGE_PORTFOLIO:
-            self.m_book.SetSelection(ID_PAGE_PORTFOLIO)
+        self.m_book.SetSelection(page=ID_PAGE_PORTFOLIO)
         self.updateTitle()
 
     def OnQuotes(self, e):
         # check current page
-        if self.m_book.GetSelection() != ID_PAGE_QUOTES:
-            self.m_book.SetSelection(ID_PAGE_QUOTES)
+        self.m_book.SetSelection(page=ID_PAGE_QUOTES)
         self.updateTitle()
 
     def OnStops(self, e):
         # check current page
-        if self.m_book.GetSelection() != ID_PAGE_STOPS:
-            self.m_book.SetSelection(ID_PAGE_STOPS)
+        self.m_book.SetSelection(page=ID_PAGE_STOPS)
         self.updateTitle()
 
     def OnIndicators(self, e):
         # check current page
-        if self.m_book.GetSelection() != ID_PAGE_INDICATORS:
-            self.m_book.SetSelection(ID_PAGE_INDICATORS)
+        self.m_book.SetSelection(page=ID_PAGE_INDICATORS)
         self.updateTitle()
 
     def OnTrading(self, e):
         # check current page
-        if self.m_book.GetSelection() != ID_PAGE_TRADING:
-            self.m_book.SetSelection(ID_PAGE_TRADING)
+        self.m_book.SetSelection(page=ID_PAGE_TRADING)
         self.updateTitle()
 
     def OnEvaluation(self, e):
         # check current page
-        if self.m_book.GetSelection() != ID_PAGE_EVALUATION:
-            self.m_book.SetSelection(ID_PAGE_EVALUATION)
+        self.m_book.SetSelection(page=ID_PAGE_EVALUATION)
         self.updateTitle()
 
     def OnOperations(self, e):
@@ -998,8 +996,8 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
 
     def OnBuyQuote(self, e):
         quote = self.currentQuote()
-        if quote and quote.list()==QList.indices:
-            quote=None
+        if quote and quote.list() == QList.indices:
+            quote = None
         if add_iTradeOperation(self, self.m_portfolio, quote, OPERATION_BUY):
             if self.m_hOperation:
                 self.m_hOperation.RebuildList()
@@ -1009,7 +1007,7 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
 
     def OnSellQuote(self, e):
         quote = self.currentQuote()
-        if quote and quote.list()==QList.indices:
+        if quote and quote.list() == QList.indices:
             quote=None
         if add_iTradeOperation(self, self.m_portfolio, quote, OPERATION_SELL):
             if self.m_hOperation:
@@ -1033,7 +1031,7 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
     def currentQuote(self):
         sel = self.m_book.GetSelection()
         win = self.m_book.win[sel]
-        if win.m_currentItem>=0:
+        if win.m_currentItem >= 0:
             quote,item = win.getQuoteAndItemOnTheLine(win.m_currentItem)
         else:
             quote = None
@@ -1077,12 +1075,12 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
         c = gLoginRegistry.get(m)
         if c:
             # with the connector, load user info and open UI
-            u,p = c.loadUserInfo()
-            u,p = login_UI(self, u, p, c)
+            u, p = c.loadUserInfo()
+            u, p = login_UI(self, u, p, c)
 
             # now, save new user info
             wx.SetCursor(wx.HOURGLASS_CURSOR)
-            c.saveUserInfo(u,p)
+            c.saveUserInfo(u, p)
             if itrade_config.isConnected():
                 # and apply this new login info
                 c.login(u, p)
@@ -1091,17 +1089,17 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
     # --- [ Language management ] -------------------------------------
 
     def SetLang(self, bDuringInit=False):
-        if itrade_config.lang==1:
+        if itrade_config.lang == 1:
             lang = 'us'
-        elif itrade_config.lang==2:
+        elif itrade_config.lang == 2:
             lang = 'fr'
-        elif itrade_config.lang==3:
+        elif itrade_config.lang == 3:
             lang = 'pt'
-        elif itrade_config.lang==4:
+        elif itrade_config.lang == 4:
             lang = 'de'
-        elif itrade_config.lang==5:
+        elif itrade_config.lang == 5:
             lang = 'it'
-        elif itrade_config.lang==0:
+        elif itrade_config.lang == 0:
             lang = gMessage.getAutoDetectedLang('us')
         else:
             # has been forced by the command line
@@ -1170,7 +1168,7 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
     # --- [ connexion management ] ---------------------------------------
 
     def OnConnexion(self, e):
-        itrade_config.proxyHostname,itrade_config.proxyAuthentication,itrade_config.connectionTimeout = connection_UI(self,itrade_config.proxyHostname,itrade_config.proxyAuthentication,itrade_config.connectionTimeout)
+        itrade_config.proxyHostname, itrade_config.proxyAuthentication, itrade_config.connectionTimeout = connection_UI(self, itrade_config.proxyHostname, itrade_config.proxyAuthentication, itrade_config.connectionTimeout)
         itrade_config.saveConfig()
 
     # --- [ autosize management ] -------------------------------------
