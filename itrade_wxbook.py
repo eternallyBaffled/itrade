@@ -573,7 +573,7 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
             # BUG: code implicitly assumes list is shorter than 49 elements
             self.accessmenu.Append(ID_ACCESS+ncon, acon.name(), acon.desc())
         if logins:
-            # menu->options->login only if there at least one login plugin loaded
+            # menu->options->login only if there is at least one login plugin loaded
             self.optionsmenu.AppendMenu(ID_ACCESS, message('main_options_access'), self.accessmenu, message('main_options_desc_access'))
 
         self.langmenu = wx.Menu()

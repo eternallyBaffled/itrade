@@ -329,7 +329,7 @@ if __name__ == '__main__':
     print("15/03/2005")
     test('AAPL', date(2005, 3, 15))
 
-    # never failed except week-end
+    # never failed except weekend
     print("yesterday-today :-(")
     test('AAPL', date.today() - timedelta(1))
 

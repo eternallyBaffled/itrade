@@ -329,7 +329,7 @@ class iTradeQuotePropertiesPanel(wx.Panel):
         idx = wx.NOT_FOUND
         lst = []
         for aname, amarket, aplace, adefaut, aconnector, aqlist, aqtag in gLiveRegistry.list(self.m_quote.market(), self.m_quote.list(), self.m_quote.place()):
-            if not aname in lst:  # be sure its unique in the list
+            if not aname in lst:  # be sure it's unique in the list
                 self.editLiveConnector.Append(aname, aname)
                 lst.append(aname)
                 if aname == self.m_quote.liveconnector().name():
@@ -345,7 +345,7 @@ class iTradeQuotePropertiesPanel(wx.Panel):
         idx = wx.NOT_FOUND
         lst = []
         for aname, aplace, amarket, adefaut, aconnector, aqlist, aqtag in gImportRegistry.list(self.m_quote.market(), self.m_quote.list(), self.m_quote.place()):
-            if aname not in lst:  # be sure its unique in the list
+            if aname not in lst:  # be sure it's unique in the list
                 self.editImportConnector.Append(aname, aname)
                 lst.append(aname)
                 if aname == self.m_quote.importconnector().name():

@@ -223,7 +223,7 @@ def main():
     # never failed - fixed date
     print("15/03/2005")
     test('OSI', date(2005, 3, 15))
-    # never failed except week-end
+    # never failed except weekend
     print("yesterday-today :-(")
     test('OSI', date.today() - timedelta(1))
     # always failed

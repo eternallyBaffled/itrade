@@ -181,7 +181,7 @@ class LocalMessages(object):
             # raise Exception(u'lang {} not found !'.format(self.m_lang))
 
     def setLocale(self, lang=None):
-        # try to setup the C runtime (_locale)
+        # try to set up the C runtime (_locale)
         if lang is None:
             lang = self.m_lang
             logging.debug(u'setLocale(): default to {}'.format(lang))
@@ -216,10 +216,10 @@ class LocalMessages(object):
         if l:
             self.m_lang = self.langSupported(l)
         else:
-            # default to french !
+            # default to French
             self.m_lang = 'fr'
 
-        # try to setup the C runtime (_locale)
+        # try to set up the C runtime (_locale)
         self.setLocale()
 
     def getLang(self):
@@ -243,7 +243,7 @@ class LocalMessages(object):
 
     def addMsg(self, m):
         if len(m) != 2:
-            # well formed ?
+            # well-formed ?
             return
         key = u'{}{}'.format(self.m_lang, m[0])
         if key in self.m_msg:

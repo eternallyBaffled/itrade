@@ -152,7 +152,7 @@ class LiveUpdate_Euronext_bonds(object):
             self.m_lastdate = date
             self.m_lastclock = val
 
-        # convert from connector timezone to market place timezone
+        # convert from connector timezone to marketplace timezone
         mdatetime = datetime(int(date[0:4]), int(date[4:6]), int(date[6:8]), val//60, val%60)
         mdatetime = convertConnectorTimeToPlaceTime(mdatetime, self.timezone(), place)
 

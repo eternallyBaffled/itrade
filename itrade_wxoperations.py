@@ -655,7 +655,7 @@ class iTradeOperationsWindow(wx.Frame, iTrade_wxFrame, wxl.ColumnSorterMixin):
 
         self.m_list.SetFont(font=FontFromSize(itrade_config.operationFontSize))
 
-        # Now that the list exists we can init the other base class,
+        # Now that the list exists, we can initialise the other base class,
         # see wxPython/lib/mixins/listctrl.py
         wxl.ColumnSorterMixin.__init__(self, numColumns=IDC_RESERVED)
 

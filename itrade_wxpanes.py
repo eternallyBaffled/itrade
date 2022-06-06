@@ -172,7 +172,7 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
         self.m_list.SetImageList(self.m_imagelist, wx.IMAGE_LIST_SMALL)
         self.m_list.SetFont(font=FontFromSize(itrade_config.matrixFontSize))
 
-        # Now that the list exists we can init the other base class,
+        # Now that the list exists, we can initialise the other base class,
         # see wxPython/lib/mixins/listctrl.py
         wxl.ColumnSorterMixin.__init__(self, IDC_LAST+1)
         self.LoadSortColumn()

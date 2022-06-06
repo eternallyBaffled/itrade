@@ -393,7 +393,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
                                  )
         self.m_list.SetImageList(self.m_imagelist, wx.IMAGE_LIST_SMALL)
 
-        # Now that the list exists we can init the other base class,
+        # Now that the list exists, we can initialise the other base class,
         # see wxPython/lib/mixins/listctrl.py
         wxl.ColumnSorterMixin.__init__(self, 7)
 

@@ -165,7 +165,7 @@ _stdoutHandler.setLevel(logging.DEBUG)
 #_stdoutHandler.setLevel(logging.INFO)
 itrade_logger.addHandler(_stdoutHandler)
 
-# __x on windows, install also NT event logger handler - if run as service
+# __x on Windows, install also NT event logger handler - if run as service
 
 # ============================================================================
 # Test me

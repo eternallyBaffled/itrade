@@ -119,7 +119,7 @@ class iTradePortfolioSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterM
 
         self.PopulateList()
 
-        # Now that the list exists we can init the other base class,
+        # Now that the list exists, we can initialise the other base class,
         # see wxPython/lib/mixins/listctrl.py
         wxl.ColumnSorterMixin.__init__(self, 3)
 

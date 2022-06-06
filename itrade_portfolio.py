@@ -66,7 +66,7 @@ from itrade_market import getDefaultIndice
 #       F   fee (cash)
 #       I   interest (cash)
 #       X   split (divisor)
-#       Y   detachment of coupon (cash on trade) - non taxable
+#       Y   detachment of coupon (cash on trade) - non-taxable
 #       Z   dividend (cash on trade) - taxable
 #       L   liquidation     i.e. SRD
 #       Q   dividend with shares
