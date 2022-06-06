@@ -225,7 +225,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
         label.SetSizerProps(valign='center')
 
         ssdatetime = wx.DateTimeFromDMY(self.m_datetime.day, self.m_datetime.month-1, self.m_datetime.year)
-        self.wxDateCtrl = wx.DatePickerCtrl(pane, wx.ID_ANY, ssdatetime , size=(120, -1),
+        self.wxDateCtrl = wx.DatePickerCtrl(pane, wx.ID_ANY, ssdatetime, size=(120, -1),
                                             style=wx.DP_DROPDOWN | wx.DP_SHOWCENTURY)
         wx.EVT_DATE_CHANGED(self, self.wxDateCtrl.GetId(), self.OnDate)
 
@@ -295,7 +295,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
                                           selectOnEntry=True)
         wx.EVT_TEXT( self, self.wxExpensesCtrl.GetId(), self.OnExpensesChange )
 
-        self.wxExpPostTxt = wx.StaticText(btnpane, wx.ID_ANY, "{} {}".format(currency2symbol(currency), message('portfolio_post_expenses')))
+        self.wxExpPostTxt = wx.StaticText(btnpane, wx.ID_ANY, u"{} {}".format(currency2symbol(currency), message('portfolio_post_expenses')))
         self.wxExpPostTxt.SetSizerProps(valign='center')
 
         # resizable pane
@@ -312,7 +312,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
         wx.EVT_TEXT(self, self.wxNumberCtrl.GetId(), self.OnNumberChange)
 
         # separator
-        line = wx.StaticLine(container, wx.ID_ANY, size=(20,-1), style=wx.LI_HORIZONTAL)
+        line = wx.StaticLine(parent=container, id=wx.ID_ANY, size=(20,-1), style=wx.LI_HORIZONTAL)
         line.SetSizerProps(expand=True)
 
         # Last Row : OK and Cancel
@@ -476,21 +476,21 @@ class iTradeOperationDialog(iTradeSizedDialog):
 
 
 class iTradeOperationsListCtrl(wx.ListCtrl, wxl.ListCtrlAutoWidthMixin):
-    def __init__(self, parent, ID, pos=wx.DefaultPosition, size=wx.DefaultSize, style=0):
-        wx.ListCtrl.__init__(self, parent, ID, pos, size, style)
-        wxl.ListCtrlAutoWidthMixin.__init__(self)
+    def __init__(self, parent, style=0, *args, **kwargs):
+        wx.ListCtrl.__init__(self, parent=parent, style=style, *args, **kwargs)
+        wxl.ListCtrlAutoWidthMixin.__init__(self, *args, **kwargs)
 
 
 class iTradeOperationToolbar(wx.ToolBar):
-    def __init__(self, parent, id):
-        wx.ToolBar.__init__(self, parent, id, style=wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT)
+    def __init__(self, parent, *args, **kwargs):
+        wx.ToolBar.__init__(self, parent=parent, style=wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT, *args, **kwargs)
         self.m_parent = parent
         self._init_toolbar()
 
     def _init_toolbar(self):
-        self.SetToolBitmapSize(wx.Size(24, 24))
-        exit_tool = self.AddSimpleTool(wx.ID_ANY, wx.ArtProvider.GetBitmap(wx.ART_CROSS_MARK, wx.ART_TOOLBAR),
-                           message('main_close'), message('main_desc_close'))
+        self.SetToolBitmapSize(size=wx.Size(24, 24))
+        exit_tool = self.AddSimpleTool(id=wx.ID_ANY, bitmap=wx.ArtProvider.GetBitmap(wx.ART_CROSS_MARK, wx.ART_TOOLBAR),
+                           shortHelpString=message('main_close'), longHelpString=message('main_desc_close'))
         self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1, 23), style=wx.LI_VERTICAL))
 
         dispall_tool = self.AddRadioLabelTool(wx.ID_ANY, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispall.png')), wx.NullBitmap, message('portfolio_dispall'), message('portfolio_desc_dispall'))
@@ -589,8 +589,8 @@ class iTradeOperationToolbar(wx.ToolBar):
 
 class iTradeOperationsWindow(wx.Frame, iTrade_wxFrame, wxl.ColumnSorterMixin):
     def __init__(self, parent, id, title, port):
-        wx.Frame.__init__(self, None, wx.ID_ANY, title, size=(800, 320), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE)
-        iTrade_wxFrame.__init__(self, parent, name='portfolio')
+        wx.Frame.__init__(self, parent=None, title=title, size=(800, 320), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE)
+        iTrade_wxFrame.__init__(self, parent=parent, name='portfolio')
         self.m_port = port
         self.m_mode = DISP_ALL
         self.m_period = PERIOD_30DAYS
@@ -649,18 +649,18 @@ class iTradeOperationsWindow(wx.Frame, iTrade_wxFrame, wxl.ColumnSorterMixin):
         self.sm_up = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'sm_up.png')))
         self.sm_dn = self.m_imagelist.Add(wx.Bitmap(os.path.join(itrade_config.dirRes, 'sm_down.png')))
 
-        self.m_list = iTradeOperationsListCtrl(self, wx.ID_ANY,
+        self.m_list = iTradeOperationsListCtrl(parent=self,
                                  style=wx.LC_REPORT | wx.SUNKEN_BORDER | wx.LC_SINGLE_SEL | wx.LC_VRULES | wx.LC_HRULES)
-        self.m_list.SetImageList(self.m_imagelist, wx.IMAGE_LIST_SMALL)
+        self.m_list.SetImageList(imageList=self.m_imagelist, which=wx.IMAGE_LIST_SMALL)
 
-        self.m_list.SetFont(FontFromSize(itrade_config.operationFontSize))
+        self.m_list.SetFont(font=FontFromSize(itrade_config.operationFontSize))
 
         # Now that the list exists we can init the other base class,
         # see wxPython/lib/mixins/listctrl.py
-        wxl.ColumnSorterMixin.__init__(self, IDC_RESERVED)
+        wxl.ColumnSorterMixin.__init__(self, numColumns=IDC_RESERVED)
 
         # Toolbar
-        self.m_toolbar = iTradeOperationToolbar(self, wx.ID_ANY)
+        self.m_toolbar = iTradeOperationToolbar(parent=self)
 
         wx.EVT_SIZE(self, self.OnSize)
         wx.EVT_LIST_ITEM_ACTIVATED(self, self.m_list.GetId(), self.OnItemActivated)
@@ -712,7 +712,7 @@ class iTradeOperationsWindow(wx.Frame, iTrade_wxFrame, wxl.ColumnSorterMixin):
     def OnChangeViewText(self):
         itrade_config.saveConfig()
         self.updateMenuItems()
-        self.m_list.SetFont(FontFromSize(itrade_config.operationFontSize))
+        self.m_list.SetFont(font=FontFromSize(itrade_config.operationFontSize))
         self.populate()
 
     def OnTextSmall(self, e):
@@ -808,113 +808,8 @@ class iTradeOperationsWindow(wx.Frame, iTrade_wxFrame, wxl.ColumnSorterMixin):
             self.m_list.InsertColumn(IDC_SRD,message('portfolio_list_srd'), wx.LIST_FORMAT_RIGHT)
         self.m_list.InsertColumn(IDC_RESERVED, '', wx.LIST_FORMAT_LEFT)
 
-        # remember columns widths with just the header and no data
-        self.m_hdrcolwidths = []
-        for col in range(self.m_list.GetColumnCount() - 1):
-            self.m_list.SetColumnWidth(col, wx.LIST_AUTOSIZE_USEHEADER)
-            self.m_hdrcolwidths.append(self.m_list.GetColumnWidth(col))
-        # populate the list
-        x = 0
-        balance = 0
-        srd = 0
-        for eachOp in self.m_port.operations().list():
-            if self.filterDisplay(eachOp):
-                # print('populate:', eachOp)
-                sign = eachOp.sign()
-
-                if sign == '+':
-                    if eachOp.isSRD():
-                        if eachOp.type() == OPERATION_LIQUIDATION:
-                            balance = balance + eachOp.nv_value()
-                            srd = srd + ( eachOp.nv_value() + eachOp.nv_expenses() )
-                        else:
-                            srd = srd + eachOp.nv_value()
-                    else:
-                        if self.m_mode == DISP_PVAL:
-                            balance = balance + eachOp.nv_pvalue()
-                        else:
-                            balance = balance + eachOp.nv_value()
-                elif sign == '-':
-                    if eachOp.isSRD():
-                        srd = srd - eachOp.nv_value()
-                    else:
-                        balance = balance - eachOp.nv_value()
-
-                # do we really need to display this op ?
-                if self.filterPeriod(eachOp):
-                    if sign == '+':
-                        idx = self.idx_plus
-                    elif sign == '-':
-                        idx = self.idx_minus
-                    elif sign == ' ' or sign == '~':
-                        idx = self.idx_neutral
-                    else:
-                        idx = self.idx_unknown
-                    sdate = eachOp.datetime().strftime('%x %X')
-                    self.m_list.InsertImageStringItem(x, sdate, idx)
-                    self.m_list.SetStringItem(x, IDC_OPERATION, eachOp.operation())
-                    if eachOp.nv_number()>0:
-                        self.m_list.SetStringItem(x, IDC_NUMBER, '{}'.format(eachOp.sv_number()))
-                    else:
-                        self.m_list.SetStringItem(x, IDC_NUMBER, '')
-                    if sign == '+':
-                        self.m_list.SetStringItem(x, IDC_CREDIT, eachOp.sv_value())
-                        vdebit = 0.0
-                        vcredit = eachOp.nv_value()
-                    elif sign == '-':
-                        self.m_list.SetStringItem(x, IDC_DEBIT, eachOp.sv_value())
-                        vcredit = 0.0
-                        vdebit = eachOp.nv_value()
-                    elif sign == '~':
-                        self.m_list.SetStringItem(x, IDC_CREDIT, eachOp.sv_value())
-                        vcredit = eachOp.nv_value()
-                        self.m_list.SetStringItem(x, IDC_DEBIT, eachOp.sv_value())
-                        vdebit = eachOp.nv_value()
-                    else:
-                        vcredit = 0.0
-                        vdebit = 0.0
-                    self.m_list.SetStringItem(x, IDC_EXPENSES, eachOp.sv_expenses())
-                    self.m_list.SetStringItem(x, IDC_DESCRIPTION, eachOp.description())
-                    self.m_list.SetStringItem(x, IDC_BALANCE, '{:.2f}'.format(balance))
-
-                    if self.filterSRDcolumn():
-                        if eachOp.isSRD():
-                            self.m_list.SetStringItem(x, IDC_SRD, '{:.2f}'.format(srd))
-                            vsrd = srd
-                        else:
-                            self.m_list.SetStringItem(x, IDC_SRD, '')
-                            vsrd = 0.0
-                        self.m_list.SetStringItem(x, IDC_RESERVED, '{:d}'.format(eachOp.ref()))
-                    else:
-                        vsrd = 0.0
-                        self.m_list.SetStringItem(x, IDC_SRD, '{:d}'.format(eachOp.ref()))
-
-                    try:
-                        pr = str('{:.2f}'.format((vcredit + vdebit)/eachOp.nv_number()))
-                        if pr == '0.00':
-                            pr = ''
-                    except ZeroDivisionError:
-                        pr = ''
-                    self.m_list.SetStringItem(x, IDC_PRU, pr)
-
-                    self.itemDataMap[x] = (eachOp.date().strftime('%Y%m%d'), eachOp.operation(), eachOp.description(), eachOp.nv_number(), pr, vdebit, vcredit, eachOp.nv_expenses(), balance, vsrd)
-                    self.itemOpMap[x] = eachOp.ref()
-
-                    item = self.m_list.GetItem(x)
-                    if sign == '+':
-                        item.SetTextColour(wx.BLACK)
-                    elif sign == '-':
-                        item.SetTextColour(wx.BLUE)
-                    elif sign == ' ':
-                        item.SetTextColour(wx.BLACK)
-                    else:
-                        item.SetTextColour(wx.RED)
-                    self.m_list.SetItem(item)
-
-                    # one more item !
-                    # self.m_op[x] = eachOp
-
-                    x = x + 1
+        self.set_column_widths()
+        self.populate_list()
 
         # fix the item data
         for x, key in enumerate(self.itemDataMap):
@@ -930,6 +825,121 @@ class iTradeOperationsWindow(wx.Frame, iTrade_wxFrame, wxl.ColumnSorterMixin):
             self.m_list.EnsureVisible(self.m_currentItem)
         else:
             self.m_currentItem = -1
+
+    def populate_list(self):
+        x = 0
+        balance = 0
+        srd = 0
+        for operation in self.m_port.operations().list():
+            if self.filterDisplay(operation):
+                # print('populate:', operation)
+                sign = operation.sign()
+
+                if sign == '+':
+                    if operation.isSRD():
+                        if operation.type() == OPERATION_LIQUIDATION:
+                            balance = balance + operation.nv_value()
+                            srd = srd + (operation.nv_value() + operation.nv_expenses())
+                        else:
+                            srd = srd + operation.nv_value()
+                    else:
+                        if self.m_mode == DISP_PVAL:
+                            balance = balance + operation.nv_pvalue()
+                        else:
+                            balance = balance + operation.nv_value()
+                elif sign == '-':
+                    if operation.isSRD():
+                        srd = srd - operation.nv_value()
+                    else:
+                        balance = balance - operation.nv_value()
+
+                # do we really need to display this op ?
+                if self.filterPeriod(operation):
+                    if sign == '+':
+                        idx = self.idx_plus
+                    elif sign == '-':
+                        idx = self.idx_minus
+                    elif sign == ' ' or sign == '~':
+                        idx = self.idx_neutral
+                    else:
+                        idx = self.idx_unknown
+                    sdate = operation.datetime().strftime('%x %X')
+                    self.m_list.InsertImageStringItem(x, sdate, idx)
+                    self.m_list.SetStringItem(x, IDC_OPERATION, operation.operation())
+                    if operation.nv_number() > 0:
+                        self.m_list.SetStringItem(x, IDC_NUMBER, u'{}'.format(operation.sv_number()))
+                    else:
+                        self.m_list.SetStringItem(x, IDC_NUMBER, '')
+                    if sign == '+':
+                        self.m_list.SetStringItem(x, IDC_CREDIT, operation.sv_value())
+                        vdebit = 0.0
+                        vcredit = operation.nv_value()
+                    elif sign == '-':
+                        self.m_list.SetStringItem(x, IDC_DEBIT, operation.sv_value())
+                        vcredit = 0.0
+                        vdebit = operation.nv_value()
+                    elif sign == '~':
+                        self.m_list.SetStringItem(x, IDC_CREDIT, operation.sv_value())
+                        vcredit = operation.nv_value()
+                        self.m_list.SetStringItem(x, IDC_DEBIT, operation.sv_value())
+                        vdebit = operation.nv_value()
+                    else:
+                        vcredit = 0.0
+                        vdebit = 0.0
+                    self.m_list.SetStringItem(x, IDC_EXPENSES, operation.sv_expenses())
+                    self.m_list.SetStringItem(x, IDC_DESCRIPTION, operation.description())
+                    self.m_list.SetStringItem(x, IDC_BALANCE, u'{:.2f}'.format(balance))
+
+                    if self.filterSRDcolumn():
+                        if operation.isSRD():
+                            self.m_list.SetStringItem(x, IDC_SRD, u'{:.2f}'.format(srd))
+                            vsrd = srd
+                        else:
+                            self.m_list.SetStringItem(x, IDC_SRD, '')
+                            vsrd = 0.0
+                        self.m_list.SetStringItem(x, IDC_RESERVED, u'{:d}'.format(operation.ref()))
+                    else:
+                        vsrd = 0.0
+                        self.m_list.SetStringItem(x, IDC_SRD, u'{:d}'.format(operation.ref()))
+
+                    try:
+                        pr = str(u'{:.2f}'.format((vcredit + vdebit) / operation.nv_number()))
+                        if pr == '0.00':
+                            pr = ''
+                    except ZeroDivisionError:
+                        pr = ''
+                    self.m_list.SetStringItem(x, IDC_PRU, pr)
+
+                    self.itemDataMap[x] = (operation.date().strftime('%Y%m%d'),
+                                           operation.operation(),
+                                           operation.description(),
+                                           operation.nv_number(),
+                                           pr,
+                                           vdebit, vcredit, operation.nv_expenses(), balance, vsrd)
+                    self.itemOpMap[x] = operation.ref()
+
+                    item = self.m_list.GetItem(x)
+                    if sign == '+':
+                        item.SetTextColour(wx.BLACK)
+                    elif sign == '-':
+                        item.SetTextColour(wx.BLUE)
+                    elif sign == ' ':
+                        item.SetTextColour(wx.BLACK)
+                    else:
+                        item.SetTextColour(wx.RED)
+                    self.m_list.SetItem(item)
+
+                    # one more item !
+                    # self.m_op[x] = operation
+
+                    x = x + 1
+
+    def set_column_widths(self):
+        # remember columns widths with just the header and no data
+        self.m_hdrcolwidths = []
+        for col in range(self.m_list.GetColumnCount() - 1):
+            self.m_list.SetColumnWidth(col, wx.LIST_AUTOSIZE_USEHEADER)
+            self.m_hdrcolwidths.append(self.m_list.GetColumnWidth(col))
 
     # --- [ adjust columns width ] -------------------------------------
 
@@ -1116,7 +1126,7 @@ class iTradeOperationsWindow(wx.Frame, iTrade_wxFrame, wxl.ColumnSorterMixin):
         ind = self.itemOpMap[key]
         info("OnModify currentItem=%d key=%d ind=%d", self.m_currentItem, key, ind)
 
-        aRet = edit_iTradeOperation(self, self.m_port.getOperation(ind), OPERATION_MODIFY, currency=self.m_port.currency())
+        aRet = edit_iTradeOperation(win=self, op=self.m_port.getOperation(ind), opmode=OPERATION_MODIFY, currency=self.m_port.currency())
         if aRet:
             info(u'OnModify: date={} type={} name={} value={:12.2f} expenses={:12.2f} number={:d} ref={:d}'.format(str(aRet[0]), aRet[1], aRet[2], aRet[3], aRet[4], aRet[5], aRet[6]))
             self.m_port.delOperation(ind)
@@ -1128,7 +1138,7 @@ class iTradeOperationsWindow(wx.Frame, iTrade_wxFrame, wxl.ColumnSorterMixin):
         ind = self.itemOpMap[key]
         info("OnDelete currentItem=%d key=%d ind=%d", self.m_currentItem, key, ind)
 
-        aRet = edit_iTradeOperation(self, self.m_port.getOperation(ind), OPERATION_DELETE, currency=self.m_port.currency())
+        aRet = edit_iTradeOperation(win=self, op=self.m_port.getOperation(ind), opmode=OPERATION_DELETE, currency=self.m_port.currency())
         if aRet:
             info(u'OnDelete: date={} type={} name={} value={:12.2f} expenses={:12.2f} number={:d} ref={:d}'.format(str(aRet[0]), aRet[1], aRet[2], aRet[3], aRet[4], aRet[5], aRet[6]))
             self.m_port.delOperation(ind)
@@ -1136,7 +1146,7 @@ class iTradeOperationsWindow(wx.Frame, iTrade_wxFrame, wxl.ColumnSorterMixin):
 
     def OnAdd(self, event):
         info("OnAdd")
-        aRet = edit_iTradeOperation(self, None, OPERATION_ADD, market=self.m_port.market(), currency=self.m_port.currency())
+        aRet = edit_iTradeOperation(win=self, op=None, opmode=OPERATION_ADD, market=self.m_port.market(), currency=self.m_port.currency())
         if aRet:
             info(u'OnAdd: date={} type={} name={} value={:12.2f} expenses={:12.2f} number={:d} ref={:d}'.format(str(aRet[0]), aRet[1], aRet[2], aRet[3], aRet[4], aRet[5], aRet[6]))
             self.m_port.addOperation(aRet)
@@ -1162,7 +1172,7 @@ def open_iTradeOperations(win, port=None):
     else:
         if not isinstance(port, Portfolio):
             port = loadPortfolio()
-        frame = iTradeOperationsWindow(win, wx.ID_ANY, u"{} - {}".format(message('portfolio_title'), port.name()), port)
+        frame = iTradeOperationsWindow(parent=win, id=wx.ID_ANY, title=u"{} - {}".format(message('portfolio_title'), port.name()), port=port)
         if win:
             win.m_hOperation = frame
         frame.Show()
@@ -1202,7 +1212,7 @@ def add_iTradeOperation(win, portfolio, quote, type):
     else:
         key = None
     op = Operation(d=datetime.now(), t=type, m=key, v='0.0', e='0.0', n='0', vat=portfolio.vat(), ref=-1)
-    aRet = edit_iTradeOperation(win, op, OPERATION_ADD, market=portfolio.market(), currency=portfolio.currency())
+    aRet = edit_iTradeOperation(win=win, op=op, opmode=OPERATION_ADD, market=portfolio.market(), currency=portfolio.currency())
     if aRet:
         info(u'add_iTradeOperation: date={} type={} name={} value={:12.2f} expenses={:12.2f} number={:d} ref={:d}'.format(str(aRet[0]), aRet[1], aRet[2], aRet[3], aRet[4], aRet[5], aRet[6]))
         portfolio.addOperation(aRet)

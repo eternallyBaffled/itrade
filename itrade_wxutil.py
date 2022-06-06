@@ -472,7 +472,7 @@ class iTradeSizedDialog(sc.SizedDialog):
         self.PostCreate(pre)
 
         self.borderLen = 12
-        self.mainPanel = sc.SizedPanel(self, wx.ID_ANY)
+        self.mainPanel = sc.SizedPanel(self, id=wx.ID_ANY)
 
         mysizer = wx.BoxSizer(wx.VERTICAL)
         mysizer.Add(self.mainPanel, 1, wx.EXPAND | wx.ALL, self.GetDialogBorder())
