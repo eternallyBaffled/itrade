@@ -91,20 +91,20 @@ class iTradeConverterDialog(iTradeSizedDialog):
         for c in list:
             self.wxOrgCur.Append(c,c)
 
-        self.wxOrgCur.SetSelection(curFrom)
+        self.wxOrgCur.SetSelection(n=curFrom)
         self.m_orgcur = list[curFrom]
         wx.EVT_COMBOBOX(self, self.wxOrgCur.GetId(), self.OnOrgCurrency)
 
         # Row 2 : Dest Currency Value
         self.wxDestVal = wx.StaticText(pane, wx.ID_ANY, "", size=(100, -1), style=wx.ALIGN_RIGHT | wx.ST_NO_AUTORESIZE)
-        self.wxDestVal.SetLabel('')
+        self.wxDestVal.SetLabel(label='')
         self.wxDestVal.SetSizerProps(valign='center')
         self.wxDestCur = wx.ComboBox(pane, wx.ID_ANY, "", size=wx.Size(80, -1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
 
         for c in list:
             self.wxDestCur.Append(c, c)
 
-        self.wxDestCur.SetSelection(curTo)
+        self.wxDestCur.SetSelection(n=curTo)
         self.m_destcur = list[curTo]
         wx.EVT_COMBOBOX(self, self.wxDestCur.GetId(), self.OnDestCurrency)
 
@@ -119,12 +119,12 @@ class iTradeConverterDialog(iTradeSizedDialog):
 
         # CLOSE
         btn = wx.Button(btnpane, wx.ID_CANCEL, message('close'))
-        btn.SetHelpText(message('close_desc'))
+        btn.SetHelpText(text=message('close_desc'))
 
         # a little trick to make sure that you can't resize the dialog to
         # less screen space than the controls need
         self.Fit()
-        self.SetMinSize(self.GetSize())
+        self.SetMinSize(minSize=self.GetSize())
 
         EVT_UPDATE_CONVERT(self, self.OnUpdateConvert)
         self.convertValue()
@@ -138,7 +138,7 @@ class iTradeConverterDialog(iTradeSizedDialog):
         # get the value and convert
         o = self.wxOrgVal.GetValue()
         d = currencies.convert(curTo=self.m_destcur, curFrom=self.m_orgcur, Value=o)
-        self.wxDestVal.SetLabel('{:.3f}'.format(d))
+        self.wxDestVal.SetLabel(label=u'{:.3f}'.format(d))
 
         # should be enough !
         wx.SetCursor(wx.STANDARD_CURSOR)

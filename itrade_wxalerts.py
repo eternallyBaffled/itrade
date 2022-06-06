@@ -95,7 +95,7 @@ class iTradeAlertsPanel(wx.Window):
         # List
         self.m_list = iTradeAlertsListCtrl(self, wx.ID_ANY, style=wx.LC_REPORT | wx.SUNKEN_BORDER | wx.LC_SINGLE_SEL | wx.LC_VRULES | wx.LC_HRULES)
         self.m_list.SetImageList(self.m_imagelist, wx.IMAGE_LIST_SMALL)
-        self.m_list.SetFont(wx.Font(10, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
+        self.m_list.SetFont(font=wx.Font(10, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
 
         # __x temp
         alerts.scan()

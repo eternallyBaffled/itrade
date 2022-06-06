@@ -91,7 +91,7 @@ def Import_ListOfQuotes_HKG(quotes, market='HONG KONG EXCHANGE', dlg=None, x=0):
             return False
 
         # returns the data
-        book = itrade_excel.open_excel(file=None, content=data)
+        book = itrade_excel.open_excel(filename=None, content=data)
         sh = book.sheet_by_index(0)
 
         #print(u'Import_ListOfQuotes_HKG_{}:'.format(market), 'book', book, 'sheet', sh, 'nrows=', sh.nrows)

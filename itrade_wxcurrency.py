@@ -89,7 +89,7 @@ class iTradeCurrencyToolbar(wx.ToolBar):
         self._init_toolbar()
 
     def _init_toolbar(self):
-        self.SetToolBitmapSize(wx.Size(24, 24))
+        self.SetToolBitmapSize(size=wx.Size(24, 24))
         close_tool = self.AddSimpleTool(wx.ID_ANY, wx.ArtProvider.GetBitmap(wx.ART_CROSS_MARK, wx.ART_TOOLBAR),
                            message('main_close'), message('main_desc_close'))
 
@@ -176,7 +176,7 @@ class iTradeCurrenciesWindow(wx.Frame, iTrade_wxFrame, iTrade_wxLiveCurrencyMixi
         menu_bar.Append(self.viewmenu, message('currency_menu_view'))
 
         # Adding the MenuBar to the Frame content
-        self.SetMenuBar(menu_bar)
+        self.SetMenuBar(menubar=menu_bar)
 
         # Toolbar
         self.m_toolbar = iTradeCurrencyToolbar(parent=self, id=wx.ID_ANY)
@@ -186,7 +186,7 @@ class iTradeCurrenciesWindow(wx.Frame, iTrade_wxFrame, iTrade_wxLiveCurrencyMixi
                                  style=wx.LC_REPORT | wx.SUNKEN_BORDER | wx.LC_SINGLE_SEL | wx.LC_VRULES | wx.LC_HRULES,
                                  list=list_of_currencies())
         # self.m_list.SetImageList(self.m_imagelist, wx.IMAGE_LIST_SMALL)
-        self.m_list.SetFont(wx.Font(10, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
+        self.m_list.SetFont(font=wx.Font(10, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
 
         wx.EVT_SIZE(self, self.OnSize)
 
@@ -204,7 +204,7 @@ class iTradeCurrenciesWindow(wx.Frame, iTrade_wxFrame, iTrade_wxLiveCurrencyMixi
         EVT_POSTINIT(self, self.OnPostInit)
         wx.PostEvent(self, PostInitEvent())
 
-        self.Show(True)
+        self.Show(show=True)
 
     # --- [ window management ] -------------------------------------
 

@@ -66,7 +66,7 @@ from itrade_wxhtml import wxUrlClickHtmlWindow, EVT_HTML_URL_CLICK
 
 def matplot_color_to_wxcolor(colorname='k'):
     """
-    convert a MatplotColor to a RGB tuple used by wxPython
+    convert a MatplotColor to an RGB tuple used by wxPython
 
          b  : blue
          g  : green
@@ -171,16 +171,19 @@ def _tupn(tup, n):
         else:
             return None
 
-DefaultButtonString = '''
-<wxp class="{}" module="{}">
-    <param name="label" value="{}">
-    <param name="id"    value="{}">
-</wxp>'''
 
 class Default_wxButton(wx.Button):
     def __init__(self, *args, **kwargs):
         wx.Button.__init__(self, *args, **kwargs)
         self.SetDefault()
+
+
+DefaultButtonString = u'''
+<wxp class="{}" module="{}">
+    <param name="label" value="{}">
+    <param name="id"    value="{}">
+</wxp>'''
+
 
 def HTMLforSingleButton(label, id=None, makedefault=0):
     if id is None:
@@ -193,6 +196,7 @@ def HTMLforSingleButton(label, id=None, makedefault=0):
             defaultstring1 = "Button"
             defaultstring2 = "wx"
         return DefaultButtonString.format(defaultstring1, defaultstring2, label, id)
+
 
 def HTMLforButtons(buttons, betweenbuttons=""):
     def rn(n):
@@ -274,6 +278,7 @@ def HTMLforButtons(buttons, betweenbuttons=""):
 #
 # ============================================================================
 
+
 class HTMLDialog(wx.Dialog):
     def __init__(self,
                  parent,
@@ -281,7 +286,7 @@ class HTMLDialog(wx.Dialog):
                  defaultsize=(420, 380),
                  name="",
                  caption=None,
-                 **kwargs):
+                 *args, **kwargs):
 
         # be sure to have a caption
         if caption is None:
@@ -296,24 +301,24 @@ class HTMLDialog(wx.Dialog):
         kwargs['defaultsize'] = defaultsize
 
         # init
-        wx.Dialog.__init__(self, parent, wx.ID_ANY, caption, style=wx.TAB_TRAVERSAL|wx.DEFAULT_DIALOG_STYLE, size=size)
+        wx.Dialog.__init__(self, parent=parent, id=wx.ID_ANY, title=caption, size=size, style=wx.TAB_TRAVERSAL|wx.DEFAULT_DIALOG_STYLE, *args, **kwargs)
 
         # container
-        self.m_html = wxUrlClickHtmlWindow(self, wx.ID_ANY, style=wx.CLIP_CHILDREN | wx.html.HW_SCROLLBAR_NEVER | wx.TAB_TRAVERSAL)
+        self.m_html = wxUrlClickHtmlWindow(self, id=wx.ID_ANY, style=wx.CLIP_CHILDREN | wx.html.HW_SCROLLBAR_NEVER | wx.TAB_TRAVERSAL)
         EVT_HTML_URL_CLICK(self.m_html, self.OnLinkClick)
 
         # set the content
         self.SetContents(*(), **kwargs)
 
         # layout the content
-        self.SetAutoLayout(True)
+        self.SetAutoLayout(autoLayout=True)
 
         lc = wx.LayoutConstraints()
         lc.top.SameAs(self, wx.Top, 5)
         lc.left.SameAs(self, wx.Left, 5)
         lc.bottom.SameAs(self, wx.Bottom, 5)
         lc.right.SameAs(self, wx.Right, 5)
-        self.m_html.SetConstraints(lc)
+        self.m_html.SetConstraints(constraints=lc)
         self.Layout()
 
         self.GetDefaultItem().SetFocus()
@@ -321,7 +326,7 @@ class HTMLDialog(wx.Dialog):
         # from wxWindows docs: This function (wxWindow::OnCharHook) is
         # only relevant to top-level windows (frames and dialogs), and
         # under Windows only. Under GTK the normal EVT_CHAR_ event has
-        # the functionality, i.e. you can intercepts it and if you
+        # the functionality, i.e. you can intercept it and if you
         # don't call wxEvent::Skip the window won't get the event.
 
         if sys.platform not in ["windows", "nt"]:
@@ -342,7 +347,7 @@ class HTMLDialog(wx.Dialog):
             webbrowser.open(url)
 
     def OnCharHook(self, event):
-        if event.KeyCode in (wx.WXK_RETURN, wx.WXK_SPACE) :
+        if event.KeyCode in (wx.WXK_RETURN, wx.WXK_SPACE):
             for id in (wx.ID_YES, wx.ID_NO, wx.ID_OK):
                 wnd = self.m_html.FindWindowById(id)
                 if wnd:
@@ -358,11 +363,11 @@ class HTMLDialog(wx.Dialog):
                 if self.IsModal():
                     self.EndModal(wx.ID_CANCEL)
                 else:
-                    self.Show(False)
+                    self.Show(show=False)
         else:
             event.Skip()
 
-    DefaultHTML = '''
+    DefaultHTML = u'''
             <html>
             <body {} {}>
             <center>
@@ -379,7 +384,7 @@ class HTMLDialog(wx.Dialog):
             </html>
             '''
 
-    ImageHTML='''
+    ImageHTML = u'''
           <a href="{}"><img src="{}" align=top alt="{}" border=0></a>&nbsp;
             '''
 
@@ -389,7 +394,7 @@ class HTMLDialog(wx.Dialog):
                     text="",
                     namefmt="<h1>{}</h1>",
                     betweenbuttons="&nbsp;",
-                    link_regexp=re.compile("</a>",re.IGNORECASE),
+                    link_regexp=re.compile("</a>", re.IGNORECASE),
                     defaultsize=(420, 380),
                     image=None,
                     imagedir="res",
@@ -408,18 +413,18 @@ class HTMLDialog(wx.Dialog):
 
         # some image ?
         if image:
-            imstr1 = self.ImageHTML.format(imageurl, os.path.join(imagedir, image), "['{}']".format(image))
+            imstr1 = self.ImageHTML.format(imageurl, os.path.join(imagedir, image), u"['{}']".format(image))
         else:
             imstr1 = ""
 
         # colors
         if fgcolor is not None:
-            colourstring1 = 'fgcolor="{}"'.format(fgcolor)
+            colourstring1 = u'fgcolor="{}"'.format(fgcolor)
         else:
             colourstring1 = ""
 
         if bgcolor is not None:
-            colourstring2 = 'bgcolor="{}"'.format(bgcolor)
+            colourstring2 = u'bgcolor="{}"'.format(bgcolor)
         else:
             colourstring2 = ""
 
@@ -429,10 +434,10 @@ class HTMLDialog(wx.Dialog):
 
         # set final content
         the_html_page = (self.DefaultHTML.format(colourstring1, colourstring2,
-                                                boxcolor,
-                                                imstr1,
-                                                text,
-                                                buttonstring)
+                                                 boxcolor,
+                                                 imstr1,
+                                                 text,
+                                                 buttonstring)
                         )
 
         self.m_html.SetPage(the_html_page)
@@ -460,8 +465,8 @@ class HTMLDialog(wx.Dialog):
             if self.IsModal():
                 self.EndModal(event.GetId())
             else:
-                self.SetReturnCode(event.GetId())
-                self.Show(False)
+                self.SetReturnCode(returnCode=event.GetId())
+                self.Show(show=False)
 
 
 class iTradeSizedDialog(sc.SizedDialog):
@@ -476,9 +481,9 @@ class iTradeSizedDialog(sc.SizedDialog):
 
         mysizer = wx.BoxSizer(wx.VERTICAL)
         mysizer.Add(self.mainPanel, 1, wx.EXPAND | wx.ALL, self.GetDialogBorder())
-        self.SetSizer(mysizer)
+        self.SetSizer(sizer=mysizer)
 
-        self.SetAutoLayout(True)
+        self.SetAutoLayout(autoLayout=True)
 
 # ============================================================================
 # iTradeDialog()
@@ -499,9 +504,10 @@ class iTradeSizedDialog(sc.SizedDialog):
 #       or wx.ICON_QUESTION
 # ============================================================================
 
+
 class iTradeDialog(iTradeSizedDialog):
     def __init__(self, parent, caption, text, size=(420, 380), style=wx.OK | wx.YES_DEFAULT):
-        iTradeSizedDialog.__init__(self, parent, wx.ID_ANY, caption, size, style=wx.DEFAULT_DIALOG_STYLE)
+        iTradeSizedDialog.__init__(self, parent, wx.ID_ANY, caption, size=size, style=wx.DEFAULT_DIALOG_STYLE)
 
         image = None
         if style & wx.ICON_INFORMATION == wx.ICON_INFORMATION:
@@ -531,7 +537,7 @@ class iTradeDialog(iTradeSizedDialog):
         else:
             h = 32
         txt = wx.StaticText(parent=pane, id=wx.ID_ANY, label=text, size=(260,h))
-        txt.SetFont(wx.Font(10, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
+        txt.SetFont(font=wx.Font(10, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
 
         txt.SetSizerProps(expand=True, valign='center', halign='center')
 
@@ -549,7 +555,7 @@ class iTradeDialog(iTradeSizedDialog):
         if style & wx.OK == wx.OK:
             btn = wx.Button(btnpane, wx.ID_OK, message('ok'))
             btn.SetDefault()
-            btn.SetHelpText(message('ok_desc'))
+            btn.SetHelpText(text=message('ok_desc'))
             wx.EVT_BUTTON(self, wx.ID_OK, self.OnOK)
 
         # YES
@@ -571,13 +577,13 @@ class iTradeDialog(iTradeSizedDialog):
         # CANCEL
         if style & wx.CANCEL == wx.CANCEL:
             btn = wx.Button(parent=btnpane, id=wx.ID_CANCEL, label=message('cancel'))
-            btn.SetHelpText(message('cancel_desc'))
+            btn.SetHelpText(text=message('cancel_desc'))
             wx.EVT_BUTTON(self, wx.ID_CANCEL, self.OnCancel)
 
         # a little trick to make sure that you can't resize the dialog to
         # less screen space than the controls need
         self.Fit()
-        self.SetMinSize(self.GetSize())
+        self.SetMinSize(minSize=self.GetSize())
 
     def OnOK(self, evt):
         self.EndModal(wx.ID_OK)
@@ -599,6 +605,7 @@ class iTradeDialog(iTradeSizedDialog):
 #   caption         The dialog caption
 # use : wxOK + wxICON_INFORMATION
 # ============================================================================
+
 
 def iTradeInformation(parent, text, caption=message('info_caption')):
     #dlg = HTMLDialog(parent=parent, caption=caption, text=text, buttons=OKButton(makedefault=1), image="box_info.png")
@@ -634,6 +641,7 @@ def iTradeError(parent, text, caption=message('alert_caption')):
 # use : wxYES_NO + { wxCANCEL) + wxICON_QUESTION
 # ============================================================================
 
+
 def iTradeYesNo(parent, text, caption, bCanCancel=False, bYesDefault=True):
     #buttons = YesButton(makedefault=bYesDefault)+NoButton(makedefault=not bYesDefault)
     #if bCanCancel:
@@ -656,6 +664,7 @@ def iTradeYesNo(parent, text, caption, bCanCancel=False, bYesDefault=True):
 # ============================================================================
 # Test me
 # ============================================================================
+
 
 def main():
     setLevel(logging.INFO)

@@ -126,7 +126,7 @@ class myColorFormatter(Formatter):
                 color = itrade_ansicolors.RED
             elif record.levelno == logging.WARNING:
                 color = itrade_ansicolors.YELLOW
-            return ''.join([color,Formatter.format(self, record, *args, **kwargs),itrade_ansicolors.RESET])
+            return ''.join([color, Formatter.format(self, record, *args, **kwargs), itrade_ansicolors.RESET])
         else:
             return Formatter.format(self, record, *args, **kwargs)
 

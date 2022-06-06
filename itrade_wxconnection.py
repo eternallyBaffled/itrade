@@ -130,17 +130,17 @@ class iTradeConnectionDialog(iTradeSizedDialog):
         # OK
         btn = wx.Button(btnpane, wx.ID_OK, message('valid'))
         btn.SetDefault()
-        btn.SetHelpText(message('valid_desc'))
+        btn.SetHelpText(text=message('valid_desc'))
         wx.EVT_BUTTON(self, wx.ID_OK, self.OnValid)
 
         # CANCEL
         btn = wx.Button(btnpane, wx.ID_CANCEL, message('cancel'))
-        btn.SetHelpText(message('cancel_desc'))
+        btn.SetHelpText(text=message('cancel_desc'))
 
         # a little trick to make sure that you can't resize the dialog to
         # less screen space than the controls need
         self.Fit()
-        self.SetMinSize(self.GetSize())
+        self.SetMinSize(minSize=self.GetSize())
 
     def OnValid(self, event):
         self.m_ip = self.wxIPCtrl.GetValue().strip()

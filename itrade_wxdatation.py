@@ -86,12 +86,12 @@ class iTradeDatePicker(wx.Dialog):
         box = wx.BoxSizer(wx.HORIZONTAL)
         btn = wx.Button(self, wx.ID_OK, message('valid'))
         btn.SetDefault()
-        btn.SetHelpText(message('valid_desc'))
+        btn.SetHelpText(text=message('valid_desc'))
         box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_BUTTON(self, btn.GetId(), self.OnValid)
 
         btn = wx.Button(self, wx.ID_CANCEL, message('cancel'))
-        btn.SetHelpText(message('cancel_desc'))
+        btn.SetHelpText(text=message('cancel_desc'))
         box.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         wx.EVT_BUTTON(self, btn.GetId(), self.OnCancel)
 
@@ -99,7 +99,7 @@ class iTradeDatePicker(wx.Dialog):
 
         wx.EVT_SIZE(self, self.OnSize)
 
-        self.SetAutoLayout(True)
+        self.SetAutoLayout(autoLayout=True)
         self.SetSizerAndFit(sizer)
 
     def OnSize(self, event):

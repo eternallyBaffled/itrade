@@ -364,7 +364,7 @@ class iTrade_wxToolbarGraph(wx.ToolBar):
         self._init_toolbar()
 
     def _init_toolbar(self):
-        self.SetToolBitmapSize(wx.Size(24,24))
+        self.SetToolBitmapSize(size=wx.Size(24,24))
         home_tool = self.AddSimpleTool(wx.ID_ANY, wx.ArtProvider.GetBitmap(wx.ART_GO_HOME, wx.ART_TOOLBAR),
                            message('tb_home'), message('tb_home'))
         self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
@@ -472,7 +472,7 @@ class iTrade_wxToolbarGraph(wx.ToolBar):
         dlg = wx.FileDialog(self.m_parent, message('save_to_file'),
                             itrade_config.dirSnapshots, default_file, filetypes,
                             wx.SAVE|wx.OVERWRITE_PROMPT|wx.CHANGE_DIR)
-        dlg.SetFilterIndex(filter_index)
+        dlg.SetFilterIndex(filterindex=filter_index)
         if dlg.ShowModal() == wx.ID_OK:
             dirname = dlg.GetDirectory()
             filename = dlg.GetFilename()
@@ -750,9 +750,9 @@ class iTrade_wxPanelGraph(GObject, PanelPrint):
         # debug('newx=%d width=%d period=%d time=%d' % (newx,width,period,int(time)))
 
         dc = wx.ClientDC(self.m_canvas)
-        dc.SetLogicalFunction(wx.XOR)
-        dc.SetBrush(wx.Brush(wx.Colour(255,255,255), wx.BRUSHSTYLE_TRANSPARENT))
-        dc.SetPen(wx.Pen(wx.Colour(200, 200, 200), 1, wx.PENSTYLE_SOLID))
+        dc.SetLogicalFunction(function=wx.XOR)
+        dc.SetBrush(brush=wx.Brush(wx.Colour(255,255,255), wx.BRUSHSTYLE_TRANSPARENT))
+        dc.SetPen(pen=wx.Pen(wx.Colour(200, 200, 200), 1, wx.PENSTYLE_SOLID))
 
         dc.ResetBoundingBox()
         dc.BeginDrawing()

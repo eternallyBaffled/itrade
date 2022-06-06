@@ -99,7 +99,7 @@ def Import_ListOfQuotes_LSE(quotes, market='LSE SETS', dlg=None, x=0):
         return False
 
     # returns the data
-    book = itrade_excel.open_excel(file=None, content=data)
+    book = itrade_excel.open_excel(filename=None, content=data)
     sh = book.sheet_by_index(0)
     n = 0
     indice = {}

@@ -111,7 +111,7 @@ def Import_ListOfQuotes_OMX(quotes, market='STOCKHOLM EXCHANGE', dlg=None, x=0):
         return False
 
     # returns the data
-    book = itrade_excel.open_excel(file=None, content=data)
+    book = itrade_excel.open_excel(filename=None, content=data)
     sh = book.sheet_by_index(1)
     n = 0
     indice = {}

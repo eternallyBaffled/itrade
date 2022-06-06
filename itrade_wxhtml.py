@@ -68,7 +68,7 @@ EVT_HTML_URL_CLICK = wx.PyEventBinder(wxEVT_HTML_URL_CLICK)
 class wxHtmlWindowUrlClick(wx.PyEvent):
     def __init__(self, linkinfo):
         wx.PyEvent.__init__(self)
-        self.SetEventType(wxEVT_HTML_URL_CLICK)
+        self.SetEventType(typ=wxEVT_HTML_URL_CLICK)
         self.linkinfo = (linkinfo.GetHref(), linkinfo.GetTarget())
 
 
@@ -111,7 +111,7 @@ class iTradeHtmlPanel(wx.Panel):
     # ---[ Window Management ] ------------------------------------------------
 
     def OnSize(self, evt):
-        self.m_html.SetSize(self.GetSizeTuple())
+        self.m_html.SetSize(size=self.GetSizeTuple())
 
     def paint0(self):
         content = u'<html><head><meta charset=iso-8859-1"></head>\
@@ -250,7 +250,7 @@ class iTradeRSSPanel(wx.Panel):
     # ---[ Window Management ]-------------------------------------------------
 
     def OnSize(self, evt):
-        self.m_html.SetSize(self.GetSizeTuple())
+        self.m_html.SetSize(size=self.GetSizeTuple())
 
     def refresh(self):
         info('iTradeRSSPanel:refresh')

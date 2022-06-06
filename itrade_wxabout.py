@@ -182,13 +182,13 @@ class iTradeAboutBox(wx.Dialog):
                            name='AboutBox', *args, **kwargs)
         self.blackback = wx.Window(parent=self, pos=(0, 0), size=self.GetClientSize(),
                                    style=wx.CLIP_CHILDREN)
-        self.blackback.SetBackgroundColour(wx.BLACK)
+        self.blackback.SetBackgroundColour(colour=wx.BLACK)
 
         self.m_html = wxUrlClickHtmlWindow(parent=self.blackback, id=wx.ID_ANY, style=wx.CLIP_CHILDREN | wx.html.HW_NO_SELECTION)
         EVT_HTML_URL_CLICK(self.m_html, self.OnLinkClick)
 
         self.setPage()
-        self.blackback.SetAutoLayout(True)
+        self.blackback.SetAutoLayout(autoLayout=True)
 
         # adjust constraints
         lc = wx.LayoutConstraints()
@@ -196,13 +196,13 @@ class iTradeAboutBox(wx.Dialog):
         lc.left.SameAs(self.blackback, wx.Left, self.border)
         lc.bottom.SameAs(self.blackback, wx.Bottom, self.border)
         lc.right.SameAs(self.blackback, wx.Right, self.border)
-        self.m_html.SetConstraints(lc)
+        self.m_html.SetConstraints(constraints=lc)
 
         # layout everything
         self.blackback.Layout()
         self.Center(wx.BOTH)
 
-        self.SetAcceleratorTable(wx.AcceleratorTable([(0, wx.WXK_ESCAPE, wx.ID_OK)]))
+        self.SetAcceleratorTable(accel=wx.AcceleratorTable([(0, wx.WXK_ESCAPE, wx.ID_OK)]))
 
     def gotoInternetUrl(self, url):
         try:
