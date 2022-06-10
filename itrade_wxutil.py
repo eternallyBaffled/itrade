@@ -449,7 +449,7 @@ class HTMLDialog(wx.Dialog):
 
         c = self.m_html.GetInternalRepresentation()
         c.Layout(w-10)
-        self.SetSize(c.GetWidth()+10, c.GetHeight()+35)
+        self.SetSize(size=(c.GetWidth()+10, c.GetHeight()+35))
 
         # layout everything
         self.Layout()

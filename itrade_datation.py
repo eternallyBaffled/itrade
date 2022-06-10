@@ -133,7 +133,7 @@ class Calendar(object):
     # --- [ properties ] --------------------------------------
 
     def isopen(self, d, market=None):
-        if type(d)==type('') or isinstance(d,date):
+        if type(d) == type('') or isinstance(d, date):
             d = Datation(d)
         if not isinstance(d, Datation):
             raise TypeError("parameter shall be date, Datation or string object")
@@ -270,15 +270,15 @@ class Calendar(object):
         while num > 0:
             # print('--- index datation --{:d}--'.format(year))
             month = 1
-            while month <= 12 and num>0:
+            while month <= 12 and num > 0:
                 # print('--- index datation --{:d}--'.format(month))
                 day = 1
-                while day <= 31 and num>0:
+                while day <= 31 and num > 0:
                     # print('--- index datation --{:d}--'.format(day))
                     try:
-                        d = date(year,month,day)
+                        d = date(year, month, day)
                         #d = Datation(d)
-                        if d.weekday()<SATURDAY:
+                        if d.weekday() < SATURDAY:
                         #if self.isopen(d):
                             # print('num={:d} - index {} = {:d}'.format(num, d, self.m_maxidx))
                             self.m_index[d] = self.m_maxidx
@@ -300,7 +300,7 @@ class Calendar(object):
         else:
             return -1
 
-    def date(self,_index):
+    def date(self, _index):
         if _index in self.m_date:
             return self.m_date[_index]
         else:

@@ -93,7 +93,7 @@ def Import_ListOfQuotes_BARCHART(quotes, market='TOTRONTO EXCHANGE', dlg=None, x
             dlg.Update(x, u"{}:'{}'".format(market, letter))
 
         try:
-            req = urllib2.Request(url.format(letter))
+            req = urllib2.Request(url=url.format(letter))
             req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
 
             with closing(urllib2.urlopen(req)) as f:

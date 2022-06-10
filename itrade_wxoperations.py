@@ -251,7 +251,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
             if k == self.m_type:
                 idx = count
 
-        self.wxTypeCtrl.SetSelection(idx)
+        self.wxTypeCtrl.SetSelection(n=idx)
 
         # Row 4 : quote
         btnpane = sc.SizedPanel(container, wx.ID_ANY)

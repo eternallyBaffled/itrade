@@ -470,53 +470,53 @@ class Trades(object):
         s = 0.0
         n = 0
         j = i
-        while n<150 and j>=0:
-            if self.m_inClose[j]>=0.0:
+        while n < 150 and j >= 0:
+            if self.m_inClose[j] >= 0.0:
                 s = s + self.m_inClose[j]
                 n = n + 1
             j = j - 1
-        if n>0:
+        if n > 0:
             self.m_ma150[i] = s/float(n)
         else:
             self.m_ma150[i] = -1.0
 
-    def compute_ma100(self,i):
-        #debug('%s: compute MA100 [%d]' % (self.m_quote.ticker(),i))
+    def compute_ma100(self, i):
+        #debug(u'{}: compute MA100 [{:d}]'.formmat(self.m_quote.ticker(), i))
         s = 0.0
         n = 0
         j = i
-        while n<100 and j>=0:
-            if self.m_inClose[j]>=0.0:
+        while n < 100 and j >= 0:
+            if self.m_inClose[j] >= 0.0:
                 s = s + self.m_inClose[j]
                 n = n + 1
             j = j - 1
-        if n>0:
+        if n > 0:
             self.m_ma100[i] = s/float(n)
         else:
             self.m_ma100[i] = -1.0
 
-    def compute_ma50(self,i):
+    def compute_ma50(self, i):
         #debug('%s: compute MA50 [%d]' % (self.m_quote.ticker(),i))
         s = 0.0
         n = 0
         j = i
-        while n<50 and j>=0:
-            if self.m_inClose[j]>=0.0:
+        while n < 50 and j >= 0:
+            if self.m_inClose[j] >= 0.0:
                 s = s + self.m_inClose[j]
                 n = n + 1
             j = j - 1
-        if n>0:
+        if n > 0:
             self.m_ma50[i] = s/float(n)
         else:
             self.m_ma50[i] = -1.0
 
-    def compute_ma20(self,i):
+    def compute_ma20(self, i):
         #debug('%s: compute MA20 [%d]' % (self.m_quote.ticker(),i))
         s = 0.0
         n = 0
         j = i
-        while n<20 and j>=0:
-            if self.m_inClose[j]>=0.0:
+        while n < 20 and j >= 0:
+            if self.m_inClose[j] >= 0.0:
                 s = s + self.m_inClose[j]
                 n = n + 1
             j = j - 1
@@ -525,14 +525,14 @@ class Trades(object):
         else:
             self.m_ma20[i] = -1.0
 
-    def compute_rsi14(self,i):
+    def compute_rsi14(self, i):
         #debug('%s: compute RSI14 [%d]' % (self.m_quote.ticker(),i))
         h = 0.0
         b = 0.0
         n = 14*10
-        if i<n:
+        if i < n:
             n=i
-        while n>=0:
+        while n >= 0:
             if self.m_inClose[i-n]>=0.0:
                 t = self.m_inClose[i-n] - self.close(i-n-1)
                 th = 0.0
@@ -546,49 +546,49 @@ class Trades(object):
                 h = ((13.0*h) + th) / 14.0
 
             n = n - 1
-        if b==0.0:
+        if b == 0.0:
             self.m_rsi14[i] = 100.0
         else:
             self.m_rsi14[i] = 100.0 - (100.0/(1.0+(h / b)))
 
-    def compute_minmax(self,i,period):
+    def compute_minmax(self, i, period):
         l = 9999999.0
         h = 0.0
         n = 0
         j = i
-        while n<period and j>=0:
-            if self.m_inHigh[j]>h:
+        while n < period and j >= 0:
+            if self.m_inHigh[j] > h:
                 h = self.m_inHigh[j]
 
-            if self.m_inLow[j]<l:
+            if self.m_inLow[j] < l:
                 l = self.m_inLow[j]
 
             n = n + 1
             j = j - 1
-        return l,h
+        return l, h
 
-    def compute_stoK(self,i):
+    def compute_stoK(self, i):
         #debug('%s: compute STO K [%d]' % (self.m_quote.ticker(),i))
         mc = (self.close(i) + self.close(i-1) + self.close(i-2))/3
-        l1,h1 = self.compute_minmax(i,14)
-        l2,h2 = self.compute_minmax(i-1,14)
-        l3,h3 = self.compute_minmax(i-2,14)
+        l1, h1 = self.compute_minmax(i, 14)
+        l2, h2 = self.compute_minmax(i-1, 14)
+        l3, h3 = self.compute_minmax(i-2, 14)
         ml = (l1 + l2 + l3) / 3
         mh = (h1 + h2 + h3) / 3
 
         t = ((mc - ml) / (mh - ml)) * 100.0
-        if t<0.0:
-            t=0.0
-        if t>100.0:
-            t=100.0
+        if t < 0.0:
+            t = 0.0
+        if t > 100.0:
+            t = 100.0
         self.m_stoK[i] = t
 
-    def compute_stoD(self,i):
+    def compute_stoD(self, i):
         #debug('%s: compute STO D [%d]' % (self.m_quote.ticker(),i))
         s = 0.0
         n = 0
         j = i
-        while n<5 and j>=0:
+        while n<5 and j >= 0:
             s = s + self.stoK(j)
             n = n + 1
             j = j - 1
@@ -597,13 +597,13 @@ class Trades(object):
         else:
             self.m_stoD[i] = -1
 
-    def compute_vma15(self,i):
+    def compute_vma15(self, i):
         #debug(<'%s: compute VMA15 [%d]' % (self.m_quote.ticker(),i))
         s = long(0)
         n = 0
         j = i
-        while n<15 and j>=0:
-            if self.m_inClose[j]>=0.0:
+        while n < 15 and j >= 0:
+            if self.m_inClose[j] >= 0.0:
                 s = s + self.m_inVol[j]
                 n = n + 1
             j = j - 1
@@ -615,36 +615,36 @@ class Trades(object):
     def compute_ovb(self):
         ovb = long(0)
         for j in range(gCal.lastindex()+1):
-            if self.m_inClose[j]>=0.0:
+            if self.m_inClose[j] >= 0.0:
                 pc = self.close(j-1)
-                if self.m_inClose[j]>=pc:
+                if self.m_inClose[j] >= pc:
                     ovb = ovb + long(self.m_inVol[j])
                 else:
                     ovb = ovb - long(self.m_inVol[j])
 
             self.m_ovb[j] = ovb
 
-    def compute_bollinger(self,i):
+    def compute_bollinger(self, i):
         #debug('%s: compute BOLLINGER n=20,d=2 [%d,%d]' % (self.m_quote.ticker(),i-20+1,i+1))
         sm = 0.0
         ecart = 0.0
         n = 0
         j = i
-        while n<20 and j>=0:
-            if self.m_inClose[j]>=0.0:
+        while n < 20 and j >= 0:
+            if self.m_inClose[j] >= 0.0:
                 sm = sm + self.m_inClose[j]
                 n = n + 1
             j = j - 1
 
-        if n>0:
+        if n > 0:
             # calculate MA20(i)
             self.m_bollM[i] = float(sm/n)
 
             # calculate MA plus 2 standard deviations
             n = 0
             j = i
-            while n<20 and j>=0:
-                if self.m_inClose[j]>=0.0:
+            while n < 20 and j >= 0:
+                if self.m_inClose[j] >= 0.0:
                     ecart = ecart + pow(self.m_inClose[j] - self.m_bollM[i],2)
                     n = n + 1
                 j = j - 1

@@ -99,16 +99,15 @@ class iTradeStopsDialog(wx.Dialog):
             box = wx.BoxSizer(wx.HORIZONTAL)
 
             label = wx.StaticText(parent=self,
-                                  id=wx.ID_ANY,
                                   label=message('stops_portfolio').format(quote.nv_number(),
-                                                                    quote.sv_pr(bDispCurrency=True)))
+                                                                          quote.sv_pr(bDispCurrency=True)))
             box.Add(item=label, proportion=0, flag=wx.ALIGN_LEFT|wx.ALL, border=5)
 
             sizer.AddSizer(box, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
         box = wx.BoxSizer(wx.HORIZONTAL)
 
-        label = wx.StaticText(parent=self, id=wx.ID_ANY, label=msgb)
+        label = wx.StaticText(parent=self, label=msgb)
         box.Add(label, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_LEFT|wx.ALL, 5)
 
         self.wxLoss = masked.Ctrl(self,

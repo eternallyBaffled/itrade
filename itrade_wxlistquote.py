@@ -166,7 +166,7 @@ class iTradeQuoteListDialog(wx.Dialog):
             if eachCtrl == self.m_market:
                 idx = count
 
-        self.editMarket.SetSelection(idx)
+        self.editMarket.SetSelection(n=idx)
 
         sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
@@ -205,7 +205,7 @@ class iTradeQuoteListDialog(wx.Dialog):
             if eachCtrl == self.m_currency:
                 idx = count
 
-        self.editCurrency.SetSelection(idx)
+        self.editCurrency.SetSelection(n=idx)
 
         sizer.AddSizer(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
@@ -349,7 +349,7 @@ class iTradeQuoteListDialog(wx.Dialog):
             if eachCtrl == self.m_place:
                 idx = count
 
-        self.editPlace.SetSelection(idx)
+        self.editPlace.SetSelection(n=idx)
 
 # ============================================================================
 # iTradeQuoteList
@@ -420,7 +420,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
             if eachCtrl == self.m_market:
                 idx = count
 
-        self.wxMarketCtrl.SetSelection(idx)
+        self.wxMarketCtrl.SetSelection(n=idx)
 
         # list selection
         label = wx.StaticText(self, wx.ID_ANY, message('quote_select_list'))
@@ -436,7 +436,7 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
         self.wxQListCtrl.Append(message('quote_select_indiceslist'), QList.indices)
         self.wxQListCtrl.Append(message('quote_select_trackerslist'), QList.trackers)
         self.wxQListCtrl.Append(message('quote_select_bondslist'), QList.bonds)
-        self.wxQListCtrl.SetSelection(self.m_qlist.value)
+        self.wxQListCtrl.SetSelection(n=self.m_qlist.value)
 
         self.wxCount = wx.StaticText(self, wx.ID_ANY, '--')
         box.Add(self.wxCount, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
@@ -677,21 +677,21 @@ class iTradeQuoteListCtrlDialog(wx.Dialog, wxl.ColumnSorterMixin):
     # --- [ OnQuote handlers management ] --------------------------------
 
     def OnNewQuote(self, event):
-        debug("OnNewQuote currentItem={:d}".format(self.currentItem))
+        debug(u"OnNewQuote currentItem={:d}".format(self.currentItem))
         aRet = edit_iTradeQuoteList(self, None, QLIST_ADD)
         if aRet:
-            debug('OnNewQuote: {}'.format(aRet[0]))
+            debug(u'OnNewQuote: {}'.format(aRet[0]))
             quotes.addQuote(aRet[0], aRet[1], aRet[2], aRet[3], aRet[4], aRet[5], aRet[6], list=QList.user, debug=True)
             self.m_dirty = True
             self.PopulateList()
 
     def OnDeleteQuote(self, event):
         quote = self.getQuoteOnTheLine(self.currentItem)
-        debug("OnDeleteQuote currentItem={:d} quote={}".format(self.currentItem, quote))
+        debug(u"OnDeleteQuote currentItem={:d} quote={}".format(self.currentItem, quote))
         if quote:
             aRet = edit_iTradeQuoteList(self, quote, QLIST_DELETE)
             if aRet:
-                debug('OnDeleteQuote: {}'.format(aRet[0]))
+                debug(u'OnDeleteQuote: {}'.format(aRet[0]))
                 quotes.removeQuote(quote.key())
                 self.m_dirty = True
                 self.PopulateList()

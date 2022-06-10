@@ -107,7 +107,7 @@ def buildListOfSupportedCurrencies():
 class Currencies(object):
     def __init__(self):
         self.m_url = 'https://finance.yahoo.com/d/quotes.csv?s={}{}=X&f=s4l1t1c1ghov&e=.csv'
-
+#'https://query1.finance.yahoo.com/v7/finance/download/EURUSD=X?period1=1622993794&period2=1654529794&interval=1d&events=history&includeAdjustedClose=true'
         self.m_connection = None
 
         # to-from
@@ -148,7 +148,7 @@ class Currencies(object):
             used, rate = target
             curs.append("{};{};{:.8f}".format(eachCurrency[:3], eachCurrency[3:], rate))
 
-        # open and write the file with these currencies information
+        # open and write the file with the currencies information
         itrade_csv.write(fn, os.path.join(itrade_config.dirCacheData, 'currencies.txt'), curs)
 
     # ---[ Convert ] ---

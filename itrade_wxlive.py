@@ -59,8 +59,8 @@ import wx.lib.newevent
 # Creates a new Event class and a EVT binder function
 # ============================================================================
 
-(UpdateLiveEvent,EVT_UPDATE_LIVE) = wx.lib.newevent.NewEvent()
-(UpdateLiveCurrencyEvent,EVT_UPDATE_LIVECURRENCY) = wx.lib.newevent.NewEvent()
+(UpdateLiveEvent, EVT_UPDATE_LIVE) = wx.lib.newevent.NewEvent()
+(UpdateLiveCurrencyEvent, EVT_UPDATE_LIVECURRENCY) = wx.lib.newevent.NewEvent()
 
 # ============================================================================
 # UpdateLiveThread
@@ -75,19 +75,19 @@ class UpdateLiveThread(object):
         self.m_sleeptime = sleeptime
         self.m_param = param
         # if itrade_config.verbose:
-        #    print('UpdateLiveThread::__init__(): %s %f %s' % (quote,sleeptime,param))
+        #    print(u'UpdateLiveThread::__init__(): {} {:f} {}'.format(quote, sleeptime, param))
 
     def Start(self):
         self.m_keepGoing = True
         self.m_running = True
         thread.start_new_thread(self.Run, (self.m_param,))
         # if itrade_config.verbose:
-        #    print('UpdateLiveThread::Start(): %s %f %s' % (self.m_quote,self.m_sleeptime,self.m_param))
+        #    print(u'UpdateLiveThread::Start(): {} {:f} {}'.format(self.m_quote, self.m_sleeptime, self.m_param))
 
     def Stop(self):
         self.m_keepGoing = False
         # if itrade_config.verbose:
-        #    print('UpdateLiveThread::Stop(): %s %f %s' % (self.m_quote,self.m_sleeptime,self.m_param))
+        #    print(u'UpdateLiveThread::Stop(): {} {:f} {}'.format(self.m_quote, self.m_sleeptime, self.m_param))
 
     def IsRunning(self):
         return self.m_running
@@ -98,7 +98,7 @@ class UpdateLiveThread(object):
 
         while self.m_keepGoing:
             # if itrade_config.verbose:
-            #    print('UpdateLiveThread::Run(): %s %f %s' % (self.m_quote,self.m_sleeptime,self.m_param))
+            #    print(u'UpdateLiveThread::Run(): {} {:f} {}'.format(self.m_quote, self.m_sleeptime, self.m_param))
 
             # update live information
             itrade_import.liveupdate_from_internet(self.m_quote)
@@ -344,6 +344,7 @@ cNEUTRAL = wx.Colour(170,170,255)
 cPOSITIF = wx.Colour(51,255,51)
 cNEGATIF = wx.Colour(255,51,51)
 
+
 class iTrade_wxLive(wx.Panel):
     def __init__(self, parent, wn, quote):
         #debug('iTrade_wxLive::__init__')
@@ -377,7 +378,7 @@ class iTrade_wxLive(wx.Panel):
         self.pricev = {}
         self.qtev = {}
         self.nbv = {}
-        for i in range(0,NBLINES):
+        for i in range(0, NBLINES):
             self.nba[i] = wx.StaticText(self, wx.ID_ANY, "-", wx.Point(X[0],y), wx.Size(W[0], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
             self.qtea[i] = wx.StaticText(self, wx.ID_ANY, "-", wx.Point(X[1],y), wx.Size(W[1], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
             self.pricea[i] = wx.StaticText(self, wx.ID_ANY, "-", wx.Point(X[2],y), wx.Size(W[2], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
@@ -401,7 +402,7 @@ class iTrade_wxLive(wx.Panel):
         self.qtelt = {}
         self.hourlt = {}
         self.pricelt = {}
-        for i in range(0,LTLINES):
+        for i in range(0, LTLINES):
             self.hourlt[i] = wx.StaticText(self, wx.ID_ANY, "::", wx.Point(X[6],y), wx.Size(W[6], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
             self.qtelt[i] = wx.StaticText(self, wx.ID_ANY, "-", wx.Point(X[7],y), wx.Size(W[7], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
             self.pricelt[i] = wx.StaticText(self, wx.ID_ANY, "-", wx.Point(X[8],y), wx.Size(W[8], 15), style=wx.ALIGN_RIGHT|wx.ST_NO_AUTORESIZE)
@@ -431,13 +432,13 @@ class iTrade_wxLive(wx.Panel):
     def DonePage(self):
         self.m_parent.stopLive(self.m_quote)
 
-    def cell(self,ref,nvalue):
+    def cell(self, ref, nvalue):
         c = ref.GetLabel()
-        if c=="-":
+        if c == "-":
             c = 0
         else:
             c = long(c)
-        if c==nvalue:
+        if c == nvalue:
             bg = wx.NullColour
         else:
             bg = cNEUTRAL
@@ -459,94 +460,92 @@ class iTrade_wxLive(wx.Panel):
         ref.SetLabel(svalue)
         return bg
 
-    def cellfd(self,ref,nvalue):
+    def cellfd(self, ref, nvalue):
         c1 = ref.GetLabel()
-        if c1=='-':
+        if c1 == '-':
             bg = wx.NullColour
         else:
             c1 = float(c1)
-            if nvalue=='-':
+            if nvalue == '-':
                 bg = wx.NullColour
             else:
                 c2 = float(nvalue)
-                if c2>c1:
+                if c2 > c1:
                     bg = cPOSITIF
-                elif c2<c1:
+                elif c2 < c1:
                     bg = cNEGATIF
                 else:
                     bg = wx.NullColour
         return bg
 
-    def setcell(self,ref,val,bg=wx.NullColour):
+    def setcell(self, ref, val, bg=wx.NullColour):
         ref.SetBackgroundColour(bg)
         ref.ClearBackground()
         ref.SetLabel(val)
         return bg
 
-    def displayMeans(self,m):
+    def displayMeans(self, m):
         if m:
-            bg = self.cellfd(self.fmpa,m[0])
-            self.setcell(self.fmpa,m[0],bg)
-            bg = self.cellfd(self.fmpv,m[1])
-            self.setcell(self.fmpv,m[1],bg)
-            bg = self.cellfd(self.cmplt,m[2])
-            self.setcell(self.cmplt,m[2],bg)
+            bg = self.cellfd(self.fmpa, m[0])
+            self.setcell(self.fmpa, m[0], bg)
+            bg = self.cellfd(self.fmpv, m[1])
+            self.setcell(self.fmpv, m[1], bg)
+            bg = self.cellfd(self.cmplt, m[2])
+            self.setcell(self.cmplt, m[2], bg)
         else:
-            self.setcell(self.fmpa,"-")
-            self.setcell(self.fmpv,"-")
-            self.setcell(self.cmplt,"-")
+            self.setcell(self.fmpa, "-")
+            self.setcell(self.fmpv, "-")
+            self.setcell(self.cmplt, "-")
 
-    def displayNotebook(self,nb):
+    def displayNotebook(self, nb):
         if not nb:
-            for i in range(0,NBLINES):
-                self.setcell(self.nba[i],"-")
-                self.setcell(self.nbv[i],"-")
-                self.setcell(self.qtea[i],"-")
-                self.setcell(self.qtev[i],"-")
-                self.setcell(self.pricea[i],"-")
-                self.setcell(self.pricev[i],"-")
+            for i in range(0, NBLINES):
+                self.setcell(self.nba[i], "-")
+                self.setcell(self.nbv[i], "-")
+                self.setcell(self.qtea[i], "-")
+                self.setcell(self.qtev[i], "-")
+                self.setcell(self.pricea[i], "-")
+                self.setcell(self.pricev[i], "-")
         else:
             line = nb[0]
             i = 0
-            for achat in line:
-                self.cell(self.nba[i],achat[0])
-                self.cell(self.qtea[i],achat[1])
-                self.cells(self.pricea[i],achat[2])
-                i = i + 1
+            for i, achat in enumerate(line):
+                self.cell(self.nba[i], achat[0])
+                self.cell(self.qtea[i], achat[1])
+                self.cells(self.pricea[i], achat[2])
 
-            for i in range(i,NBLINES):
-                self.setcell(self.nba[i],"-")
-                self.setcell(self.qtea[i],"-")
-                self.setcell(self.pricea[i],"-")
+            for i in range(i, NBLINES):
+                self.setcell(self.nba[i], "-")
+                self.setcell(self.qtea[i], "-")
+                self.setcell(self.pricea[i], "-")
 
             line = nb[1]
             i = 0
-            for vente in line:
-                self.cell(self.nbv[i],vente[0])
-                self.cell(self.qtev[i],vente[1])
-                self.cells(self.pricev[i],vente[2])
-                i = i + 1
+            for i, vente in enumerate(line):
+                self.cell(self.nbv[i], vente[0])
+                self.cell(self.qtev[i], vente[1])
+                self.cells(self.pricev[i], vente[2])
 
-            for i in range(i,NBLINES):
-                self.setcell(self.nbv[i],"-")
-                self.setcell(self.qtev[i],"-")
-                self.setcell(self.pricev[i],"-")
+            for i in range(i, NBLINES):
+                self.setcell(self.nbv[i], "-")
+                self.setcell(self.qtev[i], "-")
+                self.setcell(self.pricev[i], "-")
 
-    def displayDiode(self,clock):
-        if clock=="::":
-            self.setcell(self.m_sclock," ",cNEGATIF)
+    def displayDiode(self, clock):
+        if clock == "::":
+            self.setcell(self.m_sclock, " ", cNEGATIF)
         else:
-            if clock==self.m_sclock.GetLabel():
-                self.setcell(self.m_sclock,clock)
+            if clock == self.m_sclock.GetLabel():
+                self.setcell(self.m_sclock, clock)
             else:
-                self.setcell(self.m_sclock,clock,cPOSITIF)
+                self.setcell(self.m_sclock, clock, cPOSITIF)
 
-    def displayLastTrades(self,lt):
+    def displayLastTrades(self, lt):
         if not lt:
-            for i in range(0,LTLINES):
-                self.setcell(self.hourlt[i],"::")
-                self.setcell(self.qtelt[i],"-")
-                self.setcell(self.pricelt[i],"-")
+            for i in range(0, LTLINES):
+                self.setcell(self.hourlt[i], "::")
+                self.setcell(self.qtelt[i], "-")
+                self.setcell(self.pricelt[i], "-")
         else:
             i = 0
             ssi = self.foundIndex(lt)
@@ -563,19 +562,18 @@ class iTrade_wxLive(wx.Panel):
                 self.setcell(self.qtelt[i], "{:d}".format(trade[1], bg))
                 i = i + 1
 
-            for i in range(i,LTLINES):
-                self.setcell(self.hourlt[i],"")
-                self.setcell(self.qtelt[i],"")
-                self.setcell(self.pricelt[i],"")
+            for i in range(i, LTLINES):
+                self.setcell(self.hourlt[i], "")
+                self.setcell(self.qtelt[i], "")
+                self.setcell(self.pricelt[i], "")
 
-    def foundIndex(self,lt):
+    def foundIndex(self, lt):
         ssi = 0
-        for trade in lt:
-            if trade[0]==self.hourlt[ssi].GetLabel():
-                if ("{:d}".format(trade[1]))==self.qtelt[ssi].GetLabel():
-                    if trade[2]==self.pricelt[ssi].GetLabel():
+        for ssi, trade in enumerate(lt):
+            if trade[0] == self.hourlt[ssi].GetLabel():
+                if u"{:d}".format(trade[1]) == self.qtelt[ssi].GetLabel():
+                    if trade[2] == self.pricelt[ssi].GetLabel():
                         return ssi
-            ssi = ssi + 1
         return ssi
 
 

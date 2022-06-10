@@ -406,9 +406,9 @@ class iTradeMainNotebookWindow(wx.Notebook):
         self.AddPage(self.win[ID_PAGE_EVALUATION], message('page_evaluation'))
         # print(']-- book init')
 
-    def SetSelection(self, page, *args, **kwargs):
+    def SetSelection(self, page):
         if self.GetSelection() != page:
-            super(iTradeMainNotebookWindow, self).SetSelection(page=page, *args, **kwargs)
+            super(iTradeMainNotebookWindow, self).SetSelection(n=page)
 
     def OnPageChanged(self, event):
         old = event.GetOldSelection()
@@ -467,6 +467,7 @@ class iTradeMainNotebookWindow(wx.Notebook):
 import wx.lib.newevent
 (PostInitEvent, EVT_POSTINIT) = wx.lib.newevent.NewEvent()
 
+
 class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
     def __init__(self, parent, portfolio, matrix, *args, **kwargs):
         wx.Frame.__init__(self, parent=parent, size=(640, 480), style=wx.DEFAULT_FRAME_STYLE|wx.NO_FULL_REPAINT_ON_RESIZE, name='main', *args, **kwargs)
@@ -499,7 +500,7 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
         self.buildMenu()
 
         # Toolbar
-        self.m_toolbar = iTradeMainToolbar(self, wx.ID_ANY)
+        self.m_toolbar = iTradeMainToolbar(parent=self, id=wx.ID_ANY)
 
         wx.EVT_SIZE(self, self.OnSize)
         wx.EVT_ERASE_BACKGROUND(self, self.OnEraseBackground)
@@ -1209,7 +1210,7 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
         # ask a confirmation
         idRet = iTradeYesNo(self, message('remove_quote_info').format(quote.name()), message('remove_quote_title'))
         if idRet == wx.ID_YES:
-            if removeFromMatrix_iTradeQuote(self, self.m_matrix, quote):
+            if removeFromMatrix_iTradeQuote(self.m_matrix, quote):
                 print('OnRemoveCurrentQuote:', quote)
                 self.m_portfolio.setupCurrencies()
                 self.RebuildList()

@@ -392,11 +392,11 @@ class Operation(object):
                 self.m_quote.buy(self.m_number, self.m_value, QuoteType.cash)
         elif self.type() == OPERATION_DETACHMENT:
             if self.m_quote:
-                debug(u'detachment {} / {:d}'.format(self.m_quote, self.m_value))
+                debug(u'detachment {} / {:f}'.format(self.m_quote, self.m_value))
                 self.m_quote.buy(0, -self.m_value, QuoteType.cash)
         elif self.type() == OPERATION_LIQUIDATION:
             if self.m_quote:
-                debug(u'liquidation {} / {:d}'.format(self.m_quote, self.m_value))
+                debug(u'liquidation {} / {:f}'.format(self.m_quote, self.m_value))
                 self.m_quote.transfertTo(self.m_number, self.m_expenses, QuoteType.cash)
 
     def undo(self, d=None):

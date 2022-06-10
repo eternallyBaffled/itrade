@@ -968,25 +968,24 @@ class iTrade_MatrixQuotesPanel(iTrade_MatrixPanel):
 # ============================================================================
 
 class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
-
-    def __init__(self,parent,wm,id,portfolio,matrix):
-        iTrade_MatrixPanel.__init__(self, parent,wm, id, portfolio, matrix)
+    def __init__(self, parent, wm, id, portfolio, matrix):
+        iTrade_MatrixPanel.__init__(self, parent, wm, id, portfolio, matrix)
 
     def name(self):
         return "stops"
 
-    def map(self,quote,key,xtype):
+    def map(self, quote, key, xtype):
         if key in self.itemDataMap:
             old = self.itemDataMap[key]
         else:
             old = None
-        self.itemDataMap[key] = ( quote.isin(),quote.ticker(),quote.nv_pru(xtype),
-                                  quote.nv_pr(),quote.nv_riskmoney(self.m_portfolio.currency()),
-                                  quote.nv_stoploss(),quote.nv_close(),quote.nv_stopwin(),
-                                  quote.nv_pv(self.m_portfolio.currency()),
-                                  quote.nv_profit(self.m_portfolio.currency()),
-                                  quote.nv_profitPercent(self.m_portfolio.currency()),
-                                  quote.name()
+        self.itemDataMap[key] = (quote.isin(), quote.ticker(), quote.nv_pru(xtype),
+                                 quote.nv_pr(), quote.nv_riskmoney(self.m_portfolio.currency()),
+                                 quote.nv_stoploss(), quote.nv_close(), quote.nv_stopwin(),
+                                 quote.nv_pv(self.m_portfolio.currency()),
+                                 quote.nv_profit(self.m_portfolio.currency()),
+                                 quote.nv_profitPercent(self.m_portfolio.currency()),
+                                 quote.name()
                                 )
         return old
 
@@ -1015,60 +1014,60 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
             # in portfolio view, display only traded values !
             if eachQuote.hasStops() and (eachQuote.isTraded() or eachQuote.isMonitored()):
                 self.m_list.InsertImageStringItem(x, eachQuote.isin(), self.idx_tbref)
-                self.m_list.SetStringItem(x,IDC_TICKER,eachQuote.ticker())
+                self.m_list.SetStringItem(x, IDC_TICKER, eachQuote.ticker())
                 if eachQuote.isTraded():
                     self.m_list.SetStringItem(x, IDC_PRU, u"{} {}".format(eachQuote.sv_pru(QuoteType.both, "{:.2f}"), self.m_portfolio.currency_symbol()))
                 else:
                     self.m_list.SetStringItem(x, IDC_PRU, u"-")
-                self.m_list.SetStringItem(x,IDC_STOPLOSS,"~ {} ".format(eachQuote.sv_stoploss()))
-                self.m_list.SetStringItem(x,IDC_STOPWIN,"~ {} ".format(eachQuote.sv_stopwin()))
-                self.m_list.SetStringItem(x,IDC_NAME,eachQuote.name())
+                self.m_list.SetStringItem(x, IDC_STOPLOSS, u"~ {} ".format(eachQuote.sv_stoploss()))
+                self.m_list.SetStringItem(x, IDC_STOPWIN, u"~ {} ".format(eachQuote.sv_stopwin()))
+                self.m_list.SetStringItem(x, IDC_NAME, eachQuote.name())
 
                 self.map(eachQuote, x, QuoteType.both)
                 self.itemQuoteMap[x] = eachQuote
                 self.itemTypeMap[x] = QuoteType.both
 
-                self.refreshStopLine(x,False)
+                self.refreshStopLine(x, False)
 
                 x = x + 1
 
         self.m_maxlines = x
         for eachQuote in self.itemQuoteMap.values():
-            self.registerLive(eachQuote,itrade_config.refreshView,self.m_id)
+            self.registerLive(eachQuote, itrade_config.refreshView, self.m_id)
 
         # finish populating
         self.populateMatrixEnd()
 
     # refresh one stop
-    def refreshStopLine(self,x,disp):
-        quote,item = self.getQuoteAndItemOnTheLine(x)
+    def refreshStopLine(self, x, disp):
+        quote, item = self.getQuoteAndItemOnTheLine(x)
         bRef = False
 
         if disp:
             color = quote.colorStop()
-            self.m_list.SetStringItem(x,IDC_CURRENT,quote.sv_close(bDispCurrency=True))
-            if color==QuoteColor.green:
-                self.m_list.SetStringItem(x,IDC_INVEST, "")
-                self.m_list.SetStringItem(x,IDC_RISKM, "")
-                self.m_list.SetStringItem(x,IDC_PV,"")
-                self.m_list.SetStringItem(x,IDC_PROFIT,"")
-                self.m_list.SetStringItem(x,IDC_PERCENT,"")
+            self.m_list.SetStringItem(x, IDC_CURRENT, quote.sv_close(bDispCurrency=True))
+            if color == QuoteColor.green:
+                self.m_list.SetStringItem(x, IDC_INVEST, "")
+                self.m_list.SetStringItem(x, IDC_RISKM, "")
+                self.m_list.SetStringItem(x, IDC_PV, "")
+                self.m_list.SetStringItem(x, IDC_PROFIT, "")
+                self.m_list.SetStringItem(x, IDC_PERCENT, "")
             else:
-                self.m_list.SetStringItem(x,IDC_INVEST, quote.sv_pr(fmt="%.0f",bDispCurrency=True))
-                self.m_list.SetStringItem(x,IDC_RISKM, quote.sv_riskmoney(self.m_portfolio.currency(),self.m_portfolio.currency_symbol()))
-                self.m_list.SetStringItem(x,IDC_PV,"{} {}".format(quote.sv_pv(self.m_portfolio.currency(),fmt="%.0f"),self.m_portfolio.currency_symbol()))
-                self.m_list.SetStringItem(x,IDC_PERCENT,quote.sv_profitPercent(self.m_portfolio.currency()))
+                self.m_list.SetStringItem(x, IDC_INVEST, quote.sv_pr(fmt="%.0f", bDispCurrency=True))
+                self.m_list.SetStringItem(x, IDC_RISKM, quote.sv_riskmoney(self.m_portfolio.currency(), self.m_portfolio.currency_symbol()))
+                self.m_list.SetStringItem(x, IDC_PV, u"{} {}".format(quote.sv_pv(self.m_portfolio.currency(), fmt="%.0f"), self.m_portfolio.currency_symbol()))
+                self.m_list.SetStringItem(x, IDC_PERCENT, quote.sv_profitPercent(self.m_portfolio.currency()))
 
                 key = self.m_list.GetItemData(x)
                 pp = self.map(quote, key, QuoteType.both)
                 bRef = (pp != self.itemDataMap[key])
         else:
-            self.m_list.SetStringItem(x,IDC_INVEST, " ------ {}".format(self.m_portfolio.currency_symbol()))
-            self.m_list.SetStringItem(x,IDC_RISKM, " ------ {}".format(self.m_portfolio.currency_symbol()))
-            self.m_list.SetStringItem(x,IDC_CURRENT," ---.-- {} ".format(quote.currency_symbol()))
-            self.m_list.SetStringItem(x,IDC_PV," ------ {}".format(self.m_portfolio.currency_symbol()))
-            self.m_list.SetStringItem(x,IDC_PROFIT," ------ {}".format(self.m_portfolio.currency_symbol()))
-            self.m_list.SetStringItem(x,IDC_PERCENT," +---.-- % ")
+            self.m_list.SetStringItem(x, IDC_INVEST, u" ------ {}".format(self.m_portfolio.currency_symbol()))
+            self.m_list.SetStringItem(x, IDC_RISKM, u" ------ {}".format(self.m_portfolio.currency_symbol()))
+            self.m_list.SetStringItem(x, IDC_CURRENT, u" ---.-- {} ".format(quote.currency_symbol()))
+            self.m_list.SetStringItem(x, IDC_PV, u" ------ {}".format(self.m_portfolio.currency_symbol()))
+            self.m_list.SetStringItem(x, IDC_PROFIT, u" ------ {}".format(self.m_portfolio.currency_symbol()))
+            self.m_list.SetStringItem(x, IDC_PERCENT, u" +---.-- % ")
             color = QuoteColor.invalid
 
         # update line color and icon
@@ -1092,28 +1091,28 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
     def refreshList(self):
         keepGoing = True
         if self.m_parent.hasFocus():
-            dlg = wx.ProgressDialog(message('main_refreshing'),"",self.m_maxlines,self,wx.PD_CAN_ABORT | wx.PD_APP_MODAL)
+            dlg = wx.ProgressDialog(title=message('main_refreshing'), message="", maximum=self.m_maxlines, parent=self, style=wx.PD_CAN_ABORT | wx.PD_APP_MODAL)
         else:
             dlg = None
 
-        for xline in range(0,self.m_maxlines):
+        for xline in range(0, self.m_maxlines):
             if keepGoing:
                 key = self.m_list.GetItemData(xline)
                 quote = self.itemQuoteMap[key]
                 if dlg:
-                    keepGoing = dlg.Update(xline,quote.name())
+                    keepGoing = dlg.Update(xline, quote.name())
                 quote.update()
-                self.refreshStopLine(xline,True)
+                self.refreshStopLine(xline, True)
 
         if dlg:
             dlg.Destroy()
 
-    def OnLiveQuote(self,quote,xline):
-        return self.refreshStopLine(xline,True)
+    def OnLiveQuote(self, quote, xline):
+        return self.refreshStopLine(xline, True)
 
     # ---[ popup menu management ] --------------------------------------------
 
-    def OpenContextMenu(self,inList,quote):
+    def OpenContextMenu(self, inList, quote):
         # only do this part the first time so the events are only bound once
         if not hasattr(self, "m_popupID_Update"):
             self.m_popupID_Update = wx.NewId()
@@ -1134,17 +1133,17 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
         menu.Append(self.m_popupID_Add, message('main_popup_add_stops'))
         menu.AppendSeparator()
         menu.Append(self.m_popupID_Edit, message('main_popup_edit_stops'))
-        menu.Enable(self.m_popupID_Edit,inList)
+        menu.Enable(self.m_popupID_Edit, inList)
         menu.Append(self.m_popupID_Remove, message('main_popup_remove_stops'))
-        menu.Enable(self.m_popupID_Remove,inList)
+        menu.Enable(self.m_popupID_Remove, inList)
 
-        menu.Enable(self.m_popupID_Add,True)
+        menu.Enable(self.m_popupID_Add, True)
         if inList:
-            menu.Enable(self.m_popupID_Edit,quote.hasStops())
-            menu.Enable(self.m_popupID_Remove,quote.hasStops())
+            menu.Enable(self.m_popupID_Edit, quote.hasStops())
+            menu.Enable(self.m_popupID_Remove, quote.hasStops())
         else:
-            menu.Enable(self.m_popupID_Edit,False)
-            menu.Enable(self.m_popupID_Remove,False)
+            menu.Enable(self.m_popupID_Edit, False)
+            menu.Enable(self.m_popupID_Remove, False)
 
         # return the menu
         return menu
@@ -1166,28 +1165,24 @@ class iTrade_MatrixStopsPanel(iTrade_MatrixPanel):
 # ============================================================================
 
 class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
-
-    def __init__(self,parent,wm,id,portfolio,matrix):
-        iTrade_MatrixPanel.__init__(self, parent,wm, id, portfolio, matrix)
-
     def name(self):
         return "indicators"
 
     def needDynamicSortColumn(self):
-        if self.m_sort_colnum<IDC_PRU:
+        if self.m_sort_colnum < IDC_PRU:
             return False
         return True
 
-    def map(self,quote,key,xtype):
+    def map(self, quote, key, xtype):
         if key in self.itemDataMap:
             old = self.itemDataMap[key]
         else:
             old = None
-        self.itemDataMap[key] = ( quote.isin(),quote.ticker(),quote.nv_pru(xtype),
-                                  quote.nv_ma(20),quote.nv_ma(50),quote.nv_ma(100),
-                                  quote.nv_rsi(14),key,quote.nv_stoK(),
-                                  key,key,key,
-                                  quote.nv_close()
+        self.itemDataMap[key] = (quote.isin(), quote.ticker(), quote.nv_pru(xtype),
+                                 quote.nv_ma(20), quote.nv_ma(50), quote.nv_ma(100),
+                                 quote.nv_rsi(14), key, quote.nv_stoK(),
+                                 key, key, key,
+                                 quote.nv_close()
                                 )
         return old
 
@@ -1198,7 +1193,7 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
         self.m_list.InsertColumn(IDC_MA20, 'MMA20', wx.LIST_FORMAT_RIGHT)
         self.m_list.InsertColumn(IDC_MA50, 'MMA50', wx.LIST_FORMAT_RIGHT)
         self.m_list.InsertColumn(IDC_MA100, 'MMA100', wx.LIST_FORMAT_RIGHT)
-        self.m_list.InsertColumn(IDC_RSI, 'RSI ({})'.format(14), wx.LIST_FORMAT_RIGHT)
+        self.m_list.InsertColumn(IDC_RSI, u'RSI ({})'.format(14), wx.LIST_FORMAT_RIGHT)
         self.m_list.InsertColumn(IDC_MACD, 'MACD', wx.LIST_FORMAT_RIGHT)
         self.m_list.InsertColumn(IDC_STOCH, 'STO %K (%D)', wx.LIST_FORMAT_RIGHT)
         self.m_list.InsertColumn(IDC_DMI, 'DMI', wx.LIST_FORMAT_RIGHT)
@@ -1214,63 +1209,59 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
             self.m_hdrcolwidths.append(self.m_list.GetColumnWidth(col))
 
         x = 0
-        for eachQuote in self.m_matrix.list():
-            if eachQuote.isTraded() or eachQuote.isMonitored():
-                self.m_list.InsertImageStringItem(x, eachQuote.isin(), self.idx_tbref)
-                self.m_list.SetStringItem(x,IDC_TICKER,eachQuote.ticker())
-                if eachQuote.isTraded():
-                    self.m_list.SetStringItem(x,IDC_PRU,eachQuote.sv_pru(QuoteType.both, "{:.3f}", False))
-                else:
-                    self.m_list.SetStringItem(x,IDC_PRU,"-")
+        for x, quote in enumerate(filter(lambda quote: quote.isTraded() or quote.isMonitored(), self.m_matrix.list())):
+            self.m_list.InsertImageStringItem(x, quote.isin(), self.idx_tbref)
+            self.m_list.SetStringItem(x, IDC_TICKER, quote.ticker())
+            if quote.isTraded():
+                self.m_list.SetStringItem(x, IDC_PRU, quote.sv_pru(QuoteType.both, "{:.3f}", False))
+            else:
+                self.m_list.SetStringItem(x, IDC_PRU, "-")
 
-                self.map(eachQuote, x, QuoteType.both)
-                self.itemQuoteMap[x] = eachQuote
-                self.itemTypeMap[x] = QuoteType.both
+            self.map(quote, x, QuoteType.both)
+            self.itemQuoteMap[x] = quote
+            self.itemTypeMap[x] = QuoteType.both
 
-                self.refreshIndicatorLine(x,False)
-
-                x = x + 1
+            self.refreshIndicatorLine(x, False)
 
         self.m_maxlines = x
-        for eachQuote in self.itemQuoteMap.values():
-            self.registerLive(eachQuote,itrade_config.refreshView,self.m_id)
+        for quote in self.itemQuoteMap.values():
+            self.registerLive(quote, itrade_config.refreshView, self.m_id)
 
         self.populateMatrixEnd()
 
     # refresh one indicator
-    def refreshIndicatorLine(self,x,disp):
+    def refreshIndicatorLine(self, x, disp):
         quote,item = self.getQuoteAndItemOnTheLine(x)
         bRef = False
 
         if disp:
-            self.m_list.SetStringItem(x,IDC_LAST,quote.sv_close(bDispCurrency=True))
+            self.m_list.SetStringItem(x, IDC_LAST, quote.sv_close(bDispCurrency=True))
             if quote.hasTraded():
                 color = quote.colorTrend()
             else:
                 color = QuoteColor.nochange
-            self.m_list.SetStringItem(x,IDC_MA20,quote.sv_ma(20))
-            self.m_list.SetStringItem(x,IDC_MA50,quote.sv_ma(50))
-            self.m_list.SetStringItem(x,IDC_MA100,quote.sv_ma(100))
-            self.m_list.SetStringItem(x,IDC_RSI,quote.sv_rsi(14))
-            self.m_list.SetStringItem(x,IDC_STOCH,u'{} ({})'.format(quote.sv_stoK(), quote.sv_stoD()))
+            self.m_list.SetStringItem(x, IDC_MA20, quote.sv_ma(20))
+            self.m_list.SetStringItem(x, IDC_MA50, quote.sv_ma(50))
+            self.m_list.SetStringItem(x, IDC_MA100, quote.sv_ma(100))
+            self.m_list.SetStringItem(x, IDC_RSI, quote.sv_rsi(14))
+            self.m_list.SetStringItem(x, IDC_STOCH, u'{} ({})'.format(quote.sv_stoK(), quote.sv_stoD()))
 
             key = self.m_list.GetItemData(x)
 
             pp = self.map(quote, key, QuoteType.both)
             bRef = (pp != self.itemDataMap[key])
-
         else:
             # no information
-            self.m_list.SetStringItem(x,IDC_MA20," ---.--- ")
-            self.m_list.SetStringItem(x,IDC_MA50," ---.--- ")
-            self.m_list.SetStringItem(x,IDC_MA100," ---.--- ")
-            self.m_list.SetStringItem(x,IDC_RSI," ---.--- ")
-            self.m_list.SetStringItem(x,IDC_MACD," ---.--- ")
-            self.m_list.SetStringItem(x,IDC_STOCH," ---.-- (---.--) ")
-            self.m_list.SetStringItem(x,IDC_DMI," ---.-- ")
-            self.m_list.SetStringItem(x,IDC_EMV," ---.-- ")
-            self.m_list.SetStringItem(x,IDC_OVB," ------ ")
-            self.m_list.SetStringItem(x,IDC_LAST, u" ----.-- {} ".format(quote.currency_symbol()))
+            self.m_list.SetStringItem(x, IDC_MA20, u" ---.--- ")
+            self.m_list.SetStringItem(x, IDC_MA50, u" ---.--- ")
+            self.m_list.SetStringItem(x, IDC_MA100, u" ---.--- ")
+            self.m_list.SetStringItem(x, IDC_RSI, u" ---.--- ")
+            self.m_list.SetStringItem(x, IDC_MACD, u" ---.--- ")
+            self.m_list.SetStringItem(x, IDC_STOCH, u" ---.-- (---.--) ")
+            self.m_list.SetStringItem(x, IDC_DMI, u" ---.-- ")
+            self.m_list.SetStringItem(x, IDC_EMV, u" ---.-- ")
+            self.m_list.SetStringItem(x, IDC_OVB, u" ------ ")
+            self.m_list.SetStringItem(x, IDC_LAST, u" ----.-- {} ".format(quote.currency_symbol()))
             color = QuoteColor.nochange
 
         # update line color and icon
@@ -1295,29 +1286,29 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
     def refreshList(self):
         keepGoing = True
         if self.m_parent.hasFocus():
-            dlg = wx.ProgressDialog(message('main_refreshing'),"",self.m_maxlines,self,wx.PD_CAN_ABORT | wx.PD_APP_MODAL)
+            dlg = wx.ProgressDialog(title=message('main_refreshing'), message="", maximum=self.m_maxlines, parent=self, style=wx.PD_CAN_ABORT | wx.PD_APP_MODAL)
         else:
             dlg = None
 
-        for xline in range(0,self.m_maxlines):
+        for xline in range(0, self.m_maxlines):
             if keepGoing:
                 key = self.m_list.GetItemData(xline)
                 quote = self.itemQuoteMap[key]
                 if dlg:
-                    keepGoing = dlg.Update(xline,quote.name())
+                    keepGoing = dlg.Update(xline, quote.name())
                 quote.update()
-                self.refreshIndicatorLine(xline,True)
+                self.refreshIndicatorLine(xline, True)
 
         if dlg:
             dlg.Destroy()
 
     def OnLiveQuote(self, quote, xline):
         quote.compute()
-        return self.refreshIndicatorLine(xline,True)
+        return self.refreshIndicatorLine(xline, True)
 
     # ---[ popup menu management ] --------------------------------------------
 
-    def OpenContextMenu(self,inList,quote):
+    def OpenContextMenu(self, inList, quote):
         # only do this part the first time so the events are only bound once
         if not hasattr(self, "m_popupID_Update"):
             self.m_popupID_Update = wx.NewId()
@@ -1340,11 +1331,11 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
         menu.Append(self.m_popupID_Update, message('main_popup_refreshall'))
         menu.AppendSeparator()
         menu.Append(self.m_popupID_View, message('main_popup_view'))
-        menu.Enable(self.m_popupID_View,inList)
+        menu.Enable(self.m_popupID_View, inList)
         menu.Append(self.m_popupID_Live, message('main_popup_live'))
-        menu.Enable(self.m_popupID_Live,inList and quote.liveconnector().hasNotebook())
+        menu.Enable(self.m_popupID_Live, inList and quote.liveconnector().hasNotebook())
         menu.Append(self.m_popupID_Properties, message('main_popup_properties'))
-        menu.Enable(self.m_popupID_Properties,inList)
+        menu.Enable(self.m_popupID_Properties, inList)
         menu.AppendSeparator()
         menu.Append(self.m_popupID_Buy, message('main_popup_buy'))
         menu.Append(self.m_popupID_Sell, message('main_popup_sell'))
@@ -1357,15 +1348,15 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
 # ============================================================================
 
 class iTrade_TradingPanel(wx.Panel):
-    def __init__(self,parent,wm,id,portfolio,matrix):
-        wx.Panel.__init__(self, parent, id)
+    def __init__(self, parent, wm, id, portfolio, matrix):
+        wx.Panel.__init__(self, parent=parent, id=id)
         self.m_parent = parent
         self.m_portfolio = portfolio
         self.m_matrix = matrix
 
     # ---[ Window Management ]-------------------------------------------------
 
-    def InitCurrentPage(self,bReset=True):
+    def InitCurrentPage(self, bReset=True):
         if bReset:
             # update portfolio and matrix (just in case)
             self.m_portfolio = self.m_parent.m_portfolio

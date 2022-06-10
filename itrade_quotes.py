@@ -41,6 +41,7 @@ from __future__ import print_function
 
 from datetime import date
 import logging
+import operator
 import os
 from enum import Enum
 from decimal import Decimal
@@ -103,9 +104,6 @@ def _format_volume(x):
 class Volume(object):
     pass
 
-# ============================================================================
-# Quote referencing
-# ============================================================================
 
 def quote_reference(isin, ticker, market, place):
     # print 'quote_reference: isin={} ticker={} market={} place={}'.format(isin, ticker, market, place)
@@ -136,9 +134,6 @@ def quote_reference(isin, ticker, market, place):
 
     return u'{}.{}.{}'.format(ticker, market, place)
 
-# ============================================================================
-# Quote
-# ============================================================================
 
 class Quote(object):
     def __init__(self, key, isin, name, ticker, market, currency, place, country, list_type=QList.system):
@@ -582,7 +577,7 @@ class Quote(object):
         self.m_stoploss = float(loss)
         self.m_stopwin = float(win)
         if itrade_config.verbose:
-            info('{}::setStops {} {}'.format(self.name(), self.m_stoploss, self.m_stopwin))
+            info(u'{}::setStops {} {}'.format(self.name(), self.m_stoploss, self.m_stopwin))
         self.m_hasStops = True
 
     def getStops(self):
@@ -1314,23 +1309,21 @@ class Quote(object):
 #   ISIN;NAME;SICOVAM;TICKER
 # ============================================================================
 
+
 class Quotes(object):
     def __init__(self):
         # debug('Quotes:__init__')
-        self._init_()
-
-    def _init_(self):
         self.m_quotes = {}
+        self.property_file = os.path.join(itrade_config.dirUserData, 'properties.txt')
+        self.default_stops = os.path.join(itrade_config.dirUserData, 'default.stops.txt')
 
     def reinit(self):
         debug('Quotes::reinit')
-        for eachQuote in self.list():
-            eachQuote.reinit()
+        for quote in self.list():
+            quote.reinit()
 
     def list(self):
-        items = self.m_quotes.values()
-        items.sort(key=Quote.name)
-        return items
+        return sorted(self.m_quotes.values(), key=operator.attrgetter('name'))
 
     # ---[ Properties ] ---
 
@@ -1341,7 +1334,7 @@ class Quotes(object):
 
     def loadProperties(self):
         # open and read the file to load properties information
-        infile = itrade_csv.read(None, os.path.join(itrade_config.dirUserData, 'properties.txt'))
+        infile = itrade_csv.read(None, self.property_file)
         # scan each line to read each quote
         for eachLine in infile:
             item = itrade_csv.parse(eachLine, 3)
@@ -1355,7 +1348,7 @@ class Quotes(object):
             for eachProp in eachQuote.listProperties():
                 # print(eachProp)
                 props.append(eachProp)
-        itrade_csv.write(None, os.path.join(itrade_config.dirUserData, 'properties.txt'), props)
+        itrade_csv.write(None, self.property_file, props)
 
     # ---[ Stops ] ---
 
@@ -1371,7 +1364,7 @@ class Quotes(object):
 
     def loadStops(self, fs=None):
         # open and read the file to load stops information
-        infile = itrade_csv.read(fs, os.path.join(itrade_config.dirUserData, 'default.stops.txt'))
+        infile = itrade_csv.read(fs, self.default_stops)
         # scan each line to read each quote
         for eachLine in infile:
             item = itrade_csv.parse(eachLine, 3)
@@ -1384,7 +1377,7 @@ class Quotes(object):
         for eachQuote in self.list():
             if eachQuote.hasStops():
                 stops.append(eachQuote.getStops())
-        itrade_csv.write(fp, os.path.join(itrade_config.dirUserData, 'default.stops.txt'), stops)
+        itrade_csv.write(fp, self.default_stops, stops)
 
     # ---[ Quotes ] ---
 
@@ -1396,12 +1389,12 @@ class Quotes(object):
             place = place.upper()
 
         # get a key and check strict duplicate (i.e. same key)
-        key = quote_reference(isin, ticker, market, place)
+        key = quote_reference(isin=isin, ticker=ticker, market=market, place=place)
         if key in self.m_quotes:
             if debug:
-                print('{!r}/{} already exists - keep it (ignore {})'.format(self.m_quotes[key],
-                                                                            self.m_quotes[key].ticker(),
-                                                                            ticker))
+                print(u'{!r}/{} already exists - keep it (ignore {})'.format(self.m_quotes[key],
+                                                                             self.m_quotes[key].ticker(),
+                                                                             ticker))
             return True
 
         # depending on isin
@@ -1410,24 +1403,24 @@ class Quotes(object):
             quote = None  # __perf: self.lookupTicker(ticker,market)
             if quote:
                 if debug:
-                    print('{!r} already exists - ignore'.format(self.m_quotes[key]))
+                    print(u'{!r} already exists - ignore'.format(self.m_quotes[key]))
                 return True
         else:
             # isin : check if we can replace the same quote without isin
-            key2 = quote_reference(None, ticker, market, place)
+            key2 = quote_reference(isin=None, ticker=ticker, market=market, place=place)
             if key2 in self.m_quotes:
                 if debug:
-                    print('{!r} already exists but without ISIN - replace'.format(self.m_quotes[key2]))
+                    print(u'{!r} already exists but without ISIN - replace'.format(self.m_quotes[key2]))
                 del self.m_quotes[key2]
 
         # new quote
-        self.m_quotes[key] = Quote(key,
-                                   isin,
-                                   name.upper(),
-                                   ticker.upper(), market, currency.upper(), place, country, list)
+        self.m_quotes[key] = Quote(key=key,
+                                   isin=isin,
+                                   name=name.upper(),
+                                   ticker=ticker.upper(), market=market, currency=currency.upper(), place=place, country=country, list_type=list)
 
         if debug:
-            print('Add {} in quotes list'.format(self.m_quotes[key]))
+            print(u'Add {} in quotes list'.format(self.m_quotes[key]))
 
         return True
 
@@ -1567,6 +1560,7 @@ class Quotes(object):
         for eachKey in self.m_quotes.keys():
             self.m_quotes[eachKey].saveTrades(fe)
 
+
 # ============================================================================
 # Export
 # ============================================================================
@@ -1584,6 +1578,7 @@ def initQuotesModule():
 # ============================================================================
 # Test
 # ============================================================================
+
 
 def main():
     setLevel(logging.INFO)

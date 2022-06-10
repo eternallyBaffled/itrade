@@ -352,7 +352,7 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
             if eachCtrl == self.m_market:
                 idx = count
 
-        self.wxMarketCtrl.SetSelection(idx)
+        self.wxMarketCtrl.SetSelection(n=idx)
 
         # row5 : main indice
         label = wx.StaticText(pane, wx.ID_ANY, message('portfolio_indicator'))
@@ -374,7 +374,7 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
                     idx = count
                 count = count + 1
 
-        self.wxIndicatorCtrl.SetSelection(idx)
+        self.wxIndicatorCtrl.SetSelection(n=idx)
 
         # row6 : currency
         label = wx.StaticText(pane, wx.ID_ANY, message('portfolio_currency'))
@@ -390,7 +390,7 @@ class iTradePortfolioPropertiesDialog(iTradeSizedDialog):
             if eachCtrl == self.m_currency:
                 idx = count
 
-        self.wxCurrencyCtrl.SetSelection(idx)
+        self.wxCurrencyCtrl.SetSelection(n=idx)
 
         # row7 : default vat
         label = wx.StaticText(pane, wx.ID_ANY, message('portfolio_vat'))

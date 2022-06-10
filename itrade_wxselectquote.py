@@ -73,10 +73,10 @@ IDC_MARKET = 4
 import wx.lib.newevent
 (PostInitEvent, EVT_POSTINIT) = wx.lib.newevent.NewEvent()
 
+
 class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin):
     def __init__(self, parent, quote, filter=False, market=None, filterEnabled=True, tradableOnly=False):
-
-        iTradeSizedDialog.__init__(self, parent, wx.ID_ANY, message('quote_select_title'), size=(460, 460), style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
+        iTradeSizedDialog.__init__(self, parent=parent, id=wx.ID_ANY, title=message('quote_select_title'), size=(460, 460), style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
 
         self.m_parent = parent
 
@@ -144,10 +144,10 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
         idx = wx.NOT_FOUND
         for count, eachCtrl in enumerate(list_of_markets(bFilterMode=False)):
             self.wxMarketCtrl.Append(eachCtrl,eachCtrl)
-            if eachCtrl==self.m_market:
+            if eachCtrl == self.m_market:
                 idx = count
 
-        self.wxMarketCtrl.SetSelection(idx)
+        self.wxMarketCtrl.SetSelection(n=idx)
 
         self.wxLabelQListCtrl = wx.StaticText(pane, wx.ID_ANY, message('quote_select_list'))
         self.wxLabelQListCtrl.SetSizerProps(valign='center')
@@ -163,7 +163,7 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
             self.wxQListCtrl.Append(message('quote_select_indiceslist'), QList.indices)
         self.wxQListCtrl.Append(message('quote_select_trackerslist'), QList.trackers)
         self.wxQListCtrl.Append(message('quote_select_bondslist'), QList.bonds)
-        self.wxQListCtrl.SetSelection(self.m_qlist.value)
+        self.wxQListCtrl.SetSelection(n=self.m_qlist.value)
 
         # select traded or not
         self.wxFilterCtrl = wx.CheckBox(container, wx.ID_ANY, message('quote_select_filterfield'))
@@ -282,12 +282,11 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
         self.m_list.InsertColumn(IDC_PLACE, message('place'), format=wx.LIST_FORMAT_LEFT, width=wx.LIST_AUTOSIZE)
         self.m_list.InsertColumn(IDC_MARKET, message('market'), format=wx.LIST_FORMAT_LEFT, width=wx.LIST_AUTOSIZE)
 
-        x = 0
-
         self.itemDataMap = {}
         self.itemQuoteMap = {}
         self.itemLineMap = {}
 
+        x = 0
         for eachQuote in quotes.list():
             if (not self.m_filter or eachQuote.isMatrix()) and self.isFiltered(eachQuote, bDuringInit):
                 self.itemDataMap[x] = (eachQuote.isin(), eachQuote.ticker(), eachQuote.name(), eachQuote.place(), eachQuote.market())
@@ -377,7 +376,7 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
                 else:
                     self.m_isin = ''
                     self.m_place = ''
-                    self.wxIsinCtrl.SetValue('')
+                    self.wxIsinCtrl.SetValue(value='')
             else:
                 self.m_isin = ''
                 self.m_place = ''

@@ -965,7 +965,7 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
         self.m_curpage = page
         page = self.init(quote, page, fromInit=True)
         wx.EVT_NOTEBOOK_PAGE_CHANGED(self, self.GetId(), self.OnPageChanged)
-        self.SetSelection(page)
+        self.SetSelection(n=page)
 
     def portfolio(self):
         return self.m_port
@@ -1050,7 +1050,7 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
             page = self.init(nquote=nquote, page=self.m_curpage)
             if itrade_config.verbose:
                 print(u'QuoteNotebookWindow::refresh Internal Page : {} - page: {}'.format(nquote.ticker(), page))
-            self.SetSelection(page)
+            self.SetSelection(n=page)
         else:
             # refresh current page
             if (self.m_curpage == self.ID_PAGE_LIVE) or (not live):
@@ -1075,9 +1075,10 @@ class iTradeQuoteNotebookWindow(wx.Notebook):
 # Container to display information and panels on a specific quote
 # ============================================================================
 
+
 class iTradeQuoteWindow(wx.Frame, iTrade_wxFrame, iTrade_wxLiveMixin):
-    def __init__(self, parent, id, port, quote, dpage=0, *args, **kwargs):
-        wx.Frame.__init__(self, parent=None, id=wx.ID_ANY, size=(800, 480), style=wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE, *args, **kwargs)
+    def __init__(self, parent, port, quote, dpage=0, *args, **kwargs):
+        wx.Frame.__init__(self, parent=None, size=(800, 480), style=wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE, *args, **kwargs)
         iTrade_wxFrame.__init__(self, parent=parent, name='view', hasStatusBar=False, *args, **kwargs)
         iTrade_wxLiveMixin.__init__(self)
 
@@ -1189,15 +1190,15 @@ class iTradeQuoteWindow(wx.Frame, iTrade_wxFrame, iTrade_wxLiveMixin):
 #   page    page to select
 # ============================================================================
 
-def open_iTradeQuote(win,port,quote,page=0):
-    if not isinstance(quote,Quote):
+def open_iTradeQuote(win, port, quote, page=0):
+    if not isinstance(quote, Quote):
         quote = quotes.lookupKey(quote)
     if win and win.m_hView:
         # set focus
         win.m_hView.SelectQuote(quote)
         win.m_hView.SetFocus()
     else:
-        frame = iTradeQuoteWindow(win, wx.ID_ANY, port, quote, page)
+        frame = iTradeQuoteWindow(parent=win, port=port, quote=quote, dpage=page)
         if win:
             win.m_hView = frame
         # __w frame.plot_data()
@@ -1212,12 +1213,12 @@ def open_iTradeQuote(win,port,quote,page=0):
 #   dquote      (optional) Quote object or ISIN reference
 # ============================================================================
 
-def addInMatrix_iTradeQuote(win,matrix,portfolio,dquote=None):
+def addInMatrix_iTradeQuote(win, matrix, portfolio, dquote=None):
     if dquote:
-        if not isinstance(dquote,Quote):
+        if not isinstance(dquote, Quote):
             dquote = quotes.lookupKey(dquote)
     else:
-        dquote = select_iTradeQuote(win,dquote=None,filter=False,market=portfolio.market())
+        dquote = select_iTradeQuote(win, dquote=None, filter=False, market=portfolio.market())
 
     if dquote:
         matrix.addKey(dquote.key())
@@ -1232,8 +1233,8 @@ def addInMatrix_iTradeQuote(win,matrix,portfolio,dquote=None):
 #   quote   Quote object or ISIN reference
 # ============================================================================
 
-def removeFromMatrix_iTradeQuote(win,matrix,quote):
-    if not isinstance(quote,Quote):
+def removeFromMatrix_iTradeQuote(matrix, quote):
+    if not isinstance(quote, Quote):
         quote = quotes.lookupKey(quote)
     if quote:
         if not quote.isTraded():

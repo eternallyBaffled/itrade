@@ -324,19 +324,19 @@ def fmtVolumeFunc(x, pos):
             else:
                 return u'{:d} K'.format(int(x*1e-3))
         else:
-            return u'{:d}'.format(x)
+            return u'{:f}'.format(x)
     else:
         return ''
 
 def fmtVolumeFunc0(x, pos):
-    if pos%3 == 0:
+    if pos % 3 == 0:
         if abs(x) >= 1000:
             if abs(x) >= 1e6:
                 return '{:.1f} M'.format(x*1e-6)
             else:
                 return '{:d} K'.format(int(x*1e-3))
         else:
-            return '{:d}'.format(x)
+            return '{:f}'.format(x)
     else:
         return ''
 
@@ -669,15 +669,16 @@ class iTrade_wxPanelGraph(GObject, PanelPrint):
                 self.draw_cursor(event)
 
     def mouse_move(self, event):
+        # event is a mpl mouse event
         if self.cursorState(event.inaxes):
             # just in case mouse is bad (PinPoint :-( )
             if self.cursorx != event.x or self.cursory != event.y:
-                debug('Move x:{:d},y:{:d}!'.format(event.x, event.y))
+                debug(u'Move x:{:f},y:{:f}!'.format(event.x, event.y))
                 self.m_timer.Stop()
                 self.cursorx, self.cursory = event.x, event.y
                 self.draw_cursor(event)
                 if event.inaxes:
-                    debug('Start timer x:{:d},y:{:d} t:{:d}!'.format(event.x, event.y, itrade_config.timerForXYPopup))
+                    debug(u'Start timer x:{:f},y:{:f} t:{:d}!'.format(event.x, event.y, itrade_config.timerForXYPopup))
                     self.m_timer.Start(itrade_config.timerForXYPopup, oneShot=True)
 
     # ---[ CURSOR DRAWING during MOVE ] -----------------------------------------------------------------
@@ -735,7 +736,7 @@ class iTrade_wxPanelGraph(GObject, PanelPrint):
 
         figheight = self.m_canvas.figure.bbox.height
         ax = event.inaxes
-        left,bottom,width,height = ax.bbox.bounds
+        left, bottom, width, height = ax.bbox.bounds
         bottom = figheight-bottom
         top = bottom - height
         right = left + width
@@ -747,11 +748,11 @@ class iTrade_wxPanelGraph(GObject, PanelPrint):
         a, b = ax.get_xlim()
         period = b - a
         newx = left+((width/period)*int(time))
-        # debug('newx=%d width=%d period=%d time=%d' % (newx,width,period,int(time)))
+        # debug(u'newx={:d} width={:d} period={:d} time={:d}'.format(newx, width, period, int(time)))
 
         dc = wx.ClientDC(self.m_canvas)
         dc.SetLogicalFunction(function=wx.XOR)
-        dc.SetBrush(brush=wx.Brush(wx.Colour(255,255,255), wx.BRUSHSTYLE_TRANSPARENT))
+        dc.SetBrush(brush=wx.Brush(wx.Colour(255, 255, 255), wx.BRUSHSTYLE_TRANSPARENT))
         dc.SetPen(pen=wx.Pen(wx.Colour(200, 200, 200), 1, wx.PENSTYLE_SOLID))
 
         dc.ResetBoundingBox()
@@ -770,7 +771,7 @@ class iTrade_wxPanelGraph(GObject, PanelPrint):
             dc.DrawLine(*line2)  # draw new
         # dc.EndDrawing()
 
-        debug("Time={:d}  Value={:f}".format(time, value))
+        debug(u"Time={:f}  Value={:f}".format(time, value))
 
         # add x and y labels
         if int(time) < len(self.times):

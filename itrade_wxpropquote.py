@@ -337,7 +337,7 @@ class iTradeQuotePropertiesPanel(wx.Panel):
                     idx = count
                 count = count + 1
 
-        self.editLiveConnector.SetSelection(idx)
+        self.editLiveConnector.SetSelection(n=idx)
 
         # --- import
         self.editImportConnector.Clear()
@@ -353,7 +353,7 @@ class iTradeQuotePropertiesPanel(wx.Panel):
                     idx = count
                 count = count + 1
 
-        self.editImportConnector.SetSelection(idx)
+        self.editImportConnector.SetSelection(n=idx)
 
     def saveThenDisplayConnector(self):
         self.fillConnectors()
