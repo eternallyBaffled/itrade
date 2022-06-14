@@ -224,8 +224,8 @@ class iTradeOperationDialog(iTradeSizedDialog):
         label = wx.StaticText(parent=pane, id=wx.ID_ANY, label=message('portfolio_date'))
         label.SetSizerProps(valign='center')
 
-        ssdatetime = wx.DateTimeFromDMY(self.m_datetime.day, self.m_datetime.month-1, self.m_datetime.year)
-        self.wxDateCtrl = wx.DatePickerCtrl(pane, wx.ID_ANY, ssdatetime, size=(120, -1),
+        ssdatetime = wx.DateTimeFromDMY(day=self.m_datetime.day, month=self.m_datetime.month-1, year=self.m_datetime.year)
+        self.wxDateCtrl = wx.DatePickerCtrl(parent=pane, id=wx.ID_ANY, dt=ssdatetime, size=(120, -1),
                                             style=wx.DP_DROPDOWN | wx.DP_SHOWCENTURY)
         wx.EVT_DATE_CHANGED(self, self.wxDateCtrl.GetId(), self.OnDate)
 
@@ -233,15 +233,15 @@ class iTradeOperationDialog(iTradeSizedDialog):
         label = wx.StaticText(parent=pane, id=wx.ID_ANY, label=message('portfolio_time'))
         label.SetSizerProps(valign='center')
 
-        hhmmsstime = wx.DateTimeFromHMS(self.m_datetime.hour, self.m_datetime.minute, self.m_datetime.second)
-        self.wxTimeCtrl = masked.TimeCtrl(pane, wx.ID_ANY, hhmmsstime, format='24HHMMSS')
+        hhmmsstime = wx.DateTimeFromHMS(hour=self.m_datetime.hour, minute=self.m_datetime.minute, second=self.m_datetime.second)
+        self.wxTimeCtrl = masked.TimeCtrl(parent=pane, id=wx.ID_ANY, value=hhmmsstime, format='24HHMMSS')
         self.Bind(masked.EVT_TIMEUPDATE, self.OnTime, self.wxTimeCtrl )
 
         # Row 3 : kind of operation
         label = wx.StaticText(parent=pane, id=wx.ID_ANY, label=message('portfolio_operation'))
         label.SetSizerProps(valign='center')
 
-        self.wxTypeCtrl = wx.ComboBox(pane, wx.ID_ANY, "", size=wx.Size(160, -1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
+        self.wxTypeCtrl = wx.ComboBox(parent=pane, id=wx.ID_ANY, value="", size=wx.Size(160, -1), style=wx.CB_DROPDOWN|wx.CB_READONLY)
         wx.EVT_COMBOBOX(self, self.wxTypeCtrl.GetId(), self.OnType)
 
         idx = wx.NOT_FOUND
