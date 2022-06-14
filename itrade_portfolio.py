@@ -83,28 +83,12 @@ OPERATION_DEBIT     = 'D'
 OPERATION_FEE       = 'F'
 OPERATION_INTEREST  = 'I'
 OPERATION_SPLIT     = 'X'
-OPERATION_DETACHMENT= 'Y'
+OPERATION_DETACHMENT = 'Y'
 OPERATION_DIVIDEND  = 'Z'
-OPERATION_LIQUIDATION  = 'L'
+OPERATION_LIQUIDATION = 'L'
 OPERATION_QUOTE = 'Q'
 OPERATION_REGISTER = 'W'
 
-operation_desc = {
-    OPERATION_BUY       : 'Portfolio_buy',
-    OPERATION_BUY_SRD   : 'Portfolio_buy_srd',
-    OPERATION_SELL      : 'Portfolio_sell',
-    OPERATION_SELL_SRD  : 'Portfolio_sell_srd',
-    OPERATION_CREDIT    : 'Portfolio_credit',
-    OPERATION_DEBIT     : 'Portfolio_debit',
-    OPERATION_FEE       : 'Portfolio_fee',
-    OPERATION_INTEREST  : 'Portfolio_interest',
-    OPERATION_SPLIT     : 'Portfolio_split',
-    OPERATION_DETACHMENT: 'Portfolio_detachment',
-    OPERATION_DIVIDEND  : 'Portfolio_dividend',
-    OPERATION_LIQUIDATION : 'Portfolio_liquidation',
-    OPERATION_QUOTE     : 'Portfolio_quote',
-    OPERATION_REGISTER  : 'Portfolio_register'
-}
 
 operation_cash = {
     OPERATION_BUY       : False,
@@ -174,23 +158,6 @@ operation_sign = {
     OPERATION_QUOTE     : ' '
 }
 
-operation_apply = {
-    OPERATION_BUY       : True,
-    OPERATION_BUY_SRD   : True,
-    OPERATION_SELL      : True,
-    OPERATION_SELL_SRD  : True,
-    OPERATION_CREDIT    : False,
-    OPERATION_DEBIT     : False,
-    OPERATION_FEE       : False,
-    OPERATION_INTEREST  : False,
-    OPERATION_SPLIT     : False,
-    OPERATION_DETACHMENT: True,
-    OPERATION_DIVIDEND  : False,
-    OPERATION_LIQUIDATION: True,
-    OPERATION_REGISTER  : True,
-    OPERATION_QUOTE     : True
-}
-
 operation_srd = {
     OPERATION_BUY       : False,
     OPERATION_BUY_SRD   : True,
@@ -227,11 +194,39 @@ operation_incl_taxes = {
 
 
 def create_operation(operation_type, d, m, value, expenses, number, vat, ref):
-    return Operation(d=d, t=operation_type, m=m, v=value, e=expenses,n=number, vat=vat, ref=ref)
+    if operation_type == OPERATION_BUY:
+        return OperationBuy(d=d, m=m, v=value, e=expenses, n=number, vat=vat, ref=ref)
+    if operation_type == OPERATION_BUY_SRD:
+        return OperationBuySrd(d=d, m=m, v=value, e=expenses, n=number, vat=vat, ref=ref)
+    if operation_type == OPERATION_SELL:
+        return OperationSell(d=d, m=m, v=value, e=expenses, n=number, vat=vat, ref=ref)
+    if operation_type == OPERATION_SELL_SRD:
+        return OperationSellSrd(d=d, m=m, v=value, e=expenses, n=number, vat=vat, ref=ref)
+    if operation_type == OPERATION_CREDIT:
+        return OperationCredit(d=d, m=m, v=value, e=expenses, n=number, vat=vat, ref=ref)
+    if operation_type == OPERATION_DEBIT:
+        return OperationDebit(d=d, m=m, v=value, e=expenses, n=number, vat=vat, ref=ref)
+    if operation_type == OPERATION_FEE:
+        return OperationFee(d=d, m=m, v=value, e=expenses, n=number, vat=vat, ref=ref)
+    if operation_type == OPERATION_INTEREST:
+        return OperationInterest(d=d, m=m, v=value, e=expenses, n=number, vat=vat, ref=ref)
+    if operation_type == OPERATION_SPLIT:
+        return OperationSplit(d=d, m=m, v=value, e=expenses, n=number, vat=vat, ref=ref)
+    if operation_type == OPERATION_DETACHMENT:
+        return OperationDetachment(d=d, m=m, v=value, e=expenses, n=number, vat=vat, ref=ref)
+    if operation_type == OPERATION_DIVIDEND:
+        return OperationDividend(d=d, m=m, v=value, e=expenses, n=number, vat=vat, ref=ref)
+    if operation_type == OPERATION_LIQUIDATION:
+        return OperationLiquidation(d=d, m=m, v=value, e=expenses, n=number, vat=vat, ref=ref)
+    if operation_type == OPERATION_QUOTE:
+        return OperationQuote(d=d, m=m, v=value, e=expenses, n=number, vat=vat, ref=ref)
+    if operation_type == OPERATION_REGISTER:
+        return OperationRegister(d=d, m=m, v=value, e=expenses, n=number, vat=vat, ref=ref)
+    raise TypeError("invalid operation_type parameter")
 
 
 class Operation(object):
-    def __init__(self, d, t, m, v, e, n, vat, ref):
+    def __init__(self, d, m, v, e, n, vat, ref):
         # decode the datetime (string) to convert to datetime
         if isinstance(d, datetime.datetime):
             self.m_datetime = d
@@ -245,7 +240,6 @@ class Operation(object):
                 except ValueError:
                     self.m_datetime = datetime.datetime.strptime(d, '%Y-%m-%d')
 
-        self.m_type = t
         self.m_value = float(v)
         self.m_number = long(n)
         self.m_expenses = float(e)
@@ -286,6 +280,12 @@ class Operation(object):
     def ref(self):
         return self.m_ref
 
+    def type(self):
+        raise NotImplementedError("Please Implement this method")
+
+    def apply(self, d=None):
+        raise NotImplementedError("Please Implement this method")
+
     def nv_value(self):
         return self.m_value
 
@@ -309,9 +309,6 @@ class Operation(object):
 
     def sv_number(self):
         return u'{:6d}'.format(self.nv_number())
-
-    def type(self):
-        return self.m_type
 
     def isSRD(self):
         return operation_srd.get(self.type(), False)
@@ -340,10 +337,7 @@ class Operation(object):
             raise TypeError("quote(): operation::type() shall be S or B or Y or Z")
 
     def operation(self):
-        if self.type() in operation_desc:
-            return message(operation_desc[self.type()])
-        else:
-            return u'? ({})'.format(self.type())
+        return u'? ({})'.format(self.type())
 
     def isCash(self):
         return operation_cash.get(self.type(), self.isQuote())
@@ -362,46 +356,6 @@ class Operation(object):
             return u'{} ({})'.format(self.name(), ticker)
         else:
             return self.name()
-
-    def apply(self, d=None):
-        if self.type() == OPERATION_SELL:
-            if self.m_quote:
-                debug(u'sell {}'.format(self.m_quote))
-                max = self.m_quote.nv_number(QuoteType.cash)
-                if self.m_number > max:
-                    self.m_number = max
-                self.m_quote.sell(self.m_number, QuoteType.cash)
-        elif self.type() == OPERATION_BUY:
-            if self.m_quote:
-                debug(u'buy {}'.format(self.m_quote))
-                self.m_quote.buy(self.m_number, self.m_value, QuoteType.cash)
-        elif self.type() == OPERATION_SELL_SRD:
-            if self.m_quote:
-                debug(u'sell SRD {}'.format(self.m_quote))
-                max = self.m_quote.nv_number(QuoteType.credit)
-                if self.m_number > max:
-                    self.m_number = max
-                self.m_quote.sell(self.m_number, QuoteType.credit)
-        elif self.type() == OPERATION_BUY_SRD:
-            if self.m_quote:
-                debug(u'buy SRD {}'.format(self.m_quote))
-                self.m_quote.buy(self.m_number, self.m_value, QuoteType.credit)
-        elif self.type() == OPERATION_QUOTE:
-            if self.m_quote:
-                debug(u'dividend/shares {}'.format(self.m_quote))
-                self.m_quote.buy(self.m_number, 0.0, QuoteType.cash)
-        elif self.type() == OPERATION_REGISTER:
-            if self.m_quote:
-                debug(u'register/shares {}'.format(self.m_quote))
-                self.m_quote.buy(self.m_number, self.m_value, QuoteType.cash)
-        elif self.type() == OPERATION_DETACHMENT:
-            if self.m_quote:
-                debug(u'detachment {} / {:f}'.format(self.m_quote, self.m_value))
-                self.m_quote.buy(0, -self.m_value, QuoteType.cash)
-        elif self.type() == OPERATION_LIQUIDATION:
-            if self.m_quote:
-                debug(u'liquidation {} / {:f}'.format(self.m_quote, self.m_value))
-                self.m_quote.transfertTo(self.m_number, self.m_expenses, QuoteType.cash)
 
     def undo(self, d=None):
         if self.type() == OPERATION_SELL:
@@ -447,6 +401,239 @@ class Operation(object):
 
     def sv_pvalue(self):
         return u'{:.2f}'.format(self.nv_pvalue())
+
+
+class OperationBuy(Operation):
+
+    def __init__(self, d, m, v, e, n, vat, ref):
+        super(OperationBuy, self).__init__(d, m, v, e, n, vat, ref)
+
+    def type(self):
+        return OPERATION_BUY
+
+    def operation(self):
+        return message('Portfolio_buy')
+
+    def apply(self, d=None):
+        if self.m_quote:
+            debug(u'buy {}'.format(self.m_quote))
+            self.m_quote.buy(self.m_number, self.m_value, QuoteType.cash)
+
+
+class OperationBuySrd(Operation):
+
+    def __init__(self, d, m, v, e, n, vat, ref):
+        super(OperationBuySrd, self).__init__(d, m, v, e, n, vat, ref)
+
+    def type(self):
+        return OPERATION_BUY_SRD
+
+    def operation(self):
+        return message('Portfolio_buy_srd')
+
+    def apply(self, d=None):
+        if self.m_quote:
+            debug(u'buy SRD {}'.format(self.m_quote))
+            self.m_quote.buy(self.m_number, self.m_value, QuoteType.credit)
+
+
+class OperationSell(Operation):
+
+    def __init__(self, d, m, v, e, n, vat, ref):
+        super(OperationSell, self).__init__(d, m, v, e, n, vat, ref)
+
+    def type(self):
+        return OPERATION_SELL
+
+    def operation(self):
+        return message('Portfolio_sell')
+
+    def apply(self, d=None):
+        if self.m_quote:
+            debug(u'sell {}'.format(self.m_quote))
+            max = self.m_quote.nv_number(QuoteType.cash)
+            if self.m_number > max:
+                self.m_number = max
+            self.m_quote.sell(self.m_number, QuoteType.cash)
+
+
+class OperationSellSrd(Operation):
+
+    def __init__(self, d, m, v, e, n, vat, ref):
+        super(OperationSellSrd, self).__init__(d, m, v, e, n, vat, ref)
+
+    def type(self):
+        return OPERATION_SELL_SRD
+
+    def operation(self):
+        return message('Portfolio_sell_srd')
+
+    def apply(self, d=None):
+        if self.m_quote:
+            debug(u'sell SRD {}'.format(self.m_quote))
+            max = self.m_quote.nv_number(QuoteType.credit)
+            if self.m_number > max:
+                self.m_number = max
+            self.m_quote.sell(self.m_number, QuoteType.credit)
+
+
+class OperationCredit(Operation):
+
+    def __init__(self, d, m, v, e, n, vat, ref):
+        super(OperationCredit, self).__init__(d, m, v, e, n, vat, ref)
+
+    def type(self):
+        return OPERATION_CREDIT
+
+    def operation(self):
+        return message('Portfolio_credit')
+
+    def apply(self, d=None):
+        pass
+
+
+class OperationDebit(Operation):
+
+    def __init__(self, d, m, v, e, n, vat, ref):
+        super(OperationDebit, self).__init__(d, m, v, e, n, vat, ref)
+
+    def type(self):
+        return OPERATION_DEBIT
+
+    def operation(self):
+        return message('Portfolio_debit')
+
+    def apply(self, d=None):
+        pass
+
+
+class OperationFee(Operation):
+
+    def __init__(self, d, m, v, e, n, vat, ref):
+        super(OperationFee, self).__init__(d, m, v, e, n, vat, ref)
+
+    def type(self):
+        return OPERATION_FEE
+
+    def operation(self):
+        return message('Portfolio_fee')
+
+    def apply(self, d=None):
+        pass
+
+
+class OperationInterest(Operation):
+
+    def __init__(self, d, m, v, e, n, vat, ref):
+        super(OperationInterest, self).__init__(d, m, v, e, n, vat, ref)
+
+    def type(self):
+        return OPERATION_INTEREST
+
+    def operation(self):
+        return message('Portfolio_interest')
+
+    def apply(self, d=None):
+        pass
+
+
+class OperationSplit(Operation):
+
+    def __init__(self, d, m, v, e, n, vat, ref):
+        super(OperationSplit, self).__init__(d, m, v, e, n, vat, ref)
+
+    def type(self):
+        return OPERATION_SPLIT
+
+    def operation(self):
+        return message('Portfolio_split')
+
+    def apply(self, d=None):
+        pass
+
+
+class OperationDetachment(Operation):
+    # return of capital?
+
+    def __init__(self, d, m, v, e, n, vat, ref):
+        super(OperationDetachment, self).__init__(d, m, v, e, n, vat, ref)
+
+    def type(self):
+        return OPERATION_DETACHMENT
+
+    def operation(self):
+        return message('Portfolio_detachment')
+
+    def apply(self, d=None):
+        if self.m_quote:
+            debug(u'detachment {} / {:f}'.format(self.m_quote, self.m_value))
+            self.m_quote.buy(0, -self.m_value, QuoteType.cash)
+
+
+class OperationDividend(Operation):
+
+    def __init__(self, d, m, v, e, n, vat, ref):
+        super(OperationDividend, self).__init__(d, m, v, e, n, vat, ref)
+
+    def type(self):
+        return OPERATION_DIVIDEND
+
+    def operation(self):
+        return message('Portfolio_dividend')
+
+    def apply(self, d=None):
+        pass
+
+
+class OperationLiquidation(Operation):
+
+    def __init__(self, d, m, v, e, n, vat, ref):
+        super(OperationLiquidation, self).__init__(d, m, v, e, n, vat, ref)
+
+    def type(self):
+        return OPERATION_LIQUIDATION
+
+    def operation(self):
+        return message('Portfolio_liquidation')
+
+    def apply(self, d=None):
+        if self.m_quote:
+            debug(u'liquidation {} / {:f}'.format(self.m_quote, self.m_value))
+            self.m_quote.transfertTo(self.m_number, self.m_expenses, QuoteType.cash)
+
+
+class OperationQuote(Operation):
+
+    def __init__(self, d, m, v, e, n, vat, ref):
+        super(OperationQuote, self).__init__(d, m, v, e, n, vat, ref)
+
+    def type(self):
+        return OPERATION_QUOTE
+
+    def operation(self):
+        return message('Portfolio_quote')
+
+    def apply(self, d=None):
+        if self.m_quote:
+            debug(u'dividend/shares {}'.format(self.m_quote))
+            self.m_quote.buy(self.m_number, 0.0, QuoteType.cash)
+
+
+class OperationRegister(Operation):
+
+    def __init__(self, d, m, v, e, n, vat, ref):
+        super(OperationRegister, self).__init__(d, m, v, e, n, vat, ref)
+
+    def type(self):
+        return OPERATION_REGISTER
+
+    def operation(self):
+        return message('Portfolio_register')
+
+    def apply(self, d=None):
+        if self.m_quote:
+            debug(u'register/shares {}'.format(self.m_quote))
+            self.m_quote.buy(self.m_number, self.m_value, QuoteType.cash)
 
 
 def isOperationTypeAQuote(type):
@@ -765,9 +952,7 @@ class Portfolio(object):
         for operation in self.m_operations.list():
             debug(u'applyOperations: {}'.format(operation))
             if d is None or d >= operation.date():
-                typ = operation.type()
-                if typ in operation_apply and operation_apply[typ]:
-                    operation.apply(d)
+                operation.apply(d)
             else:
                 info(u'ignore {}'.format(operation.name()))
 
