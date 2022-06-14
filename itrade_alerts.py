@@ -56,8 +56,8 @@ ALERT_TYPE_INFO_QUOTE = 0
 ALERT_TYPE_INFO_SRD = 1
 
 alert_type_desc = {
-    ALERT_TYPE_INFO_QUOTE : 'alert_type_info_quote',
-    ALERT_TYPE_INFO_SRD : 'alert_type_info_srd'
+    ALERT_TYPE_INFO_QUOTE: 'alert_type_info_quote',
+    ALERT_TYPE_INFO_SRD: 'alert_type_info_srd'
     }
 
 # ============================================================================
@@ -77,7 +77,7 @@ class Alert(object):
     def __init__(self, a_type, source, datation, title, desc, link, isin):
         self.m_type = a_type
         self.m_source = source
-        self.m_datation = date(int(datation[0:4]),int(datation[5:7]),int(datation[8:10]))
+        self.m_datation = date(int(datation[0:4]), int(datation[5:7]), int(datation[8:10]))
         self.m_title = title
         self.m_desc = desc
         self.m_link = link
@@ -151,14 +151,14 @@ class Alerts(object):
     def listAlerts(self):
         return self.m_alerts.values()
 
-    def existAlert(self,ref):
+    def existAlert(self, ref):
         if ref in self.m_alerts:
             return self.m_alerts[ref]
         else:
             return None
 
-    def newAlert(self,type,source,datation,title,desc,link,isin):
-        alert = Alert(type,source,datation,title,desc,link,isin)
+    def newAlert(self, type, source, datation, title, desc, link, isin):
+        alert = Alert(type, source, datation, title, desc, link, isin)
         ref = alert.reference()
         if self.existAlert(ref):
             return None
@@ -167,7 +167,7 @@ class Alerts(object):
             self.m_dirty = True
             return alert
 
-    def delAlert(self,ref):
+    def delAlert(self, ref):
         if self.existAlert(ref):
             del self.m_alerts[ref]
             self.m_dirty = True
@@ -177,7 +177,7 @@ class Alerts(object):
 
     # ---[ file ] -----------------------------------------
 
-    def saveFile(self,ref,ext,content):
+    def saveFile(self, ref, ext, content):
         pass
 
     def readFile(self, ref, ext):
@@ -192,7 +192,7 @@ class Alerts(object):
             return None
         return txt
 
-    def addAlert(self,ref,state):
+    def addAlert(self, ref, state):
         if self.existAlert(ref):
             # known :-(
             info(u'Alerts::addAlert(): ref={} already exists !'.format(ref))
@@ -200,11 +200,11 @@ class Alerts(object):
         else:
             # parse ref
             item = ref.split('.')
-            if len(item)!=5:
+            if len(item) != 5:
                 info(u'Alerts::addAlert(): ref={} already exists !'.format(ref))
                 return False
 
-            type,source,datation,isin,title = item
+            type, source, datation, isin, title = item
             type = int(type)
             title = title.strip('"')
 
@@ -212,10 +212,10 @@ class Alerts(object):
             link = self.readFile(ref,'lnk')
             desc = self.readFile(ref,'txt')
 
-            #print 'addAlert:',type,source,datation,isin,title
+            #print('addAlert:', type, source, datation, isin, title)
 
             # create alert
-            alert = self.newAlert(type,source,datation,title,desc,link,isin)
+            alert = self.newAlert(type, source, datation, title, desc, link, isin)
             if alert:
                 alert.setstate(state)
 
@@ -225,7 +225,7 @@ class Alerts(object):
                 # humm :-(
                 return False
 
-    def load(self,fn=None):
+    def load(self, fn=None):
         # open and read the file to load these alerts information
         infile = itrade_csv.read(fn, itrade_config.default_alerts_file())
         # scan each line to read each alert
@@ -234,7 +234,7 @@ class Alerts(object):
             if item:
                 self.addAlert(item[1], int(item[0]))
 
-    def save(self,fn=None):
+    def save(self, fn=None):
         # open and write the file with these alerts information
         itrade_csv.write(fn, itrade_config.default_alerts_file(), self.m_alerts.values())
 
@@ -250,7 +250,7 @@ class Alerts(object):
     def listPlugins(self):
         return self.m_plugins.values()
 
-    def register(self,name,plugin):
+    def register(self, name, plugin):
         if name in self.m_plugins:
             warning(u"Alerts: can't register {}:{} : already registered !".format(name, plugin))
             return False
@@ -263,7 +263,7 @@ class Alerts(object):
 
     # ---[ scan ] ------------------------------------------
 
-    def scan(self,dlg=None):
+    def scan(self, dlg=None):
         print(u'Alerts: scan {:d}:{}'.format(self.numOfPlugins(), self.listPlugins()))
 
         for x, eachPlugin in enumerate(self.listPlugins()):

@@ -186,7 +186,7 @@ operation_apply = {
     OPERATION_SPLIT     : False,
     OPERATION_DETACHMENT: True,
     OPERATION_DIVIDEND  : False,
-    OPERATION_LIQUIDATION  : True,
+    OPERATION_LIQUIDATION: True,
     OPERATION_REGISTER  : True,
     OPERATION_QUOTE     : True
 }
@@ -226,10 +226,14 @@ operation_incl_taxes = {
 }
 
 
+def create_operation(operation_type, d, m, value, expenses, number, vat, ref):
+    return Operation(d=d, t=operation_type, m=m, v=value, e=expenses,n=number, vat=vat, ref=ref)
+
+
 class Operation(object):
-    def __init__(self,d,t,m,v,e,n,vat,ref):
+    def __init__(self, d, t, m, v, e, n, vat, ref):
         # decode the datetime (string) to convert to datetime
-        if isinstance(d,datetime.datetime):
+        if isinstance(d, datetime.datetime):
             self.m_datetime = d
         else:
             debug('Operation::__init__():{}'.format(d))
@@ -271,7 +275,7 @@ class Operation(object):
             self.m_quote = None
             self.m_name = m
 
-        #print 'Operation(): quote=%s name=%s' % (self.m_quote,self.m_name)
+        # print(u'Operation(): quote={} name={}'.format(self.m_quote, self.m_name))
 
     def __repr__(self):
         name = self.m_name
@@ -444,11 +448,13 @@ class Operation(object):
     def sv_pvalue(self):
         return u'{:.2f}'.format(self.nv_pvalue())
 
+
 def isOperationTypeAQuote(type):
     if type in operation_quote:
         return operation_quote[type]
     else:
         return False
+
 
 def isOperationTypeIncludeTaxes(type):
     return operation_incl_taxes.get(type, True)
@@ -483,25 +489,26 @@ class Operations(object):
         self.m_operations = {}
         self.m_ref = 0
         self.m_portfolio = portfolio
+        self.default_operations_file = os.path.join(itrade_config.dirUserData, 'default.operations.txt')
 
     def list(self):
         return sorted(self.m_operations.values(), key=operator.methodcaller('datetime'))
 
-    def load(self,infile=None):
-        infile = itrade_csv.read(infile,os.path.join(itrade_config.dirUserData,'default.operations.txt'))
+    def load(self, infile=None):
+        infile = itrade_csv.read(infile, self.default_operations_file)
         # scan each line to read each trade
         for line in infile:
-            item = itrade_csv.parse(line,7)
+            item = itrade_csv.parse(line, 7)
             if item:
-                self.add(item,False)
+                self.add(item, False)
 
-    def save(self,outfile=None):
-        itrade_csv.write(outfile,os.path.join(itrade_config.dirUserData,'default.operations.txt'),self.list())
+    def save(self, outfile=None):
+        itrade_csv.write(outfile, self.default_operations_file, self.list())
 
     def add(self, item, bApply):
         debug(u'Operations::add() before: 0:{} , 1:{} , 2:{} , 3:{} , 4:{} , 5:{}'.format(item[0], item[1], item[2], item[3], item[4], item[5]))
         vat = self.item_vat(item)
-        op = Operation(item[0], item[1], item[2], item[3], item[4], item[5], vat, self.m_ref)
+        op = create_operation(operation_type=item[1], d=item[0], m=item[2], value=item[3], expenses=item[4], number=item[5], vat=vat, ref=self.m_ref)
         self.m_operations[self.m_ref] = op
         if bApply:
             op.apply()
@@ -533,6 +540,7 @@ class Operations(object):
 #   accountref      account reference number
 #   market          principal market traded by this portfolio
 # ============================================================================
+
 
 class Portfolio(object):
     def __init__(self, filename='default', name='<Portfolio>', accountref='000000000', market='EURONEXT', currency='EUR', vat=1.0, term=3, risk=5, indice='FR0003500008'):
@@ -648,7 +656,7 @@ class Portfolio(object):
         self.m_cTaxable = 0.0
         self.m_cAppreciation = 0.0
 
-    # ---[ reinit the porfolio, associated services and quotes ]---------------
+    # ---[ reinit the portfolio, associated services and quotes ]---------------
 
     def reinit(self):
         debug(u'Portfolio::{}::reinit'.format(self.name()))
@@ -656,27 +664,19 @@ class Portfolio(object):
         quotes.reinit()
         self._init_()
 
-    # ---[ File management for the porfolio ]----------------------------------
+    # ---[ File management for the portfolio ]----------------------------------
 
     def remove(self):
-        # remove all files used by the portfolio
+        """
+        remove all files used by the portfolio
+        """
+        self.remove_file('operations')
+        self.remove_file('matrix')
+        self.remove_file('fees')
+        self.remove_file('stops')
 
-        fn = self.filepath('operations')
-        try:
-            os.remove(fn)
-        except OSError:
-            pass
-        fn = self.filepath('matrix')
-        try:
-            os.remove(fn)
-        except OSError:
-            pass
-        fn = self.filepath('fees')
-        try:
-            os.remove(fn)
-        except OSError:
-            pass
-        fn = self.filepath('stops')
+    def remove_file(self, file_type):
+        fn = self.filepath(file_type)
         try:
             os.remove(fn)
         except OSError:
@@ -774,16 +774,14 @@ class Portfolio(object):
     # --- [ manage login to services ] ----------------------------------------
 
     def loginToServices(self, quote=None):
-
         def login(quote):
             name = quote.liveconnector(bForceLive=True).name()
-            #print 'loginToServices:', quote.ticker(), name
+            #print('loginToServices:', quote.ticker(), name)
             if name not in maperr:
                 con = gLoginRegistry.get(name)
-                if con:
-                    if not con.logged():
-                        print('login to service :', name)
-                        maperr[name] = con.login()
+                if con and not con.logged():
+                    print('login to service :', name)
+                    maperr[name] = con.login()
 
         if itrade_config.isConnected():
             # temp map
@@ -803,15 +801,14 @@ class Portfolio(object):
             maperr = {}
 
             # log to service
-            for eachQuote in quotes.list():
-                if eachQuote.isMatrix():
-                    name = eachQuote.liveconnector().name()
+            for quote in quotes.list():
+                if quote.isMatrix():
+                    name = quote.liveconnector().name()
                     if name not in maperr:
                         con = gLoginRegistry.get(name)
-                        if con:
-                            if con.logged():
-                                print('logout from service :',name)
-                                maperr[name] = con.logout()
+                        if con and con.logged():
+                            print('logout from service :', name)
+                            maperr[name] = con.logout()
 
     # --- [ manage multi-currency on the portfolio ] --------------------------
 
@@ -840,89 +837,89 @@ class Portfolio(object):
 
     def computeOperations(self, cd=None):
         self.reset()
-        for eachOp in self.m_operations.list():
-            if eachOp.type() == OPERATION_CREDIT:
-                debug(u'credit {} : + {:f}'.format(eachOp.name(), eachOp.nv_value()))
-                self.m_cCash = self.m_cCash + eachOp.nv_value()
-                self.m_cInvest = self.m_cInvest + eachOp.nv_value()
-                if self.sameyear(eachOp, cd):
-                    self.m_cExpenses = self.m_cExpenses + eachOp.nv_expenses()
-            elif eachOp.type() == OPERATION_DEBIT:
-                debug(u'debit {} : - {:f}'.format(eachOp.name(), eachOp.nv_value()))
-                self.m_cCash = self.m_cCash - eachOp.nv_value()
-                # __x self.m_cInvest = self.m_cInvest - eachOp.nv_value()
-                if self.sameyear(eachOp, cd):
-                    self.m_cExpenses = self.m_cExpenses + eachOp.nv_expenses()
-            elif eachOp.type() == OPERATION_BUY:
-                debug(u'buy {}/{} : {:d} for {:f}'.format(eachOp.name(), eachOp.quote(), eachOp.nv_number(), eachOp.nv_value()))
-                self.m_cCash = self.m_cCash - eachOp.nv_value()
-                if self.sameyear(eachOp, cd):
-                    self.m_cExpenses = self.m_cExpenses + eachOp.nv_expenses()
-            elif eachOp.type() == OPERATION_BUY_SRD:
-                debug(u'buy SRD {}/{} : {:d} for {:f}'.format(eachOp.name(), eachOp.quote(), eachOp.nv_number(), eachOp.nv_value()))
-                self.m_cCredit = self.m_cCredit + eachOp.nv_value()
-                if self.sameyear(eachOp, cd):
-                    self.m_cExpenses = self.m_cExpenses + eachOp.nv_expenses()
-            elif eachOp.type() == OPERATION_SELL:
-                debug(u'sell {}/{} : {:d} for {:f}'.format(eachOp.name(), eachOp.quote(), eachOp.nv_number(), eachOp.nv_value()))
-                self.m_cCash = self.m_cCash + eachOp.nv_value()
-                if self.sameyear(eachOp, cd):
-                    self.m_cExpenses = self.m_cExpenses + eachOp.nv_expenses()
-                    self.m_cTransfer = self.m_cTransfer + eachOp.nv_value() + eachOp.nv_expenses()
-                    self.m_cTaxable = self.m_cTaxable + eachOp.nv_pvalue()
-                    self.m_cAppreciation = self.m_cAppreciation + eachOp.nv_pvalue()
-            elif eachOp.type() == OPERATION_SELL_SRD:
-                debug(u'sell SRD {}/{} : {:d} for {:f}'.format(eachOp.name(), eachOp.quote(), eachOp.nv_number(), eachOp.nv_value()))
-                self.m_cCredit = self.m_cCredit - eachOp.nv_value()
-                if self.sameyear(eachOp, cd):
-                    self.m_cExpenses = self.m_cExpenses + eachOp.nv_expenses()
-                    self.m_cTransfer = self.m_cTransfer + eachOp.nv_value() + eachOp.nv_expenses()
-            elif eachOp.type() == OPERATION_FEE:
-                debug(u'fee {}: {:f}'.format(eachOp.name(), eachOp.nv_value()))
-                self.m_cCash = self.m_cCash - eachOp.nv_value()
-                if self.sameyear(eachOp, cd):
-                    self.m_cExpenses = self.m_cExpenses + eachOp.nv_expenses()
-            elif eachOp.type() == OPERATION_LIQUIDATION:
-                debug(u'liquidation {}: {:f}'.format(eachOp.name(), eachOp.nv_value()))
-                self.m_cCash = self.m_cCash + eachOp.nv_value()
-                self.m_cCredit = self.m_cCredit + (eachOp.nv_value() + eachOp.nv_expenses())
-                if self.sameyear(eachOp, cd):
-                    self.m_cExpenses = self.m_cExpenses + eachOp.nv_expenses()
-                    self.m_cTaxable = self.m_cTaxable + eachOp.nv_value()
-                    self.m_cAppreciation = self.m_cAppreciation + eachOp.nv_value()
-                    quote = eachOp.quote()
+        for operation in self.m_operations.list():
+            if operation.type() == OPERATION_CREDIT:
+                debug(u'credit {} : + {:f}'.format(operation.name(), operation.nv_value()))
+                self.m_cCash = self.m_cCash + operation.nv_value()
+                self.m_cInvest = self.m_cInvest + operation.nv_value()
+                if self.sameyear(operation, cd):
+                    self.m_cExpenses = self.m_cExpenses + operation.nv_expenses()
+            elif operation.type() == OPERATION_DEBIT:
+                debug(u'debit {} : - {:f}'.format(operation.name(), operation.nv_value()))
+                self.m_cCash = self.m_cCash - operation.nv_value()
+                # __x self.m_cInvest = self.m_cInvest - operation.nv_value()
+                if self.sameyear(operation, cd):
+                    self.m_cExpenses = self.m_cExpenses + operation.nv_expenses()
+            elif operation.type() == OPERATION_BUY:
+                debug(u'buy {}/{} : {:d} for {:f}'.format(operation.name(), operation.quote(), operation.nv_number(), operation.nv_value()))
+                self.m_cCash = self.m_cCash - operation.nv_value()
+                if self.sameyear(operation, cd):
+                    self.m_cExpenses = self.m_cExpenses + operation.nv_expenses()
+            elif operation.type() == OPERATION_BUY_SRD:
+                debug(u'buy SRD {}/{} : {:d} for {:f}'.format(operation.name(), operation.quote(), operation.nv_number(), operation.nv_value()))
+                self.m_cCredit = self.m_cCredit + operation.nv_value()
+                if self.sameyear(operation, cd):
+                    self.m_cExpenses = self.m_cExpenses + operation.nv_expenses()
+            elif operation.type() == OPERATION_SELL:
+                debug(u'sell {}/{} : {:d} for {:f}'.format(operation.name(), operation.quote(), operation.nv_number(), operation.nv_value()))
+                self.m_cCash = self.m_cCash + operation.nv_value()
+                if self.sameyear(operation, cd):
+                    self.m_cExpenses = self.m_cExpenses + operation.nv_expenses()
+                    self.m_cTransfer = self.m_cTransfer + operation.nv_value() + operation.nv_expenses()
+                    self.m_cTaxable = self.m_cTaxable + operation.nv_pvalue()
+                    self.m_cAppreciation = self.m_cAppreciation + operation.nv_pvalue()
+            elif operation.type() == OPERATION_SELL_SRD:
+                debug(u'sell SRD {}/{} : {:d} for {:f}'.format(operation.name(), operation.quote(), operation.nv_number(), operation.nv_value()))
+                self.m_cCredit = self.m_cCredit - operation.nv_value()
+                if self.sameyear(operation, cd):
+                    self.m_cExpenses = self.m_cExpenses + operation.nv_expenses()
+                    self.m_cTransfer = self.m_cTransfer + operation.nv_value() + operation.nv_expenses()
+            elif operation.type() == OPERATION_FEE:
+                debug(u'fee {}: {:f}'.format(operation.name(), operation.nv_value()))
+                self.m_cCash = self.m_cCash - operation.nv_value()
+                if self.sameyear(operation, cd):
+                    self.m_cExpenses = self.m_cExpenses + operation.nv_expenses()
+            elif operation.type() == OPERATION_LIQUIDATION:
+                debug(u'liquidation {}: {:f}'.format(operation.name(), operation.nv_value()))
+                self.m_cCash = self.m_cCash + operation.nv_value()
+                self.m_cCredit = self.m_cCredit + (operation.nv_value() + operation.nv_expenses())
+                if self.sameyear(operation, cd):
+                    self.m_cExpenses = self.m_cExpenses + operation.nv_expenses()
+                    self.m_cTaxable = self.m_cTaxable + operation.nv_value()
+                    self.m_cAppreciation = self.m_cAppreciation + operation.nv_value()
+                    quote = operation.quote()
                     if quote:
-                        pv = eachOp.nv_number() * quote.nv_pru(QuoteType.credit)
+                        pv = operation.nv_number() * quote.nv_pru(QuoteType.credit)
                         self.m_cTaxable = self.m_cTaxable + pv
                         self.m_cAppreciation = self.m_cAppreciation + pv
-            elif eachOp.type() == OPERATION_INTEREST:
-                debug(u'interest {} : {:f}'.format(eachOp.name(), eachOp.nv_value()))
-                self.m_cCash = self.m_cCash + eachOp.nv_value()
-                if self.sameyear(eachOp, cd):
-                    self.m_cExpenses = self.m_cExpenses + eachOp.nv_expenses()
-                    #self.m_cTaxable = self.m_cTaxable + eachOp.nv_value()
-                    self.m_cAppreciation = self.m_cAppreciation + eachOp.nv_value()
-            elif eachOp.type() == OPERATION_DETACHMENT:
-                debug(u'detach {}/{} : {:f}'.format(eachOp.name(), eachOp.quote(), eachOp.nv_value()))
-                self.m_cCash = self.m_cCash + eachOp.nv_value()
-                if self.sameyear(eachOp, cd):
-                    self.m_cExpenses = self.m_cExpenses + eachOp.nv_expenses()
-                    #self.m_cTaxable = self.m_cTaxable + eachOp.nv_value()
-                    self.m_cAppreciation = self.m_cAppreciation + eachOp.nv_value()
-            elif eachOp.type() == OPERATION_DIVIDEND:
-                debug(u'dividend {}/{} : {:f}'.format(eachOp.name(), eachOp.quote(), eachOp.nv_value()))
-                self.m_cCash = self.m_cCash + eachOp.nv_value()
-                if self.sameyear(eachOp, cd):
-                    self.m_cExpenses = self.m_cExpenses + eachOp.nv_expenses()
-                    self.m_cTaxable = self.m_cTaxable + eachOp.nv_value()
-                    self.m_cAppreciation = self.m_cAppreciation + eachOp.nv_value()
-            elif eachOp.type() == OPERATION_QUOTE:
-                debug(u'dividend/share {}/{} : {:f}'.format(eachOp.name(), eachOp.quote(), eachOp.nv_value()))
-            elif eachOp.type() == OPERATION_REGISTER:
-                debug(u'register/share {}/{} : {:f}'.format(eachOp.name(), eachOp.quote(), eachOp.nv_value()))
-                self.m_cInvest = self.m_cInvest + eachOp.nv_value()
+            elif operation.type() == OPERATION_INTEREST:
+                debug(u'interest {} : {:f}'.format(operation.name(), operation.nv_value()))
+                self.m_cCash = self.m_cCash + operation.nv_value()
+                if self.sameyear(operation, cd):
+                    self.m_cExpenses = self.m_cExpenses + operation.nv_expenses()
+                    #self.m_cTaxable = self.m_cTaxable + operation.nv_value()
+                    self.m_cAppreciation = self.m_cAppreciation + operation.nv_value()
+            elif operation.type() == OPERATION_DETACHMENT:
+                debug(u'detach {}/{} : {:f}'.format(operation.name(), operation.quote(), operation.nv_value()))
+                self.m_cCash = self.m_cCash + operation.nv_value()
+                if self.sameyear(operation, cd):
+                    self.m_cExpenses = self.m_cExpenses + operation.nv_expenses()
+                    #self.m_cTaxable = self.m_cTaxable + operation.nv_value()
+                    self.m_cAppreciation = self.m_cAppreciation + operation.nv_value()
+            elif operation.type() == OPERATION_DIVIDEND:
+                debug(u'dividend {}/{} : {:f}'.format(operation.name(), operation.quote(), operation.nv_value()))
+                self.m_cCash = self.m_cCash + operation.nv_value()
+                if self.sameyear(operation, cd):
+                    self.m_cExpenses = self.m_cExpenses + operation.nv_expenses()
+                    self.m_cTaxable = self.m_cTaxable + operation.nv_value()
+                    self.m_cAppreciation = self.m_cAppreciation + operation.nv_value()
+            elif operation.type() == OPERATION_QUOTE:
+                debug(u'dividend/share {}/{} : {:f}'.format(operation.name(), operation.quote(), operation.nv_value()))
+            elif operation.type() == OPERATION_REGISTER:
+                debug(u'register/share {}/{} : {:f}'.format(operation.name(), operation.quote(), operation.nv_value()))
+                self.m_cInvest = self.m_cInvest + operation.nv_value()
             else:
-                raise TypeError("computeOperations(): operation::type() unknown %s", eachOp.type())
+                raise TypeError("computeOperations(): operation::type() unknown %s", operation.type())
 
     # --- [ compute the value ] -----------------------------------------------
 
@@ -944,24 +941,24 @@ class Portfolio(object):
 
     # --- [ operations API ] --------------------------------------------------
 
-    def addOperation(self,item):
-        self.m_operations.add(item,True)
+    def addOperation(self, item):
+        self.m_operations.add(item, True)
 
-    def delOperation(self,ref):
-        self.m_operations.remove(ref,True)
+    def delOperation(self, ref):
+        self.m_operations.remove(ref, True)
 
-    def getOperation(self,ref):
+    def getOperation(self, ref):
         return self.m_operations.get(ref)
 
     # --- [ value API ] -------------------------------------------------------
 
-    def nv_cash(self,currency=None):
+    def nv_cash(self, currency=None):
         retval = self.m_cCash
         if currency:
             retval = currencies.convert(curTo=currency, curFrom=self.m_currency, Value=retval)
         return retval
 
-    def nv_credit(self,currency=None):
+    def nv_credit(self, currency=None):
         retval = self.m_cCredit
         if currency:
             retval = currencies.convert(curTo=currency, curFrom=self.m_currency, Value=retval)
@@ -973,9 +970,9 @@ class Portfolio(object):
     def nv_value(self, box=QuoteType.both):
         # __x compute it !
         self.computeValue()
-        if box==QuoteType.cash:
+        if box == QuoteType.cash:
             return self.m_cDIRValue
-        if box==QuoteType.credit:
+        if box == QuoteType.credit:
             return self.m_cSRDValue
         else:
             return self.m_cDIRValue + self.m_cSRDValue
@@ -983,9 +980,9 @@ class Portfolio(object):
     def nv_buy(self, box=QuoteType.both):
         # __x compute it !
         self.computeBuy()
-        if box==QuoteType.cash:
+        if box == QuoteType.cash:
             return self.m_cDIRBuy
-        if box==QuoteType.credit:
+        if box == QuoteType.credit:
             return self.m_cSRDBuy
         else:
             return self.m_cDIRBuy + self.m_cSRDBuy
@@ -1011,13 +1008,13 @@ class Portfolio(object):
             return self.nv_taxable() * itrade_config.taxesPercent
 
     def nv_perf(self, box=QuoteType.both):
-        #info('nv_perf=%f'% (self.nv_value(box) - self.nv_buy(box)))
+        #info(u'nv_perf={:f}'.format(self.nv_value(box) - self.nv_buy(box)))
         return self.nv_value(box) - self.nv_buy(box)
 
     def nv_perfPercent(self, box=QuoteType.both):
         n = self.nv_value(box)
         b = self.nv_buy(box)
-        if n==0.0 or b==0.0:
+        if n == 0.0 or b == 0.0:
             return 0.0
         return ((n*100.0) / b) - 100
 

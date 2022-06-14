@@ -57,7 +57,7 @@ import wx.lib.sized_controls as sc
 from itrade_logging import setLevel, info, debug
 from itrade_local import message, getGroupChar, getDecimalChar
 from itrade_quotes import initQuotesModule, quotes
-from itrade_portfolio import loadPortfolio, initPortfolioModule, Operation, Portfolio, OPERATION_LIQUIDATION,\
+from itrade_portfolio import loadPortfolio, initPortfolioModule, create_operation, Portfolio, OPERATION_LIQUIDATION,\
     OPERATION_SELL, isOperationTypeHasShareNumber, signOfOperationType, isOperationTypeIncludeTaxes,\
     isOperationTypeAQuote, OPERATION_BUY, OPERATION_CREDIT, OPERATION_DEBIT, OPERATION_FEE, OPERATION_DIVIDEND,\
     OPERATION_DETACHMENT, OPERATION_INTEREST, OPERATION_BUY_SRD, OPERATION_SELL_SRD, OPERATION_QUOTE, OPERATION_REGISTER
@@ -221,7 +221,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
         pane.SetSizerProps(expand=True)
 
         # Row 1 : date
-        label = wx.StaticText(pane, wx.ID_ANY, message('portfolio_date'))
+        label = wx.StaticText(parent=pane, id=wx.ID_ANY, label=message('portfolio_date'))
         label.SetSizerProps(valign='center')
 
         ssdatetime = wx.DateTimeFromDMY(self.m_datetime.day, self.m_datetime.month-1, self.m_datetime.year)
@@ -230,7 +230,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
         wx.EVT_DATE_CHANGED(self, self.wxDateCtrl.GetId(), self.OnDate)
 
         # Row 2 : time
-        label = wx.StaticText(pane, wx.ID_ANY, message('portfolio_time'))
+        label = wx.StaticText(parent=pane, id=wx.ID_ANY, label=message('portfolio_time'))
         label.SetSizerProps(valign='center')
 
         hhmmsstime = wx.DateTimeFromHMS(self.m_datetime.hour, self.m_datetime.minute, self.m_datetime.second)
@@ -258,16 +258,16 @@ class iTradeOperationDialog(iTradeSizedDialog):
         btnpane.SetSizerType("horizontal")
         btnpane.SetSizerProps(expand=True)
 
-        self.wxNameLabel = wx.StaticText(btnpane, wx.ID_ANY, message('portfolio_description'))
+        self.wxNameLabel = wx.StaticText(parent=btnpane, id=wx.ID_ANY, label=message('portfolio_description'))
         self.wxNameLabel.SetSizerProps(valign='center')
 
         bmp = wx.Bitmap(os.path.join(itrade_config.dirRes, 'quotes.png'))
-        self.wxNameButton = wx.BitmapButton(btnpane, wx.ID_ANY, bmp, size=wx.Size(bmp.GetWidth()+5, bmp.GetHeight()+5))
+        self.wxNameButton = wx.BitmapButton(parent=btnpane, id=wx.ID_ANY, bitmap=bmp, size=wx.Size(bmp.GetWidth()+5, bmp.GetHeight()+5))
         wx.EVT_BUTTON(self, self.wxNameButton.GetId(), self.OnQuote)
 
         # print('creating ctrl:',self.m_name)
-        self.wxNameCtrl = wx.TextCtrl(btnpane, wx.ID_ANY, self.m_name, size=wx.Size(240, -1), style=wx.TE_LEFT)
-        wx.EVT_TEXT( self, self.wxNameCtrl.GetId(), self.OnDescChange )
+        self.wxNameCtrl = wx.TextCtrl(parent=btnpane, id=wx.ID_ANY, value=self.m_name, size=wx.Size(240, -1), style=wx.TE_LEFT)
+        wx.EVT_TEXT(self, self.wxNameCtrl.GetId(), self.OnDescChange)
         self.wxNameCtrl.SetSizerProps(expand=True)
 
         # Row 5 : value
@@ -275,7 +275,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
         btnpane.SetSizerType("horizontal")
         btnpane.SetSizerProps(expand=True)
 
-        self.wxValueLabel = wx.StaticText(btnpane, wx.ID_ANY, message('portfolio_field_credit'))
+        self.wxValueLabel = wx.StaticText(parent=btnpane, id=wx.ID_ANY, label=message('portfolio_field_credit'))
         self.wxValueLabel.SetSizerProps(valign='center')
 
         self.wxValueCtrl = masked.Ctrl(btnpane, integerWidth=9, fractionWidth=2, controlType=masked.controlTypes.NUMBER,
@@ -283,7 +283,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
                                        decimalChar=getDecimalChar(), selectOnEntry=True)
         wx.EVT_TEXT( self, self.wxValueCtrl.GetId(), self.OnValueChange )
 
-        self.wxValueTxt = wx.StaticText(btnpane, wx.ID_ANY, currency2symbol(currency))
+        self.wxValueTxt = wx.StaticText(parent=btnpane, id=wx.ID_ANY, label=currency2symbol(currency))
         self.wxValueTxt.SetSizerProps(valign='center')
 
         self.wxExpPreTxt = wx.StaticText(parent=btnpane, id=wx.ID_ANY, label='')
@@ -295,7 +295,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
                                           selectOnEntry=True)
         wx.EVT_TEXT( self, self.wxExpensesCtrl.GetId(), self.OnExpensesChange )
 
-        self.wxExpPostTxt = wx.StaticText(btnpane, wx.ID_ANY, u"{} {}".format(currency2symbol(currency), message('portfolio_post_expenses')))
+        self.wxExpPostTxt = wx.StaticText(parent=btnpane, id=wx.ID_ANY, label=u"{} {}".format(currency2symbol(currency), message('portfolio_post_expenses')))
         self.wxExpPostTxt.SetSizerProps(valign='center')
 
         # resizable pane
@@ -304,7 +304,7 @@ class iTradeOperationDialog(iTradeSizedDialog):
         pane.SetSizerProps(expand=True)
 
         # number
-        label = wx.StaticText(pane, wx.ID_ANY, message('portfolio_quantity'))
+        label = wx.StaticText(parent=pane, id=wx.ID_ANY, label=message('portfolio_quantity'))
         label.SetSizerProps(valign='center')
 
         self.wxNumberCtrl = masked.Ctrl(pane, integerWidth=9, fractionWidth=0, controlType=masked.controlTypes.NUMBER,
@@ -1211,7 +1211,7 @@ def add_iTradeOperation(win, portfolio, quote, type):
         key = quote.key()
     else:
         key = None
-    op = Operation(d=datetime.now(), t=type, m=key, v='0.0', e='0.0', n='0', vat=portfolio.vat(), ref=-1)
+    op = create_operation(operation_type=type, d=datetime.now(), m=key, v='0.0', e='0.0', n='0', vat=portfolio.vat(), ref=-1)
     aRet = edit_iTradeOperation(win=win, op=op, opmode=OPERATION_ADD, market=portfolio.market(), currency=portfolio.currency())
     if aRet:
         info(u'add_iTradeOperation: date={} type={} name={} value={:12.2f} expenses={:12.2f} number={:d} ref={:d}'.format(str(aRet[0]), aRet[1], aRet[2], aRet[3], aRet[4], aRet[5], aRet[6]))

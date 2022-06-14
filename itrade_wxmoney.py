@@ -162,7 +162,7 @@ class iTradeEvaluationPanel(wx.Window):
     # ---[ Compute & Display Evaluation ]--------------------------------------
 
     def compute(self, year):
-        self.m_port.computeOperations(year)
+        self.m_port.computeOperations(cd=year)
         return (self.m_port.nv_expenses(), self.m_port.nv_transfer(), self.m_port.nv_appreciation(), self.m_port.nv_taxable(), self.m_port.nv_taxes())
 
     def refresh(self):
@@ -230,9 +230,9 @@ class iTradeEvaluationPanel(wx.Window):
         self.m_html.AppendToPage(u'   <td align="right" class="percent" nowrap><b>{:d}</b></td>'.format(date.today().year))
         self.m_html.AppendToPage(' </tr>')
 
-        expenses0,transfer0,appr0,taxable0,taxes0 = self.compute(date.today().year-2)
-        expenses1,transfer1,appr1,taxable1,taxes1 = self.compute(date.today().year-1)
-        expenses2,transfer2,appr2,taxable2,taxes2 = self.compute(date.today().year)
+        expenses0, transfer0, appr0, taxable0, taxes0 = self.compute(date.today().year-2)
+        expenses1, transfer1, appr1, taxable1, taxes1 = self.compute(date.today().year-1)
+        expenses2, transfer2, appr2, taxable2, taxes2 = self.compute(date.today().year)
 
         self.m_html.AppendToPage(' <tr align="right" class="T20">')
         self.m_html.AppendToPage(u'   <td align="left" nowrap>{}</td>'.format(message('money_expenses_vat')))
