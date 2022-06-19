@@ -286,6 +286,9 @@ class Operation(object):
     def apply(self, d=None):
         raise NotImplementedError("Please Implement this method")
 
+    def undo(self, d=None):
+        raise NotImplementedError("Please Implement this method")
+
     def nv_value(self):
         return self.m_value
 
@@ -357,40 +360,6 @@ class Operation(object):
         else:
             return self.name()
 
-    def undo(self, d=None):
-        if self.type() == OPERATION_SELL:
-            if self.m_quote:
-                debug(u'undo-sell {}'.format(self.m_quote))
-                self.m_quote.buy(self.m_number, self.m_value, QuoteType.cash)
-        elif self.type() == OPERATION_BUY:
-            if self.m_quote:
-                debug(u'undo-buy {}'.format(self.m_quote))
-                self.m_quote.sell(self.m_number, QuoteType.cash)
-        elif self.type() == OPERATION_QUOTE:
-            if self.m_quote:
-                debug(u'undo-dividend/share {}'.format(self.m_quote))
-                self.m_quote.sell(self.m_number, QuoteType.cash)
-        elif self.type() == OPERATION_REGISTER:
-            if self.m_quote:
-                debug(u'undo-register {}'.format(self.m_quote))
-                self.m_quote.sell(self.m_number, QuoteType.cash)
-        elif self.type() == OPERATION_BUY_SRD:
-            if self.m_quote:
-                debug(u'undo-buy SRD {}'.format(self.m_quote))
-                self.m_quote.sell(self.m_number, QuoteType.credit)
-        elif self.type() == OPERATION_SELL_SRD:
-            if self.m_quote:
-                debug(u'undo-sell SRD {}'.format(self.m_quote))
-                self.m_quote.buy(self.m_number, self.m_value, QuoteType.credit)
-        elif self.type() == OPERATION_DETACHMENT:
-            if self.m_quote:
-                debug(u'undo-detachment {}'.format(self.m_quote))
-                self.m_quote.buy(0, self.m_value, QuoteType.cash)
-        elif self.type() == OPERATION_LIQUIDATION:
-            if self.m_quote:
-                debug(u'undo-liquidation {} / {:d}'.format(self.m_quote))
-                self.m_quote.transfertTo(self.m_number, self.m_expenses, QuoteType.credit)
-
     def nv_pvalue(self):
         if self.m_quote:
             if self.type() == OPERATION_SELL:
@@ -401,6 +370,9 @@ class Operation(object):
 
     def sv_pvalue(self):
         return u'{:.2f}'.format(self.nv_pvalue())
+
+    def compute(self, portfolio, cd):
+        raise TypeError("computeOperations(): self::type() unknown %s", self.type())
 
 
 class OperationBuy(Operation):
@@ -419,6 +391,18 @@ class OperationBuy(Operation):
             debug(u'buy {}'.format(self.m_quote))
             self.m_quote.buy(self.m_number, self.m_value, QuoteType.cash)
 
+    def undo(self, d=None):
+        if self.m_quote:
+            debug(u'undo-buy {}'.format(self.m_quote))
+            self.m_quote.sell(self.m_number, QuoteType.cash)
+
+    def compute(self, portfolio, cd):
+        debug(u'buy {}/{} : {:d} for {:f}'.format(self.name(), self.quote(), self.nv_number(),
+                                                  self.nv_value()))
+        portfolio.m_cCash -= self.nv_value()
+        if portfolio.sameyear(self, cd):
+            portfolio.m_cExpenses += self.nv_expenses()
+
 
 class OperationBuySrd(Operation):
 
@@ -435,6 +419,18 @@ class OperationBuySrd(Operation):
         if self.m_quote:
             debug(u'buy SRD {}'.format(self.m_quote))
             self.m_quote.buy(self.m_number, self.m_value, QuoteType.credit)
+
+    def undo(self, d=None):
+        if self.m_quote:
+            debug(u'undo-buy SRD {}'.format(self.m_quote))
+            self.m_quote.sell(self.m_number, QuoteType.credit)
+
+    def compute(self, portfolio, cd):
+            debug(u'buy SRD {}/{} : {:d} for {:f}'.format(self.name(), self.quote(), self.nv_number(),
+                                                          self.nv_value()))
+            portfolio.m_cCredit = portfolio.m_cCredit + self.nv_value()
+            if portfolio.sameyear(self, cd):
+                portfolio.m_cExpenses = portfolio.m_cExpenses + self.nv_expenses()
 
 
 class OperationSell(Operation):
@@ -456,6 +452,21 @@ class OperationSell(Operation):
                 self.m_number = max
             self.m_quote.sell(self.m_number, QuoteType.cash)
 
+    def undo(self, d=None):
+        if self.m_quote:
+            debug(u'undo-sell {}'.format(self.m_quote))
+            self.m_quote.buy(self.m_number, self.m_value, QuoteType.cash)
+
+    def compute(self, portfolio, cd):
+        debug(u'sell {}/{} : {:d} for {:f}'.format(self.name(), self.quote(), self.nv_number(),
+                                                   self.nv_value()))
+        portfolio.m_cCash = portfolio.m_cCash + self.nv_value()
+        if portfolio.sameyear(self, cd):
+            portfolio.m_cExpenses = portfolio.m_cExpenses + self.nv_expenses()
+            portfolio.m_cTransfer = portfolio.m_cTransfer + self.nv_value() + self.nv_expenses()
+            portfolio.m_cTaxable = portfolio.m_cTaxable + self.nv_pvalue()
+            portfolio.m_cAppreciation = portfolio.m_cAppreciation + self.nv_pvalue()
+
 
 class OperationSellSrd(Operation):
 
@@ -476,6 +487,19 @@ class OperationSellSrd(Operation):
                 self.m_number = max
             self.m_quote.sell(self.m_number, QuoteType.credit)
 
+    def undo(self, d=None):
+        if self.m_quote:
+            debug(u'undo-sell SRD {}'.format(self.m_quote))
+            self.m_quote.buy(self.m_number, self.m_value, QuoteType.credit)
+
+    def compute(self, portfolio, cd):
+        debug(u'sell SRD {}/{} : {:d} for {:f}'.format(self.name(), self.quote(), self.nv_number(),
+                                                       self.nv_value()))
+        portfolio.m_cCredit = portfolio.m_cCredit - self.nv_value()
+        if portfolio.sameyear(self, cd):
+            portfolio.m_cExpenses = portfolio.m_cExpenses + self.nv_expenses()
+            portfolio.m_cTransfer = portfolio.m_cTransfer + self.nv_value() + self.nv_expenses()
+
 
 class OperationCredit(Operation):
 
@@ -490,6 +514,16 @@ class OperationCredit(Operation):
 
     def apply(self, d=None):
         pass
+
+    def undo(self, d=None):
+        pass
+
+    def compute(self, portfolio, cd):
+        debug(u'credit {} : + {:f}'.format(self.name(), self.nv_value()))
+        portfolio.m_cCash = portfolio.m_cCash + self.nv_value()
+        portfolio.m_cInvest = portfolio.m_cInvest + self.nv_value()
+        if portfolio.sameyear(self, cd):
+            portfolio.m_cExpenses = portfolio.m_cExpenses + self.nv_expenses()
 
 
 class OperationDebit(Operation):
@@ -506,6 +540,16 @@ class OperationDebit(Operation):
     def apply(self, d=None):
         pass
 
+    def undo(self, d=None):
+        pass
+
+    def compute(self, portfolio, cd):
+        debug(u'debit {} : - {:f}'.format(self.name(), self.nv_value()))
+        portfolio.m_cCash = portfolio.m_cCash - self.nv_value()
+        # __x portfolio.m_cInvest = portfolio.m_cInvest - self.nv_value()
+        if portfolio.sameyear(self, cd):
+            portfolio.m_cExpenses = portfolio.m_cExpenses + self.nv_expenses()
+
 
 class OperationFee(Operation):
 
@@ -520,6 +564,15 @@ class OperationFee(Operation):
 
     def apply(self, d=None):
         pass
+
+    def undo(self, d=None):
+        pass
+
+    def compute(self, portfolio, cd):
+        debug(u'fee {}: {:f}'.format(self.name(), self.nv_value()))
+        portfolio.m_cCash = portfolio.m_cCash - self.nv_value()
+        if portfolio.sameyear(self, cd):
+            portfolio.m_cExpenses = portfolio.m_cExpenses + self.nv_expenses()
 
 
 class OperationInterest(Operation):
@@ -536,6 +589,17 @@ class OperationInterest(Operation):
     def apply(self, d=None):
         pass
 
+    def undo(self, d=None):
+        pass
+
+    def compute(self, portfolio, cd):
+        debug(u'interest {} : {:f}'.format(self.name(), self.nv_value()))
+        portfolio.m_cCash = portfolio.m_cCash + self.nv_value()
+        if portfolio.sameyear(self, cd):
+            portfolio.m_cExpenses = portfolio.m_cExpenses + self.nv_expenses()
+            # portfolio.m_cTaxable = portfolio.m_cTaxable + self.nv_value()
+            portfolio.m_cAppreciation = portfolio.m_cAppreciation + self.nv_value()
+
 
 class OperationSplit(Operation):
 
@@ -549,6 +613,12 @@ class OperationSplit(Operation):
         return message('Portfolio_split')
 
     def apply(self, d=None):
+        pass
+
+    def undo(self, d=None):
+        pass
+
+    def compute(self, portfolio, cd):
         pass
 
 
@@ -569,6 +639,19 @@ class OperationDetachment(Operation):
             debug(u'detachment {} / {:f}'.format(self.m_quote, self.m_value))
             self.m_quote.buy(0, -self.m_value, QuoteType.cash)
 
+    def undo(self, d=None):
+        if self.m_quote:
+            debug(u'undo-detachment {}'.format(self.m_quote))
+            self.m_quote.buy(0, self.m_value, QuoteType.cash)
+
+    def compute(self, portfolio, cd):
+        debug(u'detach {}/{} : {:f}'.format(self.name(), self.quote(), self.nv_value()))
+        portfolio.m_cCash = portfolio.m_cCash + self.nv_value()
+        if portfolio.sameyear(self, cd):
+            portfolio.m_cExpenses = portfolio.m_cExpenses + self.nv_expenses()
+            # portfolio.m_cTaxable = portfolio.m_cTaxable + self.nv_value()
+            portfolio.m_cAppreciation = portfolio.m_cAppreciation + self.nv_value()
+
 
 class OperationDividend(Operation):
 
@@ -583,6 +666,17 @@ class OperationDividend(Operation):
 
     def apply(self, d=None):
         pass
+
+    def undo(self, d=None):
+        pass
+
+    def compute(self, portfolio, cd):
+        debug(u'dividend {}/{} : {:f}'.format(self.name(), self.quote(), self.nv_value()))
+        portfolio.m_cCash = portfolio.m_cCash + self.nv_value()
+        if portfolio.sameyear(self, cd):
+            portfolio.m_cExpenses = portfolio.m_cExpenses + self.nv_expenses()
+            portfolio.m_cTaxable = portfolio.m_cTaxable + self.nv_value()
+            portfolio.m_cAppreciation = portfolio.m_cAppreciation + self.nv_value()
 
 
 class OperationLiquidation(Operation):
@@ -601,6 +695,25 @@ class OperationLiquidation(Operation):
             debug(u'liquidation {} / {:f}'.format(self.m_quote, self.m_value))
             self.m_quote.transfertTo(self.m_number, self.m_expenses, QuoteType.cash)
 
+    def undo(self, d=None):
+        if self.m_quote:
+            debug(u'undo-liquidation {} / {:d}'.format(self.m_quote))
+            self.m_quote.transfertTo(self.m_number, self.m_expenses, QuoteType.credit)
+
+    def compute(self, portfolio, cd):
+        debug(u'liquidation {}: {:f}'.format(self.name(), self.nv_value()))
+        portfolio.m_cCash = portfolio.m_cCash + self.nv_value()
+        portfolio.m_cCredit = portfolio.m_cCredit + (self.nv_value() + self.nv_expenses())
+        if portfolio.sameyear(self, cd):
+            portfolio.m_cExpenses = portfolio.m_cExpenses + self.nv_expenses()
+            portfolio.m_cTaxable = portfolio.m_cTaxable + self.nv_value()
+            portfolio.m_cAppreciation = portfolio.m_cAppreciation + self.nv_value()
+            quote = self.quote()
+            if quote:
+                pv = self.nv_number() * quote.nv_pru(QuoteType.credit)
+                portfolio.m_cTaxable = portfolio.m_cTaxable + pv
+                portfolio.m_cAppreciation = portfolio.m_cAppreciation + pv
+
 
 class OperationQuote(Operation):
 
@@ -618,6 +731,14 @@ class OperationQuote(Operation):
             debug(u'dividend/shares {}'.format(self.m_quote))
             self.m_quote.buy(self.m_number, 0.0, QuoteType.cash)
 
+    def undo(self, d=None):
+        if self.m_quote:
+            debug(u'undo-dividend/share {}'.format(self.m_quote))
+            self.m_quote.sell(self.m_number, QuoteType.cash)
+
+    def compute(self, portfolio, cd):
+        debug(u'dividend/share {}/{} : {:f}'.format(self.name(), self.quote(), self.nv_value()))
+
 
 class OperationRegister(Operation):
 
@@ -634,6 +755,15 @@ class OperationRegister(Operation):
         if self.m_quote:
             debug(u'register/shares {}'.format(self.m_quote))
             self.m_quote.buy(self.m_number, self.m_value, QuoteType.cash)
+
+    def undo(self, d=None):
+        if self.m_quote:
+            debug(u'undo-register {}'.format(self.m_quote))
+            self.m_quote.sell(self.m_number, QuoteType.cash)
+
+    def compute(self, portfolio, cd):
+        debug(u'register/share {}/{} : {:f}'.format(self.name(), self.quote(), self.nv_value()))
+        portfolio.m_cInvest = portfolio.m_cInvest + self.nv_value()
 
 
 def isOperationTypeAQuote(type):
@@ -1023,88 +1153,7 @@ class Portfolio(object):
     def computeOperations(self, cd=None):
         self.reset()
         for operation in self.m_operations.list():
-            if operation.type() == OPERATION_CREDIT:
-                debug(u'credit {} : + {:f}'.format(operation.name(), operation.nv_value()))
-                self.m_cCash = self.m_cCash + operation.nv_value()
-                self.m_cInvest = self.m_cInvest + operation.nv_value()
-                if self.sameyear(operation, cd):
-                    self.m_cExpenses = self.m_cExpenses + operation.nv_expenses()
-            elif operation.type() == OPERATION_DEBIT:
-                debug(u'debit {} : - {:f}'.format(operation.name(), operation.nv_value()))
-                self.m_cCash = self.m_cCash - operation.nv_value()
-                # __x self.m_cInvest = self.m_cInvest - operation.nv_value()
-                if self.sameyear(operation, cd):
-                    self.m_cExpenses = self.m_cExpenses + operation.nv_expenses()
-            elif operation.type() == OPERATION_BUY:
-                debug(u'buy {}/{} : {:d} for {:f}'.format(operation.name(), operation.quote(), operation.nv_number(), operation.nv_value()))
-                self.m_cCash = self.m_cCash - operation.nv_value()
-                if self.sameyear(operation, cd):
-                    self.m_cExpenses = self.m_cExpenses + operation.nv_expenses()
-            elif operation.type() == OPERATION_BUY_SRD:
-                debug(u'buy SRD {}/{} : {:d} for {:f}'.format(operation.name(), operation.quote(), operation.nv_number(), operation.nv_value()))
-                self.m_cCredit = self.m_cCredit + operation.nv_value()
-                if self.sameyear(operation, cd):
-                    self.m_cExpenses = self.m_cExpenses + operation.nv_expenses()
-            elif operation.type() == OPERATION_SELL:
-                debug(u'sell {}/{} : {:d} for {:f}'.format(operation.name(), operation.quote(), operation.nv_number(), operation.nv_value()))
-                self.m_cCash = self.m_cCash + operation.nv_value()
-                if self.sameyear(operation, cd):
-                    self.m_cExpenses = self.m_cExpenses + operation.nv_expenses()
-                    self.m_cTransfer = self.m_cTransfer + operation.nv_value() + operation.nv_expenses()
-                    self.m_cTaxable = self.m_cTaxable + operation.nv_pvalue()
-                    self.m_cAppreciation = self.m_cAppreciation + operation.nv_pvalue()
-            elif operation.type() == OPERATION_SELL_SRD:
-                debug(u'sell SRD {}/{} : {:d} for {:f}'.format(operation.name(), operation.quote(), operation.nv_number(), operation.nv_value()))
-                self.m_cCredit = self.m_cCredit - operation.nv_value()
-                if self.sameyear(operation, cd):
-                    self.m_cExpenses = self.m_cExpenses + operation.nv_expenses()
-                    self.m_cTransfer = self.m_cTransfer + operation.nv_value() + operation.nv_expenses()
-            elif operation.type() == OPERATION_FEE:
-                debug(u'fee {}: {:f}'.format(operation.name(), operation.nv_value()))
-                self.m_cCash = self.m_cCash - operation.nv_value()
-                if self.sameyear(operation, cd):
-                    self.m_cExpenses = self.m_cExpenses + operation.nv_expenses()
-            elif operation.type() == OPERATION_LIQUIDATION:
-                debug(u'liquidation {}: {:f}'.format(operation.name(), operation.nv_value()))
-                self.m_cCash = self.m_cCash + operation.nv_value()
-                self.m_cCredit = self.m_cCredit + (operation.nv_value() + operation.nv_expenses())
-                if self.sameyear(operation, cd):
-                    self.m_cExpenses = self.m_cExpenses + operation.nv_expenses()
-                    self.m_cTaxable = self.m_cTaxable + operation.nv_value()
-                    self.m_cAppreciation = self.m_cAppreciation + operation.nv_value()
-                    quote = operation.quote()
-                    if quote:
-                        pv = operation.nv_number() * quote.nv_pru(QuoteType.credit)
-                        self.m_cTaxable = self.m_cTaxable + pv
-                        self.m_cAppreciation = self.m_cAppreciation + pv
-            elif operation.type() == OPERATION_INTEREST:
-                debug(u'interest {} : {:f}'.format(operation.name(), operation.nv_value()))
-                self.m_cCash = self.m_cCash + operation.nv_value()
-                if self.sameyear(operation, cd):
-                    self.m_cExpenses = self.m_cExpenses + operation.nv_expenses()
-                    #self.m_cTaxable = self.m_cTaxable + operation.nv_value()
-                    self.m_cAppreciation = self.m_cAppreciation + operation.nv_value()
-            elif operation.type() == OPERATION_DETACHMENT:
-                debug(u'detach {}/{} : {:f}'.format(operation.name(), operation.quote(), operation.nv_value()))
-                self.m_cCash = self.m_cCash + operation.nv_value()
-                if self.sameyear(operation, cd):
-                    self.m_cExpenses = self.m_cExpenses + operation.nv_expenses()
-                    #self.m_cTaxable = self.m_cTaxable + operation.nv_value()
-                    self.m_cAppreciation = self.m_cAppreciation + operation.nv_value()
-            elif operation.type() == OPERATION_DIVIDEND:
-                debug(u'dividend {}/{} : {:f}'.format(operation.name(), operation.quote(), operation.nv_value()))
-                self.m_cCash = self.m_cCash + operation.nv_value()
-                if self.sameyear(operation, cd):
-                    self.m_cExpenses = self.m_cExpenses + operation.nv_expenses()
-                    self.m_cTaxable = self.m_cTaxable + operation.nv_value()
-                    self.m_cAppreciation = self.m_cAppreciation + operation.nv_value()
-            elif operation.type() == OPERATION_QUOTE:
-                debug(u'dividend/share {}/{} : {:f}'.format(operation.name(), operation.quote(), operation.nv_value()))
-            elif operation.type() == OPERATION_REGISTER:
-                debug(u'register/share {}/{} : {:f}'.format(operation.name(), operation.quote(), operation.nv_value()))
-                self.m_cInvest = self.m_cInvest + operation.nv_value()
-            else:
-                raise TypeError("computeOperations(): operation::type() unknown %s", operation.type())
+            operation.compute(self, cd)
 
     # --- [ compute the value ] -----------------------------------------------
 
