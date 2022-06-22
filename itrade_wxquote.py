@@ -61,7 +61,7 @@ import wx.lib.sized_controls as sc
 import matplotlib
 
 from matplotlib.dates import date2num
-from myfinance import plot_day_summary2, candlestick2, volume_overlay, plot_day_summary3
+import myfinance as mf
 
 # iTrade wxPython system
 from itrade_wxhtml import iTradeHtmlPanel, iTradeRSSPanel
@@ -803,11 +803,11 @@ class iTradeQuoteGraphPanel(wx.Panel, iTrade_wxPanelGraph):
 
         if num > 0:
             if self.m_dispChart1Type == 'c':
-                lc = candlestick2(self.chart1, self.m_quote.m_daytrades.m_inOpen[begin:end], self.m_quote.m_daytrades.m_inClose[begin:end], self.m_quote.m_daytrades.m_inHigh[begin:end], self.m_quote.m_daytrades.m_inLow[begin:end], colorup = 'g', colordown = 'r', alpha=1.0)
+                lc = mf.candlestick2(self.chart1, self.m_quote.m_daytrades.m_inOpen[begin:end], self.m_quote.m_daytrades.m_inClose[begin:end], self.m_quote.m_daytrades.m_inHigh[begin:end], self.m_quote.m_daytrades.m_inLow[begin:end], colorup='g', colordown='r', alpha=1.0)
             elif self.m_dispChart1Type == 'l':
-                lc = plot_day_summary3(self.chart1, self.m_quote.m_daytrades.m_inClose[begin:end], color='k')
+                lc = mf.plot_day_summary3(self.chart1, self.m_quote.m_daytrades.m_inClose[begin:end], color='k')
             elif self.m_dispChart1Type == 'o':
-                lc = plot_day_summary2(self.chart1, self.m_quote.m_daytrades.m_inOpen[begin:end], self.m_quote.m_daytrades.m_inClose[begin:end], self.m_quote.m_daytrades.m_inHigh[begin:end], self.m_quote.m_daytrades.m_inLow[begin:end], colorup='k', colordown='r')
+                lc = mf.plot_day_summary2(self.chart1, self.m_quote.m_daytrades.m_inOpen[begin:end], self.m_quote.m_daytrades.m_inClose[begin:end], self.m_quote.m_daytrades.m_inHigh[begin:end], self.m_quote.m_daytrades.m_inLow[begin:end], colorup='k', colordown='r')
             else:
                 lc = None
 
@@ -824,10 +824,10 @@ class iTradeQuoteGraphPanel(wx.Panel, iTrade_wxPanelGraph):
                 self.chart1.plot(self.m_quote.m_daytrades.m_ma20[begin:end],'m',scalex = False, label='MMA(20)')
 
             if self.m_dispOverlaidVolume:
-                volume_overlay(self.chart1vol, self.m_quote.m_daytrades.m_inClose[begin-1:end], self.m_quote.m_daytrades.m_inVol[begin-1:end], colorup='g', colordown='r', alpha=0.5)
+                mf.volume_overlay(self.chart1vol, self.m_quote.m_daytrades.m_inClose[begin-1:end], self.m_quote.m_daytrades.m_inVol[begin-1:end], colorup='g', colordown='r', alpha=0.5)
             #l5 = self.chart1vol.plot(self.m_quote.m_daytrades.m_ovb[begin:end],'k')
 
-            volume_overlay(self.chart2, self.m_quote.m_daytrades.m_inClose[begin-1:end], self.m_quote.m_daytrades.m_inVol[begin-1:end], colorup='g', colordown='r', alpha=1.0)
+            mf.volume_overlay(self.chart2, self.m_quote.m_daytrades.m_inClose[begin-1:end], self.m_quote.m_daytrades.m_inVol[begin-1:end], colorup='g', colordown='r', alpha=1.0)
             lvma15, = self.chart2.plot(self.m_quote.m_daytrades.m_vma15[begin:end], 'r', antialiased=False, linewidth=0.05, scalex=False, label='VMA(15)')
             lovb, = self.chart2vol.plot(self.m_quote.m_daytrades.m_ovb[begin:end], 'k', antialiased=False, linewidth=0.05, label='OVB')
             #index_bar(self.chart2, self.m_quote.m_daytrades.m_inVol[begin:end], facecolor='g', edgecolor='k', width=4,alpha=1.0)
