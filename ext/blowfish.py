@@ -30,30 +30,28 @@ def testbf():
     """
 
     # change or remove path to testvectors file if necessary
-    testvectors = open(r"ocn/bftstdata.txt",'r')
-    for testdata in testvectors.readlines():
-        if testdata[0]=="#": continue
-        key,plaintext,ciphertext = map(lambda x: eval('0x'+x+'L'),
-                                       testdata.split())
-        print("Key      : %s " % (hex(key)[2:-1]))
-        initialize(key)
-        computext = bfencrypt(plaintext)
-        decrypted = bfdecrypt(computext)
+    with open(r"ocn/bftstdata.txt",'r') as testvectors:
+        for testdata in testvectors.readlines():
+            if testdata[0]=="#": continue
+            key,plaintext,ciphertext = map(lambda x: eval('0x'+x+'L'),
+                                           testdata.split())
+            print("Key      : %s " % (hex(key)[2:-1]))
+            initialize(key)
+            computext = bfencrypt(plaintext)
+            decrypted = bfdecrypt(computext)
 
-        # compare results with testvector
-        if ciphertext == computext:
-            testresult = "GOOD"
-        else:
-            testresult = "BAD"
+            # compare results with testvector
+            if ciphertext == computext:
+                testresult = "GOOD"
+            else:
+                testresult = "BAD"
 
-        # Print outcomes, stripping L off long hex integers
+            # Print outcomes, stripping L off long hex integers
 
-        print("Plaintext: %s          Target: %s" % (
-              plaintext,ciphertext))
-        print("Decrypted: %s      Ciphertext: %s  %s\n" % (
-              decrypted, computext, testresult))
-
-    testvectors.close()
+            print("Plaintext: %s          Target: %s" % (
+                  plaintext,ciphertext))
+            print("Decrypted: %s      Ciphertext: %s  %s\n" % (
+                  decrypted, computext, testresult))
 
 def bfencrypt(x):
     """
@@ -171,35 +169,31 @@ def encrypt(filename,key=5333772633003566340333184962382):
     encfilesize = os.stat(filename)[6]
     print("File size: %s bytes" % encfilesize)
 
-    plnfileobj = open(filename,'rb')
-    encfileobj = open(encfile,'wb')
-    keyfileobj = open(keyfile,'w')
+    with open(filename,'rb') as plnfileobj,
+         open(encfile,'wb') as encfileobj,
+         open(keyfile,'w') as keyfileobj:
 
-    initialize(key)
+        initialize(key)
 
-    instring = plnfileobj.read()
-    blocks = len(instring)/8
-    padding = (blocks + 1)*8 - encfilesize
-    instring = instring + padding * chr(padding)
-    print("Padding with %s bytes" % padding)
-    print("New file size: %s" % len(instring))
+        instring = plnfileobj.read()
+        blocks = len(instring)/8
+        padding = (blocks + 1)*8 - encfilesize
+        instring = instring + padding * chr(padding)
+        print("Padding with %s bytes" % padding)
+        print("New file size: %s" % len(instring))
 
-    outstring = ""
+        outstring = ""
 
-    print("Encrypting...")
-    for i in range(blocks+1):
-        inbytes   = mkchunk(instring[i*8:i*8+8]) # 8-byte string as hex no.
-        cipher    = bfencrypt(inbytes)     # ...encrypted
-        outbytes  = mkbytes(cipher)
-        outstring = outstring + outbytes   # and appended
+        print("Encrypting...")
+        for i in range(blocks+1):
+            inbytes   = mkchunk(instring[i*8:i*8+8]) # 8-byte string as hex no.
+            cipher    = bfencrypt(inbytes)     # ...encrypted
+            outbytes  = mkbytes(cipher)
+            outstring = outstring + outbytes   # and appended
 
-    print("Writing to file: %s bytes" % len(outstring))
-    encfileobj.write(outstring)
-    keyfileobj.write(hex(key)+","+str(keylen))
-
-    plnfileobj.close()
-    encfileobj.close()
-    keyfileobj.close()
+        print("Writing to file: %s bytes" % len(outstring))
+        encfileobj.write(outstring)
+        keyfileobj.write(hex(key)+","+str(keylen))
 
 def decrypt(filename):
     """
@@ -209,44 +203,40 @@ def decrypt(filename):
     plnfile  = filename[:filename.rfind(".")]+".dcp"
     keyfile  = filename[:filename.rfind(".")]+".key"
 
-    encfileobj = open(filename,'rb')
-    plnfileobj = open(plnfile,'wb')
-    keyfileobj = open(keyfile,'r')
+    with open(filename,'rb') as encfileobj,
+         open(plnfile,'wb') as plnfileobj,
+         open(keyfile,'r') as keyfileobj:
 
-    encfilesize = os.stat(filename)[6]
-    print("File size: %s bytes" % encfilesize)
-    print("Reading from " + filename)
-    print("Writing to " + plnfile)
-    print("Using key " + keyfile)
+        encfilesize = os.stat(filename)[6]
+        print("File size: %s bytes" % encfilesize)
+        print("Reading from " + filename)
+        print("Writing to " + plnfile)
+        print("Using key " + keyfile)
 
-    line = keyfileobj.readline()  # this file is a one-liner
-    values = line.split(",")
-    key = eval(values[0])
-    keylen = int(values[1])
+        line = keyfileobj.readline()  # this file is a one-liner
+        values = line.split(",")
+        key = eval(values[0])
+        keylen = int(values[1])
 
-    initialize(key)
+        initialize(key)
 
-    outstring = ""
+        outstring = ""
 
-    instring = encfileobj.read(encfilesize)
+        instring = encfileobj.read(encfilesize)
 
-    print("Decrypting...")
-    for i in range(encfilesize/8):
-        inbytes   = mkchunk(instring[i*8:i*8+8]) # 8-byte string as hex no.
-        plain     = bfdecrypt(inbytes)           # ...decrypted
-        outbytes  = mkbytes(plain)
-        outstring = outstring+outbytes           # and appended
+        print("Decrypting...")
+        for i in range(encfilesize/8):
+            inbytes   = mkchunk(instring[i*8:i*8+8]) # 8-byte string as hex no.
+            plain     = bfdecrypt(inbytes)           # ...decrypted
+            outbytes  = mkbytes(plain)
+            outstring = outstring+outbytes           # and appended
 
-    lastbyte = outstring[-1]
-    outstring = outstring[:-ord(lastbyte)]
-    print("Last byte: %s " % ord(lastbyte))
+        lastbyte = outstring[-1]
+        outstring = outstring[:-ord(lastbyte)]
+        print("Last byte: %s " % ord(lastbyte))
 
-    plnfileobj.write(outstring)
-    print("Writing file: %s bytes" % len(outstring))
-
-    encfileobj.close()
-    plnfileobj.close()
-    keyfileobj.close()
+        plnfileobj.write(outstring)
+        print("Writing file: %s bytes" % len(outstring))
 
 def mkchunk(chrs):
     """

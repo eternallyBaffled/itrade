@@ -486,10 +486,9 @@ class LiveUpdate_fortuneo(object):
     def readCookie(self):
         if self.m_cookie is None:
             try:
-                f = open(os.path.join(itrade_config.dirUserData,'fortuneo_live.txt'),'r')
-                infile = f.readlines()
+                with open(os.path.join(itrade_config.dirUserData,'fortuneo_live.txt'), 'r') as f:
+                    infile = f.readlines()
                 txt = infile[0].strip()
-                f.close()
                 self.m_cookie,self.m_blowfish = txt.split('-')
                 print('cookie,blowfish:',self.m_cookie,self.m_blowfish)
             except IOError:

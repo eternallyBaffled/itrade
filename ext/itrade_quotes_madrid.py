@@ -92,45 +92,44 @@ def Import_ListOfQuotes_MADRID(quotes, market='MADRID EXCHANGE', dlg=None, x=0):
 
     # returns the data
 
-    source = open(f, 'rb')
-    pdf = pyPdf.PdfFileReader(source)
+    with open(f, 'rb') as source:
+        pdf = pyPdf.PdfFileReader(source)
 
-    for page in pdf.pages:
-        data = page.extractText()
-        data = data[data.find('DecimalsFixing')+15:]
-        cr = data[:8]
-        lines = splitLines(data)
+        for page in pdf.pages:
+            data = page.extractText()
+            data = data[data.find('DecimalsFixing')+15:]
+            cr = data[:8]
+            lines = splitLines(data)
 
-        for line in lines:
-            if 'Sociedad de Bolsas' in line:
-                pass
-            else:
-                line = line[:line.find('<')]
-                line = line[:line.find('0,0')]
-                ticker = line[:8].strip()
-                if 'BBVA' in ticker and len(ticker) == 5:
+            for line in lines:
+                if 'Sociedad de Bolsas' in line:
                     pass
                 else:
-                    ticker = ticker.replace('.', '-')
+                    line = line[:line.find('<')]
+                    line = line[:line.find('0,0')]
+                    ticker = line[:8].strip()
+                    if 'BBVA' in ticker and len(ticker) == 5:
+                        pass
+                    else:
+                        ticker = ticker.replace('.', '-')
 
-                isin = line[8:21]
-                name = line[21:].strip()
-                if not 'LYX' in name and not 'TRACKERS' in name:
-                    name = name.encode('cp1252')
-                    name = name.replace(',', ' ')
-                    name = name.replace('Ó', 'O')
-                    name = name.replace('Ñ', 'N')
-                    name = name.replace('Ç', 'C')
+                    isin = line[8:21]
+                    name = line[21:].strip()
+                    if not 'LYX' in name and not 'TRACKERS' in name:
+                        name = name.encode('cp1252')
+                        name = name.replace(',', ' ')
+                        name = name.replace('Ó', 'O')
+                        name = name.replace('Ñ', 'N')
+                        name = name.replace('Ç', 'C')
 
-                    #print isin,name,ticker,market
+                        #print isin,name,ticker,market
 
-                    quotes.addQuote(isin=isin, name=name,
-                                ticker=ticker, market=market,
-                                currency='EUR', place='MAD', country='ES')
-                    n = n + 1
-    if itrade_config.verbose:
-        print(u'Imported {:d} lines from {}'.format(n, market))
-    source.close()
+                        quotes.addQuote(isin=isin, name=name,
+                                    ticker=ticker, market=market,
+                                    currency='EUR', place='MAD', country='ES')
+                        n = n + 1
+        if itrade_config.verbose:
+            print(u'Imported {:d} lines from {}'.format(n, market))
     os.remove(f)
     return True
 

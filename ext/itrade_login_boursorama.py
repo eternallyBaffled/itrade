@@ -87,22 +87,20 @@ class Login_boursorama(object):
 
     # ---[ userinfo ] ---
     def saveUserInfo(self,u,p):
-        f = open(os.path.join(itrade_config.dirUserData,'boursorama_userinfo.txt'),'w')
-        s = u + ',' + p
-        f.write(s)
-        f.close()
+        with open(os.path.join(itrade_config.dirUserData,'boursorama_userinfo.txt'),'w') as f:
+            s = u + ',' + p
+            f.write(s)
 
     def loadUserInfo(self):
         try:
-            f = open(os.path.join(itrade_config.dirUserData,'boursorama_userinfo.txt'),'r')
+            with open(os.path.join(itrade_config.dirUserData,'boursorama_userinfo.txt'),'r') as f:
+                s = f.read().strip()
         except IOError:
-            return None,None
-        s = f.read().strip()
-        f.close()
+            return None, None
         v = s.split(',')
-        if len(v)==2:
-            return v[0].strip(),v[1].strip()
-        return None,None
+        if len(v) == 2:
+            return v[0].strip(), v[1].strip()
+        return None, None
 
     # ---[ login ] ---
 

@@ -111,7 +111,7 @@ def Import_ListOfQuotes_NSE(quotes, market='NATIONAL EXCHANGE OF INDIA', dlg=Non
         debug('Import_ListOfQuotes_NSE:status!=200')
         return False
 
-    data =response.read()
+    data = response.read()
 
     # returns the data
     lines = splitLines(data)

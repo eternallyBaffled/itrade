@@ -241,9 +241,8 @@ class LiveUpdate_RealTime(object):
                                 symbol = symbol[:symbol.find('" >')]
                                 self.m_isinsymbol [isin] = symbol
                                 debug(u'{} found and added in dictionary ({})'.format(isin, symbol))
-                                dic = open(os.path.join(itrade_config.dirUserData, 'ticker_bourso.txt'), 'w')
-                                cPickle.dump(self.m_isinsymbol, dic)
-                                dic.close()
+                                with open(os.path.join(itrade_config.dirUserData, 'ticker_bourso.txt'), 'w') as dic:
+                                    cPickle.dump(self.m_isinsymbol, dic)
                             else:
                                 return None
                         else:
