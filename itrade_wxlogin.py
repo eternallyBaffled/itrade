@@ -164,18 +164,19 @@ class iTradeLoginDialog(wx.Dialog):
 #
 # ============================================================================
 
-def login_UI(win,username,password,connector):
+
+def login_UI(win, username, password, connector):
     if username is None:
         username = ''
     if password is None:
         password = ''
 
-    dlg = iTradeLoginDialog(win,username,password,connector)
-    if dlg.ShowModal()==wx.ID_OK:
+    dlg = iTradeLoginDialog(parent=win, username=username, password=password, connector=connector)
+    if dlg.ShowModal() == wx.ID_OK:
         username = dlg.m_username
         password = dlg.m_password
     dlg.Destroy()
-    return username,password
+    return username, password
 
 # ============================================================================
 # Test me
