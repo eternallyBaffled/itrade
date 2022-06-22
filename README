@@ -1,6 +1,12 @@
 /iTrade/README
 ===============================================================================
 
+NOTE: Code is currently not ready for Python 3.
+Dependencies reflect this and are currently pinned to the latest version that still supports Python 2.7.
+This also means some dependencies are missing important security fixes!
+DO NOT use this code if you don't understand what that means for you.
+You have been warned.
+
 The iTrade project is an open source initiative to provide a charting and
 trading system written in Python language.
 
@@ -10,13 +16,13 @@ o License : GPLv3 with some disclaimers - read ./LICENSE and ./AUTHORS files
 
 o iTrade information : read ./RELNOTES, ./TODO and ./ChangeLog files
 
-o Developer Informations : read ./HACKING and ./RELEASE files
+o Developer Information : read ./HACKING and ./RELEASE files
 
 o How to write an extension / plugin : read ./ext/README file
 
 o How to add quote's logo/images : read ./images/README file
 
-o Donators : read ./DONORS file
+o Donors : read ./DONORS file
 
 o To report a bug : read ./BUGS file
 
