@@ -5,17 +5,14 @@ financial data.   User contributions welcome!
 """
 # flake8: noqa
 #from __future__ import division
-import os, time, warnings
+import os
+import time
+import warnings
 from urllib import urlopen
 
-try:
-    from hashlib import md5
-except ImportError:
-    from md5 import md5 #Deprecated in 2.5
+from hashlib import md5
 
-try: import datetime
-except ImportError:
-    raise SystemExit('The finance module requires datetime support (python2.3)')
+import datetime
 
 import numpy as np
 
@@ -41,7 +38,7 @@ def parse_yahoo_historical(fh, asobject=False, adjusted=True):
 
     d, open, close, high, low, volume
 
-    where d is a floating poing representation of date, as returned by date2num
+    where d is a floating point representation of date, as returned by date2num
 
     if adjust=True, use adjusted prices
     """
@@ -52,7 +49,6 @@ def parse_yahoo_historical(fh, asobject=False, adjusted=True):
     datefmt = None
 
     for line in lines[1:]:
-
         vals = line.split(',')
 
         if len(vals)!=7: continue
@@ -65,7 +61,7 @@ def parse_yahoo_historical(fh, asobject=False, adjusted=True):
                 datefmt = '%d-%b-%y'  # Old Yahoo--cached file?
         dt = datetime.date(*time.strptime(datestr, datefmt)[:3])
         d = date2num(dt)
-        open, high, low, close =  [float(val) for val in vals[1:5]]
+        open, high, low, close = [float(val) for val in vals[1:5]]
         volume = int(vals[5])
         if adjusted:
             aclose = float(vals[6])
@@ -78,12 +74,12 @@ def parse_yahoo_historical(fh, asobject=False, adjusted=True):
         results.append((d, open, close, high, low, volume))
     results.reverse()
     if asobject:
-        if len(results)==0: return None
+        if len(results) == 0:
+            return None
         else:
             date, open, close, high, low, volume = map(np.asarray, zip(*results))
         return Bunch(date=date, open=open, close=close, high=high, low=low, volume=volume)
     else:
-
         return results
 
 def fetch_historical_yahoo(ticker, date1, date2, cachename=None):
@@ -103,16 +99,12 @@ def fetch_historical_yahoo(ticker, date1, date2, cachename=None):
 
     ticker = ticker.upper()
 
-
     d1 = (date1.month-1, date1.day, date1.year)
     d2 = (date2.month-1, date2.day, date2.year)
 
-
     urlFmt = u'https://table.finance.yahoo.com/table.csv?a={:d}&b={:d}&c={:d}&d={:d}&e={:d}&f={:d}&s={}&y=0&g=d&ignore=.csv'
 
-    url = urlFmt.format(d1[0], d1[1], d1[2],
-                     d2[0], d2[1], d2[2], ticker)
-
+    url = urlFmt.format(d1[0], d1[1], d1[2], d2[0], d2[1], d2[2], ticker)
 
     if cachename is None:
         cachename = os.path.join(cachedir, md5(url).hexdigest())
@@ -162,18 +154,17 @@ def quotes_historical_yahoo(ticker, date1, date2, asobject=False, adjusted=True,
     and date range)
     """
 
-    fh = fetch_historical_yahoo(ticker, date1, date2, cachename)
-
-    try: ret = parse_yahoo_historical(fh, asobject, adjusted)
+    ret = None
+    try:
+        with fetch_historical_yahoo(ticker, date1, date2, cachename) as fh:
+            ret = parse_yahoo_historical(fh, asobject, adjusted)
     except IOError as exc:
         warnings.warn('urlopen() failure\n' + url + '\n' + exc.strerror[1])
-        return None
 
     return ret
 
-def plot_day_summary(ax, quotes, ticksize=3,
-                     colorup='k', colordown='r',
-                     ):
+
+def plot_day_summary(ax, quotes, ticksize=3, colorup='k', colordown='r'):
     """
     quotes is a list of (time, open, close, high, low, ...) tuples
 
@@ -190,16 +181,14 @@ def plot_day_summary(ax, quotes, ticksize=3,
     return value is a list of lines added
     """
 
-
-
-
     lines = []
     for q in quotes:
-
         t, open, close, high, low = q[:5]
 
-        if close>=open : color = colorup
-        else           : color = colordown
+        if close >= open:
+            color = colorup
+        else:
+            color = colordown
 
         vline = Line2D(
             xdata=(t, t), ydata=(low, high),
@@ -233,11 +222,8 @@ def plot_day_summary(ax, quotes, ticksize=3,
     return lines
 
 
-def candlestick(ax, quotes, width=0.2, colorup='k', colordown='r',
-                alpha=1.0):
-
+def candlestick(ax, quotes, width=0.2, colorup='k', colordown='r', alpha=1.0):
     """
-
     quotes is a list of (time, open, close, high, low, ...)  tuples.
     As long as the first 5 elements of the tuples are these values,
     the tuple can be as long as you want (eg it may store volume).
@@ -259,9 +245,7 @@ def candlestick(ax, quotes, width=0.2, colorup='k', colordown='r',
     added and patches is a list of the rectangle patches added
     """
 
-
     OFFSET = width/2.0
-
 
     lines = []
     patches = []
@@ -303,11 +287,8 @@ def candlestick(ax, quotes, width=0.2, colorup='k', colordown='r',
     return lines, patches
 
 
-def plot_day_summary2(ax, opens, closes, highs, lows, ticksize=4,
-                      colorup='k', colordown='r',
-                     ):
+def plot_day_summary2(ax, opens, closes, highs, lows, ticksize=4, colorup='k', colordown='r'):
     """
-
     Represent the time, open, close, high, low as a vertical line
     ranging from low to high.  The left tick is the open and the right
     tick is the close.
@@ -325,11 +306,11 @@ def plot_day_summary2(ax, opens, closes, highs, lows, ticksize=4,
 
     rangeSegments = [ ((i, low), (i, high)) for i, low, high in zip(xrange(len(lows)), lows, highs) if low != -1 ]
 
-    # the ticks will be from ticksize to 0 in points at the origin and
+    # the ticks will be from ticksize to 0 in points at the origin, and
     # we'll translate these to the i, close location
-    openSegments = [  ((-ticksize, 0), (0, 0)) ]
+    openSegments = [ ((-ticksize, 0), (0, 0)) ]
 
-    # the ticks will be from 0 to ticksize in points at the origin and
+    # the ticks will be from 0 to ticksize in points at the origin, and
     # we'll translate these to the i, close location
     closeSegments = [ ((0, 0), (ticksize, 0)) ]
 
@@ -352,37 +333,40 @@ def plot_day_summary2(ax, opens, closes, highs, lows, ticksize=4,
                }
     colors = [colord[open<close] for open, close in zip(opens, closes) if open!=-1 and close !=-1]
 
-    assert(len(rangeSegments)==len(offsetsOpen))
-    assert(len(offsetsOpen)==len(offsetsClose))
-    assert(len(offsetsClose)==len(colors))
+    if len(rangeSegments) != len(offsetsOpen):
+        raise TypeError("Expected lists of equal length.")
+    if len(offsetsOpen) != len(offsetsClose):
+        raise TypeError("Expected lists of equal length.")
+    if len(offsetsClose) != len(colors):
+        raise TypeError("Expected lists of equal length.")
 
     useAA = 0,   # use tuple here
-    if ticksize>1:
+    if ticksize > 1:
         lw = 0.5,   # and here
     else:
         lw = 0.2,
 
     rangeCollection = LineCollection(rangeSegments,
-                                     colors       = colors,
-                                     linewidths   = lw,
-                                     antialiaseds = useAA,
+                                     colors=colors,
+                                     linewidths=lw,
+                                     antialiaseds=useAA,
                                      )
 
     openCollection = LineCollection(openSegments,
-                                    colors       = colors,
-                                    antialiaseds = useAA,
-                                    linewidths   = lw,
-                                    offsets      = offsetsOpen,
-                                    transOffset  = ax.transData,
+                                    colors=colors,
+                                    antialiaseds=useAA,
+                                    linewidths=lw,
+                                    offsets=offsetsOpen,
+                                    transOffset=ax.transData,
                                    )
     openCollection.set_transform(tickTransform)
 
     closeCollection = LineCollection(closeSegments,
-                                     colors       = colors,
-                                     antialiaseds = useAA,
-                                     linewidths   = lw,
-                                     offsets      = offsetsClose,
-                                     transOffset  = ax.transData,
+                                     colors=colors,
+                                     antialiaseds=useAA,
+                                     linewidths=lw,
+                                     offsets=offsetsClose,
+                                     transOffset=ax.transData,
                                      )
     closeCollection.set_transform(tickTransform)
 
@@ -399,11 +383,9 @@ def plot_day_summary2(ax, opens, closes, highs, lows, ticksize=4,
     ax.add_collection(closeCollection)
     return rangeCollection, openCollection, closeCollection
 
-def plot_day_summary3(ax, closes, ticksize=4,
-                      color='k',
-                     ):
-    """
 
+def plot_day_summary3(ax, closes, ticksize=4, color='k'):
+    """
     Represent the time, open, close, high, low as a vertical line
     ranging from low to high.  The left tick is the open and the right
     tick is the close.
@@ -416,26 +398,26 @@ def plot_day_summary3(ax, closes, ticksize=4,
     """
 
     rangeSegments = []
-    pfrom = (0,closes[0])
-    for i in range(0,len(closes)):
-        if closes[i]>=0.0:
-            pto = (i,closes[i])
-            rangeSegments.append((pfrom,pto))
+    pfrom = (0, closes[0])
+    for i in range(0, len(closes)):
+        if closes[i] >= 0.0:
+            pto = (i, closes[i])
+            rangeSegments.append((pfrom, pto))
             pfrom = pto
 
-    r,g,b = colorConverter.to_rgb(color)
-    color = r,g,b,1
+    r, g, b = colorConverter.to_rgb(color)
+    color = r, g, b, 1
 
     useAA = 0,   # use tuple here
-    if ticksize>1:
+    if ticksize > 1:
         lw = 0.5,   # and here
     else:
         lw = 0.2,
 
     rangeCollection = LineCollection(rangeSegments,
-                                     colors       = color,
-                                     linewidths   = lw,
-                                     antialiaseds = useAA,
+                                     colors=color,
+                                     linewidths=lw,
+                                     antialiaseds=useAA,
                                      )
 
     minx, maxx = (0, len(rangeSegments))
@@ -450,12 +432,8 @@ def plot_day_summary3(ax, closes, ticksize=4,
     return rangeCollection
 
 
-def candlestick2(ax, opens, closes, highs, lows, width=0.6,
-                 colorup='k', colordown='r',
-                 alpha=0.75,
-                ):
+def candlestick2(ax, opens, closes, highs, lows, width=0.6, colorup='k', colordown='r', alpha=0.75):
     """
-
     Represent the open, close as a bar line and high low range as a
     vertical line.
 
@@ -487,9 +465,10 @@ def candlestick2(ax, opens, closes, highs, lows, width=0.6,
                }
     colors = [colord[open<=close] for open, close in zip(opens, closes) if open!=-1 and close !=-1]
 
-
-    assert(len(barVerts)==len(rangeSegments1))
-    assert(len(barVerts)==len(rangeSegments2))
+    if len(barVerts) != len(rangeSegments1):
+        raise TypeError("Expected lists of equal length.")
+    if len(barVerts) != len(rangeSegments2):
+        raise TypeError("Expected lists of equal length.")
 
     useAA = 0,  # use tuple here
     lw = 0.5,   # and here
@@ -504,7 +483,6 @@ def candlestick2(ax, opens, closes, highs, lows, width=0.6,
                                      linewidths   = lw,
                                      antialiaseds = useAA,
                                      )
-
 
     barCollection = PolyCollection(barVerts,
                                    facecolors   = colors,
@@ -527,9 +505,8 @@ def candlestick2(ax, opens, closes, highs, lows, width=0.6,
     ax.add_collection(rangeCollection2)
     return rangeCollection1, rangeCollection2, barCollection
 
-def volume_overlay(ax, closes, volumes,
-                   colorup='k', colordown='r',
-                   width=0.7, alpha=1.0):
+
+def volume_overlay(ax, closes, volumes, colorup='k', colordown='r', width=0.7, alpha=1.0):
     """
     Add a volume overlay to the current axes.  The closes are used to
     determine the color of the bar.  -1 is missing.  If a value is
@@ -570,7 +547,8 @@ def volume_overlay(ax, closes, volumes,
     delta = width/2.
     bars = [ ( (i-delta, 0), (i-delta, v), (i+delta, v), (i+delta, 0)) for i, v in enumerate(cvolumes) if v >= 0 ]
 
-    assert(len(bars)==len(colors))
+    if len(bars) != len(colors):
+        raise TypeError("Expected lists of equal length.")
 
     useAA = 0,  # use tuple here
     lw = 0.5,   # and here
@@ -589,9 +567,8 @@ def volume_overlay(ax, closes, volumes,
     ax.add_collection(barCollection)
     return barCollection
 
-def volume_overlay3(ax, quotes,
-                   colorup='k', colordown='r',
-                   width=4, alpha=1.0):
+
+def volume_overlay3(ax, quotes, colorup='k', colordown='r', width=4, alpha=1.0):
     """
     Add a volume overlay to the current axes.  quotes is a list of (d,
     open, close, high, low, volume) and close-open is used to
@@ -602,21 +579,20 @@ def volume_overlay3(ax, quotes,
     colorup     : the color of the lines where close1 >= close0
     colordown   : the color of the lines where close1 <  close0
     alpha       : bar transparency
-
-
     """
 
-    r,g,b = colorConverter.to_rgb(colorup)
-    colorup = r,g,b,alpha
-    r,g,b = colorConverter.to_rgb(colordown)
-    colordown = r,g,b,alpha
-    colord = { True : colorup,
-               False : colordown,
-               }
+    r, g, b = colorConverter.to_rgb(colorup)
+    colorup = r, g, b, alpha
+    r, g, b = colorConverter.to_rgb(colordown)
+    colordown = r, g, b, alpha
+    colord = {
+        True: colorup,
+        False: colordown,
+    }
 
     dates, opens, closes, highs, lows, volumes = zip(*quotes)
     colors = [colord[close1>=close0] for close0, close1 in zip(closes[:-1], closes[1:]) if close0!=-1 and close1 !=-1]
-    colors.insert(0,colord[closes[0]>=opens[0]])
+    colors.insert(0, colord[closes[0]>=opens[0]])
 
     right = width/2.0
     left = -width/2.0
@@ -644,11 +620,6 @@ def volume_overlay3(ax, quotes,
                                    )
     barCollection.set_transform(barTransform)
 
-
-
-
-
-
     minpy, maxx = (min(dates), max(dates))
     miny = 0
     maxy = max([volume for d, open, close, high, low, volume in quotes])
@@ -662,17 +633,14 @@ def volume_overlay3(ax, quotes,
 
     return barCollection
 
-def index_bar(ax, vals,
-              facecolor='b', edgecolor='k',
-              width=4, alpha=1.0, ):
+
+def index_bar(ax, vals, facecolor='b', edgecolor='k', width=4, alpha=1.0, ):
     """
     Add a bar collection graph with height vals (-1 is missing).
 
     ax          : an Axes instance to plot to
     width       : the bar width in points
     alpha       : bar transparency
-
-
     """
 
     facecolors = (colorConverter.to_rgba(facecolor, alpha),)
@@ -680,7 +648,6 @@ def index_bar(ax, vals,
 
     right = width/2.0
     left = -width/2.0
-
 
     bars = [ ( (left, 0), (left, v), (right, v), (right, 0)) for v in vals if v != -1 ]
 
