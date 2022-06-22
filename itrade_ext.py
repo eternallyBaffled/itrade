@@ -213,19 +213,20 @@ def isLoaded(name):
     return name in loadedModules
 
 
-def importFromPath(moduleName, path):
-    module = sys.modules.get(moduleName)
+def importFromPath(module_name, path):
+    module = sys.modules.get(module_name)
     if not module:
         f = None
 
         # find the module
-        data = imp.find_module(moduleName, [path])
+        data = imp.find_module(module_name, [path])
         if data:
             # import the module
             f, path, desc = data
-            module = imp.load_module(moduleName, f, path, desc)
+
+            module = imp.load_module(module_name, f, path, desc)
             if module:
-                loadedModules[moduleName] = module
+                loadedModules[module_name] = module
         if f:
             f.close()
     return module
