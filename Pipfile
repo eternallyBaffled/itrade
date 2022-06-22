@@ -12,7 +12,6 @@ matplotlib = ">= 2.2.5, < 3"
 numpy = ">= 1.16.6, < 1.17"
 python-dateutil = ">= 2.8.2"
 pytz = ">= 2021.1"
-six = ">= 1.16.0"
 xlrd = ">= 1.2.0"
 pyPdf = ">= 1.13"
 
