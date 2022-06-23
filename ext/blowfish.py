@@ -18,7 +18,7 @@ these are easily removed for older versions of Python
 from __future__ import print_function
 # flake8: noqa
 
-import string,os
+import os
 from binascii import hexlify, unhexlify
 
 sbox,parray = [0]*4,[0]*18
