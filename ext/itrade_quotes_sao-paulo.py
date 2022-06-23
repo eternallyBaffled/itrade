@@ -88,8 +88,10 @@ def Import_ListOfQuotes_SAO(quotes, market='SAO PAULO EXCHANGE', dlg=None, x=0):
 
     try:
         urllib.urlretrieve(url, 'Securities_Traded.zip')
-        zfile = zipfile.ZipFile('Securities_Traded.zip')
-        data = zfile.read('SECURITIES_TRADED.TXT')
+        with zipfile.ZipFile('Securities_Traded.zip') as zfile:
+            data = zfile.read('SECURITIES_TRADED.TXT')
+
+        os.remove('Securities_Traded.zip')
     except Exception:
         debug('Import_ListOfQuotes_BOVESPA:unable to connect :-(')
         return False
@@ -120,9 +122,6 @@ def Import_ListOfQuotes_SAO(quotes, market='SAO PAULO EXCHANGE', dlg=None, x=0):
                 quotes.addQuote(isin=isin, name=short_name+'-'+specific_code, ticker=ticker, market=market, currency=currency, place=place, country=country)
     if itrade_config.verbose:
         print(u'Imported {:d} lines from {} data.'.format(n, market))
-
-    zfile.close()
-    os.remove('Securities_Traded.zip')
 
     return True
 

@@ -196,7 +196,6 @@ gImportABC = Import_ABCBourse()
 
 def test(ticker,d):
     if gImportABC.connect():
-
         state = gImportABC.getstate()
         if state:
             debug(u"state={}".format(state))

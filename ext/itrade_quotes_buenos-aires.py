@@ -42,6 +42,7 @@
 from __future__ import print_function
 import logging
 import urllib
+from contextlib import closing
 
 # iTrade system
 import itrade_config
@@ -68,63 +69,61 @@ def Import_ListOfQuotes_BUE(quotes, market='BUENOS AIRES EXCHANGE', dlg=None, x=
         return False
 
     try:
-        data=urllib.urlopen(url)
+        with closing(urllib.urlopen(url)) as data:
+            nlines = 0
+            i = 0
+            n = 0
+            ch_ticker = '		<td Class="Oscuro"><A href="/NET/Research/Especies/Acciones.aspx?especie='
+            ch_name = '		<td><A class="LinkAzul" href="../sociedades/fichaTecnica.aspx?emisor='
+
+            #typical lines:
+                    #<tr Class="Claro">
+            #		<td Class="Oscuro"><A href="/NET/Research/Especies/Acciones.aspx?especie=4">ACIN</a></td>
+            #		<td>Ordinarias Escriturales &quot;B&quot; (1 Voto)</td>
+            #		<td>ARP008791179</td>
+            #		<td><A class="LinkAzul" href="../sociedades/fichaTecnica.aspx?emisor=2">ACINDAR S.A.</a></td>
+
+            for line in data:
+                if ch_ticker in line:
+                    i = 1
+                    ticker = line[len(ch_ticker):]
+                    ticker = ticker[ticker.index('">')+2 : ticker.index('</a></td>')]
+                    #print ticker
+                elif i == 1:
+                    n= n + 1
+                    if n == 2:
+                        isin = line[line.index('<td>')+4:line.index('</td>')]
+                        #print isin
+                    if n == 3:
+                        name = line[len(ch_name):]
+                        name = name[name.index('">')+2:name.index('</a></td>')]
+
+                        name = name.decode('utf-8').encode('cp1252')
+
+                        name = name.replace(' S.A.','')
+                        name = name.replace(' S. A.','')
+                        name = name.replace(',','')
+
+                        name = name.replace('í','i') #í
+                        name = name.replace('Í','i') #Í
+                        name = name.replace('ó','o') #Ó
+                        name = name.replace('Á','a') #Á
+                        name = name.replace('Ñ','n') #Ñ
+
+                        name = name.upper()
+                        i = 0
+                        n = 0
+
+                        # ok to proceed
+                        if isin != '':
+                            quotes.addQuote(isin=isin, name=name,
+                                ticker=ticker, market='BUENOS AIRES EXCHANGE', currency='ARS', place='BUE', country='AR')
+                            nlines = nlines + 1
+            if itrade_config.verbose:
+                print(u'Imported {:d} lines from BUENOS AIRES EXCHANGE data.'.format(nlines))
     except Exception:
         debug('Import_ListOfQuotes_BUE unable to connect :-(')
         return False
-
-    nlines = 0
-    i = 0
-    n = 0
-    ch_ticker = '		<td Class="Oscuro"><A href="/NET/Research/Especies/Acciones.aspx?especie='
-    ch_name = '		<td><A class="LinkAzul" href="../sociedades/fichaTecnica.aspx?emisor='
-
-    #typical lines:
-            #<tr Class="Claro">
-    #		<td Class="Oscuro"><A href="/NET/Research/Especies/Acciones.aspx?especie=4">ACIN</a></td>
-    #		<td>Ordinarias Escriturales &quot;B&quot; (1 Voto)</td>
-    #		<td>ARP008791179</td>
-    #		<td><A class="LinkAzul" href="../sociedades/fichaTecnica.aspx?emisor=2">ACINDAR S.A.</a></td>
-
-    for line in data:
-        if ch_ticker in line:
-            i = 1
-            ticker = line[len(ch_ticker):]
-            ticker = ticker[ticker.index('">')+2 : ticker.index('</a></td>')]
-            #print ticker
-        elif i == 1:
-            n= n + 1
-            if n == 2:
-                isin = line[line.index('<td>')+4:line.index('</td>')]
-                #print isin
-            if n == 3:
-                name = line[len(ch_name):]
-                name = name[name.index('">')+2:name.index('</a></td>')]
-
-                name = name.decode('utf-8').encode('cp1252')
-
-                name = name.replace(' S.A.','')
-                name = name.replace(' S. A.','')
-                name = name.replace(',','')
-
-                name = name.replace('í','i') #í
-                name = name.replace('Í','i') #Í
-                name = name.replace('ó','o') #Ó
-                name = name.replace('Á','a') #Á
-                name = name.replace('Ñ','n') #Ñ
-
-                name = name.upper()
-                i = 0
-                n = 0
-
-                # ok to proceed
-                if isin != '':
-                    quotes.addQuote(isin=isin, name=name,
-                        ticker=ticker, market='BUENOS AIRES EXCHANGE', currency='ARS', place='BUE', country='AR')
-                    nlines = nlines + 1
-    if itrade_config.verbose:
-        print(u'Imported {:d} lines from BUENOS AIRES EXCHANGE data.'.format(nlines))
-    data.close()
     return True
 
 # ============================================================================
