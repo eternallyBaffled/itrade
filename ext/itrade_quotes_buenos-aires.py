@@ -40,8 +40,9 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 import logging
-import urllib
+import six.moves.urllib.request, six.moves.urllib.parse, six.moves.urllib.error
 from contextlib import closing
 
 # iTrade system
@@ -69,7 +70,7 @@ def Import_ListOfQuotes_BUE(quotes, market='BUENOS AIRES EXCHANGE', dlg=None, x=
         return False
 
     try:
-        with closing(urllib.urlopen(url)) as data:
+        with closing(six.moves.urllib.request.urlopen(url)) as data:
             nlines = 0
             i = 0
             n = 0

@@ -36,6 +36,7 @@
 # ============================================================================
 
 from __future__ import print_function
+from __future__ import absolute_import
 __author__ = "Gilles Dumortier (dgil@ieee.org)"
 __version__ = "0.4.8"
 __status__ = "alpha"
@@ -51,7 +52,7 @@ __credits__ = """See requirements.txt for the list of libraries used."""
 import os
 import sys
 import imp
-import ConfigParser
+import six.moves.configparser
 import inspect
 
 __revision__ = 'x???'
@@ -474,7 +475,7 @@ def load_config():
         print(u"load_config called from {}".format(caller_module()))
 
     # create a configuration object
-    config = ConfigParser.ConfigParser()
+    config = six.moves.configparser.ConfigParser()
 
     # read the user configuration file
     fn = user_configuration_file()
@@ -560,7 +561,7 @@ def load_config():
 
 def saveConfig():
     # create a configuration object
-    config = ConfigParser.ConfigParser()
+    config = six.moves.configparser.ConfigParser()
 
     # create "View" section
     config.add_section("view")

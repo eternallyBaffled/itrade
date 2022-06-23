@@ -5,10 +5,11 @@ financial data.   User contributions welcome!
 """
 # flake8: noqa
 #from __future__ import division
+from __future__ import absolute_import
 import os
 import time
 import warnings
-from urllib import urlopen
+from six.moves.urllib.request import urlopen
 
 from hashlib import md5
 
@@ -24,6 +25,9 @@ from matplotlib.colors import colorConverter
 from matplotlib.lines import Line2D, TICKLEFT, TICKRIGHT
 from matplotlib.patches import Rectangle
 from matplotlib.transforms import Affine2D
+from six.moves import map
+from six.moves import range
+from six.moves import zip
 
 
 
@@ -77,7 +81,7 @@ def parse_yahoo_historical(fh, asobject=False, adjusted=True):
         if len(results) == 0:
             return None
         else:
-            date, open, close, high, low, volume = map(np.asarray, zip(*results))
+            date, open, close, high, low, volume = list(map(np.asarray, list(zip(*results))))
         return Bunch(date=date, open=open, close=close, high=high, low=low, volume=volume)
     else:
         return results
@@ -109,17 +113,17 @@ def fetch_historical_yahoo(ticker, date1, date2, cachename=None):
     if cachename is None:
         cachename = os.path.join(cachedir, md5(url).hexdigest())
     if os.path.exists(cachename):
-        fh = file(cachename)
+        fh = open(cachename)
         verbose.report(u'Using cachefile {} for {}'.format(cachename, ticker))
     else:
         if not os.path.isdir(cachedir):
             os.mkdir(cachedir)
         urlfh = urlopen(url)
 
-        with file(cachename, 'w') as fh:
+        with open(cachename, 'w') as fh:
             fh.write(urlfh.read())
         verbose.report(u'Saved {} data to cache file {}'.format(ticker, cachename))
-        fh = file(cachename, 'r')
+        fh = open(cachename, 'r')
 
     return fh
 
@@ -159,7 +163,7 @@ def quotes_historical_yahoo(ticker, date1, date2, asobject=False, adjusted=True,
         with fetch_historical_yahoo(ticker, date1, date2, cachename) as fh:
             ret = parse_yahoo_historical(fh, asobject, adjusted)
     except IOError as exc:
-        warnings.warn('urlopen() failure\n' + url + '\n' + exc.strerror[1])
+        warnings.warn('urlopen() failure\n\n' + exc.strerror[1])
 
     return ret
 
@@ -304,7 +308,7 @@ def plot_day_summary2(ax, opens, closes, highs, lows, ticksize=4, colorup='k', c
     # note this code assumes if any value open, close, low, high is
     # missing they all are missing
 
-    rangeSegments = [ ((i, low), (i, high)) for i, low, high in zip(xrange(len(lows)), lows, highs) if low != -1 ]
+    rangeSegments = [ ((i, low), (i, high)) for i, low, high in zip(range(len(lows)), lows, highs) if low != -1 ]
 
     # the ticks will be from ticksize to 0 in points at the origin, and
     # we'll translate these to the i, close location
@@ -315,9 +319,9 @@ def plot_day_summary2(ax, opens, closes, highs, lows, ticksize=4, colorup='k', c
     closeSegments = [ ((0, 0), (ticksize, 0)) ]
 
 
-    offsetsOpen = [ (i, open) for i, open in zip(xrange(len(opens)), opens) if open != -1 ]
+    offsetsOpen = [ (i, open) for i, open in zip(range(len(opens)), opens) if open != -1 ]
 
-    offsetsClose = [ (i, close) for i, close in zip(xrange(len(closes)), closes) if close != -1 ]
+    offsetsClose = [ (i, close) for i, close in zip(range(len(closes)), closes) if close != -1 ]
 
 
     scale = ax.figure.dpi * (1.0/72.0)
@@ -451,10 +455,10 @@ def candlestick2(ax, opens, closes, highs, lows, width=0.6, colorup='k', colordo
     # missing they all are missing
 
     delta = width/2.
-    barVerts = [ ( (i-delta, open), (i-delta, close), (i+delta, close), (i+delta, open) ) for i, open, close in zip(xrange(len(opens)), opens, closes) if open != -1 and close!=-1 ]
+    barVerts = [ ( (i-delta, open), (i-delta, close), (i+delta, close), (i+delta, open) ) for i, open, close in zip(range(len(opens)), opens, closes) if open != -1 and close!=-1 ]
 
-    rangeSegments1 = [ ((i, low), (i, min(close,open))) for i, low, close, open in zip(xrange(len(lows)), lows, closes, opens) if low != -1 ]
-    rangeSegments2 = [ ((i, max(close,open)), (i, high)) for i, high, close, open in zip(xrange(len(lows)), highs, closes, opens) if high != -1 ]
+    rangeSegments1 = [ ((i, low), (i, min(close,open))) for i, low, close, open in zip(range(len(lows)), lows, closes, opens) if low != -1 ]
+    rangeSegments2 = [ ((i, max(close,open)), (i, high)) for i, high, close, open in zip(range(len(lows)), highs, closes, opens) if high != -1 ]
 
     r,g,b = colorConverter.to_rgb(colorup)
     colorup = r,g,b,alpha
@@ -590,7 +594,7 @@ def volume_overlay3(ax, quotes, colorup='k', colordown='r', width=4, alpha=1.0):
         False: colordown,
     }
 
-    dates, opens, closes, highs, lows, volumes = zip(*quotes)
+    dates, opens, closes, highs, lows, volumes = list(zip(*quotes))
     colors = [colord[close1>=close0] for close0, close1 in zip(closes[:-1], closes[1:]) if close0!=-1 and close1 !=-1]
     colors.insert(0, colord[closes[0]>=opens[0]])
 

@@ -37,10 +37,12 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 import os
 
 # iTrade system
 import itrade_config
+from six.moves import range
 
 # wxPython system
 if not itrade_config.nowxversion:
@@ -217,8 +219,8 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
         a,b = itrade_config.column[self.name()].split(';')
 
         # load
-        self.m_sort_colnum = long(a)
-        self.m_sort_colasc = long(b)
+        self.m_sort_colnum = int(a)
+        self.m_sort_colasc = int(b)
 
         #
         if itrade_config.verbose:
@@ -1209,7 +1211,7 @@ class iTrade_MatrixIndicatorsPanel(iTrade_MatrixPanel):
             self.m_hdrcolwidths.append(self.m_list.GetColumnWidth(col))
 
         x = 0
-        for x, quote in enumerate(filter(lambda quote: quote.isTraded() or quote.isMonitored(), self.m_matrix.list())):
+        for x, quote in enumerate([quote for quote in self.m_matrix.list() if quote.isTraded() or quote.isMonitored()]):
             self.m_list.InsertImageStringItem(x, quote.isin(), self.idx_tbref)
             self.m_list.SetStringItem(x, IDC_TICKER, quote.ticker())
             if quote.isTraded():

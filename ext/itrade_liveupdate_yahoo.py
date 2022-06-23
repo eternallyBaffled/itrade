@@ -37,10 +37,11 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 import logging
 from datetime import date, datetime
 import re
-import thread
+import six.moves._thread
 import time
 from pytz import timezone
 
@@ -63,7 +64,7 @@ class LiveUpdate_yahoo(object):
         debug('LiveUpdate_yahoo:__init__')
 
         self.m_connected = False
-        self.m_livelock = thread.allocate_lock()
+        self.m_livelock = six.moves._thread.allocate_lock()
         self.m_dateindice = {}
         self.m_clock = {}
         self.m_dcmpd = {}
@@ -172,7 +173,7 @@ class LiveUpdate_yahoo(object):
             ('f', 'sl1d1t1c1ohgv'),
             ('e', '.csv'),
         )
-        query = map(lambda var_val: u'{}={}'.format(var_val[0], str(var_val[1])), query)
+        query = [u'{}={}'.format(var_val[0], str(var_val[1])) for var_val in query]
         query = '&'.join(query)
         url = yahooUrl(quote.market(), live=True) + '?' + query
 
@@ -282,7 +283,7 @@ class LiveUpdate_yahoo(object):
           percent,
           (value-change)
         )
-        data = map(lambda val: u'{}'.format(str(val)), data)
+        data = [u'{}'.format(str(val)) for val in data]
         data = ';'.join(data)
 
         # temp: hunting an issue (SF bug 1848473)

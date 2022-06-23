@@ -32,6 +32,7 @@
 # ============================================================================
 
 
+from __future__ import absolute_import
 class BasicIndicator(object):
     def __init__(self, name):
         self.m_name = name

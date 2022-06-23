@@ -1,6 +1,9 @@
 #!/usr/bin/python
 
+from __future__ import absolute_import
+from __future__ import print_function
 import time
+from six.moves import range
 
 def timeit(function):
     def capsule(*arg, **kw):
@@ -43,11 +46,11 @@ class Q2:
 
 @timeit
 def test(n, qs, function):
-    for i in xrange(n):
+    for i in range(n):
         function(qs)
 
 def list(dict):
-    items = dict.values()
+    items = list(dict.values())
     nlist = [(x.name(), x) for x in items]
     nlist.sort()
     nlist = [val for (key, val) in nlist]
@@ -55,17 +58,17 @@ def list(dict):
     return nlist
 
 def list2(dict):
-    items = dict.values()
+    items = list(dict.values())
     items.sort(cmp=cmpQ)
     return items
 
 def list3(dict):
-    items = dict.values()
+    items = list(dict.values())
     items.sort(key=Q.name)
     return items
 
 def list4(dict):
-    items = dict.values()
+    items = list(dict.values())
     items.sort(key=Q2.name)
     return items
 
@@ -74,11 +77,11 @@ def cmpQ(x, y):
 
 # Main
 qs={}
-for i in xrange(10000):
+for i in range(10000):
     qs[i]=Q(i)
 
 n=100
 
 for function in (list, list2, list3, list4):
     test(n, qs, function)
-    print "%s => %f" % (function.__name__, last_measure)
+    print("%s => %f" % (function.__name__, last_measure))

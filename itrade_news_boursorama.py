@@ -38,6 +38,7 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 import logging
 import re
 import time
@@ -47,6 +48,7 @@ import itrade_config
 from itrade_logging import setLevel, info, debug
 from itrade_local import message
 from itrade_connection import ITradeConnection
+import six
 
 # ============================================================================
 # Used to build a Feed entry
@@ -107,7 +109,7 @@ class News_Boursorama(object):
             debug('News_Boursorama:unable to connect :-(')
             return None
 
-        buf = unicode(buf, 'iso-8859-1', 'strict')
+        buf = six.text_type(buf, 'iso-8859-1', 'strict')
         return buf
 
     def feed(self, url):

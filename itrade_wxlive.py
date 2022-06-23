@@ -37,9 +37,10 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 import logging
 import time
-import thread
+import six.moves._thread
 import random
 
 # iTrade system
@@ -48,6 +49,7 @@ from itrade_logging import setLevel, info
 from itrade_local import message
 import itrade_import
 import itrade_currency
+from six.moves import range
 
 # wxPython system
 if not itrade_config.nowxversion:
@@ -80,7 +82,7 @@ class UpdateLiveThread(object):
     def Start(self):
         self.m_keepGoing = True
         self.m_running = True
-        thread.start_new_thread(self.Run, (self.m_param,))
+        six.moves._thread.start_new_thread(self.Run, (self.m_param,))
         # if itrade_config.verbose:
         #    print(u'UpdateLiveThread::Start(): {} {:f} {}'.format(self.m_quote, self.m_sleeptime, self.m_param))
 
@@ -175,7 +177,7 @@ class iTrade_wxLiveMixin(object):
         else:
             # if itrade_config.verbose:
             #    print('wxLiveMixin::stopLive : {:d} threads ---['.format(len(self.m_threads.values())))
-            if len(self.m_threads.values()):
+            if len(list(self.m_threads.values())):
                 # stop live for all registered quotes
                 if bBusy:
                     busy = wx.BusyInfo(message('live_busy'))
@@ -217,7 +219,7 @@ class UpdateLiveCurrencyThread(object):
     def Start(self):
         self.m_keepGoing = True
         self.m_running = True
-        thread.start_new_thread(self.Run, (self.m_param,))
+        six.moves._thread.start_new_thread(self.Run, (self.m_param,))
         # if itrade_config.verbose:
         #    print('UpdateLiveCurrencyThread::Start(): %s %f %s' % (self.m_key,self.m_sleeptime,self.m_param))
 
@@ -310,7 +312,7 @@ class iTrade_wxLiveCurrencyMixin(object):
             # if itrade_config.verbose:
             #    print('stopLive Currency : {:d} threads ---['.format(len(self.m_threads.values())))
 
-            if len(self.m_threads.values()):
+            if len(list(self.m_threads.values())):
                 # stop live for all registered currencies
                 if bBusy:
                     busy = wx.BusyInfo(message('live_busy'))
@@ -437,7 +439,7 @@ class iTrade_wxLive(wx.Panel):
         if c == "-":
             c = 0
         else:
-            c = long(c)
+            c = int(c)
         if c == nvalue:
             bg = wx.NullColour
         else:

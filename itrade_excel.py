@@ -38,6 +38,7 @@
 #    Unpythonic, handle it transparently here.
 
 from __future__ import print_function
+from __future__ import absolute_import
 canReadExcel = True
 
 xlrd_url = 'https://pypi.org/project/xlrd/'

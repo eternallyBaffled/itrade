@@ -36,8 +36,8 @@
 # ============================================================================
 
 # python system
+from __future__ import absolute_import
 import logging
-import string
 
 # itrade system
 from itrade_logging import setLevel, debug
@@ -76,7 +76,7 @@ class iTrade_wxLabelPopup(object):
         # detect color information for the line
         nlines = []
         for eachLine in lines:
-            idx = string.find(eachLine, ',')
+            idx = eachLine.find(',')
             if idx >= 0:
                 debug('idx={:d} line={} color={}'.format(idx, eachLine[idx+1:], eachLine[:idx]))
                 nlines.append((eachLine[idx+1:], matplot_color_to_wxcolor(eachLine[:idx])))

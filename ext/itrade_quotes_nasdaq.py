@@ -38,8 +38,9 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 import logging
-import urllib
+import six.moves.urllib.request, six.moves.urllib.parse, six.moves.urllib.error
 import csv
 
 # iTrade system
@@ -72,7 +73,7 @@ def Import_ListOfQuotes_NASDAQ(quotes, market='NASDAQ', dlg=None, x=0):
         return False
 
     try:
-        data = urllib.urlopen(url)
+        data = six.moves.urllib.request.urlopen(url)
         #data=connection.getDataFromUrl(url)
     except Exception:
         debug('Import_ListOfQuotes_NASDAQ:unable to connect :-(')

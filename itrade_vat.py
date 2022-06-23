@@ -40,6 +40,7 @@
 # COUNTRY -> default VAT
 # ============================================================================
 
+from __future__ import absolute_import
 cp_vat = {
     'fr': 1.196,
     'nl': 1.0,

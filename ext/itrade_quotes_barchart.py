@@ -39,8 +39,9 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 import logging
-import urllib2
+import six.moves.urllib.request, six.moves.urllib.error, six.moves.urllib.parse
 from contextlib import closing
 
 # iTrade system
@@ -79,7 +80,7 @@ def Import_ListOfQuotes_BARCHART(quotes, market='TOTRONTO EXCHANGE', dlg=None, x
 
     def splitLines(buf):
         lines = buf.split('<tr id="dt1_')
-        lines = filter(lambda x: x, lines)
+        lines = [x for x in lines if x]
         def removeCarriage(s):
             if s[-1] == '\r':
                 return s[:-1]
@@ -93,10 +94,10 @@ def Import_ListOfQuotes_BARCHART(quotes, market='TOTRONTO EXCHANGE', dlg=None, x
             dlg.Update(x, u"{}:'{}'".format(market, letter))
 
         try:
-            req = urllib2.Request(url=url.format(letter))
+            req = six.moves.urllib.request.Request(url=url.format(letter))
             req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
 
-            with closing(urllib2.urlopen(req)) as f:
+            with closing(six.moves.urllib.request.urlopen(req)) as f:
                 data = f.read()
         except Exception:
             print('Import_ListOfQuotes_BARCHART:unable to connect to', url.format(letter))

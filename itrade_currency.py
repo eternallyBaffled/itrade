@@ -39,9 +39,9 @@
 # python system
 from __future__ import print_function
 
+from __future__ import absolute_import
 import itertools
 import logging
-import string
 import os
 
 # iTrade system
@@ -242,7 +242,7 @@ class Currencies(object):
 
         # extract data
         # print(url, buf)
-        sdata = string.split(buf, ',')
+        sdata = buf.split(',')
         f = float(sdata[1])
 
         # pence

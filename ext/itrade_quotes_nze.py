@@ -39,6 +39,7 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 import logging
 
 # iTrade system
@@ -47,6 +48,8 @@ from itrade_logging import setLevel, debug
 from itrade_defs import QList, QTag
 from itrade_ext import gListSymbolRegistry
 from itrade_connection import ITradeConnection
+from six.moves import map
+from six.moves import range
 
 # ============================================================================
 # Import_ListOfQuotes_NZE()
@@ -60,7 +63,7 @@ def removeCarriage(s):
 
 def splitLines(buf):
     lines = buf.split('\n')
-    lines = filter(lambda x: x, lines)
+    lines = [x for x in lines if x]
 
     lines = [removeCarriage(l) for l in lines]
     return lines
@@ -78,7 +81,7 @@ def Import_ListOfQuotes_NZE(quotes, market='NEW ZEALAND EXCHANGE', dlg=None, x=0
     else:
         return False
 
-    select_alpha = map(chr, range(65, 91))  # A to Z
+    select_alpha = list(map(chr, list(range(65, 91))))  # A to Z
 
     count = 0
     isin = ''

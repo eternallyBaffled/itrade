@@ -38,6 +38,7 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 from datetime import date
 import logging
 
@@ -45,6 +46,7 @@ import logging
 from itrade_logging import setLevel
 from itrade_alerts import alerts, ALERT_TYPE_INFO_SRD
 from itrade_datation import gCal, Datation
+from six.moves import range
 
 # ============================================================================
 # Alerts_SRD
@@ -58,7 +60,7 @@ class Alerts_SRD(object):
         print(u'SRD::scan(): dlg,x = {},{:d}'.format(dlg, x))
 
         ajd = date.today()
-        for nb in xrange(21):
+        for nb in range(21):
             if gCal.issrd(ajd):
                 dummy, desc = gCal.srd(ajd)
                 print(u"{}".format(ajd), ': SRD :', desc)

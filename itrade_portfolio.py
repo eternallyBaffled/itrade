@@ -37,6 +37,7 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 import datetime
 import logging
 import operator
@@ -241,7 +242,7 @@ class Operation(object):
                     self.m_datetime = datetime.datetime.strptime(d, '%Y-%m-%d')
 
         self.m_value = float(v)
-        self.m_number = long(n)
+        self.m_number = int(n)
         self.m_expenses = float(e)
         self.m_vat = float(vat)
         self.m_ref = ref
@@ -809,7 +810,7 @@ class Operations(object):
         self.default_operations_file = os.path.join(itrade_config.dirUserData, 'default.operations.txt')
 
     def list(self):
-        return sorted(self.m_operations.values(), key=operator.methodcaller('datetime'))
+        return sorted(list(self.m_operations.values()), key=operator.methodcaller('datetime'))
 
     def load(self, infile=None):
         infile = itrade_csv.read(infile, self.default_operations_file)
@@ -1420,7 +1421,7 @@ class Portfolios(object):
             eachPortfolio.reinit()
 
     def list(self):
-        items = self.m_portfolios.values()
+        items = list(self.m_portfolios.values())
         items.sort(key=Portfolio.key)
         return items
 
@@ -1501,7 +1502,7 @@ class Portfolios(object):
         debug('Portfolios:save()')
 
         # open and write the file with these quotes information
-        itrade_csv.write(fn, os.path.join(itrade_config.dirUserData, 'portfolio.txt'), self.m_portfolios.values())
+        itrade_csv.write(fn, os.path.join(itrade_config.dirUserData, 'portfolio.txt'), list(self.m_portfolios.values()))
 
 # ============================================================================
 # loadPortfolio
@@ -1554,7 +1555,7 @@ def loadPortfolio(fn=None):
     # save current file
     scf = {}
     scf[0] = currentCell(fn)
-    itrade_csv.write(None, os.path.join(itrade_config.dirUserData, 'default.txt'), scf.values())
+    itrade_csv.write(None, os.path.join(itrade_config.dirUserData, 'default.txt'), list(scf.values()))
 
     # return the portfolio
     return p
@@ -1576,7 +1577,7 @@ def newPortfolio(fn=None):
     # save current file
     scf = {}
     scf[0] = currentCell(fn)
-    itrade_csv.write(None, os.path.join(itrade_config.dirUserData, 'default.txt'), scf.values())
+    itrade_csv.write(None, os.path.join(itrade_config.dirUserData, 'default.txt'), list(scf.values()))
 
     # return the portfolio
     return p

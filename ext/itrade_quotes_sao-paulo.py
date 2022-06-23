@@ -39,8 +39,9 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 import logging
-import urllib
+import six.moves.urllib.request, six.moves.urllib.parse, six.moves.urllib.error
 import zipfile
 import os
 
@@ -63,7 +64,7 @@ def removeCarriage(s):
 
 def splitLines(buf):
     lines = buf.split('\n')
-    lines = filter(lambda x: x, lines)
+    lines = [x for x in lines if x]
 
     lines = [removeCarriage(l) for l in lines]
     return lines
@@ -87,7 +88,7 @@ def Import_ListOfQuotes_SAO(quotes, market='SAO PAULO EXCHANGE', dlg=None, x=0):
     info(u'Import_ListOfQuotes_BOVESPA_{}:connect to {}'.format(market, url))
 
     try:
-        urllib.urlretrieve(url, 'Securities_Traded.zip')
+        six.moves.urllib.request.urlretrieve(url, 'Securities_Traded.zip')
         with zipfile.ZipFile('Securities_Traded.zip') as zfile:
             data = zfile.read('SECURITIES_TRADED.TXT')
 

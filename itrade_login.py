@@ -32,6 +32,7 @@
 # ============================================================================
 
 
+from __future__ import absolute_import
 class LoginRegistry(object):
     def __init__(self):
         self.m_log = []

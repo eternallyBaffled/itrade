@@ -38,6 +38,7 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 import time
 import os
 
@@ -52,6 +53,7 @@ from itrade_defs import QList
 from itrade_ext import getDefaultLiveConnector
 from itrade_login import gLoginRegistry
 from itrade_market import date_format
+from six.moves import range
 
 # iTrade wx system
 if not itrade_config.nowxversion:
@@ -660,7 +662,7 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
         wx.EVT_MENU(self, ID_NORMAL_VIEW, self.OnViewNormal)
         wx.EVT_MENU(self, ID_BIG_VIEW, self.OnViewBig)
 
-        for i in xrange(1, len(logins)+1):
+        for i in range(1, len(logins)+1):
             wx.EVT_MENU(self, ID_ACCESS+i, self.OnAccess)
 
         wx.EVT_MENU(self, wx.LANGUAGE_DEFAULT + ID_MAC_OFFSET, self.OnLangDefault)

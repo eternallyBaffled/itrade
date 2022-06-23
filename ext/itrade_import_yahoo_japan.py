@@ -39,6 +39,7 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 from datetime import date, timedelta
 import logging
 
@@ -51,6 +52,7 @@ from itrade_ext import gImportRegistry
 from itrade_market import yahooTicker, yahooUrlJapan
 from itrade_connection import ITradeConnection
 import itrade_config
+from six.moves import range
 
 # ============================================================================
 # ImportYahoojp()
@@ -87,7 +89,7 @@ class ImportYahoojp(object):
 
     def splitLines(self, buf):
         lines = buf.split('\n')
-        lines = filter(lambda x: x, lines)
+        lines = [x for x in lines if x]
         def removeCarriage(s):
             if s[-1] == '\r':
                 return s[:-1]
@@ -243,7 +245,7 @@ class ImportYahoojp(object):
                     value,
                     volume
                 )
-                line = map(lambda val: str(val), line)
+                line = [str(val) for val in line]
                 line = ';'.join(line)
 
                 # append

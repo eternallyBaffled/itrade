@@ -38,8 +38,9 @@
 # ============================================================================
 
 # python system
+from __future__ import absolute_import
+from __future__ import print_function
 import logging
-from functools import partial
 
 # iTrade system
 from itrade_logging import setLevel, info

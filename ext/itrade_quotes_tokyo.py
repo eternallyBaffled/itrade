@@ -39,8 +39,9 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 import logging
-import httplib
+import six.moves.http_client
 
 # iTrade system
 import itrade_config
@@ -48,6 +49,7 @@ from itrade_logging import setLevel, info
 from itrade_defs import QList, QTag
 from itrade_ext import gListSymbolRegistry
 from itrade_connection import ITradeConnection
+from six.moves import range
 
 # ============================================================================
 # Import_ListOfQuotes_TKS()
@@ -61,7 +63,7 @@ def removeCarriage(s):
 
 def splitLines(buf):
     lines = buf.split('</td>')
-    lines = filter(lambda x: x, lines)
+    lines = [x for x in lines if x]
 
     lines = [removeCarriage(l) for l in lines]
     return lines
@@ -102,7 +104,7 @@ def Import_ListOfQuotes_TKS(quotes, market='TOKYO EXCHANGE', dlg=None, x=0):
         if cursor != 0:
             url += '&GO_BEFORE=&BEFORE='+str(cursor)
 
-        conn = httplib.HTTPConnection(host, 80)
+        conn = six.moves.http_client.HTTPConnection(host, 80)
         conn.request("GET", url, None, headers)
         response = conn.getresponse()
         data = response.read()

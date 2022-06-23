@@ -37,12 +37,14 @@
 # ============================================================================
 
 # python system
+from __future__ import absolute_import
 from datetime import timedelta, datetime, date
 import logging
 import os
 
 # iTrade system
 import itrade_config
+from six.moves import range
 
 # wxPython system
 if not itrade_config.nowxversion:

@@ -38,6 +38,7 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 import os
 import logging
 
@@ -293,7 +294,7 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
                 self.itemQuoteMap[x] = eachQuote
                 x = x + 1
 
-        items = self.itemDataMap.items()
+        items = list(self.itemDataMap.items())
         line = 0
         curline = -1
         for x, item in enumerate(items):

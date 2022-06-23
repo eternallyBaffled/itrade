@@ -38,6 +38,7 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 import logging
 
 # iTrade system
@@ -47,6 +48,7 @@ from itrade_logging import setLevel, info
 from itrade_defs import QList, QTag
 from itrade_ext import gListSymbolRegistry
 from itrade_connection import ITradeConnection
+from six.moves import range
 
 # ============================================================================
 # Import_ListOfQuotes_HKG()
@@ -72,7 +74,7 @@ def Import_ListOfQuotes_HKG(quotes, market='HONG KONG EXCHANGE', dlg=None, x=0):
 
     def splitLines(buf):
         lines = buf.split('\n')
-        lines = filter(lambda x: x, lines)
+        lines = [x for x in lines if x]
         def removeCarriage(s):
             if s[-1] == '\r':
                 return s[:-1]

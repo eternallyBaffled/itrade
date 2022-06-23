@@ -39,10 +39,11 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 import logging
-import httplib
-import urllib2
-import cookielib
+import six.moves.http_client
+import six.moves.urllib.request, six.moves.urllib.error, six.moves.urllib.parse
+import six.moves.http_cookiejar
 
 # iTrade system
 import itrade_config
@@ -50,6 +51,7 @@ from itrade_logging import setLevel, debug
 from itrade_defs import QList, QTag
 from itrade_ext import gListSymbolRegistry
 from itrade_connection import ITradeConnection
+from six.moves import range
 
 # ============================================================================
 # Import_ListOfQuotes_MEX()
@@ -63,7 +65,7 @@ def removeCarriage(s):
 
 def splitLines(buf):
     lines = buf.split('\n')
-    lines = filter(lambda x: x, lines)
+    lines = [x for x in lines if x]
 
     lines = [removeCarriage(l) for l in lines]
     return lines
@@ -88,11 +90,11 @@ def Import_ListOfQuotes_MEX(quotes, market='MEXICO EXCHANGE', dlg=None, x=0):
 
     cj = None
 
-    urlopen = urllib2.urlopen
-    Request = urllib2.Request
-    cj = cookielib.LWPCookieJar()
-    opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
-    urllib2.install_opener(opener)
+    urlopen = six.moves.urllib.request.urlopen
+    Request = six.moves.urllib.request.Request
+    cj = six.moves.http_cookiejar.LWPCookieJar()
+    opener = six.moves.urllib.request.build_opener(six.moves.urllib.request.HTTPCookieProcessor(cj))
+    six.moves.urllib.request.install_opener(opener)
 
     url = 'https://www.bmv.com.mx/wb3/wb/BMV/BMV_busqueda_de_valores/_rid/222/_mto/3/_url/BMVAPP/componenteSelectorInput.jsf?st=1'
 
@@ -117,7 +119,7 @@ def Import_ListOfQuotes_MEX(quotes, market='MEXICO EXCHANGE', dlg=None, x=0):
                 , "Cookie": cookie
                }
 
-    conn = httplib.HTTPConnection(host,80)
+    conn = six.moves.http_client.HTTPConnection(host,80)
     conn.request("GET",url,None,headers)
     response = conn.getresponse()
     #print response.status, response.reason
@@ -150,7 +152,7 @@ def Import_ListOfQuotes_MEX(quotes, market='MEXICO EXCHANGE', dlg=None, x=0):
                      , "Content-Length": len(params)
                     }
 
-        conn = httplib.HTTPConnection(host, 80)
+        conn = six.moves.http_client.HTTPConnection(host, 80)
         conn.request("POST", url, params, headers)
 
         response = conn.getresponse()

@@ -39,22 +39,22 @@
 from __future__ import print_function
 
 
+from __future__ import absolute_import
+
+
 def read_b(fn):
     try:
-        f = open(fn, 'r')
+        with open(fn, 'r') as f:
+            lines = f.readlines()
     except IOError:
         return []
-
-    with f:
-        lines = f.readlines()
     return lines
 
 
 def read(fn, fd):
-    if fn:
-        return read_b(fn)
-    else:
-        return read_b(fd)
+    if not fn:
+        fn = fd
+    return read_b(fn)
 
 
 def parser(line, separator=';'):
@@ -87,12 +87,12 @@ def write_b(fn, lines):
 
 def write(fn, fd, lines):
     try:
-        if fn:
-            write_b(fn, lines)
-        else:
-            write_b(fd, lines)
+        if not fn:
+            fn = fd
+
+        write_b(fn, lines)
     except IOError:
-        print(u"Can't open the file {}/{} for writing!".format(fn, fd))
+        print(u"Can't open the file {} for writing!".format(fn))
         return None
 
 

@@ -37,6 +37,7 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 import logging
 import os
 
@@ -58,7 +59,7 @@ class TradingMatrix(object):
         self._init_()
 
     def list(self):
-        return self.m_quotes.values()
+        return list(self.m_quotes.values())
 
     def _init_(self):
         self.m_quotes = {}
@@ -96,7 +97,7 @@ class TradingMatrix(object):
 
     # save 'matrix.txt'
     def save(self, fn):
-        itrade_csv.write(None, os.path.join(itrade_config.dirUserData, u'{}.matrix.txt'.format(fn)), self.m_quotes.values())
+        itrade_csv.write(None, os.path.join(itrade_config.dirUserData, u'{}.matrix.txt'.format(fn)), list(self.m_quotes.values()))
 
     # save all trades of the matrix
     def saveTrades(self):

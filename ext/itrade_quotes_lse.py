@@ -37,8 +37,9 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 import logging
-import urllib2
+import six.moves.urllib.request, six.moves.urllib.error, six.moves.urllib.parse
 from contextlib import closing
 
 # iTrade system
@@ -48,6 +49,7 @@ from itrade_logging import setLevel, info
 from itrade_defs import QList, QTag
 from itrade_ext import gListSymbolRegistry
 from itrade_connection import ITradeConnection
+from six.moves import range
 
 # ============================================================================
 # Import_ListOfQuotes_LSE()
@@ -61,7 +63,7 @@ def removeCarriage(s):
 
 def splitLines(buf):
     lines = buf.split('\n')
-    lines = filter(lambda x: x, lines)
+    lines = [x for x in lines if x]
 
     lines = [removeCarriage(l) for l in lines]
     return lines
@@ -88,11 +90,11 @@ def Import_ListOfQuotes_LSE(quotes, market='LSE SETS', dlg=None, x=0):
         return False
 
     info(u'Import_ListOfQuotes_LSE_{}:connect to {}'.format(market, url))
-    req = urllib2.Request(url)
+    req = six.moves.urllib.request.Request(url)
     req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
 
     try:
-        with closing(urllib2.urlopen(req)) as f:
+        with closing(six.moves.urllib.request.urlopen(req)) as f:
             data = f.read()
     except Exception:
         info(u'Import_ListOfQuotes_LSE_{}:unable to connect :-('.format(market))

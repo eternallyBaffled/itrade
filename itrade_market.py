@@ -38,6 +38,7 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 import os
 from pytz import timezone
 
@@ -269,7 +270,7 @@ def list_of_markets(ifLoaded=False, bFilterMode=False):
     lom = []
     if bFilterMode:
         lom.append(message('all_markets'))
-    keys = _lom.keys()
+    keys = list(_lom.keys())
     keys.sort()
     for market in keys:
         if not ifLoaded or _lom[market]:

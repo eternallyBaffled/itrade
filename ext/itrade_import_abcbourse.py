@@ -37,11 +37,12 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 import logging
 import re
 from datetime import date, timedelta
-from urllib import urlencode
-from httplib import HTTPConnection, HTTPException
+from six.moves.urllib.parse import urlencode
+from six.moves.http_client import HTTPConnection, HTTPException
 
 # iTrade system
 from itrade_logging import setLevel, debug

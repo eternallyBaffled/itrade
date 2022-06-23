@@ -39,6 +39,7 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 import logging
 
 # iTrade system
@@ -59,7 +60,7 @@ def removeCarriage(s):
 
 def splitLines(buf):
     lines = buf.split('\r\n')
-    lines = filter(lambda x: x, lines)
+    lines = [x for x in lines if x]
 
     lines = [removeCarriage(l) for l in lines]
     return lines

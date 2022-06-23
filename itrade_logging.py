@@ -36,6 +36,7 @@
 # ============================================================================
 
 # python system
+from __future__ import absolute_import
 import sys
 import types
 import atexit

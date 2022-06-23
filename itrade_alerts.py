@@ -38,6 +38,7 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 from datetime import date
 import logging
 import os
@@ -149,7 +150,7 @@ class Alerts(object):
     # ---[ alert ] ----------------------------------------
 
     def listAlerts(self):
-        return self.m_alerts.values()
+        return list(self.m_alerts.values())
 
     def existAlert(self, ref):
         if ref in self.m_alerts:
@@ -236,7 +237,7 @@ class Alerts(object):
 
     def save(self, fn=None):
         # open and write the file with these alerts information
-        itrade_csv.write(fn, itrade_config.default_alerts_file(), self.m_alerts.values())
+        itrade_csv.write(fn, itrade_config.default_alerts_file(), list(self.m_alerts.values()))
 
         for eachAlert in self.listAlerts():
             ref = eachAlert.reference()
@@ -248,7 +249,7 @@ class Alerts(object):
     # ---[ plugins ] ---------------------------------------
 
     def listPlugins(self):
-        return self.m_plugins.values()
+        return list(self.m_plugins.values())
 
     def register(self, name, plugin):
         if name in self.m_plugins:

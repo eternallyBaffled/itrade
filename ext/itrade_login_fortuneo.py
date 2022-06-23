@@ -38,10 +38,11 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 import logging
 import re
 import os
-import httplib
+import six.moves.http_client
 
 # iTrade system
 import itrade_config
@@ -109,7 +110,7 @@ class Login_fortuneo(object):
         #print('log:', u, p)
 
         # create the HTTPS connection
-        self.m_conn = httplib.HTTPSConnection(self.m_default_host, 443)
+        self.m_conn = six.moves.http_client.HTTPSConnection(self.m_default_host, 443)
         if self.m_conn is None:
             print(u'login: not connected on {}'.format(self.m_default_host))
             return False

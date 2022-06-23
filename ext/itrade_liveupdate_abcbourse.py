@@ -37,13 +37,14 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 import logging
 import re
-import thread
+import six.moves._thread
 from datetime import date, datetime, timedelta
 
-from urllib import urlencode
-from httplib import HTTPConnection
+from six.moves.urllib.parse import urlencode
+from six.moves.http_client import HTTPConnection
 
 # iTrade system
 import itrade_config
@@ -69,7 +70,7 @@ class LiveUpdate_ABCBourse(object):
         self.m_viewstate = None
         self.m_data = None
         self.m_clock = "::"
-        self.m_livelock = thread.allocate_lock()
+        self.m_livelock = six.moves._thread.allocate_lock()
 
     # ---[ reentrant ] ---
     def acquire(self):

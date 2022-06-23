@@ -39,9 +39,10 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 from datetime import date, datetime
 import logging
-import thread
+import six.moves._thread
 
 # iTrade system
 import itrade_config
@@ -61,7 +62,7 @@ class LiveUpdate_yahoojp(object):
     def __init__(self, market='TOKYO EXCHANGE'):
         debug('LiveUpdate_yahoojp:__init__')
         self.m_connected = False
-        self.m_livelock = thread.allocate_lock()
+        self.m_livelock = six.moves._thread.allocate_lock()
         self.m_dateindice = {}
         self.m_clock = {}
         self.m_dcmpd = {}
@@ -77,7 +78,7 @@ class LiveUpdate_yahoojp(object):
 
     def splitLines(self, buf):
         lines = buf.split('\n')
-        lines = filter(lambda x: x, lines)
+        lines = [x for x in lines if x]
 
         def removeCarriage(s):
             if s[-1] == '\r':
@@ -362,7 +363,7 @@ class LiveUpdate_yahoojp(object):
               percent,
               (value-change)
             )
-            data = map(lambda val: u'{}'.format(str(val)), data)
+            data = [u'{}'.format(str(val)) for val in data]
             data = ';'.join(data)
 
             # temp: hunting an issue (SF bug 1848473)

@@ -39,11 +39,10 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 from datetime import datetime, timedelta, date
 import time
 import logging
-import os
-import string
 import re
 
 # iTrade system
@@ -80,14 +79,14 @@ def yy2yyyy(yy):
         return repr(yy+1900)
 
 def dd_mmm_yy2yyyymmdd(d):
-    d = string.split(d, '-')
+    d = d.split('-')
     day = '{:02d}'.format(int(d[0]))
     month = '{:02d}'.format(MONTH2NUM[d[1]])
     year = yy2yyyy(d[2])
     return year + month + day
 
 def jjmmaa2yyyymmdd(d):
-    d = string.split(d,'/')
+    d = d.split('/')
     day = '{:02d}'.format(int(d[0]))
     month = '{:02d}'.format(int(d[1]))
     year = yy2yyyy(d[2])

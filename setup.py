@@ -36,6 +36,7 @@
 # Imports
 # ============================================================================
 
+from __future__ import absolute_import
 from distutils.core import setup
 import glob
 import py2exe
@@ -48,15 +49,15 @@ import matplotlib
 matplotlibdatadir = matplotlib.get_data_path()
 matplotlibdata = findall(matplotlibdatadir)
 
-matplotlibdata_files =[("cache",[]),
-            ("alerts",[]),
-            ("data",["data/places.txt","data/yahoo_tickers.txt","data/srd.txt","data/hours.txt","data/closed.txt","data/fr.messages.txt","data/us.messages.txt","data/pt.messages.txt"]),
-            ("images",glob.glob("images\\*.gif")),
-            ("res",glob.glob("res\\*.*")),
-            ("ext",glob.glob("ext\\*.*")),
-            ("symbols",glob.glob("symbols\\*.lst")),
-            ("brokers",glob.glob("brokers\\*.txt")),
-            ("usrdata",["usrdata/usrquotes.txt","usrdata/portfolio.txt","usrdata/default.matrix.txt","usrdata/default.operations.txt","usrdata/default.stops.txt"]),
+matplotlibdata_files = [("cache", []),
+            ("alerts", []),
+            ("data", ["data/places.txt","data/yahoo_tickers.txt","data/srd.txt","data/hours.txt","data/closed.txt","data/fr.messages.txt","data/us.messages.txt","data/pt.messages.txt"]),
+            ("images", glob.glob("images\\*.gif")),
+            ("res", glob.glob("res\\*.*")),
+            ("ext", glob.glob("ext\\*.*")),
+            ("symbols", glob.glob("symbols\\*.lst")),
+            ("brokers", glob.glob("brokers\\*.txt")),
+            ("usrdata", ["usrdata/usrquotes.txt","usrdata/portfolio.txt","usrdata/default.matrix.txt","usrdata/default.operations.txt","usrdata/default.stops.txt"]),
            ]
 
 
@@ -72,12 +73,13 @@ for f in matplotlibdata:
 
 setup(windows=["itrade.py"],
       data_files=matplotlibdata_files,
-      options = {"py2exe":
+      options={"py2exe":
                  {"packages": ['matplotlib','pytz'],
-                  "excludes": ['_tkagg', '_gtkagg','Tkinter','Tkcontants','Tcl','pywin','pywin.debugger','pywin.debugger.dbgcon','pywin.dialogs','pywin.dialogs.list'],
-                  "dll_excludes": ['libgdk_pixbuf-2.0-0.dll','libgdk-win32-2.0-0.dll','libgobject-2.0-0.dll','wxmsw26uh_vc.dll','gdiplus.dll']
+                  "excludes": ['_tkagg', '_gtkagg', 'Tkinter', 'Tkcontants', 'Tcl', 'pywin', 'pywin.debugger', 'pywin.debugger.dbgcon', 'pywin.dialogs', 'pywin.dialogs.list'],
+                  "dll_excludes": ['libgdk_pixbuf-2.0-0.dll', 'libgdk-win32-2.0-0.dll', 'libgobject-2.0-0.dll', 'wxmsw26uh_vc.dll', 'gdiplus.dll']
                   }
-                }, requires=['xlrd', 'pytz', 'matplotlib', 'feedparser', 'pyPdf', 'numpy']
+               },
+      requires=['xlrd', 'pytz', 'matplotlib', 'feedparser', 'pyPdf', 'numpy']
       )
 
 # ============================================================================

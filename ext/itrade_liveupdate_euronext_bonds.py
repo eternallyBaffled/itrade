@@ -39,9 +39,10 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 import logging
-import thread
-import urllib2
+import six.moves._thread
+import six.moves.urllib.request, six.moves.urllib.error, six.moves.urllib.parse
 from contextlib import closing
 from datetime import date, datetime
 
@@ -68,7 +69,7 @@ class LiveUpdate_Euronext_bonds(object):
     def __init__(self,market='EURONEXT'):
         debug('LiveUpdate_Euronext_bonds:__init__')
         self.m_connected = False
-        self.m_livelock = thread.allocate_lock()
+        self.m_livelock = six.moves._thread.allocate_lock()
         self.m_data = None
 
         self.m_clock = {}
@@ -123,7 +124,7 @@ class LiveUpdate_Euronext_bonds(object):
     # ---[ code to get data ] ---
     def splitLines(self, buf):
         lines = buf.split('\n')
-        lines = filter(lambda x: x, lines)
+        lines = [x for x in lines if x]
         def removeCarriage(s):
             if s[-1]=='\r':
                 return s[:-1]
@@ -176,7 +177,7 @@ class LiveUpdate_Euronext_bonds(object):
         ret = ''
         for val in val:
             ret = ret + val
-        return long(ret)
+        return int(ret)
 
     def getdata(self, quote):
         self.m_connected = False
@@ -188,7 +189,7 @@ class LiveUpdate_Euronext_bonds(object):
             ('isin', quote.isin()),
             ('mic', mic),
         )
-        query = map(lambda var_val: u'{}={}'.format(var_val[0], str(var_val[1])), query)
+        query = [u'{}={}'.format(var_val[0], str(var_val[1])) for var_val in query]
         query = '&'.join(query)
 
         url = self.m_url + query
@@ -196,10 +197,10 @@ class LiveUpdate_Euronext_bonds(object):
         debug("LiveUpdate_Euronext_bonds:getdata: url=%s ", url)
 
         try:
-            req = urllib2.Request(url)
+            req = six.moves.urllib.request.Request(url)
             req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
 
-            with closing(urllib2.urlopen(req)) as f:
+            with closing(six.moves.urllib.request.urlopen(req)) as f:
                 buf = f.read()
 
             #buf=self.m_connection.getDataFromUrl(url)

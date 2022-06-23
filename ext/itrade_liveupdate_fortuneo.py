@@ -44,10 +44,11 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 import logging
-import thread
+import six.moves._thread
 import os
-import httplib
+import six.moves.http_client
 
 # iTrade system
 import itrade_config
@@ -57,7 +58,8 @@ from itrade_defs import QList, QTag
 from itrade_ext import gLiveRegistry
 from itrade_quotes import quotes
 
-import blowfish
+from . import blowfish
+from six.moves import range
 
 # ============================================================================
 # Flux to Place
@@ -473,7 +475,7 @@ class LiveUpdate_fortuneo(object):
         self.m_conn = None
         self.m_connected = False
 
-        self.m_livelock = thread.allocate_lock()
+        self.m_livelock = six.moves._thread.allocate_lock()
         self.m_dcmpd = {}
         self.m_clock = {}
         self.m_lastclock = 0
@@ -515,7 +517,7 @@ class LiveUpdate_fortuneo(object):
     # ---[ connection ] ---
 
     def connect(self):
-        self.m_conn = httplib.HTTPConnection(self.m_default_host, 80)
+        self.m_conn = six.moves.http_client.HTTPConnection(self.m_default_host, 80)
         if self.m_conn is None:
             print(u'live: not connected on {}:80'.format(self.m_default_host))
             return False
@@ -722,7 +724,7 @@ class LiveUpdate_fortuneo(object):
           dcmpd['CSA_CRS_DERNIER'],
           dcmpd['CSA_VOL_JOUR']
         )
-        data = map(lambda val: u'{}'.format(str(val)), data)
+        data = [u'{}'.format(str(val)) for val in data]
         data = ';'.join(data)
         return data
 

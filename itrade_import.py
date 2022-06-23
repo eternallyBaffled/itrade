@@ -38,6 +38,7 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 from datetime import date
 import logging
 import os
@@ -45,6 +46,7 @@ import os
 # iTrade system
 import itrade_config
 from itrade_logging import setLevel, info, debug
+from six.moves import range
 
 # ============================================================================
 # Importation from internet : HISTORIC
@@ -224,7 +226,7 @@ def cmdline_importQuoteFromFile(quote, file):
 
 def cmdline_importMatrixFromInternet(matrix, dlg=None):
     year = date.today().year
-    for nyear in xrange(itrade_config.numTradeYears):
+    for nyear in range(itrade_config.numTradeYears):
         if itrade_config.verbose:
             print(u'--- update the matrix --{:d}--'.format(year))
         matrix.update(date(year,1,1), date(year,12,31))

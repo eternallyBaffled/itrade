@@ -39,10 +39,11 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 import logging
-import httplib
-import urllib2
-import cookielib
+import six.moves.http_client
+import six.moves.urllib.request, six.moves.urllib.error, six.moves.urllib.parse
+import six.moves.http_cookiejar
 
 # iTrade system
 import itrade_config
@@ -64,7 +65,7 @@ def removeCarriage(s):
 
 def splitLines(buf):
     lines = buf.split('</td></tr>')
-    lines = filter(lambda x: x, lines)
+    lines = [x for x in lines if x]
 
     lines = [removeCarriage(l) for l in lines]
     return lines
@@ -100,11 +101,11 @@ def Import_ListOfQuotes_KRX(quotes, market='KOREA STOCK EXCHANGE', dlg=None, x=0
 
     cj = None
 
-    urlopen = urllib2.urlopen
-    Request = urllib2.Request
-    cj = cookielib.LWPCookieJar()
-    opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
-    urllib2.install_opener(opener)
+    urlopen = six.moves.urllib.request.urlopen
+    Request = six.moves.urllib.request.Request
+    cj = six.moves.http_cookiejar.LWPCookieJar()
+    opener = six.moves.urllib.request.build_opener(six.moves.urllib.request.HTTPCookieProcessor(cj))
+    six.moves.urllib.request.install_opener(opener)
 
     req = Request(url)
     handle = urlopen(req)
@@ -135,7 +136,7 @@ def Import_ListOfQuotes_KRX(quotes, market='KOREA STOCK EXCHANGE', dlg=None, x=0
                 }
 
     try:
-        conn = httplib.HTTPConnection(host,80)
+        conn = six.moves.http_client.HTTPConnection(host,80)
         conn.request("POST",url,params,headers)
         response = conn.getresponse()
     except Exception:

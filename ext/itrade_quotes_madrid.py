@@ -38,10 +38,16 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 import os
 import logging
-import urllib
-import pyPdf
+import six
+import six.moves.urllib.request
+import six.moves.urllib.parse
+import six.moves.urllib.error
+
+six.add_move(six.MovedModule('pyPdf', 'pyPdf', 'PyPDF2'))
+from six.moves import pyPdf
 
 # iTrade system
 import itrade_config
@@ -70,7 +76,7 @@ def Import_ListOfQuotes_MADRID(quotes, market='MADRID EXCHANGE', dlg=None, x=0):
 
     def splitLines(buf):
         lines = buf.split(cr)
-        lines = filter(lambda x: x, lines)
+        lines = [x for x in lines if x]
         def removeCarriage(s):
             if s[-1] == '\r':
                 return s[:-1]
@@ -85,7 +91,7 @@ def Import_ListOfQuotes_MADRID(quotes, market='MADRID EXCHANGE', dlg=None, x=0):
     n = 0
 
     try:
-        urllib.urlretrieve(url, f)
+        six.moves.urllib.request.urlretrieve(url, f)
     except Exception:
         info(u'Import_ListOfQuotes_MADRID_{}:unable to connect :-('.format(market))
         return False

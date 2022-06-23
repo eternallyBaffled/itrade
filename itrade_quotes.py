@@ -39,6 +39,7 @@
 # python system
 from __future__ import print_function
 
+from __future__ import absolute_import
 from datetime import date
 import logging
 import operator
@@ -1323,7 +1324,7 @@ class Quotes(object):
             quote.reinit()
 
     def list(self):
-        return sorted(self.m_quotes.values(), key=operator.attrgetter('name'))
+        return sorted(list(self.m_quotes.values()), key=operator.attrgetter('name'))
 
     # ---[ Properties ] ---
 

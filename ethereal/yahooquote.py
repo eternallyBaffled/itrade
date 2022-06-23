@@ -16,7 +16,18 @@
 # 21/09/04 - Updated by Alberto Santini to accomodate Yahoo changes
 # 27/01/05 - Updated by Alberto Santini to accomodate Yahoo changes
 
-import os, sys, re, traceback, getopt, urllib, string, anydbm, time
+from __future__ import absolute_import
+from __future__ import print_function
+import os
+import sys
+import re
+import traceback
+import getopt
+import six.moves.urllib.request
+import six.moves.urllib.parse
+import six.moves.urllib.error
+import anydbm
+import time
 
 Y2KCUTOFF=60
 __version__ = "0.5"
@@ -24,38 +35,38 @@ CACHE='stocks.db'
 DEBUG = 1
 
 def showVersion():
-  print 'pyQ v'+__version__+', by Rimon Barr:'
-  print 'Python Yahoo Quote fetching utility'
+  print('pyQ v'+__version__+', by Rimon Barr:')
+  print('Python Yahoo Quote fetching utility')
 
 def showUsage():
-  print
+  print()
   showVersion()
-  print
-  print 'Usage: pyQ [-i] [start_date [end_date]] ticker [ticker...]'
-  print '       rimdu -h | -v'
-  print
-  print '  -h, -?, --help      display this help information'
-  print '  -v, --version       display version'
-  print '  -i, --stdin         tickers fed on stdin, one per line'
-  print
-  print '    date formats are yyyymmdd'
-  print '    if enddate is omitted, it is assume to be the same as startdate'
-  print '    if startdate is omitted, we use *current* stock tables'
-  print '      and otherwise, use historical stock tables.'
-  print '      (current stock tables will give previous close price before'
-  print '       market closing time.)'
-  print '    tickers are exactly what you would type at finance.yahoo.com'
-  print '    output format: "ticker, date (yyyymmdd), open, high, low, close, vol"'
-  print '  date formats are yyyymmdd'
-  print '  tickers are exactly what you would type at finance.yahoo.com'
-  print '  output format: ticker, date, open, high, low, close, volume'
-  print
-  print 'Send comments, suggestions and bug reports to <barr+pyq@cs.cornell.edu>.'
-  print
+  print()
+  print('Usage: pyQ [-i] [start_date [end_date]] ticker [ticker...]')
+  print('       rimdu -h | -v')
+  print()
+  print('  -h, -?, --help      display this help information')
+  print('  -v, --version       display version')
+  print('  -i, --stdin         tickers fed on stdin, one per line')
+  print()
+  print('    date formats are yyyymmdd')
+  print('    if enddate is omitted, it is assume to be the same as startdate')
+  print('    if startdate is omitted, we use *current* stock tables')
+  print('      and otherwise, use historical stock tables.')
+  print('      (current stock tables will give previous close price before')
+  print('       market closing time.)')
+  print('    tickers are exactly what you would type at finance.yahoo.com')
+  print('    output format: "ticker, date (yyyymmdd), open, high, low, close, vol"')
+  print('  date formats are yyyymmdd')
+  print('  tickers are exactly what you would type at finance.yahoo.com')
+  print('  output format: ticker, date, open, high, low, close, volume')
+  print()
+  print('Send comments, suggestions and bug reports to <barr+pyq@cs.cornell.edu>.')
+  print()
 
 def usageError():
-  print 'rimdu: command syntax error'
-  print 'Try `rimdu --help\' for more information.'
+  print('rimdu: command syntax error')
+  print('Try `rimdu --help\' for more information.')
 
 def isInt(i):
   try:
@@ -65,8 +76,8 @@ def isInt(i):
     return 0
 
 def splitLines(buf):
-  lines=string.split(buf, '\n')
-  lines=filter(lambda x:x, lines)
+  lines=buf.split('\n')
+  lines=[x for x in lines if x]
   def removeCarriage(s):
     if s[-1]=='\r': return s[:-1]
     else: return s
@@ -80,15 +91,15 @@ def parseDate(d):
 def yy2yyyy(yy):
   global Y2KCUTOFF;
   yy=int(yy) % 100
-  if yy<Y2KCUTOFF: return `yy+2000`
-  else: return `yy+1900`
+  if yy<Y2KCUTOFF: return repr(yy+2000)
+  else: return repr(yy+1900)
 
 # convert month to number
 MONTH2NUM = {'Jan': 1, 'Feb': 2, 'Mar': 3, 'Apr': 4, 'May': 5, 'Jun': 6,
   'Jul': 7, 'Aug': 8, 'Sep': 9, 'Oct': 10, 'Nov': 11, 'Dec': 12}
 def dd_mmm_yy2yyyymmdd(d):
   global MONTH2NUM
-  d=string.split(d, '-')
+  d=d.split('-')
   day='%02d' % int(d[0])
   month='%02d' % MONTH2NUM[d[1]]
   year=yy2yyyy(d[2])
@@ -126,7 +137,7 @@ def aggDates(dates):
 
 def getTicker(d1, d2, ticker):
   if DEBUG:
-    print 'Quering Yahoo!... for %s (%s-%s)' % (ticker, d1, d2)
+    print('Quering Yahoo!... for %s (%s-%s)' % (ticker, d1, d2))
   d1=parseDate(d1)
   d2=parseDate(d2)
   url='http://ichart.finance.yahoo.com/table.csv'
@@ -142,17 +153,17 @@ def getTicker(d1, d2, ticker):
     ('g', 'd'),
     ('ignore', '.csv'),
   )
-  query = map(lambda (var, val): '%s=%s' % (var, str(val)), query)
-  query = string.join(query, '&')
+  query = ['%s=%s' % (var_val[0], str(var_val[1])) for var_val in query]
+  query = '&'.join(query)
   url=url+'?'+query
-  f=urllib.urlopen(url)
+  f=six.moves.urllib.request.urlopen(url)
   buf=f.read()
   lines=splitLines(buf)
   if re.match('no prices', lines[0], re.I): return
   lines=lines[1:len(lines)]
   result = []
   def processLine(l, t=ticker):
-    l=string.split(l, ',')
+    l=l.split(',')
     l[0]=dd_mmm_yy2yyyymmdd(l[0])
     l=[t]+l
     result.append(l)
@@ -174,7 +185,7 @@ def getCachedTicker(d1, d2, ticker, forcefailed):
   data = {}
   db = anydbm.open(CACHE, 'c')
   for d in dates:
-    try: data[ (d, ticker) ] = db[ `(d, ticker)` ]
+    try: data[ (d, ticker) ] = db[ repr((d, ticker)) ]
     except KeyError: pass
   # forced failed
   if forcefailed:
@@ -190,16 +201,16 @@ def getCachedTicker(d1, d2, ticker, forcefailed):
     tmp = getTicker(d1, d2, ticker)
     for t in tmp:
       _, d, datum = t[0], t[1], t[2:]
-      data[ (d, ticker) ] = db[ `(d, ticker)` ] = `datum`
+      data[ (d, ticker) ] = db[ repr((d, ticker)) ] = repr(datum)
   # failed
   cached = [d for d,ticker in data.keys()]
   failed = [d for d in missing if d not in cached]
   for d in failed:
-    try: times = eval(db[ `(d, ticker)` ])
+    try: times = eval(db[ repr((d, ticker)) ])
     except: times = 0
     if forcefailed<0: times = 1
     if times < forcefailed: times = times + 1
-    data [ (d, ticker) ] = db[ `(d, ticker)` ] = `times`
+    data [ (d, ticker) ] = db[ repr((d, ticker)) ] = repr(times)
   # result
   result = []
   for d in dates:
@@ -224,16 +235,16 @@ def getTickers(d1, d2, tickers, forcefailed=0):
 
 def getTickersNowChunk(tickers):
   url='http://finance.yahoo.com/d/quotes.csv';
-  tickers=string.join(tickers)
+  tickers=''.join(tickers)
   query={ 's':tickers, 'f':'sohgpv', 'e':'.csv' }
-  url=url+'?'+urllib.urlencode(query)
-  f=urllib.urlopen(url)
+  url=url+'?'+six.moves.urllib.parse.urlencode(query)
+  f=six.moves.urllib.request.urlopen(url)
   buf=f.read()
   lines=splitLines(buf)
   result = []
   def processLine(l):
-    l=string.split(l, ',')
-    l[0]=string.lower(l[0][1:-1])
+    l=l.split(',')
+    l[0]=l[0][1:-1].lower()
     t=time.localtime()
     l.insert(1, '%4d%02d%02d' % (t[0], t[1], t[2]))
     result.append(l)
@@ -294,14 +305,14 @@ def main():
   if today:
     result = getTickersNow(tickers)
     for l in result:
-      print string.join(l, ',')
+      print(','.join(l))
   else:
     result = getTickers(startdate, enddate, tickers)
     for l in result:
-      print string.join(l, ',')
+      print(','.join(l))
 
 try:
   if __name__=='__main__': main()
 except KeyboardInterrupt:
   traceback.print_exc()
-  print 'Break!'
+  print('Break!')

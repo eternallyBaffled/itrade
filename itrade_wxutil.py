@@ -37,9 +37,9 @@
 # ============================================================================
 
 # python system
+from __future__ import absolute_import
 import logging
 import re
-import string
 import os
 import sys
 
@@ -47,6 +47,7 @@ import sys
 from itrade_logging import setLevel
 from itrade_local import message
 import itrade_config
+from six.moves import map
 
 # wxPython system
 if not itrade_config.nowxversion:
@@ -201,8 +202,7 @@ def HTMLforSingleButton(label, id=None, makedefault=0):
 def HTMLforButtons(buttons, betweenbuttons=""):
     def rn(n):
         return lambda tup, n=n: _tupn(tup, n)
-    return string.join(map(HTMLforSingleButton, map(rn(0), buttons), map(rn(1), buttons), map(rn(2), buttons)),
-                       betweenbuttons)
+    return betweenbuttons.join(map(HTMLforSingleButton, list(map(rn(0), buttons)), list(map(rn(1), buttons)), list(map(rn(2), buttons))))
 
 # ============================================================================
 # HTMLDialog

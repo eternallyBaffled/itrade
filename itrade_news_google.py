@@ -38,10 +38,10 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 import logging
 import time
 import webbrowser
-import string
 
 # iTrade system
 from itrade_logging import setLevel, info, debug
@@ -134,7 +134,7 @@ class News_Google(object):
             lang = self.m_quote.country()
 
         param = self.m_quote.name()+' '+self.m_quote.ticker()
-        param = string.replace(param, ' ', '+')
+        param = param.replace(' ', '+')
 
         return self.feed(self.m_baseurl.format(lang, param))
 

@@ -40,6 +40,7 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 import logging
 
 # iTrade system
@@ -71,7 +72,7 @@ def Import_ListOfQuotes_ASX(quotes, market='ASX', dlg=None, x=0):
 
     def splitLines(buf):
         lines = buf.split('\n')
-        lines = filter(lambda x: x, lines)
+        lines = [x for x in lines if x]
 
         def removeCarriage(s):
             if s[-1] == '\r':

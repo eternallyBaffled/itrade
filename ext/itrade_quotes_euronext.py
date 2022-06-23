@@ -39,10 +39,11 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 import logging
-import httplib
-import urllib2
-import cookielib
+import six.moves.http_client
+import six.moves.urllib.request, six.moves.urllib.error, six.moves.urllib.parse
+import six.moves.http_cookiejar
 
 # iTrade system
 import itrade_config
@@ -97,7 +98,7 @@ def Import_ListOfQuotes_Euronext(quotes, market='EURONEXT', dlg=None, x=0):
 
     def splitLines(buf):
         lines = buf.split('\n')
-        lines = filter(lambda x: x, lines)
+        lines = [x for x in lines if x]
         def removeCarriage(s):
             if s[-1] == '\r':
                 return s[:-1]
@@ -109,11 +110,11 @@ def Import_ListOfQuotes_Euronext(quotes, market='EURONEXT', dlg=None, x=0):
     try:
         host = "europeanequities.nyx.com"
         cj = None
-        urlopen = urllib2.urlopen
-        Request = urllib2.Request
-        cj = cookielib.LWPCookieJar()
-        opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
-        urllib2.install_opener(opener)
+        urlopen = six.moves.urllib.request.urlopen
+        Request = six.moves.urllib.request.Request
+        cj = six.moves.http_cookiejar.LWPCookieJar()
+        opener = six.moves.urllib.request.build_opener(six.moves.urllib.request.HTTPCookieProcessor(cj))
+        six.moves.urllib.request.install_opener(opener)
         req = Request(url)
         handle = urlopen(req)
         cj = str(cj)
@@ -142,7 +143,7 @@ def Import_ListOfQuotes_Euronext(quotes, market='EURONEXT', dlg=None, x=0):
 
     try:
         # POST the request
-        conn = httplib.HTTPConnection(host, 80)
+        conn = six.moves.http_client.HTTPConnection(host, 80)
         conn.request("POST", url, params, headers)
         response = conn.getresponse()
         data = response.read()

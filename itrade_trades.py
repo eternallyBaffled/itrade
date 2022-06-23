@@ -37,6 +37,7 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 from datetime import date
 from math import pow, sqrt
 import logging
@@ -51,6 +52,7 @@ from itrade_logging import setLevel, info, debug
 import itrade_csv
 from itrade_datation import gCal, Datation
 from itrade_candle import Candle, CANDLE_VOLUME_AVERAGE, CANDLE_VOLUME_TREND_NOTREND
+from six.moves import range
 
 # ============================================================================
 # Trade
@@ -76,7 +78,7 @@ class Trade(object):
         self.m_high = float(high)
         if self.m_high < 0.0:
             self.m_high = 0.0
-        self.m_volume = long(volume)
+        self.m_volume = int(volume)
         if self.m_volume < 0:
             self.m_volume = 0
         self.m_trades = trades
@@ -143,13 +145,13 @@ class Trades(object):
         self.m_inClose = create_array(-1.0)
         self.m_inLow = create_array(-1.0)
         self.m_inHigh = create_array(-1.0)
-        self.m_inVol = create_array(long(-1))
+        self.m_inVol = create_array(int(-1))
         self.m_ma20 = create_array(-1.0)
         self.m_ma50 = create_array(-1.0)
         self.m_ma100 = create_array(-1.0)
         self.m_ma150 = create_array(-1.0)
         self.m_vma15 = create_array(-1.0)
-        self.m_ovb = create_array(long(0))
+        self.m_ovb = create_array(int(0))
         self.m_rsi14 = create_array(-1.0)
 
         self.m_stoK = create_array(-1.0)
@@ -165,7 +167,7 @@ class Trades(object):
         return self.m_quote
 
     def trades(self, newerfirst=True):
-        items = self.m_trades.values()
+        items = list(self.m_trades.values())
         items.sort(key=Trade.date, reverse=newerfirst)
         return items
         #return self.m_trades
@@ -214,7 +216,7 @@ class Trades(object):
 
     def save(self, outfile=None):
         #debug(u'Trades::save {} {}'.format(self.m_quote.ticker(), self.m_quote.key()))
-        if self.m_trades.keys():
+        if list(self.m_trades.keys()):
             # do not save today trade
             ajd = date.today()
             if ajd in self.m_trades:
@@ -226,7 +228,7 @@ class Trades(object):
                 tr = None
 
             # save all trades (except today)
-            itrade_csv.write(outfile, os.path.join(itrade_config.dirCacheData, u'{}.txt'.format(self.m_quote.key())), self.m_trades.values())
+            itrade_csv.write(outfile, os.path.join(itrade_config.dirCacheData, u'{}.txt'.format(self.m_quote.key())), list(self.m_trades.values()))
             self.m_dirty = False
 
             # restore today trade
@@ -599,7 +601,7 @@ class Trades(object):
 
     def compute_vma15(self, i):
         #debug(<'%s: compute VMA15 [%d]' % (self.m_quote.ticker(),i))
-        s = long(0)
+        s = int(0)
         n = 0
         j = i
         while n < 15 and j >= 0:
@@ -613,14 +615,14 @@ class Trades(object):
             self.m_vma15[i] = -1
 
     def compute_ovb(self):
-        ovb = long(0)
+        ovb = int(0)
         for j in range(gCal.lastindex()+1):
             if self.m_inClose[j] >= 0.0:
                 pc = self.close(j-1)
                 if self.m_inClose[j] >= pc:
-                    ovb = ovb + long(self.m_inVol[j])
+                    ovb = ovb + int(self.m_inVol[j])
                 else:
-                    ovb = ovb - long(self.m_inVol[j])
+                    ovb = ovb - int(self.m_inVol[j])
 
             self.m_ovb[j] = ovb
 

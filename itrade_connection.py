@@ -38,16 +38,16 @@
 # ============================================================================
 
 # python system
+from __future__ import absolute_import
 import base64
-import httplib
-import urlparse
+import six.moves.http_client
+import six.moves.urllib.parse
 import socket
 import time
-import string
 from gzip import GzipFile
-from StringIO import StringIO
+from six import StringIO
 from threading import Lock
-from urllib import urlencode
+from six.moves.urllib.parse import urlencode
 
 # iTrade system
 import logging
@@ -104,7 +104,7 @@ class ITradeConnection(object):
         @param data: dictionary of parameters for POST (optional, default is None)"""
 
         # Parse URL
-        (protocol, host, page, params, query, fragments) = urlparse.urlparse(url)
+        (protocol, host, page, params, query, fragments) = six.moves.urllib.parse.urlparse(url)
 
         # print("==>", currentThread().getName(), protocol, host, page, params, query, fragments)
         try:
@@ -130,7 +130,7 @@ class ITradeConnection(object):
                     connection = self.m_httpConnection[host]
                 else:
                     # Open a new one and save it
-                    connection = httplib.HTTPConnection(host)
+                    connection = six.moves.http_client.HTTPConnection(host)
                     self.m_httpConnection[host] = connection
             else:
                 if host in self.m_httpsConnection:
@@ -138,7 +138,7 @@ class ITradeConnection(object):
                     connection = self.m_httpsConnection[host]
                 else:
                     # Open a new one and save it
-                    connection = httplib.HTTPSConnection(host)
+                    connection = six.moves.http_client.HTTPSConnection(host)
                     self.m_httpsConnection[host] = connection
 
             # Add cookie
@@ -171,7 +171,7 @@ class ITradeConnection(object):
                         if ldata:
                             # some servers can return min,max or max,max
                             #  i.e. "http://www.nysedata.com/nysedata/asp/download.asp?s=txt&prod=symbols" is doing that !
-                            ldata = string.split(ldata, ',')
+                            ldata = ldata.split(',')
                             if ldata and len(ldata) > 1:
                                 ldata = int(ldata[0])
                                 self.m_responseData = self.response.read(ldata)
@@ -185,7 +185,7 @@ class ITradeConnection(object):
 
                 # Follow redirect if any with recursion
                 if self.getStatus() in (301, 302):
-                    url = urlparse.urljoin(url, self.response.getheader("location", ""))
+                    url = six.moves.urllib.parse.urljoin(url, self.response.getheader("location", ""))
                     self.put(url, next_header)
 
                 self.m_duration = time.time() - start
@@ -214,7 +214,7 @@ class ITradeConnection(object):
                 self.clearConnection(protocol, host)
                 raise msg
 
-            except (socket.gaierror, httplib.CannotSendRequest, httplib.BadStatusLine) as e:
+            except (socket.gaierror, six.moves.http_client.CannotSendRequest, six.moves.http_client.BadStatusLine) as e:
                 self.clearConnection(protocol, host)
                 if not self.m_retrying:
                     # Retry one time because this kind of error can be "normal"

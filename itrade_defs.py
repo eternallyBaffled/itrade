@@ -31,6 +31,7 @@
 # 2007-04-13    dgil  Wrote it from scratch
 # ============================================================================
 
+from __future__ import absolute_import
 from enum import Enum
 
 class QList(Enum):

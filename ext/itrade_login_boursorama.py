@@ -40,6 +40,7 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 import logging
 import os
 
@@ -124,7 +125,7 @@ class Login_boursorama(object):
             return False
 
         print("bourso login response :saved to bourso.html")
-        file("bourso.html", "w").write(buf)
+        open("bourso.html", "w").write(buf)
 
         return True
 

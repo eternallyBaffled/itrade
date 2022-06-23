@@ -39,6 +39,7 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 import logging
 import os
 
@@ -191,7 +192,7 @@ class iTradePortfolioSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterM
                 self.itemDataMap[x] = (eachPortfolio.filename(), eachPortfolio.name(), eachPortfolio.accountref())
                 x = x + 1
 
-        items = self.itemDataMap.items()
+        items = list(self.itemDataMap.items())
         for x, item in enumerate(items):
             key, data = item
             if data[0] != '':

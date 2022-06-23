@@ -39,6 +39,7 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 import os
 import logging
 
@@ -48,6 +49,7 @@ from itrade_logging import setLevel, debug
 from itrade_quotes import quotes, initQuotesModule, Quote
 from itrade_local import message
 import itrade_config
+from six.moves import range
 
 # wxPython system
 if not itrade_config.nowxversion:

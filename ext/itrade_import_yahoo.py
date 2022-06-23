@@ -37,6 +37,7 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 import logging
 from datetime import date, timedelta
 
@@ -85,7 +86,7 @@ class Import_yahoo(object):
 
     def splitLines(self, buf):
         lines = buf.split('\n')
-        lines = filter(lambda x: x, lines)
+        lines = [x for x in lines if x]
         def removeCarriage(s):
             if s[-1] == '\r':
                 return s[:-1]
@@ -129,7 +130,7 @@ class Import_yahoo(object):
             ('g', 'd'),
             ('ignore', '.csv'),
         )
-        query = map(lambda var_val: u'{}={}'.format(var_val[0], str(var_val[1])), query)
+        query = [u'{}={}'.format(var_val[0], str(var_val[1])) for var_val in query]
         query = '&'.join(query)
         url = yahooUrl(quote.market(), live=False) + '?' + query
 
@@ -179,7 +180,7 @@ class Import_yahoo(object):
                        value,
                        volume
                     )
-                    line = map(lambda val: u'{}'.format(str(val)), line)
+                    line = [u'{}'.format(str(val)) for val in line]
                     line = ';'.join(line)
                     # append
                     data = data + line + '\r\n'

@@ -40,8 +40,9 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 import logging
-import httplib
+import six.moves.http_client
 
 # iTrade system
 import itrade_config
@@ -62,7 +63,7 @@ def removeCarriage(s):
 
 def splitLines(buf):
     lines = buf.split('\n')
-    lines = filter(lambda x: x, lines)
+    lines = [x for x in lines if x]
 
     lines = [removeCarriage(l) for l in lines]
     return lines
@@ -99,7 +100,7 @@ def Import_ListOfQuotes_NSE(quotes, market='NATIONAL EXCHANGE OF INDIA', dlg=Non
                 }
 
     try:
-        conn = httplib.HTTPConnection(host, 80)
+        conn = six.moves.http_client.HTTPConnection(host, 80)
         conn.request("GET", url, None, headers)
         response = conn.getresponse()
     except Exception:

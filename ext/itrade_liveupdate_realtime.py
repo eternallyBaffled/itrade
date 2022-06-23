@@ -39,13 +39,14 @@
 
 # python system
 from __future__ import print_function
+from __future__ import absolute_import
 from contextlib import closing
 from datetime import date, datetime
 import logging
-import thread
+import six.moves._thread
 import os
-import urllib2
-import cPickle
+import six.moves.urllib.request, six.moves.urllib.error, six.moves.urllib.parse
+import six.moves.cPickle
 
 # iTrade system
 import itrade_config
@@ -66,7 +67,7 @@ class LiveUpdate_RealTime(object):
     def __init__(self, market='EURONEXT'):
         debug('LiveUpdate_RealTime:__init__')
         self.m_connected = False
-        self.m_livelock = thread.allocate_lock()
+        self.m_livelock = six.moves._thread.allocate_lock()
         self.m_conn = None
         self.m_clock = {}
         self.m_dateindice = {}
@@ -87,7 +88,7 @@ class LiveUpdate_RealTime(object):
 
             # try to open dictionary of ticker_bourso.txt
             with open(os.path.join(itrade_config.dirUserData, 'ticker_bourso.txt'), 'r') as f:
-                self.m_isinsymbol = cPickle.load(f)
+                self.m_isinsymbol = six.moves.cPickle.load(f)
 
         except Exception:
             print('Missing or invalid file: ticker_bourso.txt')
@@ -106,10 +107,10 @@ class LiveUpdate_RealTime(object):
 
                 # extract pre_symbol
                 for isin in select_isin:
-                    req = urllib2.Request('https://www.boursorama.com/recherche/index.phtml?search%5Bquery%5D=' + isin)
+                    req = six.moves.urllib.request.Request('https://www.boursorama.com/recherche/index.phtml?search%5Bquery%5D=' + isin)
                     req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
                     try:
-                        with closing(urllib2.urlopen(req)) as f:
+                        with closing(six.moves.urllib.request.urlopen(req)) as f:
                             data = f.read()
 
                         ch = 'class="bourse fit block" >'
@@ -128,7 +129,7 @@ class LiveUpdate_RealTime(object):
                         pass
 
                 with open(os.path.join(itrade_config.dirUserData,'ticker_bourso.txt'), 'w') as dic:
-                    cPickle.dump(self.m_isinsymbol, dic)
+                    six.moves.cPickle.dump(self.m_isinsymbol, dic)
 
             except Exception:
                 pass
@@ -177,7 +178,7 @@ class LiveUpdate_RealTime(object):
 
     def splitLines(self, data):
         lines = data.split('\n')
-        lines = filter(lambda x: x, lines)
+        lines = [x for x in lines if x]
         def removeCarriage(s):
             if s[-1] == '\r':
                 return s[:-1]
@@ -222,11 +223,11 @@ class LiveUpdate_RealTime(object):
 
         if isin != '':
             if not isin in self.m_isinsymbol:
-                req = urllib2.Request('https://www.boursorama.com/recherche/index.phtml?search%5Bquery%5D=' + isin)
+                req = six.moves.urllib.request.Request('https://www.boursorama.com/recherche/index.phtml?search%5Bquery%5D=' + isin)
                 req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
 
                 try:
-                    with closing(urllib2.urlopen(req)) as f:
+                    with closing(six.moves.urllib.request.urlopen(req)) as f:
                         data = f.read()
 
                     ch = 'class="bourse fit block" >'
@@ -242,7 +243,7 @@ class LiveUpdate_RealTime(object):
                                 self.m_isinsymbol [isin] = symbol
                                 debug(u'{} found and added in dictionary ({})'.format(isin, symbol))
                                 with open(os.path.join(itrade_config.dirUserData, 'ticker_bourso.txt'), 'w') as dic:
-                                    cPickle.dump(self.m_isinsymbol, dic)
+                                    six.moves.cPickle.dump(self.m_isinsymbol, dic)
                             else:
                                 return None
                         else:
@@ -266,12 +267,12 @@ class LiveUpdate_RealTime(object):
                '1RT' in symbol or
                '1z' in symbol or
                '1g' in symbol):
-                req = urllib2.Request('https://www.boursorama.com/bourse/trackers/etf.phtml?symbole=' + symbol)
+                req = six.moves.urllib.request.Request('https://www.boursorama.com/bourse/trackers/etf.phtml?symbole=' + symbol)
             else:
-                req = urllib2.Request('https://www.boursorama.com/cours.phtml?symbole=' + symbol)
+                req = six.moves.urllib.request.Request('https://www.boursorama.com/cours.phtml?symbole=' + symbol)
             req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041202 Firefox/1.0')
 
-            with closing(urllib2.urlopen(req)) as f:
+            with closing(six.moves.urllib.request.urlopen(req)) as f:
                 data = f.read()
         except Exception:
             debug('LiveUpdate_Boursorama:unable to connect :-(')
