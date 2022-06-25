@@ -275,7 +275,7 @@ def test(ticker,d):
         if state:
             debug(u"state={}".format(state))
 
-            quote = quotes.lookupTicker(ticker, 'TOKYO EXCHANGE')
+            quote = quotes.lookupTicker(ticker=ticker, market='TOKYO EXCHANGE')
             data = gImportYahoojp.getdata(quote, d)
             if data is not None:
                 if data:

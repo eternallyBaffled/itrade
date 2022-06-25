@@ -280,7 +280,7 @@ def test(ticker):
         if state:
             debug("state=u".format(state))
 
-            quote = quotes.lookupTicker(ticker, 'EURONEXT')
+            quote = quotes.lookupTicker(ticker=ticker, market='EURONEXT')
             data = gLiveABC.getdata(quote)
             if data is not None:
                 if data:

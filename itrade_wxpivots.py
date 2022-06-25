@@ -108,7 +108,7 @@ def main():
     gMessage.load()
     ticker = 'AXL'
     from itrade_quotes import quotes
-    quote = quotes.lookupTicker(ticker)
+    quote = quotes.lookupTicker(ticker=ticker)
     quote.loadTrades()
     info('{}: {}'.format(ticker, quote))
     app = wx.App(False)

@@ -264,19 +264,20 @@ def main():
     itrade_config.set_application_root_folder(os.environ['itrade_path'])
     from itrade_quotes import quotes
     print('AUSY (Euronext market):')
-    q = quotes.lookupTicker('OSI', 'EURONEXT')
-    print(u'Country: {}, Market: {}'.format(q.country(), q.market()))
-    print("Get 15/03/2005 - 25/03/2005")
-    q.update(date(2005, 3, 15), date(2005, 3, 25))
-    print("Get Live {} ".format(date.today()))
-    q.update()
-    print('APPLE (US market):')
-    q = quotes.lookupTicker('AAPL', 'NASDAQ')
-    print(u'Country: {}, Market: {}'.format(q.country(), q.market()))
-    print("Get 15/03/2005 - 25/03/2005")
-    q.update(date(2005, 3, 15), date(2005, 3, 25))
-    print("Get Live {} ".format(date.today()))
-    q.update()
+    q = quotes.lookupTicker(ticker='OSI', market='EURONEXT')
+    if q:
+        print(u'Country: {}, Market: {}'.format(q.country(), q.market()))
+        print("Get 15/03/2005 - 25/03/2005")
+        q.update(date(2005, 3, 15), date(2005, 3, 25))
+        print("Get Live {} ".format(date.today()))
+        q.update()
+        print('APPLE (US market):')
+        q = quotes.lookupTicker(ticker='AAPL', market='NASDAQ')
+        print(u'Country: {}, Market: {}'.format(q.country(), q.market()))
+        print("Get 15/03/2005 - 25/03/2005")
+        q.update(date(2005, 3, 15), date(2005, 3, 25))
+        print("Get Live {} ".format(date.today()))
+        q.update()
 
 
 if __name__ == '__main__':

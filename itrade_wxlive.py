@@ -623,7 +623,7 @@ def main():
     from itrade_quotes import initQuotesModule, quotes
     initQuotesModule()
     ticker = 'GTO'
-    quote = quotes.lookupTicker(ticker)
+    quote = quotes.lookupTicker(ticker=ticker)
     info(u'{}: {}'.format(ticker, quote))
     app = wx.App(False)
     frame = WndTest(None, quote)

@@ -192,7 +192,7 @@ def main():
     setLevel(logging.INFO)
     itrade_config.app_header()
     from itrade_quotes import quotes
-    quote = quotes.lookupTicker('RIB')
+    quote = quotes.lookupTicker(ticker='RIB')
     if quote:
         gNewsBalo.feedQuote(quote)
     # gNewsBalo.goto(None,"http://www.boursorama.com/infos/imprimer_news.phtml?news=3020909")

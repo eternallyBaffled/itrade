@@ -157,12 +157,12 @@ def main():
     gMessage.setLang('fr')
     gMessage.load()
     from itrade_quotes import quotes
-    quote = quotes.lookupTicker('AAPL')
+    quote = quotes.lookupTicker(ticker='AAPL')
     print(gNewsGoogle.feedQuote(quote))
-    quote = quotes.lookupTicker('AXL')
+    quote = quotes.lookupTicker(ticker='AXL')
     print(gNewsGoogle.feedQuote(quote))
     print(gNewsGoogle.feedQuote(quote, 'fr'))
-    quote = quotes.lookupTicker('SAF')
+    quote = quotes.lookupTicker(ticker='SAF')
     print(gNewsGoogle.feedQuote(quote))
 
 

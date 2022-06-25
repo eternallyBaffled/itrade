@@ -333,7 +333,7 @@ def main():
     # init modules
     initQuotesModule()
     ticker = 'GTO'
-    quote = quotes.lookupTicker(ticker)
+    quote = quotes.lookupTicker(ticker=ticker)
     info(u'{}: {}'.format(ticker, quote))
     from itrade_portfolio import initPortfolioModule, loadPortfolio
     initPortfolioModule()

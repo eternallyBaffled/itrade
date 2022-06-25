@@ -97,7 +97,7 @@ class News_Boursorama(object):
     def getQuote(self):
         return self.m_quote
 
-    def splitLines(self,buf):
+    def splitLines(self, buf):
         p = re.compile(r"\d\d/\d\d/\d\d\d\d</td>[ \t\n\r]*<td></td>[ \t\n\r]*.*</td>", re.IGNORECASE|re.MULTILINE)
         return p.findall(buf)
 
@@ -119,11 +119,14 @@ class News_Boursorama(object):
         self.m_feed.feed = _FeedEntry()
         self.m_feed.feed.title = 'Boursorama: ' + self.m_quote.ticker()
 
-        info('Boursorama News refresh %s',self.m_url)
+        info('Boursorama News refresh %s', self.m_url)
         buf = self.getdata(url)
 
+        if not buf:
+            return self.m_feed
+
         iter = self.splitLines(buf)
-        #print iter
+        # print(iter)
 
         for eachLine in iter:
             sdate = time.strptime(eachLine[0:10], "%d/%m/%Y")
@@ -211,7 +214,7 @@ def main():
     setLevel(logging.INFO)
     itrade_config.app_header()
     from itrade_quotes import quotes
-    quote = quotes.lookupTicker('RIB')
+    quote = quotes.lookupTicker(ticker='RIB')
     print(gNewsBoursorama.feedQuote(quote))
     gNewsBoursorama.goto(None, "https://www.boursorama.com/infos/imprimer_news.phtml?news=3020909")
 

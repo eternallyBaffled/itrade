@@ -207,7 +207,7 @@ def main():
 
     # commands
     if vticker:
-        quote = itrade_quotes.quotes.lookupTicker(vticker)
+        quote = itrade_quotes.quotes.lookupTicker(ticker=vticker)
         if not quote:
             print('ticker {} not found !'.format(vticker))
             sys.exit()

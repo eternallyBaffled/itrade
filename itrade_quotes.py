@@ -107,7 +107,7 @@ class Volume(object):
 
 
 def quote_reference(isin, ticker, market, place):
-    # print 'quote_reference: isin={} ticker={} market={} place={}'.format(isin, ticker, market, place)
+    # print('quote_reference: isin={} ticker={} market={} place={}'.format(isin, ticker, market, place))
     if isin and isin != '':
         if market is None or market == '':
             lst = quotes.lookupISIN(isin)
@@ -125,7 +125,7 @@ def quote_reference(isin, ticker, market, place):
             return u'{}.{}.{}'.format(isin, market, place)
 
     if market is None or market == '':
-        quote = quotes.lookupTicker(ticker)
+        quote = quotes.lookupTicker(ticker=ticker)
         if quote:
             market = quote.market()
             place = quote.place()
@@ -1596,16 +1596,16 @@ def main():
     itrade_ext.loadOneExtension('itrade_import_euronext.py', itrade_config.dirExtData)
     quotes.loadMarket('EURONEXT')
     info('test1 {}'.format(quotes.lookupISIN('FR0000072621')))
-    quote = quotes.lookupTicker('OSI', 'EURONEXT')
+    quote = quotes.lookupTicker(ticker='OSI', market='EURONEXT')
     info('test2 {}'.format(quote.ticker()))
     info('test3a {}'.format(quote.isin()))
     info('test3b {}'.format(quote.key()))
     info('test4 {}'.format(quote.name()))
     info('test5 {}'.format(quote.descr()))
-    quote = quotes.lookupTicker('OSI', 'EURONEXT')
+    quote = quotes.lookupTicker(ticker='OSI', market='EURONEXT')
     quote.loadTrades('import/Cortal-2005-01-07.txt')
     info('test6 {}'.format(quote.trades().trade(date(2005, 1, 4))))
-    quote = quotes.lookupTicker('EADT', 'EURONEXT')
+    quote = quotes.lookupTicker(ticker='EADT', market='EURONEXT')
     quote.loadTrades('import/Cortal-2005-01-07.txt')
     quote.loadTrades('import/Cortal-2005-01-14.txt')
     quote.loadTrades('import/Cortal-2005-01-21.txt')

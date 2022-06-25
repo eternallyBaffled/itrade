@@ -1265,7 +1265,7 @@ def main():
     from itrade_portfolio import initPortfolioModule, loadPortfolio
     initPortfolioModule()
     port = loadPortfolio('default')
-    q = quotes.lookupTicker('GTO', 'EURONEXT')
+    q = quotes.lookupTicker(ticker='GTO', market='EURONEXT')
     if q:
         open_iTradeQuote(None, port, q)
         app.MainLoop()

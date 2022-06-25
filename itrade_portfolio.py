@@ -252,7 +252,7 @@ class Operation(object):
             # m : could be isin (old format) or key (new format)
             self.m_quote = quotes.lookupKey(m)
             if not self.m_quote:
-                self.m_quote = quotes.lookupTicker(m)
+                self.m_quote = quotes.lookupTicker(ticker=m)
                 if self.m_quote:
                     self.m_name = self.m_quote.name()
                 else:

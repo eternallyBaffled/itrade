@@ -118,7 +118,7 @@ def main():
 
     gNews.setCallback(cb)
     from itrade_quotes import quotes
-    quote = quotes.lookupTicker('RIB')
+    quote = quotes.lookupTicker(ticker='RIB')
     print(gNews.feedQuote(quote, 'fr'))
 
 

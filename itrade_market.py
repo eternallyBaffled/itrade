@@ -88,6 +88,7 @@ isin_market = {
     'tw': 'TAIWAN STOCK EXCHANGE',
     }
 
+
 def isin2market(isin):
     if isin:
         cp = isin[0:2].lower()
@@ -137,11 +138,11 @@ market_indice = {
     'BUENOS AIRES EXCHANGE': 'ARMERV160025',#MERVAL
     'MEXICO EXCHANGE': 'QS0010040614',#IPC
     'SINGAPORE EXCHANGE': 'XC0009653640',#STRAITS TIMES INDEX
-    'KOREA STOCK EXCHANGE' : 'KR0000000001',#KOSPI COMPOSITE
-    'KOREA KOSDAQ EXCHANGE' : 'KR0000000002',#KOSDAQ COMPOSITE
-    'WIENER BORSE' : 'AT0000999982',#ATX
-    'TOKYO EXCHANGE' : 'XC0009692440',#NIKKEI 225
-    'TAIWAN STOCK EXCHANGE' : 'TW0000000001',#TAIWAN TAIEX INDEX
+    'KOREA STOCK EXCHANGE': 'KR0000000001',#KOSPI COMPOSITE
+    'KOREA KOSDAQ EXCHANGE': 'KR0000000002',#KOSDAQ COMPOSITE
+    'WIENER BORSE': 'AT0000999982',#ATX
+    'TOKYO EXCHANGE': 'XC0009692440',#NIKKEI 225
+    'TAIWAN STOCK EXCHANGE': 'TW0000000001',#TAIWAN TAIEX INDEX
     }
 
 def getDefaultIndice(market):
@@ -207,7 +208,7 @@ def market2currency(market):
 # ============================================================================
 
 _lom = {
-    'EURONEXT' : False,
+    'EURONEXT': False,
     'ALTERNEXT': False,
     'PARIS MARCHE LIBRE': False,
     'BRUXELLES MARCHE LIBRE': False,
@@ -242,7 +243,7 @@ _lom = {
     'KOREA STOCK EXCHANGE': False,
     'KOREA KOSDAQ EXCHANGE': False,
     'WIENER BORSE': False,
-    'TOKYO EXCHANGE':False,
+    'TOKYO EXCHANGE': False,
     'TAIWAN STOCK EXCHANGE': False,
     }
 
@@ -270,11 +271,10 @@ def list_of_markets(ifLoaded=False, bFilterMode=False):
     lom = []
     if bFilterMode:
         lom.append(message('all_markets'))
-    keys = list(_lom.keys())
-    keys.sort()
-    for market in keys:
-        if not ifLoaded or _lom[market]:
-            lom.append(market)
+    if not ifLoaded:
+        lom.extend(sorted(_lom))
+    else:
+        lom.extend(sorted([market for market, loaded in _lom.items() if loaded]))
     return lom
 
 # ============================================================================
@@ -542,16 +542,17 @@ place_timezone = {
     "TAI":  "Asia/Taipei",
     }
 
+
 def convertConnectorTimeToPlaceTime(mdatetime, zone, place):
-    #fmt = '%Y-%m-%d %H:%M:%S %Z%z'
+    # fmt = '%Y-%m-%d %H:%M:%S %Z%z'
 
     market_tz = timezone(zone)
     place_tz = timezone(place_timezone[place])
 
     market_dt = market_tz.localize(mdatetime)
-    #print '*** market time:',market_dt.strftime(fmt)
+    # print('*** market time:', market_dt.strftime(fmt))
     place_dt = place_tz.normalize(market_dt.astimezone(place_tz))
-    #print '*** place time:',place_dt.strftime(fmt)
+    # print('*** place time:', place_dt.strftime(fmt))
     return place_dt
 
 
@@ -571,6 +572,7 @@ euronext_mic = {
     'PARIS MARCHE LIBRE.PAR': 'XMLI',
     'BRUXELLES MARCHE LIBRE.BRU': 'MLXB',
     }
+
 
 def euronextmic(market, place):
     key = market + '.' + place
@@ -669,7 +671,8 @@ yahoo_suffix = {
     'TAIWAN STOCK EXCHANGE.TAI': '.TW',
     }
 
-def yahoosuffix(market,place):
+
+def yahoosuffix(market, place):
     key = market + '.' + place
     if key in yahoo_suffix:
         return yahoo_suffix[key]
@@ -678,33 +681,34 @@ def yahoosuffix(market,place):
 
 yahoo_map_tickers = {}
 
-def yahooTicker(ticker,market,place):
+
+def yahooTicker(ticker, market, place):
     # special case for US markets
     if ticker[0:1] == '^':
         return ticker
 
-    pticker = ticker
+    # pticker = ticker
 
     # special case for TORONTO
-    if market=='TORONTO EXCHANGE' or market=='TORONTO VENTURE':
+    if market == 'TORONTO EXCHANGE' or market == 'TORONTO VENTURE':
         s = ticker.split('-')
-        if len(s)==3:
+        if len(s) == 3:
             ticker = s[0]+'-'+s[1]+s[2]
 
     # special case for AMEX
-    if market=="AMEX":
+    if market == "AMEX":
         s = ticker.split('.')
-        if len(s)==2:
+        if len(s) == 2:
             ticker = s[0]+'-'+s[1]
-            if s[1]=="W":
+            if s[1] == "W":
                 ticker = ticker + "T"
         else:
             s = ticker.split('-')
-            if len(s)==2:
-                ticker= s[0]+'-P'+s[1]
+            if len(s) == 2:
+                ticker = s[0]+'-P'+s[1]
 
-    #if pticker!=ticker and itrade_config.verbose:
-    #    print 'convert to Yahoo ticker %s -> %s' % (pticker,ticker)
+    # if pticker != ticker and itrade_config.verbose:
+    #    print('convert to Yahoo ticker {} -> {}'.format(pticker, ticker))
 
     # build the ticker using the suffix
     key = market + '.' + place
@@ -738,31 +742,32 @@ read_yahoo_tickers()
 # some marketplaces seems to use various URL from Yahoo website :-(
 # ============================================================================
 
-def yahooUrl(market,live):
+def yahooUrl(market, live):
     if live:
         if market in ['TORONTO VENTURE','TORONTO EXCHANGE']:
             url = "https://download.finance.yahoo.com/d/quotes.csv"
         else:
-            #url = "https://quote.yahoo.com/download/quotes.csv"
+            # url = "https://quote.yahoo.com/download/quotes.csv"
             url = "https://download.finance.yahoo.com/d/quotes.csv"
     else:
         if market in ['TORONTO VENTURE','TORONTO EXCHANGE']:
-            #url = 'https://download.finance.yahoo.com/d/quotes.csv'
+            # url = 'https://download.finance.yahoo.com/d/quotes.csv'
             url = 'https://ichart.finance.yahoo.com/table.csv'
-            #url = 'https://download.finance.yahoo.com/d/quotes.csv'
         else:
             url = 'https://ichart.finance.yahoo.com/table.csv'
 
     return url
 
-def yahooUrlJapan(market,live):
+
+def yahooUrlJapan(market, live):
     if live:
         url = "https://quote.yahoo.co.jp/q"
-        #url = 'https://quote.yahoo.co.jp/q?s=%s&d=v2' % (ss)
+        # url = 'https://quote.yahoo.co.jp/q?s={}&d=v2'.format(ss)
     else:
         url = "https://table.yahoo.co.jp/t"
-        #url = 'https://table.yahoo.co.jp/t?c=%s&a=%s&b=%s&f=%s&d=%s&e=%s&g=d&s=%s.t&y=%s&z=%s.t' % (d1[0],d1[1],d1[2],d2[0],d2[1],d2[2],ss,str(cursor),ss)
+        # url = 'https://table.yahoo.co.jp/t?c={}&a={}&b={}&f={}&d={}&e={}&g=d&s={}.t&y={}&z={}.t'.format(d1[0], d1[1], d1[2], d2[0], d2[1], d2[2], ss, str(cursor), ss)
     return url
+
 
 def main():
     from itrade_logging import setLevel

@@ -256,7 +256,7 @@ def main():
 #    gMessage.load()
     itrade_config.verbose = False
     quotes.loadListOfQuotes()
-    q = quotes.lookupTicker('SAF', 'EURONEXT')
+    q = quotes.lookupTicker(ticker='SAF', market='EURONEXT')
     if q:
         addOrEditStops_iTradeQuote(win=None, quote=q, bAdd=(not q.hasStops()))
     else:

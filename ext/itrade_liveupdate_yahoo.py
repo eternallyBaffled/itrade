@@ -479,7 +479,7 @@ def test(ticker):
         if state:
             debug(u"state={}".format(state))
 
-            quote = quotes.lookupTicker(ticker, 'NASDAQ')
+            quote = quotes.lookupTicker(ticker=ticker, market='NASDAQ')
             data = gLiveYahoo.getdata(Quote)
             if data is not None:
                 if data:
