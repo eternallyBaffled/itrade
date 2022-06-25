@@ -161,12 +161,12 @@ class Quote(object):
 
         self.m_userliveconnector = None
 
-        self.m_defaultimportconnector = gImportRegistry.get(self.m_market, self.m_list, QTag.imported, self.m_place)
+        self.m_defaultimportconnector = gImportRegistry.get(self.m_market, self.list(), QTag.imported, self.m_place)
         if self.m_defaultimportconnector is None:
             if itrade_config.verbose:
-                print('no default import connector for {} (list:{})'.format(self, self.m_list.name))
+                print('no default import connector for {} (list:{})'.format(self, self.list().name))
 
-        if self.m_list != QList.indices:
+        if self.list() != QList.indices:
             if not currency:
                 self.m_currency = market2currency(self.m_market)
             else:
@@ -396,7 +396,7 @@ class Quote(object):
 
     def liveconnector(self, bForceLive=False, bDebug=False):
         if bForceLive:
-            ret = gLiveRegistry.get(self.market(), self.m_list, QTag.live, self.m_place)
+            ret = gLiveRegistry.get(self.market(), self.list(), QTag.live, self.m_place)
             if bDebug:
                 print('liveconnector: for live connector {}'.format(ret))
             if ret:
@@ -409,7 +409,7 @@ class Quote(object):
             return self.m_userliveconnector
 
         if not self.m_liveconnector:
-            self.m_liveconnector = getDefaultLiveConnector(market=self.market(), lst=self.m_list, place=self.m_place)
+            self.m_liveconnector = getDefaultLiveConnector(market=self.market(), lst=self.list(), place=self.m_place)
             if bDebug:
                 print('liveconnector: get liveconnector {}'.format(self.m_liveconnector))
         if bDebug:
@@ -430,18 +430,18 @@ class Quote(object):
     def restore_defaultconnectors(self):
         self.m_userliveconnector = None
         # self.m_liveconnector = getDefaultLiveConnector(self.market(), self.m_list, self.m_place)
-        self.m_importconnector = gImportRegistry.get(self.market(), self.m_list, QTag.imported, self.m_place)
+        self.m_importconnector = gImportRegistry.get(self.market(), self.list(), QTag.imported, self.m_place)
         self.m_pluginId = None
 
     def set_liveconnector(self, name):
         if itrade_config.verbose:
             print('set_liveconnector {}/{} for '.format(self.key(), self.name()),
                   self.market(),
-                  self.m_list,
+                  self.list(),
                   QTag.any,
                   self.m_place,
                   name)
-        conn = gLiveRegistry.get(self.market(), self.m_list, QTag.any, self.m_place, name)
+        conn = gLiveRegistry.get(self.market(), self.list(), QTag.any, self.m_place, name)
         # if itrade_config.verbose:
         #     print(' returns', conn)
         if conn:
@@ -449,7 +449,7 @@ class Quote(object):
             self.m_pluginId = None
 
     def set_importconnector(self, name):
-        conn = gImportRegistry.get(self.market(), self.m_list, QTag.imported, self.m_place, name)
+        conn = gImportRegistry.get(self.market(), self.list(), QTag.imported, self.m_place, name)
         if conn:
             self.m_importconnector = conn
             self.m_pluginId = None
