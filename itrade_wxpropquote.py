@@ -530,7 +530,7 @@ def open_iTradeQuoteProperty(win, quote, bDialog=False):
 
 def main():
     setLevel(logging.INFO)
-    app = wx.App(False)
+    app = wx.App()
     # load configuration
     import itrade_config
     itrade_config.load_config()
@@ -542,7 +542,7 @@ def main():
     itrade_ext.loadExtensions(file=itrade_config.fileExtData, folder=itrade_config.dirExtData)
     # init modules
     initQuotesModule()
-    q = select_iTradeQuote(win=None, dquote=None, filter=False)
+    q = select_iTradeQuote(win=None)
     if q:
         open_iTradeQuoteProperty(win=None, quote=q)
         app.MainLoop()

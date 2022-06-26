@@ -65,11 +65,10 @@ class Import_euronext_bonds(object):
         debug('Import_euronext_bonds:__init__')
         self.m_url = 'https://bonds.nyx.com/en/popup/data/download?ml=nyx_pd_bonds&cmd=default&formKey=nyx_pd_filter_values%3Acddaabb01525e7a66f50cd7f51ece3dd'
 
-        self.m_connection = ITradeConnection(cookies = None,
-                                           proxy = itrade_config.proxyHostname,
-                                           proxyAuth = itrade_config.proxyAuthentication,
-                                           connectionTimeout = itrade_config.connectionTimeout
-                                           )
+        self.m_connection = ITradeConnection(proxy=itrade_config.proxyHostname,
+                                             proxyAuth=itrade_config.proxyAuthentication,
+                                             connectionTimeout=itrade_config.connectionTimeout
+                                            )
 
     def name(self):
         return 'euronext_bonds'

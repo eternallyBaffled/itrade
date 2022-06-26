@@ -59,11 +59,10 @@ from itrade_connection import ITradeConnection
 def Import_ListOfQuotes_BARCHART(quotes, market='TOTRONTO EXCHANGE', dlg=None, x=0):
     if itrade_config.verbose:
         print(u'Update {} list of symbols'.format(market))
-    connection = ITradeConnection(cookies=None,
-                               proxy=itrade_config.proxyHostname,
-                               proxyAuth=itrade_config.proxyAuthentication,
-                               connectionTimeout=itrade_config.connectionTimeout
-                               )
+    connection = ITradeConnection(proxy=itrade_config.proxyHostname,
+                                  proxyAuth=itrade_config.proxyAuthentication,
+                                  connectionTimeout=itrade_config.connectionTimeout
+                                 )
 
     if market == 'TORONTO EXCHANGE' or market == 'TORONTO VENTURE':
         url = u'https://www.barchart.com/lookup.php?field=name&string={}&search=begins&type[]=CAN&_dtp1=0'

@@ -63,10 +63,10 @@ threshold_tohba = 0.003
 # Volume indicators
 # ============================================================================
 
-CANDLE_VOLUME_LOWLOW   = 0
-CANDLE_VOLUME_LOW      = 1
-CANDLE_VOLUME_AVERAGE  = 2
-CANDLE_VOLUME_HIGH     = 3
+CANDLE_VOLUME_LOWLOW = 0
+CANDLE_VOLUME_LOW = 1
+CANDLE_VOLUME_AVERAGE = 2
+CANDLE_VOLUME_HIGH = 3
 CANDLE_VOLUME_HIGHHIGH = 4
 
 CANDLE_NBDAYS_AVERAGE_WEEK = 5
@@ -78,6 +78,8 @@ CANDLE_VOLUME_TREND_xx = 2
 # ============================================================================
 # Basic Candle Type
 # ============================================================================
+
+
 class CandleType(Enum):
     unknown = 0
     notype = 1
@@ -163,8 +165,9 @@ CANDLE_SHADOWS = 5
 # volume average calculation
 # ============================================================================
 
-def volume_indicator_from_average(nbdays_average,volume_average,volume):
-    if nbdays_average==CANDLE_NBDAYS_AVERAGE_WEEK:
+
+def volume_indicator_from_average(nbdays_average, volume_average, volume):
+    if nbdays_average == CANDLE_NBDAYS_AVERAGE_WEEK:
         if volume < (volume_average*(1-threshold_volume_week_lowlow)):
             return CANDLE_VOLUME_LOWLOW
         elif volume < (volume_average*(1-threshold_volume_week_low)):
@@ -185,17 +188,18 @@ def volume_indicator_from_average(nbdays_average,volume_average,volume):
 # volume average calculation
 # ============================================================================
 
-def volume_indicator_2string(nbdays_average,vi):
-    if nbdays_average==CANDLE_NBDAYS_AVERAGE_WEEK:
-        if vi==CANDLE_VOLUME_LOWLOW:
+
+def volume_indicator_2string(nbdays_average, vi):
+    if nbdays_average == CANDLE_NBDAYS_AVERAGE_WEEK:
+        if vi == CANDLE_VOLUME_LOWLOW:
             return "Volumes decreased of more than 70% in one week"
-        elif vi==CANDLE_VOLUME_LOW:
+        elif vi == CANDLE_VOLUME_LOW:
             return "Volumes decreased of more than 50% in one week"
-        elif vi==CANDLE_VOLUME_AVERAGE:
+        elif vi == CANDLE_VOLUME_AVERAGE:
             return "No observation on volumes"
-        elif vi==CANDLE_VOLUME_HIGH:
+        elif vi == CANDLE_VOLUME_HIGH:
             return "Volumes increased of more than 70% in one week"
-        elif vi==CANDLE_VOLUME_HIGHHIGH:
+        elif vi == CANDLE_VOLUME_HIGHHIGH:
             return "Volumes increased of more than 150% in one week"
 
     return "invalid volume indicator"
@@ -225,10 +229,10 @@ class Candle(object):
     >>> print('candle: %s - %s = gravestone doji' % (c, c.type()))
     candle: gravestone doji - 5 = gravestone doji
     """
-    def __init__(self,open,high,low,close,volind=CANDLE_VOLUME_AVERAGE,voltrend=CANDLE_VOLUME_TREND_NOTREND):
+    def __init__(self, open_, high, low, close, volind=CANDLE_VOLUME_AVERAGE, voltrend=CANDLE_VOLUME_TREND_NOTREND):
         self.hi = high
         self.lo = low
-        self.op = open
+        self.op = open_
         self.cl = close
         self.vi = volind
         self.vt = voltrend
@@ -265,7 +269,7 @@ class Candle(object):
         else:
             return abs(self.lo-self.cl)
 
-    def range(self,range_type):
+    def range(self, range_type):
         if range_type == CANDLE_BODY:
             return self.body()
         elif range_type == CANDLE_HIGHLOW:
@@ -282,14 +286,14 @@ class Candle(object):
     def computeType(self):
         if self.hi == self.lo:
             self.m_type = CandleType.flatfix
-        elif (self.hi == self.cl) and (self.lo == self.op): # closing = high and opening = low
+        elif (self.hi == self.cl) and (self.lo == self.op):  # closing = high and opening = low
             self.m_type = CandleType.marubozu_white
-        elif (self.lo == self.cl) and (self.hi == self.op): # closing = low and opening = high
+        elif (self.lo == self.cl) and (self.hi == self.op):  # closing = low and opening = high
             self.m_type = CandleType.marubozu_black
-        elif abs(1-(self.op/self.cl))<threshold_doji:  # closing == opening
+        elif abs(1-(self.op/self.cl)) < threshold_doji:  # closing == opening
             self.m_type = CandleType.doji
-            #print 'dragon ? %f/%f=%f %f %f' %(self.hi,self.cl,self.hi/self.cl,abs(1-(self.hi/self.cl)),threshold_tombo)
-            #print 'gravestone ? %f/%f=%f %f %f' %(self.cl,self.lo,self.cl/self.lo,abs(1-(self.cl/self.lo)),threshold_tohba)
+            # print('dragon ? %f/%f=%f %f %f' %(self.hi,self.cl,self.hi/self.cl,abs(1-(self.hi/self.cl)),threshold_tombo))
+            # print('gravestone ? %f/%f=%f %f %f' %(self.cl,self.lo,self.cl/self.lo,abs(1-(self.cl/self.lo)),threshold_tohba))
             if abs(1-(self.hi/self.cl))<threshold_tombo:  # closing == opening == high
                 self.m_type = CandleType.tombo
             elif abs(1-(self.cl/self.lo))<threshold_tohba:  # closing == opening == low

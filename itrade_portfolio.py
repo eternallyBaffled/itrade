@@ -1254,7 +1254,7 @@ class Portfolio(object):
         return ((n*100.0) / b) - 100
 
     def nv_totalValue(self):
-        return self.nv_value(QuoteType.both) + self.nv_cash() - self.m_cCredit
+        return self.nv_value() + self.nv_cash() - self.m_cCredit
 
     def nv_perfTotal(self):
         return self.nv_totalValue() - self.nv_invest()

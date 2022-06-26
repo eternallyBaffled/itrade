@@ -832,7 +832,7 @@ def edit_iTradeQuoteList(win, quote, qmode):
 
 def main():
     setLevel(logging.INFO)
-    app = wx.App(False)
+    app = wx.App()
     # from itrade_local import setLang, gMessage
     # setLang('us')
     # gMessage.load()

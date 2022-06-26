@@ -60,10 +60,9 @@ from itrade_connection import ITradeConnection
 def Import_ListOfQuotes_Euronext(quotes, market='EURONEXT', dlg=None, x=0):
     if itrade_config.verbose:
         print('Update {} list of symbols'.format(market))
-    connection = ITradeConnection(cookies=None,
-                               proxy=itrade_config.proxyHostname,
-                               proxyAuth=itrade_config.proxyAuthentication,
-                               connectionTimeout=max(45, itrade_config.connectionTimeout)
+    connection = ITradeConnection(proxy=itrade_config.proxyHostname,
+                                  proxyAuth=itrade_config.proxyAuthentication,
+                                  connectionTimeout=max(45, itrade_config.connectionTimeout)
                                )
 
     nyse_euronext_market = {
@@ -205,7 +204,7 @@ if __name__ == '__main__':
 
     from itrade_quotes import quotes
 
-    Import_ListOfQuotes_Euronext(quotes, 'EURONEXT')
+    Import_ListOfQuotes_Euronext(quotes)
     Import_ListOfQuotes_Euronext(quotes, 'ALTERNEXT')
     Import_ListOfQuotes_Euronext(quotes, 'PARIS MARCHE LIBRE')
     Import_ListOfQuotes_Euronext(quotes, 'BRUXELLES MARCHE LIBRE')

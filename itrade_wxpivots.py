@@ -111,7 +111,7 @@ def main():
     quote = quotes.lookupTicker(ticker=ticker)
     quote.loadTrades()
     info('{}: {}'.format(ticker, quote))
-    app = wx.App(False)
+    app = wx.App()
     frame = WndTest(None, quote)
     if frame:
         frame.Show(show=True)

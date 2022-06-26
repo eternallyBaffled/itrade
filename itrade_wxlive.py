@@ -625,7 +625,7 @@ def main():
     ticker = 'GTO'
     quote = quotes.lookupTicker(ticker=ticker)
     info(u'{}: {}'.format(ticker, quote))
-    app = wx.App(False)
+    app = wx.App()
     frame = WndTest(None, quote)
     if frame:
         frame.Show(show=True)

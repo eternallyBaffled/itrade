@@ -59,12 +59,11 @@ class Import_yahoo(object):
     def __init__(self):
         debug('Import_yahoo:__init__')
 
-        #self.m_connection=ITradeConnection(proxy="172.30.0.3:8080")
-        self.m_connection = ITradeConnection(cookies = None,
-                                           proxy = itrade_config.proxyHostname,
-                                           proxyAuth = itrade_config.proxyAuthentication,
-                                           connectionTimeout = itrade_config.connectionTimeout
-                                           )
+        # self.m_connection=ITradeConnection(proxy="172.30.0.3:8080")
+        self.m_connection = ITradeConnection(proxy=itrade_config.proxyHostname,
+                                             proxyAuth=itrade_config.proxyAuthentication,
+                                             connectionTimeout=itrade_config.connectionTimeout
+                                            )
 
     def name(self):
         return 'yahoo'

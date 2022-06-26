@@ -216,8 +216,7 @@ class Currencies(object):
             return None
 
         if self.m_connection is None:
-            self.m_connection = ITradeConnection(cookies=None,
-                                                 proxy=itrade_config.proxyHostname,
+            self.m_connection = ITradeConnection(proxy=itrade_config.proxyHostname,
                                                  proxyAuth=itrade_config.proxyAuthentication,
                                                  connectionTimeout=itrade_config.connectionTimeout
                                                  )

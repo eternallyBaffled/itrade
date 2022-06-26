@@ -74,6 +74,7 @@ ALERT_STATE_ARCHIVE = 3
 # Alert
 # ============================================================================
 
+
 class Alert(object):
     def __init__(self, a_type, source, datation, title, desc, link, isin):
         self.m_type = a_type
@@ -135,6 +136,7 @@ class Alert(object):
 #   <ref>;<state>
 # ============================================================================
 
+
 class Alerts(object):
     def __init__(self):
         self._init_()
@@ -158,8 +160,8 @@ class Alerts(object):
         else:
             return None
 
-    def newAlert(self, type, source, datation, title, desc, link, isin):
-        alert = Alert(type, source, datation, title, desc, link, isin)
+    def newAlert(self, type_, source, datation, title, desc, link, isin):
+        alert = Alert(type_, source, datation, title, desc, link, isin)
         ref = alert.reference()
         if self.existAlert(ref):
             return None
@@ -205,18 +207,18 @@ class Alerts(object):
                 info(u'Alerts::addAlert(): ref={} already exists !'.format(ref))
                 return False
 
-            type, source, datation, isin, title = item
-            type = int(type)
+            type_, source, datation, isin, title = item
+            type_ = int(type_)
             title = title.strip('"')
 
             # read link & desc
-            link = self.readFile(ref,'lnk')
-            desc = self.readFile(ref,'txt')
+            link = self.readFile(ref, 'lnk')
+            desc = self.readFile(ref, 'txt')
 
-            #print('addAlert:', type, source, datation, isin, title)
+            # print('addAlert:', type, source, datation, isin, title)
 
             # create alert
-            alert = self.newAlert(type, source, datation, title, desc, link, isin)
+            alert = self.newAlert(type_, source, datation, title, desc, link, isin)
             if alert:
                 alert.setstate(state)
 
@@ -241,8 +243,8 @@ class Alerts(object):
 
         for eachAlert in self.listAlerts():
             ref = eachAlert.reference()
-            self.saveFile(ref,'lnk',eachAlert.link())
-            self.saveFile(ref,'txt',eachAlert.desc())
+            self.saveFile(ref, 'lnk', eachAlert.link())
+            self.saveFile(ref, 'txt', eachAlert.desc())
 
         self.m_dirty = False
 

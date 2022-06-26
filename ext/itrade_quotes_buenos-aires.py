@@ -60,9 +60,8 @@ from itrade_connection import ITradeConnection
 def Import_ListOfQuotes_BUE(quotes, market='BUENOS AIRES EXCHANGE', dlg=None, x=0):
     if itrade_config.verbose:
         print(u'Update {} list of symbols'.format(market))
-    connection=ITradeConnection(cookies=None,
-                                proxy=itrade_config.proxyHostname,
-                                proxyAuth=itrade_config.proxyAuthentication)
+    connection = ITradeConnection(proxy=itrade_config.proxyHostname,
+                                  proxyAuth=itrade_config.proxyAuthentication)
 
     if market == 'BUENOS AIRES EXCHANGE':
         url = 'https://www.bolsar.com/NET/Research/Especies/Acciones.aspx'
@@ -142,7 +141,7 @@ if __name__ == '__main__':
 
     from itrade_quotes import quotes
 
-    Import_ListOfQuotes_BUE(quotes, 'BUENOS AIRES EXCHANGE')
+    Import_ListOfQuotes_BUE(quotes)
     quotes.saveListOfQuotes()
 
 # ============================================================================

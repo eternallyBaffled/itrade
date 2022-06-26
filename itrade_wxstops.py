@@ -208,7 +208,7 @@ def addOrEditStops_iTradeQuote(win, quote, market=None, bAdd=True):
     if not quote:
         print('addOrEditStops_iTradeQuote() : need to select a quote')
         # select one quote from the matrix list
-        quote = select_iTradeQuote(win, quote, filter=True, market=market, filterEnabled=True)
+        quote = select_iTradeQuote(win, quote, filter=True, market=market)
         # cancel -> exit
         if not quote:
             return False
@@ -250,7 +250,7 @@ def removeStops_iTradeQuote(win, quote):
 
 def main():
     setLevel(logging.INFO)
-    app = wx.App(False)
+    app = wx.App()
 #    from itrade_local import setLang, gMessage
 #    setLang('us')
 #    gMessage.load()

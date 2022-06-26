@@ -743,7 +743,7 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
     # --- [ menu ] -------------------------------------
 
     def OnOpen(self, e):
-        dp = select_iTradePortfolio(self, self.m_portfolio, 'select')
+        dp = select_iTradePortfolio(self, self.m_portfolio)
         if dp and dp != self.m_portfolio:
             # can be long ...
             wx.SetCursor(wx.HOURGLASS_CURSOR)
@@ -773,7 +773,7 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
         self.OnPostInit(None)
 
     def OnNew(self, e):
-        dp = properties_iTradePortfolio(self, None, 'create')
+        dp = properties_iTradePortfolio(self, None)
         if dp:
             self.NewContext(dp)
             self.Save()
@@ -973,12 +973,12 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
         open_iTradeCurrencies(self)
 
     def OnGraphQuote(self, e):
-        if self.currentItem()>=0:
+        if self.currentItem() >= 0:
             debug("OnGraphQuote: {}".format(self.currentItemText()))
-            self.openCurrentQuote(page=0)
+            self.openCurrentQuote()
 
     def OnLiveQuote(self, e):
-        if self.currentItem()>=0:
+        if self.currentItem() >= 0:
             debug("OnLiveQuote: {}".format(self.currentItemText()))
             self.openCurrentQuote(page=1)
 
@@ -1205,7 +1205,7 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
             self.RebuildList()
 
     def OnAddQuote(self, e):
-        self.AddAndRefresh(None)
+        self.AddAndRefresh()
 
     def OnRemoveCurrentQuote(self, e):
         quote = self.currentQuote()
@@ -1220,7 +1220,7 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
     # ---[ Stops ] -----------------------------------------
 
     def OnAddStops(self, e):
-        quote = addOrEditStops_iTradeQuote(self, quote=None, market=self.m_portfolio.market(), bAdd=True)
+        quote = addOrEditStops_iTradeQuote(self, quote=None, market=self.m_portfolio.market())
         if quote:
             self.AddAndRefresh(quote)
 

@@ -231,7 +231,7 @@ class iTradeCurrenciesWindow(wx.Frame, iTrade_wxFrame, iTrade_wxLiveCurrencyMixi
         event.Skip(False)
 
     def OnCloseWindow(self, evt):
-        self.stopLiveCurrency(bBusy=False)
+        self.stopLiveCurrency()
         self.unregisterLiveCurrency()
         self.saveConfig()
         currencies.save()
@@ -312,7 +312,7 @@ class iTradeCurrenciesWindow(wx.Frame, iTrade_wxFrame, iTrade_wxLiveCurrencyMixi
     def populate(self, bDuringInit):
         info('populate duringinit={:d}'.format(bDuringInit))
         # clear current population
-        self.stopLiveCurrency(bBusy=False)
+        self.stopLiveCurrency()
         self.unregisterLiveCurrency()
 
         clist = list_of_currencies()
@@ -343,7 +343,7 @@ def main():
 #    from itrade_local import setLang, gMessage
 #    setLang('us')
 #    gMessage.load()
-    app = wx.App(False)
+    app = wx.App()
     open_iTradeCurrencies(None)
     app.MainLoop()
 

@@ -338,7 +338,7 @@ def main():
     from itrade_portfolio import initPortfolioModule, loadPortfolio
     initPortfolioModule()
     port = loadPortfolio('default')
-    app = wx.App(False)
+    app = wx.App()
     frame = WndTest(None, quote, port)
     if frame:
         frame.Show(show=True)

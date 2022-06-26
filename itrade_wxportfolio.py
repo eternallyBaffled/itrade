@@ -264,9 +264,9 @@ def select_iTradePortfolio(win, dportfolio=None, operation='select'):
             dportfolio = portfolios.portfolio(dportfolio)
     if operation == 'delete':
         # do not delete current selected !
-        dlg = iTradePortfolioSelectorListCtrlDialog(win, None, operation, dportfolio.filename())
+        dlg = iTradePortfolioSelectorListCtrlDialog(parent=win, portfolio=None, operation=operation, except_portfolio=dportfolio.filename())
     else:
-        dlg = iTradePortfolioSelectorListCtrlDialog(win, dportfolio, operation, None)
+        dlg = iTradePortfolioSelectorListCtrlDialog(parent=win, portfolio=dportfolio, operation=operation)
     if dlg.ShowModal() == wx.ID_OK:
         if dlg.portfolio == dportfolio:
             info(u'select_iTradePortfolio() : {} is already the current portfolio'.format(dlg.portfolio))
@@ -578,14 +578,14 @@ def properties_iTradePortfolio(win, portfolio, operation='create'):
 
 def main():
     setLevel(logging.INFO)
-    app = wx.App(False)
+    app = wx.App()
     initPortfolioModule()
     from itrade_local import gMessage
     gMessage.setLang('us')
     gMessage.load()
     provider = wx.SimpleHelpProvider()
     wx.HelpProvider_Set(provider)
-    port = select_iTradePortfolio(None, 'default', 'select')
+    port = select_iTradePortfolio(win=None, dportfolio='default')
     if port:
         port = loadPortfolio(port.filename())
         properties_iTradePortfolio(None, port, 'edit')

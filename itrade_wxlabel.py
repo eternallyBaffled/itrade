@@ -81,7 +81,7 @@ class iTrade_wxLabelPopup(object):
                 debug('idx={:d} line={} color={}'.format(idx, eachLine[idx+1:], eachLine[:idx]))
                 nlines.append((eachLine[idx+1:], matplot_color_to_wxcolor(eachLine[:idx])))
             else:
-                nlines.append((eachLine, matplot_color_to_wxcolor('k')))
+                nlines.append((eachLine, matplot_color_to_wxcolor()))
 
         # calculate space to display the string
         tx = 0
@@ -215,7 +215,7 @@ def DrawRectLabel(dc, label, x, y, w, h, colorpen, colorbg, font, vert='top', ho
 
 def main():
     setLevel(logging.INFO)
-    app = wx.App(False)
+    app = wx.App()
     app.MainLoop()
 
 

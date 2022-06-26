@@ -406,7 +406,7 @@ class HTMLDialog(wx.Dialog):
 
         # always one button : OK
         if buttons is None:
-            buttons = OKButton(makedefault=1)
+            buttons = OKButton()
 
         # dialog name with format
         name = namefmt.format(name)
@@ -668,7 +668,7 @@ def iTradeYesNo(parent, text, caption, bCanCancel=False, bYesDefault=True):
 
 def main():
     setLevel(logging.INFO)
-    app = wx.App(False)
+    app = wx.App()
     iRet = iTradeYesNo(None, "message without cancel and default to Yes", "caption")
     if iRet == wx.ID_YES:
         iRet = iTradeYesNo(None, "message with cancel and default to No", "caption", bCanCancel=True, bYesDefault=False)

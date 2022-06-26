@@ -418,11 +418,10 @@ def checkNewRelease(ping=False):
         return 'dev'
 
     from itrade_connection import ITradeConnection
-    connection = ITradeConnection(cookies = None,
-                               proxy = proxyHostname,
-                               proxyAuth = proxyAuthentication,
-                               connectionTimeout = 3
-                               )
+    connection = ITradeConnection(proxy=proxyHostname,
+                                  proxyAuth=proxyAuthentication,
+                                  connectionTimeout=3
+                                 )
 
     # get OFFICIAL file from svn
     try:

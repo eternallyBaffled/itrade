@@ -143,8 +143,8 @@ class iTradeQuoteSelectorListCtrlDialog(iTradeSizedDialog, wxl.ColumnSorterMixin
         wx.EVT_COMBOBOX(self, self.wxMarketCtrl.GetId(), self.OnMarket)
 
         idx = wx.NOT_FOUND
-        for count, eachCtrl in enumerate(list_of_markets(bFilterMode=False)):
-            self.wxMarketCtrl.Append(eachCtrl,eachCtrl)
+        for count, eachCtrl in enumerate(list_of_markets()):
+            self.wxMarketCtrl.Append(eachCtrl, eachCtrl)
             if eachCtrl == self.m_market:
                 idx = count
 
@@ -460,7 +460,7 @@ def select_iTradeQuote(win, dquote=None, filter=False, market=None, filterEnable
 
 def main():
     setLevel(logging.INFO)
-    app = wx.App(False)
+    app = wx.App()
     # load configuration
     import itrade_config
     itrade_config.load_config()
@@ -472,7 +472,7 @@ def main():
     itrade_ext.loadExtensions(file=itrade_config.fileExtData, folder=itrade_config.dirExtData)
     # init modules
     initQuotesModule()
-    q = select_iTradeQuote(win=None, dquote=None, filter=False, market='EURONEXT')
+    q = select_iTradeQuote(win=None, market='EURONEXT')
     if q:
         print(q.name())
 

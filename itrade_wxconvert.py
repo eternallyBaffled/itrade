@@ -180,7 +180,7 @@ def open_iTradeConverter(win, curSelected=(0, 1)):
 
 def main():
     setLevel(logging.INFO)
-    app = wx.App(False)
+    app = wx.App()
     # load configuration
     import itrade_config
     itrade_config.load_config()

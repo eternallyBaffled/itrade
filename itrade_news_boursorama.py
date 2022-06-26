@@ -81,10 +81,9 @@ class News_Boursorama(object):
         self.m_baseurl[3] = "https://www.boursorama.com/conseils/conseils_index_code.phtml?symbole=1rP%s"
         self.m_baselink = "https://www.boursorama.com/infos/imprimer_news.phtml?news=%s"
 
-        self.m_connection = ITradeConnection(cookies = None,
-                               proxy = itrade_config.proxyHostname,
-                               proxyAuth = itrade_config.proxyAuthentication,
-                               connectionTimeout = itrade_config.connectionTimeout
+        self.m_connection = ITradeConnection(proxy=itrade_config.proxyHostname,
+                               proxyAuth=itrade_config.proxyAuthentication,
+                               connectionTimeout=itrade_config.connectionTimeout
                                )
 
     # ---[ protected interface ] ---

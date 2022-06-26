@@ -63,10 +63,9 @@ from itrade_connection import ITradeConnection
 def Import_ListOfQuotes_MADRID(quotes, market='MADRID EXCHANGE', dlg=None, x=0):
     if itrade_config.verbose:
         print(u'Update {} list of symbols'.format(market))
-    connection = ITradeConnection(cookies=None,
-                               proxy=itrade_config.proxyHostname,
-                               proxyAuth=itrade_config.proxyAuthentication,
-                               connectionTimeout=itrade_config.connectionTimeout
+    connection = ITradeConnection(proxy=itrade_config.proxyHostname,
+                                  proxyAuth=itrade_config.proxyAuthentication,
+                                  connectionTimeout=itrade_config.connectionTimeout
                                )
 
     if market == 'MADRID EXCHANGE':
@@ -154,7 +153,7 @@ if __name__ == '__main__':
 
     from itrade_quotes import quotes
 
-    Import_ListOfQuotes_MADRID(quotes, 'MADRID EXCHANGE')
+    Import_ListOfQuotes_MADRID(quotes)
 
     quotes.saveListOfQuotes()
 

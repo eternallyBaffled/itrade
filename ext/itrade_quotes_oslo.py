@@ -70,9 +70,8 @@ def splitLines(buf):
 def Import_ListOfQuotes_OSLO(quotes, market='OSLO EXCHANGE', dlg=None, x=0):
     if itrade_config.verbose:
         print(u'Update {} list of symbols'.format(market))
-    connection = ITradeConnection(cookies=None,
-                                proxy=itrade_config.proxyHostname,
-                                proxyAuth=itrade_config.proxyAuthentication)
+    connection = ITradeConnection(proxy=itrade_config.proxyHostname,
+                                  proxyAuth=itrade_config.proxyAuthentication)
 
     if market == 'OSLO EXCHANGE':
         starturl = 'https://www.oslobors.no/markedsaktivitet/stockIsinList?newt_isinList-stock_exch=ose&newt_isinList-stock_sort=aLONG_NAME&newt_isinList-stock_page='
@@ -146,7 +145,7 @@ if __name__ == '__main__':
 
     from itrade_quotes import quotes
 
-    Import_ListOfQuotes_OSLO(quotes, 'OSLO EXCHANGE')
+    Import_ListOfQuotes_OSLO(quotes)
     quotes.saveListOfQuotes()
 
 # ============================================================================

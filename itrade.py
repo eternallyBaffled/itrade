@@ -121,7 +121,7 @@ def main():
     lang = gMessage.getAutoDetectedLang('us')
     for o, a in opts:
         if o == "-d":
-            itrade_config.setDisconnected(True)
+            itrade_config.setDisconnected()
 
         if o == "-v" or o == "--verbose":
             itrade_config.verbose = True

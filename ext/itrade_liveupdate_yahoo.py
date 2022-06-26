@@ -71,11 +71,10 @@ class LiveUpdate_yahoo(object):
         self.m_lastclock = 0
         self.m_lastdate = "20070101"
 
-        self.m_connection = ITradeConnection(cookies = None,
-                                           proxy = itrade_config.proxyHostname,
-                                           proxyAuth = itrade_config.proxyAuthentication,
-                                           connectionTimeout = itrade_config.connectionTimeout
-                                           )
+        self.m_connection = ITradeConnection(proxy=itrade_config.proxyHostname,
+                                             proxyAuth=itrade_config.proxyAuthentication,
+                                             connectionTimeout=itrade_config.connectionTimeout
+                                            )
 
     # ---[ reentrant ] ---
     def acquire(self):

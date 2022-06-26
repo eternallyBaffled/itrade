@@ -69,13 +69,12 @@ class Login_boursorama(object):
         self.m_login_url   = "https://www.boursorama.fr/logunique.phtml"
         self.m_logged = False
         self.m_cookies=ITradeCookies()
-        # Manualy set the cookie that tell boursorama we are a cookie aware browser
+        # Manually set the cookie that tell boursorama we are a cookie aware browser
         self.m_cookies.set("SUP_COOKIE=OUI")
-        self.m_connection = ITradeConnection(cookies = None,
-                                           proxy = itrade_config.proxyHostname,
-                                           proxyAuth = itrade_config.proxyAuthentication,
-                                           connectionTimeout = itrade_config.connectionTimeout
-                                           )
+        self.m_connection = ITradeConnection(proxy=itrade_config.proxyHostname,
+                                             proxyAuth=itrade_config.proxyAuthentication,
+                                             connectionTimeout=itrade_config.connectionTimeout
+                                            )
         debug(u'Boursorama login ({}) - ready to run'.format(self.m_default_host))
 
     # ---[ properties ] ---
@@ -156,7 +155,7 @@ if __name__ == '__main__':
     print('use usrdata/boursorama_userinfo.txt to get login/password')
     print(' format is one line with <login>,<password>')
     print()
-    gLoginBoursorama.login(None,None)
+    gLoginBoursorama.login()
     gLoginBoursorama.logout()
 
 # ============================================================================

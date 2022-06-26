@@ -294,7 +294,7 @@ class Quote(object):
         elif box is QuoteType.credit:
             return self.m_SRD_pru
         else:
-            n = self.nv_number(QuoteType.both)
+            n = self.nv_number()
             if n > 0:
                 return (self.nv_pr(QuoteType.cash) + self.nv_pr(QuoteType.credit)) / n
             return 0.0
@@ -1249,7 +1249,7 @@ class Quote(object):
         print('Cours = {:f}'.format(self.nv_close()))
         print('Nbre DIR/SRD/total = {:d}/{:d}/{:d}'.format(self.nv_number(QuoteType.cash),
                                                            self.nv_number(QuoteType.credit),
-                                                           self.nv_number(QuoteType.both)))
+                                                           self.nv_number()))
         print('Gain DIR = {:f}'.format((self.nv_close()-self.m_DIR_pru)*self.nv_number(QuoteType.cash)))
         print('Gain SRD = {:f}'.format((self.nv_close()-self.m_SRD_pru)*self.nv_number(QuoteType.credit)))
         print('Candle = {}'.format(self.ov_candle()))

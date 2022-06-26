@@ -72,9 +72,8 @@ def splitLines(buf):
 def Import_ListOfQuotes_TKS(quotes, market='TOKYO EXCHANGE', dlg=None, x=0):
     if itrade_config.verbose:
         print(u'Update {} list of symbols'.format(market))
-    connection = ITradeConnection(cookies=None,
-                                proxy=itrade_config.proxyHostname,
-                                proxyAuth=itrade_config.proxyAuthentication)
+    connection = ITradeConnection(proxy=itrade_config.proxyHostname,
+                                  proxyAuth=itrade_config.proxyAuthentication)
     if market == 'TOKYO EXCHANGE':
         url = "https://www.tse.or.jp/english/index.html"
     else:
@@ -154,7 +153,7 @@ if __name__ == '__main__':
 
     from itrade_quotes import quotes
 
-    Import_ListOfQuotes_TKS(quotes, 'TOKYO EXCHANGE')
+    Import_ListOfQuotes_TKS(quotes)
     quotes.saveListOfQuotes()
 
 # ============================================================================

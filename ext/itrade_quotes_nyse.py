@@ -57,11 +57,10 @@ from itrade_connection import ITradeConnection
 def Import_ListOfQuotes_NASDAQ(quotes, market='NASDAQ', dlg=None, x=0):
     if itrade_config.verbose:
         print(u'Update {} list of symbols'.format(market))
-    connection = ITradeConnection(cookies=None,
-                               proxy=itrade_config.proxyHostname,
-                               proxyAuth=itrade_config.proxyAuthentication,
-                               connectionTimeout=itrade_config.connectionTimeout
-                               )
+    connection = ITradeConnection(proxy=itrade_config.proxyHostname,
+                                  proxyAuth=itrade_config.proxyAuthentication,
+                                  connectionTimeout=itrade_config.connectionTimeout
+                                 )
     if market == 'NYSE':
         url = 'https://www.nasdaq.com/screening/companies-by-industry.aspx?letter=0&exchange=nyse&render=download'
     elif market == 'NASDAQ':
@@ -115,9 +114,9 @@ if __name__ == '__main__':
 
     from itrade_quotes import quotes
 
-    Import_ListOfQuotes_NASDAQ(quotes,'NASDAQ')
-    Import_ListOfQuotes_NASDAQ(quotes,'NYSE')
-    Import_ListOfQuotes_NASDAQ(quotes,'AMEX')
+    Import_ListOfQuotes_NASDAQ(quotes)
+    Import_ListOfQuotes_NASDAQ(quotes, 'NYSE')
+    Import_ListOfQuotes_NASDAQ(quotes, 'AMEX')
     quotes.saveListOfQuotes()
 
 # ============================================================================

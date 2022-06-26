@@ -201,7 +201,7 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
         # event.Skip(False)
 
     def OnCloseWindow(self, evt):
-        self.stopLive(bBusy=False)
+        self.stopLive()
         self.SaveSortColumn()
 
     # --- [ wxl.ColumnSorterMixin management ] -------------------------------------
@@ -343,7 +343,7 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
 
     def OnPopup_View(self, event):
         debug("OnPopup_View")
-        self.openCurrentQuote(page=0)
+        self.openCurrentQuote()
 
     def OnPopup_Live(self, event):
         debug("OnPopup_Live")
@@ -370,11 +370,11 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
 
     # ---[ Populate view ] -----------------------------------------
 
-    def populate(self,bDuringInit):
-        #debug('populate duringinit=%d' % bDuringInit)
+    def populate(self, bDuringInit):
+        # debug('populate duringinit={:d}'.format(bDuringInit))
 
         # clear current population
-        self.stopLive(bBusy=False)
+        self.stopLive()
         self.unregisterLive()
         self.m_list.ClearAll()
 
@@ -493,7 +493,7 @@ class iTrade_MatrixPanel(wx.Panel,wxl.ColumnSorterMixin,iTrade_wxLiveMixin):
     def DoneCurrentPage(self):
         # be sure to stop the live (if any)
         self.m_list.Show(show=False)
-        self.stopLive(bBusy=False)
+        self.stopLive()
 
     # --- [ refresh lists ] -------------------------------------
 

@@ -142,7 +142,7 @@ class GToolHLine(GTool):
             label = parent.GetYLabel(axe, obj[3])
             textExtent = self.m_parent.GetFullTextExtent(label, font)
 
-            DrawRectLabel(dc, label, rect[0], y, textExtent[0], textExtent[1], lc, bg, font, vert='top', horz='right')
+            DrawRectLabel(dc=dc, label=label, x=rect[0], y=y, w=textExtent[0], h=textExtent[1], colorpen=lc, colorbg=bg, font=font, horz='right')
 
 
 class GToolUPL(GTool):
@@ -176,7 +176,7 @@ class GToolUPL(GTool):
             label = parent.GetYLabel(axe, obj[3])
             textExtent = self.m_parent.GetFullTextExtent(label, font)
 
-            DrawRectLabel(dc, label, rect[0], y, textExtent[0], textExtent[1], lc, bg, font, vert='top', horz='right')
+            DrawRectLabel(dc=dc, label=label, x=rect[0], y=y, w=textExtent[0], h=textExtent[1], colorpen=lc, colorbg=bg, font=font, horz='right')
 
 
 class GToolVLine(GTool):
@@ -228,7 +228,7 @@ class GToolVLine(GTool):
             label = parent.GetXLabel(time)
             textExtent = self.m_parent.GetFullTextExtent(label,font)
 
-            DrawRectLabel(dc,label,x,rect[3], textExtent[0], textExtent[1],lc,bg,font,vert='bottom',horz='center')
+            DrawRectLabel(dc=dc, label=label, x=x, y=rect[3], w=textExtent[0], h=textExtent[1], colorpen=lc, colorbg=bg, font=font, vert='bottom')
 
 
 class GToolOLine(GTool):
@@ -386,14 +386,14 @@ class iTrade_wxToolbarGraph(wx.ToolBar):
         setup_tool = self.AddSimpleTool(wx.ID_ANY, wx.Bitmap(os.path.join(itrade_config.dirRes, 'printsetup.png')), message('tb_setup'), message('tb_setup'))
         print_tool = self.AddSimpleTool(wx.ID_ANY, wx.Bitmap(os.path.join(itrade_config.dirRes, 'print.png')), message('tb_print'), message('tb_print'))
         preview_tool = self.AddSimpleTool(wx.ID_ANY, wx.Bitmap(os.path.join(itrade_config.dirRes, 'printpreview.png')), message('tb_preview'), message('tb_preview'))
-        self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
+        self.AddControl(wx.StaticLine(parent=self, id=wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
 
-        ind_tool = self.AddRadioLabelTool(wx.ID_ANY, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'toolind.png')), wx.NullBitmap, message('tb_tool_ind'), message('tb_tool_ind'))
-        hline_tool = self.AddRadioLabelTool(wx.ID_ANY, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'toolhline.png')), wx.NullBitmap, message('tb_tool_hline'), message('tb_tool_hline'))
-        vline_tool = self.AddRadioLabelTool(wx.ID_ANY, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'toolvline.png')), wx.NullBitmap, message('tb_tool_vline'), message('tb_tool_vline'))
-        oline_tool = self.AddRadioLabelTool(wx.ID_ANY, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'toololine.png')), wx.NullBitmap, message('tb_tool_oline'), message('tb_tool_oline'))
-        fibo_tool = self.AddRadioLabelTool(wx.ID_ANY, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'toolfibo.png')), wx.NullBitmap, message('tb_tool_fibo'), message('tb_tool_fibo'))
-        trash_tool = self.AddRadioLabelTool(wx.ID_ANY, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'tooltrash.png')), wx.NullBitmap, message('tb_tool_trash'), message('tb_tool_trash'))
+        ind_tool = self.AddRadioLabelTool(id=wx.ID_ANY, label='', bitmap=wx.Bitmap(os.path.join(itrade_config.dirRes, 'toolind.png')), shortHelp=message('tb_tool_ind'), longHelp=message('tb_tool_ind'))
+        hline_tool = self.AddRadioLabelTool(id=wx.ID_ANY, label='', bitmap=wx.Bitmap(os.path.join(itrade_config.dirRes, 'toolhline.png')), shortHelp=message('tb_tool_hline'), longHelp=message('tb_tool_hline'))
+        vline_tool = self.AddRadioLabelTool(id=wx.ID_ANY, label='', bitmap=wx.Bitmap(os.path.join(itrade_config.dirRes, 'toolvline.png')), shortHelp=message('tb_tool_vline'), longHelp=message('tb_tool_vline'))
+        oline_tool = self.AddRadioLabelTool(id=wx.ID_ANY, label='', bitmap=wx.Bitmap(os.path.join(itrade_config.dirRes, 'toololine.png')), shortHelp=message('tb_tool_oline'), longHelp=message('tb_tool_oline'))
+        fibo_tool = self.AddRadioLabelTool(id=wx.ID_ANY, label='', bitmap=wx.Bitmap(os.path.join(itrade_config.dirRes, 'toolfibo.png')), shortHelp=message('tb_tool_fibo'), longHelp=message('tb_tool_fibo'))
+        trash_tool = self.AddRadioLabelTool(id=wx.ID_ANY, label='', bitmap=wx.Bitmap(os.path.join(itrade_config.dirRes, 'tooltrash.png')), shortHelp=message('tb_tool_trash'), longHelp=message('tb_tool_trash'))
 
         self._NTB2_HOME = home_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_HOME, self.home)

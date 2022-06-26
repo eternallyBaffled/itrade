@@ -71,11 +71,10 @@ def splitLines(buf):
 def Import_ListOfQuotes_MIL(quotes, market='MILAN EXCHANGE', dlg=None, x=0):
     if itrade_config.verbose:
         print(u'Update {} list of symbols'.format(market))
-    connection = ITradeConnection(cookies=None,
-                               proxy=itrade_config.proxyHostname,
-                               proxyAuth=itrade_config.proxyAuthentication,
-                               connectionTimeout=itrade_config.connectionTimeout
-                               )
+    connection = ITradeConnection(proxy=itrade_config.proxyHostname,
+                                  proxyAuth=itrade_config.proxyAuthentication,
+                                  connectionTimeout=itrade_config.connectionTimeout
+                                 )
 
     if market == 'MILAN EXCHANGE':
         url = u"https://www.borsaitaliana.it/bitApp/listino?main_list=1&sub_list=1&service=Results&search=nome&lang=it&target=null&nome="
@@ -144,7 +143,7 @@ if __name__ == '__main__':
     setLevel(logging.INFO)
 
     from itrade_quotes import quotes
-    Import_ListOfQuotes_MIL(quotes, 'MILAN EXCHANGE')
+    Import_ListOfQuotes_MIL(quotes)
     quotes.saveListOfQuotes()
 
 # ============================================================================

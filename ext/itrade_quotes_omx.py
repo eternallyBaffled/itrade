@@ -72,9 +72,8 @@ def splitLines(buf):
 def Import_ListOfQuotes_OMX(quotes, market='STOCKHOLM EXCHANGE', dlg=None, x=0):
     if itrade_config.verbose:
         print(u'Update {} list of symbols'.format(market))
-    connection=ITradeConnection(cookies=None,
-                                proxy=itrade_config.proxyHostname,
-                                proxyAuth=itrade_config.proxyAuthentication)
+    connection = ITradeConnection(proxy=itrade_config.proxyHostname,
+                                  proxyAuth=itrade_config.proxyAuthentication)
 
     import xlrd
 

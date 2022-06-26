@@ -64,11 +64,10 @@ class Import_euronext(object):
         debug('Import_euronext:__init__')
         self.m_url = 'https://europeanequities.nyx.com/nyx_eu_listings/price_chart/download_historical'
 
-        self.m_connection = ITradeConnection(cookies = None,
-                                           proxy = itrade_config.proxyHostname,
-                                           proxyAuth = itrade_config.proxyAuthentication,
-                                           connectionTimeout = itrade_config.connectionTimeout
-                                           )
+        self.m_connection = ITradeConnection(proxy=itrade_config.proxyHostname,
+                                             proxyAuth=itrade_config.proxyAuthentication,
+                                             connectionTimeout=itrade_config.connectionTimeout
+                                            )
 
     def name(self):
         return 'euronext'

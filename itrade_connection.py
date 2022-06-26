@@ -155,10 +155,10 @@ class ITradeConnection(object):
                     data = urlencode(data)
                     next_header.update({'Content-Length': len(data),
                                         'Content-type': 'application/x-www-form-urlencoded'})
-                    connection.request("POST", page, data, next_header)
+                    connection.request(method="POST", url=page, body=data, headers=next_header)
                 else:
                     # print("GET", request, next_header)
-                    connection.request("GET", request, None, next_header)
+                    connection.request(method="GET", url=request, body=None, headers=next_header)
 
                 self.response = connection.getresponse()
 

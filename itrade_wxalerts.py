@@ -245,12 +245,12 @@ def open_iTradeAlerts(win, port=None):
 def main():
     setLevel(logging.INFO)
     alerts.load()
-    app = wx.App(False)
+    app = wx.App()
     from itrade_local import gMessage
     gMessage.setLang('us')
     gMessage.load()
     import itrade_wxportfolio
-    port = itrade_wxportfolio.select_iTradePortfolio(win=None, dportfolio='default', operation='select')
+    port = itrade_wxportfolio.select_iTradePortfolio(win=None, dportfolio='default')
     if port:
         port = loadPortfolio(port.filename())
         open_iTradeAlerts(win=None, port=port)

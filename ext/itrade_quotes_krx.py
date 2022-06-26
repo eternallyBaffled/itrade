@@ -74,11 +74,10 @@ def splitLines(buf):
 def Import_ListOfQuotes_KRX(quotes, market='KOREA STOCK EXCHANGE', dlg=None, x=0):
     if itrade_config.verbose:
         print(u'Update {} list of symbols'.format(market))
-    connection = ITradeConnection(cookies=None,
-                               proxy=itrade_config.proxyHostname,
-                               proxyAuth=itrade_config.proxyAuthentication,
-                               connectionTimeout=itrade_config.connectionTimeout
-                               )
+    connection = ITradeConnection(proxy=itrade_config.proxyHostname,
+                                  proxyAuth=itrade_config.proxyAuthentication,
+                                  connectionTimeout=itrade_config.connectionTimeout
+                                 )
 
     if market == 'KOREA STOCK EXCHANGE':
         params = "isu_cd=&gbn=1&market_gubun=1&isu_nm=&sort=&std_ind_cd=&std_ind_cd1=&par_pr=&cpta_scl=&sttl_trm=&lst_stk_vl=1&in_lst_stk_vl=&in_lst_stk_vl2=&cpt=1&in_cpt=&in_cpt2=&nat_tot_amt=1&in_nat_tot_amt=&in_nat_tot_amt2="
@@ -194,7 +193,7 @@ if __name__ == '__main__':
 
     from itrade_quotes import quotes
 
-    Import_ListOfQuotes_KRX(quotes, 'KOREA STOCK EXCHANGE')
+    Import_ListOfQuotes_KRX(quotes)
     Import_ListOfQuotes_KRX(quotes, 'KOREA KOSDAQ EXCHANGE')
     quotes.saveListOfQuotes()
 

@@ -69,8 +69,7 @@ def splitLines(buf):
 def Import_ListOfQuotes_BSE(quotes, market='BOMBAY EXCHANGE', dlg=None, x=0):
     if itrade_config.verbose:
         print(u'Update {} list of symbols'.format(market))
-    connection=ITradeConnection(cookies=None,
-                                proxy=itrade_config.proxyHostname,
+    connection=ITradeConnection(proxy=itrade_config.proxyHostname,
                                 proxyAuth=itrade_config.proxyAuthentication)
 
     if market == 'BOMBAY EXCHANGE':
@@ -137,7 +136,7 @@ if __name__ == '__main__':
 
     from itrade_quotes import quotes
 
-    Import_ListOfQuotes_BSE(quotes, 'BOMBAY EXCHANGE')
+    Import_ListOfQuotes_BSE(quotes)
     quotes.saveListOfQuotes()
 
 # ============================================================================

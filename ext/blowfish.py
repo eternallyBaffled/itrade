@@ -169,10 +169,7 @@ def encrypt(filename,key=5333772633003566340333184962382):
     encfilesize = os.stat(filename)[6]
     print("File size: %s bytes" % encfilesize)
 
-    with open(filename,'rb') as plnfileobj,
-         open(encfile,'wb') as encfileobj,
-         open(keyfile,'w') as keyfileobj:
-
+    with open(filename,'rb') as plnfileobj, open(encfile,'wb') as encfileobj, open(keyfile,'w') as keyfileobj:
         initialize(key)
 
         instring = plnfileobj.read()
@@ -203,10 +200,7 @@ def decrypt(filename):
     plnfile  = filename[:filename.rfind(".")]+".dcp"
     keyfile  = filename[:filename.rfind(".")]+".key"
 
-    with open(filename,'rb') as encfileobj,
-         open(plnfile,'wb') as plnfileobj,
-         open(keyfile,'r') as keyfileobj:
-
+    with open(filename,'rb') as encfileobj, open(plnfile,'wb') as plnfileobj, open(keyfile,'r') as keyfileobj:
         encfilesize = os.stat(filename)[6]
         print("File size: %s bytes" % encfilesize)
         print("Reading from " + filename)
@@ -245,13 +239,13 @@ def mkchunk(chrs):
     """
     return eval('0x'+hexlify(chrs)+"L")
 
-def mkbytes(input):
+def mkbytes(input_):
     """
     Accept a long integer and return a corresponding
     string of characters (bytes), left-padding to 8 bytes
     """
     outstr=""
-    instr = (('0'*16)+hex(input)[2:-1])[-16:]
+    instr = (('0'*16)+hex(input_)[2:-1])[-16:]
     return unhexlify(instr)
 
 """

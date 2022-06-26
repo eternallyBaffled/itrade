@@ -81,11 +81,10 @@ class LiveUpdate_Euronext(object):
 
         self.m_url = 'https://europeanequities.nyx.com/fr/nyx_eu_listings/real-time/quote?'
 
-        self.m_connection = ITradeConnection(cookies = None,
-                                           proxy = itrade_config.proxyHostname,
-                                           proxyAuth = itrade_config.proxyAuthentication,
-                                           connectionTimeout = itrade_config.connectionTimeout
-                                           )
+        self.m_connection = ITradeConnection(proxy=itrade_config.proxyHostname,
+                                             proxyAuth=itrade_config.proxyAuthentication,
+                                             connectionTimeout=itrade_config.connectionTimeout
+                                            )
 
 
     # ---[ reentrant ] ---

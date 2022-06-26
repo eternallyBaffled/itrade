@@ -445,7 +445,7 @@ class Trades(object):
             return False
 
         # create candle
-        ca = Candle(tr.nv_open(), tr.nv_high(), tr.nv_low(), tr.nv_close(), CANDLE_VOLUME_AVERAGE, CANDLE_VOLUME_TREND_NOTREND)
+        ca = Candle(tr.nv_open(), tr.nv_high(), tr.nv_low(), tr.nv_close())
         self.m_candles[tr.date()] = ca
 
         # get index given date

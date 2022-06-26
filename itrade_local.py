@@ -254,7 +254,7 @@ class LocalMessages(object):
     def getMsg(self, ref):
         if not self.m_lang:
             # package not initialized :-(
-            lang = gMessage.getAutoDetectedLang('us')
+            lang = gMessage.getAutoDetectedLang()
             # print('getMsg: need to setLang :',lang," during ref:",ref)
             gMessage.setLang(lang)
         if len(self.m_msg) == 0:

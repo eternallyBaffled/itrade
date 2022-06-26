@@ -69,9 +69,8 @@ def splitLines(buf):
 def Import_ListOfQuotes_SHE(quotes, market='SHENZHEN EXCHANGE', dlg=None, x=0):
     if itrade_config.verbose:
         print(u'Update {} list of symbols'.format(market))
-    connection = ITradeConnection(cookies=None,
-                                proxy=itrade_config.proxyHostname,
-                                proxyAuth=itrade_config.proxyAuthentication)
+    connection = ITradeConnection(proxy=itrade_config.proxyHostname,
+                                  proxyAuth=itrade_config.proxyAuthentication)
 
     if market == 'SHENZHEN EXCHANGE':
         url = 'https://www.szse.cn/szseWeb/FrontController.szse?ACTIONID=8&CATALOGID=1693&TABKEY=tab1&ENCODE=1'

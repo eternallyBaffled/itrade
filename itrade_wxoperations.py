@@ -495,13 +495,13 @@ class iTradeOperationToolbar(wx.ToolBar):
                            shortHelpString=message('main_close'), longHelpString=message('main_desc_close'))
         self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1, 23), style=wx.LI_VERTICAL))
 
-        dispall_tool = self.AddRadioLabelTool(wx.ID_ANY, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispall.png')), wx.NullBitmap, message('portfolio_dispall'), message('portfolio_desc_dispall'))
-        quotes_tool = self.AddRadioLabelTool(wx.ID_ANY, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispquote.png')), wx.NullBitmap, message('portfolio_dispquotes'), message('portfolio_desc_dispquotes'))
-        cash_tool = self.AddRadioLabelTool(wx.ID_ANY, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispcash.png')), wx.NullBitmap, message('portfolio_dispcash'), message('portfolio_desc_dispcash'))
-        srd_tool = self.AddRadioLabelTool(wx.ID_ANY, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispsrd.png')), wx.NullBitmap, message('portfolio_dispsrd'), message('portfolio_desc_dispsrd'))
-        pval_tool = self.AddRadioLabelTool(wx.ID_ANY, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispvalue.png')), wx.NullBitmap, message('portfolio_dispvalues'), message('portfolio_desc_dispvalues'))
+        dispall_tool = self.AddRadioLabelTool(id=wx.ID_ANY, label='', bitmap=wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispall.png')), shortHelp=message('portfolio_dispall'), longHelp=message('portfolio_desc_dispall'))
+        quotes_tool = self.AddRadioLabelTool(id=wx.ID_ANY, label='', bitmap=wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispquote.png')), shortHelp=message('portfolio_dispquotes'), longHelp=message('portfolio_desc_dispquotes'))
+        cash_tool = self.AddRadioLabelTool(id=wx.ID_ANY, label='', bitmap=wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispcash.png')), shortHelp=message('portfolio_dispcash'), longHelp=message('portfolio_desc_dispcash'))
+        srd_tool = self.AddRadioLabelTool(id=wx.ID_ANY, label='', bitmap=wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispsrd.png')), shortHelp=message('portfolio_dispsrd'), longHelp=message('portfolio_desc_dispsrd'))
+        pval_tool = self.AddRadioLabelTool(id=wx.ID_ANY, label='', bitmap=wx.Bitmap(os.path.join(itrade_config.dirRes, 'dispvalue.png')), shortHelp=message('portfolio_dispvalues'), longHelp=message('portfolio_desc_dispvalues'))
 
-        self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
+        self.AddControl(wx.StaticLine(parent=self, id=wx.ID_ANY, size=(-1,23), style=wx.LI_VERTICAL))
 
         add_tool = self.AddSimpleTool(wx.ID_ANY, wx.Bitmap(os.path.join(itrade_config.dirRes, 'add.png')), message('portfolio_opadd'), message('portfolio_desc_opadd'))
         modify_tool = self.AddSimpleTool(wx.ID_ANY, wx.Bitmap(os.path.join(itrade_config.dirRes, 'modify.png')), message('portfolio_opmodify'), message('portfolio_desc_opmodify'))
@@ -509,10 +509,10 @@ class iTradeOperationToolbar(wx.ToolBar):
 
         self.AddControl(wx.StaticLine(self, wx.ID_ANY, size=(-1, 23), style=wx.LI_VERTICAL))
 
-        d30_tool = self.AddRadioLabelTool(wx.ID_ANY, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'filter30.png')), wx.NullBitmap, message('portfolio_per30days'), message('portfolio_desc_per30days'))
-        d90_tool = self.AddRadioLabelTool(wx.ID_ANY, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'filter90.png')), wx.NullBitmap, message('portfolio_per90days'), message('portfolio_desc_per90days'))
-        year_tool = self.AddRadioLabelTool(wx.ID_ANY, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'filter.png')), wx.NullBitmap, message('portfolio_peryear'), message('portfolio_desc_peryear'))
-        all_tool = self.AddRadioLabelTool(wx.ID_ANY, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'nofilter.png')), wx.NullBitmap, message('portfolio_perall'), message('portfolio_desc_perall'))
+        d30_tool = self.AddRadioLabelTool(wx.ID_ANY, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'filter30.png')), shortHelp=message('portfolio_per30days'), longHelp=message('portfolio_desc_per30days'))
+        d90_tool = self.AddRadioLabelTool(wx.ID_ANY, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'filter90.png')), shortHelp=message('portfolio_per90days'), longHelp=message('portfolio_desc_per90days'))
+        year_tool = self.AddRadioLabelTool(wx.ID_ANY, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'filter.png')),  shortHelp=message('portfolio_peryear'), longHelp=message('portfolio_desc_peryear'))
+        all_tool = self.AddRadioLabelTool(wx.ID_ANY, '', wx.Bitmap(os.path.join(itrade_config.dirRes, 'nofilter.png')), shortHelp=message('portfolio_perall'), longHelp=message('portfolio_desc_perall'))
 
         self._NTB2_EXIT = exit_tool.GetId()
         wx.EVT_TOOL(self, self._NTB2_EXIT, self.onExit)
@@ -1213,7 +1213,7 @@ def add_iTradeOperation(win, portfolio, quote, type):
         key = quote.key()
     else:
         key = None
-    op = create_operation(operation_type=type, d=datetime.now(), m=key, v='0.0', e='0.0', n='0', vat=portfolio.vat(), ref=-1)
+    op = create_operation(operation_type=type, d=datetime.now(), m=key, value='0.0', expenses='0.0', number='0', vat=portfolio.vat(), ref=-1)
     aRet = edit_iTradeOperation(win=win, op=op, opmode=OPERATION_ADD, market=portfolio.market(), currency=portfolio.currency())
     if aRet:
         info(u'add_iTradeOperation: date={} type={} name={} value={:12.2f} expenses={:12.2f} number={:d} ref={:d}'.format(str(aRet[0]), aRet[1], aRet[2], aRet[3], aRet[4], aRet[5], aRet[6]))
@@ -1228,7 +1228,7 @@ def add_iTradeOperation(win, portfolio, quote, type):
 
 def main():
     setLevel(logging.INFO)
-    app = wx.App(False)
+    app = wx.App()
     # load configuration
     itrade_config.load_config()
     from itrade_local import gMessage
@@ -1241,10 +1241,10 @@ def main():
     initQuotesModule()
     initPortfolioModule()
     import itrade_wxportfolio
-    port = itrade_wxportfolio.select_iTradePortfolio(None, 'default', 'select')
+    port = itrade_wxportfolio.select_iTradePortfolio(win=None, dportfolio='default')
     if port:
         port = loadPortfolio(port.filename())
-        open_iTradeOperations(None, port)
+        open_iTradeOperations(win=None, port=port)
         app.MainLoop()
 
 

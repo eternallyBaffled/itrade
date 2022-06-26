@@ -73,9 +73,8 @@ def splitLines(buf):
 def Import_ListOfQuotes_SAO(quotes, market='SAO PAULO EXCHANGE', dlg=None, x=0):
     if itrade_config.verbose:
         print(u'Update {} list of symbols'.format(market))
-    connection = ITradeConnection(cookies=None,
-                                proxy=itrade_config.proxyHostname,
-                                proxyAuth=itrade_config.proxyAuthentication)
+    connection = ITradeConnection(proxy=itrade_config.proxyHostname,
+                                  proxyAuth=itrade_config.proxyAuthentication)
 
     if market == 'SAO PAULO EXCHANGE':
         url ='https://www.bmfbovespa.com.br/suplemento/ExecutaAcaoDownload.asp?arquivo=Securities_Traded.zip'
@@ -141,7 +140,7 @@ if __name__ == '__main__':
 
     from itrade_quotes import quotes
 
-    Import_ListOfQuotes_SAO(quotes, 'SAO PAULO EXCHANGE')
+    Import_ListOfQuotes_SAO(quotes)
     quotes.saveListOfQuotes()
 
 # ============================================================================

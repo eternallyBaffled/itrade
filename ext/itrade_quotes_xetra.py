@@ -70,11 +70,10 @@ def splitLines(buf):
 def Import_ListOfQuotes_Xetra(quotes, market='FRANKFURT EXCHANGE', dlg=None, x=0):
     if itrade_config.verbose:
         print(u'Update {} list of symbols'.format(market))
-    connection = ITradeConnection(cookies=None,
-                               proxy=itrade_config.proxyHostname,
-                               proxyAuth=itrade_config.proxyAuthentication,
-                               connectionTimeout=itrade_config.connectionTimeout
-                               )
+    connection = ITradeConnection(proxy=itrade_config.proxyHostname,
+                                  proxyAuth=itrade_config.proxyAuthentication,
+                                  connectionTimeout=itrade_config.connectionTimeout
+                                 )
 
     if market == 'FRANKFURT EXCHANGE':
         url = 'https://deutsche-boerse.com/dbag/dispatch/en/xetraCSV/gdb_navigation/trading/20_tradable_instruments/900_tradable_instruments/100_xetra'

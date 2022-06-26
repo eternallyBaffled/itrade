@@ -63,11 +63,10 @@ class ImportYahoojp(object):
     def __init__(self):
         debug('ImportYahoojp:__init__')
 
-        self.m_connection = ITradeConnection(cookies=None,
-                                           proxy=itrade_config.proxyHostname,
-                                           proxyAuth=itrade_config.proxyAuthentication,
-                                           connectionTimeout=itrade_config.connectionTimeout
-                                           )
+        self.m_connection = ITradeConnection(proxy=itrade_config.proxyHostname,
+                                             proxyAuth=itrade_config.proxyAuthentication,
+                                             connectionTimeout=itrade_config.connectionTimeout
+                                            )
 
     def name(self):
         return 'yahoojp'

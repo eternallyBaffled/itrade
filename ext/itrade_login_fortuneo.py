@@ -222,7 +222,7 @@ class Login_fortuneo(object):
             return False
 
         buf = flux.read()
-        #print buf
+        # print(buf)
 
         # GET trader request
         try:
@@ -246,14 +246,14 @@ class Login_fortuneo(object):
 
         cookie = m.group()[17:-11]
 
-        print('Login_fortuneo: cookie:',len(cookie),':',cookie)
-        #if len(cookie)!=96:
-        #   print 'Login_fortuneo: cookie len is strange (%d != 96) !' % len(cookie)
+        print('Login_fortuneo: cookie:', len(cookie), ':', cookie)
+        # if len(cookie) != 96:
+        #   print('Login_fortuneo: cookie len is strange ({:d} != 96) !'.format(len(cookie)))
 
         self.m_logged = True
 
         # save the cookie for later use
-        with open(os.path.join(itrade_config.dirUserData,'fortuneo_live.txt'),'w') as f:
+        with open(os.path.join(itrade_config.dirUserData, 'fortuneo_live.txt'), 'w') as f:
             f.write(cookie)
 
         self.m_conn.close()

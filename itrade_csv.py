@@ -68,7 +68,7 @@ def parser(line, separator=';'):
 
 
 def parse(line, maxn):
-    return parser(line, ';')
+    return parser(line)
 
 
 def write_b(fn, lines):

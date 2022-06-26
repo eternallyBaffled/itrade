@@ -69,11 +69,10 @@ def splitLines(buf):
 def Import_ListOfQuotes_OTCBB(quotes, market='OTCBB', dlg=None, x=0):
     if itrade_config.verbose:
         print(u'Update {} list of symbols'.format(market))
-    connection = ITradeConnection(cookies=None,
-                               proxy=itrade_config.proxyHostname,
-                               proxyAuth=itrade_config.proxyAuthentication,
-                               connectionTimeout=itrade_config.connectionTimeout
-                               )
+    connection = ITradeConnection(proxy=itrade_config.proxyHostname,
+                                  proxyAuth=itrade_config.proxyAuthentication,
+                                  connectionTimeout=itrade_config.connectionTimeout
+                                 )
     if market == 'OTCBB':
         url = 'https://www.otcbb.com/dynamic/tradingdata/download/allotcbb.txt'
     else:
@@ -119,7 +118,7 @@ if __name__ == '__main__':
 
     from itrade_quotes import quotes
 
-    Import_ListOfQuotes_OTCBB(quotes, 'OTCBB')
+    Import_ListOfQuotes_OTCBB(quotes)
     quotes.saveListOfQuotes()
 
 # ============================================================================

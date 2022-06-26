@@ -81,11 +81,10 @@ class LiveUpdate_Euronext_bonds(object):
         self.m_market = market
         self.m_url = 'https://bonds.nyx.com/fr/nyx_eu_listings/real-time/quote?_=&'
 
-        self.m_connection = ITradeConnection(cookies = None,
-                                           proxy = itrade_config.proxyHostname,
-                                           proxyAuth = itrade_config.proxyAuthentication,
-                                           connectionTimeout = itrade_config.connectionTimeout
-                                           )
+        self.m_connection = ITradeConnection(proxy=itrade_config.proxyHostname,
+                                             proxyAuth=itrade_config.proxyAuthentication,
+                                             connectionTimeout=itrade_config.connectionTimeout
+                                            )
 
     # ---[ reentrant ] ---
     def acquire(self):

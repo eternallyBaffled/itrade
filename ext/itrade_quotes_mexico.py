@@ -73,9 +73,8 @@ def splitLines(buf):
 
 def Import_ListOfQuotes_MEX(quotes, market='MEXICO EXCHANGE', dlg=None, x=0):
     print(u'Update {} list of symbols'.format(market))
-    connection = ITradeConnection(cookies=None,
-                                proxy=itrade_config.proxyHostname,
-                                proxyAuth=itrade_config.proxyAuthentication)
+    connection = ITradeConnection(proxy=itrade_config.proxyHostname,
+                                  proxyAuth=itrade_config.proxyAuthentication)
 
     if market == 'MEXICO EXCHANGE':
         url = 'https://www.bmv.com.mx/wb3/wb/BMV/BMV_busqueda_de_valores/_rid/222/_mto/3/_url/BMVAPP/componenteSelectorInput.jsf?st=1'
@@ -119,8 +118,8 @@ def Import_ListOfQuotes_MEX(quotes, market='MEXICO EXCHANGE', dlg=None, x=0):
                 , "Cookie": cookie
                }
 
-    conn = six.moves.http_client.HTTPConnection(host,80)
-    conn.request("GET",url,None,headers)
+    conn = six.moves.http_client.HTTPConnection(host, 80)
+    conn.request("GET", url, None, headers)
     response = conn.getresponse()
     #print response.status, response.reason
 
@@ -170,7 +169,7 @@ def Import_ListOfQuotes_MEX(quotes, market='MEXICO EXCHANGE', dlg=None, x=0):
             data = response.read()
 
             if data.find(startch):
-                a= data.find(startch)
+                a = data.find(startch)
                 dataline = data[a:data.index(endch,a)]
                 dataline = dataline.replace('</tr>','')
                 dataline = dataline.replace('<tr>','')
@@ -181,7 +180,7 @@ def Import_ListOfQuotes_MEX(quotes, market='MEXICO EXCHANGE', dlg=None, x=0):
             lines = splitLines(dataline)
 
             lineticker ='text-align: left;">'
-            linename =  'margin-right:5px;">'
+            linename = 'margin-right:5px;">'
             lineserie = 'text-valign:bottom;">'
 
             for line in lines:
@@ -229,7 +228,7 @@ if __name__ == '__main__':
 
     from itrade_quotes import quotes
 
-    Import_ListOfQuotes_MEX(quotes, 'MEXICO EXCHANGE')
+    Import_ListOfQuotes_MEX(quotes)
     quotes.saveListOfQuotes()
 
 # ============================================================================

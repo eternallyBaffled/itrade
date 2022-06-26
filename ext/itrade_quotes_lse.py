@@ -72,11 +72,10 @@ def splitLines(buf):
 def Import_ListOfQuotes_LSE(quotes, market='LSE SETS', dlg=None, x=0):
     if itrade_config.verbose:
         print(u'Update {} list of symbols'.format(market))
-    connection = ITradeConnection(cookies=None,
-                               proxy=itrade_config.proxyHostname,
-                               proxyAuth=itrade_config.proxyAuthentication,
-                               connectionTimeout=itrade_config.connectionTimeout
-                               )
+    connection = ITradeConnection(proxy=itrade_config.proxyHostname,
+                                  proxyAuth=itrade_config.proxyAuthentication,
+                                  connectionTimeout=itrade_config.connectionTimeout
+                                 )
 
     import xlrd
 
@@ -165,9 +164,9 @@ if __name__ == '__main__':
     from itrade_quotes import quotes
 
     if itrade_excel.canReadExcel:
-        Import_ListOfQuotes_LSE(quotes,'LSE SETS')
-        Import_ListOfQuotes_LSE(quotes,'LSE SETSqx')
-        Import_ListOfQuotes_LSE(quotes,'LSE SEAQ')
+        Import_ListOfQuotes_LSE(quotes)
+        Import_ListOfQuotes_LSE(quotes, 'LSE SETSqx')
+        Import_ListOfQuotes_LSE(quotes, 'LSE SEAQ')
 
         quotes.saveListOfQuotes()
     else:

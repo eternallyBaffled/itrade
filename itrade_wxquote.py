@@ -805,11 +805,11 @@ class iTradeQuoteGraphPanel(wx.Panel, iTrade_wxPanelGraph):
 
         if num > 0:
             if self.m_dispChart1Type == 'c':
-                lc = mf.candlestick2(self.chart1, self.m_quote.m_daytrades.m_inOpen[begin:end], self.m_quote.m_daytrades.m_inClose[begin:end], self.m_quote.m_daytrades.m_inHigh[begin:end], self.m_quote.m_daytrades.m_inLow[begin:end], colorup='g', colordown='r', alpha=1.0)
+                lc = mf.candlestick2(self.chart1, self.m_quote.m_daytrades.m_inOpen[begin:end], self.m_quote.m_daytrades.m_inClose[begin:end], self.m_quote.m_daytrades.m_inHigh[begin:end], self.m_quote.m_daytrades.m_inLow[begin:end], colorup='g', alpha=1.0)
             elif self.m_dispChart1Type == 'l':
-                lc = mf.plot_day_summary3(self.chart1, self.m_quote.m_daytrades.m_inClose[begin:end], color='k')
+                lc = mf.plot_day_summary3(self.chart1, self.m_quote.m_daytrades.m_inClose[begin:end])
             elif self.m_dispChart1Type == 'o':
-                lc = mf.plot_day_summary2(self.chart1, self.m_quote.m_daytrades.m_inOpen[begin:end], self.m_quote.m_daytrades.m_inClose[begin:end], self.m_quote.m_daytrades.m_inHigh[begin:end], self.m_quote.m_daytrades.m_inLow[begin:end], colorup='k', colordown='r')
+                lc = mf.plot_day_summary2(self.chart1, self.m_quote.m_daytrades.m_inOpen[begin:end], self.m_quote.m_daytrades.m_inClose[begin:end], self.m_quote.m_daytrades.m_inHigh[begin:end], self.m_quote.m_daytrades.m_inLow[begin:end])
             else:
                 lc = None
 
@@ -826,10 +826,10 @@ class iTradeQuoteGraphPanel(wx.Panel, iTrade_wxPanelGraph):
                 self.chart1.plot(self.m_quote.m_daytrades.m_ma20[begin:end],'m',scalex = False, label='MMA(20)')
 
             if self.m_dispOverlaidVolume:
-                mf.volume_overlay(self.chart1vol, self.m_quote.m_daytrades.m_inClose[begin-1:end], self.m_quote.m_daytrades.m_inVol[begin-1:end], colorup='g', colordown='r', alpha=0.5)
+                mf.volume_overlay(self.chart1vol, self.m_quote.m_daytrades.m_inClose[begin-1:end], self.m_quote.m_daytrades.m_inVol[begin-1:end], colorup='g', alpha=0.5)
             #l5 = self.chart1vol.plot(self.m_quote.m_daytrades.m_ovb[begin:end],'k')
 
-            mf.volume_overlay(self.chart2, self.m_quote.m_daytrades.m_inClose[begin-1:end], self.m_quote.m_daytrades.m_inVol[begin-1:end], colorup='g', colordown='r', alpha=1.0)
+            mf.volume_overlay(self.chart2, self.m_quote.m_daytrades.m_inClose[begin-1:end], self.m_quote.m_daytrades.m_inVol[begin-1:end], colorup='g')
             lvma15, = self.chart2.plot(self.m_quote.m_daytrades.m_vma15[begin:end], 'r', antialiased=False, linewidth=0.05, scalex=False, label='VMA(15)')
             lovb, = self.chart2vol.plot(self.m_quote.m_daytrades.m_ovb[begin:end], 'k', antialiased=False, linewidth=0.05, label='OVB')
             #index_bar(self.chart2, self.m_quote.m_daytrades.m_inVol[begin:end], facecolor='g', edgecolor='k', width=4,alpha=1.0)
@@ -1124,7 +1124,7 @@ class iTradeQuoteWindow(wx.Frame, iTrade_wxFrame, iTrade_wxLiveMixin):
 
     def SelectQuote(self, nquote=None):
         if not nquote:
-            nquote = select_iTradeQuote(self, self.m_quote, filter=True, market=None)
+            nquote = select_iTradeQuote(self, self.m_quote, filter=True)
         if nquote and nquote != self.m_quote:
             if itrade_config.verbose:
                 print()
@@ -1220,7 +1220,7 @@ def addInMatrix_iTradeQuote(win, matrix, portfolio, dquote=None):
         if not isinstance(dquote, Quote):
             dquote = quotes.lookupKey(dquote)
     else:
-        dquote = select_iTradeQuote(win, dquote=None, filter=False, market=portfolio.market())
+        dquote = select_iTradeQuote(win, market=portfolio.market())
 
     if dquote:
         matrix.addKey(dquote.key())
@@ -1250,7 +1250,7 @@ def removeFromMatrix_iTradeQuote(matrix, quote):
 
 def main():
     setLevel(logging.INFO)
-    app = wx.App(False)
+    app = wx.App()
     # load configuration
     import itrade_config
     itrade_config.load_config()

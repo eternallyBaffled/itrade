@@ -72,11 +72,10 @@ def splitLines(buf):
 def Import_ListOfQuotes_NSE(quotes, market='NATIONAL EXCHANGE OF INDIA', dlg=None, x=0):
     if itrade_config.verbose:
         print(u'Update {} list of symbols'.format(market))
-    connection = ITradeConnection(cookies=None,
-                               proxy=itrade_config.proxyHostname,
-                               proxyAuth=itrade_config.proxyAuthentication,
-                               connectionTimeout=itrade_config.connectionTimeout
-                               )
+    connection = ITradeConnection(proxy=itrade_config.proxyHostname,
+                                  proxyAuth=itrade_config.proxyAuthentication,
+                                  connectionTimeout=itrade_config.connectionTimeout
+                                 )
 
     if market == 'NATIONAL EXCHANGE OF INDIA':
         url = "https://www.nseindia.com/content/equities/EQUITY_L.csv"

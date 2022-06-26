@@ -69,11 +69,10 @@ def splitLines(buf):
 def Import_ListOfQuotes_SWX(quotes, market='SWISS EXCHANGE', dlg=None, x=0):
     if itrade_config.verbose:
         print(u'Update {} list of symbols'.format(market))
-    connection = ITradeConnection(cookies=None,
-                               proxy=itrade_config.proxyHostname,
-                               proxyAuth=itrade_config.proxyAuthentication,
-                               connectionTimeout=itrade_config.connectionTimeout
-                               )
+    connection = ITradeConnection(proxy=itrade_config.proxyHostname,
+                                  proxyAuth=itrade_config.proxyAuthentication,
+                                  connectionTimeout=itrade_config.connectionTimeout
+                                 )
     if market == 'SWISS EXCHANGE':
         url = 'https://www.six-swiss-exchange.com/shares/companies/download/issuers_all_fr.csv'
         try:

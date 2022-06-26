@@ -371,7 +371,7 @@ def open_iTradeMoney(win, page=0, port=None, quote=None):
 if __name__ == '__main__':
     setLevel(logging.INFO)
 
-    app = wx.App(False)
+    app = wx.App()
 
     from itrade_local import gMessage
     gMessage.setLang('us')
@@ -379,7 +379,7 @@ if __name__ == '__main__':
 
     port, matrix = cmdline_evaluatePortfolio()
 
-    open_iTradeMoney(None, port=port, quote=None)
+    open_iTradeMoney(win=None, port=port)
     app.MainLoop()
 
 # ============================================================================
