@@ -372,7 +372,7 @@ Portfolio_detachment;prime
 Portfolio_dividend;dividende
 Portfolio_liquidation;liquidation
 Portfolio_quote;prime
-Portfolio_register;public registration
+Portfolio_register;enregistrement public
 
 portfolio_dispall;&Tous
 portfolio_desc_dispall; Affiche toutes les opérations

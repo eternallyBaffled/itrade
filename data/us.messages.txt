@@ -373,7 +373,7 @@ Portfolio_detachment;detachment
 Portfolio_dividend;dividend
 Portfolio_liquidation;liquidation
 Portfolio_quote;dividend in shares
-Portfolio_register;enregistrement public
+Portfolio_register;public registration
 
 portfolio_dispall;&All
 portfolio_desc_dispall; Display list of all transactions
