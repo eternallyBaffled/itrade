@@ -61,13 +61,13 @@ o Create a tracker to indicate you are going to work on something. So everyone
 		Release : feature/bug fix on the ./RELEASE process itself
 		Website : feature/bug fix on the website
 
-	Group : the iTrade release targetted by the feature/bug fix
+	Group : the iTrade release targeted by the feature/bug fix
 
 		NB: do not use this field to indicate the release where the
 		issue has been found but to indicate the release where the
 		issue will be solved.
 
-		Use "TBD" when you don't know yet the targetted release.
+		Use "TBD" when you don't know yet the targeted release.
 
 	Priority : everything should be 5 :)
 
@@ -80,7 +80,7 @@ o Change the "Resolution" field of the tracker to "Accepted" when :
   It means also for everyone involved in the project that you have take lead on
   the subject.
 
-  You can comment the traker with information about your status on the subject.
+  You can comment the tracker with information about your status on the subject.
 
 o Delivery new code (new module or modified module) :
 
@@ -109,7 +109,7 @@ o Derogation to the Development Process
      ChangeLog information
 
 -------------------------------------------------------------------------------
-Developement Policies
+Development Policies
 -------------------------------------------------------------------------------
 
 o Create a module
@@ -156,7 +156,7 @@ o File format : CSV compatible with EBP
 
 o Tracing Python Programs
 	/usr/lib/python2.4/trace.py -t program.py
-  This'll print out the filename, line number and contents of that line before
+  This prints out the filename, line number and contents of that line before
   executing the code. If you want to skip the output for the standard library
   (ie. only show statements from your own code), simply pass
   --ignore-dir=/usr/lib/python2.4 (or similar) as an option
@@ -173,7 +173,7 @@ o python 2 executable (binary pack) - see also setup.py in /itrade folder
 o Matplotlib and wxPython
   http://www.scipy.org/wikis/topical_software/EmbeddingInWx
 
-o Date formating
+o Date formatting
    strptime( string[, format])
    strftime( format[, t])
 
