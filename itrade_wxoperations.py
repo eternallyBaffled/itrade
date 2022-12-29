@@ -712,7 +712,7 @@ class iTradeOperationsWindow(wx.Frame, iTrade_wxFrame, wxl.ColumnSorterMixin):
     # --- [ Text font size management ] -------------------------------------
 
     def OnChangeViewText(self):
-        itrade_config.saveConfig()
+        itrade_config.save_config()
         self.updateMenuItems()
         self.m_list.SetFont(font=FontFromSize(itrade_config.operationFontSize))
         self.populate()

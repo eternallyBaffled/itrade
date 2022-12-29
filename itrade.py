@@ -229,7 +229,7 @@ def main():
         quote.printInfo()
 
     # save the user configuration
-    # __x ? itrade_config.saveConfig()
+    # __x ? itrade_config.save_config()
 
 
 # ============================================================================

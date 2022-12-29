@@ -561,11 +561,11 @@ def load_config():
             column[i] = "-1;1"
 
 # ============================================================================
-# saveConfig()
+# save_config()
 # ============================================================================
 
 
-def saveConfig():
+def save_config():
     # create a configuration object
     config = six.moves.configparser.ConfigParser()
 
@@ -670,7 +670,7 @@ def main():
     app_header()
     set_application_root_folder(os.environ['itrade_path'])
     load_config()
-    saveConfig()
+    save_config()
     print(__revision__)
     print(os.path.expanduser('~'))
     print(check_new_release())

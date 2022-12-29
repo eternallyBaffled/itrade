@@ -992,7 +992,7 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
     def Save(self):
         self.m_matrix.save(self.m_portfolio.filename())
         self.m_portfolio.saveStops()
-        itrade_config.saveConfig()
+        itrade_config.save_config()
         self.saveConfig()
 
     # --- [ buy / sell from the matrix ] ------------------------------------
@@ -1050,7 +1050,7 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
     # --- [ Text font size management ] -------------------------------------
 
     def OnChangeViewText(self):
-        itrade_config.saveConfig()
+        itrade_config.save_config()
         self.updateCheckItems()
         sel = self.m_book.GetSelection()
         win = self.m_book.win[sel]
@@ -1124,7 +1124,7 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
             self.updateCheckItems()
 
     def OnChangeLang(self):
-        itrade_config.saveConfig()
+        itrade_config.save_config()
         self.SetLang()
 
     def OnLangDefault(self, e):
@@ -1172,7 +1172,7 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
 
     def OnConnection(self, e):
         itrade_config.proxyHostname, itrade_config.proxyAuthentication, itrade_config.connectionTimeout = connection_UI(self, itrade_config.proxyHostname, itrade_config.proxyAuthentication, itrade_config.connectionTimeout)
-        itrade_config.saveConfig()
+        itrade_config.save_config()
 
     # --- [ autosize management ] -------------------------------------
 
@@ -1186,7 +1186,7 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
     def OnAutoRefresh(self, e):
         self.DoneCurrentPage()
         itrade_config.bAutoRefreshMatrixView = not itrade_config.bAutoRefreshMatrixView
-        itrade_config.saveConfig()
+        itrade_config.save_config()
         self.updateCheckItems()
         self.m_toolbar.ClearIndicator()
         self.InitCurrentPage(bReset=False, bInit=False)
