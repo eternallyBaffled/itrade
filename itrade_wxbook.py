@@ -828,7 +828,7 @@ class iTradeMainWindow(wx.Frame, iTrade_wxFrame):
         # can be long ...
         wx.SetCursor(wx.HOURGLASS_CURSOR)
 
-        url = itrade_config.checkNewRelease()
+        url = itrade_config.check_new_release()
 
         # restore
         wx.SetCursor(wx.STANDARD_CURSOR)

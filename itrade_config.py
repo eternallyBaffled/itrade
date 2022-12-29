@@ -84,7 +84,7 @@ softwareAuthors = __author__
 softwareCopyright = __copyright__
 softwareCredits = __credits__
 softwareWebsite = 'https://itrade.sourceforge.net/'
-softwareLatest  = 'https://itrade.svn.sourceforge.net/svnroot/itrade/trunk/OFFICIAL'
+softwareLatest = 'https://itrade.svn.sourceforge.net/svnroot/itrade/trunk/OFFICIAL'
 
 # iTrade version (major.minor)
 softwareVersion = __version__
@@ -152,6 +152,7 @@ def ensure_folder(folder):
 def resolve_folder(folder):
     return os.path.join(application_root_folder(), folder)
 
+
 fileExtData = 'extensions.txt'
 fileIndData = 'indicators.txt'
 # file to get the current portfolio
@@ -172,8 +173,10 @@ dirSnapshots = ''
 dirReports = ''
 dirRes = ''
 
+
 def update_folders():
-    global dirSysData, dirBrokersData, dirSymbData, dirExtData, dirIndData, dirUserData, dirAlerts, dirImageData, dirCacheData, dirImport, dirExport, dirSnapshots, dirReports, dirRes
+    global dirSysData, dirBrokersData, dirSymbData, dirExtData, dirIndData, dirUserData, dirAlerts, dirImageData
+    global dirCacheData, dirImport, dirExport, dirSnapshots, dirReports, dirRes
     # directory for system data
     dirSysData = resolve_folder('data')
     # directory for brokers data
@@ -256,6 +259,7 @@ def default_alerts_file():
 
 def user_configuration_file():
     return os.path.join(dirUserData, 'usrconfig.txt')
+
 
 # number of trading years
 #numTradeYears = 12
@@ -402,19 +406,19 @@ column = {
 
 
 # ============================================================================
-# checkNewRelease()
+# check_new_release()
 #
 # return None or link to download the new release
 # ============================================================================
 
-def checkNewRelease(ping=False):
+def check_new_release(ping=False):
     # just to test : remove '#' from the line just below
     #__revision__ = 'r565'
 
     # development release : do not test
     if not ping and __revision__[0] == 'x':
         if verbose:
-            print('checkNewRelease(): development release')
+            print('check_new_release(): development release')
         return 'dev'
 
     from itrade_connection import ITradeConnection
@@ -425,38 +429,40 @@ def checkNewRelease(ping=False):
 
     # get OFFICIAL file from svn
     try:
-        latest=connection.getDataFromUrl(softwareLatest)
+        latest = connection.getDataFromUrl(softwareLatest)
     except IOError:
-        print('checkNewRelease(): exception getting OFFICIAL file')
+        print('check_new_release(): exception getting OFFICIAL file')
         return 'err'
 
-    if latest[0]!='r':
+    if latest[0] != 'r':
         if verbose:
-            print('checkNewRelease(): OFFICIAL file malformed')
+            print('check_new_release(): OFFICIAL file malformed')
         return 'err'
 
     # development release : do not test
     if __revision__[0] == 'x':
         if verbose:
-            print('checkNewRelease(): development release (ping)')
+            print('check_new_release(): development release (ping)')
         return 'dev'
 
     current = int(__revision__[1:])
     latest = int(latest[1:])
 
-    #print current,latest
+    #print(current, latest)
 
-    if current<latest:
-        print(u'checkNewRelease(): please update ({:d} vs {:d}) : {}'.format(current, latest, downloadURL))
+    if current < latest:
+        print(u'check_new_release(): please update ({:d} vs {:d}) : {}'.format(current, latest, downloadURL))
         return downloadURL
     else:
-        print('checkNewRelease(): up to date')
+        print('check_new_release(): up to date')
         return 'ok'
+
 
 def caller_module():
     frm = inspect.stack()[1]
     mod = inspect.getmodule(frm[0])
     return mod.__name__
+
 
 def load_config():
     # access global var
@@ -478,7 +484,7 @@ def load_config():
 
     # read the user configuration file
     fn = user_configuration_file()
-    print('User Configuration :',fn)
+    print('User Configuration :', fn)
     config.read(fn)
 
     # try to read information
@@ -558,6 +564,7 @@ def load_config():
 # saveConfig()
 # ============================================================================
 
+
 def saveConfig():
     # create a configuration object
     config = six.moves.configparser.ConfigParser()
@@ -578,16 +585,16 @@ def saveConfig():
     # create "Net" section
     config.add_section("net")
     if proxyHostname:
-        config.set("net","proxyHostname",proxyHostname)
+        config.set("net", "proxyHostname", proxyHostname)
     if proxyAuthentication:
-        config.set("net","proxyAuthentication",proxyAuthentication)
+        config.set("net", "proxyAuthentication", proxyAuthentication)
     if connectionTimeout != default_connectionTimeout:
-        config.set("net","connectionTimeout",connectionTimeout)
+        config.set("net", "connectionTimeout", connectionTimeout)
 
     # create "Column" section
     config.add_section("column")
     for i in column.keys():
-        config.set("column",i,column[i])
+        config.set("column", i, column[i])
 
     # write the new configuration file
     with open(user_configuration_file(), 'w') as f:
@@ -598,14 +605,16 @@ def saveConfig():
 # if a module is running standalone
 # ============================================================================
 
+
 def main_is_frozen():
     if sys.platform == 'darwin':
         # this is a temporary hack for bundlebuilder
         return not sys.executable == '/System/Library/Frameworks/Python.framework/Versions/2.3/Resources/Python.app/Contents/MacOS/Python'
     else:
-        return (hasattr(sys, "frozen") or # new py2exe, McMillan
-                hasattr(sys, "importers") # old py2exe
-                or imp.is_frozen("__main__")) # tools/freeze, cx_freeze
+        return (hasattr(sys, "frozen") or  # new py2exe, McMillan
+                hasattr(sys, "importers")  # old py2exe
+                or imp.is_frozen("__main__"))  # tools/freeze, cx_freeze
+
 
 def get_main_dir():
     if main_is_frozen():
@@ -616,10 +625,12 @@ def get_main_dir():
 # readAndEvalFile()
 # ============================================================================
 
+
 def readThenEvalFile(filename):
     with open(filename) as f:
         txt = '\n'.join(f.read().splitlines())
     return eval(txt, globals())
+
 
 # ============================================================================
 # disconnected
@@ -627,6 +638,7 @@ def readThenEvalFile(filename):
 
 # connection to network
 gbDisconnected = False
+
 
 def setDisconnected(status=True):
     global gbDisconnected
@@ -636,6 +648,7 @@ def setDisconnected(status=True):
         print('Network : No connection')
     else:
         print('Network : Ready')
+
 
 def isConnected():
     # print 'isConnected(): {}'.format(not gbDisconnected)
@@ -660,7 +673,7 @@ def main():
     saveConfig()
     print(__revision__)
     print(os.path.expanduser('~'))
-    print(checkNewRelease())
+    print(check_new_release())
 
 
 if __name__ == '__main__':
