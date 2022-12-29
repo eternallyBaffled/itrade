@@ -60,6 +60,7 @@ import wx.lib.mixins.listctrl as wxl
 # - focus management
 # ============================================================================
 
+
 class iTrade_wxFrame(object):
     def __init__(self, parent, name, hasStatusBar=True):
         self.m_parent = parent
@@ -68,14 +69,14 @@ class iTrade_wxFrame(object):
         self._config = {}
 
         # icon
-        self.SetIcon(wx.Icon(os.path.join(itrade_config.dirRes, "itrade.ico"),wx.BITMAP_TYPE_ICO))
+        self.SetIcon(wx.Icon(os.path.join(itrade_config.dirRes, "itrade.ico"), wx.BITMAP_TYPE_ICO))
 
         # focus
         self.m_hasFocus = True
-        wx.EVT_ACTIVATE(self,self._OnActivate)
+        wx.EVT_ACTIVATE(self, self._OnActivate)
 
         # size and position
-        wx.EVT_ICONIZE(self,self._OnMinimize)
+        wx.EVT_ICONIZE(self, self._OnMinimize)
 
         # a Statusbar in the bottom of the window
         if hasStatusBar:
@@ -87,8 +88,8 @@ class iTrade_wxFrame(object):
     def getParent(self):
         return self.m_parent
 
-    def _OnActivate(self,event):
-        #debug('_OnActivate %d',event.GetActive())
+    def _OnActivate(self, event):
+        # debug('_OnActivate %d', event.GetActive())
         self.m_hasFocus = event.GetActive()
         if self.m_hasFocus and not self.IsIconized():
             self._restoredPosition = self.GetPositionTuple()
@@ -122,9 +123,11 @@ class iTrade_wxFrame(object):
 
     def loadConfig(self):
         if self.m_name:
-            if itrade_config.verbose: print('iTrade_wxFrame::loadConfig',self.m_name)
+            if itrade_config.verbose:
+                print('iTrade_wxFrame::loadConfig', self.m_name)
             try:
-                self._config = itrade_config.readThenEvalFile(os.path.join(itrade_config.dirCacheData, '{}.win'.format(self.m_name)))
+                file_name = os.path.join(itrade_config.dirCacheData, '{}.win'.format(self.m_name))
+                self._config = itrade_config.readThenEvalFile(file_name)
                 if self._config != {}:
                     if 'position' in self._config:
                         self.SetPosition(self._config['position'])
@@ -140,7 +143,7 @@ class iTrade_wxFrame(object):
             self._config['position'] = self.GetRestoredPosition()
             self._config['size'] = self.GetRestoredSize()
             try:
-                path = os.path.join(itrade_config.dirCacheData,'{}.win'.format(self.m_name))
+                path = os.path.join(itrade_config.dirCacheData, '{}.win'.format(self.m_name))
                 if itrade_config.verbose:
                     print('saveConfig: {} {}'.format(path, self._config))
                 with open(path, "w") as f:
@@ -155,6 +158,7 @@ class iTrade_wxFrame(object):
 #
 # ListCtrl with sorting columns
 # ============================================================================
+
 
 class iTradeSelectorListCtrl(wx.ListCtrl, wxl.ListCtrlAutoWidthMixin):
     def __init__(self, parent, ID, pos=wx.DefaultPosition,
