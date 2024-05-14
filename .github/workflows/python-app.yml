@@ -1,7 +1,7 @@
 # This workflow will install Python dependencies, run tests and lint with a single version of Python
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 
-name: Python application
+name: Legacy Python 2.7 application
 
 on:
   push:
@@ -22,15 +22,13 @@ jobs:
         python-version: [2.7]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Install wxPython
-      run: |
-        sudo apt-get -y install python-wxgtk3.0
     - name: Install dependencies
+      # wxPython now available from requirements
       run: |
         pip --version
         # python -m pip install --upgrade pip
